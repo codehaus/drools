@@ -10,4 +10,14 @@
       </classpath>
     </java>
   </goal>
+
+  <goal name="fishmonger" prereqs="jar:jar">
+    <java classname="org.drools.examples.fishmonger.FishMonger"
+          fork="true">
+      <classpath refid="maven.dependency.classpath"/>
+      <classpath>
+        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+      </classpath>
+    </java>
+  </goal>
 </project>

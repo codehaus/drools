@@ -1,10 +1,16 @@
-<rule-set name="Fishmonger Rules" xmlns="http://drools.org/rules" xmlns:java="http://drools.org/semantics/java">
+<?xml version="1.0"?>
+
+<rule-set name="Fishmonger Rules"
+          xmlns="http://drools.org/rules"
+	  xmlns:java="http://drools.org/semantics/java">
 
     <rule name="Explode Cart">
 
       <parameter identifier="cart">
         <java:class>org.drools.examples.fishmonger.ShoppingCart</java:class>
       </parameter>
+
+      <java:condition>true</java:condition>
 
         <java:consequence>
          
@@ -77,3 +83,4 @@
     </rule>
 
   </rule-set>
+
