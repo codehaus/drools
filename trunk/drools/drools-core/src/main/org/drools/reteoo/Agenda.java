@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.25 2003-12-05 04:26:23 bob Exp $
+ $Id: Agenda.java,v 1.26 2004-06-26 15:10:56 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,6 @@ import org.drools.spi.ConsequenceException;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Collections;
 import java.util.Iterator;
 
 /** Rule-firing Agenda.

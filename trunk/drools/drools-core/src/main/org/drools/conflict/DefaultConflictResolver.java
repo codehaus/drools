@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: DefaultConflictResolver.java,v 1.2 2004-06-25 11:46:58 mproctor Exp $
+ $Id: DefaultConflictResolver.java,v 1.3 2004-06-26 15:10:56 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -10,26 +10,26 @@ package org.drools.conflict;
  that the following conditions are met:
 
  1. Redistributions of source code must retain copyright
-    statements and notices.  Redistributions must also contain a
-    copy of this document.
+ statements and notices.  Redistributions must also contain a
+ copy of this document.
 
  2. Redistributions in binary form must reproduce the
-    above copyright notice, this list of conditions and the
-    following disclaimer in the documentation and/or other
-    materials provided with the distribution.
+ above copyright notice, this list of conditions and the
+ following disclaimer in the documentation and/or other
+ materials provided with the distribution.
 
  3. The name "drools" must not be used to endorse or promote
-    products derived from this Software without prior written
-    permission of The Werken Company.  For written permission,
-    please contact bob@werken.com.
+ products derived from this Software without prior written
+ permission of The Werken Company.  For written permission,
+ please contact bob@werken.com.
 
  4. Products derived from this Software may not be called "drools"
-    nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of
-    The Werken Company.
+ nor may "drools" appear in their names without prior written
+ permission of The Werken Company. "drools" is a trademark of
+ The Werken Company.
 
  5. Due credit should be given to The Werken Company.
-    (http://werken.com/)
+ (http://werken.com/)
 
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
@@ -46,73 +46,85 @@ package org.drools.conflict;
 
  */
 
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.Activation;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
-/** Strategy for resolving conflicts amongst multiple rules.
- *
- *  <p>
- *  Since a fact or set of facts may activate multiple rules,
- *  a <code>ConflictResolutionStrategy</code> is used to provide
- *  priority ordering of conflicting rules.
- *  </p>
- *
- *  @see Activation
- *  @see Tuple
- *  @see org.drools.rule.Rule
- *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
- *
- *  @version $Id: DefaultConflictResolver.java,v 1.2 2004-06-25 11:46:58 mproctor Exp $
+import org.drools.spi.Activation;
+import org.drools.spi.ConflictResolver;
+import org.drools.spi.Tuple;
+
+/**
+ * Strategy for resolving conflicts amongst multiple rules.
+ * 
+ * <p>
+ * Since a fact or set of facts may activate multiple rules, a
+ * <code>ConflictResolutionStrategy</code> is used to provide priority
+ * ordering of conflicting rules.
+ * </p>
+ * 
+ * @see Activation
+ * @see Tuple
+ * @see org.drools.rule.Rule
+ * 
+ * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * 
+ * @version $Id: DefaultConflictResolver.java,v 1.2 2004/06/25 11:46:58 mproctor
+ *          Exp $
  */
 public class DefaultConflictResolver implements ConflictResolver
 {
-    // ----------------------------------------------------------------------
-    //     Class members
-    // ----------------------------------------------------------------------
+	// ----------------------------------------------------------------------
+	//     Class members
+	// ----------------------------------------------------------------------
 
-    /** Singleton instance. */
-    private static final DefaultConflictResolver INSTANCE = new DefaultConflictResolver();
-    private ArrayList conflictResolvers;
+	/** Singleton instance. */
+	private static final DefaultConflictResolver INSTANCE = new DefaultConflictResolver( );
+	private static List conflictResolvers;
 
-    // ----------------------------------------------------------------------
-    //     Class methods
-    // ----------------------------------------------------------------------
+	// ----------------------------------------------------------------------
+	//     Class methods
+	// ----------------------------------------------------------------------
 
-    /** Retrieve the singleton instance.
-     *
-     *  @return The singleton instance.
-     */
-    public static ConflictResolver getInstance()
-    {
-        return INSTANCE;
-    }
+	/**
+	 * Retrieve the singleton instance.
+	 * 
+	 * @return The singleton instance.
+	 */
+	public static ConflictResolver getInstance()
+	{
+		return INSTANCE;
+	}
 
-    /**
-     * Setup a default ConflictResolver configuration
-     */
-    public DefaultConflictResolver() {
-        conflictResolvers = new ArrayList();
-        this.conflictResolvers.add(SalienceConflictResolver.getInstance());
-        //this.conflictResolvers.add(BreadthConflictResolver.getInstance());
-        //this.conflictResolvers.add(ComplexityConflictResolver.getInstance());
-        this.conflictResolvers.add(LoadOrderConflictResolver.getInstance());
-    }
+	/**
+	 * Setup a default ConflictResolver configuration
+	 */
+	public DefaultConflictResolver()
+	{
+		if ( (conflictResolvers == null) || (conflictResolvers.isEmpty( )) )
+		{
+			conflictResolvers = new ArrayList( );
+			conflictResolvers.add( SalienceConflictResolver.getInstance( ) );
+			conflictResolvers.add( ComplexityConflictResolver.getInstance( ) );
+			//conflictResolvers.add(BreadthConflictResolver.getInstance());
+			conflictResolvers.add( LoadOrderConflictResolver.getInstance( ) );
+		}
+	}
 
-    public List insert(Activation activation,
-                       List list)
-    {
-        ConflictResolver conflictResolver;
-        Iterator iterator = this.conflictResolvers.iterator();
-        while ( (list != null) && iterator.hasNext() )
-        {
-            conflictResolver = (ConflictResolver) iterator.next();
-            list = conflictResolver.insert(activation, list);
-        }
-        return list;
-    }
+	public static void setStrategies( List strategyList )
+	{
+		conflictResolvers = strategyList;
+	}
+
+	public List insert( Activation activation, List list )
+	{
+		ConflictResolver conflictResolver;
+		Iterator iterator = conflictResolvers.iterator( );
+		while ( (list != null) && iterator.hasNext( ) )
+		{
+			conflictResolver = (ConflictResolver) iterator.next( );
+			list = conflictResolver.insert( activation, list );
+		}
+		return list;
+	}
 }

@@ -8,7 +8,6 @@ import org.drools.spi.InstrumentedConsequence;
 import org.drools.MockObjectType;
 import org.drools.rule.RuleSet;
 import org.drools.conflict.DefaultConflictResolver;
-import org.drools.spi.ConflictResolver;
 import org.drools.RuleBase;
 
 public class AgendaItemTest

@@ -1,6 +1,5 @@
 package org.drools.reteoo;
 
-import org.drools.WorkingMemory;
 import org.drools.FactHandle;
 
 import java.util.List;

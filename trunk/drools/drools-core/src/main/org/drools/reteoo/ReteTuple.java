@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.23 2004-06-20 16:07:10 n_alex Exp $
+ $Id: ReteTuple.java,v 1.24 2004-06-26 15:10:56 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -55,7 +55,6 @@ import org.drools.rule.Declaration;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.HashSet;
 
 /** Base Rete-OO <code>Tuple</code> implementation.
  *
@@ -63,7 +62,7 @@ import java.util.HashSet;
  *  
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.23 2004-06-20 16:07:10 n_alex Exp $ 
+ *  @version $Id: ReteTuple.java,v 1.24 2004-06-26 15:10:56 mproctor Exp $ 
  */
 class ReteTuple
     implements Tuple
