@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.26 2004-10-28 22:07:47 mproctor Exp $
+ * $Id: JoinMemory.java,v 1.27 2004-10-29 13:22:37 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -63,14 +63,16 @@ class JoinMemory implements Serializable
     //     Instance members
     // ------------------------------------------------------------
 
+    private final JoinNode node;
+
     /** Left-side tuples. */
-    private TupleSet leftTuples;
+    private final TupleSet leftTuples;
 
     /** Right-side tuples. */
-    private TupleSet rightTuples;
+    private final TupleSet rightTuples;
 
     /** Join column declarations. */
-    private Set      joinDeclarations;
+    private final Set      joinDeclarations;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -83,6 +85,7 @@ class JoinMemory implements Serializable
      */
     JoinMemory(JoinNode node)
     {
+        this.node = node;
         this.leftTuples = new TupleSet( );
         this.rightTuples = new TupleSet( );
 
@@ -190,18 +193,16 @@ class JoinMemory implements Serializable
      *
      * @param trigger Triggering object handle.
      * @param newTuples Modification replacement tuples.
-     * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
      *
      * @throws FactException if an error occurs during modification.
      */
-    protected void modifyLeftTuples(FactHandle trigger,
-                                    TupleSet newTuples,
-                                    JoinNode joinNode,
-                                    WorkingMemoryImpl workingMemory) throws FactException
+    protected void modifyLeftTuples( FactHandle trigger,
+                                     TupleSet newTuples,
+                                     WorkingMemoryImpl workingMemory ) throws FactException
     {
         modifyTuples( trigger, newTuples, getLeftTuples( ), getRightTuples( ),
-                      joinNode, workingMemory );
+                workingMemory );
     }
 
     /**
@@ -209,18 +210,16 @@ class JoinMemory implements Serializable
      *
      * @param trigger Triggering object handle.
      * @param newTuples Modification replacement tuples.
-     * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
      *
      * @throws FactException if an error occurs during modification.
      */
-    protected void modifyRightTuples(FactHandle trigger,
-                                     TupleSet newTuples,
-                                     JoinNode joinNode,
-                                     WorkingMemoryImpl workingMemory) throws FactException
+    protected void modifyRightTuples( FactHandle trigger,
+                                      TupleSet newTuples,
+                                      WorkingMemoryImpl workingMemory ) throws FactException
     {
         modifyTuples( trigger, newTuples, getRightTuples( ), getLeftTuples( ),
-                      joinNode, workingMemory );
+                workingMemory );
     }
 
     /**
@@ -232,17 +231,15 @@ class JoinMemory implements Serializable
      *        modifications.
      * @param thatSideTuples The tuples on the side that's <b>not </b> receiving
      *        the modifications.
-     * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
      *
      * @throws FactException if an error occurs during modification.
      */
-    protected void modifyTuples(FactHandle trigger,
-                                TupleSet newTuples,
-                                TupleSet thisSideTuples,
-                                TupleSet thatSideTuples,
-                                JoinNode joinNode,
-                                WorkingMemoryImpl workingMemory) throws FactException
+    protected void modifyTuples( FactHandle trigger,
+                                 TupleSet newTuples,
+                                 TupleSet thisSideTuples,
+                                 TupleSet thatSideTuples,
+                                 WorkingMemoryImpl workingMemory ) throws FactException
     {
         Set origModified = new HashSet( );
         Set newModified = new HashSet( );
@@ -270,21 +267,6 @@ class JoinMemory implements Serializable
 
         newModified.addAll( newTuples.getTuples( ) );
 
-/*
- * I'm sure this is redundant, comment out for now will delete later
- * @todo: delete commented code
- *
-        TupleSet origJoined = new TupleSet( );
-
-        for ( Iterator tupleIter = origModified.iterator( ); tupleIter
-                                                                      .hasNext( ); )
-        {
-            ReteTuple eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            origJoined.addAllTuples( attemptJoin( eachTuple,
-                                                  thatSideTuples.iterator( ) ) );
-        }
-*/
         TupleSet newJoined = new TupleSet( );
 
         for ( Iterator tupleIter = newModified.iterator( ); tupleIter.hasNext( ); )
@@ -297,34 +279,7 @@ class JoinMemory implements Serializable
 
         thisSideTuples.addAllTuples( newTuples );
 
-        joinNode.propagateModifyTuples( trigger, newJoined, workingMemory );
-    }
-
-    /**
-     * Propagate retractions.
-     *
-     * @param trigger The retracted trigger object.
-     * @param retractedKeys Keys to the retracted tuples.
-     * @param joinNode This memory's join node.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException if an error occurs during modification.
-     */
-    private void propagateRetractTuples(Object trigger,
-                                        Set retractedKeys,
-                                        JoinNode joinNode,
-                                        WorkingMemoryImpl workingMemory) throws FactException
-    {
-        Iterator keyIter = retractedKeys.iterator( );
-        TupleKey eachKey = null;
-
-        while ( keyIter.hasNext( ) )
-        {
-            eachKey = ( TupleKey ) keyIter.next( );
-
-            joinNode.propagateRetractTuples( eachKey, workingMemory );
-        }
-
+        this.node.propagateModifyTuples( trigger, newJoined, workingMemory );
     }
 
     /**
@@ -466,8 +421,6 @@ class JoinMemory implements Serializable
                 joinedTuples.add( joinedTuple );
             }
         }
-
-
 
         return joinedTuples;
     }
