@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.20 2004-07-28 13:34:31 mproctor Exp $
+ $Id: Interp.java,v 1.21 2004-07-28 13:55:41 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.20 2004-07-28 13:34:31 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.21 2004-07-28 13:55:41 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -134,7 +134,7 @@ public class Interp implements Serializable
         this.imports = newImports.toString();
         if (this instanceof ExprCondition)
         {
-            this.text = "return new Boolean((" + newText.toString().trim() + "));" + newline;
+            this.text = "return (" + newText.toString().trim() + ");" + newline;
         }
         else if (this instanceof ExprExtractor)
         {
@@ -183,7 +183,10 @@ public class Interp implements Serializable
                     type = type.substring(0, nestedClassPosition);
                 }
 
-                buffer.append("import " + type + ";" + newline);
+                if (type.indexOf("java.lang") == -1)
+                {
+                    buffer.append("import " + type + ";" + newline);
+                }
 
                 if ( objectType instanceof ExtraImports )
                 {
@@ -191,7 +194,10 @@ public class Interp implements Serializable
 
                     for ( int e = 0 ; e < extra.length ; ++e )
                     {
-                        buffer.append( "import " + extra[e] + ";" + newline );
+                        if (extra[e].indexOf("java.lang") == -1)
+                        {
+                            buffer.append( "import " + extra[e] + ";" + newline );
+                        }
                     }
                 }
             }
@@ -211,7 +217,11 @@ public class Interp implements Serializable
             {
                 type = type.substring(0, nestedClassPosition);
             }
-            buffer.append("import " + object.getClass().getName() + ";" + newline);
+
+            if (type.indexOf("java.lang") == -1)
+            {
+                buffer.append("import " + type + ";" + newline);
+            }
         }
         buffer.append(imports);
 
