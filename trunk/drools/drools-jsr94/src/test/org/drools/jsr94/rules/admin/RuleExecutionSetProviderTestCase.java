@@ -1,10 +1,19 @@
 package org.drools.jsr94.rules.admin;
 
 import org.drools.jsr94.rules.RuleEngineTestBase;
+import org.drools.RuleBase;
+import org.drools.io.RuleSetReader;
+import org.drools.RuleBaseBuilder;
 
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetProvider;
+import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * Test the RuleExecutionSetProvider implementation.
@@ -33,7 +42,9 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
     public void testCreateFromElement() throws Exception
     {
         // TODO: implement testCreateFromElement()
-        throw new UnsupportedOperationException("The createRuleExecutionSet(Element, Map) method has not yet been implemented.");
+        throw new UnsupportedOperationException("" +
+                "The createRuleExecutionSet(Element, Map) method has not yet " +
+                "been implemented.");
     }
 
 
@@ -42,8 +53,16 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
      */
     public void testCreateFromSerializable() throws Exception
     {
-        // TODO: implement testCreateFromSerializable()
-        throw new UnsupportedOperationException("The createRuleExecutionSet(Serializable, Map) method has not yet been implemented.");
+        InputStream resourceAsStream = RuleEngineTestBase.class.getResourceAsStream(bindUri);
+        Reader reader = new InputStreamReader( resourceAsStream );
+        RuleSetReader ruleSetReader = new RuleSetReader();
+        RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
+        builder.addRuleSet( ruleSetReader.read( reader ) );
+        RuleBase ruleBase = builder.build();
+
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleBase, null);
+        assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
+        assertEquals("number of rules", 2, ruleSet.getRules().size());
     }
 
     /**
@@ -51,9 +70,18 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
      */
     public void testCreateFromURI() throws Exception
     {
-        String rulesUri = org.drools.jsr94.rules.RuleEngineTestBase.class.getResource(bindUri).toExternalForm();
+        String rulesUri = RuleEngineTestBase.class.getResource(bindUri).toExternalForm();
         RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesUri, null);
         assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
         assertEquals("number of rules", 2, ruleSet.getRules().size());
+    }
+
+    public static void main (String[] args) {
+        String[] name = { RuleExecutionSetProviderTestCase.class.getName() };
+        junit.textui.TestRunner.main(name);
+    }
+
+    public static Test suite() {
+        return new TestSuite(RuleExecutionSetProviderTestCase.class);
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.8 2004-04-04 02:54:55 n_alex Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.9 2004-04-05 19:49:07 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,6 +47,7 @@ package org.drools.jsr94.rules.admin;
  */
 
 import org.drools.jsr94.rules.NotImplementedException;
+import org.drools.RuleBase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -83,18 +84,32 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
     }
 
     /**
-     * Creates a <code>RuleExecutionSet</code> implementation from a vendor specific AST representation
-     * and vendor-specific properties.
-     * <p>
-     * This method accepts <code>org.drools.rule.Rule</code> and <code>org.drools.rule.RuleSet</code> objects or
-     * a <code>List</code> of these objects.
+     * <p>Creates a <code>RuleExecutionSet</code> implementation from a vendor
+     * specific Abstract Syntax Tree (AST) representation and vendor-specific
+     * properties.</p>
+     *
+     * <p>This method accepts a <code>org.drools.RuleBase</code> object as its
+     * vendor specific AST representation.</p>
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable, Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( Serializable serializable, Map properties ) throws RuleExecutionSetCreateException, RemoteException
+    public RuleExecutionSet createRuleExecutionSet(
+            Serializable serializable,
+            Map properties )
+            throws RuleExecutionSetCreateException,
+            RemoteException
     {
-        LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
-        return localRuleExecutionSetProvider.createRuleExecutionSet( serializable, properties );
+        if(serializable instanceof RuleBase)
+        {
+            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
+            return localRuleExecutionSetProvider.createRuleExecutionSet( serializable, properties );
+        }
+        else
+        {
+            throw new IllegalArgumentException("Serializable object must be " +
+                    "an instance of org.drools.RuleBase.  It was "
+                    + serializable.getClass().getName());
+        }
     }
 
     /**
