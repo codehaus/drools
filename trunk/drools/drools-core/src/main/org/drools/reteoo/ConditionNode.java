@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.23 2004-11-09 09:03:35 simon Exp $
+ * $Id: ConditionNode.java,v 1.24 2004-11-09 13:52:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,20 +41,10 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.spi.Condition;
 
-import org.drools.rule.Rule;
-
-import org.drools.event.WorkingMemoryEventListener;
-import org.drools.event.ConditionTestedEvent;
-
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.List;
 
 /**
  * Node which filters <code>ReteTuple</code>s.
@@ -154,18 +144,7 @@ class ConditionNode extends TupleSource implements TupleSink
         Condition condition = getCondition( );
         boolean isAllowed = condition.isAllowed( tuple );
 
-            List listeners = workingMemory.getListeners( );
-            if ( !listeners.isEmpty( ) )
-            {
-                ConditionTestedEvent conditionTestedEvent =  new ConditionTestedEvent(workingMemory, tuple.getRule(), condition, tuple, isAllowed);
-                Iterator iter = listeners.iterator( );
-                WorkingMemoryEventListener listener;
-                while ( iter.hasNext() )
-                {
-                    listener = ( WorkingMemoryEventListener ) iter.next( );
-                    listener.conditionTested( conditionTestedEvent );
-                }
-            }
+        workingMemory.getEventSupport( ).fireConditionTested( tuple.getRule( ), condition, tuple, isAllowed);
 
         if ( isAllowed )
         {

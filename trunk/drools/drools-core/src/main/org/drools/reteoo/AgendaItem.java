@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.16 2004-11-06 04:08:42 mproctor Exp $
+ * $Id: AgendaItem.java,v 1.17 2004-11-09 13:52:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,22 +40,14 @@ package org.drools.reteoo;
  *
  */
 
-import java.io.Serializable;
-import java.util.Iterator;
-
-import org.drools.event.WorkingMemoryEventListener;
-import org.drools.event.ActivationFiredEvent;
-
-
 import org.drools.FactHandle;
-import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Item entry in the <code>Agenda</code>.
@@ -162,25 +154,13 @@ class AgendaItem implements Activation, Serializable
      * @throws ConsequenceException If an error occurs while attempting to fire
      *         the consequence.
      */
-    void fire(WorkingMemory workingMemory) throws ConsequenceException
+    void fire(WorkingMemoryImpl workingMemory) throws ConsequenceException
     {
         Consequence consequence = getRule( ).getConsequence( );
-        Tuple ruple = getTuple();
 
         consequence.invoke( tuple, workingMemory );
 
-        List listeners = workingMemory.getListeners( );
-        if ( !listeners.isEmpty( ) )
-        {
-            ActivationFiredEvent activationFiredEvent =  new ActivationFiredEvent(workingMemory, consequence, tuple);
-            Iterator iter = listeners.iterator();
-            WorkingMemoryEventListener listener;
-            while ( iter.hasNext( ) )
-            {
-                listener = ( WorkingMemoryEventListener ) iter.next( );
-                listener.activationFired( activationFiredEvent );
-            }
-        }
+        workingMemory.getEventSupport( ).fireActivationFired( consequence, this.tuple );
     }
 
     public long getActivationNumber()

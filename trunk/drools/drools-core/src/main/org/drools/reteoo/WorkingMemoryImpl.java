@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.39 2004-11-09 09:03:35 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.40 2004-11-09 13:52:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,15 +46,12 @@ import org.drools.NoSuchFactHandleException;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.event.ObjectAssertedEvent;
-import org.drools.event.ObjectModifiedEvent;
-import org.drools.event.ObjectRetractedEvent;
 import org.drools.event.WorkingMemoryEventListener;
+import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.spi.AgendaFilter;
 import org.drools.util.IdentityMap;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -66,7 +63,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.39 2004-11-09 09:03:35 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.40 2004-11-09 13:52:38 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -75,19 +72,19 @@ class WorkingMemoryImpl implements WorkingMemory
     // ------------------------------------------------------------
 
     /** The actual memory for the <code>JoinNode</code>s. */
-    private final Map           joinMemories        = new HashMap( );
+    private final Map           joinMemories                = new HashMap( );
 
     /** Application data which is associated with this memory. */
-    private final Map           applicationData     = new HashMap( );
+    private final Map           applicationData             = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final Map           objects             = new HashMap( );
+    private final Map           objects                     = new HashMap( );
 
     /** Object-to-handle mapping. */
-    private final Map           handles             = new IdentityMap( );
+    private final Map           handles                     = new IdentityMap( );
 
-    /** Array of listeners */
-    private final List          listeners           = new ArrayList( );
+    /** The eventSupport */
+    private final WorkingMemoryEventSupport eventSupport    = new WorkingMemoryEventSupport( this );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
     private final RuleBaseImpl  ruleBase;
@@ -119,37 +116,19 @@ class WorkingMemoryImpl implements WorkingMemory
     //     Instance methods
     // ------------------------------------------------------------
 
-    /**
-     * add event listener to listeners ArrayList
-     *
-     * @param listener
-     */
     public void addEventListener(WorkingMemoryEventListener listener)
     {
-        if ( !listeners.contains( listener ) )
-        {
-            listeners.add( listener );
-        }
+        this.eventSupport.addEventListener( listener );
     }
 
-    /**
-     * remove event listener from listeners ArrayList
-     *
-     * @param listener
-     */
     public void removeEventListener(WorkingMemoryEventListener listener)
     {
-        listeners.remove( listener );
+        this.eventSupport.removeEventListener( listener );
     }
 
-    /**
-     * Returns a read-only list of listeners
-     *
-     * @return listeners
-     */
-    public List getListeners()
+    public List getEventListeners()
     {
-        return Collections.unmodifiableList( listeners );
+        return eventSupport.getEventListeners( );
     }
 
     /**
@@ -352,17 +331,8 @@ class WorkingMemoryImpl implements WorkingMemory
             putObject( handle, object );
 
             this.ruleBase.assertObject( handle, object, this );
-            if ( !this.listeners.isEmpty( ) )
-            {
-                ObjectAssertedEvent objectAssertedEvent =  new ObjectAssertedEvent(this, handle, object);
-                Iterator iter = this.listeners.iterator( );
-                WorkingMemoryEventListener listener;
-                while ( iter.hasNext() )
-                {
-                    listener = ( WorkingMemoryEventListener ) iter.next( );
-                    listener.objectAsserted( objectAssertedEvent );
-                }
-            }
+
+            this.eventSupport.fireObjectAsserted( handle, object );
         }
 
         return handle;
@@ -389,17 +359,8 @@ class WorkingMemoryImpl implements WorkingMemory
         this.ruleBase.retractObject( handle, this );
 
         this.handles.remove( this.objects.remove( handle ) );
-        if ( !this.listeners.isEmpty( ) )
-        {
-            ObjectRetractedEvent objectRetractedEvent =  new ObjectRetractedEvent( this, handle );
-            Iterator iter = getListeners( ).iterator( );
-            WorkingMemoryEventListener listener;
-            while ( iter.hasNext( ) )
-            {
-                listener = ( WorkingMemoryEventListener ) iter.next( );
-                listener.objectRetracted( objectRetractedEvent );
-            }
-        }
+
+        this.eventSupport.fireObjectRetracted( handle );
     }
 
     /**
@@ -422,19 +383,8 @@ class WorkingMemoryImpl implements WorkingMemory
 
         this.ruleBase.assertObject( handle, object, this );
 
-        if ( !this.listeners.isEmpty( ) )
-        {
-            ObjectModifiedEvent objectModifiedEvent =  new ObjectModifiedEvent( this, handle, object );
-            Iterator iter = getListeners( ).iterator( );
-            WorkingMemoryEventListener listener;
-            while ( iter.hasNext( ) )
-            {
-                listener = ( WorkingMemoryEventListener ) iter.next( );
-                listener.objectModified( objectModifiedEvent );
-            }
-        }
+        this.eventSupport.fireObjectModified( handle, object );
     }
-
 
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
@@ -461,5 +411,10 @@ class WorkingMemoryImpl implements WorkingMemory
     public long getConditionTimeStamp()
     {
         return this.conditionCounter++;
+    }
+
+    public WorkingMemoryEventSupport getEventSupport()
+    {
+        return eventSupport;
     }
 }

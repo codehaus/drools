@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.9 2004-09-17 00:14:10 mproctor Exp $
- * 
+ * $Id: Scheduler.java,v 1.10 2004-11-09 13:52:38 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,8 +37,10 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
+
+import org.drools.spi.ConsequenceException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -46,12 +48,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.drools.WorkingMemory;
-import org.drools.spi.ConsequenceException;
-
 /**
  * Scheduler for rules requiring truth duration.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 final class Scheduler
@@ -69,7 +68,7 @@ final class Scheduler
 
     /**
      * Retrieve the singleton instance.
-     * 
+     *
      * @return The singleton instance.
      */
     static Scheduler getInstance()
@@ -103,11 +102,11 @@ final class Scheduler
 
     /**
      * Schedule an agenda item.
-     * 
+     *
      * @param item The item to schedule.
      * @param workingMemory The working memory session.
      */
-    void scheduleAgendaItem(AgendaItem item, WorkingMemory workingMemory)
+    void scheduleAgendaItem(AgendaItem item, WorkingMemoryImpl workingMemory)
     {
         Date now = new Date( );
 
@@ -131,7 +130,7 @@ final class Scheduler
 
     /**
      * Cancel an agenda item.
-     * 
+     *
      * @param item The item to cancle.
      */
     void cancelAgendaItem(AgendaItem item)
@@ -147,7 +146,7 @@ final class Scheduler
 
 /**
  * Fire listener.
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 
@@ -161,7 +160,7 @@ class AgendaItemFireListener extends TimerTask
     private AgendaItem    item;
 
     /** The working-memory session. */
-    private WorkingMemory workingMemory;
+    private WorkingMemoryImpl workingMemory;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -169,11 +168,11 @@ class AgendaItemFireListener extends TimerTask
 
     /**
      * Construct.
-     * 
+     *
      * @param item The agenda item.
      * @param workingMemory The working memory session.
      */
-    AgendaItemFireListener(AgendaItem item, WorkingMemory workingMemory)
+    AgendaItemFireListener(AgendaItem item, WorkingMemoryImpl workingMemory)
     {
         this.item = item;
         this.workingMemory = workingMemory;

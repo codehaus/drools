@@ -6,11 +6,9 @@ import org.drools.spi.Tuple;
 
 public class ActivationCreatedEvent extends WorkingMemoryEvent
 {
-    private WorkingMemory workingMemory;
+    private final Consequence   consequence;
 
-    private Consequence   consequence;
-
-    private Tuple         tuple;
+    private final Tuple         tuple;
 
     public ActivationCreatedEvent(WorkingMemory workingMemory,
                                   Consequence consequence,
@@ -18,14 +16,8 @@ public class ActivationCreatedEvent extends WorkingMemoryEvent
     {
         super( workingMemory );
 
-        this.workingMemory = workingMemory;
         this.consequence = consequence;
         this.tuple = tuple;
-    }
-
-    public WorkingMemory getWorkingMemory()
-    {
-        return this.workingMemory;
     }
 
     public Consequence getConsequence()

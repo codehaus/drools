@@ -5,9 +5,9 @@ import org.drools.WorkingMemory;
 
 public class ObjectAssertedEvent extends WorkingMemoryEvent
 {
-    private FactHandle handle;
+    private final FactHandle handle;
 
-    private Object     object;
+    private final Object     object;
 
     public ObjectAssertedEvent(WorkingMemory workingMemory,
                                FactHandle handle,

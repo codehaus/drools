@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.34 2004-11-08 14:54:20 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.35 2004-11-09 13:52:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,34 +54,33 @@ import java.util.Map;
  */
 public interface WorkingMemory extends Serializable
 {
+    /**
+     * Add an event listener.
+     *
+     * @param listener The listener to add.
+     */
+    void addEventListener(WorkingMemoryEventListener listener);
 
     /**
-     * add event listener to listeners ArrayList
+     * Remove an event listener.
      *
-     * @param listener
+     * @param listener The listener to remove.
      */
-    public void addEventListener(WorkingMemoryEventListener listener);
+    void removeEventListener(WorkingMemoryEventListener listener);
 
     /**
-     * remove event listener from listeners ArrayList
+     * Returns all event listeners.
      *
-     * @param listener
+     * @return listeners The listeners.
      */
-    public void removeEventListener(WorkingMemoryEventListener listener);
-
-    /**
-     * Returns a list of listeners
-     *
-     * @return listeners
-     */
-    public List getListeners();
+    List getEventListeners();
 
     /**
      * Retrieve all of the set application data in this memory
      *
      * @return the application data as a Map
      */
-    public Map getApplicationDataMap();
+    Map getApplicationDataMap();
 
     /**
      * Set a specific piece of application data in this working memory
@@ -89,7 +88,7 @@ public interface WorkingMemory extends Serializable
      * @param name the name under which to populate the data
      * @param value the application data
      */
-    public void setApplicationData(String name, Object value);
+    void setApplicationData(String name, Object value);
 
     /**
      * Retrieve a specific piece of application data by name
@@ -113,12 +112,12 @@ public interface WorkingMemory extends Serializable
     void fireAllRules() throws FactException;
 
     /**
-     * Fire all items on the agenda until empty, using the 
+     * Fire all items on the agenda until empty, using the
      * given AgendaFiler
      *
      * @throws FactException If an error occurs.
      */
-    void fireAllRules(AgendaFilter agendaFilter) throws FactException;    
+    void fireAllRules(AgendaFilter agendaFilter) throws FactException;
 
     /**
      * Retrieve the object associated with a <code>FactHandle</code>.
@@ -216,5 +215,4 @@ public interface WorkingMemory extends Serializable
      *
      */
     void clearAgenda();
- 
 }
