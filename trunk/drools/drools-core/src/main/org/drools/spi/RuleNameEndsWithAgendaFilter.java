@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameEndsWithAgendaFilter.java,v 1.3 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: RuleNameEndsWithAgendaFilter.java,v 1.4 2004-12-07 20:41:10 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,7 @@ package org.drools.spi;
 
 /**
  * Filters activations based on a specified rule name suffix.
- * 
+ *
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
 public class RuleNameEndsWithAgendaFilter
@@ -50,14 +50,27 @@ public class RuleNameEndsWithAgendaFilter
     AgendaFilter
 {
     private final String suffix;
+    private final String accept;
 
     public RuleNameEndsWithAgendaFilter(String suffix)
+    {
+        this( suffix, true );
+    }
+
+    public RuleNameEndsWithAgendaFilter(String suffix, boolean accept)
     {
         this.suffix = suffix;
     }
 
     public boolean accept(Activation activation)
     {
-        return activation.getRule( ).getName( ).endsWith( this.suffix );
+        if (activation.getRule( ).getName( ).endsWith( this.suffix ) )
+        {
+            return accept;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameEqualsAgendaFilter.java,v 1.3 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: RuleNameEqualsAgendaFilter.java,v 1.4 2004-12-07 20:41:10 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,7 @@ package org.drools.spi;
 
 /**
  * Filters activations based on an exact match of a rule name.
- * 
+ *
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
 public class RuleNameEqualsAgendaFilter
@@ -51,13 +51,30 @@ public class RuleNameEqualsAgendaFilter
 {
     private final String name;
 
+    private final String accept;
+
     public RuleNameEqualsAgendaFilter(String name)
     {
-        this.name = name;
+        this(name, true);
     }
+
+    public RuleNameEqualsAgendaFilter(String name, boolean accept)
+    {
+        this.name = name;
+        this.accept = accept;
+    }
+
+
 
     public boolean accept(Activation activation)
     {
-        return activation.getRule( ).getName( ).equals( this.name );
+        if ( activation.getRule( ).getName( ).equals( this.name ) )
+        {
+            return accept;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
