@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.2 2002-08-27 05:06:45 bob Exp $
+ $Id: Eval.java,v 1.3 2002-08-27 06:46:44 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,9 @@ package org.drools.semantics.python;
  
  */
 
+import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
+import org.drools.smf.ConfigurationException;
 
 import org.python.core.Py;
 import org.python.core.PyDictionary;
@@ -63,7 +65,7 @@ import java.util.Hashtable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Eval.java,v 1.2 2002-08-27 05:06:45 bob Exp $
+ *  @version $Id: Eval.java,v 1.3 2002-08-27 06:46:44 bob Exp $
  */
 public class Eval extends Interp
 {
@@ -76,6 +78,9 @@ public class Eval extends Interp
 
     /** BeanShell interpreter. */
     private PythonInterpreter interp;
+
+    /** Required decls. */
+    private Declaration[] decls;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -142,5 +147,51 @@ public class Eval extends Interp
     {
         setText( expr,
                  "eval" );
+    }
+
+    /** Return the expression.
+     *
+     *  @return The expression.
+     */
+    public String getExpression()
+    {
+        return getText();
+    }
+
+    /** Retrieve the array of <code>Declaration</code>s required
+     *  by this condition to perform its duties.
+     *
+     *  @return The array of <code>Declarations</code> expected
+     *          on incoming <code>Tuples</code>.
+     */
+    public Declaration[] getRequiredTupleMembers()
+    {
+        return this.decls;
+    }
+
+    /** Configure.
+     *
+     *  @param text Configuration text.
+     *  @param availDecls Available declarations.
+     *
+     *  @throws ConfigurationException If an error occurs while
+     *          attempting to perform configuration.
+     */
+    public void configure(String text,
+                          Declaration[] availDecls) throws ConfigurationException
+    {
+        try
+        {
+            setText( text );
+            
+            ExprAnalyzer analyzer = new ExprAnalyzer();
+            
+            this.decls = analyzer.analyze( getNode(),
+                                           availDecls );
+        }
+        catch (Exception e)
+        {
+            throw new ConfigurationException( e );
+        }
     }
 }

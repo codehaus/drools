@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.3 2002-08-27 05:06:45 bob Exp $
+ $Id: Interp.java,v 1.4 2002-08-27 06:46:44 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,8 +54,9 @@ import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
 import org.python.core.PyString;
-import org.python.core.__builtin__;
+import org.python.core.parser;
 import org.python.util.PythonInterpreter;
+import org.python.parser.ast.modType;
 
 import java.util.Hashtable;
 import java.util.Set;
@@ -68,7 +69,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.3 2002-08-27 05:06:45 bob Exp $
+ *  @version $Id: Interp.java,v 1.4 2002-08-27 06:46:44 bob Exp $
  */
 public class Interp
 {
@@ -97,6 +98,9 @@ public class Interp
 
     /** The code. */
     private PyCode code;
+
+    /** The AST node. */
+    private modType node;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -132,7 +136,18 @@ public class Interp
     {
         this.text = text;
 
-        this.code = __builtin__.compile( text, "<text>", type );
+        this.node = (modType) parser.parse( text, type );
+        this.code = Py.compile( this.node,
+                                "<jython>");
+    }
+
+    /** Retrieve the AST node.
+     *
+     *  @return The node.
+     */
+    public modType getNode()
+    {
+        return this.node;
     }
 
     /** Retrieve the compiled code.
