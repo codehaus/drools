@@ -1,5 +1,5 @@
 
-<project default="drools:build" xmlns:jxr="jxr" xmlns:j="jelly:core">
+<project default="drools:build" xmlns:j="jelly:core">
 
     <!-- pre goals ************************************************************************************************* -->
 
