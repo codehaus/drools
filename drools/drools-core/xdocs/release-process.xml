@@ -33,6 +33,9 @@
       Ensure that build.xml agrees with project.xml with respect to dependent jars names.
     </li>
     <li>
+      Update xdocs/releases.xml to reflect the current build version.
+    </li>
+    <li>
       Set the release version number in Maven project.xml . For 
       example, 2.0-beta-9-dev would become 2.0-beta-9
     </li>
