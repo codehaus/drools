@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.21 2004-11-21 12:33:52 simon Exp $
+ * $Id: TupleSet.java,v 1.22 2004-11-21 13:18:04 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -83,19 +83,8 @@ class TupleSet
      */
     TupleSet(ReteTuple tuple)
     {
-        this( 1 );
+        this.tuples = new HashMap( 1, 1 );
         addTuple( tuple );
-    }
-
-    /**
-     * Construct with a size hint.
-     *
-     * @param sizeHint
-     *            Hint as to desired size.
-     */
-    TupleSet(int sizeHint)
-    {
-        this.tuples = new HashMap( sizeHint );
     }
 
     /**

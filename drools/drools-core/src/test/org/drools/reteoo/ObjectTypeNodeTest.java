@@ -19,6 +19,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
         ObjectTypeNode objectTypeNode = new ObjectTypeNode( new MockObjectType( String.class ) );
 
         InstrumentedParameterNode paramNode = new InstrumentedParameterNode( null, decl );
+        paramNode.setTupleSink( new InstrumentedTupleSink( ) );
 
         objectTypeNode.addParameterNode( paramNode );
 
