@@ -1,0 +1,11 @@
+
+Building drools is ultra-simple.
+
+First, obtain and install maven beta-5 or later from:
+
+    http://jakarta.apache.org/turbine/maven/
+
+Then, type 'maven'.  It should all build.
+
+You will see what appears to be errors coming from ANTLR,
+but they are completely expected and can be disregarded.
