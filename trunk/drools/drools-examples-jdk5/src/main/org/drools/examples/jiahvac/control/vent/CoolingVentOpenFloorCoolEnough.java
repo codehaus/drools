@@ -4,16 +4,19 @@ import org.drools.examples.jiahvac.model.HeatPump;
 import org.drools.examples.jiahvac.model.Vent;
 import org.drools.examples.jiahvac.model.TempuratureControl;
 import org.drools.examples.jiahvac.model.Thermometer;
-import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsRule;
+import org.drools.semantics.annotation.DroolsParameter;
+import org.drools.semantics.annotation.DroolsCondition;
+import org.drools.semantics.annotation.DroolsConsequence;
 
-@Drools.Rule
+@DroolsRule
 public class CoolingVentOpenFloorCoolEnough
 {
-    @Drools.Condition
-    public boolean condition(@Drools.Parameter("vent") Vent vent,
-                             @Drools.Parameter("thermometer") Thermometer thermometer,
-                             @Drools.Parameter("pump") HeatPump pump,
-                             @Drools.Parameter("control") TempuratureControl control) {
+    @DroolsCondition
+    public boolean condition(@DroolsParameter("vent") Vent vent,
+                             @DroolsParameter("thermometer") Thermometer thermometer,
+                             @DroolsParameter("pump") HeatPump pump,
+                             @DroolsParameter("control") TempuratureControl control) {
         return isPumpCooling(pump) 
                 && isVentOpen(vent)
                 && isCoolEnough(thermometer, control)
@@ -21,31 +24,31 @@ public class CoolingVentOpenFloorCoolEnough
     }
     
     //@Drools.Condition
-    public boolean isPumpCooling(@Drools.Parameter("pump") HeatPump pump) {
+    public boolean isPumpCooling(@DroolsParameter("pump") HeatPump pump) {
         return pump.getState() == HeatPump.State.COOLING;
      }
     
     //@Drools.Condition
-    public boolean isVentOpen(@Drools.Parameter("vent") Vent vent) {
+    public boolean isVentOpen(@DroolsParameter("vent") Vent vent) {
         return vent.getState() == Vent.State.OPEN;
      }
     
     //@Drools.Condition
-    public boolean isCoolEnough(@Drools.Parameter("thermometer") Thermometer thermometer,
-                                @Drools.Parameter("control") TempuratureControl control) {
+    public boolean isCoolEnough(@DroolsParameter("thermometer") Thermometer thermometer,
+                                @DroolsParameter("control") TempuratureControl control) {
         return control.isCoolEnough(thermometer.getReading());
     }
     
     //@Drools.Condition
-    public boolean isSameFloor(@Drools.Parameter("vent") Vent vent,
-                               @Drools.Parameter("thermometer") Thermometer thermometer,
-                               @Drools.Parameter("pump") HeatPump pump) {
+    public boolean isSameFloor(@DroolsParameter("vent") Vent vent,
+                               @DroolsParameter("thermometer") Thermometer thermometer,
+                               @DroolsParameter("pump") HeatPump pump) {
         return vent.getFloor() == thermometer.getFloor()
                 && vent.getFloor().getHeatPump() == pump;
     }
     
-    @Drools.Consequence
-    public void consequence(@Drools.Parameter("vent") Vent vent) {
+    @DroolsConsequence
+    public void consequence(@DroolsParameter("vent") Vent vent) {
         vent.setState(Vent.State.CLOSED);
         System.out.println("CoolingVentOpenFloorCoolEnough: " + vent
                            + ", " + vent.getFloor().getThermometer());

@@ -9,7 +9,10 @@ import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsParameter;
+import org.drools.semantics.annotation.DroolsApplicationData;
+import org.drools.semantics.annotation.DroolsCondition;
+import org.drools.semantics.annotation.DroolsConsequence;
 import org.drools.semantics.annotation.DroolsContext;
 import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.Consequence;
@@ -35,7 +38,7 @@ public class AnnonatedPojoRuleBuilder
     {
         for (Method method : ruleClass.getMethods( ))
         {
-            Drools.Condition conditionAnnotation = method.getAnnotation( Drools.Condition.class );
+            DroolsCondition conditionAnnotation = method.getAnnotation( DroolsCondition.class );
             if (conditionAnnotation != null)
             {
                 PojoCondition condition = newPojoCondition( rule, pojo, method );
@@ -50,8 +53,8 @@ public class AnnonatedPojoRuleBuilder
         Consequence consequence = null;
         for (Method method : ruleClass.getMethods( ))
         {
-            Drools.Consequence consequenceAnnotation = method
-                    .getAnnotation( Drools.Consequence.class );
+            DroolsConsequence consequenceAnnotation = method
+                    .getAnnotation( DroolsConsequence.class );
             if (consequenceAnnotation != null)
             {
                 if (consequence != null)
@@ -182,10 +185,10 @@ public class AnnonatedPojoRuleBuilder
         {
             for (Annotation annotation : parameterAnnotations)
             {
-                if (annotation instanceof Drools.Parameter)
+                if (annotation instanceof DroolsParameter)
                 {
                     assertNonConflictingParameterAnnotation( parameterValue );
-                    String parameterId = ((Drools.Parameter) annotation).value( );
+                    String parameterId = ((DroolsParameter) annotation).value( );
                     Declaration declaration = rule.getParameterDeclaration( parameterId );
                     if (declaration == null)
                     {
@@ -194,10 +197,10 @@ public class AnnonatedPojoRuleBuilder
                     }
                     parameterValue = new TupleParameterValue( declaration );
                 }
-                else if (annotation instanceof Drools.ApplicationData)
+                else if (annotation instanceof DroolsApplicationData)
                 {
                     assertNonConflictingParameterAnnotation( parameterValue );
-                    String parameterId = ((Drools.ApplicationData) annotation).value( );
+                    String parameterId = ((DroolsApplicationData) annotation).value( );
                     parameterValue = new ApplicationDataParameterValue( parameterId, parameterClass );
                 }
             }

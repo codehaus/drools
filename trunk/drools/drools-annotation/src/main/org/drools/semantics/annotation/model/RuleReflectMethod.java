@@ -79,4 +79,21 @@ class RuleReflectMethod implements Externalizable
         
         parameterValues = (ParameterValue[]) in.readObject();
     }
+    
+    public String toString() {
+        return pojo.getClass().getSimpleName() 
+                + "." + method.getName()
+                + "(" + toStringParamterTypes() + ")";
+    }
+    
+    private String toStringParamterTypes() {
+        return "...";
+//        StringBuilder value = new StringBuilder();
+//        String prefix = "";
+//        for (Class clazz : method.getParameterTypes()) {
+//            value.append(prefix).append(clazz.getSimpleName());
+//            prefix = ",";
+//        }
+//        return value.toString();
+    }
 }

@@ -30,7 +30,7 @@ public class SimThermometer implements Thermometer {
         return reading;
     }
 
-    void setReading(double reading) {
+    public void setReading(double reading) {
         prevReading = this.reading;
         this.reading = reading;
         pcs.firePropertyChange("reading", new Double(prevReading), new Double(reading));

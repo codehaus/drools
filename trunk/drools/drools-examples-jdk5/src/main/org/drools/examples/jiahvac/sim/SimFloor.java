@@ -24,7 +24,7 @@ public class SimFloor implements Floor
         return thermometer;
     }
     
-    void setThermometer(SimThermometer thermometer)
+    public void setThermometer(SimThermometer thermometer)
     {
         this.thermometer = thermometer;
     }
@@ -34,7 +34,7 @@ public class SimFloor implements Floor
         return vent;
     }
     
-    void setVent(SimVent vent)
+    public void setVent(SimVent vent)
     {
         this.vent = vent;
     }
@@ -44,7 +44,7 @@ public class SimFloor implements Floor
         return heatPump;
     }
     
-    void setHeatPump(SimHeatPump heatPump)
+    public void setHeatPump(SimHeatPump heatPump)
     {
         this.heatPump = heatPump;
     }
