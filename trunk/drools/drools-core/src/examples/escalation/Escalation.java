@@ -1,21 +1,23 @@
+package escalation;
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.DroolsException;
 import org.drools.AssertionException;
 
-import org.drools.semantic.java.RuleLoader;
+import org.drools.io.RuleSetLoader;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
 public class Escalation
 {
+/*
     public static void main(String[] args)
     {
         if ( args.length != 1 )
         {
-            System.err.println( "usage: java Escalation <rule-set.xml>" );
+            System.err.println( "usage: java escalation.Escalation <rule-set.xml>" );
 
             System.exit( 1 );
         }
@@ -102,4 +104,5 @@ public class Escalation
             e.printStackTrace();
         }
     }
+    */
 }
