@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleRuntimeImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleRuntimeImpl.java,v 1.3 2003-03-22 22:03:45 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -62,51 +62,57 @@ import java.util.Map;
  */
 public class RuleRuntimeImpl implements RuleRuntime {
 
-   private static RuleRuntimeImpl ruleRuntime;
+    private static RuleRuntimeImpl ruleRuntime;
 
-   /** Hide the constructor. */
-   private RuleRuntimeImpl() {
-   }
+    /** Hide the constructor. */
+    private RuleRuntimeImpl()
+    {
+    }
 
-   /** Get the class instance of a <code>RuleRuntime</code>. */
-   public static RuleRuntime getInstance() {
-      if (ruleRuntime != null) return ruleRuntime;
-      return ruleRuntime = new RuleRuntimeImpl();
-   }
+    /** Get the class instance of a <code>RuleRuntime</code>. */
+    public static RuleRuntime getInstance()
+    {
+        if (ruleRuntime != null) return ruleRuntime;
+        return ruleRuntime = new RuleRuntimeImpl();
+    }
 
-   /**
-    * Creates a <code>RuleSession</code> implementation using the supplied
-    * vendor-specific rule execution set registration URI.
-    *
-    * @see RuleRuntime#createRuleSession
-    */
-   public RuleSession createRuleSession(String bindUri, Map properties, int ruleSessionType)
-           throws RuleExecutionSetNotFoundException, RuleSessionTypeUnsupportedException {
+    /**
+     * Creates a <code>RuleSession</code> implementation using the supplied
+     * vendor-specific rule execution set registration URI.
+     *
+     * @see RuleRuntime#createRuleSession
+     */
+    public RuleSession createRuleSession( String bindUri, Map properties, int ruleSessionType )
+            throws RuleExecutionSetNotFoundException, RuleSessionTypeUnsupportedException
+    {
 
-      if (ruleSessionType == RuleRuntime.STATELESS_SESSION_TYPE) {
-         StatelessRuleSessionImpl session = new StatelessRuleSessionImpl(bindUri);
-         return session;
-      }
+        if (ruleSessionType == RuleRuntime.STATELESS_SESSION_TYPE)
+        {
+            StatelessRuleSessionImpl session = new StatelessRuleSessionImpl( bindUri, properties );
+            return session;
+        }
 
-      if (ruleSessionType == RuleRuntime.STATEFUL_SESSION_TYPE) {
-         StatefulRuleSessionImpl session = new StatefulRuleSessionImpl(bindUri);
-         return session;
-      }
+        if (ruleSessionType == RuleRuntime.STATEFUL_SESSION_TYPE)
+        {
+            StatefulRuleSessionImpl session = new StatefulRuleSessionImpl( bindUri, properties );
+            return session;
+        }
 
-      throw new RuleSessionTypeUnsupportedException("invalid session type: " + ruleSessionType);
-   }
+        throw new RuleSessionTypeUnsupportedException( "invalid session type: " + ruleSessionType );
+    }
 
 
-   /**
-    * Retrieves a List of the URIs that currently have <code>RuleExecutionSets</code>
-    * associated with them.
-    *
-    * An empty list is returned is there are no associations.
-    *
-    * @see RuleRuntime#getRegistrations
-    */
-   public List getRegistrations() {
-      RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-      return repository.getRegistrations();
-   }
+    /**
+     * Retrieves a List of the URIs that currently have <code>RuleExecutionSets</code>
+     * associated with them.
+     *
+     * An empty list is returned is there are no associations.
+     *
+     * @see RuleRuntime#getRegistrations
+     */
+    public List getRegistrations()
+    {
+        RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
+        return repository.getRegistrations();
+    }
 }
