@@ -1,9 +1,9 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.5 2004-12-04 22:55:41 simon Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.6 2004-12-05 01:38:45 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -96,8 +96,7 @@ public class WorkingMemoryEventSupport
                                                              handle,
                                                              object );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectAsserted( event );
         }
@@ -115,8 +114,7 @@ public class WorkingMemoryEventSupport
                                                              handle,
                                                              object );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectModified( event );
         }
@@ -132,8 +130,7 @@ public class WorkingMemoryEventSupport
         ObjectRetractedEvent event = new ObjectRetractedEvent( this.workingMemory,
                                                                handle );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectRetracted( event );
         }
@@ -155,8 +152,7 @@ public class WorkingMemoryEventSupport
                                                                tuple,
                                                                result );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).conditionTested( event );
         }
@@ -174,8 +170,7 @@ public class WorkingMemoryEventSupport
                                                                    rule,
                                                                    tuple );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationCreated( event );
         }
@@ -193,8 +188,7 @@ public class WorkingMemoryEventSupport
                                                                        rule,
                                                                        tuple );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationCancelled( event );
         }
@@ -212,8 +206,7 @@ public class WorkingMemoryEventSupport
                                                                rule,
                                                                tuple );
 
-        int size = this.listeners.size( );
-        for ( int i = 0; i < size; i++ )
+        for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
             ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationFired( event );
         }
