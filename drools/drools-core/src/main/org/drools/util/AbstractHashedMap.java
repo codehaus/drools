@@ -22,17 +22,12 @@ import java.util.AbstractCollection;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
-import org.drools.util.IterableMap;
-import org.drools.util.KeyValue;
-import org.drools.util.MapIterator;
-import org.drools.util.EmptyIterator;
-import org.drools.util.EmptyMapIterator;
 
 /**
  * An abstract implementation of a hash-based map which provides numerous points
@@ -51,16 +46,14 @@ import org.drools.util.EmptyMapIterator;
  * NOTE: From Commons Collections 3.1 this class extends AbstractMap. This is to
  * provide backwards compatibility for ReferenceMap between v3.0 and v3.1. This
  * extends clause will be removed in v4.0.
- * 
+ *
  * @since Commons Collections 3.0
- * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
- * 
+ * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ *
  * @author java util HashMap
  * @author Stephen Colebourne
  */
 public class AbstractHashedMap extends AbstractMap
-    implements
-    IterableMap
 {
 
     protected static final String NO_NEXT_ENTRY = "No next() entry in the iteration";
@@ -108,7 +101,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Constructor which performs no validation on the passed in parameters.
-     * 
+     *
      * @param initialCapacity
      *            the initial capacity, must be a power of two
      * @param loadFactor
@@ -130,7 +123,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Constructs a new, empty map with the specified initial capacity and
      * default load factor.
-     * 
+     *
      * @param initialCapacity
      *            the initial capacity
      * @throws IllegalArgumentException
@@ -145,7 +138,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Constructs a new, empty map with the specified initial capacity and load
      * factor.
-     * 
+     *
      * @param initialCapacity
      *            the initial capacity
      * @param loadFactor
@@ -177,7 +170,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Constructor copying elements from another map.
-     * 
+     *
      * @param map
      *            the map to copy
      * @throws NullPointerException
@@ -201,7 +194,7 @@ public class AbstractHashedMap extends AbstractMap
     // -----------------------------------------------------------------------
     /**
      * Gets the value mapped to the key specified.
-     * 
+     *
      * @param key
      *            the key
      * @return the mapped value, null if no match
@@ -227,7 +220,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Gets the size of the map.
-     * 
+     *
      * @return the size
      */
     public int size()
@@ -237,7 +230,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Checks whether the map is currently empty.
-     * 
+     *
      * @return true if the map is currently size zero
      */
     public boolean isEmpty()
@@ -248,7 +241,7 @@ public class AbstractHashedMap extends AbstractMap
     // -----------------------------------------------------------------------
     /**
      * Checks whether the map contains the specified key.
-     * 
+     *
      * @param key
      *            the key to search for
      * @return true if the map contains the key
@@ -274,7 +267,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Checks whether the map contains the specified value.
-     * 
+     *
      * @param value
      *            the value to search for
      * @return true if the map contains the value
@@ -318,7 +311,7 @@ public class AbstractHashedMap extends AbstractMap
     // -----------------------------------------------------------------------
     /**
      * Puts a key-value mapping into this map.
-     * 
+     *
      * @param key
      *            the key to add
      * @param value
@@ -358,7 +351,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * This implementation iterates around the specified map and uses
      * {@link #put(Object, Object)}.
-     * 
+     *
      * @param map
      *            the map to add
      * @throws NullPointerException
@@ -383,7 +376,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Removes the specified mapping from this map.
-     * 
+     *
      * @param key
      *            the mapping to remove
      * @return the value mapped to the removed key, null if key not in map
@@ -436,7 +429,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * The reverse conversion can be changed, if required, by overriding the
      * getKey() method in the hash entry.
-     * 
+     *
      * @param key
      *            the key convert
      * @return the converted key
@@ -450,7 +443,7 @@ public class AbstractHashedMap extends AbstractMap
      * Gets the hash code for the key specified. This implementation uses the
      * additional hashing routine from JDK1.4. Subclasses can override this to
      * return alternate hash codes.
-     * 
+     *
      * @param key
      *            the key to get a hash code for
      * @return the hash code
@@ -470,7 +463,7 @@ public class AbstractHashedMap extends AbstractMap
      * Compares two keys, in internal converted form, to see if they are equal.
      * This implementation uses the equals method and assumes neither key is
      * null. Subclasses can override this to match differently.
-     * 
+     *
      * @param key1
      *            the first key to compare passed in from outside
      * @param key2
@@ -488,7 +481,7 @@ public class AbstractHashedMap extends AbstractMap
      * Compares two values, in external form, to see if they are equal. This
      * implementation uses the equals method and assumes neither value is null.
      * Subclasses can override this to match differently.
-     * 
+     *
      * @param value1
      *            the first value to compare passed in from outside
      * @param value2
@@ -506,7 +499,7 @@ public class AbstractHashedMap extends AbstractMap
      * Gets the index into the data storage for the hashCode specified. This
      * implementation uses the least significant bits of the hashCode.
      * Subclasses can override this to return alternate bucketing.
-     * 
+     *
      * @param hashCode
      *            the hash code to use
      * @param dataSize
@@ -526,7 +519,7 @@ public class AbstractHashedMap extends AbstractMap
      * This method exists for subclasses that may need to perform a multi-step
      * process accessing the entry. The public methods in this class don't use
      * this method to gain a small performance boost.
-     * 
+     *
      * @param key
      *            the key
      * @return the entry, null if no match
@@ -556,7 +549,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * This implementation calls <code>setValue()</code> on the entry.
      * Subclasses could override to handle changes to the map.
-     * 
+     *
      * @param entry
      *            the entry to update
      * @param newValue
@@ -573,7 +566,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * This implementation sets all the data fields on the entry. Subclasses
      * could populate additional entry fields.
-     * 
+     *
      * @param entry
      *            the entry to update, not null
      * @param hashIndex
@@ -605,7 +598,7 @@ public class AbstractHashedMap extends AbstractMap
      * <code>addEntry()</code> and <code>checkCapacity()</code>. It also
      * handles changes to <code>modCount</code> and <code>size</code>.
      * Subclasses could override to fully control adds to the map.
-     * 
+     *
      * @param hashIndex
      *            the index into the data array to store at
      * @param hashCode
@@ -636,7 +629,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * This implementation creates a new HashEntry instance. Subclasses can
      * override this to return a different storage class, or implement caching.
-     * 
+     *
      * @param next
      *            the next entry in sequence
      * @param hashCode
@@ -663,7 +656,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * This implementation adds the entry to the data storage table. Subclasses
      * could override to handle changes to the map.
-     * 
+     *
      * @param entry
      *            the entry to add
      * @param hashIndex
@@ -683,7 +676,7 @@ public class AbstractHashedMap extends AbstractMap
      * <code>destroyEntry()</code>. It also handles changes to
      * <code>modCount</code> and <code>size</code>. Subclasses could
      * override to fully control removals from the map.
-     * 
+     *
      * @param entry
      *            the entry to remove
      * @param hashIndex
@@ -709,7 +702,7 @@ public class AbstractHashedMap extends AbstractMap
      * This implementation removes the entry from the data storage table. The
      * size is not updated. Subclasses could override to handle changes to the
      * map.
-     * 
+     *
      * @param entry
      *            the entry to remove
      * @param hashIndex
@@ -737,7 +730,7 @@ public class AbstractHashedMap extends AbstractMap
      * This implementation prepares the HashEntry for garbage collection.
      * Subclasses can override this to implement caching (override clear as
      * well).
-     * 
+     *
      * @param entry
      *            the entry to destroy
      */
@@ -769,7 +762,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Changes the size of the data structure to the capacity proposed.
-     * 
+     *
      * @param newCapacity
      *            the new capacity of the array (a power of two, less or equal
      *            to max)
@@ -820,7 +813,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Calculates the new capacity of the map. This implementation normalizes
      * the capacity to a power of two.
-     * 
+     *
      * @param proposedCapacity
      *            the proposed capacity
      * @return the normalized new capacity
@@ -849,7 +842,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Calculates the new threshold of the map, where it will be resized. This
      * implementation uses the load factor.
-     * 
+     *
      * @param newCapacity
      *            the new capacity
      * @param factor
@@ -866,7 +859,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the <code>next</code> field from a <code>HashEntry</code>. Used
      * in subclasses that have no visibility of the field.
-     * 
+     *
      * @param entry
      *            the entry to query, must not be null
      * @return the <code>next</code> field of the entry
@@ -882,7 +875,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the <code>hashCode</code> field from a <code>HashEntry</code>.
      * Used in subclasses that have no visibility of the field.
-     * 
+     *
      * @param entry
      *            the entry to query, must not be null
      * @return the <code>hashCode</code> field of the entry
@@ -898,7 +891,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the <code>key</code> field from a <code>HashEntry</code>. Used
      * in subclasses that have no visibility of the field.
-     * 
+     *
      * @param entry
      *            the entry to query, must not be null
      * @return the <code>key</code> field of the entry
@@ -914,7 +907,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the <code>value</code> field from a <code>HashEntry</code>.
      * Used in subclasses that have no visibility of the field.
-     * 
+     *
      * @param entry
      *            the entry to query, must not be null
      * @return the <code>value</code> field of the entry
@@ -936,10 +929,10 @@ public class AbstractHashedMap extends AbstractMap
      * methods to get the key and value, and set the value. It avoids the need
      * to create an entrySet/keySet/values object. It also avoids creating the
      * Map.Entry object.
-     * 
+     *
      * @return the map iterator
      */
-    public MapIterator mapIterator()
+    private MapIterator mapIterator()
     {
         if ( size == 0 )
         {
@@ -1001,7 +994,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the entrySet view of the map. Changes made to the view affect this
      * map. To simply iterate through the entries, use {@link #mapIterator()}.
-     * 
+     *
      * @return the entrySet view
      */
     public Set entrySet()
@@ -1016,14 +1009,14 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Creates an entry set iterator. Subclasses can override this to return
      * iterators with different properties.
-     * 
+     *
      * @return the entrySet iterator
      */
     protected Iterator createEntrySetIterator()
     {
         if ( size( ) == 0 )
         {
-            return EmptyIterator.INSTANCE;
+            return Collections.EMPTY_MAP.keySet( ).iterator( );
         }
         return new EntrySetIterator( this );
     }
@@ -1106,7 +1099,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the keySet view of the map. Changes made to the view affect this
      * map. To simply iterate through the keys, use {@link #mapIterator()}.
-     * 
+     *
      * @return the keySet view
      */
     public Set keySet()
@@ -1121,14 +1114,14 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Creates a key set iterator. Subclasses can override this to return
      * iterators with different properties.
-     * 
+     *
      * @return the keySet iterator
      */
     protected Iterator createKeySetIterator()
     {
         if ( size( ) == 0 )
         {
-            return EmptyIterator.INSTANCE;
+            return Collections.EMPTY_MAP.keySet().iterator();
         }
         return new KeySetIterator( this );
     }
@@ -1196,7 +1189,7 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Gets the values view of the map. Changes made to the view affect this
      * map. To simply iterate through the values, use {@link #mapIterator()}.
-     * 
+     *
      * @return the values view
      */
     public Collection values()
@@ -1211,14 +1204,14 @@ public class AbstractHashedMap extends AbstractMap
     /**
      * Creates a values iterator. Subclasses can override this to return
      * iterators with different properties.
-     * 
+     *
      * @return the values iterator
      */
     protected Iterator createValuesIterator()
     {
         if ( size( ) == 0 )
         {
-            return EmptyIterator.INSTANCE;
+            return Collections.EMPTY_MAP.keySet().iterator();
         }
         return new ValuesIterator( this );
     }
@@ -1286,8 +1279,7 @@ public class AbstractHashedMap extends AbstractMap
      */
     protected static class HashEntry
         implements
-        Map.Entry,
-        KeyValue
+        Map.Entry
     {
         /** The next entry in the hash chain */
         protected HashEntry next;
@@ -1466,7 +1458,7 @@ public class AbstractHashedMap extends AbstractMap
      * Subclasses may override if they have a specific field that must be
      * present on read before this implementation will work. Generally, the read
      * determines what must be serialized here, if anything.
-     * 
+     *
      * @param out
      *            the output stream
      */
@@ -1498,7 +1490,7 @@ public class AbstractHashedMap extends AbstractMap
      * Subclasses may override if the subclass has a specific field that must be
      * present before <code>put()</code> or <code>calculateThreshold()</code>
      * will work correctly.
-     * 
+     *
      * @param in
      *            the input stream
      */
@@ -1527,7 +1519,7 @@ public class AbstractHashedMap extends AbstractMap
      * <p>
      * To implement <code>clone()</code>, a subclass must implement the
      * <code>Cloneable</code> interface and make this method public.
-     * 
+     *
      * @return a shallow clone
      */
     protected Object clone()
@@ -1554,7 +1546,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Compares this map with another.
-     * 
+     *
      * @param obj
      *            the object to compare to
      * @return true if equal
@@ -1610,7 +1602,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Gets the standard Map hashCode.
-     * 
+     *
      * @return the hash code defined in the Map interface
      */
     public int hashCode()
@@ -1626,7 +1618,7 @@ public class AbstractHashedMap extends AbstractMap
 
     /**
      * Gets the map as a String.
-     * 
+     *
      * @return a string version of the map
      */
     public String toString()

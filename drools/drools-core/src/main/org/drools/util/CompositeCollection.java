@@ -19,11 +19,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
-
-import org.drools.util.EmptyIterator;
-import org.drools.util.IteratorChain;
-import org.drools.util.UnmodifiableList;
 
 /**
  * Decorates a collection of other collections to provide a single unified view.
@@ -31,10 +28,10 @@ import org.drools.util.UnmodifiableList;
  * Changes made to this collection will actually be made on the decorated
  * collection. Add and remove operations require the use of a pluggable
  * strategy. If no strategy is provided then add and remove are unsupported.
- * 
+ *
  * @since Commons Collections 3.0
- * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
- * 
+ * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ *
  * @author Brian McCallister
  * @author Stephen Colebourne
  * @author Phil Steitz
@@ -61,7 +58,7 @@ public class CompositeCollection
 
     /**
      * Create a Composite Collection with only coll composited.
-     * 
+     *
      * @param coll
      *            a collection to decorate
      */
@@ -74,7 +71,7 @@ public class CompositeCollection
     /**
      * Create a CompositeCollection with colls as the initial list of composited
      * collections.
-     * 
+     *
      * @param colls
      *            an array of collections to decorate
      */
@@ -89,7 +86,7 @@ public class CompositeCollection
      * Gets the size of this composite collection.
      * <p>
      * This implementation calls <code>size()</code> on each collection.
-     * 
+     *
      * @return total number of elements in all contained containers
      */
     public int size()
@@ -106,7 +103,7 @@ public class CompositeCollection
      * Checks whether this composite collection is empty.
      * <p>
      * This implementation calls <code>isEmpty()</code> on each collection.
-     * 
+     *
      * @return true if all of the contained collections are empty
      */
     public boolean isEmpty()
@@ -125,7 +122,7 @@ public class CompositeCollection
      * Checks whether this composite collection contains the object.
      * <p>
      * This implementation calls <code>contains()</code> on each collection.
-     * 
+     *
      * @param obj
      *            the object to search for
      * @return true if obj is contained in any of the contained collections
@@ -146,7 +143,7 @@ public class CompositeCollection
      * Gets an iterator over all the collections in this composite.
      * <p>
      * This implementation uses an <code>IteratorChain</code>.
-     * 
+     *
      * @return an <code>IteratorChain</code> instance which supports
      *         <code>remove()</code>. Iteration occurs over contained
      *         collections in the order they were added, but this behavior
@@ -157,7 +154,7 @@ public class CompositeCollection
     {
         if ( this.all.length == 0 )
         {
-            return EmptyIterator.INSTANCE;
+            return Collections.EMPTY_LIST.iterator( );
         }
         IteratorChain chain = new IteratorChain( );
         for ( int i = 0; i < this.all.length; ++i )
@@ -169,7 +166,7 @@ public class CompositeCollection
 
     /**
      * Returns an array containing all of the elements in this composite.
-     * 
+     *
      * @return an object array of all the elements in the collection
      */
     public Object[] toArray()
@@ -186,7 +183,7 @@ public class CompositeCollection
     /**
      * Returns an object array, populating the supplied array if possible. See
      * <code>Collection</code> interface for full details.
-     * 
+     *
      * @param array
      *            the array to use, populating if possible
      * @return an array of all the elements in the collection
@@ -223,7 +220,7 @@ public class CompositeCollection
     /**
      * Adds an object to the collection, throwing UnsupportedOperationException
      * unless a CollectionMutator strategy is specified.
-     * 
+     *
      * @param obj
      *            the object to add
      * @return true if the collection was modified
@@ -253,7 +250,7 @@ public class CompositeCollection
      * Removes an object from the collection, throwing
      * UnsupportedOperationException unless a CollectionMutator strategy is
      * specified.
-     * 
+     *
      * @param obj
      *            the object being removed
      * @return true if the collection is changed
@@ -283,7 +280,7 @@ public class CompositeCollection
      * <p>
      * This implementation calls <code>contains()</code> for each element in
      * the specified collection.
-     * 
+     *
      * @param coll
      *            the collection to check for
      * @return true if all elements contained
@@ -304,7 +301,7 @@ public class CompositeCollection
      * Adds a collection of elements to this collection, throwing
      * UnsupportedOperationException unless a CollectionMutator strategy is
      * specified.
-     * 
+     *
      * @param coll
      *            the collection to add
      * @return true if the collection was modified
@@ -335,7 +332,7 @@ public class CompositeCollection
      * collection.
      * <p>
      * This implementation calls <code>removeAll</code> on each collection.
-     * 
+     *
      * @param coll
      *            the collection to remove
      * @return true if the collection was modified
@@ -361,7 +358,7 @@ public class CompositeCollection
      * collection, removing all others.
      * <p>
      * This implementation calls <code>retainAll()</code> on each collection.
-     * 
+     *
      * @param coll
      *            the collection to remove
      * @return true if the collection was modified
@@ -382,7 +379,7 @@ public class CompositeCollection
      * Removes all of the elements from this collection .
      * <p>
      * This implementation calls <code>clear()</code> on each collection.
-     * 
+     *
      * @throws UnsupportedOperationException
      *             if clear is unsupported
      */
@@ -397,7 +394,7 @@ public class CompositeCollection
     // -----------------------------------------------------------------------
     /**
      * Specify a CollectionMutator strategy instance to handle changes.
-     * 
+     *
      * @param mutator
      *            the mutator to use
      */
@@ -408,7 +405,7 @@ public class CompositeCollection
 
     /**
      * Add these Collections to the list of collections in this composite
-     * 
+     *
      * @param comps
      *            Collections to be appended to the composite
      */
@@ -421,7 +418,7 @@ public class CompositeCollection
 
     /**
      * Add an additional collection to this composite.
-     * 
+     *
      * @param c
      *            the collection to add
      */
@@ -432,7 +429,7 @@ public class CompositeCollection
 
     /**
      * Add two additional collections to this composite.
-     * 
+     *
      * @param c
      *            the first collection to add
      * @param d
@@ -446,7 +443,7 @@ public class CompositeCollection
 
     /**
      * Removes a collection from the those being decorated in this composite.
-     * 
+     *
      * @param coll
      *            collection to be removed
      */
@@ -460,7 +457,7 @@ public class CompositeCollection
 
     /**
      * Returns a new collection containing all of the elements
-     * 
+     *
      * @return A new ArrayList containing all of the elements in this composite.
      *         The new collection is <i>not </i> backed by this composite.
      */
@@ -471,12 +468,12 @@ public class CompositeCollection
 
     /**
      * Gets the collections being decorated.
-     * 
+     *
      * @return Unmodifiable collection of all collections in this composite.
      */
     public Collection getCollections()
     {
-        return UnmodifiableList.decorate( Arrays.asList( this.all ) );
+        return Collections.unmodifiableList( Arrays.asList( this.all ) );
     }
 
     // -----------------------------------------------------------------------
@@ -488,7 +485,7 @@ public class CompositeCollection
 
         /**
          * Called when an object is to be added to the composite.
-         * 
+         *
          * @param composite
          *            the CompositeCollection being changed
          * @param collections
@@ -512,7 +509,7 @@ public class CompositeCollection
 
         /**
          * Called when a collection is to be added to the composite.
-         * 
+         *
          * @param composite
          *            the CompositeCollection being changed
          * @param collections
@@ -536,7 +533,7 @@ public class CompositeCollection
 
         /**
          * Called when an object is to be removed to the composite.
-         * 
+         *
          * @param composite
          *            the CompositeCollection being changed
          * @param collections

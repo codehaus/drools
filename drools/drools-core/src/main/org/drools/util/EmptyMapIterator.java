@@ -1,4 +1,7 @@
 package org.drools.util;
+
+import java.util.NoSuchElementException;
+
 /*
  *  Copyright 2004 The Apache Software Foundation
  *
@@ -15,26 +18,22 @@ package org.drools.util;
  *  limitations under the License.
  */
 
-import org.drools.util.MapIterator;
-import org.drools.util.ResettableIterator;
-
 /**
  * Provides an implementation of an empty map iterator.
- * 
+ *
  * @since Commons Collections 3.1
- * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
- * 
+ * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ *
  * @author Stephen Colebourne
  */
-public class EmptyMapIterator extends AbstractEmptyIterator
+public class EmptyMapIterator
     implements
-    MapIterator,
-    ResettableIterator
+    MapIterator
 {
 
     /**
      * Singleton instance of the iterator.
-     * 
+     *
      * @since Commons Collections 3.1
      */
     public static final MapIterator INSTANCE = new EmptyMapIterator( );
@@ -44,7 +43,70 @@ public class EmptyMapIterator extends AbstractEmptyIterator
      */
     protected EmptyMapIterator()
     {
-        super( );
     }
 
+    public boolean hasNext()
+    {
+        return false;
+    }
+
+    public Object next()
+    {
+        throw new NoSuchElementException( "Iterator contains no elements" );
+    }
+
+    public boolean hasPrevious()
+    {
+        return false;
+    }
+
+    public Object previous()
+    {
+        throw new NoSuchElementException( "Iterator contains no elements" );
+    }
+
+    public int nextIndex()
+    {
+        return 0;
+    }
+
+    public int previousIndex()
+    {
+        return -1;
+    }
+
+    public void add( Object obj )
+    {
+        throw new UnsupportedOperationException( "add() not supported for empty Iterator" );
+    }
+
+    public void set( Object obj )
+    {
+        throw new IllegalStateException( "Iterator contains no elements" );
+    }
+
+    public void remove()
+    {
+        throw new IllegalStateException( "Iterator contains no elements" );
+    }
+
+    public Object getKey()
+    {
+        throw new IllegalStateException( "Iterator contains no elements" );
+    }
+
+    public Object getValue()
+    {
+        throw new IllegalStateException( "Iterator contains no elements" );
+    }
+
+    public Object setValue( Object value )
+    {
+        throw new IllegalStateException( "Iterator contains no elements" );
+    }
+
+    public void reset()
+    {
+        // do nothing
+    }
 }

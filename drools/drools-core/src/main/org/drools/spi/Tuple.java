@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.21 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: Tuple.java,v 1.22 2004-11-22 02:38:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,26 +45,23 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
  * A mapping of <code>Declaration</code> s to current fact values.
- * 
+ *
  * @see Declaration
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: Tuple.java,v 1.21 2004-11-19 02:14:48 mproctor Exp $
  */
 public interface Tuple
 {
     /**
      * Retrieve the value bound to a particular <code>Declaration</code>.
-     * 
+     *
      * @param declaration
      *            The <code>Declaration</code> key.
-     * 
+     *
      * @return The currently bound <code>Object</code> value.
      */
     Object get(Declaration declaration);
@@ -72,7 +69,7 @@ public interface Tuple
     /**
      * Retrieve the <code>Collection</code> of all <code>Declarations</code>
      * active in this tuple.
-     * 
+     *
      * @return The <code>Collection</code> of all <code>Declarations</code>
      *         in this tuple.
      */
@@ -81,24 +78,24 @@ public interface Tuple
     /**
      * Returns a reference to the <code>Rule</code> associated with this
      * object.
-     * 
+     *
      * @return Rule
      */
     Rule getRule();
 
     /**
      * Retrieve the <code>FactHandle</code> for a given object.
-     * 
+     *
      * <p>
      * Within a consequence of a rule, if the desire is to retract or modify a
      * root fact this method provides a way to retrieve the
      * <code>FactHandle</code>. Facts that are <b>not </b> root fact objects
      * have no handle.
      * </p>
-     * 
+     *
      * @param object
      *            The object.
-     * 
+     *
      * @return The fact-handle or <code>null</code> if the supplied object is
      *         not a root fact object.
      */
@@ -107,7 +104,7 @@ public interface Tuple
     /**
      * Returns a reference to the <code>WorkingMemory</code> associated with
      * this object.
-     * 
+     *
      * @return WorkingMemory
      */
     WorkingMemory getWorkingMemory();

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.35 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: TerminalNode.java,v 1.36 2004-11-22 02:38:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,9 +47,9 @@ import org.drools.rule.Rule;
 /**
  * Leaf Rete-OO node responsible for enacting <code>Action</code> s on a
  * matched <code>Rule</code>.
- * 
+ *
  * @see org.drools.rule.Rule
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 final class TerminalNode
@@ -69,7 +69,7 @@ final class TerminalNode
 
     /**
      * Construct.
-     * 
+     *
      * @param inputSource
      *            The parent tuple source.
      * @param rule
@@ -89,7 +89,7 @@ final class TerminalNode
 
     /**
      * Retrieve the <code>Action</code> associated with this node.
-     * 
+     *
      * @return The <code>Action</code> associated with this node.
      */
     public Rule getRule()
@@ -103,12 +103,12 @@ final class TerminalNode
 
     /**
      * Assert a new <code>Tuple</code>.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> being asserted.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws AssertionException
      *             If an error occurs while asserting.
      */
@@ -116,12 +116,12 @@ final class TerminalNode
                             WorkingMemoryImpl workingMemory) throws AssertionException
     {
         workingMemory.getAgenda( ).addToAgenda( tuple,
-                                                getRule( ) );
+                                                this.rule );
     }
 
     /**
      * Retract tuples.
-     * 
+     *
      * @param key
      *            The tuple key.
      * @param workingMemory
@@ -131,12 +131,12 @@ final class TerminalNode
                               WorkingMemoryImpl workingMemory)
     {
         workingMemory.getAgenda( ).removeFromAgenda( key,
-                                                     getRule( ) );
+                                                     this.rule );
     }
 
     /**
      * Modify tuples.
-     * 
+     *
      * @param trigger
      *            The root fact object handle.
      * @param newTuples
@@ -150,7 +150,7 @@ final class TerminalNode
     {
         workingMemory.getAgenda( ).modifyAgenda( trigger,
                                                  newTuples,
-                                                 getRule( ) );
+                                                 this.rule );
     }
 
     public String toString()

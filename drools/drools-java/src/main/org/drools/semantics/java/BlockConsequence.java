@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.35 2004-11-14 01:02:54 simon Exp $
+ * $Id: BlockConsequence.java,v 1.36 2004-11-22 02:38:39 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ package org.drools.semantics.java;
 import net.janino.Scanner;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.ImportEntry;
@@ -63,7 +64,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: BlockConsequence.java,v 1.35 2004-11-14 01:02:54 simon Exp $
+ * @version $Id: BlockConsequence.java,v 1.36 2004-11-22 02:38:39 simon Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
@@ -119,14 +120,20 @@ public class BlockConsequence implements Consequence, Serializable
 
             if ( this.script == null )
             {
-                compileScript( tuple, applicationData );
+                compileScript( tuple.getRule( ),
+                               tuple.getDeclarations( ),
+                               applicationData );
             }
 
-            script.invoke( tuple, this.params, new KnowledgeHelper( tuple ), applicationData );
+            script.invoke( tuple,
+                           this.params,
+                           new KnowledgeHelper( tuple ),
+                           applicationData );
         }
         catch ( Exception e )
         {
-            throw new ConsequenceException( e, tuple.getRule( ) );
+            throw new ConsequenceException( e,
+                                            tuple.getRule( ) );
         }
     }
 
@@ -149,14 +156,13 @@ public class BlockConsequence implements Consequence, Serializable
                 throws Exception;
     }
 
-    private void compileScript( Tuple tuple, Map applicationData ) throws IOException, ConsequenceException
+    private void compileScript( Rule rule, Set decls, Map applicationData ) throws IOException, ConsequenceException
     {
-        Set decls = tuple.getDeclarations( );
         this.params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
         Arrays.sort( this.params );
 
         Set imports = new HashSet( );
-        Iterator it = tuple.getRule( ).getImports( ).iterator( );
+        Iterator it = rule.getImports( ).iterator( );
         ImportEntry importEntry;
         while ( it.hasNext( ) )
         {
@@ -178,7 +184,8 @@ public class BlockConsequence implements Consequence, Serializable
         }
         catch ( Scanner.LocatedException e )
         {
-            throw new ConsequenceException( e.getMessage( ), tuple.getRule( ) );
+            throw new ConsequenceException( e.getMessage( ),
+                                            rule );
         }
     }
 }
