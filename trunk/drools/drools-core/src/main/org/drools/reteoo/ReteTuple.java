@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.64 2004-11-29 13:20:52 simon Exp $
+ * $Id: ReteTuple.java,v 1.65 2004-12-01 13:41:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -80,7 +80,7 @@ class ReteTuple
     ReteTuple( WorkingMemoryImpl workingMemory )
     {
         this.workingMemory = workingMemory;
-        this.key = TupleKey.EMPTY;
+        this.key = TupleKey.EMPTY_KEY;
     }
 
     ReteTuple(ReteTuple left,

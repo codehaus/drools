@@ -14,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import java.util.Set;
 
 public class RuleTest extends DroolsTestCase
 {
@@ -110,8 +109,8 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getOrder( ) );
-        assertEquals( 1, rule.addParameterDeclaration( "paramVar1", new MockObjectType( true ) ).getOrder( ) );
+        assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getIndex( ) );
+        assertEquals( 1, rule.addParameterDeclaration( "paramVar1", new MockObjectType( true ) ).getIndex( ) );
     }
 
     public void testDuration_SimpleLong() throws Exception

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.25 2004-11-30 00:32:54 simon Exp $
+ * $Id: Declaration.java,v 1.26 2004-12-01 13:41:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -70,8 +70,8 @@ public class Declaration
     // handler stuff.
     private ObjectType objectType;
 
-    /** The order within a rule. */
-    private final int order;
+    /** The index within a rule. */
+    private final int index;
 
     // ------------------------------------------------------------
     // Constructors
@@ -80,12 +80,9 @@ public class Declaration
     /**
      * Construct.
      *
-     * @param identifier
-     *            The name of the variable.
-     * @param objectType
-     *            The type of this variable declaration.
-     * @param order
-     *            The order within a rule.
+     * @param identifier The name of the variable.
+     * @param objectType The type of this variable declaration.
+     * @param order The index within a rule.
      */
     Declaration(String identifier,
                 ObjectType objectType,
@@ -93,7 +90,7 @@ public class Declaration
     {
         this.objectType = objectType;
         this.identifier = identifier;
-        this.order = order;
+        this.index = order;
     }
 
     // ------------------------------------------------------------
@@ -126,16 +123,16 @@ public class Declaration
         return this.identifier;
     }
 
-    public int getOrder()
+    public int getIndex()
     {
-        return this.order;
+        return this.index;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     public int compareTo(Object object)
     {
-        return this.order - ( ( Declaration ) object).order;
+        return this.index - ( ( Declaration ) object ).index;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -147,6 +144,6 @@ public class Declaration
 
     public int hashCode()
     {
-        return this.order;
+        return this.index;
     }
 }
