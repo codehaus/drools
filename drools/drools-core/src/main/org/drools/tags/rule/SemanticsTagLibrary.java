@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.3 2002-08-19 21:00:13 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.4 2002-08-19 21:15:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,6 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.rule.Declaration;
 import org.drools.smf.SemanticModule;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
@@ -73,7 +72,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.3 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.4 2002-08-19 21:15:42 bob Exp $
  */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -192,6 +191,19 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  throw new JellyException( "No delcaration for object type" );
                                              }
 
+                                             if ( this.objectType instanceof ConfigurableObjectType)
+                                             {
+                                                 try
+                                                 {
+                                                     ((ConfigurableObjectType)this.objectType)
+                                                         .configure( getBodyText() );
+                                                 }
+                                                 catch (ConfigurationException e)
+                                                 {
+                                                     throw new JellyException( e );
+                                                 }
+                                             }
+
                                              tag.setObjectType( this.objectType );
                                          }
                                      };
@@ -272,8 +284,9 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                              {
                                                  try
                                                  {
-                                                     ((ConfigurableCondition)this.condition).configure( getBodyText(),
-                                                                                                        tag.getAvailableDeclarations() );
+                                                     ((ConfigurableCondition)this.condition)
+                                                         .configure( getBodyText(),
+                                                                     tag.getAvailableDeclarations() );
                                                  }
                                                  catch (ConfigurationException e)
                                                  {
@@ -357,6 +370,20 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  throw new JellyException( "No wrapper for extraction" );
                                              }
 
+                                             if ( this.extractor instanceof ConfigurableExtractor )
+                                             {
+                                                 try
+                                                 {
+                                                     ((ConfigurableExtractor)this.extractor)
+                                                         .configure( getBodyText(),
+                                                                     tag.getAvailableDeclarations() );
+                                                 }
+                                                 catch (ConfigurationException e)
+                                                 {
+                                                     throw new JellyException( e );
+                                                 }
+                                             }
+
                                              tag.setExtractor( this.extractor );
                                          }
                                      };
@@ -433,6 +460,19 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  throw new JellyException( "No wrapper for consequence" );
                                              }
 
+                                             if ( this.consequence instanceof ConfigurableConsequence )
+                                             {
+                                                 try
+                                                 {
+                                                     ((ConfigurableConsequence)this.consequence)
+                                                         .configure( getBodyText(),
+                                                                     tag.getAvailableDeclarations() );
+                                                 }
+                                                 catch (ConfigurationException e)
+                                                 {
+                                                     throw new JellyException( e );
+                                                 }
+                                             }
                                              tag.setConsequence( this.consequence );
                                          }
                                      };

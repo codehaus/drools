@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ExtractionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ $Id: ExtractionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExtractionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: ExtractionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
  */
 public class ExtractionTag extends RuleTagSupport
 {
@@ -74,6 +74,7 @@ public class ExtractionTag extends RuleTagSupport
     /** The semantic extractor. */
     private Extractor extractor;
 
+    /** The variable. */
     private String var;
 
     // ------------------------------------------------------------
@@ -128,11 +129,19 @@ public class ExtractionTag extends RuleTagSupport
         return this.target;
     }
 
+    /** Set the variable in which to store the <code>Extraction</code>.
+     *
+     *  @param var The variable.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable in which to store the <code>Extraction</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;
