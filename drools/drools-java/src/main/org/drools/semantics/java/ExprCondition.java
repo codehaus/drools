@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ $Id: ExprCondition.java,v 1.2 2002-08-18 05:47:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,46 +50,37 @@ import org.drools.spi.ConfigurableCondition;
 import org.drools.spi.Tuple;
 import org.drools.spi.ConditionException;
 import org.drools.spi.ConfigurationException;
-import org.drools.rule.Declaration;
+
+import bsh.EvalError;
 
 /** Java expression semantics <code>Condition</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.2 2002-08-18 05:47:20 bob Exp $
  */
-public class ExprCondition implements ConfigurableCondition
+public class ExprCondition extends Expr implements ConfigurableCondition
 {
-    private Declaration[] requiredDecls;
-
     public ExprCondition()
     {
-        this.requiredDecls = null;
-    }
-
-    public void configure(String text,
-                          Declaration[] decls) throws ConfigurationException
-    {
-        ExprAnalyzer analyzer = new ExprAnalyzer();
-
-        try
-        {
-            this.requiredDecls = analyzer.analyze( decls,
-                                                   text );
-        }
-        catch (Exception e)
-        {
-            throw new ConfigurationException( e );
-        }
-    }
-
-    public Declaration[] getRequiredTupleMembers()
-    {
-        return this.requiredDecls;
     }
 
     public boolean isAllowed(Tuple tuple) throws ConditionException
     {
-        return false;
+        try
+        {
+            Object result = evaluate( tuple );
+            
+            if ( result instanceof Boolean )
+            {
+                return ((Boolean)result).booleanValue();
+            }
+        }
+        catch (EvalError e)
+        {
+            throw new ConditionException( e );
+        }
+
+        throw new NonBooleanExprException( getExpression() );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ $Id: ExprExtractor.java,v 1.2 2002-08-18 05:47:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,50 +46,34 @@ package org.drools.semantics.java;
  
  */
 
-import org.drools.rule.Declaration;
 import org.drools.spi.ConfigurableFactExtractor;
 import org.drools.spi.Tuple;
 import org.drools.spi.FactExtractionException;
 import org.drools.spi.ConfigurationException;
 
+import bsh.EvalError;
+
 /** Java expression semantics <code>FactExtractor</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.2 2002-08-18 05:47:20 bob Exp $
  */
-public class ExprExtractor implements ConfigurableFactExtractor
+public class ExprExtractor extends Expr implements ConfigurableFactExtractor
 {
-    private Declaration[] requiredDecls;
-
     public ExprExtractor()
     {
-        this.requiredDecls = null;
-    }
-
-    public void configure(String text,
-                          Declaration[] decls) throws ConfigurationException
-    {
-        ExprAnalyzer analyzer = new ExprAnalyzer();
-
-        try
-        {
-            this.requiredDecls = analyzer.analyze( decls,
-                                                   text );
-        }
-        catch (Exception e)
-        {
-            throw new ConfigurationException( e );
-        }
-    }
-
-    public Declaration[] getRequiredTupleMembers()
-    {
-        return this.requiredDecls;
     }
 
     public Object extractFact(Tuple tuple) throws FactExtractionException
     {
-        return null;
+        try
+        {
+            return evaluate( tuple );
+        }
+        catch (EvalError e)
+        {
+            throw new FactExtractionException( e );
+        }
     }
 }
