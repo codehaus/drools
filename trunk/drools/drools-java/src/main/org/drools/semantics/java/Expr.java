@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.20 2004-08-26 10:11:34 mproctor Exp $
+ $Id: Expr.java,v 1.21 2004-08-26 16:55:59 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,10 +66,9 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.20 2004-08-26 10:11:34 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.21 2004-08-26 16:55:59 mproctor Exp $
  */
-public class Expr
-    //extends Interp
+public class Expr implements Serializable
 {
     // ------------------------------------------------------------
     //     Constants
