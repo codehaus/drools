@@ -1,12 +1,12 @@
 package org.drools;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MockTuple implements Tuple
 {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: FactHandleImpl.java,v 1.15 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: FactHandleImpl.java,v 1.16 2004-11-28 05:02:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,10 +44,8 @@ import org.drools.FactHandle;
 
 /**
  * Implementation of <code>FactHandle</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: FactHandleImpl.java,v 1.15 2004-11-19 02:13:46 mproctor Exp $
  */
 public class FactHandleImpl
     implements
@@ -73,7 +71,7 @@ public class FactHandleImpl
 
     /**
      * Construct.
-     * 
+     *
      * @param id
      *            Handle id.
      */
@@ -139,7 +137,7 @@ public class FactHandleImpl
     {
         return this.id;
     }
-    
+
     void invalidate()
     {
         this.id = -1;

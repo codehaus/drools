@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandleFactory.java,v 1.13 2004-11-27 00:59:54 dbarnett Exp $
+ * $Id: Jsr94FactHandleFactory.java,v 1.14 2004-11-28 05:02:38 simon Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,13 +50,13 @@ import org.drools.reteoo.FactHandleFactory;
 public final class Jsr94FactHandleFactory implements FactHandleFactory
 {
     /** The Singleton instance of the <code>Jsr94FactHandleFactory</code>. */
-    private static Jsr94FactHandleFactory INSTANCE;
+    private static Jsr94FactHandleFactory INSTANCE = new Jsr94FactHandleFactory();
 
-    /** Counter for generating unique <code>Handle</code> ids. */
-    private long idCounter;
+    /** The fact id. */
+    private long id;
 
-    /** Counter for generating successive recency values. */
-    private long recencyCounter;
+    /** The number of facts created - used for recency. */
+    private long counter;
 
     /** Private constructor; use <code>getInstance</code> instead. */
     private Jsr94FactHandleFactory( )
@@ -69,34 +69,19 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
      *
      * @return The Singleton instance of the repository.
      */
-    public static synchronized Jsr94FactHandleFactory getInstance( )
+    public static Jsr94FactHandleFactory getInstance( )
     {
-        if ( Jsr94FactHandleFactory.INSTANCE != null )
-        {
-            return Jsr94FactHandleFactory.INSTANCE;
-        }
-        return Jsr94FactHandleFactory.INSTANCE = new Jsr94FactHandleFactory( );
+        return INSTANCE;
     }
 
-    /**
-     * Returns a new <code>Handle</code>.
-     *
-     * @return a new <code>Handle</code>.
-     */
-    public synchronized FactHandle newFactHandle( )
+    public synchronized FactHandle newFactHandle()
     {
-        return new Jsr94FactHandle( ++this.idCounter,  ++this.recencyCounter );
+        return newFactHandle( ++id );
     }
 
-    /**
-     * Returns a new <code>Handle</code>.
-     *
-     * @param id A unique <code>Handle</code> id.
-     *
-     * @return a new <code>Handle</code> with the given id.
-     */
     public synchronized FactHandle newFactHandle( long id )
     {
-        return new Jsr94FactHandle( id, ++this.recencyCounter );
+        return new Jsr94FactHandle( id,
+                                    ++counter );
     }
 }
