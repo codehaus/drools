@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Exec.java,v 1.6 2003-10-26 22:06:49 bob Exp $
+ $Id: Exec.java,v 1.7 2003-11-29 02:50:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,8 +47,6 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.smf.Configuration;
-import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.python.core.Py;
 import org.python.core.PyDictionary;
@@ -62,22 +60,21 @@ import java.util.Hashtable;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Exec.java,v 1.6 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: Exec.java,v 1.7 2003-11-29 02:50:50 bob Exp $
  */
-public class Exec extends Interp
+public class Exec
+    extends Interp
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      */
-    protected Exec()
+    protected Exec(String text)
     {
+        super( text,
+               "exec" );
     }
 
     // ------------------------------------------------------------
@@ -111,34 +108,12 @@ public class Exec extends Interp
 
     /** Execute.
      */
+    /*
     protected void execute()
     {
         PyDictionary locals = new PyDictionary( new Hashtable() );
         
         execute( locals );
     }
-    
-    /** Set the text to execute.
-     *
-     *  @param text The text.
-     */
-    protected void setText(String text)
-    {
-        setText( text,
-                 "exec" );
-    }
-
-    /** Configure.
-     *
-     *  @param text Configuration text.
-     *  @param availDecls Available declarations.
-     *
-     *  @throws ConfigurationException If an error occurs while
-     *          attempting to perform configuration.
-     */
-    public void configure(Configuration config,
-                          Declaration[] availDecls) throws ConfigurationException
-    {
-        setText( config.getText() );
-    }
+    */
 }

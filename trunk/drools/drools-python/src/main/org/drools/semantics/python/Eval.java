@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.7 2003-10-26 22:06:49 bob Exp $
+ $Id: Eval.java,v 1.8 2003-11-29 02:50:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,8 +47,6 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.smf.Configuration;
-import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
@@ -64,16 +62,14 @@ import java.util.Hashtable;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>  
  *
- *  @version $Id: Eval.java,v 1.7 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: Eval.java,v 1.8 2003-11-29 02:50:50 bob Exp $
  */
-public class Eval extends Interp
+public class Eval
+    extends Interp
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
-
-    /** Interpreted text. */
-    private String text;
 
     /** Required decls. */
     private Declaration[] decls;
@@ -84,9 +80,14 @@ public class Eval extends Interp
 
     /** Construct.
      */
-    protected Eval()
+    protected Eval(String text,
+                   Declaration[] availDecls)
+        throws Exception
     {
-        // intentionally left blank
+        super( text,
+               "eval" );
+
+        this.decls = analyze( availDecls );
     }
 
     // ------------------------------------------------------------
@@ -135,25 +136,6 @@ public class Eval extends Interp
         return evaluate( locals );
     }
 
-    /** Set the expression to evaluate.
-     *
-     *  @param expr The expression.
-     */
-    public void setExpression(String expr)
-    {
-        setText( expr,
-                 "eval" );
-    }
-
-    /** Return the expression.
-     *
-     *  @return The expression.
-     */
-    public String getExpression()
-    {
-        return getText();
-    }
-
     /** Retrieve the array of <code>Declaration</code>s required
      *  by this condition to perform its duties.
      *
@@ -165,21 +147,12 @@ public class Eval extends Interp
         return this.decls;
     }
 
-    public void configure(Configuration config,
-                          Declaration[] availDecls) throws ConfigurationException
+    protected Declaration[] analyze(Declaration[] availDecls)
+        throws Exception
     {
-        try
-        {
-            setExpression( config.getText() );
+        ExprAnalyzer analyzer = new ExprAnalyzer();
             
-            ExprAnalyzer analyzer = new ExprAnalyzer();
-            
-            this.decls = analyzer.analyze( getNode(),
-                                           availDecls );
-        }
-        catch (Exception e)
-        {
-            throw new ConfigurationException( e );
-        }
+        return analyzer.analyze( getNode(),
+                                 availDecls );
     }
 }

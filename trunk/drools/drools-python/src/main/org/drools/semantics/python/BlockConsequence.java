@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: BlockConsequence.java,v 1.5 2003-11-29 02:50:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package org.drools.semantics.python;
  */
 
 import org.drools.WorkingMemory;
-import org.drools.smf.ConfigurableConsequence;
+import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 import org.python.core.Py;
@@ -58,9 +58,11 @@ import org.python.core.PyString;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: BlockConsequence.java,v 1.5 2003-11-29 02:50:50 bob Exp $
  */
-public class BlockConsequence extends Exec implements ConfigurableConsequence
+public class BlockConsequence
+    extends Exec
+    implements Consequence
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -72,13 +74,7 @@ public class BlockConsequence extends Exec implements ConfigurableConsequence
      */
     public BlockConsequence(String text)
     {
-        setText( text );
-    }
-
-    /** Construct, partially.
-     */
-    public BlockConsequence()
-    {
+        super( text );
     }
 
     // ------------------------------------------------------------

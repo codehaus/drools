@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: Interp.java,v 1.6 2003-11-29 02:50:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,7 +64,7 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: Interp.java,v 1.6 2003-11-29 02:50:50 bob Exp $
  */
 public class Interp
 {
@@ -85,10 +85,7 @@ public class Interp
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Interp. */
-    // private PythonInterpreter interp;
-
-    /** Interpreted text. */
+    /** Text. */
     private String text;
 
     /** The code. */
@@ -103,9 +100,14 @@ public class Interp
 
     /** Construct.
      */
-    protected Interp()
+    protected Interp(String text,
+                     String type)
     {
-        this.text = null;
+        this.text = text;
+        this.node = (modType) parser.parse( text,
+                                            type );
+        this.code = Py.compile( this.node,
+                                "<jython>");
     }
 
     // ------------------------------------------------------------
@@ -121,26 +123,11 @@ public class Interp
         return this.text;
     }
 
-    /** Set the text to evaluate.
-     *
-     *  @param text The text.
-     *  @param type The type ("exec" or "eval").
-     */
-    protected void setText(String text,
-                           String type)
-    {
-        this.text = text;
-
-        this.node = (modType) parser.parse( text, type );
-        this.code = Py.compile( this.node,
-                                "<jython>");
-    }
-
     /** Retrieve the AST node.
      *
      *  @return The node.
      */
-    public modType getNode()
+    protected modType getNode()
     {
         return this.node;
     }
