@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleSetIntegrationException.java,v 1.3 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: RuleSetIntegrationException.java,v 1.4 2005-01-11 16:11:56 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,7 +55,7 @@ import org.drools.rule.RuleSet;
  * @version $Id: RuleIntegrationException.java,v 1.6 2004/09/17 00:14:06
  *          mproctor Exp $
  */
-public class RuleSetIntegrationException extends DroolsException
+public class RuleSetIntegrationException extends IntegrationException
 {
     // ------------------------------------------------------------
     // Instance members
