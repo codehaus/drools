@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.27 2004-10-29 13:22:37 simon Exp $
+ * $Id: JoinMemory.java,v 1.28 2004-10-30 00:00:59 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,9 +53,8 @@ import java.util.Set;
 /**
  * Memory for left and right inputs of a <code>JoinNode</code>.
  *
- * @see ReteTuple
- *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
+ * @see ReteTuple
  */
 class JoinMemory implements Serializable
 {
@@ -65,14 +64,20 @@ class JoinMemory implements Serializable
 
     private final JoinNode node;
 
-    /** Left-side tuples. */
+    /**
+     * Left-side tuples.
+     */
     private final TupleSet leftTuples;
 
-    /** Right-side tuples. */
+    /**
+     * Right-side tuples.
+     */
     private final TupleSet rightTuples;
 
-    /** Join column declarations. */
-    private final Set      joinDeclarations;
+    /**
+     * Join column declarations.
+     */
+    private final Set joinDeclarations;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -83,13 +88,13 @@ class JoinMemory implements Serializable
      *
      * @param node The <code>JoinNode</code> this memory is for.
      */
-    JoinMemory(JoinNode node)
+    JoinMemory( JoinNode node )
     {
         this.node = node;
-        this.leftTuples = new TupleSet( );
-        this.rightTuples = new TupleSet( );
+        this.leftTuples = new TupleSet();
+        this.rightTuples = new TupleSet();
 
-        this.joinDeclarations = node.getCommonDeclarations( );
+        this.joinDeclarations = node.getCommonDeclarations();
     }
 
     // ------------------------------------------------------------
@@ -101,39 +106,39 @@ class JoinMemory implements Serializable
      *
      * @param handle The handle for the fact to retract.
      */
-    protected void retractObject(FactHandle handle)
+    protected void retractObject( FactHandle handle )
     {
         try
         {
             ReteTuple eachTuple = null;
 
-            Iterator tupleIter = leftTuples.iterator( );
+            Iterator tupleIter = leftTuples.iterator();
 
-            while ( tupleIter.hasNext( ) )
+            while ( tupleIter.hasNext() )
             {
-                eachTuple = ( ReteTuple ) tupleIter.next( );
+                eachTuple = ( ReteTuple ) tupleIter.next();
 
                 if ( eachTuple.dependsOn( handle ) )
                 {
-                    tupleIter.remove( );
+                    tupleIter.remove();
                 }
             }
 
-            tupleIter = rightTuples.iterator( );
+            tupleIter = rightTuples.iterator();
 
-            while ( tupleIter.hasNext( ) )
+            while ( tupleIter.hasNext() )
             {
-                eachTuple = ( ReteTuple ) tupleIter.next( );
+                eachTuple = ( ReteTuple ) tupleIter.next();
 
                 if ( eachTuple.dependsOn( handle ) )
                 {
-                    tupleIter.remove( );
+                    tupleIter.remove();
                 }
             }
         }
         catch ( Exception e )
         {
-            e.printStackTrace( );
+            e.printStackTrace();
         }
     }
 
@@ -142,14 +147,14 @@ class JoinMemory implements Serializable
      *
      * @param keys The keys for the tuples to be removed.
      */
-    protected void retractTuples(Set keys)
+    protected void retractTuples( Set keys )
     {
-        Iterator keyIter = keys.iterator( );
+        Iterator keyIter = keys.iterator();
         TupleKey eachKey = null;
 
-        while ( keyIter.hasNext( ) )
+        while ( keyIter.hasNext() )
         {
-            eachKey = ( TupleKey ) keyIter.next( );
+            eachKey = ( TupleKey ) keyIter.next();
 
             retractTuples( eachKey );
         }
@@ -160,30 +165,30 @@ class JoinMemory implements Serializable
      *
      * @param key The key for the tuples to be removed.
      */
-    protected void retractTuples(TupleKey key)
+    protected void retractTuples( TupleKey key )
     {
-        retractTuples( key, getLeftTuples( ).iterator( ) );
+        retractTuples( key, getLeftTuples().iterator() );
 
-        retractTuples( key, getRightTuples( ).iterator( ) );
+        retractTuples( key, getRightTuples().iterator() );
     }
 
     /**
      * Retract tuples from this memory.
      *
-     * @param key The key for the tuples to be removed.
+     * @param key       The key for the tuples to be removed.
      * @param tupleIter Iterator of tuples to be removed.
      */
-    private void retractTuples(TupleKey key, Iterator tupleIter)
+    private void retractTuples( TupleKey key, Iterator tupleIter )
     {
         ReteTuple eachTuple = null;
 
-        while ( tupleIter.hasNext( ) )
+        while ( tupleIter.hasNext() )
         {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
+            eachTuple = ( ReteTuple ) tupleIter.next();
 
-            if ( eachTuple.getKey( ).containsAll( key ) )
+            if ( eachTuple.getKey().containsAll( key ) )
             {
-                tupleIter.remove( );
+                tupleIter.remove();
             }
         }
     }
@@ -191,48 +196,43 @@ class JoinMemory implements Serializable
     /**
      * Modify tuples on the left-side.
      *
-     * @param trigger Triggering object handle.
-     * @param newTuples Modification replacement tuples.
+     * @param trigger       Triggering object handle.
+     * @param newTuples     Modification replacement tuples.
      * @param workingMemory The working memory session.
-     *
      * @throws FactException if an error occurs during modification.
      */
     protected void modifyLeftTuples( FactHandle trigger,
                                      TupleSet newTuples,
                                      WorkingMemoryImpl workingMemory ) throws FactException
     {
-        modifyTuples( trigger, newTuples, getLeftTuples( ), getRightTuples( ),
+        modifyTuples( trigger, newTuples, getLeftTuples(), getRightTuples(),
                 workingMemory );
     }
 
     /**
      * Modify tuples on the right-side.
      *
-     * @param trigger Triggering object handle.
-     * @param newTuples Modification replacement tuples.
+     * @param trigger       Triggering object handle.
+     * @param newTuples     Modification replacement tuples.
      * @param workingMemory The working memory session.
-     *
      * @throws FactException if an error occurs during modification.
      */
     protected void modifyRightTuples( FactHandle trigger,
                                       TupleSet newTuples,
                                       WorkingMemoryImpl workingMemory ) throws FactException
     {
-        modifyTuples( trigger, newTuples, getRightTuples( ), getLeftTuples( ),
+        modifyTuples( trigger, newTuples, getRightTuples(), getLeftTuples(),
                 workingMemory );
     }
 
     /**
      * Modify tuples
      *
-     * @param trigger Triggering object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param thisSideTuples The tuples on the side that's receiving the
-     *        modifications.
-     * @param thatSideTuples The tuples on the side that's <b>not </b> receiving
-     *        the modifications.
-     * @param workingMemory The working memory session.
-     *
+     * @param trigger        Triggering object handle.
+     * @param newTuples      Modification replacement tuples.
+     * @param thisSideTuples The tuples on the side that's receiving the modifications.
+     * @param thatSideTuples The tuples on the side that's <b>not </b> receiving the modifications.
+     * @param workingMemory  The working memory session.
      * @throws FactException if an error occurs during modification.
      */
     protected void modifyTuples( FactHandle trigger,
@@ -241,76 +241,53 @@ class JoinMemory implements Serializable
                                  TupleSet thatSideTuples,
                                  WorkingMemoryImpl workingMemory ) throws FactException
     {
-        Set origModified = new HashSet( );
-        Set newModified = new HashSet( );
+        ReteTuple tuple;
 
-        for ( Iterator tupleIter = thisSideTuples.iterator( ); tupleIter
-                                                                        .hasNext( ); )
+        for ( Iterator tupleIter = thisSideTuples.iterator(); tupleIter.hasNext(); )
         {
-            ReteTuple origTuple = ( ReteTuple ) tupleIter.next( );
+            tuple = ( ReteTuple ) tupleIter.next();
 
-            if ( origTuple.dependsOn( trigger ) )
+            if ( tuple.dependsOn( trigger ) && !newTuples.containsTuple( tuple.getKey() ) )
             {
-                ReteTuple newTuple = newTuples.getTuple( origTuple.getKey( ) );
-
-                if ( newTuple == null )
-                {
-                    tupleIter.remove( );
-                }
-                else
-                {
-                    newModified.add( newTuple );
-                    origModified.add( origTuple );
-                }
+                tupleIter.remove();
             }
         }
 
-        newModified.addAll( newTuples.getTuples( ) );
+        TupleSet newJoined = new TupleSet();
 
-        TupleSet newJoined = new TupleSet( );
-
-        for ( Iterator tupleIter = newModified.iterator( ); tupleIter.hasNext( ); )
+        for ( Iterator tupleIter = newTuples.iterator(); tupleIter.hasNext(); )
         {
-            ReteTuple eachTuple = ( ReteTuple ) tupleIter.next( );
+            tuple = ( ReteTuple ) tupleIter.next();
 
-            newJoined.addAllTuples( attemptJoin( eachTuple,
-                                                 thatSideTuples.iterator( ) ) );
+            thisSideTuples.addTuple( tuple );
+
+            newJoined.addAllTuples( attemptJoin( tuple, thatSideTuples.iterator() ) );
         }
-
-        thisSideTuples.addAllTuples( newTuples );
 
         this.node.propagateModifyTuples( trigger, newJoined, workingMemory );
     }
 
     /**
-     * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
-     * left input to the left side of this memory, and attempt to join to
-     * existing <code>Tuples</code> in the right side.
-     *
-     * @see JoinNode
-     * @see ReteTuple
+     * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code> left input to the left side of this
+     * memory, and attempt to join to existing <code>Tuples</code> in the right side.
      *
      * @param tuple The <code>Tuple</code> to add to the left side memory.
-     *
-     * @return A <code>List</code> of <code>Tuples</code> successfully
-     *         created by joining the incoming <code>tuple</code> against
-     *         existing <code>Tuples</code> on the right side memory.
+     * @return A <code>List</code> of <code>Tuples</code> successfully created by joining the incoming
+     *         <code>tuple</code> against existing <code>Tuples</code> on the right side memory.
+     * @see JoinNode
+     * @see ReteTuple
      */
-    protected Set addLeftTuple(JoinNode node, ReteTuple tuple)
+    protected Set addLeftTuple( JoinNode node, ReteTuple tuple )
     {
         this.leftTuples.addTuple( tuple );
 
-        Set joined = attemptJoin( tuple, getRightTupleIterator( ) );
-
-        return joined;
+        return attemptJoin( tuple, getRightTupleIterator() );
     }
 
     /**
-     * Retrieve the <code>List</code> of <code>Tuples</code> held in the
-     * left side memory.
+     * Retrieve the <code>List</code> of <code>Tuples</code> held in the left side memory.
      *
-     * @return The <code>List</code> of <code>Tuples</code> help in the left
-     *         side memory.
+     * @return The <code>List</code> of <code>Tuples</code> help in the left side memory.
      */
     protected TupleSet getLeftTuples()
     {
@@ -318,44 +295,36 @@ class JoinMemory implements Serializable
     }
 
     /**
-     * Retrieve an <code>Iterator</code> over the <code>Tuples</code> held
-     * in the left side memory.
+     * Retrieve an <code>Iterator</code> over the <code>Tuples</code> held in the left side memory.
      *
-     * @return An <code>Iterator</code> over the <code>Tuples</code> help in
-     *         the left side memory.
+     * @return An <code>Iterator</code> over the <code>Tuples</code> help in the left side memory.
      */
     protected Iterator getLeftTupleIterator()
     {
-        return this.leftTuples.iterator( );
+        return this.leftTuples.iterator();
     }
 
     /**
-     * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
-     * right input to the right side of this memory, and attempt to join to
-     * existing <code>Tuples</code> in the left side.
-     *
-     * @see JoinNode
-     * @see ReteTuple
+     * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code> right input to the right side of this
+     * memory, and attempt to join to existing <code>Tuples</code> in the left side.
      *
      * @param tuple The <code>Tuple</code> to add to the right side memory.
-     *
-     * @return A <code>List</code> of <code>Tuples</code> successfully
-     *         created by joining the incoming <code>tuple</code> against
-     *         existing <code>Tuples</code> on the left side memory.
+     * @return A <code>List</code> of <code>Tuples</code> successfully created by joining the incoming
+     *         <code>tuple</code> against existing <code>Tuples</code> on the left side memory.
+     * @see JoinNode
+     * @see ReteTuple
      */
-    protected Set addRightTuple(JoinNode node, ReteTuple tuple)
+    protected Set addRightTuple( JoinNode node, ReteTuple tuple )
     {
         this.rightTuples.addTuple( tuple );
 
-        return attemptJoin( tuple, getLeftTupleIterator( ) );
+        return attemptJoin( tuple, getLeftTupleIterator() );
     }
 
     /**
-     * Retrieve the <code>List</code> of <code>Tuples</code> held in the
-     * right side memory.
+     * Retrieve the <code>List</code> of <code>Tuples</code> held in the right side memory.
      *
-     * @return The <code>List</code> of <code>Tuples</code> help in the
-     *         right side memory.
+     * @return The <code>List</code> of <code>Tuples</code> help in the right side memory.
      */
     protected TupleSet getRightTuples()
     {
@@ -363,51 +332,44 @@ class JoinMemory implements Serializable
     }
 
     /**
-     * Retrieve an <code>Iterator</code> over the <code>Tuples</code> held
-     * in the right side memory.
+     * Retrieve an <code>Iterator</code> over the <code>Tuples</code> held in the right side memory.
      *
-     * @return An <code>Iterator</code> over the <code>Tuples</code> help in
-     *         the right side memory.
+     * @return An <code>Iterator</code> over the <code>Tuples</code> help in the right side memory.
      */
     protected Iterator getRightTupleIterator()
     {
-        return this.rightTuples.iterator( );
+        return this.rightTuples.iterator();
     }
 
     /**
-     * Retrieve an <code>Iterator</code> over the common
-     * <code>Declarations</code> used to join <code>Tuples</code> from the
-     * left and right side memories.
+     * Retrieve an <code>Iterator</code> over the common <code>Declarations</code> used to join <code>Tuples</code> from
+     * the left and right side memories.
      *
-     * @return An <code>Iterator</code> of common join
-     *         <code>Declarations</code>.
+     * @return An <code>Iterator</code> of common join <code>Declarations</code>.
      */
     protected Iterator getJoinDeclarationIterator()
     {
-        return this.joinDeclarations.iterator( );
+        return this.joinDeclarations.iterator();
     }
 
     /**
-     * Attempt to join the <code>tuple</code> against the tuples available
-     * through the <code>tupleIterator</code>.
+     * Attempt to join the <code>tuple</code> against the tuples available through the <code>tupleIterator</code>.
      *
-     * @param tuple The <code>Tuple</code> to attempt joining.
-     * @param tupleIter The <code>Iterator</code> over <code>Tuples</code>
-     *        to attempt joining to the <code>tuple</code> parameter.
-     *
-     * @return A possibly empty <code>List</code> of joined
-     *         <code>Tuples</code>.
+     * @param tuple     The <code>Tuple</code> to attempt joining.
+     * @param tupleIter The <code>Iterator</code> over <code>Tuples</code> to attempt joining to the <code>tuple</code>
+     *                  parameter.
+     * @return A possibly empty <code>List</code> of joined <code>Tuples</code>.
      */
-    protected Set attemptJoin(ReteTuple tuple, Iterator tupleIter)
+    protected Set attemptJoin( ReteTuple tuple, Iterator tupleIter )
     {
         Set joinedTuples = Collections.EMPTY_SET;
 
         ReteTuple eachTuple = null;
         ReteTuple joinedTuple = null;
 
-        while ( tupleIter.hasNext( ) )
+        while ( tupleIter.hasNext() )
         {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
+            eachTuple = ( ReteTuple ) tupleIter.next();
 
             joinedTuple = attemptJoin( tuple, eachTuple );
 
@@ -415,7 +377,7 @@ class JoinMemory implements Serializable
             {
                 if ( joinedTuples == Collections.EMPTY_SET )
                 {
-                    joinedTuples = new HashSet( );
+                    joinedTuples = new HashSet();
                 }
 
                 joinedTuples.add( joinedTuple );
@@ -430,22 +392,25 @@ class JoinMemory implements Serializable
      *
      * @return The debug string.
      */
-    protected ReteTuple attemptJoin(ReteTuple left, ReteTuple right)
+    protected ReteTuple attemptJoin( ReteTuple left, ReteTuple right )
     {
-        Iterator declIter = getJoinDeclarationIterator( );
+        Iterator declIter = getJoinDeclarationIterator();
         Declaration eachDecl = null;
 
         FactHandle leftHandle = null;
         FactHandle rightHandle = null;
 
-        while ( declIter.hasNext( ) )
+        while ( declIter.hasNext() )
         {
-            eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = ( Declaration ) declIter.next();
 
-            if (!checkExtractorJoinsOk(eachDecl, left, right)) return null;
+            if ( !checkExtractorJoinsOk( eachDecl, left, right ) )
+            {
+                return null;
+            }
 
-            leftHandle = left.getKey( ).get( eachDecl );
-            rightHandle = right.getKey( ).get( eachDecl );
+            leftHandle = left.getKey().get( eachDecl );
+            rightHandle = right.getKey().get( eachDecl );
 
             if ( leftHandle == null && rightHandle == null )
             {
@@ -474,32 +439,29 @@ class JoinMemory implements Serializable
     }
 
     /**
-     * For targets shared by extractors the
-     * extracted fact should be the same.
-     * If the given declaration is a targetDeclaration
-     * for one it must be for the other, as its a common
-     * declaration.
+     * For targets shared by extractors the extracted fact should be the same. If the given declaration is a
+     * targetDeclaration for one it must be for the other, as its a common declaration.
      *
      * @param decl
      * @param left
      * @param right
      * @return
      */
-    boolean checkExtractorJoinsOk(Declaration decl, ReteTuple left, ReteTuple right)
+    boolean checkExtractorJoinsOk( Declaration decl, ReteTuple left, ReteTuple right )
     {
-        Set leftTargetDecls = left.getDeclarations( );
-        Set rightTargetDecls = right.getDeclarations( );
+        Set leftTargetDecls = left.getDeclarations();
+        Set rightTargetDecls = right.getDeclarations();
 
-        if ((leftTargetDecls != null)&&leftTargetDecls.contains(decl))
+        if ( leftTargetDecls != null && leftTargetDecls.contains( decl ) )
         {
-            if (!rightTargetDecls.contains(decl) || !left.get(decl).equals(right.get(decl)))
+            if ( !rightTargetDecls.contains( decl ) || !left.get( decl ).equals( right.get( decl ) ) )
             {
                 return false;
             }
         }
-        else if ((rightTargetDecls != null)&&rightTargetDecls.contains(decl))
+        else if ( rightTargetDecls != null && rightTargetDecls.contains( decl ) )
         {
-            if (!leftTargetDecls.contains(decl) || !right.get(decl).equals(left.get(decl)))
+            if ( !leftTargetDecls.contains( decl ) || !right.get( decl ).equals( left.get( decl ) ) )
             {
                 return false;
             }
@@ -519,7 +481,7 @@ class JoinMemory implements Serializable
     public String toString()
     {
         return "[JoinMemory \n\tleft=" + this.leftTuples + "\n\tright="
-               + this.rightTuples + "]";
+                + this.rightTuples + "]";
     }
 
 }

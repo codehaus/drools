@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.17 2004-10-29 07:38:49 simon Exp $
+ * $Id: TupleSet.java,v 1.18 2004-10-30 00:00:59 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ class TupleSet implements Serializable
     // ------------------------------------------------------------
 
     /** Tuples, indexed by TupleKey. */
-    private Map tuples;
+    private final Map tuples;
 
     // ------------------------------------------------------------
     //     Constructors
