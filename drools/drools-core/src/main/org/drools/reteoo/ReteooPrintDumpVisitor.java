@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteooPrintDumpVisitor.java,v 1.2 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: ReteooPrintDumpVisitor.java,v 1.3 2004-09-15 22:05:25 dbarnett Exp $
 
  Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -165,6 +165,24 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         depth = scopedDepth;
     }
 
+    public void visitExtractionNode(ExtractionNode extractionNode)
+    {
+        String indent = getIndent(depth);
+        buffer.append(indent + "ExtractionNode");
+        buffer.append(newline);
+        buffer.append(indent + "-------------");
+        buffer.append(newline);
+        buffer.append(indent + "extraction: ");
+        buffer.append(extractionNode.toString());
+        buffer.append(newline);
+        buffer.append(indent + "tupleSink:");
+        buffer.append(newline);
+        int scopedDepth = depth;
+        depth++;
+        visit(extractionNode.getTupleSink());
+        depth = scopedDepth;
+    }
+    
     public void visitJoinNodeInput(JoinNodeInput joinNodeInput)
     {
         String indent = getIndent(depth);
