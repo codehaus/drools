@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagLibrary.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ $Id: RuleTagLibrary.java,v 1.3 2002-08-19 21:33:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import org.apache.commons.jelly.TagLibrary;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagLibrary.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: RuleTagLibrary.java,v 1.3 2002-08-19 21:33:08 bob Exp $
  */
 public class RuleTagLibrary extends TagLibrary
 {
@@ -64,6 +64,9 @@ public class RuleTagLibrary extends TagLibrary
      */
     public RuleTagLibrary()
     {
+        registerTag( "semantics",
+                     SemanticsTag.class );
+
         registerTag( "rule-set",
                      RuleSetTag.class );
 
@@ -82,8 +85,7 @@ public class RuleTagLibrary extends TagLibrary
         registerTag( "extraction",
                      ExtractionTag.class );
 
-        registerTag( "semantics",
-                     SemanticsTag.class );
+        registerTag( "consequence",
+                     ConsequenceTag.class );
     }
-
 }
