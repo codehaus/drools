@@ -6,4 +6,8 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
+    <goal name="clean">
+      <attainGoal name="multiproject:clean"/>
+    </goal>
+  
 </project>
