@@ -33,9 +33,10 @@ employs a depth-first search approach to the problem.
            </java:condition>
 
             <java:consequence>
+               import org.drools.jsr94.benchmark.drools.Seating;
+
                System.out.println("FIRE: find first seat: " + guest);
 
-               import org.drools.jsr94.benchmark.drools.Seating;
                drools.assertObject(new Seating(1, guest, null));
 
                context.setState("find_seating");
@@ -151,9 +152,12 @@ employs a depth-first search approach to the problem.
           </java:condition>
 
           <java:consequence>
+             import org.drools.jsr94.benchmark.Seat;
+             import java.util.List;
+             import java.util.ArrayList;
+
              System.out.println("FIRE: we are done");
 
-             import org.drools.jsr94.benchmark.Seat;
              List list = new ArrayList();
              while(seating != null) {
                 Seat seat = new Seat(seating.getSeat1(), seating.getGuest1().getName());
