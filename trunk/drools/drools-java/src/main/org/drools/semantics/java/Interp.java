@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.10 2004-06-13 03:36:25 bob Exp $
+ $Id: Interp.java,v 1.11 2004-06-15 05:12:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,7 +66,7 @@ import java.util.Map;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.10 2004-06-13 03:36:25 bob Exp $
+ *  @version $Id: Interp.java,v 1.11 2004-06-15 05:12:45 bob Exp $
  */
 public class Interp
 {
@@ -158,6 +158,8 @@ public class Interp
     protected NameSpace setUpNameSpace(Tuple tuple) throws UtilEvalError, EvalError
     {
         NameSpace ns = new NameSpace(interp.getClassManager(),  "" );
+
+        ns.importCommands( "org.drools.semantics.java.bsh" );
 
         Set         decls    = tuple.getDeclarations();
 
