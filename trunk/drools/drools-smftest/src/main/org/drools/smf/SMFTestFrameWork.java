@@ -88,10 +88,10 @@ public class SMFTestFrameWork  extends TestCase
     {
         MockTuple tuple;
 
-        MockConfiguration itemConfiguration = new MockConfiguration("test1");
-        itemConfiguration.setText(Cheese.class.getName());
+        MockConfiguration cheeseConfiguration = new MockConfiguration("test1");
+        cheeseConfiguration.setText(Cheese.class.getName());
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory("class");
-        ObjectType itemType = objectTypeFactory.newObjectType(itemConfiguration);
+        ObjectType cheeseType = objectTypeFactory.newObjectType(cheeseConfiguration);
 
         tuple = new MockTuple();
         tuple.setWorkingMemory(new MockWorkingMemory());
@@ -101,8 +101,8 @@ public class SMFTestFrameWork  extends TestCase
         assertTrue(testCondition(3, tuple, new Declaration[] {}));
         assertTrue(testCondition(4, tuple, new Declaration[] {}));
 
-        Declaration camembertDecl = new Declaration(itemType, "camembert");
-        Declaration stiltonDecl = new Declaration(itemType, "stilton");
+        Declaration camembertDecl = new Declaration(cheeseType, "camembert");
+        Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
 
         tuple.put(camembertDecl, new Cheese("camembert"));
         assertTrue(testCondition(5, tuple, new Declaration[] {camembertDecl}));
@@ -131,6 +131,22 @@ public class SMFTestFrameWork  extends TestCase
         assertTrue(testCondition(13, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
         assertFalse(testCondition(14, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
         assertTrue(testCondition(15, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+
+        tuple = new MockTuple();
+        workingMemory = new MockWorkingMemory();
+        tuple.setWorkingMemory(workingMemory);
+
+        MockConfiguration stringConfiguration = new MockConfiguration("test2");
+        stringConfiguration.setText(String.class.getName());
+        ObjectType stringType = objectTypeFactory.newObjectType(stringConfiguration);
+        Declaration favouriteCheeseDecl = new Declaration(stringType, "favouriteCheese");
+
+
+        tuple.put(favouriteCheeseDecl, "camembert");
+        tuple.put(camembertDecl, new Cheese("camembert"));
+        assertTrue(testCondition(16, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl}));
+        assertTrue(testCondition(17, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl}));
+
     }
 
     private boolean testCondition(int testNumber, Tuple tuple, Declaration[] decls) throws Exception
@@ -146,14 +162,14 @@ public class SMFTestFrameWork  extends TestCase
     {
         MockTuple tuple;
 
-        MockConfiguration itemConfiguration = new MockConfiguration("test1");
-        itemConfiguration.setText(Cheese.class.getName());
+        MockConfiguration cheeseConfiguration = new MockConfiguration("test1");
+        cheeseConfiguration.setText(Cheese.class.getName());
 
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory("class");
-        ObjectType itemType = objectTypeFactory.newObjectType(itemConfiguration);
+        ObjectType cheeseType = objectTypeFactory.newObjectType(cheeseConfiguration);
 
-        Declaration camembertDecl = new Declaration(itemType, "camembert");
-        Declaration stiltonDecl = new Declaration(itemType, "stilton");
+        Declaration camembertDecl = new Declaration(cheeseType, "camembert");
+        Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
 
 
         tuple = new MockTuple();
@@ -185,13 +201,13 @@ public class SMFTestFrameWork  extends TestCase
     {
         MockTuple tuple;
 
-        MockConfiguration itemConfiguration = new MockConfiguration("test1");
-        itemConfiguration.setText(Cheese.class.getName());
+        MockConfiguration cheeseConfiguration = new MockConfiguration("test1");
+        cheeseConfiguration.setText(Cheese.class.getName());
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory("class");
-        ObjectType itemType = objectTypeFactory.newObjectType(itemConfiguration);
+        ObjectType cheeseType = objectTypeFactory.newObjectType(cheeseConfiguration);
 
-        Declaration camembertDecl = new Declaration(itemType, "camembert");
-        Declaration stiltonDecl = new Declaration(itemType, "stilton");
+        Declaration camembertDecl = new Declaration(cheeseType, "camembert");
+        Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
 
 
         tuple = new MockTuple();
