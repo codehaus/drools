@@ -29,7 +29,7 @@
     <goal name="drools:example-escalation"
           prereqs="drools:compile-examples">
       <echo>running escalation example</echo>
-      <java classname="escalation.Escalation"> 
+      <java classname="escalation.Escalation" fork="true"> 
         <classpath>
           <path refid="maven.dependency.classpath"/>
           <path location="target/${maven.final.name}.jar"/>
@@ -41,7 +41,7 @@
     <goal name="drools:example-sisters"
           prereqs="drools:compile-examples">
       <echo>running sisters example</echo>
-      <java classname="sisters.Sisters"> 
+      <java classname="sisters.Sisters" fork="true"> 
         <classpath>
           <path refid="maven.dependency.classpath"/>
           <path location="target/${maven.final.name}.jar"/>
@@ -53,7 +53,7 @@
     <goal name="drools:example-fishmonger"
           prereqs="drools:compile-examples">
       <echo>running fishmonger example</echo>
-      <java classname="fishmonger.FishMonger"> 
+      <java classname="fishmonger.FishMonger" fork="true"> 
         <classpath>
           <path refid="maven.dependency.classpath"/>
           <path location="target/${maven.final.name}.jar"/>
