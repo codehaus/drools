@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<rule-set name="NodeSharing" xmlns="http://drools.org/rules" xmlns:java="http://drools.org/semantics/java" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+    <java:import>java.lang.Comparable</java:import>
+
+    <rule name="Find all distinct combinations of three values">
+        <parameter identifier="x">
+            <class>Comparable</class>
+        </parameter>
+        <parameter identifier="y">
+            <class>Comparable</class>
+        </parameter>
+        <parameter identifier="z">
+            <class>Comparable</class>
+        </parameter>
+
+        <java:condition><![CDATA[
+            x.compareTo(y) < 0
+        ]]></java:condition>
+
+        <java:condition><![CDATA[
+            y.compareTo(z) < 0
+        ]]></java:condition>
+
+        <java:consequence><![CDATA[
+            System.out.println(x + ", " + y + ", " + z);
+        ]]></java:consequence>
+    </rule>
+
+    <rule name="Find all distinct combinations of two values">
+        <parameter identifier="x">
+            <class>Comparable</class>
+        </parameter>
+        <parameter identifier="y">
+            <class>Comparable</class>
+        </parameter>
+
+        <java:condition><![CDATA[
+            x.compareTo(y) < 0
+        ]]></java:condition>
+
+        <java:consequence><![CDATA[
+            System.out.println(x + ", " + y);
+        ]]></java:consequence>
+    </rule>
+
+</rule-set>
