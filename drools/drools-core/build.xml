@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.32 2003-03-24 09:10:11 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.33 2003-03-24 09:53:43 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
@@ -316,7 +316,7 @@
 
     <target name="war"
         unless="test.failure"
-        depends="jar">
+        depends="jar, compile-examples">
 
         <war destfile="${defaulttargetdir}/${warname}.war" webxml="${webappdir}/web-inf/web.xml">
 
