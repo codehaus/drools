@@ -8,6 +8,16 @@ import java.util.Collection;
 public class DroolsTestCase
     extends TestCase
 {
+    public DroolsTestCase( )
+    {
+      super(  );
+    }
+
+    public DroolsTestCase(String name)
+    {
+      super( name );
+    }
+
     public void assertLength(int len,
                              Object[] array)
     {
