@@ -68,7 +68,7 @@ class Scheduler
     {
         Date now = new Date();
 
-        Date then = new Date( now.getTime() + ( item.getRule().getDuration( item.getTuple() ) * 1000 ) );
+        Date then = new Date( now.getTime() + ( item.getRule().getDuration().getDuration( item.getTuple() ) * 1000 ) );
 
         try
         {

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.21 2003-10-28 19:32:48 bob Exp $
+ $Id: Rule.java,v 1.22 2003-10-28 19:55:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -69,7 +69,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.21 2003-10-28 19:32:48 bob Exp $
+ *  @version $Id: Rule.java,v 1.22 2003-10-28 19:55:17 bob Exp $
  */
 public class Rule
 {
@@ -160,6 +160,7 @@ public class Rule
      *  @return The number of seconds the rule must
      *          hold true in order to fire.
      */
+    /*
     public long getDuration(Tuple tuple)
     {
         if ( this.duration == null )
@@ -168,6 +169,12 @@ public class Rule
         }
 
         return this.duration.getDuration( tuple );
+    }
+    */
+
+    public Duration getDuration()
+    {
+        return this.duration;
     }
 
     /** Determine if this rule is internally consistent and valid.

@@ -1,6 +1,10 @@
 package org.drools.rule;
 
 import org.drools.DroolsTestCase;
+import org.drools.WorkingMemory;
+import org.drools.spi.Duration;
+import org.drools.spi.Consequence;
+import org.drools.spi.Tuple;
 import org.drools.spi.MockObjectType;
 
 import java.util.Set;
@@ -24,6 +28,23 @@ public class RuleTest
         {
             // expected and correct
         }
+
+        assertLength( 0,
+                      rule.getParameterDeclarations() );
+
+        assertLength( 0,
+                      rule.getLocalDeclarations() );
+
+        assertLength( 0,
+                      rule.getAllDeclarations() );
+
+        assertLength( 0,
+                      rule.getExtractions() );
+
+        assertLength( 0,
+                      rule.getConditions() );
+
+        assertNull( rule.getConsequence() );
     }
 
     public void testParameterDeclarations()
@@ -53,6 +74,16 @@ public class RuleTest
 
         assertLength( 0,
                       localDecls );
+
+        Declaration[] allDecls = rule.getAllDeclarations();
+
+        assertLength( 1,
+                      allDecls );
+
+        assertContains( paramDecl,
+                        allDecls );
+
+        assertNull( rule.getDeclaration( "betty" ) );
     }
 
     public void testLocalDeclarations()
@@ -90,6 +121,19 @@ public class RuleTest
 
         assertSame( localDecl,
                     rule.getDeclaration( "localVar" ) );
+
+        Declaration[] allDecls = rule.getAllDeclarations();
+
+        assertLength( 2,
+                      allDecls );
+
+        assertContains( paramDecl,
+                        allDecls );
+
+        assertContains( localDecl,
+                        allDecls );
+
+        assertNull( rule.getDeclaration( "betty" ) );
     }
 
     public void testDocumenation()
@@ -117,5 +161,57 @@ public class RuleTest
 
         assertEquals( 42,
                       rule.getSalience() );
+    }
+
+    public void testDuration_SimpleLong()
+        throws Exception
+    {
+        Rule rule = new Rule( "test-rule" );
+
+        rule.setDuration( 42L );
+
+        Duration dur = rule.getDuration();
+
+        assertNotNull( dur );
+
+        assertTrue( dur instanceof FixedDuration );
+
+        assertEquals( 42L,
+                      rule.getDuration().getDuration( null ) );
+    }
+
+    public void testDuration_WithObject()
+        throws Exception
+    {
+        Duration dur = new FixedDuration( 42 );
+
+        Rule rule = new Rule( "test-rule" );
+
+        rule.setDuration( dur );
+
+        assertSame( dur,
+                    rule.getDuration() );
+    }
+
+    public void testConsequence()
+        throws Exception
+    {
+        Rule rule = new Rule( "test-rule" );
+
+        assertNull( rule.getConsequence() );
+
+        Consequence consequence = new Consequence()
+            {
+                public void invoke(Tuple tuple,
+                                   WorkingMemory workingMemory)
+                {
+                    // nothing;
+                }
+            };
+
+        rule.setConsequence( consequence );
+
+        assertSame( consequence,
+                    rule.getConsequence() );
     }
 }
