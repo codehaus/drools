@@ -1,12 +1,12 @@
 i = 0
 i += 1
-<!--drools-test--!>
+<!--drools-test--!> //1
 from org.drools.smf import SMFTestFrameWork
 from org.drools.smf.SMFTestFrameWork import Cheese
 
 brie = Cheese("brie")
 drools.assertObject(brie)
-<!--drools-test--!>
+<!--drools-test--!> // 2
 from org.drools.smf import SMFTestFrameWork
 from org.drools.smf.SMFTestFrameWork import Cheese
 
@@ -17,7 +17,7 @@ brie.eatCheese()
 drools.modifyObject(brie)
 stilton.eatCheese()
 stilton.eatCheese()
-<!--drools-test--!>
+<!--drools-test--!> // 3
 from java.util import HashMap
 
 camembert.eatCheese()
@@ -29,11 +29,14 @@ map.put("key", "value")
 
 cheeses.put("favourite cheese", camembert)
 cheeses.put("bites", bites)
-<!--drools-test--!>
+<!--drools-test--!> //4
 camembert.eatCheese()
 trimmed = favouriteCheese.strip()
-<!--drools-test--!>
+<!--drools-test--!> // 5
 camembert.eatCheese()
 trimmed = favouriteCheese.strip()
-<!--drools-test--!> // 4
+<!--drools-test--!> // 6
 SMFTestFrameWork.consequenceExceptionTest()
+<!--drools-test--!> // 7
+bigInt = BigInteger("1");
+brie = Cheese("brie");

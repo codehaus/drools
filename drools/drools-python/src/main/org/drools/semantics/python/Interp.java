@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.15 2004-09-17 00:34:39 mproctor Exp $
+ * $Id: Interp.java,v 1.16 2004-10-24 00:58:03 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,17 +51,21 @@ import java.util.Set;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.rule.Imports;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
 import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
-import org.python.core.PyFunction;
+import org.python.core.PyModule;
+import org.python.core.PyObject;
 import org.python.core.PyString;
+import org.python.core.PyStringMap;
+import org.python.core.PySystemState;
 import org.python.core.parser;
 import org.python.parser.ast.modType;
-import org.python.util.PythonInterpreter;
 
 /**
  * Base class for Jython interpreter-based Python semantic components.
@@ -71,7 +75,7 @@ import org.python.util.PythonInterpreter;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Interp.java,v 1.15 2004-09-17 00:34:39 mproctor Exp $
+ * @version $Id: Interp.java,v 1.16 2004-10-24 00:58:03 mproctor Exp $
  */
 public class Interp
 {
@@ -83,23 +87,13 @@ public class Interp
     //     Class Initialization
     // ------------------------------------------------------------
 
-    /**
-     * Ensure jpython gets initialized.
-     */
-    static
-    {
-        // throw it away. we only need it for setting up
-        // system state.
-        new PythonInterpreter( );
-    }
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
     /** Text. */
     private String              text;
-
+    
     /** Original Text */
     private String              origininalText;
 
@@ -107,10 +101,25 @@ public class Interp
     private PyCode              code;
 
     /** The AST node. */
-    private modType             node;
+    private modType             node;    
+    
+    private PyDictionary        globals;
 
-    /** ternary function */
-    private PyFunction          qFunc;
+    private String newline = System.getProperty( "line.separator" );
+    
+    /**
+     * Initialise Jython's PySystemState
+     */
+    static {
+        PySystemState.initialize();
+        
+        PySystemState systemState = Py.getSystemState();
+        if (systemState == null)
+        {
+            systemState = new PySystemState();
+        }             
+        Py.setSystemState(systemState);         
+    }
 
     // ------------------------------------------------------------
     //     Constructors
@@ -119,32 +128,68 @@ public class Interp
     /**
      * Construct.
      */
-    protected Interp(String text, String type)
+    protected Interp(String text, Imports imports, String type)
     {
         this.origininalText = text;
+        StringBuffer globalText = new StringBuffer();
 
+        if ((imports != null)&&(imports.getImportEntries() != null))
+        {
+            Iterator it =imports.getImportEntries().iterator();
+            
+            while (it.hasNext())
+            {                
+                ImportEntry importEntry = (ImportEntry) it.next();
+                if (importEntry instanceof PythonImportEntry)
+                {
+                    globalText.append(importEntry.getImportEntry());
+                    globalText.append(";");
+                    globalText.append(newline);
+                }
+            }                   
+        }
+        
+        globalText.append("def q(cond,on_true,on_false):\n");
+        globalText.append("  if cond:\n");
+        globalText.append("    return on_true\n");
+        globalText.append("  else:\n");
+        globalText.append("    return on_false\n");
+        
+        if (this.globals == null)
+        {        
+            this.globals = getGlobals(globalText.toString());
+        }
+        
         this.text = stripOuterIndention( text );
 
-        this.node = ( modType ) parser.parse( this.text, type );
-        this.code = Py.compile( this.node, "<jython>" );
-        /*
-         * String qString = "from inspect import isfunction\n" + "def
-         * q(cond,on_true,on_false):\n" + " if cond:\n" + " if not
-         * isfunction(on_true): return on_true \n" + " else: return
-         * apply(on_true)\n" + " else:\n" + " if not isfunction(on_false):
-         * return on_false\n" + " else: return apply(on_false)\n";
-         */
-        String qString = "def q(cond,on_true,on_false):\n" + "  if cond:\n"
-                         + "    return on_true\n" + "  else:\n"
-                         + "    return on_false\n";
-
-        modType qNode = ( modType ) parser.parse( qString, "exec" );
-        PyCode qCode = Py.compile( qNode, "<jython>" );
-
-        PythonInterpreter pythonInterpreter = new PythonInterpreter( );
-        pythonInterpreter.exec( qCode );
-        qFunc = ( PyFunction ) pythonInterpreter.get( "q", PyFunction.class );
+        try
+        {
+            this.node = ( modType ) parser.parse( this.text, type );
+            this.code = Py.compile( this.node, "<jython>" );
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
+
+    /**
+     * Parses a python script and returns the globals 
+     * It is used to be able to inject imports and functions
+     * into code when being executed by Py.runCode(...)
+     * @param String text
+     * @return PyDictionary globals
+     */
+    public PyDictionary getGlobals(String text) 
+    {                           
+          PyModule module = new PyModule("main", new PyDictionary());
+          
+          PyObject locals = module.__dict__;         
+          
+          Py.exec(Py.compile_flags(text, "<string>", "exec", null), locals, locals);
+          
+          return (PyDictionary) locals;
+    }     
 
     /**
      * Trims leading indention from the block of text. Since Python relies on
@@ -291,15 +336,6 @@ public class Interp
         return this.origininalText;
     }
 
-    /**
-     * Retrieve the AST node.
-     * 
-     * @return The node.
-     */
-    protected modType getNode()
-    {
-        return this.node;
-    }
 
     /**
      * Retrieve the compiled code.
@@ -310,6 +346,21 @@ public class Interp
     {
         return this.code;
     }
+    
+    /**
+     * Retrieve the AST node.
+     * 
+     * @return The node.
+     */
+    protected modType getNode()
+    {
+        return this.node;
+    }   
+
+    protected PyDictionary getGlobals()
+    {
+        return this.globals;
+    }    
 
     /**
      * Configure a <code>PyDictionary</code> using a <code>Tuple</code> for
@@ -334,7 +385,7 @@ public class Interp
 
         PyDictionary dict = new PyDictionary( );
 
-        dict.setdefault( new PyString( "q" ), qFunc ); //add tenerary function
+        //dict.setdefault( new PyString( "q" ), qFunc ); //add tenerary function
 
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
