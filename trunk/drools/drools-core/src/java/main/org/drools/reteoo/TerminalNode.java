@@ -50,7 +50,8 @@ public class TerminalNode implements TupleSink
 
         if ( action != null )
         {
-            action.invoke( tuple );
+            action.invoke( tuple,
+                           workingMemory );
         }
     }
 

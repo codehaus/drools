@@ -1,6 +1,8 @@
 
 package org.drools.spi;
 
+import org.drools.WorkingMemory;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -13,7 +15,8 @@ public class InstrumentedAction implements Action
         this.invokedTuples = new ArrayList();
     }
 
-    public void invoke(Tuple tuple)
+    public void invoke(Tuple tuple,
+                       WorkingMemory workingMemory)
     {
         this.invokedTuples.add( tuple );
     }
