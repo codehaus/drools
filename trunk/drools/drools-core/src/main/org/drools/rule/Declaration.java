@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.3 2002-11-22 03:08:46 bob Exp $
+ $Id: Declaration.java,v 1.4 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -90,9 +90,19 @@ public class Declaration
         this.identifier = identifier;
     }
 
+    public Declaration(String identifier)
+    {
+        this.identifier = identifier;
+    }
+
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    public void setObjectType(ObjectType objectType)
+    {
+        this.objectType = objectType;
+    }
 
     /** Retrieve the <code>ObjectType</code> of this <code>Declaration</code>.
      *

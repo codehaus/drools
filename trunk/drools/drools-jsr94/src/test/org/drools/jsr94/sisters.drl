@@ -1,54 +1,37 @@
-<rules xmlns="http://drools.org/rules">
-
-  <semantics module="org.drools.semantics.java"/>
-
-  <rule-set name="Sisters Rules"
-           xmlns:java="http://drools.org/semantics/java">
+<rule-set name="Sisters Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
 
     <rule name="Find Sisters">
 
-      <parameter identifier="person">
-        <java:class type="org.drools.jsr94.rules.Person"/>
-      </parameter>
+        <parameter identifier="person">
+          <java:class type="org.drools.jsr94.rules.Person"/>
+        </parameter>
 
-      <parameter identifier="sister">
-        <java:class type="org.drools.jsr94.rules.Person"/>
-      </parameter>
+        <parameter identifier="sister">
+          <java:class type="org.drools.jsr94.rules.Person"/>
+        </parameter>
 
-      <condition>
         <java:condition>person.hasSister( sister )</java:condition>
-      </condition>
-
-      <consequence>
 
         <java:consequence>
-          assertObject( person + ": I like cheese" );
-          assertObject( "bob says: " + person + " and " + sister + " are sisters" );
+            assertObject( person + ": I like cheese" );
+            assertObject( "bob says: " + person + " and " + sister + " are sisters" );
         </java:consequence>
-
-      </consequence>
-
     </rule>
 
     <rule name="Message Received">
-      <parameter identifier="message">
-        <java:class type="java.lang.String"/>
-      </parameter>
+        <parameter identifier="message">
+            <java:class type="java.lang.String"/>
+        </parameter>
 
-      <condition>
         <java:condition>
-          message.startsWith( "bob says:" );
+            message.startsWith( "bob says:" );
         </java:condition>
-      </condition>
 
-      <consequence>
         <java:consequence>
         </java:consequence>
-      </consequence>
 
     </rule>
 
-  </rule-set>
-
-</rules>
-
+</rule-set>

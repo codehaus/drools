@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.16 2003-10-14 19:16:16 bob Exp $
+ $Id: Rule.java,v 1.17 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,7 +67,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.16 2003-10-14 19:16:16 bob Exp $
+ *  @version $Id: Rule.java,v 1.17 2003-10-26 22:06:49 bob Exp $
  */
 public class Rule
 {
@@ -77,6 +77,8 @@ public class Rule
 
     /** Name of the rule. */
     private String name;
+
+    private String documentation;
 
     /** Salience value. */
     private int salience;
@@ -116,6 +118,16 @@ public class Rule
 
         this.conditions            = Collections.EMPTY_SET;
         this.extractions           = Collections.EMPTY_SET;
+    }
+
+    public void setDocumentation(String documentation)
+    {
+        this.documentation = documentation;
+    }
+
+    public String getDocumentation()
+    {
+        return this.documentation;
     }
 
     /** Set the truthness duration.
@@ -332,17 +344,7 @@ public class Rule
      */
     public Declaration[] getDeclarationsArray()
     {
-        Declaration[] decls = new Declaration[ this.allDeclarations.size() ];
-
-        int i = 0;
-        Iterator declIter = this.allDeclarations.iterator();
-
-        while ( declIter.hasNext() )
-        {
-            decls[ i++ ] = (Declaration) declIter.next();
-        }
-
-        return decls;
+        return (Declaration[]) this.allDeclarations.toArray( Declaration.EMPTY_ARRAY );
     }
 
     /** Add a <code>Condition</code> to this rule.

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.25 2003-10-14 19:16:16 bob Exp $
+ $Id: Builder.java,v 1.26 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,6 @@ package org.drools.reteoo;
  
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.drools.RuleIntegrationException;
 import org.drools.reteoo.impl.*;
 import org.drools.rule.Declaration;
@@ -73,8 +71,6 @@ import java.util.Set;
  */
 public class Builder
 {
-    private static Log log = LogFactory.getLog(Builder.class);
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -119,8 +115,6 @@ public class Builder
      */
     public void addRule(Rule rule) throws RuleIntegrationException
     {
-        log.debug("addRule: rule=" + rule);
-
         Set factExtracts = new HashSet( rule.getExtractions() );
         Set conds        = new HashSet( rule.getConditions() );
 
@@ -192,7 +186,6 @@ public class Builder
 
         TerminalNode terminal = new TerminalNodeImpl( lastNode,
                                                       rule );
-        log.debug("new TerminalNode: " + terminal);
     }
 
     /** Create the <code>ParameterNode</code>s for the <code>Rule</code>,
@@ -205,8 +198,6 @@ public class Builder
      */
     protected Set createParameterNodes(Rule rule)
     {
-        log.debug("createParameterNodes: " + rule);
-
         Set leafNodes = new HashSet();
 
         Set      parameterDecls  = rule.getParameterDeclarations();
@@ -254,8 +245,6 @@ public class Builder
     protected void attachConditions(Set conds,
                                     Set leafNodes)
     {
-        log.debug("attachConditions: conds=" + conds + ",leafNodes=" + leafNodes);
-
         Iterator        condIter    = conds.iterator();
         Condition       eachCond    = null;
         TupleSourceImpl tupleSource = null;
@@ -296,8 +285,6 @@ public class Builder
     protected boolean joinForCondition(Set conds,
                                        Set leafNodes)
     {
-        log.debug("joinForCondition: conds=" + conds + ",leafNodes=" + leafNodes);
-
         return joinArbitrary( leafNodes );
     }
 
@@ -351,8 +338,6 @@ public class Builder
      */
     protected boolean createJoinNodes(Set leafNodes)
     {
-        log.debug("createJoinNodes: leafNodes=" + leafNodes);
-
         boolean performedJoin = false;
 
         Object[] leftNodes  = leafNodes.toArray();

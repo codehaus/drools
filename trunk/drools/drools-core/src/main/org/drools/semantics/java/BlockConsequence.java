@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.10 2003-10-15 20:03:59 bob Exp $
+ $Id: BlockConsequence.java,v 1.11 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,6 +49,7 @@ package org.drools.semantics.java;
 import bsh.NameSpace;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.smf.Configuration;
 import org.drools.smf.ConfigurableConsequence;
 import org.drools.smf.ConfigurationException;
 import org.drools.spi.ConsequenceException;
@@ -58,7 +59,7 @@ import org.drools.spi.Tuple;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.10 2003-10-15 20:03:59 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.11 2003-10-26 22:06:49 bob Exp $
  */
 public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
@@ -92,18 +93,10 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
     //     org.drools.smf.ConfigurableConsequence
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Configure.
-     *
-     *  @param text Configuration text.
-     *  @param decls Available declarations.
-     *
-     *  @throws ConfigurationException If an error occurs while
-     *          attempting to perform configuration.
-     */
-    public void configure(String text,
+    public void configure(Configuration config,
                           Declaration[] decls) throws ConfigurationException
     {
-        setText( text );
+        setText( config.getText() );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

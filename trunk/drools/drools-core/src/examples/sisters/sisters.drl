@@ -1,64 +1,43 @@
 
-<rules xmlns="http://drools.org/rules">
+<rule-set name="Sisters Rules"
+         xmlns="http://drools.org/rules"
+         xmlns:java="http://drools.org/semantics/java">
 
-  <semantics module="org.drools.semantics.java"/>
-  <semantics module="org.drools.semantics.jelly"/>
+  <rule name="Find Sisters" salience="10">
 
-  <rule-set name="Sisters Rules"
-           xmlns:java="http://drools.org/semantics/java"
-           xmlns:jelly="http://drools.org/semantics/jelly">
+    <parameter identifier="person">
+      <java:class type="sisters.Person"/>
+    </parameter>
 
-    <rule name="Find Sisters" salience="10">
+    <parameter identifier="sister">
+      <java:class type="sisters.Person"/>
+    </parameter>
 
-      <parameter identifier="person">
-        <java:class type="sisters.Person"/>
-      </parameter>
+    <java:condition>
+        person.hasSister( sister )
+    </java:condition>
 
-      <parameter identifier="sister">
-        <java:class type="sisters.Person"/>
-      </parameter>
+    <java:consequence>
+        assertObject(  person + ": I like cheese" );
+        assertObject(  "bob says: " +  person + " and " + sister + " are sisters" );
+    </java:consequence>
 
-      <condition>
-        <java:condition>person.hasSister( sister )</java:condition>
-      </condition>
+  </rule>
 
-      <consequence>
+  <rule name="Message Received" salience="0">
+    <parameter identifier="message">
+      <java:class type="java.lang.String"/>
+    </parameter>
 
-        <java:consequence>
-         
-          assertObject(  person + ": I like cheese" );
-          assertObject(  "bob says: " +  person + " and " + sister + " are sisters" );
+    <java:condition>
+        message.startsWith( "bob says:" );
+    </java:condition>
 
-        </java:consequence>
+    <java:consequence>
+        System.err.println( "Message from bob received." );
+        System.err.println( message );
+    </java:consequence>
 
-      </consequence>
+  </rule>
 
-    </rule>
-
-    <rule name="Message Received" salience="20">
-      <parameter identifier="message">
-        <java:class type="java.lang.String"/>
-      </parameter>
-
-      <condition>
-        <java:condition>
-          message.startsWith( "bob says:" );
-        </java:condition>
-      </condition>
-
-      <consequence>
-        <java:consequence>
-            System.err.println( "Getting message from appData." );
-            System.err.println( appData.get("message") );
-            System.err.println();
-            System.err.println( "Message from bob received." );
-            System.err.println( message );
-        </java:consequence>
-      </consequence>
-
-    </rule>
-
-  </rule-set>
-
-</rules>
-
+</rule-set>

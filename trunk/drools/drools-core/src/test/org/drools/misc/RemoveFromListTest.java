@@ -3,7 +3,9 @@ package org.drools.misc;
 import junit.framework.TestCase;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleSetLoader;
+import org.drools.io.RuleSetReader;
+import org.drools.io.SemanticsReader;
+import org.drools.smf.SimpleSemanticsRepository;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.io.FileReader;
  *
  * Autor: thomas.diesler@iotronics.com
  *
- * $Id: RemoveFromListTest.java,v 1.4 2003-10-14 22:57:59 bob Exp $
+ * $Id: RemoveFromListTest.java,v 1.5 2003-10-26 22:06:50 bob Exp $
  */
 public class RemoveFromListTest extends TestCase
 {
@@ -27,22 +29,27 @@ public class RemoveFromListTest extends TestCase
         super( name );
     }
 
-    public void setUp() throws Exception
+    public void setUp()
+        throws Exception
     {
+        SimpleSemanticsRepository repo = new SimpleSemanticsRepository();
+
+        SemanticsReader semanticsReader = new SemanticsReader();
+
+        repo.registerSemanticModule( semanticsReader.read( getClass().getResource( "/org/drools/semantics/java/semantics.properties" ) ) );
+
+        RuleSetReader ruleSetReader = new RuleSetReader( repo );
 
         RuleBase ruleBase = new RuleBase();
 
-        RuleSetLoader loader = new RuleSetLoader();
-        URL url = getClass().getResource( "RemoveFromListTest.drl" );
-        assertNotNull( "cannot find drl file", url );
-        loader.load(url, ruleBase);
+        ruleBase.addRuleSet( ruleSetReader.read( getClass().getResource( "RemoveFromListTest.drl" ) ) );
 
         workingMemory = ruleBase.newWorkingMemory();
     }
 
-    public void testRemoveFromList() throws Exception
+    public void testRemoveFromList()
+        throws Exception
     {
-
         Participant pt1 = new Participant( false );
         Participant pt2 = new Participant( true );
 

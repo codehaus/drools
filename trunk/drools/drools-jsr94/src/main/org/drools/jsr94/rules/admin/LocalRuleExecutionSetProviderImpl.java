@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.5 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,9 +46,10 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.io.RuleSetLoader;
+import org.drools.io.RuleSetReader;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
+import org.drools.smf.SimpleSemanticsRepository;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
@@ -80,7 +81,9 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(InputStream,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( InputStream ruleExecutionSetStream, Map properties ) throws IOException, RuleExecutionSetCreateException
+    public RuleExecutionSet createRuleExecutionSet(InputStream ruleExecutionSetStream,
+                                                   Map properties)
+        throws IOException, RuleExecutionSetCreateException
     {
         Reader reader = new InputStreamReader( ruleExecutionSetStream );
         return createRuleExecutionSet( reader, properties );
@@ -95,9 +98,10 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Object,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( Object astObject, Map properties ) throws RuleExecutionSetCreateException
+    public RuleExecutionSet createRuleExecutionSet(Object astObject,
+                                                   Map properties)
+        throws RuleExecutionSetCreateException
     {
-
         try
         {
             if ( astObject instanceof List )
@@ -162,16 +166,18 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Reader,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( Reader ruleReader, Map properties )
+    public RuleExecutionSet createRuleExecutionSet(Reader ruleReader,
+                                                   Map properties)
             throws RuleExecutionSetCreateException, IOException
     {
 
         try
         {
             // load the rules from XML
-            RuleSetLoader ruleSetLoader = new RuleSetLoader();
-            List droolRules = ruleSetLoader.load( ruleReader );
-            createRuleExecutionSet( droolRules, properties );
+            RuleSetReader reader = new RuleSetReader( new SimpleSemanticsRepository() );
+            RuleSet ruleSet = reader.read( ruleReader );
+            createRuleExecutionSet( ruleSet,
+                                    properties );
         }
         catch ( IOException ex )
         {

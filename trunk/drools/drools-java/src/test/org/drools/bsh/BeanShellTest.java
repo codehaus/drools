@@ -3,9 +3,12 @@ package org.drools.bsh;
 import junit.framework.TestCase;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleSetLoader;
-//import org.drools.jsr94.rules.RuleServiceProviderImpl;
+import org.drools.io.RuleSetReader;
+import org.drools.io.SemanticsReader;
 import org.drools.rule.RuleSet;
+import org.drools.smf.SimpleSemanticsRepository;
+
+//import org.drools.jsr94.rules.RuleServiceProviderImpl;
 
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
@@ -30,25 +33,22 @@ public class BeanShellTest extends TestCase
 
     public void testBshCommands() throws Exception
     {
+        SimpleSemanticsRepository repo = new SimpleSemanticsRepository();
+
+        SemanticsReader semanticsReader = new SemanticsReader();
+
+        repo.registerSemanticModule( semanticsReader.read( getClass().getResource( "/org/drools/semantics/java/semantics.properties" ) ) );
+
         RuleBase ruleBase = new RuleBase();
-        RuleSetLoader loader = new RuleSetLoader();
 
-        List ruleSets = loader.load( getClass().getResource( BEAN_SHELL_TEST_RULES ) );
+        RuleSetReader ruleSetReader = new RuleSetReader( repo );
 
-        assertNotNull( ruleSets );
-        assertEquals( 1, ruleSets.size() );
-
-        Iterator ruleSetIter = ruleSets.iterator();
-        RuleSet eachRuleSet = null;
-
-        while ( ruleSetIter.hasNext() )
-        {
-            eachRuleSet = (RuleSet) ruleSetIter.next();
-            ruleBase.addRuleSet( eachRuleSet );
-        }
+        ruleBase.addRuleSet( ruleSetReader.read( getClass().getResource( BEAN_SHELL_TEST_RULES ) ) );
 
         List list = new ArrayList();
+
         HashMap appData = new HashMap();
+
         appData.put( "rules.fired", list );
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();

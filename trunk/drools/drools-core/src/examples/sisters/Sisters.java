@@ -5,8 +5,13 @@ import org.drools.WorkingMemory;
 import org.drools.DroolsException;
 import org.drools.AssertionException;
 import org.drools.rule.RuleSet;
+import org.drools.smf.SemanticModule;
+import org.drools.smf.SemanticsRepository;
+import org.drools.smf.SimpleSemanticsRepository;
 
-import org.drools.io.RuleSetLoader;
+//import org.drools.io.RuleSetLoader;
+import org.drools.io.RuleSetReader;
+import org.drools.io.SemanticsReader;
 
 import java.util.HashMap;
 import java.io.IOException;
@@ -35,8 +40,17 @@ public class Sisters
         }
     }
 
-    private void runSisters() throws Exception
+    private void runSisters()
+        throws Exception
     {
+        SemanticsReader semanticsReader = new SemanticsReader();
+
+        SemanticModule module = semanticsReader.read( getClass().getResource( "/org/drools/semantics/java/semantics.properties" ) );
+
+        SimpleSemanticsRepository repo = new SimpleSemanticsRepository();
+
+        repo.registerSemanticModule( module );
+
         // First, construct an empty RuleBase to be the
         // container for your rule logic.
 
@@ -45,36 +59,32 @@ public class Sisters
         // Then, use the [org.drools.semantic.java.RuleLoader]
         // static method to load a rule-set from a local File.
 
-        RuleSetLoader loader = new RuleSetLoader();
+        //RuleSetLoader loader = new RuleSetLoader();
 
-        URL url = Sisters.class.getResource("sisters.drl");
+        URL url = getClass().getResource("sisters.drl");
+
+        RuleSetReader reader = new RuleSetReader( repo );
 
         System.err.println("loading: " + url);
 
-        List ruleSets = loader.load(url);
+        RuleSet ruleSet = reader.read( url );
 
-        Iterator ruleSetIter = ruleSets.iterator();
-        RuleSet eachRuleSet = null;
-
-        while (ruleSetIter.hasNext())
-        {
-            eachRuleSet = (RuleSet) ruleSetIter.next();
-
-            ruleBase.addRuleSet(eachRuleSet);
-        }
+        ruleBase.addRuleSet( ruleSet );
 
         // Create some application specific data that will
         // be needed by our consequence.
 
         HashMap map = new HashMap();
-        map.put("message", "This came from the appData HashMap");
+
+        map.put( "message",
+                 "This came from the appData HashMap");
 
         // Create a [org.drools.WorkingMemory] to be the
         // container for your facts
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-        workingMemory.setApplicationData(map);
 
+        workingMemory.setApplicationData(map);
 
         Person person = null;
 
