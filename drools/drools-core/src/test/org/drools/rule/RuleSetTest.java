@@ -1,6 +1,6 @@
 package org.drools.rule;
 
-import junit.framework.TestCase;
+import org.drools.DroolsTestCase;
 import org.drools.spi.Consequence;
 import org.drools.spi.Extractor;
 import org.drools.spi.MockObjectType;
@@ -14,7 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectInput;
 
 
-public class RuleSetTest extends TestCase
+public class RuleSetTest extends DroolsTestCase
 {
     private RuleSet ruleSet;
 
@@ -188,5 +188,7 @@ public class RuleSetTest extends TestCase
         ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
         ruleSet = (RuleSet) in.readObject();
         in.close();
+
+        assertLength(2, ruleSet.getRules());
     }
 }

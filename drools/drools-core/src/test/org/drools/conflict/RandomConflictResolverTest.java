@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
-$Id: RandomConflictResolverTest.java,v 1.1 2004-06-27 15:30:01 mproctor Exp $
+$Id: RandomConflictResolverTest.java,v 1.2 2004-06-27 23:09:41 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -56,99 +56,124 @@ import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.MockTuple;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+
 public class RandomConflictResolverTest extends TestCase
 {
-	private ConflictResolver conflictResolver;
+  	private ConflictResolver conflictResolver;
 
-	private InstrumentedRule brieRule;
-	private InstrumentedRule camembertRule;
-	private InstrumentedRule stiltonRule;
+  	private InstrumentedRule brieRule;
+  	private InstrumentedRule camembertRule;
+  	private InstrumentedRule stiltonRule;
 
-	private MockAgendaItem brie;
-	private MockAgendaItem camembert;
-	private MockAgendaItem stilton;
+  	private MockAgendaItem brie;
+  	private MockAgendaItem camembert;
+  	private MockAgendaItem stilton;
 
-	private LinkedList items;
-	private List conflictItems;
+  	private LinkedList items;
+  	private List conflictItems;
 
-	public RandomConflictResolverTest( String name )
-	{
-		super( name );
-	}
+  	public RandomConflictResolverTest( String name )
+  	{
+  		  super( name );
+  	}
 
-	public void setUp()
-	{
-		this.conflictResolver = RandomConflictResolver.getInstance( );
-		items = new LinkedList( );
+  	public void setUp()
+  	{
+    		this.conflictResolver = RandomConflictResolver.getInstance( );
+    		items = new LinkedList( );
 
-		brieRule = new InstrumentedRule( "brie" );
-		brieRule.isValid( true );
+    		brieRule = new InstrumentedRule( "brie" );
+    		brieRule.isValid( true );
 
-		camembertRule = new InstrumentedRule( "camembert" );
-		camembertRule.isValid( true );
+    		camembertRule = new InstrumentedRule( "camembert" );
+    		camembertRule.isValid( true );
 
-		stiltonRule = new InstrumentedRule( "stilton" );
-		stiltonRule.isValid( true );
+    		stiltonRule = new InstrumentedRule( "stilton" );
+    		stiltonRule.isValid( true );
 
-		brie = new MockAgendaItem( new MockTuple( ), brieRule );
-	camembert = new MockAgendaItem( new MockTuple( ), camembertRule );
-		stilton = new MockAgendaItem( new MockTuple( ), stiltonRule );
-	}
+    		brie = new MockAgendaItem( new MockTuple( ), brieRule );
+    	  camembert = new MockAgendaItem( new MockTuple( ), camembertRule );
+    		stilton = new MockAgendaItem( new MockTuple( ), stiltonRule );
+  	}
 
-	public void tearDown()
-	{
-	}
+  	public void tearDown()
+  	{
+  	}
 
-	public void testSingleInsert() throws Exception
-	{
-		items.clear( );
-		conflictItems = this.conflictResolver.insert( brie, items );
-		assertNull( conflictItems );
-		MockAgendaItem item = (MockAgendaItem) items.get( 0 );
-		assertEquals( "brie", item.getRule( ).getName( ) );
-	}
+  	public void testSingleInsert() throws Exception
+  	{
+    		items.clear( );
+    		conflictItems = this.conflictResolver.insert( brie, items );
+    		assertNull( conflictItems );
+    		MockAgendaItem item = (MockAgendaItem) items.get( 0 );
+    		assertEquals( "brie", item.getRule( ).getName( ) );
+  	}
 
-	public void testInsertsNoConflicts() throws Exception
-	{
-		MockAgendaItem item;
-		RuleSet ruleSet;
-		items.clear( );
-		ruleSet = new RuleSet( "cheese board" );
+  	public void testInsertsNoConflicts() throws Exception
+  	{
+    		MockAgendaItem item;
+    		RuleSet ruleSet;
+    		items.clear( );
+    		ruleSet = new RuleSet( "cheese board" );
 
-		ruleSet.addRule( brieRule );
-		ruleSet.addRule( camembertRule );
-		ruleSet.addRule( stiltonRule );
+    		ruleSet.addRule( brieRule );
+    		ruleSet.addRule( camembertRule );
+    		ruleSet.addRule( stiltonRule );
 
-		//try ascending
-		conflictItems = this.conflictResolver.insert( brie, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( camembert, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( stilton, items );
-		assertNull( conflictItems );
+    		//try ascending
+    		conflictItems = this.conflictResolver.insert( brie, items );
+    		assertNull( conflictItems );
+    		conflictItems = this.conflictResolver.insert( camembert, items );
+    		assertNull( conflictItems );
+    		conflictItems = this.conflictResolver.insert( stilton, items );
+    		assertNull( conflictItems );
 
-    assertEquals(3, items.size());
+        assertEquals(3, items.size());
 
-		//try descending
-		items.clear( );
-		conflictItems = this.conflictResolver.insert( stilton, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( camembert, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( brie, items );
-		assertNull( conflictItems );
+    		//try descending
+    		items.clear( );
+    		conflictItems = this.conflictResolver.insert( stilton, items );
+    		assertNull( conflictItems );
+    		conflictItems = this.conflictResolver.insert( camembert, items );
+    		assertNull( conflictItems );
+    		conflictItems = this.conflictResolver.insert( brie, items );
+    		assertNull( conflictItems );
 
-    assertEquals(3, items.size());
+        assertEquals(3, items.size());
 
-		//try mixed order
-		items.clear( );
-		conflictItems = this.conflictResolver.insert( camembert, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( stilton, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( brie, items );
-		assertNull( conflictItems );
+    		//try mixed order
+    		items.clear( );
+    		conflictItems = this.conflictResolver.insert( camembert, items );
+    		assertNull( conflictItems );
+    		conflictItems = this.conflictResolver.insert( stilton, items );
+    		assertNull( conflictItems );
+    		conflictItems = this.conflictResolver.insert( brie, items );
+    		assertNull( conflictItems );
 
-    assertEquals(3, items.size());
-	}
+        assertEquals(3, items.size());
+  	}
+
+    public void testSerialize() throws Exception
+    {
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+        ObjectOutput out = new ObjectOutputStream(bos) ;
+        out.writeObject(conflictResolver);
+        out.close();
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray();
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        conflictResolver = (ConflictResolver) in.readObject();
+        in.close();
+    }
 }
