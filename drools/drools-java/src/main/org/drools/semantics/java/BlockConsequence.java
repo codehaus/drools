@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.24 2004-08-05 08:28:01 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.25 2004-08-26 10:11:32 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -51,9 +51,19 @@ import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
-import net.janino.ScriptEvaluator;
+import net.janino.EvaluatorBase;
 import net.janino.Scanner;
+import net.janino.Scanner;
+import net.janino.Parser;
+import net.janino.Java;
+import net.janino.Mod;
+
+import java.util.HashMap;
+
 import java.io.StringReader;
+import java.io.IOException;
+
+import java.lang.reflect.Method;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -76,15 +86,17 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.24 2004-08-05 08:28:01 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.25 2004-08-26 10:11:32 mproctor Exp $
  */
-public class BlockConsequence extends Interp
+public class BlockConsequence //extends Interp
     implements Consequence
 {
     /** Interpreted text. */
     private String newline = System.getProperty("line.separator");
 
     private transient Script script;
+
+    private String block;
 
     private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
     // ------------------------------------------------------------
@@ -99,7 +111,8 @@ public class BlockConsequence extends Interp
                             Declaration[] availDecls)
         throws Exception
     {
-        super(block);
+        //super(block);
+        this.block = block;
     }
 
     // ------------------------------------------------------------
@@ -138,21 +151,22 @@ public class BlockConsequence extends Interp
 
 
             Declaration[] params = (Declaration[]) decls.toArray(Declaration.EMPTY_ARRAY) ;
+            Map applicationData = tuple.getWorkingMemory().getApplicationDataMap();
 
             if ( script == null )
             {
-                String block = getPreparedText(tuple, params);
-                script = (Script) ScriptEvaluator.createFastScriptEvaluator(
-                                  new Scanner(null, new StringReader(block)),
-                                  Script.class,
-                                  scriptParamNames,
-                                  (ClassLoader) null);          // Use current thread's context class loader
+                script = (Script) DroolsScriptEvaluator.compile(
+                                                                this.block,
+                                                                Script.class,
+                                                                scriptParamNames,
+                                                                params,
+                                                                applicationData);
             }
 
             script.invoke(tuple,
                                params,
                                new KnowledgeHelper( tuple ),
-                               tuple.getWorkingMemory().getApplicationDataMap());
+                               applicationData);
         }
         catch (Exception e)
         {
@@ -166,7 +180,7 @@ public class BlockConsequence extends Interp
     */
    public String getBlock()
    {
-       return getText();
+       return this.block;
    }
 
     public interface Script extends Serializable

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.19 2004-08-05 08:28:01 mproctor Exp $
+ $Id: Expr.java,v 1.20 2004-08-26 10:11:34 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,10 +66,10 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.19 2004-08-05 08:28:01 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.20 2004-08-26 10:11:34 mproctor Exp $
  */
 public class Expr
-    extends Interp
+    //extends Interp
 {
     // ------------------------------------------------------------
     //     Constants
@@ -87,13 +87,15 @@ public class Expr
 
     private transient ConditionScript conditionScript;
     private transient ExtractorScript extractorScript;
+    private String expr;
 
     private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
+
 
     protected Expr()
         throws Exception
     {
-        super();
+        //super();
     }
 
     // ------------------------------------------------------------
@@ -112,7 +114,14 @@ public class Expr
                    Declaration[] availDecls)
         throws Exception
     {
-        super(expr);
+	      if (this instanceof ExprCondition)
+	      {
+	        this.expr = "return (" + expr + ");";
+	      }
+	      if (this instanceof ExprExtractor)
+	      {
+	        this.expr = "return (" + expr + ");";
+	      }
         this.requiredDecls = analyze( expr,
                                       availDecls );
     }
@@ -127,39 +136,46 @@ public class Expr
      */
     public String getExpression()
     {
-        return getText();
+        return this.expr;
     }
 
    public boolean evaluateCondition(Tuple tuple) throws Exception
    {
+        Declaration[] params = this.requiredDecls;
+        Map applicationData = tuple.getWorkingMemory().getApplicationDataMap();
+
         if (conditionScript == null)
         {
-           String expr = getPreparedText(tuple, this.requiredDecls);
            conditionScript  = ( ConditionScript )
-                              ScriptEvaluator.createFastScriptEvaluator(
-                              new Scanner(null, new StringReader(expr)),
+                              DroolsScriptEvaluator.compile(
+                              this.expr,
                               ConditionScript.class,
                               scriptParamNames,
-                              (ClassLoader) null);          // Use current thread's context class loader
+                              params,
+                              applicationData);
         }
 
         return conditionScript.invoke(tuple,
                              this.requiredDecls,
                              new KnowledgeHelper( tuple ),
                              tuple.getWorkingMemory().getApplicationDataMap());
+
    }
 
    public Object evaluateExtractor(Tuple tuple) throws Exception
    {
+        Declaration[] params = this.requiredDecls;
+        Map applicationData = tuple.getWorkingMemory().getApplicationDataMap();
+
         if (extractorScript == null)
         {
-           String expr = getPreparedText(tuple, this.requiredDecls);
-           extractorScript  = (ExtractorScript)
-                              ScriptEvaluator.createFastScriptEvaluator(
-                              new Scanner(null, new StringReader(expr)),
-                              ExtractorScript.class,
-                              scriptParamNames,
-                              (ClassLoader) null);          // Use current thread's context class loader
+           extractorScript  = ( ExtractorScript )
+                               DroolsScriptEvaluator.compile(
+                               this.expr,
+                               ExtractorScript.class,
+                               scriptParamNames,
+                               params,
+                               applicationData);
         }
 
         return extractorScript.invoke(tuple,
