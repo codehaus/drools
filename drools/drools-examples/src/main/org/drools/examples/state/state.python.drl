@@ -4,9 +4,7 @@
           xmlns="http://drools.org/rules"
           xmlns:python="http://drools.org/semantics/python">
 
-   <imports>
-     <python:import>from org.drools.examples.state import State</python:import>
-   </imports>
+    <python:import>from org.drools.examples.state import State</python:import>
 
     <rule name="Bootstrap">
         <parameter identifier="a">
