@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReader.java,v 1.7 2004-11-28 20:01:13 mproctor Exp $
+ * $Id: SemanticsReader.java,v 1.8 2004-12-05 20:30:55 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,7 @@ package org.drools.smf;
  *
  */
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
@@ -66,7 +67,7 @@ import java.util.Properties;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: SemanticsReader.java,v 1.7 2004-11-28 20:01:13 mproctor Exp $
+ * @version $Id: SemanticsReader.java,v 1.8 2004-12-05 20:30:55 dbarnett Exp $
  */
 public class SemanticsReader
 {
@@ -118,7 +119,7 @@ public class SemanticsReader
      * @throws Exception
      *             If an error occurs while loading the module.
      */
-    public SemanticModule read(URL url) throws Exception
+    public SemanticModule read(URL url) throws IOException, SemanticsReaderException
     {
         InputStream in = url.openStream( );
 
@@ -139,11 +140,13 @@ public class SemanticsReader
      *            The descriptor input stream.
      * 
      * @return The loaded semantic module.
-     * 
-     * @throws Exception
+
+     * @throws IOException
+     *             If an error occurs while loading the module.
+     * @throws SemanticsReaderException
      *             If an error occurs while loading the module.
      */
-    public SemanticModule read(InputStream in) throws Exception
+    public SemanticModule read(InputStream in) throws IOException, SemanticsReaderException
     {
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
@@ -160,7 +163,7 @@ public class SemanticsReader
 
         if ( uri == null || uri.trim( ).equals( "" ) )
         {
-            throw new Exception( "module.uri must be specified" );
+            throw new SemanticsReaderException( "module.uri must be specified" );
         }
 
         SimpleSemanticModule module = new SimpleSemanticModule( uri.trim( ) );
@@ -176,79 +179,97 @@ public class SemanticsReader
 
             String className = props.getProperty( key );
 
-            Class factoryClass = cl.loadClass( className );
-
+            Class factoryClass;
+            try
+            {
+                factoryClass = cl.loadClass( className );
+            }
+            catch ( ClassNotFoundException e )
+            {
+                throw new SemanticsReaderException( e );
+            }
             if ( key.indexOf( "(" ) < 0 || key.indexOf( ")" ) < 0 )
             {
-                throw new Exception( "invalid key: " + key );
+                throw new SemanticsReaderException( "invalid key: " + key );
             }
 
             String type = parseType( key );
 
             if ( type == null || type.equals( "" ) )
             {
-                throw new Exception( "no type specified" );
+                throw new SemanticsReaderException( "no type specified" );
             }
 
             String componentName = parseName( key );
 
             if ( componentName == null || componentName.equals( "" ) )
             {
-                throw new Exception( "no component name specified" );
+                throw new SemanticsReaderException( "no component name specified" );
             }
 
-            if ( "Rule".equals( type ) )
+            try
             {
-                RuleFactory factory = (RuleFactory) factoryClass.newInstance( );
-
-                module.addRuleFactory( componentName,
-                                       factory );
-            }
-            else if ( "ObjectType".equals( type ) )
-            {
-                ObjectTypeFactory factory = (ObjectTypeFactory) factoryClass.newInstance( );
-
-                module.addObjectTypeFactory( componentName,
-                                             factory );
-            }
-            else if ( "Condition".equals( type ) )
-            {
-                ConditionFactory factory = (ConditionFactory) factoryClass.newInstance( );
-
-                module.addConditionFactory( componentName,
-                                            factory );
-            }
-            else if ( "Consequence".equals( type ) )
-            {
-                ConsequenceFactory factory = (ConsequenceFactory) factoryClass.newInstance( );
-
-                module.addConsequenceFactory( componentName,
-                                              factory );
-            }
-            else if ( "Duration".equals( type ) )
-            {
-                DurationFactory factory = (DurationFactory) factoryClass.newInstance( );
-
-                module.addDurationFactory( componentName,
+                if ( "Rule".equals( type ) )
+                {
+                    RuleFactory factory = (RuleFactory) factoryClass.newInstance( );
+    
+                    module.addRuleFactory( componentName,
                                            factory );
-            }
-            else if ( "ImportEntry".equals( type ) )
-            {
-                ImportEntryFactory factory = (ImportEntryFactory) factoryClass.newInstance( );
-
-                module.addImportEntryFactory( componentName,
-                                              factory );
-            }
-            else if ( "ApplicationData".equals( type ) )
-            {
-                ApplicationDataFactory factory = (ApplicationDataFactory) factoryClass.newInstance( );
-
-                module.addApplicationDataFactory( componentName,
+                }
+                else if ( "ObjectType".equals( type ) )
+                {
+                    ObjectTypeFactory factory = (ObjectTypeFactory) factoryClass.newInstance( );
+    
+                    module.addObjectTypeFactory( componentName,
+                                                 factory );
+                }
+                else if ( "Condition".equals( type ) )
+                {
+                    ConditionFactory factory = (ConditionFactory) factoryClass.newInstance( );
+    
+                    module.addConditionFactory( componentName,
+                                                factory );
+                }
+                else if ( "Consequence".equals( type ) )
+                {
+                    ConsequenceFactory factory = (ConsequenceFactory) factoryClass.newInstance( );
+    
+                    module.addConsequenceFactory( componentName,
                                                   factory );
+                }
+                else if ( "Duration".equals( type ) )
+                {
+                    DurationFactory factory = (DurationFactory) factoryClass.newInstance( );
+    
+                    module.addDurationFactory( componentName,
+                                               factory );
+                }
+                else if ( "ImportEntry".equals( type ) )
+                {
+                    ImportEntryFactory factory = (ImportEntryFactory) factoryClass.newInstance( );
+    
+                    module.addImportEntryFactory( componentName,
+                                                  factory );
+                }
+                else if ( "ApplicationData".equals( type ) )
+                {
+                    ApplicationDataFactory factory = (ApplicationDataFactory) factoryClass.newInstance( );
+    
+                    module.addApplicationDataFactory( componentName,
+                                                      factory );
+                }
+                else
+                {
+                    throw new SemanticsReaderException( "unknown type '" + type + "'" );
+                }
             }
-            else
+            catch ( InstantiationException e )
             {
-                throw new Exception( "unknown type '" + type + "'" );
+                throw new SemanticsReaderException( e );
+            }
+            catch ( IllegalAccessException e )
+            {
+                throw new SemanticsReaderException( e );
             }
         }
 
