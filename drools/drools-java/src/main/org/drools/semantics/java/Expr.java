@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.18 2004-07-28 13:55:41 mproctor Exp $
+ $Id: Expr.java,v 1.19 2004-08-05 08:28:01 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -57,6 +57,8 @@ import org.drools.rule.Declaration;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.io.Serializable;
+
 /** Base class for expression-based Java semantic components.
  *
  *  @see ExprCondition
@@ -64,7 +66,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.18 2004-07-28 13:55:41 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.19 2004-08-05 08:28:01 mproctor Exp $
  */
 public class Expr
     extends Interp
@@ -83,8 +85,8 @@ public class Expr
     /** Required declarations. */
     private Declaration[] requiredDecls;
 
-    private ConditionScript conditionScript;
-    private ExtractorScript extractorScript;
+    private transient ConditionScript conditionScript;
+    private transient ExtractorScript extractorScript;
 
     private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
 
@@ -194,7 +196,7 @@ public class Expr
                              Map applicationData) throws Exception;
     }
 
-    public interface ExtractorScript
+    public interface ExtractorScript  extends Serializable
     {
         public Object invoke(Tuple tuple,
                              Declaration[] decls,
