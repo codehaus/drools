@@ -272,6 +272,16 @@
             </properties>
         </dependency>
         <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+            <url>http://jakarta.apache.org/log4j</url>
+            <properties>
+                <bin_dist>false</bin_dist>
+                <rar_bundle>false</rar_bundle>
+                <war_bundle>false</war_bundle>
+            </properties>
+        </dependency>
+        <dependency>
             <!-- Some of the oro classes were part of the jython-SNAPSHOT.jar, which breaks the maven build -->
             <id>oro</id>
             <version>2.0.7</version>
