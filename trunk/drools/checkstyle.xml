@@ -157,6 +157,7 @@
         <module name="HiddenField">
 	    <property name="ignoreConstructorParameter" value="true"/>
 	    <property name="ignoreSetter" value="true"/>
+	    <property name="ignoreFormat" value="^id$"/>
         </module>
         <module name="IllegalInstantiation"> 
             <property name="classes" value="java.lang.Boolean,java.lang.String"/> 
