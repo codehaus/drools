@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.12 2004-07-13 17:19:41 dbarnett Exp $
+ $Id: Rete.java,v 1.13 2004-08-05 02:13:48 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -267,11 +267,11 @@ class Rete
     public String dumpToDot()
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("digraph Rete {\n");
+        buffer.append("digraph RETEOO {\n");
         
         // Node 0 will be the root of the Rete itself
         long thisNode = 0;
-        buffer.append(thisNode + " [label=\"Rete\"];\n");
+        buffer.append(thisNode + " [label=\"RETE-OO\"];\n");
         
         long nextNode = thisNode + 1;
         for (Iterator i = getObjectTypeNodeIterator(); i.hasNext(); )
