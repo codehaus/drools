@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprExtractorFactory.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: ExprExtractorFactory.java,v 1.2 2003-12-30 22:14:53 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,9 @@ public class ExprExtractorFactory implements ExtractorFactory {
         return INSTANCE;
     }
 
-    public Extractor newExtractor(Declaration[] availDecls, Configuration config) throws FactoryException {
+    public Extractor newExtractor(Configuration config,
+                                  Declaration[] availDecls)
+        throws FactoryException {
         try {
             return new ExprExtractor(config.getText(), availDecls);
         }
