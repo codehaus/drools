@@ -255,15 +255,10 @@
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
+<!--
+                <include>**/*TestCase.java</include>
+-->
             </includes>
-            <excludes>
-                <exclude>**/jsr94/*.java</exclude>
-            </excludes>
-            <!--
-                  <excludes>
-                    <exclude>**/*.java</exclude>
-                  </excludes>
-            -->
             <resources>
                 <resource>
                     <directory>src/java/test</directory>
