@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.17 2004-07-28 13:34:31 mproctor Exp $
+ $Id: Expr.java,v 1.18 2004-07-28 13:55:41 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -64,7 +64,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.17 2004-07-28 13:34:31 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.18 2004-07-28 13:55:41 mproctor Exp $
  */
 public class Expr
     extends Interp
@@ -83,11 +83,10 @@ public class Expr
     /** Required declarations. */
     private Declaration[] requiredDecls;
 
-    private Script script;
+    private ConditionScript conditionScript;
+    private ExtractorScript extractorScript;
 
     private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
-
-    private Class returnType;
 
     protected Expr()
         throws Exception
@@ -108,12 +107,10 @@ public class Expr
      *          attempting to perform configuration.
      */
     protected Expr(String expr,
-                   Declaration[] availDecls, Class returnType)
+                   Declaration[] availDecls)
         throws Exception
     {
         super(expr);
-
-        this.returnType = returnType;
         this.requiredDecls = analyze( expr,
                                       availDecls );
     }
@@ -131,55 +128,42 @@ public class Expr
         return getText();
     }
 
-    private void compile(Tuple tuple) throws Exception
-    {
-        String expr = getPreparedText(tuple, this.requiredDecls);
-
-        //System.err.println( "expr-----" );
-        //System.err.println( expr );
-        //System.err.println( "---------" );
-
-        try
-        {
-            //code = new ScriptEvaluator( expr, returnType, paramNames, paramTypes );
-           script = (Script) ScriptEvaluator.createFastScriptEvaluator(
-                             new Scanner(null, new StringReader(expr)),
-                             Script.class,
-                             scriptParamNames,
-                             (ClassLoader) null);          // Use current thread's context class loader
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            throw e;
-        }
-        /*
-        catch (net.janino.Java.CompileException e)
-        {
-          throw e;
-        }
-        catch (net.janino.Parser.ParseException e)
-        {
-          throw e;
-        }
-        catch (net.janino.Scanner.ScanException e)
-        {
-          throw e;
-        }
-        catch (java.io.IOException e)
-        {
-          throw e;
-        }
-        */
-    }
-
-   public Object evaluate(Tuple tuple) throws Exception
+   public boolean evaluateCondition(Tuple tuple) throws Exception
    {
-        if (script == null) compile(tuple);
-        return script.invoke(tuple,
+        if (conditionScript == null)
+        {
+           String expr = getPreparedText(tuple, this.requiredDecls);
+           conditionScript  = ( ConditionScript )
+                              ScriptEvaluator.createFastScriptEvaluator(
+                              new Scanner(null, new StringReader(expr)),
+                              ConditionScript.class,
+                              scriptParamNames,
+                              (ClassLoader) null);          // Use current thread's context class loader
+        }
+
+        return conditionScript.invoke(tuple,
                              this.requiredDecls,
                              new KnowledgeHelper( tuple ),
                              tuple.getWorkingMemory().getApplicationDataMap());
+   }
+
+   public Object evaluateExtractor(Tuple tuple) throws Exception
+   {
+        if (extractorScript == null)
+        {
+           String expr = getPreparedText(tuple, this.requiredDecls);
+           extractorScript  = (ExtractorScript)
+                              ScriptEvaluator.createFastScriptEvaluator(
+                              new Scanner(null, new StringReader(expr)),
+                              ExtractorScript.class,
+                              scriptParamNames,
+                              (ClassLoader) null);          // Use current thread's context class loader
+        }
+
+        return extractorScript.invoke(tuple,
+                                      this.requiredDecls,
+                                      new KnowledgeHelper( tuple ),
+                                      tuple.getWorkingMemory().getApplicationDataMap());
    }
 
     protected Declaration[] analyze(String expr,
@@ -202,12 +186,15 @@ public class Expr
         return this.requiredDecls;
     }
 
-    public Class getReturnType()
+    public interface ConditionScript
     {
-        return this.returnType;
+        public boolean invoke(Tuple tuple,
+                             Declaration[] decls,
+                             KnowledgeHelper drools,
+                             Map applicationData) throws Exception;
     }
 
-    public interface Script
+    public interface ExtractorScript
     {
         public Object invoke(Tuple tuple,
                              Declaration[] decls,

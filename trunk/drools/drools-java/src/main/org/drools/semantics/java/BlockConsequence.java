@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.22 2004-07-28 13:34:31 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.23 2004-07-28 13:55:41 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -74,7 +74,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.22 2004-07-28 13:34:31 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.23 2004-07-28 13:55:41 mproctor Exp $
  */
 public class BlockConsequence extends Interp
     implements Consequence
@@ -99,50 +99,6 @@ public class BlockConsequence extends Interp
     {
         super(block);
     }
-
-    private void compile(Tuple tuple, Declaration[] availDecls) throws Exception
-    {
-        String block = getPreparedText(tuple, availDecls);
-
-        //System.err.println("block-----" );
-        //System.err.println(block);
-        //System.err.println("----------" );
-        try
-        {
-            //code = new ScriptEvaluator(block, Void.TYPE, paramNames, paramTypes, new Class[] {Exception.class});
-           script = (Script) ScriptEvaluator.createFastScriptEvaluator(
-                             new Scanner(null, new StringReader(block)),
-                             Script.class,
-                             scriptParamNames,
-                             (ClassLoader) null);          // Use current thread's context class loader
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            throw e;
-        }
-        /*
-        catch (net.janino.Java.CompileException e)
-        {
-          throw e;
-        }
-        catch (net.janino.Parser.ParseException e)
-        {
-          throw e;
-        }
-        catch (net.janino.Scanner.ScanException e)
-        {
-          throw e;
-        }
-        catch (java.io.IOException e)
-        {
-          throw e;
-        }
-        */
-    }
-
-
 
     // ------------------------------------------------------------
     //     Instance methods
@@ -181,25 +137,20 @@ public class BlockConsequence extends Interp
 
             Declaration[] params = (Declaration[]) decls.toArray(Declaration.EMPTY_ARRAY) ;
 
-            if ( script == null ) {
-                compile(tuple, params);
+            if ( script == null )
+            {
+                String block = getPreparedText(tuple, params);
+                script = (Script) ScriptEvaluator.createFastScriptEvaluator(
+                                  new Scanner(null, new StringReader(block)),
+                                  Script.class,
+                                  scriptParamNames,
+                                  (ClassLoader) null);          // Use current thread's context class loader
             }
+
             script.invoke(tuple,
                                params,
                                new KnowledgeHelper( tuple ),
                                tuple.getWorkingMemory().getApplicationDataMap());
-
-            /*
-            Object[] paramValues = new Object[ params.length + 2];
-
-            paramValues[0] = new KnowledgeHelper( tuple );
-            paramValues[1] = workingMemory.getApplicationDataMap();
-
-            for ( int i = 0 ; i < params.length ; i++ ) {
-                paramValues[i + 2] = tuple.get( params[i] );
-            }
-            code.evaluate( paramValues );
-            */
         }
         catch (Exception e)
         {
