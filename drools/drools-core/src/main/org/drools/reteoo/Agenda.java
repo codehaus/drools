@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.27 2004-07-04 11:45:43 mproctor Exp $
+ $Id: Agenda.java,v 1.28 2004-08-05 10:15:44 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -58,6 +58,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Iterator;
 
+import java.io.Serializable;
+
 /** Rule-firing Agenda.
  *
  *  <p>
@@ -74,7 +76,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-class Agenda
+class Agenda implements Serializable
 {
     // ------------------------------------------------------------
     //     Instance members

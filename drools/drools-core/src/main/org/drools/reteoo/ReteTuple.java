@@ -1,10 +1,10 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.25 2004-07-26 19:56:15 bob Exp $
+ $Id: ReteTuple.java,v 1.26 2004-08-05 10:15:44 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.reteoo;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.reteoo;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import org.drools.FactHandle;
@@ -56,23 +56,26 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
+import java.io.Serializable;
+
 /** Base Rete-OO <code>Tuple</code> implementation.
  *
  *  @see Tuple
- *  
+ *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.25 2004-07-26 19:56:15 bob Exp $ 
+ *  @version $Id: ReteTuple.java,v 1.26 2004-08-05 10:15:44 mproctor Exp $
  */
 class ReteTuple
-    implements Tuple
+    implements Tuple,
+    Serializable
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
     private WorkingMemory workingMemory;
-    
+
     private Rule rule;
 
     /** Key columns for this tuple. */
@@ -86,7 +89,7 @@ class ReteTuple
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-    
+
     /** Construct.
      */
     public ReteTuple(WorkingMemory workingMemory,
@@ -137,7 +140,7 @@ class ReteTuple
         this( null, null );
     }
     */
-    
+
     /*
     public String toString()
     {
@@ -153,7 +156,7 @@ class ReteTuple
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-    
+
     /** Set a key column's value.
      *
      *  @param declaration The column declaration.
@@ -169,7 +172,7 @@ class ReteTuple
 
         this.objectToHandle.put( value,
                                  handle );
-        
+
         putColumn( declaration,
                    value );
     }
@@ -228,7 +231,7 @@ class ReteTuple
         return this.key.containsRootFactHandle( handle );
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /** @see Tuple
      */
