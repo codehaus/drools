@@ -31,7 +31,7 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="jar:deploy-snapshot">
+    <goal name="deploy-snapshot">
       <j:set var="goal" value="jar:deploy-snapshot"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
