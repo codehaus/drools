@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.17 2004-07-27 01:31:49 mproctor Exp $
+ $Id: WorkingMemoryImpl.java,v 1.18 2004-09-11 13:00:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.17 2004-07-27 01:31:49 mproctor Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.18 2004-09-11 13:00:08 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -100,6 +100,7 @@ class WorkingMemoryImpl
     /** Array of listeners */
     private ArrayList listeners = new ArrayList();
 
+    private long conditionCounter = 0;
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -413,5 +414,10 @@ class WorkingMemoryImpl
         }
 
         return memory;
+    }
+    
+    public long getConditionTimeStamp()
+    {
+        return this.conditionCounter++;
     }
 }

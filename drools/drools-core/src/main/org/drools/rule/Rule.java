@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.33 2004-09-01 20:38:32 mproctor Exp $
+ $Id: Rule.java,v 1.34 2004-09-11 13:00:09 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -50,7 +50,7 @@ import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
@@ -58,7 +58,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Collections;
 
 import java.io.Serializable;
 
@@ -73,7 +72,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.33 2004-09-01 20:38:32 mproctor Exp $
+ *  @version $Id: Rule.java,v 1.34 2004-09-11 13:00:09 mproctor Exp $
  */
 public class Rule implements Serializable
 {
@@ -104,7 +103,7 @@ public class Rule implements Serializable
     private Set parameterDeclarations;
 
     /** Map holding the parameter addition order */
-    private Map parameterOrder;
+    private Map parameterOrderMap;
 
 		/** Counter used to provide the order number for the added */
     private int parameterCounter;
@@ -141,7 +140,7 @@ public class Rule implements Serializable
 
         this.conditions            = Collections.EMPTY_LIST;
         this.extractions           = Collections.EMPTY_SET;
-        this.parameterOrder				 = Collections.	EMPTY_MAP;
+        this.parameterOrderMap	   = Collections.EMPTY_MAP;
     }
 
     /** Set the documentation.
@@ -284,11 +283,11 @@ public class Rule implements Serializable
         if ( this.parameterDeclarations == Collections.EMPTY_SET )
         {
             this.parameterDeclarations = new HashSet();
-            this.parameterOrder = new HashMap();
+            this.parameterOrderMap = new HashMap();
         }
 
         this.parameterDeclarations.add( declaration );
-        parameterOrder.put( declaration.getIdentifier(), new Integer( this.parameterCounter++ ) );
+        parameterOrderMap.put( declaration.getIdentifier(), new Integer( this.parameterCounter++ ) );
         addDeclaration( declaration );
     }
 
@@ -344,11 +343,11 @@ public class Rule implements Serializable
      */
     public int getParameterOrder(String identifier)
     {
-    	  Integer pInt = (Integer) parameterOrder.get(identifier);
+    	  Integer pInt = (Integer) parameterOrderMap.get(identifier);
     	  int pint = pInt.intValue();
     	  return pint;
 
-    		//return ((Integer) parameterOrder.get(identifier)).intValue();
+    		//return ((Integer) parameterOrderMap.get(identifier)).intValue();
     }
 
 
@@ -424,7 +423,7 @@ public class Rule implements Serializable
         }
 
         this.conditions.add( condition );
-    }
+    }   
 
     /** Add a consistent <code>Extraction</code> to this rule.
      *
@@ -454,6 +453,10 @@ public class Rule implements Serializable
         return (Condition[]) this.conditions.toArray( Condition.EMPTY_ARRAY );
     }
 
+    public int getConditionSize()
+    {
+        return this.conditions.size();
+    }
     /** Retrieve the <code>Set</code> of <code>Extractions</code> for
      *  this rule.
      *

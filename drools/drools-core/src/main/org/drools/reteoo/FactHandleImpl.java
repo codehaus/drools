@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FactHandleImpl.java,v 1.6 2004-08-05 17:14:12 mproctor Exp $
+ $Id: FactHandleImpl.java,v 1.7 2004-09-11 13:00:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -52,7 +52,7 @@ import org.drools.FactHandle;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: FactHandleImpl.java,v 1.6 2004-08-05 17:14:12 mproctor Exp $
+ *  @version $Id: FactHandleImpl.java,v 1.7 2004-09-11 13:00:08 mproctor Exp $
  */
 public class FactHandleImpl
     implements FactHandle
@@ -120,5 +120,10 @@ public class FactHandleImpl
     public String toString()
     {
         return toExternalForm();
+    }
+    
+    public long getRecency() 
+    {
+        return this.id;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.25 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: ParameterNode.java,v 1.26 2004-09-11 13:00:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -130,6 +130,7 @@ class ParameterNode
                                          getDeclaration(),
                                          handle,
                                          object );
+        
         propagateAssertTuple( tuple,
                               workingMemory );
     }

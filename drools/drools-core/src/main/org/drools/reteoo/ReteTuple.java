@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.26 2004-08-05 10:15:44 mproctor Exp $
+ $Id: ReteTuple.java,v 1.27 2004-09-11 13:00:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -55,6 +55,7 @@ import org.drools.rule.Declaration;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Iterator;
 
 import java.io.Serializable;
 
@@ -64,7 +65,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.26 2004-08-05 10:15:44 mproctor Exp $
+ *  @version $Id: ReteTuple.java,v 1.27 2004-09-11 13:00:08 mproctor Exp $
  */
 class ReteTuple
     implements Tuple,
@@ -85,7 +86,15 @@ class ReteTuple
     private Map columns;
 
     private Map objectToHandle;
-
+    
+    private FactHandleImpl mostRecentFact;
+    
+    private FactHandleImpl leastRecentFact;
+    
+    /** return array of condition time stamps */
+    private long conditionTimeStamps[];
+    
+    private boolean isChanged = false;
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -99,7 +108,9 @@ class ReteTuple
         this.rule           = rule;
         this.key            = new TupleKey();
         this.columns        = new HashMap();
-        this.objectToHandle = new HashMap();
+        this.objectToHandle = new HashMap(); 
+        
+        this.conditionTimeStamps = new long[rule.getConditionSize()];
     }
 
     /** Copy constructor.
@@ -109,10 +120,14 @@ class ReteTuple
     ReteTuple(ReteTuple that)
     {
         this.workingMemory  = that.workingMemory;
-        this.rule           = that.rule;
+        this.rule           = that.rule;        
         this.key            = new TupleKey( that.key );
         this.columns        = new HashMap( that.columns );
         this.objectToHandle = new HashMap( that.objectToHandle );
+
+        this.mostRecentFact = (FactHandleImpl) getMostRecentFact();
+        this.leastRecentFact = (FactHandleImpl) getLeastRecentFact();
+        this.conditionTimeStamps = getConditionTimeStamps();      
     }
 
     /** Construct a simple 1-column tuple.
@@ -132,6 +147,9 @@ class ReteTuple
         putKeyColumn( declaration,
                       handle,
                       value );
+        //this.mostRecentFact = (FactHandleImpl) getMostRecentFact();
+        //this.leastRecentFact = (FactHandleImpl) getLeastRecentFact();
+        this.conditionTimeStamps = getConditionTimeStamps();    
     }
 
     /*
@@ -175,6 +193,8 @@ class ReteTuple
 
         putColumn( declaration,
                    value );
+        
+        this.isChanged = true;
     }
 
     /** Add all columns from another tuple.
@@ -186,6 +206,16 @@ class ReteTuple
         this.key.putAll( that.key );
         this.columns.putAll( that.columns );
         this.objectToHandle.putAll( that.objectToHandle );
+        this.isChanged = true; 
+
+        long[] conditionTimeStamps = getConditionTimeStamps();
+        for (int i = 0; i < conditionTimeStamps.length; i++)
+        {
+            if (conditionTimeStamps[i] > 0)
+            {
+                this.conditionTimeStamps[i] = conditionTimeStamps[i];
+            }
+        }
     }
 
     /** Set an other column's value.
@@ -262,5 +292,72 @@ class ReteTuple
     public WorkingMemory getWorkingMemory()
     {
         return this.workingMemory;
+    }
+    
+    FactHandle getMostRecentFact()
+    {
+        FactHandleImpl fact = null; 
+        long currentRecency = (this.mostRecentFact != null) ? this.mostRecentFact.getRecency() : -1;
+
+        if (isChanged == true)
+        {
+            Iterator it = this.key.iterator();
+            while (it.hasNext())
+            {
+                fact = (FactHandleImpl) this.key.get((Declaration) it.next());
+                if (fact.getRecency() > currentRecency)
+                {
+                    this.mostRecentFact = fact;
+                }
+            }
+        }
+        this.isChanged = false;
+        return fact;
+    }
+
+    FactHandle getLeastRecentFact()
+    {
+        FactHandleImpl fact = null;  
+        long currentRecency = (this.leastRecentFact != null) ? this.leastRecentFact.getRecency() : -1;
+        if (isChanged == true)
+        {
+            Iterator it = this.key.iterator();
+            while (it.hasNext())
+            {
+                fact = (FactHandleImpl) this.key.get((Declaration) it.next());
+                if (fact.getRecency() < currentRecency)
+                {
+                    this.leastRecentFact = fact;
+                }
+            }
+        }
+        this.isChanged = false;
+        return fact;
+    }
+
+    public long getMostRecentFactTimeStamp()
+    {
+        return (this.mostRecentFact !=null) ?  this.mostRecentFact.getRecency() : -1;
+        
+    }
+
+    public long getLeastRecentFactTimeStamp()
+    {
+        return (this.leastRecentFact != null) ?  this.leastRecentFact.getRecency() : -1;
+    }
+ 
+    public void setConditionTimeStamp(int order, long timeStamp)
+    {
+        this.conditionTimeStamps[order] = timeStamp;
+    }    
+
+    public long getConditionTimeStamp(int order)
+    {
+        return this.conditionTimeStamps[order];
+    }        
+
+    long[] getConditionTimeStamps()
+    {
+        return this.conditionTimeStamps;
     }
 }
