@@ -11,11 +11,11 @@ import junit.framework.TestCase;
 import java.util.List;
 import java.util.Set;
 
-public class ParameterNodeTest extends TestCase
+public class ParameterNodeImplTest extends TestCase
 {
     private Declaration decl;
 
-    public ParameterNodeTest(String name)
+    public ParameterNodeImplTest(String name)
     {
         super( name );
     }

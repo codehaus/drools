@@ -10,11 +10,11 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
-public class ObjectTypeNodeTest extends TestCase
+public class ObjectTypeNodeImplTest extends TestCase
 {
     private Declaration decl;
 
-    public ObjectTypeNodeTest(String name)
+    public ObjectTypeNodeImplTest(String name)
     {
         super( name );
     }
