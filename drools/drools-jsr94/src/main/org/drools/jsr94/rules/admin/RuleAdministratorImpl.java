@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleAdministratorImpl.java,v 1.13 2004-12-04 04:33:58 dbarnett Exp $
+ * $Id: RuleAdministratorImpl.java,v 1.14 2004-12-04 04:54:07 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,6 +48,7 @@ import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetDeregistrationException;
 import javax.rules.admin.RuleExecutionSetProvider;
+import javax.rules.admin.RuleExecutionSetRegisterException;
 
 /**
  * The Drools implementation of the <code>RuleAdministrator</code> interface
@@ -125,9 +126,13 @@ public class RuleAdministratorImpl implements RuleAdministrator
      *        <code>RuleExecutionSet</code>.
      * @param set the <code>RuleExecutionSet</code> to associate with the URI
      * @param properties additional properties used to perform the registration
+     *
+     * @throws RuleExecutionSetRegisterException if an error occurred that
+     *         prevented registration
      */
     public void registerRuleExecutionSet(
             String bindUri, RuleExecutionSet set, Map properties )
+        throws RuleExecutionSetRegisterException
     {
         // Note: an existing RuleExecutionSet is simply replaced
         RuleExecutionSetRepository repository =

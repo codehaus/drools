@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetRepository.java,v 1.10 2004-11-27 00:59:54 dbarnett Exp $
+ * $Id: RuleExecutionSetRepository.java,v 1.11 2004-12-04 04:54:07 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.rules.admin.RuleExecutionSet;
+import javax.rules.admin.RuleExecutionSetRegisterException;
 
 /**
  * Stores the registered <code>RuleExecutionSet</code> objects.
@@ -119,17 +120,24 @@ public final class RuleExecutionSetRepository
      *        <code>RuleExecutionSet</code>.
      * @param ruleSet the <code>RuleExecutionSet</code> to associate with the
      *        URI
+     *
+     * @throws RuleExecutionSetRegisterException if an error occurred that
+     *         prevented registration
+     *         (i.e. if bindUri or ruleSet are <code>null</code>)
      */
     public void registerRuleExecutionSet(
-        String bindUri, RuleExecutionSet ruleSet )
+            String bindUri, RuleExecutionSet ruleSet )
+        throws RuleExecutionSetRegisterException
     {
         if ( bindUri == null )
         {
-            throw new NullPointerException( "bindUri cannot be null" );
+            throw new RuleExecutionSetRegisterException(
+                "bindUri cannot be null" );
         }
         if ( ruleSet == null )
         {
-            throw new NullPointerException( "ruleSet cannot be null" );
+            throw new RuleExecutionSetRegisterException(
+                "ruleSet cannot be null" );
         }
         this.map.put( bindUri, ruleSet );
     }
