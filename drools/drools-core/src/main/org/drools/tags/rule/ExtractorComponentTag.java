@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConsequenceTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ $Id: ExtractorComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,100 +46,40 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.rule.Rule;
-import org.drools.spi.Consequence;
+import org.drools.spi.Extractor;
+import org.drools.smf.ConfigurableExtractor;
+import org.drools.smf.ConfigurationException;
 
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 
-/** Construct a <code>Consequence</code> for a <code>Rule</code>.
- *
- *  @see Consequence
+/** Dynamic <code>Extractor</code> component tag.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConsequenceTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ExtractorComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
  */
-public class ConsequenceTag extends RuleTagSupport implements ConsequenceReceptor
+class ExtractorComponentTag extends ComponentTag
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The consequence. */
-    private Consequence consequence;
-
-    /** The variable. */
-    private String var;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      */
-    public ConsequenceTag()
+    ExtractorComponentTag()
     {
-        this.consequence = null;
+        // intentionally left blank
     }
-
+    
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the <code>Consequence</code>.
-     *
-     *  @param consequence The consequence.
-     */
-    public void setConsequence(Consequence consequence)
-    {
-        this.consequence = consequence;
-    }
-
-    /** Retrieve the <code>Consequence</code>.
-     *
-     *  @return The consequence.
-     */
-    public Consequence getConsequence()
-    {
-        return this.consequence;
-    }
-
-    /** Set the variable in which to store the <code>Consequence</code>.
-     *
-     *  @param var The variable name.
-     */
-    public void setVar(String var)
-    {
-        this.var = var;
-    }
-
-    /** Retrieve the variable in which to store the <code>Consequence</code>.
-     *
-     *  @return The variable name.
-     */
-    public String getVar()
-    {
-        return this.var;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.tags.rule.ConsequenceReceptor
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Receive a <code>Consequence</code>.
-     *
-     *  @param consequence The consequence.
-     */
-    public void receiveConsequence(Consequence consequence)
-    {
-        setConsequence( consequence );
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    
+
     /** Perform this tag.
      *
      *  @param output The output sink.
@@ -147,31 +87,28 @@ public class ConsequenceTag extends RuleTagSupport implements ConsequenceRecepto
      *  @throws Exception If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output)  throws Exception
     {
-        Rule rule = getRule();
-
-        if ( rule == null )
+        ExtractorReceptor receptor = (ExtractorReceptor) findAncestorWithClass( ExtractorReceptor.class );
+        
+        if ( receptor == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyException( "No receptor for extractor" );
         }
-
-        invokeBody( output );
-
-        if ( this.consequence == null )
+        
+        if ( getComponent() instanceof ConfigurableExtractor)
         {
-            throw new JellyException( "Consequence expected" );
+            try
+            {
+                ((ConfigurableExtractor)getComponent()).configure( getBodyText( false ),
+                                                                   receptor.getAvailableDeclarations() );
+            }
+            catch (ConfigurationException e)
+            {
+                throw new JellyException( e );
+            }
         }
-
-        if ( this.var != null )
-        {
-            getContext().setVariable( this.var,
-                                      this.consequence );
-        }
-
-        getContext().setVariable( "org.drools.consequence",
-                                  this.consequence );
-
-        rule.setConsequence( this.consequence );
+        
+        receptor.receiveExtractor( (Extractor) getComponent() );
     }
 }

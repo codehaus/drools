@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ExtractionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
+ $Id: ExtractionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,9 +60,9 @@ import org.apache.commons.jelly.JellyException;
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExtractionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
+ *  @version $Id: ExtractionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
  */
-public class ExtractionTag extends RuleTagSupport
+public class ExtractionTag extends RuleTagSupport implements ExtractorReceptor
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -145,6 +145,19 @@ public class ExtractionTag extends RuleTagSupport
     public String getVar()
     {
         return this.var;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.tags.rule.ExtractorReceptor
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Receive a <code>Extractor</code>.
+     *
+     *  @param extractor The extrcactor.
+     */
+    public void receiveExtractor(Extractor extractor)
+    {
+        setExtractor( extractor );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

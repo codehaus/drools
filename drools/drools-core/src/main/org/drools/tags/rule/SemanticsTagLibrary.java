@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.5 2002-08-20 05:06:24 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.6 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,23 +47,8 @@ package org.drools.tags.rule;
  */
 
 import org.drools.smf.SemanticModule;
-import org.drools.spi.ObjectType;
-import org.drools.spi.Condition;
-import org.drools.spi.Extractor;
-import org.drools.spi.Consequence;
-import org.drools.smf.ConfigurableObjectType;
-import org.drools.smf.ConfigurableCondition;
-import org.drools.smf.ConfigurableExtractor;
-import org.drools.smf.ConfigurableConsequence;
-import org.drools.smf.ConfigurationException;
 
-import org.apache.commons.beanutils.ConvertingWrapDynaBean;
-import org.apache.commons.jelly.Tag;
-import org.apache.commons.jelly.DynaBeanTagSupport;
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.impl.DynamicTagLibrary;
-import org.apache.commons.jelly.impl.TagFactory;
 
 import java.util.Set;
 import java.util.Iterator;
@@ -72,7 +57,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.5 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.6 2002-09-27 20:55:32 bob Exp $
  */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -153,65 +138,8 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                       final Class beanClass) throws Exception
     {
         registerBeanTag( name,
-                         new TagFactory()
-                         {
-                             public Tag createTag() throws Exception
-                             {
-                                 Tag tag =
-                                     new DynaBeanTagSupport()
-                                     {
-                                         private ObjectType objectType;
-
-                                         public void setAttribute(String name,
-                                                                  Object value) throws Exception
-                                         {
-                                             super.setAttribute( name,
-                                                                 value );
-                                         }
-                                         
-                                         public void beforeSetAttributes() throws Exception
-                                         {
-                                             try
-                                             {
-                                                 this.objectType = (ObjectType) beanClass.newInstance();
-                                                 setDynaBean( new ConvertingWrapDynaBean( this.objectType ) );
-                                             }
-                                             catch (Exception e)
-                                             {
-                                                 throw new JellyException( "Unable to instantiate: " + beanClass.getName() );
-                                             }
-                                         }
-
-                                         public void doTag(XMLOutput output)  throws Exception
-                                         {
-                                             DeclarationTag tag = (DeclarationTag) findAncestorWithClass( DeclarationTag.class );
-
-                                             if ( tag == null )
-                                             {
-                                                 throw new JellyException( "No delcaration for object type" );
-                                             }
-
-                                             if ( this.objectType instanceof ConfigurableObjectType)
-                                             {
-                                                 try
-                                                 {
-                                                     ((ConfigurableObjectType)this.objectType)
-                                                         .configure( getBodyText( false ) );
-                                                 }
-                                                 catch (ConfigurationException e)
-                                                 {
-                                                     throw new JellyException( e );
-                                                 }
-                                             }
-
-                                             tag.setObjectType( this.objectType );
-                                         }
-                                     };
-
-                                 return tag;
-                             }
-                         }
-                         );
+                         new ComponentTagFactory( beanClass,
+                                                  ObjectTypeComponentTag.class ) );
     }
 
     /** Register <code>Condition</code>s.
@@ -249,59 +177,8 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                      final Class beanClass) throws Exception
     {
         registerBeanTag( name,
-                         new TagFactory()
-                         {
-                             public Tag createTag() throws Exception
-                             {
-                                 Tag tag =
-                                     new DynaBeanTagSupport()
-                                     {
-                                         private Condition condition;
-                                         
-                                         public void beforeSetAttributes() throws Exception
-                                         {
-                                             try
-                                             {
-                                                 this.condition = (Condition) beanClass.newInstance();
-                                                 setDynaBean( new ConvertingWrapDynaBean( this.condition ) );
-                                             }
-                                             catch (Exception e)
-                                             {
-                                                 throw new JellyException( "Unable to instantiate: " + beanClass.getName() );
-                                             }
-                                         }
-
-                                         public void doTag(XMLOutput output)  throws Exception
-                                         {
-                                             ConditionTag tag = (ConditionTag) findAncestorWithClass( ConditionTag.class );
-
-                                             if ( tag == null )
-                                             {
-                                                 throw new JellyException( "No wrapper for condition" );
-                                             }
-
-                                             if ( this.condition instanceof ConfigurableCondition )
-                                             {
-                                                 try
-                                                 {
-                                                     ((ConfigurableCondition)this.condition)
-                                                         .configure( getBodyText( false ),
-                                                                     tag.getAvailableDeclarations() );
-                                                 }
-                                                 catch (ConfigurationException e)
-                                                 {
-                                                     throw new JellyException( e );
-                                                 }
-                                             }
-
-                                             tag.setCondition( this.condition );
-                                         }
-                                     };
-
-                                 return tag;
-                             }
-                         }
-                         );
+                         new ComponentTagFactory( beanClass,
+                                                  ConditionComponentTag.class ) );
     }
 
     /** Register <code>Extractors</code>s.
@@ -339,59 +216,8 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                      final Class beanClass) throws Exception
     {
         registerBeanTag( name,
-                         new TagFactory()
-                         {
-                             public Tag createTag() throws Exception
-                             {
-                                 Tag tag =
-                                     new DynaBeanTagSupport()
-                                     {
-                                         private Extractor extractor;
-                                         
-                                         public void beforeSetAttributes() throws Exception
-                                         {
-                                             try
-                                             {
-                                                 this.extractor = (Extractor) beanClass.newInstance();
-                                                 setDynaBean( new ConvertingWrapDynaBean( this.extractor ) );
-                                             }
-                                             catch (Exception e)
-                                             {
-                                                 throw new JellyException( "Unable to instantiate: " + beanClass.getName() );
-                                             }
-                                         }
-
-                                         public void doTag(XMLOutput output)  throws Exception
-                                         {
-                                             ExtractionTag tag = (ExtractionTag) findAncestorWithClass( ExtractionTag.class );
-
-                                             if ( tag == null )
-                                             {
-                                                 throw new JellyException( "No wrapper for extraction" );
-                                             }
-
-                                             if ( this.extractor instanceof ConfigurableExtractor )
-                                             {
-                                                 try
-                                                 {
-                                                     ((ConfigurableExtractor)this.extractor)
-                                                         .configure( getBodyText( false ),
-                                                                     tag.getAvailableDeclarations() );
-                                                 }
-                                                 catch (ConfigurationException e)
-                                                 {
-                                                     throw new JellyException( e );
-                                                 }
-                                             }
-
-                                             tag.setExtractor( this.extractor );
-                                         }
-                                     };
-
-                                 return tag;
-                             }
-                         }
-                         );
+                         new ComponentTagFactory( beanClass,
+                                                  ExtractorComponentTag.class ) );
     }
 
     /** Register <code>Consequence</code>s.
@@ -429,57 +255,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                        final Class beanClass) throws Exception
     {
         registerBeanTag( name,
-                         new TagFactory()
-                         {
-                             public Tag createTag() throws Exception
-                             {
-                                 Tag tag =
-                                     new DynaBeanTagSupport()
-                                     {
-                                         private Consequence consequence;
-                                         
-                                         public void beforeSetAttributes() throws Exception
-                                         {
-                                             try
-                                             {
-                                                 this.consequence = (Consequence) beanClass.newInstance();
-                                                 setDynaBean( new ConvertingWrapDynaBean( this.consequence ) );
-                                             }
-                                             catch (Exception e)
-                                             {
-                                                 throw new JellyException( "Unable to instantiate: " + beanClass.getName() );
-                                             }
-                                         }
-
-                                         public void doTag(XMLOutput output)  throws Exception
-                                         {
-                                             ConsequenceTag tag = (ConsequenceTag) findAncestorWithClass( ConsequenceTag.class );
-
-                                             if ( tag == null )
-                                             {
-                                                 throw new JellyException( "No wrapper for consequence" );
-                                             }
-
-                                             if ( this.consequence instanceof ConfigurableConsequence )
-                                             {
-                                                 try
-                                                 {
-                                                     ((ConfigurableConsequence)this.consequence)
-                                                         .configure( getBodyText( false ),
-                                                                     tag.getAvailableDeclarations() );
-                                                 }
-                                                 catch (ConfigurationException e)
-                                                 {
-                                                     throw new JellyException( e );
-                                                 }
-                                             }
-                                             tag.setConsequence( this.consequence );
-                                         }
-                                     };
-
-                                 return tag;
-                             }
-                         }
-                         );
+                         new ComponentTagFactory( beanClass,
+                                                  ConsequenceComponentTag.class ) );
     }
 }

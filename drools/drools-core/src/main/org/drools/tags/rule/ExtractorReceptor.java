@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.6 2002-09-27 20:55:32 bob Exp $
+ $Id: ExtractorReceptor.java,v 1.1 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,68 +47,23 @@ package org.drools.tags.rule;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
+import org.drools.spi.Extractor;
 
-import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
 
-/** Support for rule tags.
+/** Object that can receive a configured <code>Extractor</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.6 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ExtractorReceptor.java,v 1.1 2002-09-27 20:55:32 bob Exp $
  */
-public abstract class RuleTagSupport extends TagSupport
+public interface ExtractorReceptor
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    protected RuleTagSupport()
-    {
-        super( true );
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the current <code>RuleSet</code>.
+    /** Receive an <code>Extractor</code>.
      *
-     *  @return The current rule-set or <code>null</code> if
-     *          no rule-set is in scope.
+     *  @param extractor The extractor.
      */
-    protected RuleSet getRuleSet() 
-    {
-        RuleSetTag ruleSetTag = (RuleSetTag) findAncestorWithClass( RuleSetTag.class );
-
-        if ( ruleSetTag == null )
-        {
-            return null;
-        }
-
-        return ruleSetTag.getRuleSet();
-    }
-
-    /** Retrieve the current <code>Rule<code>.
-     *
-     *  @return The current rule.
-     */
-    protected Rule getRule() 
-    {
-        RuleTag ruleTag = (RuleTag) findAncestorWithClass( RuleTag.class );
-
-        if ( ruleTag == null )
-        {
-            return null;
-        }
-
-        return ruleTag.getRule();
-    }
+    void receiveExtractor(Extractor extractor);
 
     /** Retrieve the array of available <code>Declaration</code>s.
      *
@@ -117,34 +72,5 @@ public abstract class RuleTagSupport extends TagSupport
      *  @throws JellyException If no declarations are currently
      *          available in scope.
      */
-    public Declaration[] getAvailableDeclarations() throws JellyException
-    {
-        Rule rule = getRule();
-
-        if ( rule == null )
-        {
-            throw new JellyException( "No rule available" );
-        }
-
-        return rule.getDeclarationsArray();
-    }
-
-    /** Check required attribute.
-     *
-     *  @param name Attribute name.
-     *  @param value Attribute value.
-     *
-     *  @throws MissingAttributeException If the value is either <code>null</code>
-     *          or contains only whitespace.
-     */
-    protected void requiredAttribute(String name,
-                                     String value) throws MissingAttributeException
-    {
-        if ( value == null
-             ||
-             value.trim().equals( "" ) )
-        {
-            throw new MissingAttributeException( name );
-        }
-    }
+    Declaration[] getAvailableDeclarations() throws JellyException;
 }
