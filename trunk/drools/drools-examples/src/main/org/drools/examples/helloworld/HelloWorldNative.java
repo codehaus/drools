@@ -23,7 +23,7 @@ import org.drools.reteoo.HelloWorldBuilder;
  * is a simplified Rete builder to illustrate what happens in org.drools.reteoo.Builder
  */
 
-public class HelloWorld
+public class HelloWorldNative
 {
     public static void main(String[] args) throws Exception
     {
