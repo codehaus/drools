@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: StatelessRuleSessionImpl.java,v 1.3 2003-03-22 22:03:45 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -57,6 +57,7 @@ import javax.rules.RuleExecutionSetNotFoundException;
 import javax.rules.StatelessRuleSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This interface is a representation of a stateless rules engine session.
@@ -68,104 +69,120 @@ import java.util.List;
  */
 public class StatelessRuleSessionImpl extends RuleSessionImpl implements StatelessRuleSession {
 
-   /** the rule set from the repository */
-   private RuleExecutionSetImpl ruleSet;
+    /** the rule set from the repository */
+    private RuleExecutionSetImpl ruleSet;
 
-   /** The rule base this session is associated with. */
-   private RuleBase ruleBase;
+    /** The rule base this session is associated with. */
+    private RuleBase ruleBase;
+    private Map properties;
 
-   /**
-    * Gets the <code>RuleExecutionSet</code> for this URI and associated it with a RuleBase.
-    *
-    * @param bindUri the URI the <code>RuleExecutionSet</code> has been bound to
-    * @throws RuleExecutionSetNotFoundException if there is no rule set under the given URI
-    */
-   StatelessRuleSessionImpl(String bindUri) throws RuleExecutionSetNotFoundException {
+    /**
+     * Gets the <code>RuleExecutionSet</code> for this URI and associated it with a RuleBase.
+     *
+     * @param bindUri the URI the <code>RuleExecutionSet</code> has been bound to
+     * @throws RuleExecutionSetNotFoundException if there is no rule set under the given URI
+     */
+    StatelessRuleSessionImpl(String bindUri, Map properties) throws RuleExecutionSetNotFoundException
+    {
+        this.properties = properties;
 
-      // get the rule set from the repository
-      RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-      ruleSet = (RuleExecutionSetImpl)repository.getRuleExecutionSet(bindUri);
-      if (ruleSet == null) throw new RuleExecutionSetNotFoundException("RuleExecutionSet unbound: " + bindUri);
+        // get the rule set from the repository
+        RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
+        ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet(bindUri);
+        if (ruleSet == null) throw new RuleExecutionSetNotFoundException("RuleExecutionSet unbound: " + bindUri);
 
-      ruleBase = ruleSet.getRuleBase();
-   }
+        ruleBase = ruleSet.getRuleBase();
+    }
 
-   /**
-    * Executes the rules in the bound rule execution set using the supplied list of objects
-    * until no rule is executable anymore.
-    * A List is returned over all objects created by the executed rules
-    * that pass the default <code>RuleExecutionSet</code>  <code>ObjectFilter</code> (if present).
+    /**
+     * Executes the rules in the bound rule execution set using the supplied list of objects
+     * until no rule is executable anymore.
+     * A List is returned over all objects created by the executed rules
+     * that pass the default <code>RuleExecutionSet</code>  <code>ObjectFilter</code> (if present).
 
-    * @see StatelessRuleSession#executeRules(List)
-    */
-   public List executeRules(List list) throws InvalidRuleSessionException {
+     * @see StatelessRuleSession#executeRules(List)
+     */
+    public List executeRules(List list) throws InvalidRuleSessionException
+    {
 
-      // Note: this breaks the factory intension of RuleBase.createWorkingMemory
-      JSR94WorkingMemory workingMemory = new JSR94WorkingMemory(ruleBase);
+        // Note: this breaks the factory intension of RuleBase.createWorkingMemory
+        JSR94WorkingMemory workingMemory = new JSR94WorkingMemory(ruleBase);
+        workingMemory.setApplicationData(properties);
 
-      try {
-         for (int i = 0; i < list.size(); i++) {
-            Object obj = list.get(i);
-            workingMemory.assertObject(obj);
-         }
-      } catch (AssertionException ex) {
-         throw new InvalidRuleSessionException(ex.getMessage(), ex);
-      }
+        try
+        {
+            for (int i = 0; i < list.size(); i++)
+            {
+                Object obj = list.get(i);
+                workingMemory.assertObject(obj);
+            }
+        } catch (AssertionException ex)
+        {
+            throw new InvalidRuleSessionException(ex.getMessage(), ex);
+        }
 
-      List outList = workingMemory.getObjectList();
+        List outList = workingMemory.getObjectList();
 
-      // apply the default filter
-      ObjectFilter objectFilter = ruleSet.getObjectFilter();
-      if (objectFilter != null) {
+        // apply the default filter
+        ObjectFilter objectFilter = ruleSet.getObjectFilter();
+        if (objectFilter != null)
+        {
 
-         // apply the filter
-         List cpyList = new ArrayList();
-         for (int i = 0; i < outList.size(); i++) {
+            // apply the filter
+            List cpyList = new ArrayList();
+            for (int i = 0; i < outList.size(); i++)
+            {
+                Object obj = objectFilter.filter(outList.get(i));
+                if (obj != null) cpyList.add(obj);
+            }
+            outList = cpyList;
+        }
+
+        return outList;
+    }
+
+    /**
+     * Executes the rules in the bound rule execution set using the supplied list of objects until no rule is executable anymore.
+     * An iterator is returned over all objects created by the executed rules and filtered with the supplied object filter.
+
+     * @see StatelessRuleSession#executeRules(List,ObjectFilter)
+     */
+    public List executeRules(List list, ObjectFilter objectFilter) throws InvalidRuleSessionException
+    {
+
+        // Note: this breaks the factory intension of RuleBase.createWorkingMemory
+        JSR94WorkingMemory workingMemory = new JSR94WorkingMemory(ruleBase);
+
+        try
+        {
+            for (int i = 0; i < list.size(); i++)
+            {
+                Object obj = list.get(i);
+                workingMemory.assertObject(obj);
+            }
+        } catch (AssertionException ex)
+        {
+            throw new InvalidRuleSessionException(ex.getMessage(), ex);
+        }
+
+        List outList = workingMemory.getObjectList();
+
+        // apply the filter
+        List cpyList = new ArrayList();
+        for (int i = 0; i < outList.size(); i++)
+        {
             Object obj = objectFilter.filter(outList.get(i));
             if (obj != null) cpyList.add(obj);
-         }
-         outList = cpyList;
-      }
+        }
 
-      return outList;
-   }
+        return cpyList;
+    }
 
-   /**
-    * Executes the rules in the bound rule execution set using the supplied list of objects until no rule is executable anymore.
-    * An iterator is returned over all objects created by the executed rules and filtered with the supplied object filter.
-
-    * @see StatelessRuleSession#executeRules(List,ObjectFilter)
-    */
-   public List executeRules(List list, ObjectFilter objectFilter) throws InvalidRuleSessionException {
-
-      // Note: this breaks the factory intension of RuleBase.createWorkingMemory
-      JSR94WorkingMemory workingMemory = new JSR94WorkingMemory(ruleBase);
-
-      try {
-         for (int i = 0; i < list.size(); i++) {
-            Object obj = list.get(i);
-            workingMemory.assertObject(obj);
-         }
-      } catch (AssertionException ex) {
-         throw new InvalidRuleSessionException(ex.getMessage(), ex);
-      }
-
-      List outList = workingMemory.getObjectList();
-
-      // apply the filter
-      List cpyList = new ArrayList();
-      for (int i = 0; i < outList.size(); i++) {
-         Object obj = objectFilter.filter(outList.get(i));
-         if (obj != null) cpyList.add(obj);
-      }
-
-      return cpyList;
-   }
-
-   /**
-    * Releases all resources used by this rule session.
-    * This method renders this rule session unusable until it is reacquired through the RuleRuntime.
-    */
-   public void release() {
-   }
+    /**
+     * Releases all resources used by this rule session.
+     * This method renders this rule session unusable until it is reacquired through the RuleRuntime.
+     */
+    public void release()
+    {
+    }
 }
