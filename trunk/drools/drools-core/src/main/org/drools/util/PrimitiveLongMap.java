@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.7 2004-11-17 13:37:07 mproctor Exp $
+ * $Id: PrimitiveLongMap.java,v 1.8 2004-11-18 23:11:17 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -49,8 +49,7 @@ import java.util.Collection;
  * @author Mark Proctor
  */
 public class PrimitiveLongMap
-    implements
-    Serializable
+    implements Serializable
 {
     private final static Object NULL = new Serializable( ) { };
 
@@ -163,7 +162,7 @@ public class PrimitiveLongMap
 
     public Object get(long key)
     {
-        if ( key >= this.maxKey )
+        if ( key > this.maxKey )
         {
             return null;
         }
