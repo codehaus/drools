@@ -1,13 +1,19 @@
-<project default="jar:jar"
-         xmlns:j="jelly:core">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    default="default"
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven">
 
-    <!-- post goals ************************************************************************************************ -->
+    <goal name="default">
+        <attainGoal name="jar:install"/>
+    </goal>
 
     <postGoal name="clover">
         <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
             file="${basedir}/target/docs/clover/pkgs-summary.html"/>
     </postGoal>
-
 
     <preGoal name="java:compile">
         <j:set var="aspects" value="${drools.aspects}"/>
@@ -15,6 +21,18 @@
         <j:if test="${aspects == 'true'}">
             <attainGoal name="aspectj:compile"/>
         </j:if>
-
     </preGoal>
+
+    <goal name="reports:publish">
+        <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-core"/>
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/clover"/>
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/junit"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/clover">
+            <ant:fileset dir="${basedir}/target/docs/clover"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/junit">
+            <ant:fileset dir="${basedir}/target/test-reports"/>
+        </ant:copy>
+    </goal>
+
 </project>
