@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.10 2004-06-29 15:44:22 n_alex Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.11 2004-06-30 00:34:14 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -87,10 +87,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     {
         this.properties = properties;
         this.ruleSet = ruleSet;
-
-        if(properties != null && properties.containsKey(Constants.RES_DESCRIPTION)) {
-            this.description = (String)properties.get(Constants.RES_DESCRIPTION);
-        }
+        this.description = ruleSet.getDocumentation();
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
         try {

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetTestCase.java,v 1.3 2004-04-04 02:54:56 n_alex Exp $
+ $Id: RuleExecutionSetTestCase.java,v 1.4 2004-06-30 00:34:14 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -82,7 +82,7 @@ public class RuleExecutionSetTestCase extends RuleEngineTestBase {
       assertEquals("number of rules", 2, ruleSet.getRules().size());
 
       assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-      assertNull("rule set description", ruleSet.getDescription());
+      assertEquals("", ruleSet.getDescription());
       assertNull("rule set default filter", ruleSet.getDefaultObjectFilter());
    }
 }
