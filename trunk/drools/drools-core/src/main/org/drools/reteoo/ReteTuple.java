@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.37 2004-10-27 07:15:54 simon Exp $
+ * $Id: ReteTuple.java,v 1.38 2004-10-27 22:46:56 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.reteoo;
  */
 
 import org.drools.FactHandle;
+import org.drools.NoSuchFactHandleException;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -59,7 +60,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.37 2004-10-27 07:15:54 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.38 2004-10-27 22:46:56 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -67,24 +68,22 @@ class ReteTuple implements Tuple, Serializable
     //     Instance members
     // ------------------------------------------------------------
 
-    private WorkingMemory  workingMemory;
+    private final WorkingMemory  workingMemory;
 
-    private Rule           rule;
+    private final Rule           rule;
 
     /** Key columns for this tuple. */
-    private TupleKey       key;
+    private final TupleKey       key;
 
     /** Value columns in this tuple. */
-    private Map            columns;
+    private final Map            columns;
 
-    private Map            objectToHandle;
+    /** return array of condition time stamps */
+    private final long conditionTimeStamps[];
 
     private FactHandleImpl mostRecentFact;
 
     private FactHandleImpl leastRecentFact;
-
-    /** return array of condition time stamps */
-    private long           conditionTimeStamps[];
 
     private boolean        isChanged = false;
 
@@ -101,7 +100,6 @@ class ReteTuple implements Tuple, Serializable
         this.rule = rule;
         this.key = new TupleKey( );
         this.columns = new HashMap( );
-        this.objectToHandle = new HashMap( );
 
         this.conditionTimeStamps = new long[rule.getConditionSize( )];
     }
@@ -117,11 +115,10 @@ class ReteTuple implements Tuple, Serializable
         this.rule = that.rule;
         this.key = new TupleKey( that.key );
         this.columns = new HashMap( that.columns );
-        this.objectToHandle = new HashMap( that.objectToHandle );
+        this.conditionTimeStamps = that.getConditionTimeStamps();
 
         this.mostRecentFact = ( FactHandleImpl ) that.getMostRecentFact( );
         this.leastRecentFact = ( FactHandleImpl ) that.getLeastRecentFact( );
-        this.conditionTimeStamps = that.getConditionTimeStamps( );
     }
 
     /**
@@ -140,8 +137,6 @@ class ReteTuple implements Tuple, Serializable
         this( workingMemory, rule );
 
         key.put( declaration, handle );
-
-        objectToHandle.put( value, handle );
 
         putTargetDeclarationColumn( declaration, value );
 
@@ -168,7 +163,6 @@ class ReteTuple implements Tuple, Serializable
     {
         this.key.putAll( that.key );
         this.columns.putAll( that.columns );
-        this.objectToHandle.putAll( that.objectToHandle );
         this.isChanged = true;
 
         long[] conditionTimeStamps = that.getConditionTimeStamps( );
@@ -249,7 +243,18 @@ class ReteTuple implements Tuple, Serializable
      */
     public FactHandle getFactHandleForObject(Object object)
     {
-        return (FactHandle) this.objectToHandle.get( object );
+        FactHandle factHandle;
+        try
+        {
+            factHandle = this.workingMemory.getFactHandle( object );
+
+        }
+        catch ( NoSuchFactHandleException e )
+        {
+            factHandle = null;
+        }
+
+        return factHandle;
     }
 
     public Rule getRule()
