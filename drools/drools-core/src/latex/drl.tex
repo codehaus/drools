@@ -22,7 +22,7 @@ DRL namespace URI to the default namespace upon the root
 
 \begin{figure}[hb]
 \begin{tagExample}
-<drl:rule-set \color{black}{xmlns:drl="http://drools.org/rules"}>
+<drl:rule-set {\color{black}xmlns:drl="http://drools.org/rules"}>
 \end{tagExample}
 \caption{Binding the DRL namespace URI to a prefix}
 \label{drl.namespace.prefix}
@@ -30,7 +30,7 @@ DRL namespace URI to the default namespace upon the root
 
 \begin{figure}[hb]
 \begin{tagExample}
-<rule-set \color{black}{xmlns="http://drools.org/rules"}>
+<rule-set {\color{black}xmlns="http://drools.org/rules"}>
 \end{tagExample}
 \caption{Binding the DRL namespace URI as the default namespace}
 \label{drl.namespace.default}
@@ -42,7 +42,7 @@ DRL namespace URI to the default namespace upon the root
 %%  rule-set
 %%
 
-\subsection{\indexTag{<rule-set>}}
+\subsection{\indexTag{rule-set}}
 
 The root tag of a DRL document is the \tag{<rule-set>} tag, which
 serves to collect a group of rules. A rule-set must have a
@@ -58,8 +58,8 @@ serves to collect a group of rules. A rule-set must have a
 \begin{center}
 \begin{minipage}{0.8\textwidth}
 \begin{tagExample}
-\color{black}{<rule-set xmlns="http://drools.org/rules"}
-          \color{black}{name="My First Rule Set">}
+{\color{black}<rule-set xmlns="http://drools.org/rules"}
+          {\color{black}name="My First Rule Set">}
     ...
 \color{black}{</rule-set>}
 \end{tagExample}
@@ -70,7 +70,7 @@ serves to collect a group of rules. A rule-set must have a
 %%  rule
 %%
 
-\subsection{\indexTag{<rule>}}
+\subsection{\indexTag{rule}}
 
 A \tag{<rule>} tag defines a single rule within the rule-set.  A rule
 must have at least one parameter\footnote{Semantic modules may add
@@ -97,10 +97,10 @@ A rule contains conditions, extractors and exactly one consequence.
 <rule-set xmlns="http://drools.org/rules" 
           name="My First Rule Set">
 
-    \color{black}{<rule name="My First Rule"}
-          \color{black}{salience="10">}
+    {\color{black}<rule name="My First Rule"}
+          {\color{black}salience="10">}
         ...
-    \color{black}{</rule>}
+    {\color{black}</rule>}
 
 </rule-set>
 \end{tagExample}
@@ -111,7 +111,7 @@ A rule contains conditions, extractors and exactly one consequence.
 %%  parameter
 %%  
 
-\subsection{\indexTag{<parameter>}}
+\subsection{\indexTag{parameter}}
 
 A \tag{<parameter>} defines an input parameter for a rule.  Each input
 parameter will be supplied an object from the working memory in order
@@ -131,12 +131,12 @@ semantic object type as its child element.
 \begin{tagExample}
 <rule name="My First Rule">
 
-    \color{black}{<parameter identifier="factOne">}
+    {\color{black}<parameter identifier="factOne">}
         ...
-    \color{black}{</parameter>}
-    \color{black}{<parameter identifier="factTwo">}
+    {\color{black}</parameter>}
+    {\color{black}<parameter identifier="factTwo">}
         ...
-    \color{black}{</parameter>}
+    {\color{black}</parameter>}
 
 </rule>
 \end{tagExample}
@@ -147,7 +147,7 @@ semantic object type as its child element.
 %%  declaration
 %%
 
-\subsection{\indexTag{<declaration>}}
+\subsection{\indexTag{declaration}}
 
 A \tag{<declaration>} defines an addition \emph{local} declared fact
 which may be the target of an \emph{extractor}. Its
@@ -167,12 +167,12 @@ a semantic object type as its child element.
 \begin{tagExample}
 <rule name="My First Rule">
 
-    \color{black}{<declaration identifier="factOne">}
+    {\color{black}<declaration identifier="factOne">}
         ...
-    \color{black}{</declaration>}
-    \color{black}{<declaration identifier="factTwo">}
+    {\color{black}</declaration>}
+    {\color{black}<declaration identifier="factTwo">}
         ...
-    \color{black}{</declaration>}
+    {\color{black}</declaration>}
 
 </rule>
 \end{tagExample}
@@ -183,12 +183,17 @@ a semantic object type as its child element.
 %%  duration
 %%
 
-\subsection{\indexTag{<duration>}}
+\subsection{\indexTag{duration}}
 
 The \tag{<duration>} tag is optionally used to specify the truthness
 duration of the rule.  The truthness duration determines how long
 the rule's conditions must be \emph{continually} true in order
 to activate the rule.
+
+\begin{implnote}
+The \class{RuleSetReader} currently doesn't allow \tag{<duration>}
+tags, which is merely an oversight. 
+\end{implnote}
 
 \begin{tagDesc}{duration}
 \attrs
@@ -204,8 +209,8 @@ to activate the rule.
 \begin{tagExample}
 <rule name="My First Rule">
 
-    \color{black}{<duration hours="2"}
-              \color{black}{minutes="30"/>}
+    {\color{black}<duration hours="2"}
+              {\color{black}minutes="30"/>}
 
 </rule>
 \end{tagExample}

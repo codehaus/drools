@@ -1,4 +1,7 @@
 \chapter{Client API}
+\label{client.api}
+
+\section{Introduction}
 
 The Drools client API is simply a fairly lightweight interface for
 starting a session, manipulating knowledge and executing rules.
@@ -23,7 +26,9 @@ Figure~\vref{rulebase.jndi} for an example of accessing a
 
 \begin{figure}
 \begin{javaCodelisting}
-InitialContext ctx = ...
+DirContext ctx = new InitialDirContext( props );
+
+RuleBase ruleBase = ctx.lookup( "cn='MyRuleBase'" );
 \end{javaCodelisting}
 \caption{Loading a \indexClass{RuleBase} from a JNDI data source}
 \label{rulebase.jndi}
@@ -52,7 +57,8 @@ sessio n where knowledge is manipulated and evaluated to determine
 which rules should fire.  Each \class{WorkingMemory} is independent
 from all other instances. Each \class{WorkingMemory} is backed by the
 \indexClass{RuleBase} that created it
-(Figure~\vref{workingmemory.creation}).
+(Figure~\vref{workingmemory.creation}) using
+\indexMethod{RuleBase}{newWorkingMemory()}.
 
 \begin{figure}
 \begin{javaCodelisting}
