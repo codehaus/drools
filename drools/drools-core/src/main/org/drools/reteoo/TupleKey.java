@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.29 2004-11-29 13:47:17 simon Exp $
+ * $Id: TupleKey.java,v 1.30 2004-12-01 13:41:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,9 +46,6 @@ import org.drools.spi.Tuple;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -62,17 +59,14 @@ class TupleKey
     implements
     Serializable
 {
-    public static final TupleKey EMPTY = new TupleKey( );
+    public static final TupleKey EMPTY_KEY = new TupleKey( );
 
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
 
     /** Columns. */
-    private final Map handles;
-
-    /** Cached hashCode. */
-    private final int hashCode;
+    private final FactHandleList handles;
 
     // ------------------------------------------------------------
     // Constructors
@@ -80,26 +74,21 @@ class TupleKey
 
     private TupleKey()
     {
-        this.handles = Collections.EMPTY_MAP;
-        this.hashCode = 0;
+        this.handles = FactHandleList.EMPTY_LIST;
     }
 
     public TupleKey(TupleKey left,
                     TupleKey right)
     {
-        this.handles = new HashMap( left.handles.size( ) + right.handles.size( ),
-                                    1 );
-        this.handles.putAll( left.handles );
-        this.handles.putAll( right.handles );
-        this.hashCode = this.handles.hashCode( );
+        this.handles = new FactHandleList( left.handles,
+                                           right.handles );
     }
 
     public TupleKey(Declaration declaration,
                     FactHandle handle)
     {
-        this.handles = Collections.singletonMap( declaration,
-                                                 handle );
-        this.hashCode = this.handles.hashCode( );
+        this.handles = new FactHandleList( declaration.getIndex( ),
+                                           ( FactHandleImpl ) handle );
     }
 
     public String toString()
@@ -120,7 +109,7 @@ class TupleKey
      */
     public FactHandle get(Declaration declaration)
     {
-        return (FactHandle) this.handles.get( declaration );
+        return this.handles.get( declaration.getIndex( ) );
     }
 
     /**
@@ -133,7 +122,7 @@ class TupleKey
      */
     public boolean containsFactHandle(FactHandle handle)
     {
-        return this.handles.values( ).contains( handle );
+        return this.handles.contains( handle );
     }
 
     /**
@@ -145,20 +134,7 @@ class TupleKey
      */
     public boolean containsAll(TupleKey that)
     {
-        Iterator entryIter = that.handles.entrySet( ).iterator( );
-        Map.Entry eachEntry;
-
-        while ( entryIter.hasNext( ) )
-        {
-            eachEntry = (Map.Entry) entryIter.next( );
-
-            if ( !eachEntry.getValue( ).equals( this.handles.get( eachEntry.getKey( ) ) ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return this.handles.containsAll( that.handles );
     }
 
     public FactHandleImpl getMostRecentFact()
@@ -168,16 +144,17 @@ class TupleKey
         FactHandleImpl eachHandle;
         long recency;
 
-        Iterator i = this.handles.values( ).iterator( );
-
-        while ( i.hasNext( ) )
+        for ( int i = this.handles.length() - 1; i >= 0; i-- )
         {
-            eachHandle = (FactHandleImpl) i.next( );
-            recency = eachHandle.getRecency( );
-            if ( recency > currentRecency )
+            eachHandle = ( FactHandleImpl ) this.handles.get( i );
+            if ( eachHandle != null )
             {
-                currentRecency = recency;
-                mostRecent = eachHandle;
+                recency = eachHandle.getRecency( );
+                if ( recency > currentRecency )
+                {
+                    currentRecency = recency;
+                    mostRecent = eachHandle;
+                }
             }
         }
 
@@ -191,16 +168,18 @@ class TupleKey
         FactHandleImpl eachHandle;
         long recency;
 
-        Iterator i = this.handles.values( ).iterator( );
 
-        while ( i.hasNext( ) )
+        for ( int i = this.handles.length() - 1; i >= 0; i-- )
         {
-            eachHandle = (FactHandleImpl) i.next( );
-            recency = eachHandle.getRecency( );
-            if ( recency < currentRecency )
+            eachHandle = ( FactHandleImpl ) this.handles.get( i );
+            if ( eachHandle != null )
             {
-                currentRecency = recency;
-                leastRecent = eachHandle;
+                recency = eachHandle.getRecency( );
+                if ( recency < currentRecency )
+                {
+                    currentRecency = recency;
+                    leastRecent = eachHandle;
+                }
             }
         }
 
@@ -210,7 +189,8 @@ class TupleKey
     // TODO: Remove this at some stage when ReteTuple no longer needs it
     public Set getDeclarations()
     {
-        return this.handles.keySet();
+        return Collections.EMPTY_SET;
+//        return this.handles.keySet();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -238,6 +218,6 @@ class TupleKey
      */
     public int hashCode()
     {
-        return this.hashCode;
+        return this.handles.hashCode( );
     }
 }
