@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.11 2004-03-30 21:13:19 n_alex Exp $
+ $Id: WorkingMemoryImpl.java,v 1.12 2004-04-02 23:07:15 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ import java.util.ArrayList;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.11 2004-03-30 21:13:19 n_alex Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.12 2004-04-02 23:07:15 n_alex Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -136,12 +136,18 @@ class WorkingMemoryImpl
 
         Class jsrHandleFactoryClass = null;
 
-        try
+        if(cl != null)
         {
-            jsrHandleFactoryClass = cl.loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
+            try
+            {
+                jsrHandleFactoryClass = cl.loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
+            }
+            catch (ClassNotFoundException e)
+            {
+                // swallow
+            }
         }
-        catch (ClassNotFoundException e)
-        {
+        if(jsrHandleFactoryClass == null) {
             cl = getClass().getClassLoader();
 
             try
