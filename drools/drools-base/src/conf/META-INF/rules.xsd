@@ -32,18 +32,20 @@
         </xs:element>
 
 
-        <xs:element name="declaration" minOccurs="0" maxOccurs="unbounded" >
-            <xs:complexType>
-              <xs:sequence>
-                <xs:element ref="rules:abstractClass"/>
-              </xs:sequence>
-              <xs:attribute name="identifier"     use="required" type="xs:string"/>
-            </xs:complexType>
-          </xs:element>
-        <xs:element ref="rules:abstractExtractor" minOccurs="0" maxOccurs="unbounded" />
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="declaration" minOccurs="0" maxOccurs="unbounded" >
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element ref="rules:abstractClass"/>
+                </xs:sequence>
+                <xs:attribute name="identifier"     use="required" type="xs:string"/>
+              </xs:complexType>
+            </xs:element>
+          <xs:element ref="rules:abstractExtractor" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
 
 
-         <xs:element ref="rules:abstractCondition"  maxOccurs="unbounded" />
+        <xs:element ref="rules:abstractCondition"  maxOccurs="unbounded" />
 
         <xs:element name="duration" minOccurs="0" >
           <xs:complexType>
