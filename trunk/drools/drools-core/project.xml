@@ -146,6 +146,14 @@
             </roles>
         </developer>
 
+        <developer>
+            <name>Robert Searle</name>
+            <email>RobertSearle@hotmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+
     </developers>
 
     <contributors>
