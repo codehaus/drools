@@ -4,6 +4,7 @@ import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
 import org.drools.spi.Consequence;
 import org.drools.spi.Extractor;
+import org.drools.spi.InstrumentedExtractor;
 import org.drools.spi.MockObjectType;
 
 import org.drools.rule.Extraction;
@@ -48,7 +49,7 @@ public class RuleBaseTest extends DroolsTestCase
                                                  "localVar" );
 
         Extraction extraction = new Extraction( localDecl,
-                                                null );
+                                                new InstrumentedExtractor() );
 
         rule1.addParameterDeclaration( paramDecl );
         rule1.addExtraction( extraction );
@@ -64,13 +65,13 @@ public class RuleBaseTest extends DroolsTestCase
 
         Rule rule2 = new Rule( "test-rule 2" );
         paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
+                                     "paramVar" );
 
         localDecl = new Declaration( new MockObjectType( true ),
-                                                 "localVar" );
+                                     "localVar" );
 
         extraction = new Extraction( localDecl,
-                                                null );
+                                     new InstrumentedExtractor());
 
         rule2.addParameterDeclaration( paramDecl );
         rule2.addExtraction( extraction );
@@ -87,9 +88,10 @@ public class RuleBaseTest extends DroolsTestCase
         ruleSet.addRule(rule1);
         ruleSet.addRule(rule2);
 
-        RuleBase ruleBase = new RuleBaseImpl(new Rete(),
-                                             new RuleSet[] {ruleSet},
-                                             DefaultConflictResolver.getInstance());
+        Builder builder = new Builder();
+        builder.addRuleSet(ruleSet);
+        builder.setConflictResolver(DefaultConflictResolver.getInstance());
+        RuleBase ruleBase = builder.buildRuleBase();
 
         // Serialize to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
