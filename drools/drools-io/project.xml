@@ -23,6 +23,16 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.0.b2</version>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.6.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -46,5 +56,34 @@
       <report>maven-javadoc-plugin</report>
       <report>maven-junit-report-plugin</report>
     </reports>
+
+    <build>
+
+        <!-- J A R  R E S O U R C E S -->
+        <!-- Resources that are packaged up inside the JAR file -->
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <resources>
+                <resource>
+                    <directory>src/test/data</directory>
+                    <includes>
+                        <include>**/*.data</include>
+                    </includes>
+                </resource>
+            </resources>
+        </unitTest>
+
+        <resources>
+            <resource>
+                <directory>src/main/conf</directory>
+                <includes>
+                    <include>**/*.xsd</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
 </project>
 

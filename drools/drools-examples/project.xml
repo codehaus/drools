@@ -102,7 +102,7 @@
         </dependency>
         <dependency>
             <id>janino</id>
-            <version>2.0.7</version>
+            <version>2.0.9</version>
         </dependency>
         <dependency>
             <groupId>aspectj</groupId>
@@ -117,6 +117,16 @@
             <groupId>jsr94</groupId>
             <artifactId>jsr94</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.0.b2</version>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.6.2</version>
         </dependency>
     </dependencies>
 
