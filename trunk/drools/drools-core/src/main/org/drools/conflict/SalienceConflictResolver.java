@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: SalienceConflictResolver.java,v 1.9 2004-10-05 19:04:28 mproctor Exp $
+ * $Id: SalienceConflictResolver.java,v 1.10 2004-10-05 19:09:31 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -105,9 +105,10 @@ public class SalienceConflictResolver implements ConflictResolver
     {
         ListIterator listIter;
         Activation eachActivation;
+        int salience = activation.getRule( ).getSalience( );
 
         //quick optimisation, check if should just add
-        if ( list.isEmpty( ) )
+        if ( !list.isEmpty( ) )
         {
             eachActivation = ( Activation ) list.get( list.size( ) - 1 );
             if ( eachActivation.getRule( ).getSalience( ) > salience )
@@ -147,7 +148,6 @@ public class SalienceConflictResolver implements ConflictResolver
         // that has a lower salience than the item to be inserted,
         // insert the item *before* it by backing up and adding
         // to the list. Then return a list of any conflicts
-        int salience = activation.getRule( ).getSalience( );
         for ( listIter = list.listIterator( ); listIter.hasNext( ); )
         {
             eachActivation = ( Activation ) listIter.next( );
@@ -155,14 +155,11 @@ public class SalienceConflictResolver implements ConflictResolver
             {
                 //do we still have any conflicts
                 int startIndex = listIter.previousIndex( );
-                while ( listIter.hasNext()
-                        &&
-                        eachActivation.getRule( ).getSalience( ) == salience )
+                while ( eachActivation.getRule( ).getSalience( ) == salience )
                 {
                     eachActivation = ( Activation ) listIter.next( );
                 }
                 int endIndex = listIter.previousIndex( );
-                endIndex = endIndex - ((listIter.hasNext()) ? 0 : 1);
                 if ( startIndex == endIndex )
                 {
                     listIter.previous( );
