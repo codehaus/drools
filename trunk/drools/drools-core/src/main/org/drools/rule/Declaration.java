@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.29 2004-12-05 01:53:53 simon Exp $
+ * $Id: Declaration.java,v 1.30 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

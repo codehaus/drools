@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConflictResolver.java,v 1.9 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: ConflictResolver.java,v 1.10 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ import java.util.Comparator;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
- * @version $Id: ConflictResolver.java,v 1.9 2004-11-19 02:14:48 mproctor Exp $
+ * @version $Id: ConflictResolver.java,v 1.10 2004-12-06 01:30:37 dbarnett Exp $
  */
 public interface ConflictResolver
     extends

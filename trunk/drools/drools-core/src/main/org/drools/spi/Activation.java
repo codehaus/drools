@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Activation.java,v 1.5 2004-09-17 00:14:12 mproctor Exp $
+ * $Id: Activation.java,v 1.6 2004-12-06 01:30:37 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -47,7 +47,7 @@ import org.drools.rule.Rule;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Activation.java,v 1.5 2004-09-17 00:14:12 mproctor Exp $
+ * @version $Id: Activation.java,v 1.6 2004-12-06 01:30:37 dbarnett Exp $
  */
 public interface Activation
 {

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: RuleSet.java,v 1.17 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,7 +57,7 @@ import java.util.Set;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
+ * @version $Id: RuleSet.java,v 1.17 2004-12-06 01:30:37 dbarnett Exp $
  */
 public class RuleSet
     implements

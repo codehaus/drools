@@ -43,7 +43,7 @@ import java.util.Iterator;
  * </pre>
  * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * @version $Revision: 1.3 $ $Date: 2004-12-06 01:30:38 $
  * 
  * @author Stephen Colebourne
  */

@@ -1,6 +1,6 @@
 package org.drools.util;
 /*
- * $Id: PrimitiveLongStack.java,v 1.5 2004-11-19 02:15:18 mproctor Exp $
+ * $Id: PrimitiveLongStack.java,v 1.6 2004-12-06 01:30:38 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

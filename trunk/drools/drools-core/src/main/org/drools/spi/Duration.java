@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Duration.java,v 1.5 2004-09-17 00:14:13 mproctor Exp $
+ * $Id: Duration.java,v 1.6 2004-12-06 01:30:37 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: FixedDuration.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
+ * $Id: FixedDuration.java,v 1.5 2004-12-06 01:30:37 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,7 +51,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: FixedDuration.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
+ * @version $Id: FixedDuration.java,v 1.5 2004-12-06 01:30:37 dbarnett Exp $
  */
 public class FixedDuration
     implements

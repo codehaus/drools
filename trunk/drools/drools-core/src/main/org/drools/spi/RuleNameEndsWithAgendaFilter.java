@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameEndsWithAgendaFilter.java,v 1.2 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: RuleNameEndsWithAgendaFilter.java,v 1.3 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
