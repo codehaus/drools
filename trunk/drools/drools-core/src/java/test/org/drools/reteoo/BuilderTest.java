@@ -19,8 +19,8 @@ import java.util.Iterator;
 
 public class BuilderTest extends TestCase
 {
-    private RootNode rootNode;
-    private Builder  builder;
+    private RootNodeImpl rootNode;
+    private Builder      builder;
 
     private ObjectType stringType;
     private ObjectType objectType;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.8 2002-07-27 05:52:17 bob Exp $
+ $Id: JoinNode.java,v 1.9 2002-07-28 13:55:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -63,213 +63,24 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class JoinNode extends TupleSource implements TupleSink
+public interface JoinNode extends TupleSource, TupleSink
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The left input <code>TupleSource</code>.
-     */
-    private TupleSource leftInput;
-
-    /** The right input <code>TupleSource</code>.
-     */
-    private TupleSource rightInput;
-
-    /** A <code>Set</code> of <code>Declarations</code>
-     *  common to both left and right input sources.
-     */
-    private Set commonDeclarations;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param leftInput The left input <code>TupleSource</code>.
-     *  @param rightInput The right input <code>TupleSource</code>.
-     */
-    public JoinNode(TupleSource leftInput,
-                    TupleSource rightInput)
-    {
-        this.leftInput  = leftInput;
-        this.rightInput = rightInput;
-
-        determineCommonDeclarations();
-
-        leftInput.setTupleSink( this );
-        rightInput.setTupleSink( this );
-    }
-
-    /** Set up the <code>Set</code> of common <code>Declarations</code>
-     *  across the two input <code>TupleSources</code>.
-     */
-    private void determineCommonDeclarations()
-    {
-        this.commonDeclarations = new HashSet();
-
-        Set leftDecls = leftInput.getTupleDeclarations();
-        Set rightDecls = rightInput.getTupleDeclarations();
-
-        Iterator    declIter = rightDecls.iterator();
-        Declaration eachDecl = null;
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-
-            if ( leftDecls.contains( eachDecl ) )
-            {
-                this.commonDeclarations.add( eachDecl );
-            }
-        }
-    }
-
     /** Retrieve the set of common <code>Declarations</code>
      *  across the two input <code>TupleSources</code>.
      *
      *  @return The <code>Set</code> of common <code>Declarations</code>.
      */
-    public Set getCommonDeclarations()
-    {
-        return this.commonDeclarations;
-    }
+    Set getCommonDeclarations();
 
     /** Retrieve the left input <code>TupleSource</code>.
      *
      *  @return The left input <code>TupleSource</code>.
      */
-    protected TupleSource getLeftInput()
-    {
-        return this.leftInput;
-    }
+    TupleSource getLeftInput();
 
     /** Retrieve the right input <code>TupleSource</code>.
      *
      *  @return The right input <code>TupleSource</code>.
      */
-    protected TupleSource getRightInput()
-    {
-        return this.rightInput;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.reteoo.TupleSource
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the <code>Set</code> of <code>Declaration</code>s.
-     *  in the propagated <code>Tuples</code>.
-     *
-     *  @see Declaration
-     *
-     *  @return The <code>Set</code> of <code>Declarations</code>
-     *          in progated <code>Tuples</code>.
-     */
-    public Set getTupleDeclarations()
-    {
-        Set decls = new HashSet();
-
-        decls.addAll( getLeftInput().getTupleDeclarations() );
-        decls.addAll( getRightInput().getTupleDeclarations() );
-
-        return decls;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.reteoo.TupleSink
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Assert a new <code>Tuple</code>.
-     *
-     *  @param inputSource The source of the <code>Tuple</code>.
-     *  @param tuple The <code>Tuple</code> being asserted.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws AssertionException If an error occurs while asserting.
-     */
-    public void assertTuple(TupleSource inputSource,
-                            ReteTuple tuple,
-                            WorkingMemory workingMemory) throws AssertionException
-    {
-        JoinMemory memory = workingMemory.getJoinMemory( this );
-
-        Set joinedTuples = null;
-
-        if ( inputSource == leftInput )
-        {
-            joinedTuples = memory.addLeftTuple( tuple );
-        }
-        else
-        {
-            joinedTuples = memory.addRightTuple( tuple );
-        }
-
-        if ( joinedTuples.isEmpty() )
-        {
-            return;
-        }
-
-        Iterator  tupleIter = joinedTuples.iterator();
-        ReteTuple eachTuple = null;
-
-        while ( tupleIter.hasNext() )
-        {
-            eachTuple = (ReteTuple) tupleIter.next();
-
-            propagateAssertTuple( eachTuple,
-                                  workingMemory );
-        }
-    }
-
-    /** Retract tuples.
-     *
-     *  @param key The tuple key.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws RetractionException If an error occurs while retracting.
-     */
-    public void retractTuples(TupleKey key,
-                              WorkingMemory workingMemory) throws RetractionException
-    {
-        JoinMemory memory = workingMemory.getJoinMemory( this );
-
-        memory.retractTuples( key );
-
-        propagateRetractTuples( key,
-                                workingMemory );
-    }
-
-    /** Modify tuples.
-     *
-     *  @param inputSource Source of modifications.
-     *  @param trigger The root fact object.
-     *  @param newTuples Modification replacement tuples.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException If an error occurs while modifying.
-     */
-    public void modifyTuples(TupleSource inputSource,
-                             Object trigger,
-                             TupleSet newTuples,
-                             WorkingMemory workingMemory) throws FactException
-    {
-        JoinMemory memory = workingMemory.getJoinMemory( this );
-
-        if ( inputSource == leftInput )
-        {
-            memory.modifyLeftTuples( trigger,
-                                     newTuples,
-                                     this,
-                                     workingMemory );
-        }
-        else
-        {
-            memory.modifyRightTuples( trigger,
-                                      newTuples,
-                                      this,
-                                      workingMemory );
-        }
-    }
+    TupleSource getRightInput();
 }

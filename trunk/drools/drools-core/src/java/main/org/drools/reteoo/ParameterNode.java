@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.9 2002-07-27 05:55:59 bob Exp $
+ $Id: ParameterNode.java,v 1.10 2002-07-28 13:55:47 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -70,121 +70,11 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ParameterNode extends TupleSource
+public interface ParameterNode extends TupleSource
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The parameter declaration. */
-    private Declaration declaration;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param inputNode The <code>ObjectTypeNode</code> input to this.
-     *  @param declaration The root fact object <code>Declaration</code>.
-     */
-    public ParameterNode(ObjectTypeNode inputNode,
-                         Declaration declaration)
-    {
-        this.declaration = declaration;
-
-        if ( inputNode != null )
-        {
-            inputNode.addParameterNode( this );
-        }
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
     /** Retrieve the root fact object <code>Declaration</code>.
      *
      *  @return The <code>Declaration</code>.
      */
-    public Declaration getDeclaration()
-    {
-        return this.declaration;
-    }
-
-    /** Assert a new fact object into this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to assert.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws AssertionException if an error occurs during assertion.
-     */
-    protected void assertObject(Object object,
-                                WorkingMemory workingMemory) throws AssertionException
-    {
-        ReteTuple tuple = new ReteTuple( getDeclaration(),
-                                         object );
-
-        propagateAssertTuple( tuple,
-                              workingMemory );
-    }
-
-    /** Retract a fact object from this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to retract.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws RetractionException if an error occurs during retraction.
-     */
-    protected void retractObject(Object object,
-                                 WorkingMemory workingMemory) throws RetractionException
-    {
-        TupleKey key = new TupleKey( getDeclaration(),
-                                     object );
-
-        propagateRetractTuples( key,
-                                workingMemory );
-    }
-
-    /** Modify a fact object in this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  With the exception of time-based nodes, modification of
-     *  a fact object is semantically equivelent to retracting and
-     *  re-asserting it.
-     *
-     *  @param object The object to modify.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException if an error occurs during modification.
-     */
-    protected void modifyObject(Object object,
-                                WorkingMemory workingMemory) throws FactException
-    {
-        ReteTuple tuple = new ReteTuple( getDeclaration(),
-                                         object );
-        
-        TupleSet tupleSet = new TupleSet( tuple );
-
-        propagateModifyTuples( object,
-                               tupleSet,
-                               workingMemory );
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.reteoo.TupleSource
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the <code>Set</code> of <code>Declaration</code>s
-     *  in the propagated <code>Tuples</code>.
-     *
-     *  @return The <code>Set</code> of <code>Declarations</code>
-     *          in progated <code>Tuples</code>.
-     */
-    public Set getTupleDeclarations()
-    {
-        return Collections.singleton( this.declaration );
-    }
+    Declaration getDeclaration();
 }

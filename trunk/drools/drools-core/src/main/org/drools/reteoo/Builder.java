@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.10 2002-07-27 05:55:59 bob Exp $
+ $Id: Builder.java,v 1.11 2002-07-28 13:55:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,6 +45,15 @@ package org.drools.reteoo;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
+
+import org.drools.reteoo.impl.RootNodeImpl;
+import org.drools.reteoo.impl.ObjectTypeNodeImpl;
+import org.drools.reteoo.impl.ParameterNodeImpl;
+import org.drools.reteoo.impl.FilterNodeImpl;
+import org.drools.reteoo.impl.JoinNodeImpl;
+import org.drools.reteoo.impl.AssignmentNodeImpl;
+import org.drools.reteoo.impl.TerminalNodeImpl;
+import org.drools.reteoo.impl.TupleSourceImpl;
 import org.drools.spi.Rule;
 import org.drools.spi.Declaration;
 import org.drools.spi.ObjectType;
@@ -69,7 +78,7 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Root node to build against. */
-    private RootNode rootNode;
+    private RootNodeImpl rootNode;
 
     /** Total-ordering priority counter. */
     private int priorityCounter;
@@ -83,7 +92,7 @@ public class Builder
      *
      *  @param rootNode The network to add on to.
      */
-    public Builder(RootNode rootNode)
+    public Builder(RootNodeImpl rootNode)
     {
         this.rootNode = rootNode;
     }
@@ -155,9 +164,9 @@ public class Builder
 
         TupleSource lastNode = (TupleSource) attachableNodes.iterator().next();
 
-        TerminalNode terminal = new TerminalNode( lastNode,
-                                                  rule,
-                                                  ++this.priorityCounter);
+        TerminalNode terminal = new TerminalNodeImpl( lastNode,
+                                                      rule,
+                                                      ++this.priorityCounter);
     }
 
     /** Create the <code>ParameterNode</code>s for the <code>Rule</code>,
@@ -177,9 +186,9 @@ public class Builder
         Iterator    declIter = parameterDecls.iterator();
         Declaration eachDecl = null;
 
-        ObjectType     objectType     = null;
-        ObjectTypeNode objectTypeNode = null;
-        ParameterNode  paramNode      = null;
+        ObjectType         objectType     = null;
+        ObjectTypeNodeImpl objectTypeNode = null;
+        ParameterNode      paramNode      = null;
 
         while ( declIter.hasNext() )
         {
@@ -187,10 +196,10 @@ public class Builder
 
             objectType = eachDecl.getObjectType();
 
-            objectTypeNode = getRootNode().getOrCreateObjectTypeNode( objectType );
+            objectTypeNode = ((RootNodeImpl)getRootNode()).getOrCreateObjectTypeNode( objectType );
 
-            paramNode = new ParameterNode( objectTypeNode,
-                                           eachDecl );
+            paramNode = new ParameterNodeImpl( objectTypeNode,
+                                               eachDecl );
 
             attachableNodes.add( paramNode );
             
@@ -219,7 +228,7 @@ public class Builder
     {
         Iterator        condIter    = filterConds.iterator();
         FilterCondition eachCond    = null;
-        TupleSource     tupleSource = null;
+        TupleSourceImpl tupleSource = null;
 
         FilterNode filterNode = null;
 
@@ -237,8 +246,8 @@ public class Builder
 
             condIter.remove();
 
-            filterNode = new FilterNode( tupleSource,
-                                         eachCond );
+            filterNode = new FilterNodeImpl( tupleSource,
+                                             eachCond );
 
             attachableNodes.remove( tupleSource );
 
@@ -272,37 +281,37 @@ public class Builder
         Object[] leftNodes  = attachableNodes.toArray();
         Object[] rightNodes = attachableNodes.toArray();
 
-        TupleSource left  = null;
-        TupleSource right = null;
+        TupleSourceImpl left  = null;
+        TupleSourceImpl right = null;
 
         JoinNode joinNode = null;
 
-      outter:
+      OUTTER:
         for ( int i = 0 ; i < leftNodes.length ; ++i )
         {
-            left = (TupleSource) leftNodes[i];
+            left = (TupleSourceImpl) leftNodes[i];
 
             if ( ! attachableNodes.contains( left ) )
             {
-                continue outter;
+                continue OUTTER;
             }
 
-          inner:
+          INNER:
             for ( int j = i + 1; j < rightNodes.length ; ++j )
             {
-                right = (TupleSource) rightNodes[j];
+                right = (TupleSourceImpl) rightNodes[j];
 
                 if ( ! attachableNodes.contains( right ) )
                 {
-                    continue inner;
+                    continue INNER;
                 }
 
                 if ( canBeJoined( left,
                                   right ) )
                 
                 {
-                    joinNode = new JoinNode( left,
-                                             right );
+                    joinNode = new JoinNodeImpl( left,
+                                                 right );
 
                     attachableNodes.remove( left );
                     attachableNodes.remove( right );
@@ -311,15 +320,11 @@ public class Builder
 
                     performedJoin = true;
 
-                    // System.err.println( joinNode + " from " + left + " and " + right );
-                    // System.err.println( attachableNodes );
-
-                    continue outter;
+                    continue OUTTER;
                 }
             }
         }
 
-        // System.err.println( "EXIT joinNodes" );
         return performedJoin;
     }
 
@@ -377,7 +382,7 @@ public class Builder
 
             Iterator            condIter  = assignmentConds.iterator();
             AssignmentCondition eachCond  = null;
-            TupleSource         tupleSource = null;
+            TupleSourceImpl     tupleSource = null;
             
             AssignmentNode assignNode = null;
             
@@ -395,9 +400,9 @@ public class Builder
                 
                 condIter.remove();
                 
-                assignNode = new AssignmentNode( tupleSource,
-                                                 eachCond.getTargetDeclaration(),
-                                                 eachCond.getFactExtractor() );
+                assignNode = new AssignmentNodeImpl( tupleSource,
+                                                     eachCond.getTargetDeclaration(),
+                                                     eachCond.getFactExtractor() );
                 
                 attachableNodes.remove( tupleSource );
                 attachableNodes.add( assignNode );
@@ -424,17 +429,17 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSource findMatchingTupleSourceForFiltering(FilterCondition condition,
+    protected TupleSourceImpl findMatchingTupleSourceForFiltering(FilterCondition condition,
                                                               Set sources)
     {
-        Iterator    sourceIter = sources.iterator();
-        TupleSource eachSource = null;
+        Iterator        sourceIter = sources.iterator();
+        TupleSourceImpl eachSource = null;
 
         Set decls = null;
 
         while ( sourceIter.hasNext() )
         {
-            eachSource = (TupleSource) sourceIter.next();
+            eachSource = (TupleSourceImpl) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
 
@@ -457,19 +462,19 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSource findMatchingTupleSourceForAssignment(AssignmentCondition condition,
-                                                               Set sources)
+    protected TupleSourceImpl findMatchingTupleSourceForAssignment(AssignmentCondition condition,
+                                                                   Set sources)
     {
         Declaration targetDecl = condition.getTargetDeclaration();
 
-        Iterator    sourceIter = sources.iterator();
-        TupleSource eachSource = null;
+        Iterator        sourceIter = sources.iterator();
+        TupleSourceImpl eachSource = null;
 
         Set decls = null;
 
         while ( sourceIter.hasNext() )
         {
-            eachSource = (TupleSource) sourceIter.next();
+            eachSource = (TupleSourceImpl) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
             // System.err.println( "decls -> " + decls );

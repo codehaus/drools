@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RootNode.java,v 1.6 2002-07-27 05:52:17 bob Exp $
+ $Id: RootNode.java,v 1.7 2002-07-28 13:55:47 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -68,139 +68,15 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class RootNode
+public interface RootNode
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The set of <code>ObjectTypeNodes</code>. */
-    private Map objectTypeNodes;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    public RootNode()
-    {
-        this.objectTypeNodes = Collections.EMPTY_MAP;
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Assert a new fact object into this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to assert.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws AssertionException if an error occurs during assertion.
-     */
-    public void assertObject(Object object,
-                             WorkingMemory workingMemory) throws AssertionException
-    {
-        Iterator       nodeIter = getObjectTypeNodeIterator();
-        ObjectTypeNode eachNode = null;
-
-        while ( nodeIter.hasNext() )
-        {
-            eachNode = (ObjectTypeNode) nodeIter.next();
-
-            eachNode.assertObject( object,
-                                   workingMemory );
-        }
-    }
-
-    /** Retract a fact object from this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to retract.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws RetractionException if an error occurs during retraction.
-     */
-    public void retractObject(Object object,
-                             WorkingMemory workingMemory) throws RetractionException
-    {
-        Iterator       nodeIter = getObjectTypeNodeIterator();
-        ObjectTypeNode eachNode = null;
-
-        while ( nodeIter.hasNext() )
-        {
-            eachNode = (ObjectTypeNode) nodeIter.next();
-
-            eachNode.retractObject( object,
-                                    workingMemory );
-        }
-    }
-
-    /** Modify a fact object in this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  With the exception of time-based nodes, modification of
-     *  a fact object is semantically equivelent to retracting and
-     *  re-asserting it.
-     *
-     *  @param object The object to modify.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException if an error occurs during modification.
-     */
-    public void modifyObject(Object object,
-                             WorkingMemory workingMemory) throws FactException
-    {
-        Iterator       nodeIter = getObjectTypeNodeIterator();
-        ObjectTypeNode eachNode = null;
-
-        while ( nodeIter.hasNext() )
-        {
-            eachNode = (ObjectTypeNode) nodeIter.next();
-
-            eachNode.modifyObject( object,
-                                   workingMemory );
-        }
-    }
-
-    /** Add an <code>ObjectTypeNode</code> child to
-     *  this <code>RootNode</code>.
-     *
-     *  @param node The node to add.
-     */
-    protected void addObjectTypeNode(ObjectTypeNode node)
-    {
-        if ( this.objectTypeNodes == Collections.EMPTY_MAP )
-        {
-            this.objectTypeNodes = new HashMap();
-        }
-
-        this.objectTypeNodes.put( node.getObjectType(),
-                                  node );
-    }
 
     /** Retrieve all <code>ObjectTypeNode</code> children
      *  of this node.
      *
      *  @return The <code>Set</code> of <code>ObjectTypeNodes</code>.
      */
-    protected Collection getObjectTypeNodes()
-    {
-        return this.objectTypeNodes.values();
-    }
-
-    /** Retrieve an <code>Iterator</code> over the
-     *  <code>ObjectTypeNode</code> children of this
-     *  node.
-     *
-     *  @return An <code>Iterator</code> over <code>ObjectTypeNodes</code>.
-     */
-    protected Iterator getObjectTypeNodeIterator()
-    {
-        return this.objectTypeNodes.values().iterator();
-    }
+    Collection getObjectTypeNodes();
 
     /** Retrieve an <code>ObjectTypeNode</code> keyed by <code>ObjectType</code>.
      *
@@ -209,29 +85,5 @@ public class RootNode
      *  @return The matching <code>ObjectTypeNode</code> if one has already
      *          been created, else <code>null</code>.
      */
-    protected ObjectTypeNode getObjectTypeNode(ObjectType objectType)
-    {
-        return (ObjectTypeNode) this.objectTypeNodes.get( objectType );
-    }
-
-    /** Retrieve an <code>ObjectTypeNode</code> keyed by <code>ObjectType</code>,
-     *  creating one, if necessary.
-     *
-     *  @param objectType The <code>ObjectType</code> key.
-     *
-     *  @return The matching <code>ObjectTypeNode</code>.
-     */
-    protected ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)
-    {
-        ObjectTypeNode node = getObjectTypeNode( objectType );
-
-        if ( node == null )
-        {
-            node = new ObjectTypeNode( objectType );
-
-            addObjectTypeNode( node );
-        }
-
-        return node;
-    }
+    ObjectTypeNode getObjectTypeNode(ObjectType objectType);
 }

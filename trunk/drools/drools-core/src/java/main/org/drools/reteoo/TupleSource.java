@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSource.java,v 1.10 2002-07-27 05:52:17 bob Exp $
+ $Id: TupleSource.java,v 1.11 2002-07-28 13:55:47 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,30 +64,8 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class TupleSource
+public interface TupleSource
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The destination for <code>Tuples</code>. */
-    private TupleSink tupleSink;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    protected TupleSource()
-    {
-        // intentionally left blank.
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
     /** Retrieve the <code>Set</code> of <code>Declaration<code>s
      *  in the propagated <code>Tuples</code>.
      *
@@ -96,18 +74,7 @@ public abstract class TupleSource
      *  @return The <code>Set</code> of <code>Declarations</code>
      *          in progated <code>Tuples</code>.
      */
-    protected abstract Set getTupleDeclarations();
-
-    /** Set the <code>TupleSink</code> that receives <code>Tuples</code>
-     *  propagated from this <code>TupleSource</code>.
-     *
-     *  @param tupleSink The <code>TupleSink</code> to receive
-     *         propagated <code>Tuples</code>.
-     */
-    protected void setTupleSink(TupleSink tupleSink)
-    {
-        this.tupleSink = tupleSink;
-    }
+    Set getTupleDeclarations();
 
     /** Retrieve the <code>TupleSink</code> that receives
      *  propagated <code>Tuples</code>.
@@ -115,78 +82,6 @@ public abstract class TupleSource
      *  @return The <code>TupleSink</code> that receives
      *          propagated <code>Tuples</code>.
      */
-    protected TupleSink getTupleSink()
-    {
-        return this.tupleSink;
-    }
+    TupleSink getTupleSink();
 
-    /** Propagate the assertion of a <code>Tuple</code>
-     *  to this node's <code>TupleSink</code>.
-     *
-     *  @param tuple The <code>Tuple</code> to propagate.
-     *  @param workingMemory the working memory session.
-     *
-     *  @throws AssertionException If an errors occurs while
-     *          attempting assertion.
-     */
-    protected void propagateAssertTuple(ReteTuple tuple,
-                                        WorkingMemory workingMemory) throws AssertionException
-    {
-        TupleSink sink = getTupleSink();
-
-        if ( sink != null )
-        {
-            sink.assertTuple( this,
-                              tuple,
-                              workingMemory );
-        }
-    }
-
-    /** Propagate the retration of a <code>Tuple</code>
-     *  to this node's <code>TupleSink</code>.
-     *
-     *  @param key The tuple key.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws RetractionException If an error occurs while
-     *          attempting retraction
-     *
-     */
-    protected void propagateRetractTuples(TupleKey key,
-                                          WorkingMemory workingMemory) throws RetractionException
-    {
-        TupleSink sink = getTupleSink();
-
-        if ( sink != null )
-        {
-            sink.retractTuples( key,
-                                workingMemory );
-        }
-    }
-
-    /** Propagate the modification of <code>Tuple</code>s
-     *  to this node's <code>TupleSink</code>.
-     *
-     *  @param trigger The modification trigger object.
-     *  @param newTuples Modification replacement tuples.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException If an error occurs while
-     *          attempting modification.
-     */
-    protected void propagateModifyTuples(Object trigger,
-                                         TupleSet newTuples,
-                                         WorkingMemory workingMemory) throws FactException
-    {
-        // System.err.println( this + " modifyTuples(" + newTuples + ")" );
-        TupleSink sink = getTupleSink();
-
-        if ( sink != null )
-        {
-            sink.modifyTuples( this,
-                               trigger,
-                               newTuples,
-                               workingMemory );
-        }
-    }
 }

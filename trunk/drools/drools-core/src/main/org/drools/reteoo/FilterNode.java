@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FilterNode.java,v 1.7 2002-07-27 05:52:17 bob Exp $
+ $Id: FilterNode.java,v 1.8 2002-07-28 13:55:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -70,144 +70,12 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FilterNode extends TupleSource implements TupleSink
+public interface FilterNode extends TupleSource, TupleSink
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The semantic <code>FilterCondition</code>. */
-    private FilterCondition filterCondition;
-
-    /** The source of incoming <code>Tuples</code>. */
-    private TupleSource     tupleSource;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param tupleSource The source of incoming <code>Tuples</code>.
-     *  @param filterCondition The semantic <code>FilterCondition</code>.
-     */
-    public FilterNode(TupleSource tupleSource,
-                      FilterCondition filterCondition)
-    {
-        this.filterCondition = filterCondition;
-        this.tupleSource     = tupleSource;
-
-        if ( tupleSource != null )
-        {
-            this.tupleSource.setTupleSink( this );
-        }
-    }
-
     /** Retrieve the <code>FilterCondition</code> associated
      *  with this node.
      *
      *  @return The <code>FilterCondition</code>.
      */
-    public FilterCondition getFilterCondition()
-    {
-        return this.filterCondition;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.reteoo.TupleSource
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the <code>Set</code> of <code>Declaration</code>s
-     *  in the propagated <code>Tuples</code>.
-     *
-     *  @return The <code>Set</code> of <code>Declarations</code>
-     *          in progated <code>Tuples</code>.
-     */
-    public Set getTupleDeclarations()
-    {
-        return this.tupleSource.getTupleDeclarations();
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.reteoo.TupleSink
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Assert a new <code>Tuple</code>.
-     *
-     *  @param inputSource The source of the <code>Tuple</code>.
-     *  @param tuple The <code>Tuple</code> being asserted.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws AssertionException If an error occurs while asserting.
-     */
-    public void assertTuple(TupleSource inputSource,
-                            ReteTuple tuple,
-                            WorkingMemory workingMemory) throws AssertionException
-    {
-        if ( getFilterCondition().isAllowed( tuple ) )
-        {
-            propagateAssertTuple( tuple,
-                                  workingMemory );
-        }
-    }
-
-    /** Retract tuples.
-     *
-     *  @param key The tuple key.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws RetractionException If an error occurs while retracting.
-     */
-    public void retractTuples(TupleKey key,
-                              WorkingMemory workingMemory) throws RetractionException
-    {
-        propagateRetractTuples( key,
-                                workingMemory );
-    }
-
-    /** Modify tuples.
-     *
-     *  @param inputSource Source of modifications.
-     *  @param trigger The root fact object.
-     *  @param newTuples Modification replacement tuples.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException If an error occurs while modifying.
-     */
-    public void modifyTuples(TupleSource inputSource,
-                             Object trigger,
-                             TupleSet newTuples,
-                             WorkingMemory workingMemory) throws FactException
-    {
-        Set retractedKeys = new HashSet();
-
-        Iterator  tupleIter = newTuples.iterator();
-        ReteTuple eachTuple = null;
-
-        while ( tupleIter.hasNext() )
-        {
-            eachTuple = (ReteTuple) tupleIter.next();
-
-            if ( ! getFilterCondition().isAllowed( eachTuple ) )
-            {
-                tupleIter.remove();
-                retractedKeys.add( eachTuple.getKey() );
-            }
-        }
-
-        propagateModifyTuples( trigger,
-                               newTuples,
-                               workingMemory );
-
-        Iterator keyIter = retractedKeys.iterator();
-        TupleKey eachKey = null;
-
-        while ( keyIter.hasNext() )
-        {
-            eachKey = (TupleKey) keyIter.next();
-
-            propagateRetractTuples( eachKey,
-                                    workingMemory );
-        }
-    }
+    FilterCondition getFilterCondition();
 }
