@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rules xmlns="http://drools.org/rules"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://drools.org/rules drl.xsd">
+
+  <semantics module="org.drools.semantics.java"/>
+
+  <rule-set name="Fishmonger Rules"
+           xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="Explode Cart">
+
+      <parameter identifier="cart">
+        <java:class type="fishmonger.ShoppingCart"/>
+      </parameter>
+
+      <consequence>
+        <java:consequence>
+         
+          import java.util.Iterator;
+
+          System.err.println( "Examining each item in the shopping cart." );
+
+          Iterator itemIter = cart.getItems().iterator();
+
+          while ( itemIter.hasNext() )
+          {
+              assertObject( itemIter.next() );
+          }
+
+        </java:consequence>
+      </consequence>
+
+    </rule>
+
+    <rule name="Free Fish Food Special">
+
+      <parameter identifier="cart">
+        <java:class type="fishmonger.ShoppingCart"/>
+      </parameter>
+
+      <parameter identifier="item">
+        <java:class type="fishmonger.CartItem"/>
+      </parameter>
+
+      <condition>
+        <java:condition>item.getName().equals( "tropical fish" )</java:condition>
+      </condition>
+
+      <condition>
+        <java:condition>cart.getItems( "tropical fish food" ).size() == 0</java:condition>
+      </condition>
+
+      <consequence>
+        <java:consequence>
+          System.err.println( "Adding free tropical fish food sample to cart" );
+
+          cart.addItem( new fishmonger.CartItem( "tropical fish food sample", 0.00 ) );
+        </java:consequence>
+      </consequence>
+
+    </rule>
+
+    <rule name="Suggest Tank">
+
+      <parameter identifier="cart">
+        <java:class type="fishmonger.ShoppingCart"/>
+      </parameter>
+
+      <condition>
+        <java:condition>cart.getItems( "tropical fish" ).size() &gt; 5</java:condition>
+      </condition>
+      <condition>
+        <java:condition>cart.getItems( "tank" ).size() == 0</java:condition>
+      </condition>
+
+      <consequence>
+        <java:consequence>
+          System.err.println( "*** SUGGESTION: Would you like to buy a tank for your"
+                            + cart.getItems( "tropical fish" ).size() + " fish?" );
+        </java:consequence>
+      </consequence>
+
+    </rule>
+
+    <rule name="Apply Discount">
+
+      <parameter identifier="cart">
+        <java:class type="fishmonger.ShoppingCart"/>
+      </parameter>
+
+      <condition>
+        <java:condition>cart.getGrossCost() &gt; 20.00</java:condition>
+      </condition>
+
+      <consequence>
+        <java:consequence>
+          System.err.println( "Applying 15% discount to cart" );
+          cart.setDiscount( 0.15 );
+        </java:consequence>
+      </consequence>
+
+    </rule>
+
+  </rule-set>
+
+</rules>
+
