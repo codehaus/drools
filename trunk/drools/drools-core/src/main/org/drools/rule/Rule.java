@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.18 2003-10-28 05:00:39 bob Exp $
+ $Id: Rule.java,v 1.19 2003-10-28 08:00:14 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,6 +53,8 @@ import org.drools.spi.Tuple;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
@@ -67,7 +69,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.18 2003-10-28 05:00:39 bob Exp $
+ *  @version $Id: Rule.java,v 1.19 2003-10-28 08:00:14 bob Exp $
  */
 public class Rule
 {
@@ -92,7 +94,7 @@ public class Rule
     private Set parameterDeclarations;
 
     /** Conditions. */
-    private Set conditions;
+    private List conditions;
 
     /** Extractions */
     private Set extractions;
@@ -118,7 +120,7 @@ public class Rule
         this.parameterDeclarations = Collections.EMPTY_SET;
         this.allDeclarations       = Collections.EMPTY_SET;
 
-        this.conditions            = Collections.EMPTY_SET;
+        this.conditions            = Collections.EMPTY_LIST;
         this.extractions           = Collections.EMPTY_SET;
     }
 
@@ -355,9 +357,9 @@ public class Rule
      */
     public void addCondition(Condition condition)
     {
-        if ( this.conditions == Collections.EMPTY_SET )
+        if ( this.conditions == Collections.EMPTY_LIST )
         {
-            this.conditions = new HashSet();
+            this.conditions = new ArrayList();
         }
 
         this.conditions.add( condition );
@@ -386,7 +388,7 @@ public class Rule
      *
      *  @return The <code>Set</code> of <code>Conditions</code>.
      */
-    public Set getConditions()
+    public List getConditions()
     {
         return this.conditions;
     }
