@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.13 2004-09-14 19:06:24 mproctor Exp $
+ $Id: RuleSetReader.java,v 1.14 2004-09-14 19:28:46 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -96,7 +96,7 @@ import java.text.MessageFormat;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.13 2004-09-14 19:06:24 mproctor Exp $
+ *  @version $Id: RuleSetReader.java,v 1.14 2004-09-14 19:28:46 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -378,22 +378,15 @@ public class RuleSetReader
                InputStream python = cl.getResourceAsStream("python.xsd");
                InputStream groovy = cl.getResourceAsStream("groovy.xsd");
                InputStream rules = cl.getResourceAsStream("rules.xsd");
-               int schemas = 0;
-
-               if (java != null) schemas++;
-               if (python != null) schemas++;
-               if (groovy != null) schemas++;
-               if (rules != null) schemas++;
                
-               InputStream[] sources = new InputStream[schemas];
+               java.util.List schemaList = new java.util.ArrayList();
 
-               schemas = 0;
-               if (java != null) sources[schemas++] = java;
-               if (python != null) sources[schemas++] = python;
-               if (groovy != null) sources[schemas++] = groovy;
-               if (rules != null)sources[schemas++] = rules;   
+               if (java != null) schemaList.add(java);
+               if (python != null) schemaList.add(python);
+               if (groovy != null) schemaList.add(groovy);
+               if (rules != null) schemaList.add(rules);
                
-               System.out.println(sources);
+               InputStream[] sources = (InputStream[]) schemaList.toArray(new InputStream[0]);
                
                parser.setProperty(SCHEMA_SOURCE, sources);
             }
