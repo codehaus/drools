@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project
     default="jar-all"
     xmlns:ant="jelly:ant"
@@ -207,24 +207,24 @@
     <goal name="drools:dist-bin" prereqs="drools:dist-prepare,javadoc-all">
 
       <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}.zip">
-    		 <zipfileset dir="${basedir}/target/docs" 
+    		 <zipfileset dir="${basedir}/target/docs"
                              prefix="drools-${pom.currentVersion}/docs" />
-    		 <zipfileset dir="${basedir}/target/" 
-                             prefix="drools-${pom.currentVersion}/lib" 
+    		 <zipfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
                              includes="drools-*.jar"/>
-    		 <zipfileset dir="${basedir}" 
-                             prefix="drools-${pom.currentVersion}" 
+    		 <zipfileset dir="${basedir}"
+                             prefix="drools-${pom.currentVersion}"
                              includes="*.txt"/>
       </zip>
 
       <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}.tar.gz" compression="gzip">
-    		 <tarfileset dir="${basedir}/target/docs" 
+    		 <tarfileset dir="${basedir}/target/docs"
                              prefix="drools-${pom.currentVersion}/docs" />
-    		 <tarfileset dir="${basedir}/target/" 
-                             prefix="drools-${pom.currentVersion}/lib" 
+    		 <tarfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
                              includes="drools-*.jar"/>
-    		 <tarfileset dir="${basedir}/" 
-                             prefix="drools-${pom.currentVersion}" 
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
                              includes="*.txt"/>
       </tar>
     </goal>
@@ -237,29 +237,29 @@
     <goal name="drools:dist-bin-withdeps" prereqs="drools:dist-prepare,javadoc-all">
 
       <zip destfile="${basedir}/target/dist/drools-deps-${pom.currentVersion}.zip">
-    		 <zipfileset dir="${basedir}/target/docs" 
+    		 <zipfileset dir="${basedir}/target/docs"
                              prefix="drools-${pom.currentVersion}/docs" />
-   		 <zipfileset dir="${basedir}/target/dependencies" 
+   		   <zipfileset dir="${basedir}/target/dependencies"
                              prefix="drools-${pom.currentVersion}/lib" />
-    		 <zipfileset dir="${basedir}/target/" 
-                             prefix="drools-${pom.currentVersion}/lib" 
+    		 <zipfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
                              includes="drools-*.jar"/>
-    		 <zipfileset dir="${basedir}" 
-                             prefix="drools-${pom.currentVersion}" 
+    		 <zipfileset dir="${basedir}"
+                             prefix="drools-${pom.currentVersion}"
                              includes="*.txt"/>
       </zip>
 
-      <tar destfile="${basedir}/target/dist/drools-deps-${pom.currentVersion}.tar.gz" compression="gzip">
-    		 <tarfileset dir="${basedir}/target/docs" 
+      <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}.tar.gz" compression="gzip">
+    		 <tarfileset dir="${basedir}/target/docs"
                              prefix="drools-${pom.currentVersion}/docs" />
-    		 <tarfileset dir="${basedir}/target/dependencies" 
+   		   <tarfileset dir="${basedir}/target/dependencies"
                              prefix="drools-${pom.currentVersion}/lib" />
-    		 <tarfileset dir="${basedir}/target/" 
-                             prefix="drools-${pom.currentVersion}/lib" 
+    		 <tarfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
                              includes="drools-*.jar"/>
-    		 <tarfileset dir="${basedir}" 
-                             prefix="drools-${pom.currentVersion}" 
-                             excludes="*.txt"/>
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
       </tar>
     </goal>
 
@@ -268,16 +268,50 @@
 			creates .zip and .tar.gz of drools source
 		-->
     <goal name="drools:dist-src" prereqs="drools:dist-prepare,javadoc-all">
-      <zip destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.zip"
-           prefix="drools-${pom.currentVersion}"
-           excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
-           basedir="${basedir}" />
 
-      <tar destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.tar.gz" 
-           compression="gzip"
-           prefix="drools-${pom.currentVersion}"
-           excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
-           basedir="${basedir}" />
+			<copy todir="${basedir}/target/src-stage">
+				<fileset dir="${basedir}" includes="drools-*/**" />
+			</copy>
+
+			<zip destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.zip">
+				<zipfileset dir="${basedir}/target/src-stage"
+					 prefix="drools-${pom.currentVersion}"
+					 excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**" />
+
+    		 <zipfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
+
+    		 <zipfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.xml"/>
+
+    		 <zipfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.properties"/>
+			</zip>
+
+			<tar destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.zip" compression="gzip">
+				<tarfileset dir="${basedir}/target/src-stage"
+					 prefix="drools-${pom.currentVersion}"
+					 excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**" />
+
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
+
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.xml"/>
+
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.properties"/>
+			</tar>
+
+      <ant:delete includeEmptyDirs="true">
+        <fileset dir="${basedir}/target/src-stage"/>
+      </ant:delete>
     </goal>
 
     <goal name="drools:get-deps">
