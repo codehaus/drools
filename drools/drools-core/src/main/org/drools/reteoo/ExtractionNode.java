@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.33 2004-11-24 14:09:11 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.34 2004-11-24 16:16:13 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -89,7 +89,7 @@ class ExtractionNode extends TupleSource
      * @param targetDeclaration
      *            Target of extraction.
      * @param extractor
-     *            The fact extractor to use. 
+     *            The fact extractor to use.
      */
     public ExtractionNode(TupleSource tupleSource,
                           Declaration targetDeclaration,
@@ -186,16 +186,13 @@ class ExtractionNode extends TupleSource
             return;
         }
 
-        if (!this.isParameter)
+        if (otherValue == null)
         {
-	        FactHandle handle = workingMemory.newExtractionHandle( );
-	        workingMemory.putExtraction( handle,
-	                                     value );
-	        tuple = new ReteTuple( tuple,
-                                   handle,
-                                   getTargetDeclaration( ));
+            tuple = new ReteTuple( tuple,
+                                   getTargetDeclaration( ),
+                                   value );
         }
-        
+
         propagateAssertTuple( tuple,
                               workingMemory );
     }
@@ -214,11 +211,10 @@ class ExtractionNode extends TupleSource
     public void retractTuples(TupleKey key,
                               WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        FactHandle handle = key.get( this.targetDeclaration );
-        if ( handle != null )
-        {
-            workingMemory.removeExtraction( handle );
-        }
+        /*
+         * FactHandle handle = key.get( this.targetDeclaration ); if ( handle !=
+         * null ) { workingMemory.removeExtraction( handle ); }
+         */
         propagateRetractTuples( key,
                                 workingMemory );
     }
@@ -258,27 +254,18 @@ class ExtractionNode extends TupleSource
             oldValue = null;
             eachTuple = (ReteTuple) tupleIter.next( );
 
-            handle = eachTuple.getFactHandleForDeclaration( this.targetDeclaration );
-            if ( handle != null )
-            {
-                oldValue = workingMemory.getExtraction( handle );
-            }
+            oldValue = eachTuple.get( this.targetDeclaration );
 
             newValue = getExtractor( ).extractFact( eachTuple );
 
-            if ( newValue == null )
+            // Extractions should never evaluate to null
+            // Extractions with same target should be of same type and value
+            // unless the otherValue is null
+            if ( newValue == null || !(oldValue == null || newValue.equals( oldValue )) )
             {
-                retract = true;
+                 retract = true;
             }
-            else if (isParameter && (oldValue == null))
-            {
-                retract = true;
-            }            
-            else if ((oldValue != null) && (!newValue.equals( oldValue )))
-            {
-                retract = true;
-            }
-            
+
             if ( retract == false )
             {
                 if ( modifiedTuples == null )
@@ -286,18 +273,11 @@ class ExtractionNode extends TupleSource
                     modifiedTuples = new TupleSet( );
                 }
 
-                if (!isParameter)
+                if ( oldValue == null )
                 {
-                    if (handle == null)
-                    {
-                        handle = workingMemory.newExtractionHandle( );
-    	                eachTuple = new ReteTuple( eachTuple,
-    	                                           handle,
-    	                                           this.targetDeclaration);                        
-                    }                    
-
-	                workingMemory.putExtraction( handle,
-	                                             newValue );
+                    eachTuple = new ReteTuple( eachTuple,
+                                               this.targetDeclaration,
+                                               newValue );
                 }
                 modifiedTuples.addTuple( eachTuple );
             }
@@ -307,10 +287,6 @@ class ExtractionNode extends TupleSource
 
                 if ( retractedKeys.add( eachKey ) )
                 {
-                    if ( handle != null )
-                    {
-                        workingMemory.removeExtraction( handle );
-                    }
                     propagateRetractTuples( eachKey,
                                             workingMemory );
                 }
