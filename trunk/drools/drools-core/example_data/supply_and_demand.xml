@@ -1,0 +1,40 @@
+
+<ruleset name="My Rule Set">
+
+	<import>Seller</import>
+	<import>Buyer</import>
+
+	<rule name="My Rule">
+
+		<param type="Seller">seller</param>
+		<param type="Buyer">buyer</param>
+
+		<decl type="int">avail</decl>
+
+		<when>
+			<cond>
+				seller.getQuantity() > 0
+			</cond>
+			<cond>
+				buyer.getDesiredQuantity() > 0 
+			</cond>
+			<cond>
+				buyer.getPrice() >= seller.getPrice()
+			</cond>
+		</when>
+
+		<then>
+			int qty = buyer.buy( seller.sell( buyer.getDesiredQuantity() ) );
+
+			System.err.println( buyer.getName() + " bought " + qty + " from " + seller.getName() );
+
+			System.err.println( buyer );
+			System.err.println( seller );
+
+			modifyObject( buyer );
+			modifyObject( seller );
+		</then>
+	</rule>
+
+</ruleset>
+
