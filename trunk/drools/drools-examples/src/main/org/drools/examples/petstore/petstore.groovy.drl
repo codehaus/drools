@@ -43,7 +43,7 @@
 
     </rule>
 
-    <!-- Suggest a tank if we have bought more than 5 tropical fish and dont already have one-->
+    <!-- Suggest a tank if we have bought more than 5 gold fish and dont already have one-->
     <rule name="Suggest Tank" salience="10">
         <parameter identifier="cart">
             <groovy:class>org.drools.examples.petstore.ShoppingCart</groovy:class>
@@ -58,7 +58,7 @@
 
             options = new Object[] {"Yes", "No"};
             int n = JOptionPane.showOptionDialog(frame, "Would you like to buy a tank for your " + cart.getItems( "Gold Fish" ).size() + " fish?","Purchase Suggestion",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            println "SUGGESTION: Would you like to buy a tank for your " + cart.getItems( "tropical fish" ).size() + " fish? - " ;
+            println "SUGGESTION: Would you like to buy a tank for your " + cart.getItems( "Gold Fish" ).size() + " fish? - " ;
             if (n == 0) {
               cart.addItem( new org.drools.examples.petstore.CartItem( "Fish Tank", 25 ) );
               println "Yes" ;
