@@ -23,7 +23,7 @@ public class ExprExtractorFactory
         try
         {
             return new ExprExtractor( config.getText(),
-                                      availDecls );
+                                      availDecls);
         }
         catch (Exception e)
         {
