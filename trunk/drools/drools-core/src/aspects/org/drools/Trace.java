@@ -74,7 +74,7 @@ public aspect Trace {
 
             printEntering(str);
         } catch(Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
 
     }
@@ -89,7 +89,7 @@ public aspect Trace {
             printExiting(str);
             callDepth--;
         } catch(Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -169,7 +169,7 @@ public aspect Trace {
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
