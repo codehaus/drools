@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.2 2004-11-13 01:43:06 simon Exp $
+ * $Id: DurationHandler.java,v 1.3 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,9 +56,6 @@ import java.util.HashSet;
 
 /**
  * @author mproctor
- *
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
  */
 class DurationHandler extends BaseAbstractHandler implements Handler
 {

@@ -55,7 +55,7 @@ public class ParameterNodeTest extends DroolsTestCase
      * A ParameterNode MUST return a set consisting of the initialization
      * Declaration as its only member for getParamterDeclarations().
      */
-    public void testGetTupleDeclarations()
+    public void testGetTupleDeclarations() throws Exception
     {
         Rule rule = new Rule( "test-rule 1" );
         Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );

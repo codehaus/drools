@@ -17,11 +17,11 @@ public class ExtractionNodeTest extends TestCase
     private Declaration stringDecl;
     private Declaration objectDecl;
 
-    public void setUp()
+    public void setUp() throws Exception
     {
         this.rule = new Rule( getName() );
         this.stringDecl = this.rule.addLocalDeclaration( "string", new MockObjectType( ) );
-        this.objectDecl = this.rule.addLocalDeclaration( "object", new MockObjectType( ) );        
+        this.objectDecl = this.rule.addLocalDeclaration( "object", new MockObjectType( ) );
     }
 
     public void tearDown()
@@ -47,7 +47,7 @@ public class ExtractionNodeTest extends TestCase
         assertTrue( decls.contains( stringDecl ) );
     }
 
-    public void testAssertTuple()
+    public void testAssertTuple() throws Exception
     {
         MockTupleSource source = new MockTupleSource( );
 

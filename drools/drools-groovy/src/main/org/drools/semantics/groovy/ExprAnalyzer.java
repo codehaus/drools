@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.5 2004-11-13 01:43:06 simon Exp $
+ * $Id: ExprAnalyzer.java,v 1.6 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,8 +48,8 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.SourceUnit;
 import org.drools.rule.Declaration;
 
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +59,7 @@ import java.util.Set;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: ExprAnalyzer.java,v 1.5 2004-11-13 01:43:06 simon Exp $
+ * @version $Id: ExprAnalyzer.java,v 1.6 2004-11-28 02:22:18 simon Exp $
  */
 public class ExprAnalyzer
 {
@@ -83,7 +83,7 @@ public class ExprAnalyzer
      * @throws Exception If an error occurs while attempting to analyze the
      *         expression.
      */
-    public Declaration[] analyze(String text, Set availDecls) throws Exception
+    public Declaration[] analyze(String text, List availDecls) throws Exception
     {
         SourceUnit unit = SourceUnit.create( "groovy.script", text );
         unit.parse( );
@@ -99,7 +99,7 @@ public class ExprAnalyzer
         expr.visit( visitor );
         Set refs = visitor.getVariables( );
 
-        Set decls = new HashSet( );
+        List decls = new LinkedList( );
         for ( Iterator declIter = availDecls.iterator( ); declIter.hasNext( ); )
         {
             Declaration eachDecl = ( Declaration ) declIter.next( );

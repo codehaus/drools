@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: ExprExtractor.java,v 1.8 2004-11-13 01:43:06 simon Exp $
+ * $Id: ExprExtractor.java,v 1.9 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,13 +46,14 @@ import org.drools.spi.Extractor;
 import org.drools.spi.Tuple;
 
 import java.util.Set;
+import java.util.List;
 
 /**
  * Python expression semantics <code>Extractor</code>.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: ExprExtractor.java,v 1.8 2004-11-13 01:43:06 simon Exp $
+ * @version $Id: ExprExtractor.java,v 1.9 2004-11-28 02:22:18 simon Exp $
  */
 public class ExprExtractor extends Eval implements Extractor
 {
@@ -65,7 +66,7 @@ public class ExprExtractor extends Eval implements Extractor
      *
      * @param expr The expression.
      */
-    public ExprExtractor(String expr, Set imports, Set availDecls) throws Exception
+    public ExprExtractor(String expr, Set imports, List availDecls) throws Exception
     {
         super( expr, imports, availDecls );
     }

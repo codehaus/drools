@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprCondition.java,v 1.8 2004-11-13 01:43:06 simon Exp $
+ * $Id: ExprCondition.java,v 1.9 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 
 import java.util.Set;
+import java.util.List;
 
 /**
  * Groovy expression semantics <code>Condition</code>.
@@ -53,7 +54,7 @@ import java.util.Set;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  *
- * @version $Id: ExprCondition.java,v 1.8 2004-11-13 01:43:06 simon Exp $
+ * @version $Id: ExprCondition.java,v 1.9 2004-11-28 02:22:18 simon Exp $
  */
 public class ExprCondition extends Eval implements Condition
 {
@@ -66,7 +67,7 @@ public class ExprCondition extends Eval implements Condition
      *
      * @param expr The expression.
      */
-    public ExprCondition(String expr, Set imports, Set availDecls) throws Exception
+    public ExprCondition(String expr, Set imports, List availDecls) throws Exception
     {
         super( expr, imports, availDecls );
     }

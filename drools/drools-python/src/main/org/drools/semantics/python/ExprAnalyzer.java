@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.4 2004-11-13 01:43:06 simon Exp $
+ * $Id: ExprAnalyzer.java,v 1.5 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,8 +44,9 @@ package org.drools.semantics.python;
 import org.drools.rule.Declaration;
 import org.python.parser.ast.modType;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -83,11 +84,11 @@ public class ExprAnalyzer
      *         expression.
      */
 
-    public Declaration[] analyze(modType expr, Set availDecls) throws Exception
+    public Declaration[] analyze(modType expr, List availDecls) throws Exception
     {
         ExprVisitor visitor = new ExprVisitor( );
 
-        Set decls = new HashSet( );
+        List decls = new ArrayList( );
 
         Set refs = ( Set ) visitor.eval_input( expr );
 

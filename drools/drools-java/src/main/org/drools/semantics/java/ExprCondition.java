@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprCondition.java,v 1.24 2004-11-13 01:43:07 simon Exp $
+ * $Id: ExprCondition.java,v 1.25 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,14 +46,14 @@ import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 
 import javax.naming.ConfigurationException;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Java expression semantics <code>Condition</code>.
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ExprCondition.java,v 1.24 2004-11-13 01:43:07 simon Exp $
+ * @version $Id: ExprCondition.java,v 1.25 2004-11-28 02:22:18 simon Exp $
  */
 public class ExprCondition extends Expr implements Condition
 {
@@ -75,7 +75,7 @@ public class ExprCondition extends Expr implements Condition
      * @throws ConfigurationException If an error occurs while attempting to
      *         perform configuration.
      */
-    public ExprCondition(String expr, Set availDecls) throws Exception
+    public ExprCondition(String expr, List availDecls) throws Exception
     {
         super( expr, availDecls );
     }

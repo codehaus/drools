@@ -4,11 +4,11 @@ import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
 import org.drools.spi.Duration;
 
-import java.util.Set;
+import java.util.List;
 
 public class BaseDurationFactory implements DurationFactory
 {
-    public Duration newDuration(Configuration config, Set availDecls)
+    public Duration newDuration(Configuration config, List availDecls)
     {
         String daysStr = config.getAttribute( "days" );
         String hoursStr = config.getAttribute( "hours" );

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.28 2004-11-13 01:43:07 simon Exp $
+ * $Id: Expr.java,v 1.29 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,6 +52,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -62,7 +63,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Expr.java,v 1.28 2004-11-13 01:43:07 simon Exp $
+ * @version $Id: Expr.java,v 1.29 2004-11-28 02:22:18 simon Exp $
  */
 public class Expr implements Serializable
 {
@@ -102,7 +103,7 @@ public class Expr implements Serializable
      * @throws ConfigurationException If an error occurs while attempting to
      *         perform configuration.
      */
-    protected Expr(String expr, Set availDecls) throws Exception
+    protected Expr(String expr, List availDecls) throws Exception
     {
         if ( this instanceof ExprCondition )
         {
@@ -113,7 +114,7 @@ public class Expr implements Serializable
             this.expr = "return (" + expr + ");";
         }
         this.originalExpression = expr;
-        Set requiredDecls = analyze( expr, availDecls );
+        List requiredDecls = analyze( expr, availDecls );
         this.requiredDecls = ( Declaration[] ) requiredDecls.toArray( new Declaration[ requiredDecls.size( ) ] );
     }
 
@@ -215,7 +216,7 @@ public class Expr implements Serializable
                                             .getApplicationDataMap( ) );
     }
 
-    protected Set analyze(String expr, Set available) throws Exception
+    protected List analyze(String expr, List available) throws Exception
     {
         ExprAnalyzer analyzer = new ExprAnalyzer( );
 

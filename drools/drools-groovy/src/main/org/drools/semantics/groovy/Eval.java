@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Eval.java,v 1.9 2004-11-16 13:37:52 simon Exp $
+ * $Id: Eval.java,v 1.10 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
 
 import java.util.Set;
+import java.util.List;
 
 /**
  * Base class for Groovy based semantic components.
@@ -72,7 +73,7 @@ public class Eval extends Interp
     /**
      * Construct.
      */
-    protected Eval(String text, Set imports, Set availDecls) throws Exception
+    protected Eval(String text, Set imports, List availDecls) throws Exception
     {
         super( text, imports );
 

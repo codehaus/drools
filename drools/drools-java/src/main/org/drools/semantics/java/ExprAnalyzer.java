@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.9 2004-11-13 01:43:07 simon Exp $
+ * $Id: ExprAnalyzer.java,v 1.10 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,15 +50,17 @@ import org.drools.semantics.java.parser.JavaRecognizer;
 import org.drools.semantics.java.parser.JavaTreeParser;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 /**
  * Expression analyzer.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: ExprAnalyzer.java,v 1.9 2004-11-13 01:43:07 simon Exp $
+ * @version $Id: ExprAnalyzer.java,v 1.10 2004-11-28 02:22:18 simon Exp $
  */
 public class ExprAnalyzer
 {
@@ -91,9 +93,9 @@ public class ExprAnalyzer
      * @throws MissingDeclarationException If the expression requires a
      *         declaration not present in the available declarations.
      */
-    public Set analyze(String expr, Set availDecls) throws TokenStreamException,
-                                                           RecognitionException,
-                                                           MissingDeclarationException
+    public List analyze(String expr, List availDecls) throws TokenStreamException,
+                                                             RecognitionException,
+                                                             MissingDeclarationException
     {
         JavaLexer lexer = new JavaLexer( new StringReader( expr ) );
         JavaRecognizer parser = new JavaRecognizer( lexer );
@@ -115,7 +117,7 @@ public class ExprAnalyzer
      *
      * @throws RecognitionException If an error occurs in the parser.
      */
-    private Set analyze( Set availDecls, AST ast ) throws RecognitionException
+    private List analyze( List availDecls, AST ast ) throws RecognitionException
     {
         JavaTreeParser treeParser = new JavaTreeParser( );
 
@@ -125,7 +127,7 @@ public class ExprAnalyzer
 
         Set refs = new HashSet( treeParser.getVariableReferences( ) );
 
-        Set decls = new HashSet( );
+        List decls = new ArrayList( );
 
         Iterator declIter = availDecls.iterator( );
         Declaration eachDecl;
