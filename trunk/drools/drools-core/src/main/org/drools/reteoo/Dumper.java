@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Dumper.java,v 1.2 2004-07-13 17:19:41 dbarnett Exp $
+ $Id: Dumper.java,v 1.3 2004-08-05 02:13:48 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -47,13 +47,18 @@ package org.drools.reteoo;
  */
 
 import org.drools.RuleBase;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Dumper.java,v 1.2 2004-07-13 17:19:41 dbarnett Exp $
+ *  @version $Id: Dumper.java,v 1.3 2004-08-05 02:13:48 dbarnett Exp $
  */
 public class Dumper
 {
@@ -66,7 +71,7 @@ public class Dumper
 
     public void dumpRete(PrintStream out)
     {
-      out.println(ruleBase.dumpRete());
+        out.println(ruleBase.dumpRete());
     }
 
     /**
@@ -74,6 +79,46 @@ public class Dumper
      */
     public void dumpReteToDot(PrintStream out)
     {
-      out.println(ruleBase.dumpReteToDot());
+        JoinNodeInput.resetDump();
+        out.println(ruleBase.dumpReteToDot());
+    }
+    
+    /**
+     * Converts line-breaks into \n for GraphViz DOT compatibility.
+     */
+    static String formatForDot(Object object)
+    {
+        if (null == object)
+        {
+            return "<NULL>";
+        }
+
+        BufferedReader br = new BufferedReader(
+            new InputStreamReader(
+                new ByteArrayInputStream(object.toString().getBytes())));
+        
+        StringBuffer buffer = new StringBuffer();
+        try
+        {
+            boolean firstLine = true;
+            for (String line = br.readLine(); null != line; line = br.readLine())
+            {
+                if (line.trim().length() == 0)
+                {
+                    continue;
+                }
+                if (!firstLine)
+                {
+                    buffer.append("\\n");
+                }
+                buffer.append(line);
+            }
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException("Error formatting '" + object + "'", e);
+        }
+        
+        return buffer.toString();
     }
 }

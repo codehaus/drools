@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNodeInput.java,v 1.8 2004-07-13 17:19:41 dbarnett Exp $
+ $Id: JoinNodeInput.java,v 1.9 2004-08-05 02:13:48 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,6 +46,9 @@ package org.drools.reteoo;
 
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -69,6 +72,20 @@ class JoinNodeInput
 
     /** Right-side input. */
     static final int RIGHT = 42;
+
+    // ------------------------------------------------------------
+    //     Class members
+    // ------------------------------------------------------------
+
+    /**
+     * Used by GraphViz dumpToDot() method to maintain a mapping of visited
+     * JoinNodes to their assigned GraphViz DOT IDs. This mapping allows
+     * the dumpToDot() method to recognize JoinNodes it has already visited
+     * and as a consequence link existing nodes back together. This is
+     * vital to the Dumper being able to link two JoinNodeInputs together
+     * through their common JoinNode.
+     */
+    private static Map joinNodesToGraphvizDotIdMap = new HashMap();
 
     // ------------------------------------------------------------
     //     Instance members
@@ -205,10 +222,33 @@ class JoinNodeInput
         return buffer.toString();
     }
 
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
     public long dumpToDot(StringBuffer buffer, long thisNode)
     {
         buffer.append(
-            thisNode + " [label=\"JoinNodeInput\\n(TupleSink)\\n" + this + "\"];\n");
-        return thisNode + 1;
+            thisNode + " [label=\"JoinNodeInput\\n(TupleSink)\\n" +
+            ((this.side == LEFT) ? "LEFT" : "RIGHT") + "\"];\n");
+
+        long nextNode = thisNode + 1;
+        if (null == joinNodesToGraphvizDotIdMap.get(getJoinNode())) {
+            joinNodesToGraphvizDotIdMap.put(getJoinNode(), new Long(nextNode));
+            buffer.append(thisNode + " -> " + nextNode + ";\n");
+            return getJoinNode().dumpToDot(buffer, nextNode);
+        } else {
+            buffer.append(
+                thisNode + " -> " + joinNodesToGraphvizDotIdMap.get(getJoinNode()) + ";\n");
+            return nextNode;
+        }
+    }
+
+    /**
+     * Resets mapping of JoinNodes to GraphViz DOT IDs.
+     * Call this method before each run of dumpToDot().
+     */
+    static void resetDump()
+    {
+        joinNodesToGraphvizDotIdMap = new HashMap();
     }
 }

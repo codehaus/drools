@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ConditionNode.java,v 1.9 2004-07-13 17:19:41 dbarnett Exp $
+ $Id: ConditionNode.java,v 1.10 2004-08-05 02:13:48 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -244,10 +244,14 @@ class ConditionNode
         return buffer.toString();
     }
     
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
     public long dumpToDot(StringBuffer buffer, long thisNode)
     {
-        buffer.append(thisNode + " [label=\"ConditionNode\\n(TupleSink)\\n" +
-            "condition: " + condition + "\"];\n");
+        buffer.append(thisNode +
+            " [label=\"ConditionNode\\n(TupleSource/TupleSink)\\n" +
+            "condition: " + Dumper.formatForDot(condition) + "\"];\n");
         
         long nextNode = thisNode + 1;
         
