@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticsReader.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ $Id: SemanticsReader.java,v 1.2 2004-01-01 23:43:55 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -77,7 +77,7 @@ import java.util.Enumeration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsReader.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ *  @version $Id: SemanticsReader.java,v 1.2 2004-01-01 23:43:55 bob Exp $
  */
 public class SemanticsReader
 {
@@ -211,7 +211,14 @@ public class SemanticsReader
                 throw new Exception( "no component name specified" );
             }
 
-            if ( "ObjectType".equals( type ) )
+            if ( "Rule".equals( type ) )
+            {
+                RuleFactory factory = (RuleFactory) factoryClass.newInstance();
+
+                module.addRuleFactory( componentName,
+                                       factory );
+            }
+            else if ( "ObjectType".equals( type ) )
             {
                 ObjectTypeFactory factory = (ObjectTypeFactory) factoryClass.newInstance();
                 
@@ -238,6 +245,13 @@ public class SemanticsReader
 
                 module.addConsequenceFactory( componentName,
                                               factory );
+            }
+            else if ( "Duration".equals( type ) )
+            {
+                DurationFactory factory = (DurationFactory) factoryClass.newInstance();
+
+                module.addDurationFactory( componentName,
+                                           factory );
             }
             else
             {

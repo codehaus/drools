@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.2 2004-01-01 04:13:46 bob Exp $
+ $Id: RuleSetReader.java,v 1.3 2004-01-01 23:43:55 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -88,7 +88,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.2 2004-01-01 04:13:46 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.3 2004-01-01 23:43:55 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -101,10 +101,10 @@ public class RuleSetReader
     public static final String RULES_NAMESPACE_URI = "http://drools.org/rules";
 
     private static final int STATE_NONE        = 0;
-    private static final int STATE_OBJECT_TYPE = 1;
-    private static final int STATE_CONDITION   = 2;
-    private static final int STATE_EXTRACTION  = 3;
-    private static final int STATE_CONSEQUENCE = 4;
+    private static final int STATE_OBJECT_TYPE = 2;
+    private static final int STATE_CONDITION   = 3;
+    private static final int STATE_EXTRACTION  = 4;
+    private static final int STATE_CONSEQUENCE = 5;
 
     // ----------------------------------------------------------------------
     //     Instance members
@@ -490,7 +490,7 @@ public class RuleSetReader
         }
         else
         {
-            if ( this.configurationStack.size() == 1 )
+            if ( this.configurationStack.size() <= 1 )
             {
                 try
                 {
@@ -579,43 +579,6 @@ public class RuleSetReader
         // nothing
     }
     
-    /** Start a &lt;rule&gt;.
-     *
-     *  @param attrs Tag attributes.
-     *
-     *  @throws SAXException If an error occurs during parse.
-     */
-    protected void startRule(Attributes attrs)
-        throws SAXException
-    {
-        if ( this.rule != null )
-        {
-            throw new SAXParseException( "<rule> may not be nested",
-                                         getLocator() );
-        }
-
-        if ( this.ruleSet == null )
-        {
-            throw new SAXParseException( "<rule> must occur within a <rule-set>",
-                                         getLocator() );
-        }
-
-        String ruleName = attrs.getValue( "name" );
-
-        if ( ruleName == null
-             ||
-             ruleName.trim().equals( "" ) )
-        {
-            throw new SAXParseException( "<rule> requires a 'name' attribute",
-                                         getLocator() );
-        }
-
-        this.rule = new Rule( ruleName.trim() );
-
-        startRule( rule,
-                   attrs );
-    }
-
     protected void startRule(SemanticModule module,
                              String localName,
                              Attributes attrs)

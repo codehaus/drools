@@ -2,8 +2,8 @@
 <project>
 
     <pomVersion>3</pomVersion>
-    <name>drools-python</name>
-    <id>drools-python</id>
+    <name>drools-base</name>
+    <id>drools-base</id>
     <groupId>drools</groupId>
     <currentVersion>2.0-beta-12-dev</currentVersion>
 
@@ -23,7 +23,7 @@
     <url>http://drools.org</url>
 
     <siteAddress>drools.codehaus.org</siteAddress>
-    <siteDirectory>/www/drools.codehaus.org/drools-python</siteDirectory>
+    <siteDirectory>/www/drools.codehaus.org/drools-base</siteDirectory>
     <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>

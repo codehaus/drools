@@ -321,7 +321,7 @@ module_make_jar()
 
   echo "jarring module $module"
   copy_tree drools-$module/src/main/ drools-$module/build/classes/ properties 
-  copy_tree drools-$module/src/conf/ drools-$module/build/classes/ '*'
+  copy_tree drools-$module/src/conf/ drools-$module/build/classes/ properties
   _jar $module
 }
 
