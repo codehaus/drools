@@ -11,19 +11,17 @@ import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
 import javax.rules.StatelessRuleSession;
-import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
-import java.io.FileReader;
-import java.io.Reader;
+import javax.rules.admin.RuleExecutionSetProvider;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashMap;
 
 public class BeanShellTest extends TestCase
 {
-    private static String BEAN_SHELL_TEST_RULES = "src/java/test/org/drools/bsh/BeanShellTest.drl";
+    private static String BEAN_SHELL_TEST_RULES = "BeanShellTest.drl";
 
     public BeanShellTest( String name )
     {
@@ -35,8 +33,7 @@ public class BeanShellTest extends TestCase
         RuleBase ruleBase = new RuleBase();
         RuleSetLoader loader = new RuleSetLoader();
 
-        //List ruleSets = loader.load( getClass().getResource( "BeanShellTest.drl" ) );
-        List ruleSets = loader.load( new FileReader( BEAN_SHELL_TEST_RULES ) );
+        List ruleSets = loader.load( getClass().getResource( BEAN_SHELL_TEST_RULES ) );
 
         assertNotNull( ruleSets );
         assertEquals( 1, ruleSets.size() );
@@ -73,9 +70,9 @@ public class BeanShellTest extends TestCase
         RuleAdministrator ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
 
         // Load the rules
-        LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider( null );
-        Reader ruleReader = new FileReader( BEAN_SHELL_TEST_RULES );
-        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet( ruleReader, null );
+        RuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getRuleExecutionSetProvider( null );
+        String uri = getClass().getResource( BEAN_SHELL_TEST_RULES ).toExternalForm();
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet( uri, null );
 
         // register the rule set
         ruleAdministrator.registerRuleExecutionSet( BEAN_SHELL_TEST_RULES, ruleSet, null );
@@ -100,5 +97,8 @@ public class BeanShellTest extends TestCase
         assertEquals( "testAssert", list.get( 0 ) );
         assertEquals( "testModify", list.get( 1 ) );
         assertEquals( "testRetract", list.get( 2 ) );
+
+        assertEquals( 1, outList.size() );
+        assertEquals( "testAssert", outList.get( 0 ) );
     }
 }
