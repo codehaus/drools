@@ -10,6 +10,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
+import java.io.Reader;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -118,10 +120,7 @@ public class RuleSetReader
      */
     public RuleSet read(URL url) throws RuleSetReaderException
     {
-        getImportManager().reset();
-
-        setCurrentRule( null );
-        setRuleSet( null );
+        reset();
 
         try
         {
@@ -147,6 +146,71 @@ public class RuleSetReader
      */
     public RuleSet read(File file) throws MalformedURLException, RuleSetReaderException
     {
+        reset();
         return read( file.toURL() );
     }
+
+    /** Read a Java ruleset XML file from a character stream.
+     *
+     *  @param charStream The character stream containing the XML ruleset.
+     *
+     *  @return The resulting {@link RuleSet}.
+     *
+     *  @throws RuleSetReaderException if an error occurs
+     *          while reading or parsing the file, or
+     *          constructing the ruleset or rules.
+     */
+    public RuleSet read(Reader charStream) throws RuleSetReaderException
+    {
+        reset();
+
+        try
+        {
+            Document doc = this.reader.read( charStream );
+        }
+        catch (DocumentException e)
+        {
+            throw new RuleSetReaderException( e );
+        }
+
+        return getRuleSet();
+    }
+
+    /** Read a Java ruleset XML file from a stream of bytes.
+     *
+     *  @param byteStream The byte stream containing the XML ruleset.
+     *
+     *  @return The resulting {@link RuleSet}.
+     *
+     *  @throws RuleSetReaderException if an error occurs
+     *          while reading or parsing the file, or
+     *          constructing the ruleset or rules.
+     */
+    public RuleSet read(InputStream byteStream) throws RuleSetReaderException
+    {
+        reset();
+
+        try
+        {
+            Document doc = this.reader.read( byteStream );
+        }
+        catch (DocumentException e)
+        {
+            throw new RuleSetReaderException( e );
+        }
+
+        return getRuleSet();
+    }
+
+    /**
+     * Reset the environment to prepare for importing
+     * a new set of rules.
+     */
+
+    private void reset() 
+      {
+        getImportManager().reset();
+        setCurrentRule( null );
+        setRuleSet( null );
+      }
 }

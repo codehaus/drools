@@ -8,6 +8,8 @@ import org.drools.spi.RuleSet;
 import org.drools.semantic.java.io.RuleSetReader;
 
 import java.io.File;
+import java.io.Reader;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -55,5 +57,38 @@ public class RuleLoader
 
         ruleBase.addRuleSet( ruleSet );
     }
+
+    /** Load a rule-set from a character stream.
+     *
+     *  @param ruleBase The <code>RuleBase</code> to load into.
+     *  @param charStream The character stream containing the rule-set definition.
+     *
+     *  @throws DroolsException if there is an error reading or parsing the file.
+     */
+    public static void load(RuleBase ruleBase,
+                            Reader charStream) throws DroolsException
+    {
+        RuleSetReader reader = new RuleSetReader();
+
+        RuleSet ruleSet = reader.read( charStream );
+
+        ruleBase.addRuleSet( ruleSet );
+    }
         
+    /** Load a rule-set from a stream of bytes.
+     *
+     *  @param ruleBase The <code>RuleBase</code> to load into.
+     *  @param byteStream The byte stream containing the rule-set definition.
+     *
+     *  @throws DroolsException if there is an error reading or parsing the file.
+     */
+    public static void load(RuleBase ruleBase,
+                            InputStream byteStream) throws DroolsException
+    {
+        RuleSetReader reader = new RuleSetReader();
+
+        RuleSet ruleSet = reader.read( byteStream );
+
+        ruleBase.addRuleSet( ruleSet );
+    }
 }
