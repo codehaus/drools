@@ -6,11 +6,12 @@ import org.drools.WorkingMemory;
 import java.util.List;
 import java.util.ArrayList;
 
-public class InstrumentedAction implements Action
+public class InstrumentedConsequence
+    implements Consequence
 {
     private List invokedTuples;
 
-    public InstrumentedAction()
+    public InstrumentedConsequence()
     {
         this.invokedTuples = new ArrayList();
     }
