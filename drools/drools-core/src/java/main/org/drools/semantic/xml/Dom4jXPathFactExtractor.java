@@ -7,7 +7,7 @@ import org.drools.spi.Tuple;
 import org.drools.spi.FactExtractionException;
 
 import org.jaxen.JaxenException;
-import org.jaxen.dom4j.XPath;
+import org.jaxen.dom4j.Dom4jXPath;
 
 /** Extracts new fact objects from a Dom4j <code>Document</code>
  *  object using the results of XPath expressions.
@@ -17,7 +17,7 @@ import org.jaxen.dom4j.XPath;
 public class Dom4jXPathFactExtractor implements FactExtractor
 {
     private Declaration declaration;
-    private XPath       xpath;
+    private Dom4jXPath  xpath;
 
     /** Construct.
      *
@@ -26,7 +26,7 @@ public class Dom4jXPathFactExtractor implements FactExtractor
      * @param xpath The fact-extracting XPath expression object.
      */
     public Dom4jXPathFactExtractor(Declaration declaration,
-                                   XPath xpath)
+                                   Dom4jXPath xpath)
     {
         this.declaration = declaration;
         this.xpath       = xpath;
@@ -46,7 +46,7 @@ public class Dom4jXPathFactExtractor implements FactExtractor
      *
      *  @return The XPath expression object.
      */
-    public XPath getXPath()
+    public Dom4jXPath getXPath()
     {
         return this.xpath;
     }

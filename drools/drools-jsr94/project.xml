@@ -6,7 +6,7 @@
   <id>drools</id>
   <currentVersion>1.0-dev</currentVersion>
   <organization>
-    <name>Werker and Sons</name>
+    <name>Werken</name>
     <url>http://code.werken.com/</url>
   </organization>
   <inceptionYear>2002</inceptionYear>
@@ -24,12 +24,10 @@
   <siteDirectory></siteDirectory>
   <distributionDirectory></distributionDirectory>
   
-  <!--
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools:drools-2</connection>
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/drools/</url>
   </repository>
-  -->
 
   <versions/>
   <branches/>
@@ -66,9 +64,9 @@
     </developer>
 
     <developer>
-      <name>David Kramer</name>
-      <id>dkramer</id>
-      <email></email>
+      <name>David Cramer</name>
+      <id>dcramer</id>
+      <email>davec@fastcrypt.com</email>
       <organization></organization>
     </developer>
 
@@ -80,7 +78,7 @@
   <dependencies>
 
     <dependency>
-      <id>antlr</id>
+      <id>antlrall</id>
       <version>2.7.1</version>
     </dependency>
 
@@ -114,8 +112,8 @@
   <build>
 
     <nagEmailAddress>drools-interest@lists.sourceforge.net</nagEmailAddress>
-    <sourceDirectory>src/java</sourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <sourceDirectory>src/java/main</sourceDirectory>
+    <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
     <integrationUnitTestSourceDirectory/>
     <aspectSourceDirectory></aspectSourceDirectory>
 

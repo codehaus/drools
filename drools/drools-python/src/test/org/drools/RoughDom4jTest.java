@@ -21,7 +21,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
 import org.saxpath.SAXPathException;
-import org.jaxen.dom4j.XPath;
+import org.jaxen.dom4j.Dom4jXPath;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -98,10 +98,10 @@ public class RoughDom4jTest extends TestCase
                                               "id" );
             
             FactExtractor aExtract = new Dom4jXPathFactExtractor( doc1,
-                                                                  new XPath( "string(/a/@id)" ) );
+                                                                  new Dom4jXPath( "string(/a/@id)" ) );
 
             FactExtractor bExtract = new Dom4jXPathFactExtractor( doc2,
-                                                                  new XPath( "string(/b/@id)" ) );
+                                                                  new Dom4jXPath( "string(/b/@id)" ) );
             
             rule.addAssignmentCondition( new AssignmentCondition( id,
                                                                   aExtract ) );
