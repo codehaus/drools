@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.36 2004-10-20 13:41:26 bob Exp $
+ * $Id: ReteTuple.java,v 1.37 2004-10-27 07:15:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
@@ -60,7 +59,7 @@ import java.util.HashSet;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.36 2004-10-20 13:41:26 bob Exp $
+ * @version $Id: ReteTuple.java,v 1.37 2004-10-27 07:15:54 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -77,8 +76,6 @@ class ReteTuple implements Tuple, Serializable
 
     /** Value columns in this tuple. */
     private Map            columns;
-    
-    private Set            targetDeclarations;
 
     private Map            objectToHandle;
 
@@ -120,10 +117,6 @@ class ReteTuple implements Tuple, Serializable
         this.rule = that.rule;
         this.key = new TupleKey( that.key );
         this.columns = new HashMap( that.columns );
-        if (that.targetDeclarations != null)
-        {
-            this.targetDeclarations = new HashSet( that.targetDeclarations );
-        }
         this.objectToHandle = new HashMap( that.objectToHandle );
 
         this.mostRecentFact = ( FactHandleImpl ) that.getMostRecentFact( );
@@ -145,7 +138,14 @@ class ReteTuple implements Tuple, Serializable
               Object value)
     {
         this( workingMemory, rule );
-        putKeyColumn( declaration, handle, value );
+
+        key.put( declaration, handle );
+
+        objectToHandle.put( value, handle );
+
+        putTargetDeclarationColumn( declaration, value );
+
+        isChanged = true;
         this.mostRecentFact = (FactHandleImpl) handle;
         this.leastRecentFact = (FactHandleImpl) handle;
     }
@@ -160,26 +160,6 @@ class ReteTuple implements Tuple, Serializable
     // ------------------------------------------------------------
 
     /**
-     * Set a key column's value.
-     *
-     * @param declaration The column declaration.
-     * @param handle The fact-handle.
-     * @param value The value.
-     */
-    public void putKeyColumn(Declaration declaration,
-                             FactHandle handle,
-                             Object value)
-    {
-        this.key.put( declaration, handle );
-
-        this.objectToHandle.put( value, handle );
-
-        putColumn( declaration, value );
-
-        this.isChanged = true;
-    }
-
-    /**
      * Add all columns from another tuple.
      *
      * @param that The column source tuple.
@@ -188,17 +168,6 @@ class ReteTuple implements Tuple, Serializable
     {
         this.key.putAll( that.key );
         this.columns.putAll( that.columns );
-        if (that.getTargetDeclarations() != null)
-        {
-            if (this.targetDeclarations == null)
-            {
-                this.targetDeclarations = new HashSet( that.targetDeclarations );
-            }
-            else
-            {
-                this.targetDeclarations.addAll(that.targetDeclarations);
-            }
-        }
         this.objectToHandle.putAll( that.objectToHandle );
         this.isChanged = true;
 
@@ -213,43 +182,17 @@ class ReteTuple implements Tuple, Serializable
     }
 
     /**
-     * Set an other column's value.
-     *
-     * @param declaration The column declaration.
-     * @param value The value.
-     */
-    public void putColumn(Declaration declaration, Object value)
-    {
-        this.columns.put( declaration, value );
-    }
-    
-    /**
      * Extractors may not have a key, so need to keep track
      * of Columns derived from extractors
-     * 
+     *
      * @param declaration
      * @param value
      */
     public void putTargetDeclarationColumn(Declaration declaration, Object value)
     {
         this.columns.put( declaration, value );
-        if (this.targetDeclarations == null)
-        {
-        	targetDeclarations = new HashSet();
-        }
-        this.targetDeclarations.add( declaration );
     }
-    
-    /**
-     * Will return null if there are no target declarations
-     * 
-     * @return Set
-     */
-    public Set getTargetDeclarations()
-    {
-    	return this.targetDeclarations;
-    }
-    
+
     /**
      * Retrieve the key for this tuple.
      *
