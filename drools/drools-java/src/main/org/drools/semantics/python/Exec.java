@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Exec.java,v 1.1 2002-08-27 04:27:07 bob Exp $
+ $Id: Exec.java,v 1.2 2002-08-27 05:06:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,20 +46,13 @@ package org.drools.semantics.python;
  
  */
 
-import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
-import org.drools.spi.ObjectType;
 
 import org.python.core.Py;
-import org.python.core.PyCode;
 import org.python.core.PyDictionary;
-import org.python.core.PyObject;
-import org.python.core.__builtin__;
 import org.python.util.PythonInterpreter;
 
 import java.util.Hashtable;
-import java.util.Set;
-import java.util.Iterator;
 
 /** Base class for Jython statement-based Python semantic components.
  *
@@ -67,7 +60,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Exec.java,v 1.1 2002-08-27 04:27:07 bob Exp $
+ *  @version $Id: Exec.java,v 1.2 2002-08-27 05:06:45 bob Exp $
  */
 public class Exec extends Interp
 {
@@ -96,8 +89,6 @@ public class Exec extends Interp
     /** Execute.
      *
      *  @param tuple Tuple containing variable bindings.
-     *
-     *  @return The result of evaluation.
      */
     public void execute(Tuple tuple) 
     {
@@ -108,9 +99,7 @@ public class Exec extends Interp
 
     /** Execute.
      *
-     *  @param dict The evaluation dictionary.
-     *
-     *  @return The result of evaluation.
+     *  @param locals The evaluation dictionary.
      */
     protected void execute(PyDictionary locals) 
     {
@@ -122,8 +111,6 @@ public class Exec extends Interp
     }
 
     /** Execute.
-     *
-     *  @return The result of evaluation.
      */
     protected void execute()
     {
@@ -132,7 +119,7 @@ public class Exec extends Interp
         execute( locals );
     }
     
-    /** Set the text to evaluate.
+    /** Set the text to execute.
      *
      *  @param text The text.
      */

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
+ $Id: Interp.java,v 1.3 2002-08-27 05:06:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,6 @@ import org.drools.spi.ObjectType;
 import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
-import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.__builtin__;
 import org.python.util.PythonInterpreter;
@@ -69,7 +68,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
+ *  @version $Id: Interp.java,v 1.3 2002-08-27 05:06:45 bob Exp $
  */
 public class Interp
 {
@@ -126,6 +125,7 @@ public class Interp
     /** Set the text to evaluate.
      *
      *  @param text The text.
+     *  @param type The type ("exec" or "eval").
      */
     protected void setText(String text,
                            String type)
@@ -135,6 +135,10 @@ public class Interp
         this.code = __builtin__.compile( text, "<text>", type );
     }
 
+    /** Retrieve the compiled code.
+     *
+     *  @return The code.
+     */
     protected PyCode getCode()
     {
         return this.code;

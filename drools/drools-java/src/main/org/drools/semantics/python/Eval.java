@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.1 2002-08-27 04:27:07 bob Exp $
+ $Id: Eval.java,v 1.2 2002-08-27 05:06:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,20 +46,15 @@ package org.drools.semantics.python;
  
  */
 
-import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
-import org.drools.spi.ObjectType;
 
 import org.python.core.Py;
-import org.python.core.PyCode;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
 import org.python.core.__builtin__;
 import org.python.util.PythonInterpreter;
 
 import java.util.Hashtable;
-import java.util.Set;
-import java.util.Iterator;
 
 /** Base class for Jython expression-based Python semantic components.
  *
@@ -68,7 +63,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Eval.java,v 1.1 2002-08-27 04:27:07 bob Exp $
+ *  @version $Id: Eval.java,v 1.2 2002-08-27 05:06:45 bob Exp $
  */
 public class Eval extends Interp
 {
@@ -112,7 +107,7 @@ public class Eval extends Interp
 
     /** Evaluate.
      *
-     *  @param dict The evaluation dictionary.
+     *  @param locals The evaluation dictionary.
      *
      *  @return The result of evaluation.
      */
@@ -139,6 +134,10 @@ public class Eval extends Interp
         return evaluate( locals );
     }
 
+    /** Set the expression to evaluate.
+     *
+     *  @param expr The expression.
+     */
     public void setText(String expr)
     {
         setText( expr,
