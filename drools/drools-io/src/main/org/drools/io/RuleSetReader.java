@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.14 2004-09-14 19:28:46 mproctor Exp $
+ $Id: RuleSetReader.java,v 1.15 2004-09-14 19:29:48 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -96,7 +96,7 @@ import java.text.MessageFormat;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.14 2004-09-14 19:28:46 mproctor Exp $
+ *  @version $Id: RuleSetReader.java,v 1.15 2004-09-14 19:29:48 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -384,11 +384,9 @@ public class RuleSetReader
                if (java != null) schemaList.add(java);
                if (python != null) schemaList.add(python);
                if (groovy != null) schemaList.add(groovy);
-               if (rules != null) schemaList.add(rules);
+               if (rules != null) schemaList.add(rules);               
                
-               InputStream[] sources = (InputStream[]) schemaList.toArray(new InputStream[0]);
-               
-               parser.setProperty(SCHEMA_SOURCE, sources);
+               parser.setProperty(SCHEMA_SOURCE, (InputStream[]) schemaList.toArray(new InputStream[0]));
             }
             catch(SAXNotRecognizedException e)
             {
