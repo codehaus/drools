@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.8 2003-12-02 23:12:41 bob Exp $
+ $Id: WorkingMemoryImpl.java,v 1.9 2003-12-03 20:57:25 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ import java.util.ArrayList;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.8 2003-12-02 23:12:41 bob Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.9 2003-12-03 20:57:25 bob Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -90,8 +90,7 @@ class WorkingMemoryImpl
     /** Handle-to-object mapping. */
     private Map objects;
 
-    /** Handle counter. */
-    private long handleCounter;
+    private FactHandleFactory factHandleFactory;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -118,15 +117,21 @@ class WorkingMemoryImpl
         this.ruleBase      = ruleBase;
         this.joinMemories  = new HashMap();
         this.objects       = new HashMap();
-        this.handleCounter = 0;
 
         this.agenda = new Agenda( this,
                                   conflictResolver );
+
+        initializeFactHandleFactory();
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    protected void initializeFactHandleFactory()
+    {
+        this.factHandleFactory = new DefaultFactHandleFactory();
+    }
 
     /** Create a new <code>FactHandle</code>.
      *
@@ -134,7 +139,7 @@ class WorkingMemoryImpl
      */
     protected FactHandle newFactHandle()
     {
-        return new FactHandleImpl( ++this.handleCounter );
+        return this.factHandleFactory.newFactHandle();
     }
 
     /** @see WorkingMemory
