@@ -13,9 +13,17 @@ package org.drools.spi;
  */
 public class AssignmentCondition implements Condition
 {
+    /** The target of the assignment. */
     private Declaration targetDeclaration;
+
+    /** FactExtractor to acquire value for assignment. */
     private FactExtractor factExtractor;
     
+    /** Construct.
+     *
+     *  @param targetDeclaration The target of this assignment.
+     *  @param factExtractor Value generator for the assignment.
+     */
     public AssignmentCondition(Declaration targetDeclaration,
                                FactExtractor factExtractor)
     {
@@ -23,11 +31,21 @@ public class AssignmentCondition implements Condition
         this.factExtractor     = factExtractor;
     }
 
+    /** Retrieve the <code>Declaration</code> for the target
+     *  of the assignment.
+     *
+     *  @return The target's <code>Declaration</code>
+     */
     public Declaration getTargetDeclaration()
     {
         return this.targetDeclaration;
     }
 
+    /** Retrieve the <code>FactExtractor</code> responsible
+     *  for generating the assignment value.
+     *
+     *  @return The <code>FactExtractor</code>.
+     */
     public FactExtractor getFactExtractor()
     {
         return this.factExtractor;
