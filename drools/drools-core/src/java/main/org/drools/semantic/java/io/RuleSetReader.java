@@ -146,7 +146,7 @@ public class RuleSetReader
      */
     public RuleSet read(File file) throws MalformedURLException, RuleSetReaderException
     {
-        reset();
+        // Pass the request off to the local read(URL) method
         return read( file.toURL() );
     }
 
