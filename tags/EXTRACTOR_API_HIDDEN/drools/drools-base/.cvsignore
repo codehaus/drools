@@ -1,0 +1,7 @@
+*.log
+*.ipr
+*.iws
+target
+cachedir
+.classpath
+.project

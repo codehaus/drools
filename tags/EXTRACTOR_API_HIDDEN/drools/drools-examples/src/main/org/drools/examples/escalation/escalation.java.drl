@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<rule-set name="Escalation Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+    <rule name="Escalate Immediately If Bob">
+      <parameter identifier="ticket">
+        <class>org.drools.examples.escalation.TroubleTicket</class>
+      </parameter>
+
+      <java:condition>ticket.getSubmitter().equals( "bob" )</java:condition>
+      <java:condition>ticket.getStatus() == TroubleTicket.NEW</java:condition>
+
+      <java:consequence>
+          import java.util.Date;
+          import java.text.DateFormat;
+
+          System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) );
+          System.err.println( "** Escalating trouble ticket for bob, because he's special" );
+          ticket.setStatus( TroubleTicket.NOTIFIED );
+          drools.modifyObject( ticket );
+
+        </java:consequence>
+    </rule>
+
+    <rule name="Escalate New Tickets">
+      <parameter identifier="ticket">
+        <class>org.drools.examples.escalation.TroubleTicket</class>
+      </parameter>
+
+      <java:condition>ticket.getStatus() == TroubleTicket.NEW</java:condition>
+
+			<duration seconds="2" />
+<!--
+      <duration>
+        <fixed-duration seconds="2"/>
+      </duration>
+-->
+      <java:consequence>
+
+          import java.util.Date;
+          import java.text.DateFormat;
+
+          System.err.println( "----------------------------------------" );
+          System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) );
+          System.err.println( "** ticket == " + ticket );
+         ticket.setStatus( TroubleTicket.NOTIFIED );
+          System.err.println( "** Escalating trouble ticket from NEW to NOTIFIED after 2 seconds" );
+          System.err.println( "** ticket == " + ticket );
+          System.err.println( "----------------------------------------" );
+
+          drools.modifyObject( ticket );
+
+      </java:consequence>
+    </rule>
+
+    <rule name="Escalate Notified Tickets">
+      <parameter identifier="ticket">
+        <class>org.drools.examples.escalation.TroubleTicket </class>
+      </parameter>
+
+     <java:condition>ticket.getStatus() == TroubleTicket.NOTIFIED</java:condition>
+
+		<duration seconds="5" />
+<!--
+      <duration>
+        <fixed-duration seconds="5"/>
+      </duration>
+-->
+
+      <java:consequence>
+
+          import java.util.Date;
+          import java.text.DateFormat;
+
+          System.err.println( "----------------------------------------" );
+          System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) );
+          System.err.println( "** ticket == " + ticket );
+          ticket.setStatus( TroubleTicket.NULL );
+          System.err.println( "** Escalating trouble ticket from NOTIFIED to /dev/null after 5 seconds" );
+          System.err.println( "** ticket == " + ticket );
+          System.err.println( "----------------------------------------" );
+
+          drools.modifyObject( ticket );
+
+      </java:consequence>
+    </rule>
+
+  </rule-set>
+

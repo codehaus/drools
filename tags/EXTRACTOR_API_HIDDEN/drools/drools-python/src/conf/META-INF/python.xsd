@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://drools.org/semantics/python"
+           elementFormDefault="qualified"
+           xmlns:python="http://drools.org/semantics/python"
+           xmlns:rules="http://drools.org/rules">
+
+  <xs:import namespace="http://drools.org/rules" schemaLocation="rules.xsd"/>
+
+  <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport"/>
+
+   <xs:element name="extractor" substitutionGroup="rules:abstractExtractor">
+     <xs:complexType>
+       <xs:complexContent>
+         <xs:extension base="rules:extractorType" />
+       </xs:complexContent>
+     </xs:complexType>
+   </xs:element>
+
+  <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
+
+  <xs:element name="condition"   type="xs:string" substitutionGroup="rules:abstractCondition"/>
+
+  <xs:element name="consequence" type="xs:string" substitutionGroup="rules:abstractConsequence"/>
+
+</xs:schema>

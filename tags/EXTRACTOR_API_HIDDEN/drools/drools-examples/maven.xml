@@ -1,0 +1,385 @@
+<project default="jar:jar" xmlns:j="jelly:core">
+
+
+    <goal name="get-deps" />
+
+<!-- Convenience goals to help regression test all examples quickly -->
+    <goal name="run-all">
+        <attainGoal name="fibonacci-java"/>
+        <attainGoal name="fibonacci-java-extract"/>
+        <attainGoal name="fibonacci-python"/>
+        <attainGoal name="fibonacci-groovy"/>
+        <attainGoal name="fibonacci-java-jndi"/>
+        <attainGoal name="fibonacci-java-serialized"/>
+        <attainGoal name="fibonacci-groovy-jndi"/>
+        <attainGoal name="fibonacci-groovy-serialized"/>
+        <attainGoal name="fibonacci-native"/>
+        <attainGoal name="escalation-java"/>
+        <attainGoal name="state-java"/>
+        <attainGoal name="state-groovy"/>
+        <attainGoal name="state-python"/>
+        <attainGoal name="helloworld-native"/>
+        <attainGoal name="helloworld-java"/>
+        <attainGoal name="helloworld-java-extract"/>
+        <attainGoal name="helloworld-groovy"/>
+        <attainGoal name="helloworld-python"/>
+        <attainGoal name="manners-jsr94"/>
+        <attainGoal name="manners-native"/>
+        <attainGoal name="manners-java"/>
+        <attainGoal name="manners-groovy"/>
+        <attainGoal name="primefactors-java"/>
+        <attainGoal name="primefactors-java-verbose"/>
+        <attainGoal name="petstore-java"/>
+        <attainGoal name="petstore-groovy"/>
+    </goal>
+
+    <goal name="run-all-java">
+	<attainGoal name="fibonacci-java"/>
+	<attainGoal name="fibonacci-java-extract"/>
+	<attainGoal name="fibonacci-java-jndi"/>
+	<attainGoal name="fibonacci-java-serialized"/>
+        <attainGoal name="escalation-java"/>
+	<attainGoal name="state-java"/>
+	<attainGoal name="helloworld-java"/>
+	<attainGoal name="helloworld-java-extract"/>
+	<attainGoal name="manners-java"/>
+	<attainGoal name="primefactors-java"/>
+	<attainGoal name="primefactors-java-verbose"/>
+	<attainGoal name="petstore-java"/>
+    </goal>
+
+    <goal name="run-all-groovy">
+	<attainGoal name="fibonacci-groovy"/>
+	<attainGoal name="fibonacci-groovy-jndi"/>
+	<attainGoal name="fibonacci-groovy-serialized"/>
+	<attainGoal name="state-groovy"/>
+	<attainGoal name="helloworld-groovy"/>
+	<attainGoal name="manners-groovy"/>
+	<attainGoal name="petstore-groovy"/>
+    </goal>
+
+    <goal name="run-all-python">
+	<attainGoal name="fibonacci-python"/>
+	<attainGoal name="helloworld-python"/>
+	<attainGoal name="state-python"/>
+    </goal>
+
+    <goal name="run-all-native">
+	<attainGoal name="fibonacci-native"/>
+	<attainGoal name="helloworld-native"/>
+	<attainGoal name="manners-native"/>
+    </goal>
+
+    <goal name="run-all-jndi">
+	<attainGoal name="fibonacci-java-jndi"/>
+	<attainGoal name="fibonacci-groovy-jndi"/>
+    </goal>
+
+    <goal name="run-all-serialized">
+	<attainGoal name="fibonacci-java-serialized"/>
+	<attainGoal name="fibonacci-groovy-serialized"/>
+    </goal>
+
+    <goal name="run-all-extract">
+	<attainGoal name="fibonacci-java-extract"/>
+	<attainGoal name="helloworld-java-extract"/>
+    </goal>
+
+<!-- Fibonacci Examples -->
+    <goal name="fibonacci-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+          <arg value="fibonacci.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-java-extract" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.java.extract.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-python" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.python.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.groovy.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-java-jndi" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
+            fork="true">
+        <arg value="org.osjava.jndi.PropertiesFactory"/>
+        <arg value="fibonacci.java.drl"/>
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-java-serialized" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+          <arg value="fibonacci.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-groovy-jndi" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
+            fork="true">
+          <arg value="org.osjava.jndi.PropertiesFactory"/>
+          <arg value="fibonacci.groovy.drl"/>
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-groovy-serialized" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.groovy.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-native" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciNative"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+<!-- Escalation -->
+    <goal name="escalation-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.escalation.Escalation"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="escalation.java.drl"/>
+      </java>
+    </goal>
+
+<!-- PetStore Examples -->
+    <goal name="petstore-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.petstore.PetStore"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="petstore.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="petstore-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.petstore.PetStore"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="petstore.groovy.drl"/>
+      </java>
+    </goal>
+
+<!-- State Examples -->
+    <goal name="state-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.state.StateExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="state.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="state-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.state.StateExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="state.groovy.drl"/>
+      </java>
+    </goal>
+
+    <goal name="state-python" prereqs="jar:jar">
+      <java classname="org.drools.examples.state.StateExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="state.python.drl"/>
+      </java>
+    </goal>
+
+<!-- Hello World Examples -->
+    <goal name="helloworld-native" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldNative"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="helloworld-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="helloworld-java-extract" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.java.extract.drl"/>
+      </java>
+    </goal>
+
+    <goal name="helloworld-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.groovy.drl"/>
+      </java>
+    </goal>
+
+    <goal name="helloworld-python" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.python.drl"/>
+      </java>
+    </goal>
+
+<!-- Miss Manners Examples -->
+    <goal name="manners-jsr94" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersJSR94"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="manners-native" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersNative"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="manners-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="manners-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="manners.groovy.drl"/>
+      </java>
+    </goal>
+
+<!-- Prime Factors Examples -->
+    <goal name="primefactors-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.primefactors.PrimeFactors"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="10000"/> <!-- Number of Rules -->
+        <arg value="300"/> <!-- Number of Facts -->
+        <arg value="0"/> <!-- Random Seed -->
+        <arg value="false"/> <!-- Verbose Output -->
+      </java>
+    </goal>
+
+    <goal name="primefactors-java-verbose" prereqs="jar:jar">
+      <java classname="org.drools.examples.primefactors.PrimeFactors"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="100"/> <!-- Number of Rules -->
+        <arg value="10"/> <!-- Number of Facts -->
+        <arg value="-1"/> <!-- Random Seed -->
+        <arg value="true"/> <!-- Verbose Output -->
+      </java>
+    </goal>
+
+</project>
+
