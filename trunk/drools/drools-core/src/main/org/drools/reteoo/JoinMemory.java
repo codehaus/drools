@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.24 2004-10-17 02:22:06 mproctor Exp $
- * 
+ * $Id: JoinMemory.java,v 1.25 2004-10-27 07:15:54 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,8 +37,12 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.rule.Declaration;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -46,15 +50,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.rule.Declaration;
-
 /**
  * Memory for left and right inputs of a <code>JoinNode</code>.
- * 
+ *
  * @see ReteTuple
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class JoinMemory implements Serializable
@@ -78,7 +78,7 @@ class JoinMemory implements Serializable
 
     /**
      * Construct.
-     * 
+     *
      * @param node The <code>JoinNode</code> this memory is for.
      */
     JoinMemory(JoinNode node)
@@ -95,7 +95,7 @@ class JoinMemory implements Serializable
 
     /**
      * Retract an object from this memory.
-     * 
+     *
      * @param handle The handle for the fact to retract.
      */
     protected void retractObject(FactHandle handle)
@@ -136,7 +136,7 @@ class JoinMemory implements Serializable
 
     /**
      * Retract tuples from this memory.
-     * 
+     *
      * @param keys The keys for the tuples to be removed.
      */
     protected void retractTuples(Set keys)
@@ -154,7 +154,7 @@ class JoinMemory implements Serializable
 
     /**
      * Retract tuples from this memory.
-     * 
+     *
      * @param key The key for the tuples to be removed.
      */
     protected void retractTuples(TupleKey key)
@@ -166,7 +166,7 @@ class JoinMemory implements Serializable
 
     /**
      * Retract tuples from this memory.
-     * 
+     *
      * @param key The key for the tuples to be removed.
      * @param tupleIter Iterator of tuples to be removed.
      */
@@ -187,12 +187,12 @@ class JoinMemory implements Serializable
 
     /**
      * Modify tuples on the left-side.
-     * 
+     *
      * @param trigger Triggering object handle.
      * @param newTuples Modification replacement tuples.
      * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during modification.
      */
     protected void modifyLeftTuples(FactHandle trigger,
@@ -206,12 +206,12 @@ class JoinMemory implements Serializable
 
     /**
      * Modify tuples on the right-side.
-     * 
+     *
      * @param trigger Triggering object handle.
      * @param newTuples Modification replacement tuples.
      * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during modification.
      */
     protected void modifyRightTuples(FactHandle trigger,
@@ -225,7 +225,7 @@ class JoinMemory implements Serializable
 
     /**
      * Modify tuples
-     * 
+     *
      * @param trigger Triggering object handle.
      * @param newTuples Modification replacement tuples.
      * @param thisSideTuples The tuples on the side that's receiving the
@@ -234,7 +234,7 @@ class JoinMemory implements Serializable
      *        the modifications.
      * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during modification.
      */
     protected void modifyTuples(FactHandle trigger,
@@ -298,12 +298,12 @@ class JoinMemory implements Serializable
 
     /**
      * Propagate retractions.
-     * 
+     *
      * @param trigger The retracted trigger object.
      * @param retractedKeys Keys to the retracted tuples.
      * @param joinNode This memory's join node.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during modification.
      */
     private void propagateRetractTuples(Object trigger,
@@ -327,12 +327,12 @@ class JoinMemory implements Serializable
      * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
      * left input to the left side of this memory, and attempt to join to
      * existing <code>Tuples</code> in the right side.
-     * 
+     *
      * @see JoinNode
      * @see ReteTuple
-     * 
+     *
      * @param tuple The <code>Tuple</code> to add to the left side memory.
-     * 
+     *
      * @return A <code>List</code> of <code>Tuples</code> successfully
      *         created by joining the incoming <code>tuple</code> against
      *         existing <code>Tuples</code> on the right side memory.
@@ -349,7 +349,7 @@ class JoinMemory implements Serializable
     /**
      * Retrieve the <code>List</code> of <code>Tuples</code> held in the
      * left side memory.
-     * 
+     *
      * @return The <code>List</code> of <code>Tuples</code> help in the left
      *         side memory.
      */
@@ -361,7 +361,7 @@ class JoinMemory implements Serializable
     /**
      * Retrieve an <code>Iterator</code> over the <code>Tuples</code> held
      * in the left side memory.
-     * 
+     *
      * @return An <code>Iterator</code> over the <code>Tuples</code> help in
      *         the left side memory.
      */
@@ -374,12 +374,12 @@ class JoinMemory implements Serializable
      * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
      * right input to the right side of this memory, and attempt to join to
      * existing <code>Tuples</code> in the left side.
-     * 
+     *
      * @see JoinNode
      * @see ReteTuple
-     * 
+     *
      * @param tuple The <code>Tuple</code> to add to the right side memory.
-     * 
+     *
      * @return A <code>List</code> of <code>Tuples</code> successfully
      *         created by joining the incoming <code>tuple</code> against
      *         existing <code>Tuples</code> on the left side memory.
@@ -394,7 +394,7 @@ class JoinMemory implements Serializable
     /**
      * Retrieve the <code>List</code> of <code>Tuples</code> held in the
      * right side memory.
-     * 
+     *
      * @return The <code>List</code> of <code>Tuples</code> help in the
      *         right side memory.
      */
@@ -406,7 +406,7 @@ class JoinMemory implements Serializable
     /**
      * Retrieve an <code>Iterator</code> over the <code>Tuples</code> held
      * in the right side memory.
-     * 
+     *
      * @return An <code>Iterator</code> over the <code>Tuples</code> help in
      *         the right side memory.
      */
@@ -419,7 +419,7 @@ class JoinMemory implements Serializable
      * Retrieve an <code>Iterator</code> over the common
      * <code>Declarations</code> used to join <code>Tuples</code> from the
      * left and right side memories.
-     * 
+     *
      * @return An <code>Iterator</code> of common join
      *         <code>Declarations</code>.
      */
@@ -431,11 +431,11 @@ class JoinMemory implements Serializable
     /**
      * Attempt to join the <code>tuple</code> against the tuples available
      * through the <code>tupleIterator</code>.
-     * 
+     *
      * @param tuple The <code>Tuple</code> to attempt joining.
      * @param tupleIter The <code>Iterator</code> over <code>Tuples</code>
      *        to attempt joining to the <code>tuple</code> parameter.
-     * 
+     *
      * @return A possibly empty <code>List</code> of joined
      *         <code>Tuples</code>.
      */
@@ -462,15 +462,15 @@ class JoinMemory implements Serializable
                 joinedTuples.add( joinedTuple );
             }
         }
-        
-        
+
+
 
         return joinedTuples;
     }
 
     /**
      * Produce debug string.
-     * 
+     *
      * @return The debug string.
      */
     protected ReteTuple attemptJoin(ReteTuple left, ReteTuple right)
@@ -479,7 +479,7 @@ class JoinMemory implements Serializable
         Declaration eachDecl = null;
 
         FactHandle leftHandle = null;
-        FactHandle rightHandle = null;  
+        FactHandle rightHandle = null;
 
         while ( declIter.hasNext( ) )
         {
@@ -488,10 +488,10 @@ class JoinMemory implements Serializable
             if (!checkExtractorJoinsOk(eachDecl, left, right)) return null;
 
             leftHandle = left.getKey( ).get( eachDecl );
-            rightHandle = right.getKey( ).get( eachDecl );                                                    
+            rightHandle = right.getKey( ).get( eachDecl );
 
             if ( leftHandle == null && rightHandle == null )
-            {                
+            {
                 continue;
             }
 
@@ -509,7 +509,7 @@ class JoinMemory implements Serializable
                 return null;
             }
         }
-        
+
         ReteTuple joinedTuple = new JoinTuple( left, right );
 
         return joinedTuple;
@@ -521,8 +521,8 @@ class JoinMemory implements Serializable
      * extracted fact should be the same.
      * If the given declaration is a targetDeclaration
      * for one it must be for the other, as its a common
-     * declaration. 
-     * 
+     * declaration.
+     *
      * @param decl
      * @param left
      * @param right
@@ -530,24 +530,24 @@ class JoinMemory implements Serializable
      */
     boolean checkExtractorJoinsOk(Declaration decl, ReteTuple left, ReteTuple right)
     {
-        Set leftTargetDecls = left.getTargetDeclarations();
-        Set rightTargetDecls = right.getTargetDeclarations();                    
-                      
+        Set leftTargetDecls = left.getDeclarations( );
+        Set rightTargetDecls = right.getDeclarations( );
+
         if ((leftTargetDecls != null)&&leftTargetDecls.contains(decl))
         {
-            if (!rightTargetDecls.contains(decl) || !left.get(decl).equals(right.get(decl))) 
+            if (!rightTargetDecls.contains(decl) || !left.get(decl).equals(right.get(decl)))
             {
                 return false;
             }
         }
         else if ((rightTargetDecls != null)&&rightTargetDecls.contains(decl))
         {
-            if (!leftTargetDecls.contains(decl) || !right.get(decl).equals(left.get(decl))) 
+            if (!leftTargetDecls.contains(decl) || !right.get(decl).equals(left.get(decl)))
             {
                 return false;
             }
         }
-        return true;        
+        return true;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -556,7 +556,7 @@ class JoinMemory implements Serializable
 
     /**
      * Produce debug string.
-     * 
+     *
      * @return The debug string.
      */
     public String toString()

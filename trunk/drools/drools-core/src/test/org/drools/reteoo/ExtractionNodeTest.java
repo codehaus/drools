@@ -72,9 +72,7 @@ public class ExtractionNodeTest extends TestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule );
-
-        tuple.putKeyColumn( paramDecl, new FactHandleImpl( 1 ),
+        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule, paramDecl, new FactHandleImpl( 1 ),
                             new String( "cheese" ) );
 
         try
