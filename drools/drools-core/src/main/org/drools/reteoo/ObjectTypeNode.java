@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.23 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ObjectTypeNode.java,v 1.24 2004-12-04 15:18:19 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,6 @@ import org.drools.FactHandle;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -53,18 +52,18 @@ import java.util.Set;
 /**
  * Filters <code>Objects</code> coming from the <code>Rete</code> using a
  * <code>ObjectType</code> semantic module.
- * 
+ *
  * <p>
  * It receives <code>Objects</code> from the <code>Rete</code>, uses a
  * <code>ObjectType</code> instance to determine membership, and propagates
  * matching <code>Objects</code> further to all matching
  * <code>ParameterNode</code>s.
  * </p>
- * 
+ *
  * @see ObjectType
  * @see ParameterNode
  * @see Rete
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com </a>
  */
 class ObjectTypeNode
@@ -76,10 +75,10 @@ class ObjectTypeNode
     // ------------------------------------------------------------
 
     /** The <code>ObjectType</code> semantic module. */
-    private ObjectType objectType;
+    private final ObjectType objectType;
 
     /** The <code>ParameterNode</code> children. */
-    private Set parameterNodes;
+    private final Set parameterNodes = new HashSet( );
 
     // ------------------------------------------------------------
     // Constructors
@@ -87,14 +86,13 @@ class ObjectTypeNode
 
     /**
      * Construct given a semantic <code>ObjectType</code>.
-     * 
+     *
      * @param objectType
      *            The semantic object-type differentiator.
      */
     public ObjectTypeNode(ObjectType objectType)
     {
         this.objectType = objectType;
-        this.parameterNodes = Collections.EMPTY_SET;
     }
 
     // ------------------------------------------------------------
@@ -103,7 +101,7 @@ class ObjectTypeNode
 
     /**
      * Retrieve the semantic <code>ObjectType</code> differentiator.
-     * 
+     *
      * @return The semantic <code>ObjectType</code> differentiator.
      */
     public ObjectType getObjectType()
@@ -113,17 +111,12 @@ class ObjectTypeNode
 
     /**
      * Add a <code>ParameterNode</code> child to this node.
-     * 
+     *
      * @param node
      *            The <code>ParameterNode</code> child to add.
      */
     void addParameterNode(ParameterNode node)
     {
-        if ( this.parameterNodes == Collections.EMPTY_SET )
-        {
-            this.parameterNodes = new HashSet( );
-        }
-
         this.parameterNodes.add( node );
     }
 
@@ -142,7 +135,7 @@ class ObjectTypeNode
     /**
      * Retreive an <code>Iterator</code> over <code>ParameterNode</code>
      * children of this node.
-     * 
+     *
      * @return An <code>Iterator</code> over <code>ParameterNode</code>
      *         children of this node.
      */
@@ -154,14 +147,14 @@ class ObjectTypeNode
     /**
      * Assert a new fact object into this <code>RuleBase</code> and the
      * specified <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle
      *            The fact handle.
      * @param object
      *            The object to assert.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws FactException
      *             if an error occurs during assertion.
      */
@@ -178,30 +171,28 @@ class ObjectTypeNode
 
         while ( nodeIter.hasNext( ) )
         {
-            ((ParameterNode) nodeIter.next( )).assertObject( handle,
-                                                             object,
-                                                             workingMemory );
+            ( ( ParameterNode ) nodeIter.next( ) ).assertObject( handle,
+                                                                 object,
+                                                                 workingMemory );
         }
     }
 
     /**
      * Retract a fact object from this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle
      *            The handle of the fact to retract.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws FactException
      *             if an error occurs during assertion.
      */
     void retractObject(FactHandle handle,
                        WorkingMemoryImpl workingMemory) throws FactException
     {
-        Object object = workingMemory.getObject( handle );
-
-        if ( !this.objectType.matches( object ) )
+        if ( !this.objectType.matches( workingMemory.getObject( handle ) ) )
         {
             return;
         }
@@ -210,25 +201,25 @@ class ObjectTypeNode
 
         while ( nodeIter.hasNext( ) )
         {
-            ((ParameterNode) nodeIter.next( )).retractObject( handle,
-                                                              workingMemory );
+            ( ( ParameterNode ) nodeIter.next( ) ).retractObject( handle,
+                                                                  workingMemory );
         }
     }
 
     /**
      * Modify a fact object in this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * With the exception of time-based nodes, modification of a fact object is
      * semantically equivelent to retracting and re-asserting it.
-     * 
+     *
      * @param handle
      *            The fact handle.
      * @param object
      *            The modified value object.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws FactException
      *             if an error occurs during assertion.
      */
@@ -236,30 +227,23 @@ class ObjectTypeNode
                       Object object,
                       WorkingMemoryImpl workingMemory) throws FactException
     {
-        ObjectType objectType = getObjectType( );
-
         Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode;
 
-        if ( !objectType.matches( object ) )
+        if ( this.objectType.matches( object ) )
         {
             while ( nodeIter.hasNext( ) )
             {
-                eachNode = (ParameterNode) nodeIter.next( );
-
-                eachNode.retractObject( handle,
-                                        workingMemory );
+                ( (ParameterNode) nodeIter.next( ) ).modifyObject( handle,
+                                                                   object,
+                                                                   workingMemory );
             }
         }
         else
         {
             while ( nodeIter.hasNext( ) )
             {
-                eachNode = (ParameterNode) nodeIter.next( );
-
-                eachNode.modifyObject( handle,
-                                       object,
-                                       workingMemory );
+                ( ( ParameterNode ) nodeIter.next( ) ).retractObject( handle,
+                                                                      workingMemory );
             }
         }
     }
