@@ -236,75 +236,73 @@ class TupleSet
     {
         return "[TupleSet tuple=" + this.tuples + "]";
     }
-
-}
-
-/** Iterator over tuples.
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-class Itr implements Iterator
-{
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** Tuples. */
-    private Map tuples;
-
-    /** Internal iterator. */
-    private Iterator keyIter;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param tuples The tuples.
-     */
-    Itr(Map tuples)
-    {
-        this.tuples = tuples;
-        this.keyIter = tuples.keySet().iterator();
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.util.Iterator
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Determine if this iterator has an element in the next position.
-     *
-     *  @return <code>true</code> if an element exists in the next
-     *          position, otherwise <code>false</code>.
-     */
-    public boolean hasNext()
-    {
-        return this.keyIter.hasNext();
-    }
-
-    /** Retrieve the element in the next position.
-     *
-     *  @return The element in the next position.
-     *
-     *  @throws NoSuchElementException If there exists no element
-     *          in the next position.
-     */
-    public Object next() throws NoSuchElementException
-    {
-        return this.tuples.get( this.keyIter.next() );
-    }
-
-    /** Remove the element at the current position.
-     */
-    public void remove()
-    {
-        this.keyIter.remove();
-    }
-
     
+    /** Iterator over tuples.
+     *
+     *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+     */
+    static class Itr implements Iterator
+    {
+        // ------------------------------------------------------------
+        //     Instance members
+        // ------------------------------------------------------------
+        
+        /** Tuples. */
+        private Map tuples;
+        
+        /** Internal iterator. */
+        private Iterator keyIter;
+        
+        // ------------------------------------------------------------
+        //     Constructors
+        // ------------------------------------------------------------
+        
+        /** Construct.
+         *
+         *  @param tuples The tuples.
+         */
+        Itr(Map tuples)
+        {
+            this.tuples = tuples;
+            this.keyIter = tuples.keySet().iterator();
+        }
+        
+        // ------------------------------------------------------------
+        //     Instance methods
+        // ------------------------------------------------------------
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        //     java.util.Iterator
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        
+        /** Determine if this iterator has an element in the next position.
+         *
+         *  @return <code>true</code> if an element exists in the next
+         *          position, otherwise <code>false</code>.
+         */
+        public boolean hasNext()
+        {
+            return this.keyIter.hasNext();
+        }
+        
+        /** Retrieve the element in the next position.
+         *
+         *  @return The element in the next position.
+         *
+         *  @throws NoSuchElementException If there exists no element
+         *          in the next position.
+         */
+        public Object next() throws NoSuchElementException
+        {
+            return this.tuples.get( this.keyIter.next() );
+        }
+        
+        /** Remove the element at the current position.
+         */
+        public void remove()
+        {
+            this.keyIter.remove();
+        }
+    }
 }
+    

@@ -2,8 +2,7 @@ package org.drools.reteoo;
 
 import org.drools.WorkingMemory;
 import org.drools.FactHandle;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
+import org.drools.FactException;
 import org.drools.spi.ObjectType;
 
 import java.util.List;
@@ -13,19 +12,20 @@ public class InstrumentedObjectTypeNode
     extends ObjectTypeNode
 {
     private List assertedObjects;
-    private List retractedObjects;
+    private List retractedHandles;
 
     public InstrumentedObjectTypeNode(ObjectType objectType)
     {
         super( objectType );
 
         this.assertedObjects  = new ArrayList();
-        this.retractedObjects = new ArrayList();
+        this.retractedHandles = new ArrayList();
     }
 
     public void assertObject(FactHandle handle,
                              Object object,
-                             WorkingMemoryImpl memory) throws AssertionException
+                             WorkingMemoryImpl memory)
+        throws FactException
     {
         super.assertObject( handle,
                             object,
@@ -35,14 +35,13 @@ public class InstrumentedObjectTypeNode
     }
 
     public void retractObject(FactHandle handle,
-                              Object object,
-                              WorkingMemoryImpl memory) throws RetractionException
+                              WorkingMemoryImpl memory)
+        throws FactException
     {
         super.retractObject( handle,
-                             object,
                              memory );
 
-        this.retractedObjects.add( object );
+        this.retractedHandles.add( handle );
     }
 
     public List getAssertedObjects()
@@ -50,8 +49,8 @@ public class InstrumentedObjectTypeNode
         return this.assertedObjects;
     }
 
-    public List getRetractedObjects()
+    public List getRetractedHandles()
     {
-        return this.retractedObjects;
+        return this.retractedHandles;
     }
 }

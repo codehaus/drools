@@ -27,7 +27,7 @@ public class ReteTupleTest
                                          "rootObj" );
 
         this.otherDecl = new Declaration( new MockObjectType(),
-                                          "rootObj" );
+                                          "otherObj" );
 
         this.rootObj = new Object();
 

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.6 2003-10-28 19:16:52 bob Exp $
+ $Id: Declaration.java,v 1.7 2003-10-31 20:46:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -136,10 +136,20 @@ public class Declaration
      */
     public boolean equals(Object thatObj)
     {
-        Declaration that = (Declaration) thatObj;
+        if ( thatObj instanceof Declaration )
+        {
+            Declaration that = (Declaration) thatObj;
 
-        return ( this.objectType.equals( that.objectType )
-                 &&
-                 this.identifier.equals( that.identifier ) );
+            return ( this.objectType.equals( that.objectType )
+                     &&
+                     this.identifier.equals( that.identifier ) );
+        }
+
+        return false;
+    }
+
+    public int hashCode()
+    {
+        return ( this.objectType.hashCode() + this.identifier.hashCode() );
     }
 }

@@ -171,19 +171,23 @@ class WorkingMemoryImpl
                                     object,
                                     this );
 
-        this.objects.put( handle,
-                          object );
+        putObject( handle,
+                   object );
 
         return handle;
+    }
+
+    void putObject(FactHandle handle,
+                   Object object)
+    {
+        this.objects.put( handle,
+                          object );
     }
 
     public synchronized void retractObject(FactHandle handle)
         throws FactException
     {
-        Object object = getObject( handle );
-
         this.ruleBase.retractObject( handle,
-                                     object,
                                      this );
 
         this.objects.remove( handle );
