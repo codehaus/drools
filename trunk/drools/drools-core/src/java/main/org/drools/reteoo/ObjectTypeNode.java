@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.6 2002-07-28 13:55:47 bob Exp $
+ $Id: ObjectTypeNode.java,v 1.7 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,16 +46,7 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.Iterator;
 
 /** Filters <code>Objects</code> coming from the <code>RootNode</code>
  *  using a <code>ObjectType</code> semantic module.

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AssignmentNodeImpl.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: AssignmentNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,6 @@ import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.reteoo.AssignmentNode;
-import org.drools.reteoo.TupleSource;
 import org.drools.spi.Declaration;
 import org.drools.spi.FactExtractor;
 
@@ -59,6 +58,8 @@ import java.util.Set;
 import java.util.HashSet;
 
 /** <i>Consistent-Assignment</i> node in the Rete-OO network.
+ *
+ *  @see AssignmentNode
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: AssignmentNode.java,v 1.12 2002-07-28 13:55:46 bob Exp $
+ $Id: AssignmentNode.java,v 1.13 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,8 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
 import org.drools.spi.Declaration;
 import org.drools.spi.FactExtractor;
-
-import java.util.Set;
-import java.util.HashSet;
 
 /** <i>Consistent-Assignment</i> node in the Rete-OO network.
  *

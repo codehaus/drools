@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeImpl.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: JoinNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,8 +60,8 @@ import java.util.Iterator;
 
 /** A two-input Rete-OO <i>join node</i>.
  *
- *  @see TupleSource
- *  @see TupleSink
+ *  @see org.drools.reteoo.TupleSource
+ *  @see org.drools.reteoo.TupleSink
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.9 2002-07-28 13:55:46 bob Exp $
+ $Id: JoinNode.java,v 1.10 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,7 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.spi.Declaration;
-
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
 /** A two-input Rete-OO <i>join node</i>.
  *

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.10 2002-07-28 13:55:47 bob Exp $
+ $Id: ParameterNode.java,v 1.11 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,7 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-
 import org.drools.spi.Declaration;
-
-import java.util.Set;
-import java.util.Collections;
 
 /** Receives <code>Objects</code> from an <code>ObjectTypeNode</code>,
  *  and creates a <code>ReteTuple</code>, passing the result to the following node.

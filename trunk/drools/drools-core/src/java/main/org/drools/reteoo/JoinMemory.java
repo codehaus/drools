@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinMemory.java,v 1.13 2002-07-28 13:55:46 bob Exp $
+ $Id: JoinMemory.java,v 1.14 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,15 +45,6 @@ package org.drools.reteoo;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.spi.Declaration;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Collections;
 
 /** Memory for left and right inputs of a <code>JoinNode</code>.
  *

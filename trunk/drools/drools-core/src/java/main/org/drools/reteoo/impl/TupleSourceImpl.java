@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSourceImpl.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: TupleSourceImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,15 +53,14 @@ import org.drools.RetractionException;
 import org.drools.reteoo.TupleSink;
 import org.drools.reteoo.TupleSource;
 
-import java.util.Set;
-
 /** A source of <code>ReteTuple</code>s for a <code>TupleSink</code>.
  *
  *  <p>
  *  Nodes that propagate <code>Tuples</code> extend this class.
  *  </p>
  *
- *  @see TupleSink
+ *  @see TupleSource
+ *  @see TupleSinkImpl
  *  @see ReteTuple
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>

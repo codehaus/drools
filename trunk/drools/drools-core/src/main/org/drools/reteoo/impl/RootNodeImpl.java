@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: RootNodeImpl.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: RootNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -66,7 +66,7 @@ import java.util.Iterator;
  *  propagates it to all <code>ObjectTypeNode</code>s for
  *  type testings.
  *
- *  @see ObjectTypeNode
+ *  @see ObjectTypeNodeImpl
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
