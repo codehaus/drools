@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.17 2004-12-04 04:33:58 dbarnett Exp $
+ * $Id: AbstractRuleSessionImpl.java,v 1.1 2004-12-05 20:25:15 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -76,7 +76,7 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-abstract class RuleSessionImpl implements RuleSession
+abstract class AbstractRuleSessionImpl implements RuleSession
 {
     /**
      * The Drools <code>WorkingMemory</code> associated
@@ -118,7 +118,6 @@ abstract class RuleSessionImpl implements RuleSession
      *
      * @see #setProperties(Map)
      * @see WorkingMemory#setApplicationData(String, Object)
-     * @see org.drools.conflict.DefaultConflictResolver
      */
     protected WorkingMemory newWorkingMemory( )
     {

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatefulRuleSessionImpl.java,v 1.16 2004-11-27 00:59:54 dbarnett Exp $
+ * $Id: StatefulRuleSessionImpl.java,v 1.17 2004-12-05 20:25:15 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -86,7 +86,7 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
 public class StatefulRuleSessionImpl
-    extends RuleSessionImpl implements StatefulRuleSession
+    extends AbstractRuleSessionImpl implements StatefulRuleSession
 {
     // ----------------------------------------------------------------------
     //     Constructors
