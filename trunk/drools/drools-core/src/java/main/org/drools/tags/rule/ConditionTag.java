@@ -1,7 +1,7 @@
-package org.drools.io;
+package org.drools.tags.rule;
 
 /*
- $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
+ $Id: ConditionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,29 +46,27 @@ package org.drools.io;
  
  */
 
-import org.drools.smf.SemanticModule;
-import org.drools.tags.semantics.SemanticsTagLibrary;
+import org.drools.spi.Condition;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.parser.XMLParser;
+import org.apache.commons.jelly.JellyException;
 
-import java.io.IOException;
-import java.net.URL;
-
-/** Loads <code>SemanticModule</code> definition from XML descriptor.
+/** Construct a <code>Condition</code> for a <code>Rule</code>.
+ *
+ *  @see Condition
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ConditionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
  */
-public class SemanticsLoader
+public class ConditionTag extends RuleTagSupport
 {
     // ------------------------------------------------------------
-    //     Constants
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Name of smf descriptor. */
-    public static final String DESCRIPTOR_NAME = "semantics.xml";
+    /** The condition.*/
+    private Condition condition;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -76,62 +74,51 @@ public class SemanticsLoader
 
     /** Construct.
      */
-    public SemanticsLoader()
+    public ConditionTag()
     {
-        // intentionally left blank.
+        this.condition = null;
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Load a <code>SemanticModule</code> deifnition from a URL.
+    /** Set the <code>Condition</code>.
      *
-     *  @param packageName The java package containing the module.
-     *
-     *  @return The loaded semantic module or <code>null</code> if none found.
-     *
-     *  @throws IOException If an IO errors occurs.
-     *  @throws Exception If an error occurs evaluating the definition.
+     *  @param condition The condition.
      */
-    public SemanticModule load(String packageName) throws IOException, Exception
+    protected void setCondition(Condition condition)
     {
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        if ( cl == null )
-        {
-            cl = ClassLoader.getSystemClassLoader();
-        }
-
-        String moduleDescriptor = packageName.replace( '.',
-                                                       '/' );
-        moduleDescriptor += "/" + DESCRIPTOR_NAME;
-
-        System.err.println( "descriptor: " + moduleDescriptor );
-
-        URL url = cl.getResource( moduleDescriptor );
-
-        if ( url == null )
-        {
-            return null;
-        }
-
-        XMLParser parser = new XMLParser();
-
-        JellyContext context = new JellyContext();
-
-        context.registerTagLibrary( "http://drools.org/semantic-module",
-                                    new SemanticsTagLibrary() );
-
-        parser.setContext( context );
-
-        Script script = parser.parse( url.toExternalForm() );
-        
-        XMLOutput output = XMLOutput.createXMLOutput( System.err );
-        
-        script.run( context,
-                    output );
-
-        return (SemanticModule) context.getVariable( "org.drools.semantic-module" );
+        this.condition = condition;
     }
-}     
+
+    /** Retrieve the <code>Condition</code>.
+     *
+     *  @return The condition.
+     */
+    public Condition getCondition()
+    {
+        return this.condition;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Perform this tag.
+     *
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
+     */
+    public void doTag(XMLOutput output) throws Exception
+    {
+        invokeBody( output );
+
+        if ( this.condition == null )
+        {
+            throw new JellyException( "Condition expected" );
+        }
+    }
+}

@@ -25,17 +25,9 @@ public class SemanticsLoaderTest extends TestCase
         this.loader = null;
     }
 
-    public void testLoad_Invalid() 
+    public void testLoad_Invalid() throws Exception
     {
-        try
-        {
-            this.loader.load( "goober.goober.goober" );
-            fail( "Should have thrown Exception" );
-        }
-        catch (Exception e)
-        {
-            // expected and correct
-        }
+        assertNull( this.loader.load( "goober.goober.goober" ) );
     }
 
     public void testLoad_Valid() throws Exception

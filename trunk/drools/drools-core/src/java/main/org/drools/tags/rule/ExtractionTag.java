@@ -1,7 +1,7 @@
-package org.drools.io;
+package org.drools.tags.rule;
 
 /*
- $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
+ $Id: ExtractionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,29 +46,32 @@ package org.drools.io;
  
  */
 
-import org.drools.smf.SemanticModule;
-import org.drools.tags.semantics.SemanticsTagLibrary;
+import org.drools.rule.Declaration;
+import org.drools.rule.Extraction;
+import org.drools.spi.Extractor;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.parser.XMLParser;
+import org.apache.commons.jelly.JellyException;
 
-import java.io.IOException;
-import java.net.URL;
-
-/** Loads <code>SemanticModule</code> definition from XML descriptor.
+/** Construct an <code>Extraction</code> for a <code>Rule</code>.
  *
+ *  @see Extraction
+ * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ExtractionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
  */
-public class SemanticsLoader
+public class ExtractionTag extends RuleTagSupport
 {
     // ------------------------------------------------------------
-    //     Constants
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Name of smf descriptor. */
-    public static final String DESCRIPTOR_NAME = "semantics.xml";
+    /** Target of the extraction. */
+    private String target;
+
+    /** The semantic extractor. */
+    private Extractor extractor;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -76,62 +79,85 @@ public class SemanticsLoader
 
     /** Construct.
      */
-    public SemanticsLoader()
+    public ExtractionTag()
     {
-        // intentionally left blank.
+        this.target        = null;
+        this.extractor = null;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Load a <code>SemanticModule</code> deifnition from a URL.
+    /** Set the <code>Extractor</code>.
      *
-     *  @param packageName The java package containing the module.
-     *
-     *  @return The loaded semantic module or <code>null</code> if none found.
-     *
-     *  @throws IOException If an IO errors occurs.
-     *  @throws Exception If an error occurs evaluating the definition.
+     *  @param extractor The extractor.
      */
-    public SemanticModule load(String packageName) throws IOException, Exception
+    protected void setExtractor(Extractor extractor)
     {
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        if ( cl == null )
-        {
-            cl = ClassLoader.getSystemClassLoader();
-        }
-
-        String moduleDescriptor = packageName.replace( '.',
-                                                       '/' );
-        moduleDescriptor += "/" + DESCRIPTOR_NAME;
-
-        System.err.println( "descriptor: " + moduleDescriptor );
-
-        URL url = cl.getResource( moduleDescriptor );
-
-        if ( url == null )
-        {
-            return null;
-        }
-
-        XMLParser parser = new XMLParser();
-
-        JellyContext context = new JellyContext();
-
-        context.registerTagLibrary( "http://drools.org/semantic-module",
-                                    new SemanticsTagLibrary() );
-
-        parser.setContext( context );
-
-        Script script = parser.parse( url.toExternalForm() );
-        
-        XMLOutput output = XMLOutput.createXMLOutput( System.err );
-        
-        script.run( context,
-                    output );
-
-        return (SemanticModule) context.getVariable( "org.drools.semantic-module" );
+        this.extractor = extractor;
     }
-}     
+
+    /** Retrieve the <code>Extractor</code>.
+     *
+     *  @return The extractor.
+     */
+    public Extractor getExtractor()
+    {
+        return this.extractor;
+    }
+
+    /** Set the target of the extraction.
+     *
+     *  @param target The target variable name.
+     */
+    public void setTarget(String target)
+    {
+        this.target = target;
+    }
+
+    /** Retrieve the target of the extraction.
+     *
+     *  @return The target variable name.
+     */
+    public String getTarget()
+    {
+        return this.target;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Perform this tag.
+     *
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
+     */
+    public void doTag(XMLOutput output) throws Exception
+    {
+        requiredAttribute( "target",
+                           this.target );
+
+        Declaration decl = getRule().getDeclaration( this.target );
+
+        if ( decl == null )
+        {
+            throw new JellyException( "Unknown declaration: " + this.target );
+        }
+
+        invokeBody( output );
+
+        if ( this.extractor == null )
+        {
+            throw new JellyException( "Extractor expected" );
+        }
+
+        Extraction extraction = new Extraction( decl,
+                                                this.extractor );
+
+        getRule().addExtraction( extraction );
+    }
+}

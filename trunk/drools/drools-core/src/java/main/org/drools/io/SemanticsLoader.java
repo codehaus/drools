@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsLoader.java,v 1.2 2002-08-19 00:31:41 bob Exp $
+ $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -89,7 +89,7 @@ public class SemanticsLoader
      *
      *  @param packageName The java package containing the module.
      *
-     *  @return The loaded semantic module.
+     *  @return The loaded semantic module or <code>null</code> if none found.
      *
      *  @throws IOException If an IO errors occurs.
      *  @throws Exception If an error occurs evaluating the definition.
@@ -108,7 +108,13 @@ public class SemanticsLoader
         moduleDescriptor += "/" + DESCRIPTOR_NAME;
 
         System.err.println( "descriptor: " + moduleDescriptor );
+
         URL url = cl.getResource( moduleDescriptor );
+
+        if ( url == null )
+        {
+            return null;
+        }
 
         XMLParser parser = new XMLParser();
 
