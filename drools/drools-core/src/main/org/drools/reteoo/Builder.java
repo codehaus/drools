@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.26 2003-10-26 22:06:49 bob Exp $
+ $Id: Builder.java,v 1.27 2003-10-28 05:00:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.RuleIntegrationException;
-import org.drools.reteoo.impl.*;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
@@ -76,7 +75,7 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Rete network to build against. */
-    private ReteImpl rete;
+    private Rete rete;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -89,7 +88,7 @@ public class Builder
      */
     public Builder(Rete rete)
     {
-        this.rete = (ReteImpl) rete;
+        this.rete = (Rete) rete;
     }
 
     // ------------------------------------------------------------
@@ -184,7 +183,7 @@ public class Builder
 
         TupleSource lastNode = (TupleSource) leafNodes.iterator().next();
 
-        TerminalNode terminal = new TerminalNodeImpl( lastNode,
+        TerminalNode terminal = new TerminalNode( lastNode,
                                                       rule );
     }
 
@@ -206,7 +205,7 @@ public class Builder
         Declaration eachDecl = null;
 
         ObjectType         objectType     = null;
-        ObjectTypeNodeImpl objectTypeNode = null;
+        ObjectTypeNode objectTypeNode = null;
         ParameterNode      paramNode      = null;
 
         while ( declIter.hasNext() )
@@ -215,9 +214,9 @@ public class Builder
 
             objectType = eachDecl.getObjectType();
 
-            objectTypeNode = ((ReteImpl)getRete()).getOrCreateObjectTypeNode( objectType );
+            objectTypeNode = ((Rete)getRete()).getOrCreateObjectTypeNode( objectType );
 
-            paramNode = new ParameterNodeImpl( objectTypeNode,
+            paramNode = new ParameterNode( objectTypeNode,
                                                eachDecl );
 
             leafNodes.add( paramNode );
@@ -247,7 +246,7 @@ public class Builder
     {
         Iterator        condIter    = conds.iterator();
         Condition       eachCond    = null;
-        TupleSourceImpl tupleSource = null;
+        TupleSource tupleSource = null;
 
         ConditionNode conditionNode = null;
 
@@ -265,7 +264,7 @@ public class Builder
 
             condIter.remove();
 
-            conditionNode = new ConditionNodeImpl( tupleSource,
+            conditionNode = new ConditionNode( tupleSource,
                                                    eachCond );
 
             leafNodes.remove( tupleSource );
@@ -297,7 +296,7 @@ public class Builder
     {
         Iterator leafIter = leafNodes.iterator();
 
-        TupleSourceImpl left = (TupleSourceImpl) leafIter.next();
+        TupleSource left = (TupleSource) leafIter.next();
 
         if ( ! leafIter.hasNext() )
         {
@@ -306,11 +305,11 @@ public class Builder
 
         leafIter.remove();
 
-        TupleSourceImpl right = (TupleSourceImpl) leafIter.next();
+        TupleSource right = (TupleSource) leafIter.next();
 
         leafIter.remove();
 
-        JoinNode joinNode = new JoinNodeImpl( left,
+        JoinNode joinNode = new JoinNode( left,
                                               right );
 
         leafNodes.add( joinNode );
@@ -343,15 +342,15 @@ public class Builder
         Object[] leftNodes  = leafNodes.toArray();
         Object[] rightNodes = leafNodes.toArray();
 
-        TupleSourceImpl left  = null;
-        TupleSourceImpl right = null;
+        TupleSource left  = null;
+        TupleSource right = null;
 
         JoinNode joinNode = null;
 
       OUTTER:
         for ( int i = 0 ; i < leftNodes.length ; ++i )
         {
-            left = (TupleSourceImpl) leftNodes[i];
+            left = (TupleSource) leftNodes[i];
 
             if ( ! leafNodes.contains( left ) )
             {
@@ -361,7 +360,7 @@ public class Builder
           INNER:
             for ( int j = i + 1; j < rightNodes.length ; ++j )
             {
-                right = (TupleSourceImpl) rightNodes[j];
+                right = (TupleSource) rightNodes[j];
 
                 if ( ! leafNodes.contains( right ) )
                 {
@@ -372,7 +371,7 @@ public class Builder
                                   right ) )
                 
                 {
-                    joinNode = new JoinNodeImpl( left,
+                    joinNode = new JoinNode( left,
                                                  right );
 
                     leafNodes.remove( left );
@@ -444,7 +443,7 @@ public class Builder
             
             Iterator        extractIter = factExtracts.iterator();
             Extraction      eachExtract = null;
-            TupleSourceImpl tupleSource = null;
+            TupleSource tupleSource = null;
             
             ExtractionNode extractNode = null;
             
@@ -462,7 +461,7 @@ public class Builder
                 
                 extractIter.remove();
                 
-                extractNode = new ExtractionNodeImpl( tupleSource,
+                extractNode = new ExtractionNode( tupleSource,
                                                       eachExtract.getTargetDeclaration(),
                                                       eachExtract.getExtractor() );
 
@@ -491,17 +490,17 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSourceImpl findMatchingTupleSourceForCondition(Condition condition,
+    protected TupleSource findMatchingTupleSourceForCondition(Condition condition,
                                                                   Set sources)
     {
         Iterator        sourceIter = sources.iterator();
-        TupleSourceImpl eachSource = null;
+        TupleSource eachSource = null;
 
         Set decls = null;
 
         while ( sourceIter.hasNext() )
         {
-            eachSource = (TupleSourceImpl) sourceIter.next();
+            eachSource = (TupleSource) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
 
@@ -524,19 +523,19 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSourceImpl findMatchingTupleSourceForExtraction(Extraction extract,
+    protected TupleSource findMatchingTupleSourceForExtraction(Extraction extract,
                                                                    Set sources)
     {
         Declaration targetDecl = extract.getTargetDeclaration();
 
         Iterator        sourceIter = sources.iterator();
-        TupleSourceImpl eachSource = null;
+        TupleSource eachSource = null;
 
         Set decls = null;
 
         while ( sourceIter.hasNext() )
         {
-            eachSource = (TupleSourceImpl) sourceIter.next();
+            eachSource = (TupleSource) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
 

@@ -1,12 +1,12 @@
 package org.drools.reteoo;
 
-import org.drools.reteoo.impl.TupleSourceImpl;
 import org.drools.rule.Declaration;
 
 import java.util.Set;
 import java.util.HashSet;
 
-public class MockTupleSource extends TupleSourceImpl
+public class MockTupleSource
+    extends TupleSource
 {
     private Set declarations;
 

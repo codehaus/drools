@@ -4,6 +4,7 @@
     <pomVersion>3</pomVersion>
     <name>drools-core</name>
     <id>drools-core</id>
+    <groupId>drools</groupId>
     <currentVersion>2.0-beta-12-dev</currentVersion>
 
     <organization>

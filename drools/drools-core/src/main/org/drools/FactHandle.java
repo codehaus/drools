@@ -4,7 +4,7 @@ public class FactHandle
 {
     private long id;
 
-    FactHandle(long id)
+    public FactHandle(long id)
     {
         this.id = id;
     }

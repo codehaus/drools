@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.3 2003-10-26 22:06:49 bob Exp $
+ $Id: RuleSet.java,v 1.4 2003-10-28 05:00:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -147,16 +147,13 @@ public class RuleSet
      */
     public Rule getRule(String name)
     {
-        Iterator ruleIter = getRuleIterator();
-        Rule     eachRule = null;
+        Rule[] rules = getRules();
 
-        while ( ruleIter.hasNext() )
+        for ( int i = 0 ; i < rules.length ; ++i )
         {
-            eachRule = (Rule) ruleIter.next();
-
-            if ( eachRule.getName().equals( name ) )
+            if ( rules[ i ].getName().equals( name ) )
             {
-                return eachRule;
+                return rules[ i ];
             }
         }
 
@@ -176,34 +173,13 @@ public class RuleSet
         return this.ruleNames.contains( name );
     }
 
-    /** Retrieve a <code>List</code> of all <code>Rules</code>
-     *  in this <code>RuleSet</code>.
+    /** Retrieve all <code>Rules</code> in this <code>RuleSet</code>.
      *
-     *  @return A <code>List</code> of all <code>Rules</code>
+     *  @return An array of all <code>Rules</code>
      *          in this <code>RuleSet</code>.
      */
-    public List getRules()
+    public Rule[] getRules()
     {
-        return this.rules;
-    }
-
-    /** Retrieve an <code>Iterator</code> of all <code>Rules</code>
-     *  in this <code>RuleSet</code>.
-     *
-     *  @return A <code>Iterator</code> over all <code>Rules</code>
-     *          in this <code>RuleSet</code>.
-     */
-    public Iterator getRuleIterator()
-    {
-        return getRules().iterator();
-    }
-
-    /** Return a string representation of this object.
-     *
-     * @return a String
-     */
-    public String toString()
-    {
-      return "[RuleSet: name=" + name + ",ruleNames=" + ruleNames + "]";
+        return (Rule[]) this.rules.toArray( Rule.EMPTY_ARRAY );
     }
 }
