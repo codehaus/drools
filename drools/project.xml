@@ -2,7 +2,7 @@
 <project>
 
     <pomVersion>3</pomVersion>
-    <name>Drools :: Rete-OO Core</name>
+    <name>drools-core</name>
     <id>drools-core</id>
     <groupId>drools</groupId>
     <currentVersion>2.0-beta-13-dev</currentVersion>
@@ -141,7 +141,7 @@
             <id>tdiesler</id>
             <email>thomas.diesler@softcon-itec.de</email>
             <roles>
-                <role>JSR-94 and JCA Lead</role>
+                <role>JCA Lead</role>
             </roles>
         </developer>
 
@@ -150,6 +150,14 @@
             <email>RobertSearle@hotmail.com</email>
             <roles>
                 <role>Developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>N. Alex Rupp</name>
+            <email>alex@nrfx.com</email>
+            <roles>
+                <role>JSR-94 Lead</role>
             </roles>
         </developer>
 
@@ -165,18 +173,15 @@
     </contributors>
 
     <dependencies>
-        <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.1.0</version>
-        </dependency>
+
     </dependencies>
 
     <build>
         <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/main</sourceDirectory>
         <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-        <aspectSourceDirectory>src/aspects</aspectSourceDirectory>
+        <integrationUnitTestSourceDirectory/>
+        <aspectSourceDirectory/>
 
         <!-- Unit test classes -->
 

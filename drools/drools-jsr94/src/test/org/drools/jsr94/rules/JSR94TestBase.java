@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TestBase.java,v 1.3 2004-04-02 22:44:21 n_alex Exp $
+ $Id: JSR94TestBase.java,v 1.4 2004-06-06 02:31:50 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -60,11 +60,11 @@ import java.net.URL;
  * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public abstract class Jsr94TestBase extends TestCase
+public abstract class JSR94TestBase extends TestCase
 {
     protected StatefulRuleSession statefulSession;
     protected StatelessRuleSession statelessSession;
-    protected ExampleEngine engine;
+    protected ExampleRuleEngineFacade engine;
     protected String bindUri = "sisters.drl";
     protected RuleServiceProvider ruleServiceProvider;
 
@@ -74,7 +74,7 @@ public abstract class Jsr94TestBase extends TestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-        engine = new ExampleEngine();
+        engine = new ExampleRuleEngineFacade();
         engine.addRuleExecutionSet(bindUri, StatelessRuleSessionTestCase.class.getResourceAsStream(bindUri));
 
         this.ruleServiceProvider = engine.getRuleServiceProvider();

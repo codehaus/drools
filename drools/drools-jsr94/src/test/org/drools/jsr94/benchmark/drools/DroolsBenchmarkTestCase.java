@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark.drools;
 
 /*
- $Id: DroolsBenchmarkTestCase.java,v 1.2 2003-03-27 20:42:02 tdiesler Exp $
+ $Id: DroolsBenchmarkTestCase.java,v 1.3 2004-06-06 02:31:50 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -106,7 +106,7 @@ public class DroolsBenchmarkTestCase extends BenchmarkTestBase
     protected void tearDown() throws Exception
     {
         statelessRuleSession.release();
-        ruleAdministrator.unregisterRuleExecutionSet( RULE_URI, null );
+        ruleAdministrator.deregisterRuleExecutionSet( RULE_URI, null );
         super.tearDown();
     }
 

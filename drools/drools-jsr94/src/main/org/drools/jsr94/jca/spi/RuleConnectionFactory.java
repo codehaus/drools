@@ -1,7 +1,7 @@
 package org.drools.jsr94.jca.spi;
 
 /*
- $Id: RuleConnectionFactory.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleConnectionFactory.java,v 1.6 2004-06-06 02:31:50 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -50,7 +50,7 @@ import org.drools.jsr94.rules.RuleServiceProviderImpl;
 
 import javax.naming.NamingException;
 import javax.naming.Reference;
-import javax.resource.Referenceable;
+import javax.naming.Referenceable;
 import javax.resource.ResourceException;
 import javax.resource.cci.*;
 import javax.resource.spi.ConnectionManager;
