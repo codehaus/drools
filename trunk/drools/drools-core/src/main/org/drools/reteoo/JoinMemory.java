@@ -62,7 +62,6 @@ public class JoinMemory
      */
     protected List addLeftTuple(Tuple tuple)
     {
-        System.err.println( this + " -> addLeftTuple(" + tuple + ")" );
         this.leftTuples.add( tuple );
 
         return attemptJoin( tuple,
@@ -106,7 +105,6 @@ public class JoinMemory
      */
     protected List addRightTuple(Tuple tuple)
     {
-        System.err.println( this + " -> addRightTuple(" + tuple + ")" );
         this.rightTuples.add( tuple );
 
         return attemptJoin( tuple,

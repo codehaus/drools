@@ -82,10 +82,10 @@ public class RoughDom4jTest extends TestCase
                                               "name" );
             
             FactExtractor aExtract = new Dom4jXPathFactExtractor( doc1,
-                                                                  new XPath( "/a/@id" ) );
+                                                                  new XPath( "string(/a/@id)" ) );
 
             FactExtractor bExtract = new Dom4jXPathFactExtractor( doc2,
-                                                                  new XPath( "/b/@id" ) );
+                                                                  new XPath( "string(/b/@id)" ) );
             
             rule.addAssignmentCondition( new AssignmentCondition( id,
                                                                   aExtract ) );

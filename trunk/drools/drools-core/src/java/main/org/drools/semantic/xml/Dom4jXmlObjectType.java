@@ -54,7 +54,7 @@ public class Dom4jXmlObjectType implements ObjectType
             }
         }
 
-        if ( root.getName().equals( this.name ) )
+        if ( ! root.getName().equals( this.name ) )
         {
             return false;
         }
