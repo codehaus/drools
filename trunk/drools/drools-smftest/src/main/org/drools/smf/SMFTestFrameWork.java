@@ -2,6 +2,8 @@ package org.drools.smf;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import org.drools.MockTuple;
 import org.drools.MockWorkingMemory;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.rule.Imports;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
@@ -23,6 +26,7 @@ import org.drools.spi.ExtractionException;
 import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
+import org.drools.spi.ImportEntry;
 
 /**
  * @author mproctor
@@ -62,6 +66,8 @@ public abstract class SMFTestFrameWork extends TestCase
     private SemanticsRepository repository;
 
     private String              newline = System.getProperty( "line.separator" );
+    
+    private Imports             imports;
 
     public SMFTestFrameWork(String name)
     {
@@ -74,7 +80,7 @@ public abstract class SMFTestFrameWork extends TestCase
      * Reads in the specified data file and extracts to a List of tests using
      * the delimter <!--drools-test--!>
      */
-    public void setUp(String semantic) throws Exception
+    public void setUp(String semantic, Imports imports) throws Exception
     {
 
         this.semantic = semantic;
@@ -112,6 +118,9 @@ public abstract class SMFTestFrameWork extends TestCase
         module = this.repository
                                 .lookupSemanticModule( "http://drools.org/semantics/"
                                                        + semantic );
+
+        this.imports = imports;
+        
     }
 
     /**
@@ -131,14 +140,17 @@ public abstract class SMFTestFrameWork extends TestCase
                                                  .newObjectType( cheeseConfiguration );
 
         tuple = new MockTuple( );
+        Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
+        tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
         //simple condition checks
-        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{} ) ); //0
-        assertFalse( testCondition( testNumber++, tuple, new Declaration[]{} ) ); //1
-        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{} ) ); //2
-        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{} ) ); //3
-        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{} ) ); //4
+        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //0
+        assertFalse( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //1
+        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //2
+        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //3
+        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //4
 
         Declaration camembertDecl = new Declaration( cheeseType, "camembert" );
         Declaration stiltonDecl = new Declaration( cheeseType, "stilton" );
@@ -146,32 +158,38 @@ public abstract class SMFTestFrameWork extends TestCase
         //condition check with a single declaration
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
         assertTrue( testCondition( testNumber++, tuple,
-                                   new Declaration[]{camembertDecl} ) ); //5
+                                   new Declaration[]{camembertDecl}, rule ) ); //5
         assertFalse( testCondition( testNumber++, tuple,
-                                    new Declaration[]{camembertDecl} ) ); //6
+                                    new Declaration[]{camembertDecl}, rule ) ); //6
 
         //condition check with a single declaration
         tuple = new MockTuple( );
+        rule = new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
+        tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl, new Cheese( "stilton" ) );
         assertTrue( testCondition( testNumber++, tuple,
-                                   new Declaration[]{stiltonDecl} ) ); //7
+                                   new Declaration[]{stiltonDecl}, rule ) ); //7
         assertFalse( testCondition( testNumber++, tuple,
-                                    new Declaration[]{stiltonDecl} ) ); //8
+                                    new Declaration[]{stiltonDecl}, rule ) ); //8
 
         //condition check with two declarations
         tuple = new MockTuple( );
+        rule = new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
+        tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl, new Cheese( "stilton" ) );
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
         assertFalse( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //9
+        stiltonDecl, camembertDecl}, rule ) ); //9
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //10
+        stiltonDecl, camembertDecl}, rule ) ); //10
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //11
+        stiltonDecl, camembertDecl}, rule ) ); //11
         assertFalse( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //12
+        stiltonDecl, camembertDecl}, rule ) ); //12
 
         //condition check with 2 declarations and application data
         WorkingMemory workingMemory = new MockWorkingMemory( );
@@ -181,14 +199,17 @@ public abstract class SMFTestFrameWork extends TestCase
         tuple.setWorkingMemory( workingMemory );
 
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //13
+        stiltonDecl, camembertDecl}, rule ) ); //13
         assertFalse( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //14
+        stiltonDecl, camembertDecl}, rule ) ); //14
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{
-        stiltonDecl, camembertDecl} ) ); //15
+        stiltonDecl, camembertDecl}, rule ) ); //15
 
         //test code works no matter what the order of decl are
         tuple = new MockTuple( );
+        rule = new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
+        tuple.setRule( rule );        
         workingMemory = new MockWorkingMemory( );
         tuple.setWorkingMemory( workingMemory );
 
@@ -202,19 +223,20 @@ public abstract class SMFTestFrameWork extends TestCase
         tuple.put( favouriteCheeseDecl, "camembert" );
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{
-        favouriteCheeseDecl, camembertDecl} ) ); //16
+        favouriteCheeseDecl, camembertDecl}, rule ) ); //16
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{
-        camembertDecl, favouriteCheeseDecl} ) ); //17
+        camembertDecl, favouriteCheeseDecl}, rule ) ); //17
 
         // test condition syntax with commas - Drools Issue #77
-        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{} ) ); //18
+        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //18
 
         //test exceptions
-        Rule rule = new Rule( "Test Rule 1" );
+        rule = new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
         tuple.setRule( rule );
         try
         {
-            testCondition( testNumber++, tuple, new Declaration[]{} );
+            testCondition( testNumber++, tuple, new Declaration[]{}, rule );
             fail( "Condition should throw an exception" );
         }
         catch ( ConditionException e )
@@ -222,7 +244,19 @@ public abstract class SMFTestFrameWork extends TestCase
             assertEquals( rule, e.getRule( ) );
             assertEquals( tests.get( testNumber - 1 ), e.getExpr( ) );
         }
-
+        
+        // need to add a test for declaration order
+        
+        // 20
+        //test imports        
+        tuple = new MockTuple( );
+        rule = new InstrumentedRule( "Test Rule 1" );                
+        rule.setImports(this.imports);       
+        tuple.setRule( rule );   
+        workingMemory = new MockWorkingMemory( );
+        tuple.setWorkingMemory( workingMemory );        
+        
+        assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //20
     }
 
     /**
@@ -230,18 +264,20 @@ public abstract class SMFTestFrameWork extends TestCase
      */
     private boolean testCondition(int testNumber,
                                   Tuple tuple,
-                                  Declaration[] decls) throws Exception
+                                  Declaration[] decls,
+                                  Rule rule ) throws Exception
     {
+        ((InstrumentedRule) rule).setDeclarations(decls);
         ConditionFactory conditionFactory = module
                                                   .getConditionFactory( "condition" );
         MockConfiguration conditionConfiguration = new MockConfiguration(
                                                                           "test"
-                                                                                                                                                                                                                                                                                                        + testNumber );
+                                                                                                                                                                                                                                                              + testNumber );
         conditionConfiguration.setText( ( String ) tests.get( testNumber ) );
         Condition condition = conditionFactory
                                               .newCondition(
                                                              conditionConfiguration,
-                                                             decls );
+                                                             rule );
         return condition.isAllowed( tuple );
     }
 
@@ -276,6 +312,9 @@ public abstract class SMFTestFrameWork extends TestCase
         // Setup
         int testNumber = 0;
         tuple = new MockTuple( );
+        Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
+        tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
         // The Tests
@@ -284,7 +323,7 @@ public abstract class SMFTestFrameWork extends TestCase
         assertEquals( "camembert",
                       ( String ) testExtractor( testNumber++,
                                                 "java.lang.String", tuple,
-                                                new Declaration[]{} ) );
+                                                new Declaration[]{}, rule ) );
 
         // 1
         Cheese camembert = new Cheese( "camembert" );
@@ -295,7 +334,7 @@ public abstract class SMFTestFrameWork extends TestCase
                                                 testNumber++,
                                                 "java.lang.String",
                                                 tuple,
-                                                new Declaration[]{camembertDecl} ) );
+                                                new Declaration[]{camembertDecl}, rule ) );
 
         // 2
         Cheese stilton = new Cheese( "stilton" );
@@ -304,28 +343,28 @@ public abstract class SMFTestFrameWork extends TestCase
                       ( String ) testExtractor( testNumber++,
                                                 "java.lang.String", tuple,
                                                 new Declaration[]{
-                                                camembertDecl, stiltonDecl} ) );
+                                                camembertDecl, stiltonDecl}, rule ) );
 
         // 3
         tuple.put( integerDecl, new Integer( camembert.getBitesLeft( ) ) );
         assertEquals( new Integer( 3 ),
                       testExtractor( testNumber++, "java.lang.Integer", tuple,
                                      new Declaration[]{camembertDecl,
-                                     stiltonDecl, integerDecl} ) );
+                                     stiltonDecl, integerDecl}, rule ) );
 
         // 4
         tuple.put( integerDecl, new Integer( stilton.getBitesLeft( ) ) );
         assertEquals( new Integer( 6 ),
                       testExtractor( testNumber++, "java.lang.Integer", tuple,
                                      new Declaration[]{camembertDecl,
-                                     stiltonDecl, integerDecl} ) );
+                                     stiltonDecl, integerDecl}, rule ) );
 
         // 5
         assertEquals( new Cheese( "cheddar" ),
                       testExtractor( testNumber++,
                                      "org.drools.smf.SMFTestFrameWork$Cheese",
                                      tuple, new Declaration[]{camembertDecl,
-                                     stiltonDecl} ) );
+                                     stiltonDecl}, rule ) );
 
         // 6
         camembert.eatCheese( );
@@ -333,16 +372,17 @@ public abstract class SMFTestFrameWork extends TestCase
                       testExtractor( testNumber++,
                                      "org.drools.smf.SMFTestFrameWork$Cheese",
                                      tuple, new Declaration[]{camembertDecl,
-                                     stiltonDecl} ) );
+                                     stiltonDecl}, rule ) );
 
         // 7
         //test exceptions
-        Rule rule = new Rule( "Test Rule 1" );
+        rule = new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
         tuple.setRule( rule );
         try
         {
             testExtractor( testNumber++, "java.lang.Boolean", tuple,
-                           new Declaration[]{camembertDecl} );
+                           new Declaration[]{camembertDecl}, rule );
             fail( "Condition should throw an exception" );
         }
         catch ( ExtractionException e )
@@ -350,6 +390,21 @@ public abstract class SMFTestFrameWork extends TestCase
             assertEquals( rule, e.getRule( ) );
             assertEquals( tests.get( testNumber - 1 ), e.getExpr( ) );
         }
+
+        //8
+        //test imports        
+        tuple = new MockTuple( );
+        rule = new InstrumentedRule( "Test Rule 1" );                
+        rule.setImports( this.imports );       
+        tuple.setRule( rule );   
+        WorkingMemory workingMemory = new MockWorkingMemory( );
+        tuple.setWorkingMemory( workingMemory );        
+        
+        assertEquals( "1brie",
+                      testExtractor( testNumber++,
+                                     "java.lang.String",
+                                     tuple, new Declaration[]{}, 
+                                     rule ) );        
     }
 
     /**
@@ -358,8 +413,12 @@ public abstract class SMFTestFrameWork extends TestCase
     private Object testExtractor(int testNumber,
                                  String returnType,
                                  Tuple tuple,
-                                 Declaration[] decls) throws Exception
+                                 Declaration[] decls,
+                                 Rule rule ) throws Exception
+                                     
     {
+        ((InstrumentedRule) rule).setDeclarations(decls);
+        
         ExtractorFactory extractorFactory = module
                                                   .getExtractorFactory( "extractor" );
         MockConfiguration extractorConfiguration = new MockConfiguration(
@@ -370,7 +429,7 @@ public abstract class SMFTestFrameWork extends TestCase
         Extractor extractor = extractorFactory
                                               .newExtractor(
                                                              extractorConfiguration,
-                                                             decls );
+                                                             rule );
         Object fact = extractor.extractFact( tuple );
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
         if ( !cl.loadClass( returnType ).isInstance( fact ) )
@@ -395,10 +454,13 @@ public abstract class SMFTestFrameWork extends TestCase
                                                  .newObjectType( cheeseConfiguration );
 
         tuple = new MockTuple( );
+        Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
+        tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
         //simple condition, no declrations
-        testConsequence( 0, tuple, new Declaration[]{} );
+        testConsequence( 0, tuple, new Declaration[]{}, rule );
 
         //need to declare so that the tests have SMFTestFrameWork.Cheese
         // imported
@@ -412,7 +474,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         //tests nested classes, public static class SMFTestFrameWork.Cheese,
         // works
-        testConsequence( 1, tuple, new Declaration[]{} );
+        testConsequence( 1, tuple, new Declaration[]{}, rule );
 
         //now start doing tests with declarations
         //first confirm that biteLeft is 3
@@ -420,7 +482,7 @@ public abstract class SMFTestFrameWork extends TestCase
         assertEquals( 3, stilton.getBitesLeft( ) );
         //execute consequence that calles eatCheese()
         testConsequence( 2, tuple,
-                         new Declaration[]{stiltonDecl, camembertDecl} );
+                         new Declaration[]{stiltonDecl, camembertDecl}, rule );
         //camembert should be eaten once, and stilton twice
         assertEquals( 2, camembert.getBitesLeft( ) );
         assertEquals( 1, stilton.getBitesLeft( ) );
@@ -431,26 +493,27 @@ public abstract class SMFTestFrameWork extends TestCase
         workingMemory.setApplicationData( "cheeses", new HashMap( ) );
         tuple.setWorkingMemory( workingMemory );
         testConsequence( 3, tuple,
-                         new Declaration[]{stiltonDecl, camembertDecl} );
+                         new Declaration[]{stiltonDecl, camembertDecl}, rule );
         assertEquals( 1, camembert.getBitesLeft( ) );
         assertEquals( 0, stilton.getBitesLeft( ) );
         Map map = ( Map ) workingMemory.getApplicationData( "cheeses" );
         assertEquals( camembert, map.get( "favourite cheese" ) );
         assertEquals( 3, ( ( Integer ) map.get( "bites" ) ).intValue( ) );
 
-        // 7
+        // 4
         //test exceptions
-        Rule rule = new Rule( "Test Rule 1" );
+        rule = new InstrumentedRule( "Test Rule 1" );
+        rule.setImports(new Imports());
         tuple.setRule( rule );
         try
         {
-            testConsequence( 4, tuple, new Declaration[]{camembertDecl} );
-            fail( "Condition should throw an exception" );
+            testConsequence( 6, tuple, new Declaration[]{camembertDecl}, rule );
+            fail( "Consequence should throw an exception" );
         }
         catch ( ConsequenceException e )
         {
             assertEquals( rule, e.getRule( ) );
-        }
+        }      
 
         //test code works no matter what the order of decl are
         /*
@@ -474,6 +537,23 @@ public abstract class SMFTestFrameWork extends TestCase
          * {favouriteCheeseDecl, camembertDecl}); testConsequence(5, tuple, new
          * Declaration[] {camembertDecl, favouriteCheeseDecl});
          */
+
+        // 7
+        //test imports        
+        tuple = new MockTuple( );
+        rule = new InstrumentedRule( "Test Rule 1" );                
+        rule.setImports( this.imports );       
+        tuple.setRule( rule );   
+        workingMemory = new MockWorkingMemory( );
+        tuple.setWorkingMemory( workingMemory );        
+        try
+        {
+            testConsequence( 7, tuple, new Declaration[]{}, rule );
+        }
+        catch ( ConsequenceException e )
+        {
+            fail( "Consequence should execute without errors" );
+        }              
     }
 
     /**
@@ -481,8 +561,12 @@ public abstract class SMFTestFrameWork extends TestCase
      */
     private void testConsequence(int testNumber,
                                  Tuple tuple,
-                                 Declaration[] decls) throws Exception
+                                 Declaration[] decls,
+                                 Rule rule ) throws Exception
+                                     
     {
+        ((InstrumentedRule) rule).setDeclarations(decls);
+        
         ConsequenceFactory consequenceFactory = module
                                                       .getConsequenceFactory( "consequence" );
         MockConfiguration consequenceConfiguration = new MockConfiguration(
@@ -492,7 +576,7 @@ public abstract class SMFTestFrameWork extends TestCase
         Consequence consequence = consequenceFactory
                                                     .newConsequence(
                                                                      consequenceConfiguration,
-                                                                     decls );
+                                                                     rule );
         consequence.invoke( tuple, tuple.getWorkingMemory( ) );
     }
 
