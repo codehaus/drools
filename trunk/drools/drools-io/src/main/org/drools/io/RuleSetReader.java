@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.20 2004-09-23 23:14:06 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.21 2004-10-20 13:26:02 bob Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -87,7 +87,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.20 2004-09-23 23:14:06 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.21 2004-10-20 13:26:02 bob Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -435,6 +435,17 @@ public class RuleSetReader extends DefaultHandler
     public Locator getLocator()
     {
         return this.locator;
+    }
+
+    public void startDocument()
+    {
+        this.state        = STATE_NONE;
+        this.ruleSet      = null;
+        this.rule         = null;
+        this.declaration  = null;;
+        this.extraction   = null;
+        this.characters   = null;
+        this.configurationStack.clear();
     }
 
     /**
