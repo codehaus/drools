@@ -266,10 +266,23 @@ public abstract class SMFTestFrameWork  extends TestCase
 
         // 4
         tuple.put(integerDecl, new Integer(stilton.getBitesLeft()));
-        assertEquals(new Integer(3),
+        assertEquals(new Integer(6),
             testExtractor(
                 testNumber++, "java.lang.Integer", tuple,
                 new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
+
+        // 5
+        assertEquals(new Cheese("cheddar"),
+            testExtractor(
+                testNumber++, "org.drools.smf.SMFTestFrameWork$Cheese", tuple,
+                new Declaration[] {camembertDecl, stiltonDecl}));
+
+       // 6
+       camembert.eatCheese();
+       assertEquals(new Cheese("mozzerella"),
+            testExtractor(
+                testNumber++, "org.drools.smf.SMFTestFrameWork$Cheese", tuple,
+                new Declaration[] {camembertDecl, stiltonDecl}));
     }
 
     /**
