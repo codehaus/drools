@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.9 2003-11-27 04:32:22 bob Exp $
+ $Id: SemanticModule.java,v 1.10 2003-12-30 00:43:31 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -137,4 +137,8 @@ public interface SemanticModule
      *  @return The set of names.
      */
     Set getConsequenceFactoryNames();
+
+    DurationFactory getDurationFactory(String name);
+
+    Set getDurationFactoryNames();
 }

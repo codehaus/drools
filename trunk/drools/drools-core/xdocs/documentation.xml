@@ -10,13 +10,12 @@
     <section name="Documentation">
 
       <p>
-      The papers previously available here have been subsumed by
-      the new and improved <i>Theory, Usage and Reference</i>
+      All previous documentation has been subsumed by the new, all-inclusive
       manual.
       </p>
 
       <ul>
-        <li><a href="pdf/drools-guide.pdf">Theory, Usage and Reference</a></li>
+        <li><a href="drools-manual.pdf">Drools Usage Manual</a></li>
       </ul>
 
     </section>

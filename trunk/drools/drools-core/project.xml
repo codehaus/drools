@@ -10,11 +10,10 @@
     <organization>
         <name>The Codehaus</name>
         <url>http://www.codehaus.org</url>
-        <logo>http://www.codehaus.org/codehaus-small.gif</logo>
+        <logo>http://www.codehaus.org/codehaus-small.png</logo>
     </organization>
     <inceptionYear>2001</inceptionYear>
     <package>org.drools</package>
-    <logo>http://images.werken.com/drools.gif</logo>
 
     <shortDescription>Rete Based Rules Engine</shortDescription>
 
