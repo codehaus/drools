@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ReteTuple.java,v 1.3 2002-08-01 18:47:33 bob Exp $
+ $Id: ReteTuple.java,v 1.4 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.reteoo.impl;
  
  */
 
+import org.drools.FactHandle;
 import org.drools.spi.Tuple;
 import org.drools.rule.Declaration;
 
@@ -100,11 +101,22 @@ public class ReteTuple implements Tuple
      *  @param value The column value.
      */
     ReteTuple(Declaration declaration,
+              FactHandle handle,
               Object value)
     {
         this();
         putKeyColumn( declaration,
+                      handle,
                       value );
+    }
+
+    ReteTuple(Declaration declaration,
+              FactHandle handle)
+    {
+        this();
+        putKeyColumn( declaration,
+                      handle,
+                      null );
     }
 
     // ------------------------------------------------------------
@@ -117,9 +129,11 @@ public class ReteTuple implements Tuple
      *  @param value The value.
      */
     public void putKeyColumn(Declaration declaration,
+                             FactHandle handle,
                              Object value)
     {
         this.keyColumns.put( declaration,
+                             handle,
                              value );
     }
 
@@ -166,14 +180,14 @@ public class ReteTuple implements Tuple
     /** Determine if this tuple depends upon
      *  a specified object.
      *
-     *  @param object The object to test.
+     *  @param handle The object handle to test.
      *
      *  @return <code>true</code> if this tuple depends upon
      *          the specified object, otherwise <code>false</code>.
      */
-    boolean dependsOn(Object object)
+    boolean dependsOn(FactHandle handle)
     {
-        return this.keyColumns.containsRootFactObject( object );
+        return this.keyColumns.containsRootFactHandle( handle );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -209,6 +223,11 @@ public class ReteTuple implements Tuple
         decls.addAll( this.otherColumns.keySet() );
 
         return decls;
+    }
+
+    public FactHandle getFactHandleForObject(Object object)
+    {
+        return this.keyColumns.getRootFactHandle( object );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -9,6 +9,7 @@
 */
 package org.drools.misc;
 
+import org.drools.FactHandle;
 import org.drools.io.RuleSetLoader;
 
 import junit.framework.TestCase;
@@ -66,8 +67,8 @@ public class DROOLS_25_Test extends TestCase {
             // Now, simply assert them into the [org.drools.WorkingMemory]
             // and let the logic engine do the rest.
 
-            workingMemory.assertObject( string );
-            workingMemory.assertObject( props );
+            FactHandle stringHandle = workingMemory.assertObject( string );
+            FactHandle propsHandle = workingMemory.assertObject( props );
 
             workingMemory.fireAllRules();
 
@@ -77,8 +78,8 @@ public class DROOLS_25_Test extends TestCase {
 
             //retract and assert method
 
-            workingMemory.retractObject( props );
-            workingMemory.assertObject( props );
+            workingMemory.retractObject( propsHandle );
+            propsHandle = workingMemory.assertObject( props );
 
             workingMemory.fireAllRules();
 
@@ -103,10 +104,8 @@ public class DROOLS_25_Test extends TestCase {
             // Now, simply assert them into the [org.drools.WorkingMemory]
             // and let the logic engine do the rest.
 
-            System.err.println( "\n\n\n####### 1 #######\n\n\n" );
-            workingMemory.assertObject( string );
-            System.err.println( "\n\n\n####### 2 #######\n\n\n" );
-            workingMemory.assertObject( props );
+            FactHandle stringHandle = workingMemory.assertObject( string );
+            FactHandle propsHandle = workingMemory.assertObject( props );
 
             workingMemory.fireAllRules();
 
@@ -115,16 +114,14 @@ public class DROOLS_25_Test extends TestCase {
             props.setProperty( "test", "test" );
 
             //modify method
-            System.err.println( "\n\n\n####### 3 #######\n\n\n" );
-            workingMemory.modifyObject( props );
-            System.err.println( "\n\n\n####### 4 #######\n\n\n" );
+            workingMemory.modifyObject( propsHandle,
+                                        props );
 
             workingMemory.fireAllRules();
 
             //the test property should be set to success
 
             String testResult = props.getProperty( "test" );
-
 
             assertEquals( "success",
                           testResult );

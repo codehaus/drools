@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTag.java,v 1.5 2003-07-10 14:19:51 tdiesler Exp $
+ $Id: RuleTag.java,v 1.6 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,8 @@ import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.tags.knowledge.RuleBaseTag;
+import org.drools.rule.DuplicateRuleNameException;
+import org.drools.rule.InvalidRuleException;
 
 /** Construct a <code>Rule</code> for a <code>RuleSet</code>.
  *
@@ -59,7 +60,7 @@ import org.drools.tags.knowledge.RuleBaseTag;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTag.java,v 1.5 2003-07-10 14:19:51 tdiesler Exp $
+ *  @version $Id: RuleTag.java,v 1.6 2003-10-15 20:03:59 bob Exp $
  */
 public class RuleTag extends RuleTagSupport
 {
@@ -125,7 +126,7 @@ public class RuleTag extends RuleTagSupport
      *
      *  @param salience The salience.
      */
-    public void setSalience( Integer salience )
+    public void setSalience(Integer salience)
     {
         this.salience = salience;
     }
@@ -168,7 +169,8 @@ public class RuleTag extends RuleTagSupport
      *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
+    public void doTag(XMLOutput output)
+        throws MissingAttributeException, JellyTagException
     {
         requiredAttribute( "name",
                            this.name );
@@ -193,25 +195,20 @@ public class RuleTag extends RuleTagSupport
 
         RuleSet ruleSet = getRuleSet();
 
-        try
+        if ( ruleSet != null )
         {
-            if ( ruleSet != null )
+            try
             {
                 ruleSet.addRule( this.rule );
             }
-            else
+            catch (DuplicateRuleNameException e)
             {
-                RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
-
-                if ( tag != null )
-                {
-                    tag.addRule( this.rule );
-                }
+                throw new JellyTagException( e );
             }
-        }
-        catch (Exception e)
-        {
-            throw new JellyTagException( e );
+            catch (InvalidRuleException e)
+            {
+                throw new JellyTagException( e );
+            }
         }
     }
 }

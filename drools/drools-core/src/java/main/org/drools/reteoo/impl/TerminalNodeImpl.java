@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TerminalNodeImpl.java,v 1.6 2003-10-14 22:57:58 bob Exp $
+ $Id: TerminalNodeImpl.java,v 1.7 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.reteoo.TerminalNode;
 import org.drools.reteoo.TupleSource;
@@ -140,11 +141,11 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
 
     /** Modify tuples.
      *
-     *  @param trigger The root fact object.
+     *  @param trigger The root fact object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      */
-    public void modifyTuples(Object trigger,
+    public void modifyTuples(FactHandle trigger,
                              TupleSet newTuples,
                              WorkingMemory workingMemory)
     {

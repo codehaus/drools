@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ReteImpl.java,v 1.2 2002-08-13 04:12:26 bob Exp $
+ $Id: ReteImpl.java,v 1.3 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -102,7 +103,8 @@ public class ReteImpl implements Rete
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public void assertObject(Object object,
+    public void assertObject(FactHandle handle,
+                             Object object,
                              WorkingMemory workingMemory) throws AssertionException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
@@ -112,7 +114,8 @@ public class ReteImpl implements Rete
         {
             eachNode = (ObjectTypeNodeImpl) nodeIter.next();
 
-            eachNode.assertObject( object,
+            eachNode.assertObject( handle,
+                                   object,
                                    workingMemory );
         }
     }
@@ -125,7 +128,8 @@ public class ReteImpl implements Rete
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public void retractObject(Object object,
+    public void retractObject(FactHandle handle,
+                              Object object,
                               WorkingMemory workingMemory) throws RetractionException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
@@ -135,7 +139,8 @@ public class ReteImpl implements Rete
         {
             eachNode = (ObjectTypeNodeImpl) nodeIter.next();
 
-            eachNode.retractObject( object,
+            eachNode.retractObject( handle,
+                                    object,
                                     workingMemory );
         }
     }
@@ -152,7 +157,8 @@ public class ReteImpl implements Rete
      *
      *  @throws FactException if an error occurs during modification.
      */
-    public void modifyObject(Object object,
+    public void modifyObject(FactHandle handle,
+                             Object object,
                              WorkingMemory workingMemory) throws FactException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
@@ -162,7 +168,8 @@ public class ReteImpl implements Rete
         {
             eachNode = (ObjectTypeNodeImpl) nodeIter.next();
 
-            eachNode.modifyObject( object,
+            eachNode.modifyObject( handle,
+                                   object,
                                    workingMemory );
         }
     }

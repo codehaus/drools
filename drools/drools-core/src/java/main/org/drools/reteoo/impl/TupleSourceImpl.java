@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSourceImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
+ $Id: TupleSourceImpl.java,v 1.4 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -146,14 +147,14 @@ public abstract class TupleSourceImpl implements TupleSource
     /** Propagate the modification of <code>Tuple</code>s
      *  to this node's <code>TupleSink</code>.
      *
-     *  @param trigger The modification trigger object.
+     *  @param trigger The modification trigger object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while
      *          attempting modification.
      */
-    protected void propagateModifyTuples(Object trigger,
+    protected void propagateModifyTuples(FactHandle trigger,
                                          TupleSet newTuples,
                                          WorkingMemory workingMemory) throws FactException
     {

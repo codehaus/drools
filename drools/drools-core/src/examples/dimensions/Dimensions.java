@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.DroolsException;
 import org.drools.RuleBase;
@@ -49,22 +50,22 @@ public class Dimensions
 			// Create a [org.drools.WorkingMemory] to be the
 			// container for your facts
 
-			WorkingMemory mem = ruleBase.createWorkingMemory();
+			WorkingMemory mem = ruleBase.newWorkingMemory();
 
 			try
 			{
 
 				Height height = new Height(150);
-				mem.assertObject(height);
+				FactHandle heightHandle = mem.assertObject(height);
 
 				Width width = new Width(240);
-				mem.assertObject(width);
+				FactHandle widthHandle = mem.assertObject(width);
 				
 				Length length = new Length(-1);
-				mem.assertObject(length);
+				FactHandle lengthHandle = mem.assertObject(length);
 
 				width = new Width(100);
-				mem.modifyObject(width);
+				mem.modifyObject(widthHandle, width);
 
 			}
 			catch (AssertionException e)

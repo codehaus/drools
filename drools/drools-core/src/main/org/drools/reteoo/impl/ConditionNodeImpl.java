@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ConditionNodeImpl.java,v 1.4 2002-08-27 23:31:08 bob Exp $
+ $Id: ConditionNodeImpl.java,v 1.5 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -170,13 +171,13 @@ public class ConditionNodeImpl extends TupleSourceImpl implements ConditionNode,
 
     /** Modify tuples.
      *
-     *  @param trigger The root fact object.
+     *  @param trigger The root fact object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    public void modifyTuples(Object trigger,
+    public void modifyTuples(FactHandle trigger,
                              TupleSet newTuples,
                              WorkingMemory workingMemory) throws FactException
     {

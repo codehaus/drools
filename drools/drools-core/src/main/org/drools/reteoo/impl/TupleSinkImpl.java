@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSinkImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
+ $Id: TupleSinkImpl.java,v 1.4 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.FactException;
@@ -84,13 +85,13 @@ public interface TupleSinkImpl extends TupleSink
 
     /** Modify tuples.
      *
-     *  @param trigger The root fact object.
+     *  @param trigger The root fact object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    void modifyTuples(Object trigger,
+    void modifyTuples(FactHandle trigger,
                       TupleSet newTuples,
                       WorkingMemory workingMemory) throws FactException;
 }

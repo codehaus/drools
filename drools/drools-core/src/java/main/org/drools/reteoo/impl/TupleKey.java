@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleKey.java,v 1.3 2002-08-01 18:47:33 bob Exp $
+ $Id: TupleKey.java,v 1.4 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.reteoo.impl;
  
  */
 
+import org.drools.FactHandle;
 import org.drools.rule.Declaration;
 
 import java.util.Set;
@@ -69,8 +70,9 @@ class TupleKey
     /** Columns. */
     private Map columns;
 
-    /** Root fact objects. */
-    private Set rootFactObjects;
+    /** Root fact object handles. */
+    //private Set rootFactHandles;
+    private Map rootFactHandles;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -81,21 +83,14 @@ class TupleKey
     public TupleKey()
     {
         this.columns         = new HashMap();
-        this.rootFactObjects = new HashSet();
+        this.rootFactHandles = new HashMap();
     }
 
-    /** Construct a simple 1-column tuple-key.
-     *
-     *  @param declaration Column declaration.
-     *  @param value Column value.
-     */
-    public TupleKey(Declaration declaration,
-                    Object value)
+    public TupleKey(FactHandle handle)
     {
         this();
-
-        put( declaration,
-             value );
+        this.rootFactHandles.put( null,
+                                  handle );
     }
 
     /** Copy constructor.
@@ -105,9 +100,7 @@ class TupleKey
     public TupleKey(TupleKey that)
     {
         this();
-
-        this.columns.putAll( that.columns );
-        this.rootFactObjects.addAll( that.rootFactObjects );
+        putAll( that );
     }
 
     // ------------------------------------------------------------
@@ -121,7 +114,7 @@ class TupleKey
     public void putAll(TupleKey key)
     {
         this.columns.putAll( key.columns );
-        this.rootFactObjects.addAll( key.rootFactObjects );
+        this.rootFactHandles.putAll( key.rootFactHandles );
     }
 
     /** Put a value for a declaration.
@@ -130,12 +123,14 @@ class TupleKey
      *  @param value The value.
      */
     public void put(Declaration declaration,
+                    FactHandle handle,
                     Object value)
     {
         this.columns.put( declaration,
                           value );
 
-        this.rootFactObjects.add( value );
+        this.rootFactHandles.put( value,
+                                  handle );
     }
 
     /** Retrieve a value by declaration.
@@ -170,9 +165,14 @@ class TupleKey
      *          specified root fact object, otherwise
      *          <code>false</code>.
      */
-    public boolean containsRootFactObject(Object object)
+    public boolean containsRootFactHandle(FactHandle handle)
     {
-        return this.rootFactObjects.contains( object );
+        return this.rootFactHandles.values().contains( handle );
+    }
+
+    public FactHandle getRootFactHandle(Object value)
+    {
+        return (FactHandle) this.rootFactHandles.get( value );
     }
 
     /** Retrieve the number of columns in this key.
@@ -202,6 +202,7 @@ class TupleKey
      *  @return <code>true</code> if this key is a super-set of
      *          the specified parameter key, otherwise <code>false</code>.
      */
+    /*
     public boolean containsAll(TupleKey that)
     {
         Iterator    declIter = that.columns.keySet().iterator(); 
@@ -237,6 +238,12 @@ class TupleKey
 
         return true;
     }
+    */
+
+    public boolean containsAll(TupleKey that)
+    {
+        return this.rootFactHandles.values().containsAll( that.rootFactHandles.values() );
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     java.lang.Object
@@ -271,6 +278,8 @@ class TupleKey
      */
     public String toString()
     {
-        return "[TupleKey: columns=" + this.columns + "]";
+        return "[TupleKey: columns=" + this.columns
+            + "; handles=" + this.rootFactHandles
+            + "]";
     }
 }

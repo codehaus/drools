@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeImpl.java,v 1.8 2003-08-21 00:57:46 tdiesler Exp $
+ $Id: JoinNodeImpl.java,v 1.9 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -271,13 +272,13 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode
 
     /** Modify tuples from the left input.
      *
-     *  @param trigger The root fact object.
+     *  @param trigger The root fact object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    void modifyLeftTuples(Object trigger,
+    void modifyLeftTuples(FactHandle trigger,
                           TupleSet newTuples,
                           WorkingMemory workingMemory) throws FactException
     {
@@ -291,13 +292,13 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode
 
     /** Modify tuples from the right input.
      *
-     *  @param trigger The root fact object.
+     *  @param trigger The root fact object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    void modifyRightTuples(Object trigger,
+    void modifyRightTuples(FactHandle trigger,
                            TupleSet newTuples,
                            WorkingMemory workingMemory) throws FactException
     {

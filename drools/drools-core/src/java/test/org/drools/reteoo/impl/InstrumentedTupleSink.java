@@ -2,6 +2,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class InstrumentedTupleSink implements TupleSinkImpl
         this.retractedKeys.add( key );
     }
 
-    public void modifyTuples(Object trigger,
+    public void modifyTuples(FactHandle trigger,
                              TupleSet tupleSet,
                              WorkingMemory workingMemory)
     {

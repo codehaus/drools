@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: DroolsException.java,v 1.10 2002-08-23 17:57:40 bob Exp $
+ $Id: DroolsException.java,v 1.11 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ import java.io.PrintWriter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DroolsException.java,v 1.10 2002-08-23 17:57:40 bob Exp $
+ *  @version $Id: DroolsException.java,v 1.11 2003-10-15 20:03:59 bob Exp $
  */
 public class DroolsException extends Exception
 {
@@ -117,20 +117,26 @@ public class DroolsException extends Exception
      */
     public String getMessage()
     {
-        Throwable rootCause = getRootCause();
-
-        if ( rootCause == null )
-        {
-            return super.getMessage();
-        }
+        String selfMessage = super.getMessage();
 
         StringBuffer msg = new StringBuffer();
 
-        msg.append( super.getMessage() );
+        if ( selfMessage != null )
+        {
+            msg.append( selfMessage );
+        }
 
-        msg.append( " : " );
+        Throwable rootCause = getRootCause();
 
-        msg.append( rootCause.getMessage() );
+        if ( rootCause != null )
+        {
+            if ( selfMessage != null )
+            {
+                msg.append( " : " );
+            }
+
+            msg.append( rootCause.getMessage() );
+        }
 
         return msg.toString();
     }
@@ -142,20 +148,26 @@ public class DroolsException extends Exception
      */
     public String getLocalizedMessage()
     {
-        Throwable rootCause = getRootCause();
-
-        if ( rootCause == null )
-        {
-            return super.getMessage();
-        }
+        String selfMessage = super.getLocalizedMessage();
 
         StringBuffer msg = new StringBuffer();
 
-        msg.append( super.getLocalizedMessage() );
+        if ( selfMessage != null )
+        {
+            msg.append( selfMessage );
+        }
 
-        msg.append( " : " );
+        Throwable rootCause = getRootCause();
 
-        msg.append( rootCause.getLocalizedMessage() );
+        if ( rootCause != null )
+        {
+            if ( selfMessage != null )
+            {
+                msg.append( " : " );
+            }
+
+            msg.append( rootCause.getLocalizedMessage() );
+        }
 
         return msg.toString();
     }
