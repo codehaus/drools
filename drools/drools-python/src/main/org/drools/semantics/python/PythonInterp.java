@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.1 2004-12-08 23:07:50 simon Exp $
+ * $Id: PythonInterp.java,v 1.2 2004-12-14 21:00:29 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
+import org.drools.spi.Functions;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
@@ -143,6 +144,11 @@ public class PythonInterp
         globalText.append("    return on_true\n");
         globalText.append("  else:\n");
         globalText.append("    return on_false\n");
+        Functions functions = rule.getRuleSet( ).getFunctions("python");
+        if (functions != null)
+        {
+            globalText.append( stripOuterIndention( functions.getText( ) ) );
+        }            
 
         if (this.globals == null)
         {

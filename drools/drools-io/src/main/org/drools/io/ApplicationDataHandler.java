@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ApplicationDataHandler.java,v 1.2 2004-12-13 20:54:51 mproctor Exp $
+ * $Id: ApplicationDataHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -64,7 +64,7 @@ class ApplicationDataHandler extends BaseAbstractHandler implements Handler
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( (this.validParents == null) && (validPeers == null) )
+        if ( (this.validParents == null) && (this.validPeers == null) )
         {
             this.validParents = new HashSet( );
             this.validParents.add( RuleSet.class );
@@ -80,29 +80,32 @@ class ApplicationDataHandler extends BaseAbstractHandler implements Handler
 
     public Object start( String uri, String localName, Attributes attrs ) throws SAXException
     {
-        ruleSetReader.startConfiguration( localName, attrs );
+        this.ruleSetReader.startConfiguration( localName, attrs );
         return null;
     }
 
     public Object end( String uri, String localName ) throws SAXException
     {
-        SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
+        SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
                                                                     localName );
 
         ApplicationDataFactory factory = module.getApplicationDataFactory( localName );        
 
-        Configuration config = ruleSetReader.endConfiguration( );
+        Configuration config = this.ruleSetReader.endConfiguration( );
         ApplicationData applicationData;
         try
         {
-            applicationData = factory.newApplicationData( config, ruleSetReader.getRuleSet( )
-                .getImports( ) );
-            ruleSetReader.getRuleSet( ).addApplicationData( applicationData );
+            applicationData = factory.newApplicationData( this.ruleSetReader.getRuleSet( ),
+                                                          this.ruleSetReader.getFactoryContext( ),
+                                                          config,
+                                                          ruleSetReader.getRuleSet( ).getImports( ) );
+            this.ruleSetReader.getRuleSet( ).addApplicationData( applicationData );
+
         }
         catch ( FactoryException e )
         {
             throw new SAXParseException( "error constructing import",
-                    ruleSetReader.getLocator( ), e );
+                    this.ruleSetReader.getLocator( ), e );
         }
         return applicationData;
     }

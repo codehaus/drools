@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyConditionFactory.java,v 1.2 2004-12-08 22:46:06 simon Exp $
+ * $Id: GroovyConditionFactory.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Condition;
+import org.drools.spi.RuleBaseContext;
 
 public class GroovyConditionFactory
     implements
@@ -58,13 +59,14 @@ public class GroovyConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition( Configuration config,
-                                   Rule rule ) throws FactoryException
+    public Condition newCondition( Rule rule,
+                                   RuleBaseContext context,
+                                   Configuration config ) throws FactoryException
     {
         try
         {
             return new GroovyCondition( config.getText( ),
-                                      rule );
+                                        rule );
         }
         catch ( Exception e )
         {

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
-* $Id: PythonConditionFactory.java,v 1.2 2004-12-08 23:07:50 simon Exp $
+* $Id: PythonConditionFactory.java,v 1.3 2004-12-14 21:00:29 mproctor Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -46,6 +46,7 @@ import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Condition;
+import org.drools.spi.RuleBaseContext;
 
 public class PythonConditionFactory
     implements
@@ -58,13 +59,14 @@ public class PythonConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition( Configuration config,
-                                   Rule rule ) throws FactoryException
+    public Condition newCondition( Rule rule,
+                                   RuleBaseContext context,
+                                   Configuration config ) throws FactoryException
     {
         try
         {
             return new PythonCondition( config.getText( ),
-                                      rule );
+                                        rule );
         }
         catch ( Exception e )
         {

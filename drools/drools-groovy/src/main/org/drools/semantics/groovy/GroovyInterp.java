@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.1 2004-12-08 22:46:06 simon Exp $
+ * $Id: GroovyInterp.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,6 +48,7 @@ import groovy.lang.Script;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.spi.Functions;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
@@ -94,6 +95,7 @@ public class GroovyInterp implements Serializable
         try
         {
             StringBuffer newText = new StringBuffer( );
+                       
             Iterator it = rule.getImports( GroovyImportEntry.class ).iterator();
             while ( it.hasNext( ) )
             {
@@ -101,6 +103,17 @@ public class GroovyInterp implements Serializable
                 newText.append( it.next( ) );
                 newText.append( ";");
                 newText.append( LINE_SEPARATOR );
+            }
+
+            Functions functions = this.rule.getRuleSet( ).getFunctions("groovy");        
+            if (functions != null)
+            {
+                newText.append(functions.getText( ));
+            }  
+            
+            if (this instanceof GroovyCondition)
+            {
+                text = "return (" + text +")";
             }
             newText.append( text );
             this.code = buildScript( newText.toString( ) );
@@ -177,7 +190,9 @@ public class GroovyInterp implements Serializable
         GroovyCodeSource codeSource = new GroovyCodeSource( text,
                                                             "groovy.script",
                                                             "groovy.script" );
+        
         GroovyClassLoader loader = new GroovyClassLoader( Thread.currentThread( ).getContextClassLoader( ) );
+        
         Class clazz = loader.parseClass( codeSource );
 
         return ( Script ) clazz.newInstance( );

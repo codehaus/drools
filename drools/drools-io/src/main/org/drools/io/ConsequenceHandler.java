@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConsequenceHandler.java,v 1.3 2004-11-28 06:45:25 simon Exp $
+ * $Id: ConsequenceHandler.java,v 1.4 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,7 +66,7 @@ class ConsequenceHandler extends BaseAbstractHandler implements Handler
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( (this.validParents == null) && (validPeers == null) )
+        if ( (this.validParents == null) && (this.validPeers == null) )
         {
             this.validParents = new HashSet( );
             this.validParents.add( Rule.class );
@@ -82,22 +82,24 @@ class ConsequenceHandler extends BaseAbstractHandler implements Handler
 
     public Object start( String uri, String localName, Attributes attrs ) throws SAXException
     {
-        ruleSetReader.startConfiguration( localName, attrs );
+        this.ruleSetReader.startConfiguration( localName, attrs );
         return null;
     }
 
     public Object end( String uri, String localName ) throws SAXException
     {
-        Configuration config = ruleSetReader.endConfiguration( );
-        SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
+        Configuration config = this.ruleSetReader.endConfiguration( );
+        SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
                                                                     localName );
 
         ConsequenceFactory factory = module.getConsequenceFactory( localName );
         Consequence consequence;
         try
         {
-            Rule rule = (Rule) ruleSetReader.getParent( Rule.class );
-            consequence = factory.newConsequence( config, rule );
+            Rule rule = (Rule) this.ruleSetReader.getParent( Rule.class );
+            consequence = factory.newConsequence( rule,
+                                                  this.ruleSetReader.getFactoryContext( ),
+                                                  config );
 
             rule.setConsequence( consequence );
         }

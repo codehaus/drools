@@ -9,7 +9,19 @@
 
   <groovy:import>java.lang.Object</groovy:import>
   <groovy:import>java.lang.String</groovy:import>
-  
+
+  <groovy:functions>
+  	def helloWorld(String hello)
+  	{
+  		println hello + " World";
+  	}
+
+  	def goodbyeWorld(String goodbye)
+  	{
+  		println goodbye + " Cruel World";
+  	}
+  </groovy:functions>
+
   <rule name="Hello World">
     <parameter identifier="hello">
       <class>String</class>
@@ -18,7 +30,7 @@
     <groovy:condition>hello.equals("Hello")</groovy:condition>
 
     <groovy:consequence>
-      println hello + " World" ;
+      helloWorld(hello);
     </groovy:consequence>
   </rule>
 
@@ -30,7 +42,7 @@
     <groovy:condition>goodbye.equals("Goodbye")</groovy:condition>
 
     <groovy:consequence>
-      println goodbye + " Cruel World" ;
+      goodbyeWorld(goodbye)
     </groovy:consequence>
   </rule>
 

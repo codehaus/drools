@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseDuration.java,v 1.5 2004-12-06 01:12:44 dbarnett Exp $
+ * $Id: BaseDuration.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.semantics.base;
  *
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
 
@@ -52,14 +53,17 @@ public class BaseDuration implements Duration
 {
     /** The number of seconds of the duration. */
     private long seconds;
+    
+    private Rule rule;
 
     /**
      * Constructor.
      * 
      * @param seconds the number of seconds of the duration
      */
-    public BaseDuration( long seconds )
+    public BaseDuration( Rule rule, long seconds )
     {
+        this.rule = rule;
         this.seconds = seconds;
     }
 
@@ -74,5 +78,10 @@ public class BaseDuration implements Duration
     public long getDuration( Tuple tuple )
     {
         return this.seconds;
+    }
+    
+    public Rule getRule( )
+    {
+        return this.rule;
     }
 }

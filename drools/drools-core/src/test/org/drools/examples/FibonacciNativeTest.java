@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.12 2004-11-29 13:20:52 simon Exp $
+ * $Id: FibonacciNativeTest.java,v 1.13 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,6 +53,7 @@ import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.RuleBaseContext;
 import org.drools.spi.Tuple;
 
 import java.io.ByteArrayInputStream;
@@ -62,6 +63,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
  * This Fibonacci example demonstrates how to build a native RuleSet without
@@ -73,8 +76,13 @@ public class FibonacciNativeTest extends TestCase implements Serializable
     public void testFibonacci() throws Exception
     {
         // <rule-set name="fibonacci" ...>
+        RuleBaseContext ruleBaseContext = new RuleBaseContext( );
+        URLClassLoader urlClassLoader = new URLClassLoader(new URL[] {});
+        ruleBaseContext.put("java-classLoader", urlClassLoader);
+        urlClassLoader = (URLClassLoader) ruleBaseContext.get("java-classLoader");
+        
         final RuleSet ruleSet = new RuleSet( "fibonacci" );
-        ruleSet.addApplicationData(new ApplicationData("fibtotal", FibTotal.class));
+        ruleSet.addApplicationData(new ApplicationData(ruleSet, "fibtotal", FibTotal.class));
 
         // <rule name="Bootstrap 1" salience="20">
         final Rule bootstrap1Rule = new Rule( "Bootstrap 1" );
@@ -456,21 +464,29 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         ruleSet.addRule( calculateRule );
 
         // Build the RuleSet.
-        RuleBaseBuilder builder = new RuleBaseBuilder( );
+        
+        RuleBaseBuilder builder = new RuleBaseBuilder( ruleBaseContext );
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
+        
+        //test context before serlisation
+        assertSame(urlClassLoader, ruleBase.getRuleBaseContext( ).get("java-classLoader"));
+
+        //test context before serlisation
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
+        assertSame(urlClassLoader, workingMemory.getRuleBase( ).getRuleBaseContext( ).get("java-classLoader"));        
 
         //Dumper dumper = new Dumper( ruleBase );
         //dumper.dumpReteToDot( System.err );
-
-        WorkingMemory workingMemory = getWorkingMemory( ruleBase );
+                
+        workingMemory = getWorkingMemory( ruleBase );
         workingMemory.addEventListener(new TestWorkingMemoryEventListener());
 
         workingMemory.setApplicationData("fibtotal", new FibTotal());
 
         // Assert the facts, and fire the rules.
         Fibonacci fibonacci = new Fibonacci( 50 );
-        workingMemory.assertObject( fibonacci );
+        workingMemory.assertObject( fibonacci );       
 
         //test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
@@ -481,6 +497,9 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         //test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
         workingMemory = serializeWorkingMemory( workingMemory );
+        
+        //test context after serlisation        
+        assertNull(workingMemory.getRuleBase( ).getRuleBaseContext().get("java-classLoader"));
 
         //test application ran correctly
         assertEquals(2, workingMemory.getObjects().size());

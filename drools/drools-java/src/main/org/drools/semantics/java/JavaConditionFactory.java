@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
-* $Id: JavaConditionFactory.java,v 1.1 2004-12-07 15:17:10 simon Exp $
+* $Id: JavaConditionFactory.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -46,6 +46,7 @@ import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Condition;
+import org.drools.spi.RuleBaseContext;
 
 public class JavaConditionFactory
     implements
@@ -58,13 +59,22 @@ public class JavaConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition( Configuration config,
-                                   Rule rule ) throws FactoryException
+    public Condition newCondition( Rule rule,
+                                   RuleBaseContext context,
+                                   Configuration config ) throws FactoryException
     {
         try
         {
-            return new JavaCondition( config.getText( ),
-                                      rule);
+            Integer id = (Integer) context.get( "java-condition-id" );
+            if (id == null)
+            {
+                id = new Integer( 0 );
+            }
+            context.put("java-condition-id", new Integer(id.intValue() + 1));            
+            
+            return new JavaCondition( rule,
+                                      id.intValue( ),
+                                      config.getText( ) );            
         }
         catch ( Exception e )
         {

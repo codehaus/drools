@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.39 2004-12-04 04:33:02 dbarnett Exp $
+ * $Id: RuleSetReader.java,v 1.40 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.smf.DefaultSemanticsRepository;
 import org.drools.smf.NoSuchSemanticModuleException;
 import org.drools.smf.SemanticModule;
 import org.drools.smf.SemanticsRepository;
+import org.drools.spi.RuleBaseContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -73,15 +74,15 @@ import java.util.Set;
 
 /**
  * <code>RuleSet</code> loader.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleSetReader.java,v 1.39 2004-12-04 04:33:02 dbarnett Exp $
+ * 
+ * @version $Id: RuleSetReader.java,v 1.40 2004-12-14 21:00:28 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
     // ----------------------------------------------------------------------
-    //     Constants
+    // Constants
     // ----------------------------------------------------------------------
 
     /** Namespace URI for the general tags. */
@@ -92,7 +93,7 @@ public class RuleSetReader extends DefaultHandler
     private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
     // ----------------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ----------------------------------------------------------------------
     /** SAX parser. */
     private SAXParser parser;
@@ -102,7 +103,7 @@ public class RuleSetReader extends DefaultHandler
 
     /** Repository of semantic modules. */
     private SemanticsRepository repo;
-    //private Map repo;
+    // private Map repo;
 
     /** Stack of configurations. */
     private LinkedList configurationStack;
@@ -122,15 +123,17 @@ public class RuleSetReader extends DefaultHandler
 
     private RuleSet ruleSet;
 
+    private RuleBaseContext factoryContext;
+
     private MessageFormat message = new MessageFormat( "({0}: {1}, {2}): {3}" );
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
      * Construct.
-     *
+     * 
      * <p>
      * Uses the default JAXP SAX parser and the default classpath-based
      * <code>DefaultSemanticModule</code>.
@@ -138,36 +141,48 @@ public class RuleSetReader extends DefaultHandler
      */
     public RuleSetReader()
     {
-        //init
+        // init
         this.configurationStack = new LinkedList( );
         this.parents = new LinkedList( );
 
         this.localNameMap = new HashMap( );
-        localNameMap.put( "rule-set", new RuleSetHandler( this ) );
-        localNameMap.put( "import", new ImportHandler( this ) );
-        localNameMap.put( "application-data", new ApplicationDataHandler( this ) );
-        localNameMap.put( "rule", new RuleHandler( this ) );
-        localNameMap.put( "parameter", new ParameterHandler( this ) );
-        //localNameMap.put( "declaration", new DeclarationHandler( this ) );
-        localNameMap.put( "class", new ObjectTypeHandler( this ) );
-        localNameMap.put( "class-field", new ObjectTypeHandler( this ) );
-        localNameMap.put( "condition", new ConditionHandler( this ) );
-        localNameMap.put( "duration", new DurationHandler( this ) );
-        localNameMap.put( "consequence", new ConsequenceHandler( this ) );
+        this.localNameMap.put( "rule-set",
+                               new RuleSetHandler( this ) );
+        this.localNameMap.put( "import",
+                               new ImportHandler( this ) );
+        this.localNameMap.put( "application-data",
+                               new ApplicationDataHandler( this ) );
+        this.localNameMap.put( "functions",
+                               new FunctionsHandler( this ) );
+        this.localNameMap.put( "rule",
+                               new RuleHandler( this ) );
+        this.localNameMap.put( "parameter",
+                               new ParameterHandler( this ) );
+        // localNameMap.put( "declaration", new DeclarationHandler( this ) );
+        this.localNameMap.put( "class",
+                               new ObjectTypeHandler( this ) );
+        this.localNameMap.put( "class-field",
+                               new ObjectTypeHandler( this ) );
+        this.localNameMap.put( "condition",
+                               new ConditionHandler( this ) );
+        this.localNameMap.put( "duration",
+                               new DurationHandler( this ) );
+        this.localNameMap.put( "consequence",
+                               new ConsequenceHandler( this ) );
 
     }
 
     /**
      * Construct.
-     *
+     * 
      * <p>
      * Uses the default classpath-based <code>DefaultSemanticModule</code>.
      * </p>
-     *
+     * 
      * @param parser
      *            The SAX parser.
      */
-    public RuleSetReader( SAXParser parser )
+    public RuleSetReader(SAXParser parser)
     {
         this( );
         this.parser = parser;
@@ -175,114 +190,189 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
-     * @param repo
-     *            The semantics repository.
-     * @param parser
-     *            The SAX parser.
-     */
-    public RuleSetReader( SemanticsRepository repo, SAXParser parser )
-    {
-        this( parser );
-        this.repo = repo;
-    }
-
-    /**
-     * Construct.
-     *
+     * 
      * @param repo
      *            The semantics repository.
      */
-    public RuleSetReader( SemanticsRepository repo )
+    public RuleSetReader(SemanticsRepository repo)
     {
         this( );
         this.repo = repo;
     }
 
+    /**
+     * Construct.
+     * 
+     * @param factoryContext
+     */
+    public RuleSetReader(RuleBaseContext factoryContext)
+    {
+        this( );
+        this.factoryContext = factoryContext;
+    }
+
+    /**
+     * Construct.
+     * 
+     * @param repo
+     *            The semantics repository.
+     * @param parser
+     *            The SAX parser.
+     */
+    public RuleSetReader(SemanticsRepository repo,
+                         SAXParser parser)
+    {
+        this( parser );
+        this.repo = repo;
+    }
+    
+    /**
+     * Construct.
+     * 
+     * @param repo
+     *            The semantics repository.
+     */
+    public RuleSetReader(SemanticsRepository repo,
+                         RuleBaseContext context)
+    {
+        this( );
+        this.repo = repo;
+        this.factoryContext = context;
+    }    
+    
+    /**
+     * Construct.
+     * @param parser
+     * 
+     * @param repo
+     *            The semantics repository.
+     */
+    public RuleSetReader(SAXParser parser,
+                         SemanticsRepository repo)
+    {
+        this( );
+        this.parser = parser;
+        this.repo = repo;
+    }       
+
+    /**
+     * Construct.
+     * @param parser
+     * @param context
+     */
+    public RuleSetReader(SAXParser parser,
+                         RuleBaseContext context)
+    {
+        this( );
+        this.parser = parser;
+        this.factoryContext = context;
+    } 
+
+    /**
+     * Construct.
+     * 
+     * @param repo
+     *            The semantics repository.
+     * @param parser
+     *            The SAX parser.
+     */
+    public RuleSetReader(SemanticsRepository repo,
+                         SAXParser parser,
+                         RuleBaseContext context)
+    {
+        this( parser );
+        this.repo = repo;
+        this.factoryContext = context;
+    }
+
     // ----------------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ----------------------------------------------------------------------
 
     /**
      * Read a <code>RuleSet</code> from a <code>URL</code>.
-     *
+     * 
      * @param url
      *            The rule-set URL.
-     *
+     * 
      * @return The rule-set.
-     *
+     * 
      * @throws Exception
      *             If an error occurs during the parse.
      */
-    public RuleSet read( URL url ) throws Exception
+    public RuleSet read(URL url) throws Exception
     {
         return read( new InputSource( url.toExternalForm( ) ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from a <code>Reader</code>.
-     *
+     * 
      * @param reader
      *            The reader containing the rule-set.
-     *
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception
-     *             If an error occurs during the parse.
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws IOException
      */
-    public RuleSet read( Reader reader )
-        throws SAXException, ParserConfigurationException, IOException
+    public RuleSet read(Reader reader) throws SAXException,
+                                      ParserConfigurationException,
+                                      IOException
     {
         return read( new InputSource( reader ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputStream</code>.
-     *
+     * 
      * @param inputStream
      *            The input-stream containing the rule-set.
-     *
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception
-     *             If an error occurs during the parse.
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws IOException
      */
-    public RuleSet read( InputStream inputStream )
-        throws SAXException, ParserConfigurationException, IOException
+    public RuleSet read(InputStream inputStream) throws SAXException,
+                                                ParserConfigurationException,
+                                                IOException
     {
         return read( new InputSource( inputStream ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from a URL.
-     *
+     * 
      * @param url
      *            The rule-set URL.
-     *
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception
-     *             If an error occurs during the parse.
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws IOException
      */
-    public RuleSet read( String url )
-        throws SAXException, ParserConfigurationException, IOException
+    public RuleSet read(String url) throws SAXException,
+                                   ParserConfigurationException,
+                                   IOException
     {
         return read( new InputSource( url ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputSource</code>.
-     *
+     * 
      * @param in
      *            The rule-set input-source.
-     *
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception
-     *             If an error occurs during the parse.
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws IOException
      */
-    public RuleSet read( InputSource in )
-        throws SAXException, ParserConfigurationException, IOException
+    public RuleSet read(InputSource in) throws SAXException,
+                                       ParserConfigurationException,
+                                       IOException
     {
         SAXParser parser;
 
@@ -290,21 +380,22 @@ public class RuleSetReader extends DefaultHandler
         {
             SAXParserFactory factory = SAXParserFactory.newInstance( );
             factory.setNamespaceAware( true );
-            String isValidating = System
-                    .getProperty( "drools.schema.validating" );
-            if ( isValidating == null ) isValidating = "true";
+            String isValidating = System.getProperty( "drools.schema.validating" );
+            if ( isValidating == null )
+            {
+                isValidating = "true";
+            }
 
-            factory.setValidating( Boolean.valueOf( isValidating )
-                    .booleanValue( ) );
+            factory.setValidating( Boolean.valueOf( isValidating ).booleanValue( ) );
             parser = factory.newSAXParser( );
             try
             {
-                parser.setProperty( JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA );
+                parser.setProperty( JAXP_SCHEMA_LANGUAGE,
+                                    W3C_XML_SCHEMA );
             }
             catch ( SAXNotRecognizedException e )
             {
-                System.err
-                        .println( "Your SAX parser is not JAXP 1.2 compliant." );
+                System.err.println( "Your SAX parser is not JAXP 1.2 compliant." );
             }
         }
         else
@@ -314,8 +405,7 @@ public class RuleSetReader extends DefaultHandler
 
         if ( !parser.isNamespaceAware( ) )
         {
-            throw new ParserConfigurationException(
-                    "parser must be namespace-aware" );
+            throw new ParserConfigurationException( "parser must be namespace-aware" );
         }
 
         if ( this.repo == null )
@@ -326,11 +416,12 @@ public class RuleSetReader extends DefaultHandler
             }
             catch ( Exception e )
             {
-                throw new SAXException("Unable to reference a Semantics Repository");
+                throw new SAXException( "Unable to reference a Semantics Repository" );
             }
         }
-
-        parser.parse( in, this );
+        
+        parser.parse( in,
+                      this );
 
         return this.ruleSet;
     }
@@ -340,7 +431,7 @@ public class RuleSetReader extends DefaultHandler
         return this.repo;
     }
 
-    void setRuleSet( RuleSet ruleSet )
+    void setRuleSet(RuleSet ruleSet)
     {
         this.ruleSet = ruleSet;
     }
@@ -349,18 +440,23 @@ public class RuleSetReader extends DefaultHandler
     {
         return this.ruleSet;
     }
+    
+    public RuleBaseContext getFactoryContext( )
+    {
+        return this.factoryContext;
+    }
 
     /**
      * @see org.xml.sax.ContentHandler
      */
-    public void setLocator( Locator locator )
+    public void setLocator(Locator locator)
     {
         this.locator = locator;
     }
 
     /**
      * Get the <code>Locator</code>.
-     *
+     * 
      * @return The locator.
      */
     public Locator getLocator()
@@ -374,58 +470,75 @@ public class RuleSetReader extends DefaultHandler
         this.current = null;
         this.peer = null;
         this.lastWasEndElement = false;
-        this.parents.clear();
+        this.parents.clear( );
         this.characters2 = null;
-        this.configurationStack.clear();
+        this.configurationStack.clear( );
+        if ( this.factoryContext == null )
+        {
+            this.factoryContext = new RuleBaseContext( );
+        }        
     }
 
     /**
+     * @param uri
+     * @param localName
+     * @param qname
+     * @param attrs
+     * @throws SAXException
      * @see org.xml.sax.ContentHandler
      */
-    public void startElement( String uri,
+    public void startElement(String uri,
                              String localName,
                              String qname,
-                             Attributes attrs ) throws SAXException
+                             Attributes attrs) throws SAXException
     {
-        //going down so no peer
+        // going down so no peer
         if ( !this.lastWasEndElement )
         {
             this.peer = null;
         }
         Handler handler = getHandler( localName );
 
-        validate( localName, handler );
+        validate( localName,
+                  handler );
 
-        Object node = handler.start( uri, localName, attrs );
+        Object node = handler.start( uri,
+                                     localName,
+                                     attrs );
 
         if ( node != null )
         {
-            parents.add( node );
+            this.parents.add( node );
             this.current = node;
         }
         this.lastWasEndElement = false;
     }
 
     /**
+     * @param uri
+     * @param localName
+     * @param qname
+     * @throws SAXException
      * @see org.xml.sax.ContentHandler
      */
-    public void endElement( String uri, String localName, String qname ) throws SAXException
+    public void endElement(String uri,
+                           String localName,
+                           String qname) throws SAXException
     {
         Handler handler = getHandler( localName );
 
         this.current = getParent( handler.generateNodeFor( ) );
 
-        Object node = handler.end( uri, localName );
+        Object node = handler.end( uri,
+                                   localName );
 
-        //next
+        // next
         if ( node != null && !this.lastWasEndElement )
         {
             this.peer = node;
         }
-        //up or no children
-        else if ( this.lastWasEndElement
-                || ( this.parents.getLast( ) ).getClass( )
-                        .isInstance( this.current ) )
+        // up or no children
+        else if ( this.lastWasEndElement || (this.parents.getLast( )).getClass( ).isInstance( this.current ) )
         {
             this.peer = this.parents.removeLast( );
         }
@@ -433,7 +546,8 @@ public class RuleSetReader extends DefaultHandler
         this.lastWasEndElement = true;
     }
 
-    private void validate( String localName, Handler handler ) throws SAXParseException
+    private void validate(String localName,
+                          Handler handler) throws SAXParseException
     {
         boolean validParent = false;
         boolean validPeer = false;
@@ -443,7 +557,7 @@ public class RuleSetReader extends DefaultHandler
         Set validPeers = handler.getValidPeers( );
         boolean allowNesting = handler.allowNesting( );
 
-        //get parent
+        // get parent
         Object parent;
         if ( this.parents.size( ) != 0 )
         {
@@ -470,16 +584,15 @@ public class RuleSetReader extends DefaultHandler
                 {
                     validParent = true;
                 }
-                else if ( allowedParent != null
-                        && ( ( Class ) allowedParent).isInstance( parent ) )
+                else if ( allowedParent != null && ((Class) allowedParent).isInstance( parent ) )
                 {
                     validParent = true;
                 }
             }
             if ( !validParent )
             {
-                throw new SAXParseException( "<" + localName
-                        + "> has an invalid parent element", getLocator( ) );
+                throw new SAXParseException( "<" + localName + "> has an invalid parent element",
+                                             getLocator( ) );
             }
         }
 
@@ -496,16 +609,15 @@ public class RuleSetReader extends DefaultHandler
             {
                 validPeer = true;
             }
-            else if ( allowedPeer != null
-                    && ( ( Class ) allowedPeer).isInstance( peer ) )
+            else if ( allowedPeer != null && ((Class) allowedPeer).isInstance( peer ) )
             {
                 validPeer = true;
             }
         }
         if ( !validPeer )
         {
-            throw new SAXParseException( "<" + localName
-                    + "> is after an invalid element", getLocator( ) );
+            throw new SAXParseException( "<" + localName + "> is after an invalid element",
+                                         getLocator( ) );
         }
 
         if ( !allowNesting )
@@ -521,24 +633,22 @@ public class RuleSetReader extends DefaultHandler
         }
         if ( invalidNesting )
         {
-            throw new SAXParseException( "<" + localName
-                    + ">  may not be nested", getLocator( ) );
+            throw new SAXParseException( "<" + localName + ">  may not be nested",
+                                         getLocator( ) );
         }
 
     }
 
     /**
      * Start a configuration node.
-     *
+     * 
      * @param name
      *            Tag name.
      * @param attrs
      *            Tag attributes.
-     *
-     * @throws SAXException
-     *             If an error occurs during parse.
      */
-    protected void startConfiguration( String name, Attributes attrs ) throws SAXException
+    protected void startConfiguration(String name,
+                                      Attributes attrs)
     {
         this.characters2 = new StringBuffer( );
 
@@ -548,7 +658,8 @@ public class RuleSetReader extends DefaultHandler
 
         for ( int i = 0; i < numAttrs; ++i )
         {
-            config.setAttribute( attrs.getLocalName( i ), attrs.getValue( i ) );
+            config.setAttribute( attrs.getLocalName( i ),
+                                 attrs.getValue( i ) );
         }
 
         if ( this.configurationStack.isEmpty( ) )
@@ -557,31 +668,37 @@ public class RuleSetReader extends DefaultHandler
         }
         else
         {
-            ((DefaultConfiguration) this.configurationStack.getLast( ))
-                    .addChild( config );
+            ((DefaultConfiguration) this.configurationStack.getLast( )).addChild( config );
         }
     }
 
     /**
+     * @param chars
+     * @param start
+     * @param len
+     * @throws SAXException
      * @see org.xml.sax.ContentHandler
      */
-    public void characters( char[] chars, int start, int len ) throws SAXException
+    public void characters(char[] chars,
+                           int start,
+                           int len) throws SAXException
     {
         if ( this.characters2 != null )
         {
-            this.characters2.append( chars, start, len );
+            this.characters2.append( chars,
+                                     start,
+                                     len );
         }
     }
 
     /**
      * End a configuration node.
-     *
+     * 
      * @return The configuration.
      */
     protected Configuration endConfiguration()
     {
-        DefaultConfiguration config = (DefaultConfiguration) this.configurationStack
-                .removeLast( );
+        DefaultConfiguration config = (DefaultConfiguration) this.configurationStack.removeLast( );
 
         config.setText( this.characters2.toString( ) );
 
@@ -590,7 +707,8 @@ public class RuleSetReader extends DefaultHandler
         return config;
     }
 
-    SemanticModule lookupSemanticModule( String uri, String localName ) throws SAXParseException
+    SemanticModule lookupSemanticModule(String uri,
+                                        String localName) throws SAXParseException
     {
         SemanticModule module;
         try
@@ -599,19 +717,19 @@ public class RuleSetReader extends DefaultHandler
         }
         catch ( NoSuchSemanticModuleException e )
         {
-            throw new SAXParseException( "no semantic module for namespace '"
-                    + uri + "' (" + localName + ")", getLocator( ) );
+            throw new SAXParseException( "no semantic module for namespace '" + uri + "' (" + localName + ")",
+                                         getLocator( ) );
         }
         return module;
     }
 
-    private Handler getHandler( String localName ) throws SAXParseException
+    private Handler getHandler(String localName) throws SAXParseException
     {
         Handler handler = (Handler) this.localNameMap.get( localName );
         if ( handler == null )
         {
-            throw new SAXParseException( "unable to handle element <"
-                    + localName + ">", getLocator( ) );
+            throw new SAXParseException( "unable to handle element <" + localName + ">",
+                                         getLocator( ) );
         }
         return handler;
     }
@@ -621,9 +739,9 @@ public class RuleSetReader extends DefaultHandler
         return this.parents;
     }
 
-    Object getParent( Class parent )
+    Object getParent(Class parent)
     {
-        ListIterator it = this.parents.listIterator( parents.size( ) );
+        ListIterator it = this.parents.listIterator( this.parents.size( ) );
         Object node = null;
         while ( it.hasPrevious( ) )
         {
@@ -645,34 +763,33 @@ public class RuleSetReader extends DefaultHandler
 
     public InputSource resolveEntity(String publicId,
                                      String systemId)
-      throws SAXException
     {
-        //Schema files must end with xsd
-        if (!systemId.toLowerCase( ).endsWith("xsd"))
+        // Schema files must end with xsd
+        if ( !systemId.toLowerCase( ).endsWith( "xsd" ) )
         {
             return null;
         }
 
-        //try the actual location given by systemId
+        // try the actual location given by systemId
         try
         {
-            URL url = new URL(systemId);
-            return new InputSource(url.openStream());
+            URL url = new URL( systemId );
+            return new InputSource( url.openStream( ) );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
         }
 
-        //Try and get the index for the filename, else return null
+        // Try and get the index for the filename, else return null
         String xsd;
-        int index = systemId.lastIndexOf("/");
-        if (index == -1)
+        int index = systemId.lastIndexOf( "/" );
+        if ( index == -1 )
         {
-          index = systemId.lastIndexOf("\\");
+            index = systemId.lastIndexOf( "\\" );
         }
-        if (index != -1)
+        if ( index != -1 )
         {
-            xsd = systemId.substring(index+1);
+            xsd = systemId.substring( index + 1 );
         }
         else
         {
@@ -686,63 +803,61 @@ public class RuleSetReader extends DefaultHandler
             cl = RuleSetReader.class.getClassLoader( );
         }
 
-        //Try looking in META-INF
+        // Try looking in META-INF
         try
         {
-            return new InputSource(cl.getResourceAsStream("META-INF/" + xsd));
+            return new InputSource( cl.getResourceAsStream( "META-INF/" + xsd ) );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
         }
 
-        //Try looking in /META-INF
+        // Try looking in /META-INF
         try
         {
-            return new InputSource(cl.getResourceAsStream("/META-INF/" + xsd));
+            return new InputSource( cl.getResourceAsStream( "/META-INF/" + xsd ) );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
         }
 
-        //Try looking at root of classpath
+        // Try looking at root of classpath
         try
         {
-            return new InputSource(cl.getResourceAsStream("/" + xsd));
+            return new InputSource( cl.getResourceAsStream( "/" + xsd ) );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
         }
 
-        //Try current working directory
+        // Try current working directory
         try
         {
-            return new InputSource(new BufferedInputStream(new FileInputStream(xsd)));
+            return new InputSource( new BufferedInputStream( new FileInputStream( xsd ) ) );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
         }
         return null;
     }
 
-    private void print( SAXParseException x )
+    private void print(SAXParseException x)
     {
-        String msg = message.format( new Object[]{x.getSystemId( ),
-                new Integer( x.getLineNumber( ) ),
-                new Integer( x.getColumnNumber( ) ), x.getMessage( )} );
+        String msg = this.message.format( new Object[]{x.getSystemId( ), new Integer( x.getLineNumber( ) ), new Integer( x.getColumnNumber( ) ), x.getMessage( )} );
         System.out.println( msg );
     }
 
-    public void warning( SAXParseException x )
+    public void warning(SAXParseException x)
     {
         print( x );
     }
 
-    public void error( SAXParseException x )
+    public void error(SAXParseException x)
     {
         print( x );
     }
 
-    public void fatalError( SAXParseException x ) throws SAXParseException
+    public void fatalError(SAXParseException x) throws SAXParseException
     {
         print( x );
         throw x;

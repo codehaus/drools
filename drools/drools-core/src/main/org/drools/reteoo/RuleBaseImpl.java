@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.26 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: RuleBaseImpl.java,v 1.27 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,13 +50,14 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.spi.ConflictResolver;
+import org.drools.spi.RuleBaseContext;
 
 /**
  * Implementation of <code>RuleBase</code>.
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.26 2004-12-06 01:23:02 dbarnett Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.27 2004-12-14 21:00:27 mproctor Exp $
  */
 class RuleBaseImpl
     implements
@@ -78,6 +79,8 @@ class RuleBaseImpl
     private List ruleSets;
     
     private Map applicationData;
+    
+    private RuleBaseContext ruleBaseContext;
 
     // ------------------------------------------------------------
     // Constructors
@@ -95,7 +98,8 @@ class RuleBaseImpl
               DefaultConflictResolver.getInstance( ),
               new DefaultFactHandleFactory( ),
               null,
-              new HashMap( ) );
+              new HashMap( ) ,
+              new RuleBaseContext( ) );
     }
 
     /**
@@ -107,18 +111,22 @@ class RuleBaseImpl
      *            The conflict resolver.
      * @param factHandleFactory
      *            The fact handle factory.
+     * @param ruleSets
+     * @param applicationData
      */
     RuleBaseImpl(Rete rete,
                  ConflictResolver conflictResolver,
                  FactHandleFactory factHandleFactory,
                  List ruleSets,
-                 Map applicationData)
+                 Map applicationData,
+                 RuleBaseContext ruleBaseContext)
     {
         this.rete = rete;
         this.factHandleFactory = factHandleFactory;
         this.conflictResolver = conflictResolver;
         this.ruleSets = ruleSets;
         this.applicationData = applicationData;
+        this.ruleBaseContext = ruleBaseContext;
     }
 
     // ------------------------------------------------------------
@@ -230,4 +238,9 @@ class RuleBaseImpl
     {
         return this.applicationData;
     }    
+    
+    public RuleBaseContext getRuleBaseContext()
+    {
+        return this.ruleBaseContext;
+    }
 }

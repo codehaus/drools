@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.1 2004-12-07 14:27:55 simon Exp $
+ * $Id: JavaBlockConsequence.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,7 +56,7 @@ import java.util.Map;
 
 /**
  * Java block semantics <code>Consequence</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
 public class JavaBlockConsequence
@@ -70,6 +70,8 @@ public class JavaBlockConsequence
 
     private final Declaration[] declarations;
 
+    private final String        className;
+
     private transient Script    script;
 
     // ------------------------------------------------------------
@@ -78,21 +80,24 @@ public class JavaBlockConsequence
 
     /**
      * Construct.
-     *
-     * @param block The statement block.
-     * @param rule The rule.
+     * 
+     * @param block
+     *            The statement block.
+     * @param rule
+     *            The rule.
      */
-    public JavaBlockConsequence( String block,
-                                 Rule rule ) throws Exception
+    public JavaBlockConsequence(Rule rule,
+                                int id,
+                                String block) throws Exception
     {
         this.block = block;
 
         this.rule = rule;
 
         List declarations = rule.getParameterDeclarations( );
-        this.declarations = ( Declaration[] ) declarations.toArray( new Declaration[declarations.size( )] );
-
-        this.script = compile( rule );
+        this.declarations = (Declaration[]) declarations.toArray( new Declaration[declarations.size( )] );
+        this.className = "Consequence_" + id;
+        this.script = compile( );
     }
 
     // ------------------------------------------------------------
@@ -105,16 +110,18 @@ public class JavaBlockConsequence
 
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     *
-     * @param tuple The matching tuple.
-     * @param workingMemory The working memory session.
-     *
+     * 
+     * @param tuple
+     *            The matching tuple.
+     * @param workingMemory
+     *            The working memory session.
+     * 
      * @throws ConsequenceException
      *             If an error occurs while attempting to invoke the
      *             consequence.
      */
-    public void invoke( Tuple tuple,
-                        WorkingMemory workingMemory) throws ConsequenceException
+    public void invoke(Tuple tuple,
+                       WorkingMemory workingMemory) throws ConsequenceException
     {
         try
         {
@@ -131,27 +138,28 @@ public class JavaBlockConsequence
         }
     }
 
-    private Script compile(Rule rule) throws Exception
+    private Script compile( ) throws Exception
     {
-        return (Script) JavaCompiler.compile( rule,
+        return (Script) JavaCompiler.compile( this.rule,
+                                              this.className,
                                               Script.class,
                                               this.block,
                                               this.block,
                                               this.declarations );
     }
 
-    private void readObject( ObjectInputStream s ) throws Exception
+    private void readObject(ObjectInputStream s) throws Exception
     {
         s.defaultReadObject( );
 
-        this.script = compile( rule );
+        this.script = compile( );
     }
 
     public static interface Script
     {
-        public void invoke( Tuple tuple,
-                            Declaration[] decls,
-                            KnowledgeHelper drools,
-                            Map applicationData ) throws Exception;
+        public void invoke(Tuple tuple,
+                           Declaration[] decls,
+                           KnowledgeHelper drools,
+                           Map applicationData) throws Exception;
     }
 }

@@ -9,7 +9,15 @@
 
   <python:import>from java.lang import Object</python:import>
   <python:import>from java.lang import String</python:import>
-  
+
+  <python:functions>
+    def helloWorld(hello):
+        print "%s World" % hello
+
+    def goodbyeWorld(goodbye):
+        print "%s Cruel World" % goodbye
+  </python:functions>
+
   <rule name="Hello World">
     <parameter identifier="hello">
       <class>String</class>
@@ -18,7 +26,7 @@
     <python:condition>hello == 'Hello'</python:condition>
 
     <python:consequence>
-      print "%s World" % hello
+      helloWorld(hello)
     </python:consequence>
   </rule>
 
@@ -30,7 +38,7 @@
     <python:condition>goodbye == 'Goodbye'</python:condition>
 
     <python:consequence>
-      print "%s Cruel World" % goodbye
+      goodbyeWorld(goodbye)
     </python:consequence>
   </rule>
 

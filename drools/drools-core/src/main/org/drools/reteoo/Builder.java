@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.70 2004-12-06 16:15:54 simon Exp $
+ * $Id: Builder.java,v 1.71 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,6 +49,7 @@ import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ConflictResolver;
+import org.drools.spi.RuleBaseContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,11 +61,11 @@ import java.util.Set;
 
 /**
  * Builds the Rete-OO network for a <code>RuleSet</code>.
- *
+ * 
  * @see org.drools.rule.RuleSet
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
+ * 
  * TODO Make joinForCondition actually be intelligent enough to build optimal
  * joins. Currently using forgy's original description of 2-input nodes, which I
  * feel (but don't know for sure, is sub-optimal.
@@ -76,19 +77,21 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Rete network to build against. */
-    private Rete rete;
+    private Rete              rete;
 
     /** Rule-sets added. */
-    private List ruleSets;
+    private List              ruleSets;
 
     /** Nodes that have been attached. */
-    private Map attachedNodes;
+    private Map               attachedNodes;
 
-    private Map applicationData;
+    private Map               applicationData;
 
     private FactHandleFactory factHandleFactory;
 
-    private ConflictResolver conflictResolver;
+    private ConflictResolver  conflictResolver;
+
+    private RuleBaseContext   ruleBaseContext;
 
     // ------------------------------------------------------------
     // Constructors
@@ -101,6 +104,17 @@ public class Builder
     public Builder()
     {
         reset( );
+        this.ruleBaseContext = new RuleBaseContext( );
+    }
+
+    /**
+     * Construct a <code>Builder</code> against an existing <code>Rete</code>
+     * network.
+     */
+    public Builder(RuleBaseContext ruleBaseContext)
+    {
+        reset( );
+        this.ruleBaseContext = ruleBaseContext;
     }
 
     // ------------------------------------------------------------
@@ -109,7 +123,7 @@ public class Builder
 
     /**
      * Build the <code>RuleBase</code>.
-     *
+     * 
      * @return The rule-base.
      */
     public RuleBase buildRuleBase()
@@ -118,7 +132,8 @@ public class Builder
                                               this.conflictResolver,
                                               this.factHandleFactory,
                                               this.ruleSets,
-                                              this.applicationData);
+                                              this.applicationData,
+                                              this.ruleBaseContext );
 
         reset( );
 
@@ -127,8 +142,9 @@ public class Builder
 
     /**
      * Set the <code>FactHandleFactory</code>.
-     *
-     * @param factHandleFactory The fact handle factory.
+     * 
+     * @param factHandleFactory
+     *            The fact handle factory.
      */
     public void setFactHandleFactory(FactHandleFactory factHandleFactory)
     {
@@ -137,8 +153,9 @@ public class Builder
 
     /**
      * Set the <code>ConflictResolver</code>.
-     *
-     * @param conflictResolver The conflict resolver.
+     * 
+     * @param conflictResolver
+     *            The conflict resolver.
      */
     public void setConflictResolver(ConflictResolver conflictResolver)
     {
@@ -147,15 +164,16 @@ public class Builder
 
     /**
      * Add a <code>RuleSet</code> to the network.
-     *
-     * @param ruleSet The rule-set to add.
-     *
+     * 
+     * @param ruleSet
+     *            The rule-set to add.
+     * 
      * @throws RuleIntegrationException
      *             if an error prevents complete construction of the network for
      *             the <code>Rule</code>.
      */
-    public void addRuleSet(RuleSet ruleSet)
-            throws RuleIntegrationException, RuleSetIntegrationException
+    public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException,
+                                           RuleSetIntegrationException
     {
         this.ruleSets.add( ruleSet );
 
@@ -165,8 +183,8 @@ public class Builder
         Class type;
         while ( it.hasNext( ) )
         {
-            identifier = ( String ) it.next( );
-            type = ( Class ) newApplicationData.get( identifier );
+            identifier = (String) it.next( );
+            type = (Class) newApplicationData.get( identifier );
             if ( this.applicationData.containsKey( identifier ) && !this.applicationData.get( identifier ).equals( type ) )
             {
                 throw new RuleSetIntegrationException( ruleSet );
@@ -185,9 +203,10 @@ public class Builder
 
     /**
      * Add a <code>Rule</code> to the network.
-     *
-     * @param rule The rule to add.
-     *
+     * 
+     * @param rule
+     *            The rule to add.
+     * 
      * @throws RuleIntegrationException
      *             if an error prevents complete construction of the network for
      *             the <code>Rule</code>.
@@ -251,9 +270,10 @@ public class Builder
     /**
      * Create the <code>ParameterNode</code> s for the <code>Rule</code>,
      * and link into the network.
-     *
-     * @param rule The rule.
-     *
+     * 
+     * @param rule
+     *            The rule.
+     * 
      * @return A <code>Set</code> of <code>ParameterNodes</code> created and
      *         linked into the network.
      */
@@ -276,14 +296,18 @@ public class Builder
     }
 
     /**
-     * Attaches a node into the network. If a node already exists that could substitute, it is used instead.
-     * @param candidate The node to attach.
-     * @param leafNodes The list to which the newly added node will be added.
+     * Attaches a node into the network. If a node already exists that could
+     * substitute, it is used instead.
+     * 
+     * @param candidate
+     *            The node to attach.
+     * @param leafNodes
+     *            The list to which the newly added node will be added.
      */
-    private void attachNode( TupleSource candidate,
-                             List leafNodes )
+    private void attachNode(TupleSource candidate,
+                            List leafNodes)
     {
-        TupleSource node = ( TupleSource ) this.attachedNodes.get( candidate );
+        TupleSource node = (TupleSource) this.attachedNodes.get( candidate );
 
         if ( node == null )
         {
@@ -300,21 +324,24 @@ public class Builder
 
     /**
      * Create and attach <code>Condition</code> s to the network.
-     *
+     * 
      * <p>
      * It may not be possible to satisfy all filder conditions on the first
      * pass. This method removes satisfied conditions from the
      * <code>Condition</code> parameter, and leaves unsatisfied ones in the
      * <code>Set</code>.
      * </p>
-     *
-     * @param rule The rule.
-     * @param conds Set of <code>Conditions</code> to attempt attaching.
-     * @param leafNodes The leaf node.
+     * 
+     * @param rule
+     *            The rule.
+     * @param conds
+     *            Set of <code>Conditions</code> to attempt attaching.
+     * @param leafNodes
+     *            The leaf node.
      */
-    private void attachConditions( Rule rule,
-                                   List conds,
-                                   List leafNodes )
+    private void attachConditions(Rule rule,
+                                  List conds,
+                                  List leafNodes)
     {
         Iterator condIter = conds.iterator( );
         Condition eachCond;
@@ -322,7 +349,7 @@ public class Builder
 
         while ( condIter.hasNext( ) )
         {
-            eachCond = ( Condition ) condIter.next( );
+            eachCond = (Condition) condIter.next( );
 
             tupleSource = findMatchingTupleSourceForCondition( eachCond,
                                                                leafNodes );
@@ -344,10 +371,12 @@ public class Builder
     /**
      * Join two arbitrary leaves in order to satisfy a filter that currently
      * cannot be applied.
-     *
-     * @param conds The filter conditions remaining.
-     * @param leafNodes Available leaf nodes.
-     *
+     * 
+     * @param conds
+     *            The filter conditions remaining.
+     * @param leafNodes
+     *            Available leaf nodes.
+     * 
      * @return <code>true</code> if a join was possible, otherwise,
      *         <code>false</code>.
      */
@@ -360,9 +389,10 @@ public class Builder
     /**
      * Join two arbitrary leaves in order to satisfy a filter that currently
      * cannot be applied.
-     *
-     * @param leafNodes Available leaf nodes.
-     *
+     * 
+     * @param leafNodes
+     *            Available leaf nodes.
+     * 
      * @return <code>true</code> if successfully joined some nodes, otherwise
      *         <code>false</code>.
      */
@@ -392,19 +422,20 @@ public class Builder
 
     /**
      * Create and attach <code>JoinNode</code> s to the network.
-     *
+     * 
      * <p>
      * It may not be possible to join all <code>leafNodes</code>.
      * </p>
-     *
+     * 
      * <p>
      * Any <code>leafNodes</code> member that particiates in a <i>join </i> is
      * removed from the <code>leafNodes</code> collection, and replaced by the
      * joining <code>JoinNode</code>.
      * </p>
-     *
-     * @param leafNodes The current attachable leaf nodes of the network.
-     *
+     * 
+     * @param leafNodes
+     *            The current attachable leaf nodes of the network.
+     * 
      * @return <code>true</code> if at least one <code>JoinNode</code> was
      *         created, else <code>false</code>.
      */
@@ -450,10 +481,12 @@ public class Builder
 
     /**
      * Determine if two <code>TupleSource</code> s can be joined.
-     *
-     * @param left The left tuple source
-     * @param right The right tuple source
-     *
+     * 
+     * @param left
+     *            The left tuple source
+     * @param right
+     *            The right tuple source
+     * 
      * @return <code>true</code> if they can be joined (they share at least
      *         one common member declaration), else <code>false</code>.
      */
@@ -477,10 +510,12 @@ public class Builder
     /**
      * Locate a <code>TupleSource</code> suitable for attaching the
      * <code>Condition</code> and remove it.
-     *
-     * @param condition The <code>Condition</code> to attach.
-     * @param sources Candidate <code>TupleSources</code>.
-     *
+     * 
+     * @param condition
+     *            The <code>Condition</code> to attach.
+     * @param sources
+     *            Candidate <code>TupleSources</code>.
+     * 
      * @return Matching <code>TupleSource</code> if a suitable one can be
      *         found, else <code>null</code>.
      */
@@ -508,12 +543,12 @@ public class Builder
     /**
      * Determine if a set of <code>Declarations</code> match those required by
      * a <code>Condition</code>.
-     *
+     * 
      * @param condition
      *            The <code>Condition</code>.
      * @param declarations
      *            The set of <code>Declarations</code> to compare against.
-     *
+     * 
      * @return <code>true</code> if the set of <code>Declarations</code> is
      *         a super-set of the <code>Declarations</code> required by the
      *         <code>Condition</code>.
@@ -528,10 +563,10 @@ public class Builder
     /**
      * Determine if a set of <code>Declarations</code> is a super set of
      * required <code>Declarations</code>
-     *
+     * 
      * @param declarations
      *            The set of <code>Declarations</code> to compare against.
-     *
+     * 
      * @param requiredDecls
      *            The required <code>Declarations</code>.
      * @return <code>true</code> if the set of <code>Declarations</code> is

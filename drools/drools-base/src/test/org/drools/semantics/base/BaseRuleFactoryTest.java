@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseRuleFactoryTest.java,v 1.2 2004-09-17 00:24:38 mproctor Exp $
+ * $Id: BaseRuleFactoryTest.java,v 1.3 2004-12-14 21:00:27 mproctor Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -86,7 +86,7 @@ public class BaseRuleFactoryTest extends TestCase
         Rule rule = null;
         try
         {
-            rule = baseRuleFactory.newRule( config );
+            rule = baseRuleFactory.newRule( null, null, config );
         }
         catch ( FactoryException e )
         {
@@ -104,7 +104,7 @@ public class BaseRuleFactoryTest extends TestCase
         Rule rule = null;
         try
         {
-            rule = baseRuleFactory.newRule( config );
+            rule = baseRuleFactory.newRule( null, null, config );
             fail( testDesc );
         }
         catch ( FactoryException e )

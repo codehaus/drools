@@ -8,12 +8,14 @@
 
   <xs:import namespace="http://drools.org/rules" schemaLocation="rules.xsd" />
 
-  <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport"/>
+  <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport" />
+  
+  <xs:element name="functions"   type="xs:string" substitutionGroup="rules:abstractFunctions" />
 
-  <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
+  <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass" />
 
-  <xs:element name="condition"   type="xs:string" substitutionGroup="rules:abstractCondition"/>
+  <xs:element name="condition"   type="xs:string" substitutionGroup="rules:abstractCondition" />
 
-  <xs:element name="consequence" type="xs:string" substitutionGroup="rules:abstractConsequence"/>
+  <xs:element name="consequence" type="xs:string" substitutionGroup="rules:abstractConsequence" />
 
 </xs:schema>

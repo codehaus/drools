@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectTypeFactory.java,v 1.5 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: ClassObjectTypeFactory.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,17 +41,22 @@ package org.drools.semantics.base;
  *
  */
 
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
+import org.drools.spi.RuleBaseContext;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ClassObjectTypeFactory implements ObjectTypeFactory
+public class ClassObjectTypeFactory
+    implements
+    ObjectTypeFactory
 {
     private static final ClassObjectTypeFactory INSTANCE = new ClassObjectTypeFactory( );
 
@@ -60,7 +65,9 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType( Configuration config, Set imports ) throws FactoryException
+    public ObjectType newObjectType(RuleBaseContext context,
+                                    Configuration config,
+                                    Set imports) throws FactoryException
     {
         String className = config.getText( ).trim( );
 
@@ -69,7 +76,7 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
             throw new FactoryException( "no class name specified" );
         }
 
-        //get imports
+        // get imports
         Set importSet = new HashSet( );
         if ( imports != null )
         {
@@ -78,7 +85,7 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
             ImportEntry importEntry;
             while ( it.hasNext( ) )
             {
-                importEntry = ( ImportEntry ) it.next( );
+                importEntry = (ImportEntry) it.next( );
                 importSet.add( importEntry.getImportEntry( ) );
             }
         }
@@ -101,7 +108,9 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
             Iterator it = importSet.iterator( );
             while ( it.hasNext( ) && clazz == null )
             {
-                clazz = importClass( cl, ( String ) it.next(), className.trim( ) );
+                clazz = importClass( cl,
+                                     (String) it.next( ),
+                                     className.trim( ) );
             }
         }
         /* We still can't find the class so throw an exception */
@@ -113,11 +122,13 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
         return new ClassObjectType( clazz );
     }
 
-    private Class importClass( ClassLoader cl, String importText, String className )
+    private Class importClass(ClassLoader cl,
+                              String importText,
+                              String className)
     {
         String qualifiedClass = null;
         Class clazz = null;
-        
+
         String convertedImportText;
         if ( importText.startsWith( "from " ) )
         {
@@ -127,11 +138,12 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
         {
             convertedImportText = importText;
         }
-        
-        //not python
+
+        // not python
         if ( convertedImportText.endsWith( "*" ) )
         {
-            qualifiedClass = convertedImportText.substring( 0, convertedImportText.indexOf( '*' ) ) + className;
+            qualifiedClass = convertedImportText.substring( 0,
+                                                            convertedImportText.indexOf( '*' ) ) + className;
         }
         else if ( convertedImportText.endsWith( className ) )
         {
@@ -152,13 +164,13 @@ public class ClassObjectTypeFactory implements ObjectTypeFactory
         return clazz;
     }
 
-    private String converPythonImport( String packageText )
+    private String converPythonImport(String packageText)
     {
         String fromString = "from ";
         String importString = "import ";
         int fromIndex = packageText.indexOf( fromString );
         int importIndex = packageText.indexOf( importString );
-        return packageText.substring( fromIndex + fromString.length(), importIndex ).trim( ) + "."
-             + packageText.substring( importIndex + importString.length() ).trim( );
+        return packageText.substring( fromIndex + fromString.length( ),
+                                      importIndex ).trim( ) + "." + packageText.substring( importIndex + importString.length( ) ).trim( );
     }
 }

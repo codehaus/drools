@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.5 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,11 +45,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
+import org.drools.spi.RuleBaseContext;
 
 public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
 {
@@ -60,7 +63,9 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType( Configuration config, Set imports ) throws FactoryException
+    public ObjectType newObjectType( RuleBaseContext context,
+                                     Configuration config, 
+                                     Set imports ) throws FactoryException
     {
         String className = config.getText( );
         String fieldName = config.getAttribute( "field" );

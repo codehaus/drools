@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequenceFactory.java,v 1.2 2004-12-08 22:46:06 simon Exp $
+ * $Id: GroovyBlockConsequenceFactory.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.smf.Configuration;
 import org.drools.smf.ConsequenceFactory;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Consequence;
+import org.drools.spi.RuleBaseContext;
 
 public class GroovyBlockConsequenceFactory
     implements
@@ -58,8 +59,9 @@ public class GroovyBlockConsequenceFactory
         return INSTANCE;
     }
 
-    public Consequence newConsequence( Configuration config,
-                                       Rule rule) throws FactoryException
+    public Consequence newConsequence( Rule rule,
+                                       RuleBaseContext context,
+                                       Configuration config) throws FactoryException
     {
         return new GroovyBlockConsequence( config.getText( ),
                                      rule );

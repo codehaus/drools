@@ -1,6 +1,5 @@
-
 /*
- * $Id: RuleHandler.java,v 1.2 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: RuleHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +49,7 @@ import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.RuleFactory;
 import org.drools.smf.SemanticModule;
+import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -61,13 +61,15 @@ import org.xml.sax.SAXParseException;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-class RuleHandler extends BaseAbstractHandler implements Handler
+class RuleHandler extends BaseAbstractHandler
+    implements
+    Handler
 {
-    RuleHandler( RuleSetReader ruleSetReader )
+    RuleHandler(RuleSetReader ruleSetReader)
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( (this.validParents == null) && (validPeers == null) )
+        if ( (this.validParents == null) && (this.validPeers == null) )
         {
             this.validParents = new HashSet( );
             this.validParents.add( RuleSet.class );
@@ -77,39 +79,48 @@ class RuleHandler extends BaseAbstractHandler implements Handler
             this.validPeers.add( Rule.class );
             this.validPeers.add( ImportEntry.class );
             this.validPeers.add( ApplicationData.class );
+            this.validPeers.add( Functions.class );
 
             this.allowNesting = false;
         }
     }
 
-    public Object start( String uri, String localName, Attributes attrs ) throws SAXException
+    public Object start(String uri,
+                        String localName,
+                        Attributes attrs) throws SAXException
     {
 
-        SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
-                                                                    localName );
+        SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
+                                                                         localName );
 
         RuleFactory factory = module.getRuleFactory( localName );
 
-        ruleSetReader.startConfiguration( localName, attrs );
+        this.ruleSetReader.startConfiguration( localName,
+                                               attrs );
 
-        Configuration config = ruleSetReader.endConfiguration( );
+        Configuration config = this.ruleSetReader.endConfiguration( );
 
         Rule rule;
         try
         {
-            rule = factory.newRule( config );
+            rule = factory.newRule( this.ruleSetReader.getRuleSet( ),
+                                    this.ruleSetReader.getFactoryContext( ),
+                                    config );
 
-            startRule( rule, attrs );
+            startRule( rule,
+                       attrs );
         }
         catch ( FactoryException e )
         {
             throw new SAXParseException( "error constructing rule",
-                    ruleSetReader.getLocator( ), e );
+                                         this.ruleSetReader.getLocator( ),
+                                         e );
         }
         return rule;
     }
 
-    private void startRule( Rule rule, Attributes attrs ) throws SAXException
+    private void startRule(Rule rule,
+                           Attributes attrs) throws SAXException
     {
         String salienceStr = attrs.getValue( "salience" );
         String noLoopStr = attrs.getValue( "no-loop" );
@@ -125,10 +136,8 @@ class RuleHandler extends BaseAbstractHandler implements Handler
             }
             catch ( NumberFormatException e )
             {
-                throw new SAXParseException(
-                        "invalid number value for 'salience' attribute: "
-                                + salienceStr.trim( ), ruleSetReader
-                                .getLocator( ) );
+                throw new SAXParseException( "invalid number value for 'salience' attribute: " + salienceStr.trim( ),
+                                             this.ruleSetReader.getLocator( ) );
             }
         }
 
@@ -136,16 +145,13 @@ class RuleHandler extends BaseAbstractHandler implements Handler
         {
             try
             {
-                boolean noLoop = new Boolean( noLoopStr.trim( ) )
-                        .booleanValue( );
+                boolean noLoop = new Boolean( noLoopStr.trim( ) ).booleanValue( );
                 rule.setNoLoop( noLoop );
             }
             catch ( NumberFormatException e )
             {
-                throw new SAXParseException(
-                        "invalid boolean value for 'no-loop' attribute: "
-                                + salienceStr.trim( ), ruleSetReader
-                                .getLocator( ) );
+                throw new SAXParseException( "invalid boolean value for 'no-loop' attribute: " + salienceStr.trim( ),
+                                             this.ruleSetReader.getLocator( ) );
             }
         }
 
@@ -154,23 +160,22 @@ class RuleHandler extends BaseAbstractHandler implements Handler
             rule.setDocumentation( ruleDesc );
         }
 
-        rule.setImports( ruleSetReader.getRuleSet( ).getImports( ) );
-        rule.setApplicationData( ruleSetReader.getRuleSet().getApplicationData() );
+        rule.setImports( this.ruleSetReader.getRuleSet( ).getImports( ) );
+        rule.setApplicationData( this.ruleSetReader.getRuleSet( ).getApplicationData( ) );
     }
 
-    public Object end( String uri, String localName ) throws SAXException
+    public Object end(String uri,
+                      String localName) throws SAXException
     {
         try
         {
-            ruleSetReader.getRuleSet( ).addRule(
-                                                 (Rule) ruleSetReader
-                                                         .getParents( )
-                                                         .getLast( ) );
+            this.ruleSetReader.getRuleSet( ).addRule( (Rule) this.ruleSetReader.getParents( ).getLast( ) );
         }
         catch ( RuleConstructionException e )
         {
-            throw new SAXParseException( "error adding rule", ruleSetReader
-                    .getLocator( ), e );
+            throw new SAXParseException( "error adding rule",
+                                         this.ruleSetReader.getLocator( ),
+                                         e );
         }
 
         return null;

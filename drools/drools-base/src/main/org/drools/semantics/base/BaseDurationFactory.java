@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseDurationFactory.java,v 1.9 2004-12-06 01:12:44 dbarnett Exp $
+ * $Id: BaseDurationFactory.java,v 1.10 2004-12-14 21:00:26 mproctor Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,9 +41,12 @@ package org.drools.semantics.base;
  *
  */
 
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
 import org.drools.spi.Duration;
+import org.drools.spi.RuleBaseContext;
 
 /**
  * An implementation of the <code>DurationFactory</code> interface.
@@ -70,7 +73,9 @@ public class BaseDurationFactory implements DurationFactory
      * 
      * @return a new <code>Duration</code> object.
      */
-    public Duration newDuration( Configuration config )
+    public Duration newDuration( Rule rule,
+                                 RuleBaseContext context,
+                                 Configuration config )
     {
         long seconds = 0;
 
@@ -102,6 +107,6 @@ public class BaseDurationFactory implements DurationFactory
             }
         }
 
-        return new BaseDuration( seconds );
+        return new BaseDuration( rule, seconds );
     }
 }

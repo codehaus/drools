@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.6 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: DurationHandler.java,v 1.7 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,7 +62,7 @@ class DurationHandler extends BaseAbstractHandler implements Handler
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( this.validParents == null && validPeers == null )
+        if ( this.validParents == null && this.validPeers == null )
         {
             this.validParents = new HashSet( );
             this.validParents.add( Rule.class );
@@ -83,24 +83,26 @@ class DurationHandler extends BaseAbstractHandler implements Handler
 
     public Object end( String uri, String localName ) throws SAXException
     {
-        Configuration config = ruleSetReader.endConfiguration( );
-        SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
+        Configuration config = this.ruleSetReader.endConfiguration( );
+        SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
                                                                     localName );
 
         DurationFactory factory = module.getDurationFactory( localName );
         Duration duration;
         try
         {
-            Rule rule = (Rule) ruleSetReader.getParent( Rule.class );
+            Rule rule = (Rule) this.ruleSetReader.getParent( Rule.class );
 
-            duration = factory.newDuration( config );
+            duration = factory.newDuration( rule,
+                                            this.ruleSetReader.getFactoryContext( ),
+                                            config );
 
             rule.setDuration( duration );
         }
         catch ( FactoryException e )
         {
             throw new SAXParseException( "error constructing duration",
-                    ruleSetReader.getLocator( ), e );
+                    this.ruleSetReader.getLocator( ), e );
         }
         return duration;
     }

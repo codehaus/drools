@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.2 2004-12-07 14:52:00 simon Exp $
+ * $Id: JavaCompiler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,37 +41,63 @@ package org.drools.semantics.java;
  *
  */
 
+import net.janino.ByteArrayClassLoader;
 import net.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.spi.RuleBaseContext;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 class JavaCompiler
 {
-    private static final String[] PARAM_NAMES = new String[] { "tuple", "decls", "drools", "applicationData" };
+    private static final String[] PARAM_NAMES = new String[]{"tuple", "decls", "drools", "applicationData"};
 
-    public static Object compile( Rule rule,
-                                  Class clazz,
-                                  String expression,
-                                  String originalExpression,
-                                  Declaration[] params ) throws IOException, CompilationException
+    public static Object compile(Rule rule,
+                                 String className,
+                                 Class clazz,
+                                 String expression,
+                                 String originalExpression,
+                                 Declaration[] params) throws IOException,
+                                                      CompilationException
     {
         try
         {
+            RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
+            ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
+            if ( classLoader == null )
+            {
+                classLoader = new ByteArrayClassLoader(Thread.currentThread().getContextClassLoader());
+                ruleBaseContext.put( "java-classLoader",
+                                     classLoader );
+            }
+            JavaFunctions functions = (JavaFunctions) rule.getRuleSet().getFunctions("java");
+            Class functionsClass = null; 
+            
+            if ( functions != null )
+            {
+                functionsClass = functions.getFunctionsClass();
+            }
+            
             return JavaScriptEvaluator.compile( expression,
+                                                className,
                                                 clazz,
                                                 PARAM_NAMES,
                                                 params,
                                                 rule.getImports( JavaImportEntry.class ),
-                                                rule.getApplicationData( ) );
+                                                rule.getApplicationData( ),
+                                                functionsClass,
+                                                classLoader );
         }
         catch ( Scanner.LocatedException e )
         {
             throw new CompilationException( rule,
                                             originalExpression,
                                             e.getLocation( ).getLineNumber( ),
-                                            e.getLocation( ).getColumnNumber( ), e.getMessage( ) );
+                                            e.getLocation( ).getColumnNumber( ),
+                                            e.getMessage( ) );
         }
     }
 }

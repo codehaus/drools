@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.1 2004-12-04 14:59:45 simon Exp $
+ * $Id: RuleBaseLoader.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.RuleBaseBuilder;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
+import org.drools.spi.RuleBaseContext;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -206,10 +207,11 @@ public final class RuleBaseLoader
     {
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setConflictResolver( resolver );
+        RuleBaseContext factoryContext = new RuleBaseContext( );
 
         for ( int i = 0; i < ins.length; ++i )
         {
-            RuleSetReader reader = new RuleSetReader( );
+            RuleSetReader reader = new RuleSetReader( factoryContext );
             RuleSet ruleSet = reader.read( ins[i] );
             builder.addRuleSet( ruleSet );
         }
@@ -273,12 +275,14 @@ public final class RuleBaseLoader
     public static RuleBase loadFromReader( Reader[] ins,
                                              ConflictResolver resolver ) throws Exception
     {
-        RuleBaseBuilder builder = new RuleBaseBuilder( );
-        builder.setConflictResolver( resolver );
+        RuleBaseContext factoryContext = new RuleBaseContext( );
+        
+        RuleBaseBuilder builder = new RuleBaseBuilder( factoryContext );
+        builder.setConflictResolver( resolver );        
 
         for ( int i = 0; i < ins.length; ++i )
         {
-            RuleSetReader reader = new RuleSetReader( );
+            RuleSetReader reader = new RuleSetReader( factoryContext );
             RuleSet ruleSet = reader.read( ins[i] );
             builder.addRuleSet( ruleSet );
         }

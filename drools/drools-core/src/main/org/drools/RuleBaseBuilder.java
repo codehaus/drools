@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.18 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: RuleBaseBuilder.java,v 1.19 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.reteoo.Builder;
 import org.drools.reteoo.FactHandleFactory;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
+import org.drools.spi.RuleBaseContext;
 
 /**
  * Factory for constructing a <code>RuleBase</code>.
@@ -62,7 +63,7 @@ import org.drools.spi.ConflictResolver;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleBaseBuilder.java,v 1.18 2004-12-06 04:51:36 dbarnett Exp $
+ * @version $Id: RuleBaseBuilder.java,v 1.19 2004-12-14 21:00:27 mproctor Exp $
  */
 public class RuleBaseBuilder
 {
@@ -72,6 +73,8 @@ public class RuleBaseBuilder
 
     /** Underlying Rete builder. */
     private Builder builder;
+    
+    private RuleBaseContext ruleBaseContext;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -82,8 +85,19 @@ public class RuleBaseBuilder
      */
     public RuleBaseBuilder( )
     {
-        this.builder = new Builder( );
+        this.ruleBaseContext = new RuleBaseContext( );
+        this.builder = new Builder( ruleBaseContext );
+        
     }
+    
+    /**
+     * Construct.
+     */
+    public RuleBaseBuilder( RuleBaseContext ruleBaseContext)
+    {
+        this.ruleBaseContext = ruleBaseContext;
+        this.builder = new Builder( ruleBaseContext );
+    }    
 
     // ----------------------------------------------------------------------
     // Instance methods
