@@ -66,20 +66,12 @@ public class AssignmentNode extends TupleSource implements TupleSink
                             ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
-
-
         Object value = getFactExtractor().extractFact( tuple );
 
         ReteTuple newTuple = new ReteTuple( tuple );
 
-        /*
-        newTuple.putAll( tuple );
-        */
-
         newTuple.putOtherColumn( getTargetDeclaration(),
                                  value );
-
-        // newTuple.addAllRootFactObjects( tuple.getRootFactObjects() );
 
         propagateAssertTuple( newTuple,
                               workingMemory );

@@ -18,8 +18,8 @@ import java.util.Iterator;
  */
 public class ReteTuple implements Tuple
 {
-    private Map keyColumns;
-    private Map otherColumns;
+    private TupleKey keyColumns;
+    private Map      otherColumns;
 
     
     /** Construct.
@@ -27,13 +27,13 @@ public class ReteTuple implements Tuple
     public ReteTuple()
     {
         // this.tuple           = new HashMap();
-        this.keyColumns      = new HashMap();
+        this.keyColumns      = new TupleKey();
         this.otherColumns    = new HashMap();
     }
 
     public ReteTuple(ReteTuple that)
     {
-        this.keyColumns      = new HashMap( that.keyColumns );
+        this.keyColumns      = new TupleKey( that.keyColumns );
         this.otherColumns    = new HashMap( that.otherColumns );
     }
 
@@ -44,9 +44,10 @@ public class ReteTuple implements Tuple
                              value );
     }
 
-    public void putAllKeyColumns(Map otherColumns)
+    public void putAll(ReteTuple that)
     {
-        this.keyColumns.putAll( otherColumns );
+        this.keyColumns.putAll( that.keyColumns );
+        this.otherColumns.putAll( that.otherColumns );
     }
 
     public void putOtherColumn(Declaration declaration,
@@ -56,12 +57,7 @@ public class ReteTuple implements Tuple
                                value );
     }
 
-    public void putAllOtherColumns(Map otherColumns)
-    {
-        this.otherColumns.putAll( otherColumns );
-    }
-
-    public Map getKeyColumns()
+    public TupleKey getKey()
     {
         return this.keyColumns;
     }
@@ -71,24 +67,14 @@ public class ReteTuple implements Tuple
         return this.otherColumns;
     }
 
-    public boolean containsRootFactObject(Object object)
-    {
-        return this.keyColumns.containsValue( object );
-    }
-
     public boolean dependsOn(Object object)
     {
-        return this.keyColumns.containsValue( object );
-    }
-
-    public boolean hasSameIdentity(ReteTuple that)
-    {
-        return this.keyColumns.equals( that.keyColumns );
+        return this.keyColumns.containsRootFactObject( object );
     }
 
     public Object get(Declaration declaration)
     {
-        if ( this.keyColumns.containsKey( declaration ) )
+        if ( this.keyColumns.containsDeclaration( declaration ) )
         {
             return this.keyColumns.get( declaration );
         }
@@ -101,7 +87,7 @@ public class ReteTuple implements Tuple
         Set decls = new HashSet( this.keyColumns.size() 
                                  + this.otherColumns.size() );
 
-        decls.addAll( this.keyColumns.keySet() );
+        decls.addAll( this.keyColumns.getDeclarations() );
         decls.addAll( this.otherColumns.keySet() );
 
         return decls;
@@ -111,6 +97,6 @@ public class ReteTuple implements Tuple
      */
     public String toString()
     {
-        return "[ReteTuple: keys=" + this.keyColumns + "; others=" + this.otherColumns + "]";
+        return "[ReteTuple: key=" + this.keyColumns + "; others=" + this.otherColumns + "]";
     }
 }

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.Collections;
 
@@ -23,12 +24,12 @@ public class JoinMemory
     /** <code>List</code> of <code>Tuples</code> received
      *  on the left input of the <code>JoinNode</code>.
      */
-    private List leftTuples;
+    private TupleSet leftTuples;
 
     /** <code>List</code> of <code>Tuples</code> received
      *  on the right input of the <code>JoinNode</code>.
      */
-    private List rightTuples;
+    private TupleSet rightTuples;
 
     /** The <code>Set</code> of common <code>Declarations</code>
      *  to join against left and right memories.
@@ -42,8 +43,8 @@ public class JoinMemory
      */
     public JoinMemory(JoinNode node)
     {
-        this.leftTuples  = new LinkedList();
-        this.rightTuples = new LinkedList();
+        this.leftTuples  = new TupleSet();
+        this.rightTuples = new TupleSet();
 
         this.joinDeclarations = node.getCommonDeclarations();
     }
@@ -57,39 +58,59 @@ public class JoinMemory
 
     protected void retractObject(Object object)
     {
-        ReteTuple eachTuple = null;
-
-        Iterator  tupleIter = leftTuples.iterator();
-
-        while ( tupleIter.hasNext() )
+        try
         {
-            eachTuple = (ReteTuple) tupleIter.next();
-
-            if ( eachTuple.containsRootFactObject( object ) )
+            ReteTuple eachTuple = null;
+            
+            Iterator  tupleIter = leftTuples.iterator();
+            
+            while ( tupleIter.hasNext() )
             {
-                tupleIter.remove();
+                eachTuple = (ReteTuple) tupleIter.next();
+                
+                if ( eachTuple.dependsOn( object ) )
+                {
+                    tupleIter.remove();
+                }
+            }
+            
+            tupleIter = rightTuples.iterator();
+            
+            while ( tupleIter.hasNext() )
+            {
+                eachTuple = (ReteTuple) tupleIter.next();
+                
+                if ( eachTuple.dependsOn( object ) )
+                {
+                    tupleIter.remove();
+                }
             }
         }
-
-        tupleIter = rightTuples.iterator();
-        
-        while ( tupleIter.hasNext() )
+        catch (Exception e)
         {
-            eachTuple = (ReteTuple) tupleIter.next();
+            e.printStackTrace();
+        }
+    }
 
-            if ( eachTuple.containsRootFactObject( object ) )
-            {
-                tupleIter.remove();
-            }
+    protected void retractLeft(Set keys)
+    {
+        Iterator keyIter = keys.iterator();
+        TupleKey eachKey = null;
+
+        while ( keyIter.hasNext() )
+        {
+            eachKey = (TupleKey) keyIter.next();
+
+            this.leftTuples.removeTuplesByPartialKey( eachKey );
         }
     }
 
     protected void modifyLeft(Object trigger,
                               TupleSet tuples)
     {
-        Set origModified = new HashSet();
-        Set newModified  = new HashSet();
-        Set retracted    = new HashSet();
+        TupleSet origModified = new TupleSet();
+        TupleSet newModified  = new TupleSet();
+        TupleSet retracted    = new TupleSet();
 
         Iterator  tupleIter = getLeftTupleIterator();
         ReteTuple eachTuple = null;
@@ -101,22 +122,24 @@ public class JoinMemory
 
             if ( eachTuple.dependsOn( trigger ) )
             {
-                newTuple = tuples.getTuple( eachTuple.getKeyColumns() );
+                newTuple = tuples.getTuple( eachTuple.getKey() );
 
                 if ( newTuple == null )
                 {
+                    // Not replaced, thus, retracted.
                     tupleIter.remove();
-                    retracted.add( eachTuple );
+                    retracted.addTuple( eachTuple );
                 }
                 else
                 {
-                    origModified.add( eachTuple );
-                    newModified.add( newTuple );
+                    // Replaced, thus, modified.
+                    origModified.addTuple( eachTuple );
+                    newModified.addTuple( newTuple );
                 }
             }
         }
 
-        List joinedRetracted = new ArrayList();
+        TupleSet retractedJoined = new TupleSet();
 
         tupleIter = retracted.iterator();
 
@@ -124,11 +147,11 @@ public class JoinMemory
         {
             eachTuple = (ReteTuple) tupleIter.next();
 
-            joinedRetracted.addAll( attemptJoin( eachTuple,
-                                                 getRightTupleIterator() ) );
+            retractedJoined.addAllTuples( attemptJoin( eachTuple,
+                                                       getRightTupleIterator() ) );
         }
 
-        List origJoined = new ArrayList();
+        TupleSet origJoined = new TupleSet();
 
         tupleIter = origModified.iterator();
 
@@ -136,11 +159,11 @@ public class JoinMemory
         {
             eachTuple = (ReteTuple) tupleIter.next();
 
-            origJoined.addAll( attemptJoin( eachTuple,
-                                            getRightTupleIterator() ) );
+            origJoined.addAllTuples( attemptJoin( eachTuple,
+                                                  getRightTupleIterator() ) );
         }
 
-        List newJoined = new ArrayList();
+        TupleSet newJoined = new TupleSet();
 
         tupleIter = newModified.iterator();
 
@@ -148,18 +171,26 @@ public class JoinMemory
         {
             eachTuple = (ReteTuple) tupleIter.next();
 
-            newJoined.addAll( attemptJoin( eachTuple,
-                                           getRightTupleIterator() ) );
+            newJoined.addAllTuples( attemptJoin( eachTuple,
+                                                 getRightTupleIterator() ) );
         }
 
-        /*
         tupleIter = origJoined.iterator();
 
         while ( tupleIter.hasNext() )
         {
             eachTuple = (ReteTuple) tupleIter.next();
+
+            if ( ! newJoined.containsTuple( eachTuple.getKey() ) )
+            {
+                retractedJoined.addTuple( eachTuple );
+                newJoined.removeTuple( eachTuple.getKey() );
+            }
         }
-        */
+
+        // propagateRetractTuples( trigger, retractedJoined, workingMemory );
+        // propagateModifyTuples( trigger, modifiedJoined, workingMemory );
+        
     }
 
     /** Add a {@link ReteTuple} received from the <code>JoinNode's</code>
@@ -175,12 +206,15 @@ public class JoinMemory
      *          against existing <code>Tuples</code> on the right
      *          side memory.
      */
-    protected List addLeftTuple(ReteTuple tuple)
+    protected Set addLeftTuple(ReteTuple tuple)
     {
-        this.leftTuples.add( tuple );
+        this.leftTuples.addTuple( tuple );
 
-        return attemptJoin( tuple,
-                            getRightTupleIterator() );
+
+        Set joined = attemptJoin( tuple,
+                                  getRightTupleIterator() );
+
+        return joined;
     }
 
     /** Retrieve the <code>List</code> of <code>Tuples</code>
@@ -189,7 +223,7 @@ public class JoinMemory
      *  @return The <code>List</code> of <code>Tuples</code>
      *          help in the left side memory.
      */
-    protected List getLeftTuples()
+    protected TupleSet getLeftTuples()
     {
         return this.leftTuples;
     }
@@ -218,9 +252,9 @@ public class JoinMemory
      *          against existing <code>Tuples</code> on the left
      *          side memory.
      */
-    protected List addRightTuple(ReteTuple tuple)
+    protected Set addRightTuple(ReteTuple tuple)
     {
-        this.rightTuples.add( tuple );
+        this.rightTuples.addTuple( tuple );
 
         return attemptJoin( tuple,
                             getLeftTupleIterator() );
@@ -232,7 +266,7 @@ public class JoinMemory
      *  @return The <code>List</code> of <code>Tuples</code>
      *          help in the right side memory.
      */
-    protected List getRightTuples()
+    protected TupleSet getRightTuples()
     {
         return this.rightTuples;
     }
@@ -271,10 +305,10 @@ public class JoinMemory
      *  @return A possibly empty <code>List</code> of joined
      *         <code>Tuples</code>.
      */
-    protected List attemptJoin(ReteTuple tuple,
-                               Iterator tupleIter)
+    protected Set attemptJoin(ReteTuple tuple,
+                              Iterator tupleIter)
     {
-        List joinedTuples = Collections.EMPTY_LIST;
+        Set joinedTuples = Collections.EMPTY_SET;
 
         ReteTuple eachTuple   = null;
         ReteTuple joinedTuple = null;
@@ -288,15 +322,14 @@ public class JoinMemory
 
             if ( joinedTuple != null )
             {
-                if ( joinedTuples == Collections.EMPTY_LIST )
+                if ( joinedTuples == Collections.EMPTY_SET )
                 {
-                    joinedTuples = new ArrayList();
+                    joinedTuples = new HashSet();
                 }
 
                 joinedTuples.add( joinedTuple );
             }
         }
-
 
         return joinedTuples;
     }

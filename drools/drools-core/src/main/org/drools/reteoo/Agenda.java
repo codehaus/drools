@@ -84,7 +84,7 @@ public class Agenda
         {
             eachItem = (AgendaItem) itemIter.next();
 
-            if ( eachItem.containsRootFactObject( object ) )
+            if ( eachItem.dependsOn( object ) )
             {
                 itemIter.remove();
             }
@@ -128,9 +128,9 @@ class AgendaItem
         this.action = action;
     }
 
-    boolean containsRootFactObject(Object object)
+    boolean dependsOn(Object object)
     {
-        return getTuple().containsRootFactObject( object );
+        return getTuple().dependsOn( object );
     }
 
     ReteTuple getTuple()

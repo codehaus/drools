@@ -70,7 +70,6 @@ public abstract class TupleSource
     protected void propagateAssertTuple(ReteTuple tuple,
                                         WorkingMemory workingMemory) throws AssertionException
     {
-        // System.err.println( this + " -> propagateTuple(" + tuple + ")" );
         TupleSink sink = getTupleSink();
 
         if ( sink != null )

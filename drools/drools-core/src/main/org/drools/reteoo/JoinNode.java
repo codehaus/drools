@@ -119,7 +119,7 @@ public class JoinNode extends TupleSource implements TupleSink
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
 
-        List joinedTuples = null;
+        Set joinedTuples = null;
 
         if ( inputSource == leftInput )
         {
@@ -135,8 +135,8 @@ public class JoinNode extends TupleSource implements TupleSink
             return;
         }
 
-        Iterator tupleIter = joinedTuples.iterator();
-        ReteTuple    eachTuple = null;
+        Iterator  tupleIter = joinedTuples.iterator();
+        ReteTuple eachTuple = null;
 
         while ( tupleIter.hasNext() )
         {
@@ -151,9 +151,9 @@ public class JoinNode extends TupleSource implements TupleSink
                               Object object,
                               WorkingMemory workingMemory) throws RetractionException
     {
-
+        
         JoinMemory memory = workingMemory.getJoinMemory( this );
-
+        
         memory.retractObject( object );
         
         propagateRetractObject( object,
