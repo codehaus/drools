@@ -58,4 +58,11 @@ public class InstrumentedTupleSink
         return this.retractedKeys;
     }
 
+    public String dump(String indent)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(indent + "InstrumentedTupleSink\n");
+        buffer.append(indent + "-------------\n");
+        return buffer.toString();
+    }
 }

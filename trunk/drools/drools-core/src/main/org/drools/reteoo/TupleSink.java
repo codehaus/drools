@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSink.java,v 1.13 2004-07-04 11:45:43 mproctor Exp $
+ $Id: TupleSink.java,v 1.14 2004-07-05 21:18:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -92,4 +92,6 @@ interface TupleSink extends Serializable
     void modifyTuples(FactHandle trigger,
                       TupleSet newTuples,
                       WorkingMemoryImpl workingMemory) throws FactException;
+
+    public String dump(String indent);
 }

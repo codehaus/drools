@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNodeInput.java,v 1.5 2004-07-04 11:45:43 mproctor Exp $
+ $Id: JoinNodeInput.java,v 1.6 2004-07-05 21:18:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -194,5 +194,13 @@ class JoinNodeInput
                                              newTuples,
                                              workingMemory );
         }
+    }
+
+    public String dump(String indent)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(indent + "JoinInputNode\n");
+        buffer.append(indent + "-------------\n");
+        return buffer.toString();
     }
 }

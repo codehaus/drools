@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ExtractionNode.java,v 1.7 2004-07-04 11:45:43 mproctor Exp $
+ $Id: ExtractionNode.java,v 1.8 2004-07-05 21:18:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -248,5 +248,13 @@ class ExtractionNode
     {
         return "[ExtractionNodeImpl: target=" + getTargetDeclaration()
             + "; extractor=" + getExtractor() + "]";
+    }
+
+    public String dump(String indent)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(indent + "ExtractionNode\n");
+        buffer.append(indent + "-------------\n");
+        return buffer.toString();
     }
 }
