@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleRuntimeTestCase.java,v 1.5 2004-11-17 03:09:50 dbarnett Exp $
+ * $Id: RuleRuntimeTestCase.java,v 1.6 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,10 +41,6 @@ package org.drools.jsr94.rules;
  *
  */
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.List;
-
 import javax.rules.RuleExecutionSetNotFoundException;
 import javax.rules.RuleRuntime;
 import javax.rules.StatefulRuleSession;
@@ -52,6 +48,9 @@ import javax.rules.StatelessRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.List;
 
 /**
  * Test the RuleRuntime implementation.
@@ -88,12 +87,11 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase
         assertNotNull( "cannot obtain RuleRuntime", ruleRuntime );
 
         // expect RuleExecutionSetNotFoundException
-        StatelessRuleSession statelessRuleSession = null;
         try
         {
-            statelessRuleSession = ( StatelessRuleSession )
-                ruleRuntime.createRuleSession(
-                    "someUri", null, RuleRuntime.STATELESS_SESSION_TYPE );
+            ruleRuntime.createRuleSession( "someUri",
+                                           null,
+                                           RuleRuntime.STATELESS_SESSION_TYPE );
             fail( "RuleExecutionSetNotFoundException expected" );
         }
         catch ( RuleExecutionSetNotFoundException ex )
@@ -109,9 +107,9 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase
         ruleAdministrator.registerRuleExecutionSet(
             RULES_RESOURCE, ruleSet, null );
 
-        statelessRuleSession = ( StatelessRuleSession )
-            ruleRuntime.createRuleSession(
-                RULES_RESOURCE, null, RuleRuntime.STATELESS_SESSION_TYPE );
+        StatelessRuleSession statelessRuleSession = ( StatelessRuleSession ) ruleRuntime.createRuleSession( RULES_RESOURCE,
+                                                                                                            null,
+                                                                                                            RuleRuntime.STATELESS_SESSION_TYPE );
         assertNotNull( "cannot obtain StatelessRuleSession",
                        statelessRuleSession );
 
@@ -127,14 +125,11 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase
         assertNotNull( "cannot obtain RuleRuntime", ruleRuntime );
 
         // expect RuleExecutionSetNotFoundException
-        StatefulRuleSession statefulRuleSession = null;
         try
         {
-            statefulRuleSession = ( StatefulRuleSession )
-                ruleRuntime.createRuleSession(
-                    "someUri",
-                    null,
-                    RuleRuntime.STATEFUL_SESSION_TYPE );
+            ruleRuntime.createRuleSession( "someUri",
+                                           null,
+                                           RuleRuntime.STATEFUL_SESSION_TYPE );
             fail( "RuleExecutionSetNotFoundException expected" );
         }
         catch ( RuleExecutionSetNotFoundException ex )
@@ -150,11 +145,10 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase
         ruleAdministrator.registerRuleExecutionSet(
             RULES_RESOURCE, ruleSet, null );
 
-        statefulRuleSession = ( StatefulRuleSession )
-            ruleRuntime.createRuleSession(
-                RULES_RESOURCE,
-                null,
-                RuleRuntime.STATEFUL_SESSION_TYPE );
+        StatefulRuleSession statefulRuleSession = ( StatefulRuleSession )
+                    ruleRuntime.createRuleSession( RULES_RESOURCE,
+                                                   null,
+                                                   RuleRuntime.STATEFUL_SESSION_TYPE );
         assertNotNull(
             "cannot obtain StatefulRuleSession", statefulRuleSession );
 

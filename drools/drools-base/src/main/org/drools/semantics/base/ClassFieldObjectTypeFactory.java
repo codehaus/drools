@@ -1,16 +1,15 @@
 package org.drools.semantics.base;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.drools.rule.Imports;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
+
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
 {
@@ -41,24 +40,24 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         {
             throw new FactoryException( "no field value specified" );
         }
-        
+
         try
         {
             //get imports
-            Set importSet = new HashSet(); 
+            Set importSet = new HashSet();
             if (imports != null)
             {
-                                  
+
                 Iterator it = imports.iterator();
                 ImportEntry importEntry;
                 while (it.hasNext())
                 {
                     importEntry = (ImportEntry) it.next();
                     importSet.add(importEntry.getImportEntry());
-                }                
-            }        
+                }
+            }
             ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-            
+
             Class clazz = null;
             /* first try loading className */
             try
@@ -68,29 +67,26 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
             catch ( Exception e )
             {
                 //swallow
-            }    
-            
+            }
+
             /* Now try the className with each of the given imports */
             if (clazz == null)
             {
                 Iterator it = importSet.iterator();
-                String importEntry;
-                Class objectTypeClass = null;
-                while (it.hasNext() && (clazz == null))
+                while ( it.hasNext( ) && clazz == null )
                 {
                     clazz = importClass(cl, (String) it.next(), className.trim( )) ;
-                }  
+                }
             }
             /* We still can't find the class so throw an exception */
             if (clazz == null)
             {
                 throw new FactoryException( "Unable to find class " + className);
             }
-                        
+
             //make sure field getter exists
-            String fieldGetter = "get" + fieldName.toUpperCase().charAt(0) 
-            + fieldName.substring(1);
-            Method getterMethod = clazz.getMethod(fieldGetter, null);       
+            Method getterMethod = clazz.getMethod("get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
+                                                  null);
 
             return new ClassFieldObjectType( clazz, fieldName, fieldValue);
         }
@@ -103,15 +99,15 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
             throw new FactoryException( "Field " + fieldName + " does not exist for Class " + className);
         }
     }
-    
+
     private Class importClass(ClassLoader cl, String importText, String className)
     {
         String qualifiedClass = null;
         Class clazz = null;
-        if (importText.startsWith("from ")) 
-        {            
+        if (importText.startsWith("from "))
+        {
             importText = converPythonImport(importText);
-        }               
+        }
         //not python
         if (importText.endsWith("*"))
         {
@@ -120,10 +116,10 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         else if (importText.endsWith(className))
         {
             qualifiedClass = importText;
-        }                        
-        
+        }
+
         if (qualifiedClass != null)
-        {            
+        {
             try
             {
                 clazz = cl.loadClass( qualifiedClass );
@@ -131,16 +127,16 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
             catch ( Exception e )
             {
                 //swallow
-            }                                 
+            }
         }
         return clazz;
     }
-    
+
     private String converPythonImport(String packageText)
     {
         int fromIndex = packageText.indexOf("from ");
         int importIndex = packageText.indexOf("import ");
         return packageText.substring(fromIndex + 5, importIndex).trim() + "." +
                packageText.substring(importIndex + 7).trim();
-    }    
+    }
 }

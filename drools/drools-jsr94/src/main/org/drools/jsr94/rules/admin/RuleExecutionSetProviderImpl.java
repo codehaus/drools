@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetProviderImpl.java,v 1.15 2004-11-14 20:12:37 dbarnett Exp $
+ * $Id: RuleExecutionSetProviderImpl.java,v 1.16 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,13 +41,10 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Serializable;
-import java.net.URL;
-import java.util.Map;
+import org.drools.io.RuleSetReader;
+import org.drools.rule.RuleSet;
+import org.drools.smf.DefaultSemanticsRepository;
+import org.w3c.dom.Element;
 
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
@@ -58,11 +55,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
-
-import org.drools.io.RuleSetReader;
-import org.drools.rule.RuleSet;
-import org.drools.smf.DefaultSemanticsRepository;
-import org.w3c.dom.Element;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * The Drools implementation of the <code>RuleExecutionSetProvider</code>
@@ -100,7 +99,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         // Prepare the DOM source
         Source source = new DOMSource( ruleExecutionSetElement );
 
-        RuleSetReader reader = null;
+        RuleSetReader reader;
         try
         {
             // Create a reader to handle the SAX events

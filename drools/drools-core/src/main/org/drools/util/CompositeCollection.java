@@ -30,7 +30,7 @@ import java.util.Iterator;
  * strategy. If no strategy is provided then add and remove are unsupported.
  *
  * @since Commons Collections 3.0
- * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ * @version $Revision: 1.4 $ $Date: 2004-11-28 03:34:05 $
  *
  * @author Brian McCallister
  * @author Stephen Colebourne
@@ -191,7 +191,7 @@ public class CompositeCollection
     public Object[] toArray(Object[] array)
     {
         int size = this.size( );
-        Object[] result = null;
+        Object[] result;
         if ( array.length >= size )
         {
             result = array;
@@ -341,14 +341,15 @@ public class CompositeCollection
      */
     public boolean removeAll(Collection coll)
     {
-        if ( coll.size( ) == 0 )
+        if ( coll.isEmpty( ) )
         {
             return false;
         }
+        
         boolean changed = false;
         for ( int i = this.all.length - 1; i >= 0; i-- )
         {
-            changed = (this.all[i].removeAll( coll ) || changed);
+            changed |= this.all[i].removeAll( coll );
         }
         return changed;
     }
