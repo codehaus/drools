@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.4 2005-01-24 20:51:58 brianm Exp $
+ * $Id: JavaBlockConsequence.java,v 1.5 2005-01-26 16:14:40 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,7 +46,7 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.KnowledgeHelperDrools;
+import org.drools.spi.DefaultKnowledgeHelper;
 import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
 
@@ -132,7 +132,7 @@ public class JavaBlockConsequence
             }
             this.script.invoke( tuple,
                            this.declarations,
-                           new KnowledgeHelperDrools( this.rule,
+                           new DefaultKnowledgeHelper( this.rule,
                                                 tuple ),
                            tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }
