@@ -1,8 +1,9 @@
-package org.drools;
+package org.drools.reteoo;
 
-import org.drools.reteoo.Builder;
-import org.drools.reteoo.Rete;
-import org.drools.reteoo.WorkingMemoryImpl;
+import org.drools.WorkingMemory;
+import org.drools.FactHandle;
+import org.drools.RuleBase;
+import org.drools.FactException;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
@@ -24,7 +25,7 @@ public class RuleBaseImpl
 
     /** Construct.
      */
-    RuleBaseImpl(Rete rete)
+    public RuleBaseImpl(Rete rete)
     {
         this.rete = rete;
     }

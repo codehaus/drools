@@ -4,6 +4,7 @@ import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.reteoo.Builder;
 import org.drools.reteoo.Rete;
+import org.drools.reteoo.RuleBaseImpl;
 
 public class RuleBaseBuilder
 {
