@@ -1,13 +1,11 @@
 package org.drools.util;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.Serializable;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.5 2004-11-16 13:17:22 mproctor Exp $
+ * $Id: PrimitiveLongMap.java,v 1.6 2004-11-16 14:35:33 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,7 +45,7 @@ import java.io.Serializable;
  */
 
 /**
- * 
+ *
  * @author Mark Proctor
  */
 public class PrimitiveLongMap
@@ -88,7 +86,7 @@ public class PrimitiveLongMap
         int size = 2;
         while ( size < indexIntervals )
         {
-            size = size << 1;
+            size <<= 1;
             ++i;
         }
         this.indexIntervals = size;
@@ -99,7 +97,7 @@ public class PrimitiveLongMap
         size = 2;
         while ( size < tableSize )
         {
-            size = size << 1;
+            size <<= 1;
             ++i;
         }
         this.tableSize = size;
@@ -134,7 +132,7 @@ public class PrimitiveLongMap
         {
             value = NULL;
         }
-        
+
         Page page = findPage(key);
 
         Object oldValue = page.put( key,
@@ -149,17 +147,17 @@ public class PrimitiveLongMap
         {
             return null;
         }
-        
+
         Page page = findPage(key);
 
         Object oldValue = page.put( key,
                                     null );
 
-        if ( (this.lastPageId != 0) && this.lastPage.isEmpty( ) )
+        if ( this.lastPageId != 0 && this.lastPage.isEmpty( ) )
         {
-            page = shrinkPages( this.lastPageId );
-        }        
-        
+            shrinkPages( this.lastPageId );
+        }
+
         return oldValue;
     }
 
@@ -184,7 +182,7 @@ public class PrimitiveLongMap
     {
         CompositeCollection collection = new CompositeCollection( );
         Page page = this.firstPage;
-        while ( (page != null) && (page.getPageId( ) <= this.lastPageId) )
+        while ( page != null && page.getPageId( ) <= this.lastPageId )
         {
             collection.addComposited( Arrays.asList( page.getValues( ) ) );
             page = page.getNextSibling( );
@@ -194,7 +192,7 @@ public class PrimitiveLongMap
 
     public boolean containsKey(long key)
     {
-        return (get( key ) != null) ? true : false;
+        return get( key ) != null;
     }
 
     /**
@@ -222,7 +220,7 @@ public class PrimitiveLongMap
     /**
      * Expand index to accomodate given pageId Create empty TopNodes
      */
-    public Page shrinkPages(int toPageId)
+    public void shrinkPages(int toPageId)
     {
         for ( int x = this.lastPageId; x >= toPageId; x-- )
         {
@@ -231,19 +229,17 @@ public class PrimitiveLongMap
             this.lastPage.clear( );
             this.lastPage = page;
             this.lastPageId = page.getPageId( );
-            if ( (page.getPageId( ) % this.indexIntervals == 0) && (page.getPageId( ) != 0) )
+            if ( page.getPageId( ) % this.indexIntervals == 0 && page.getPageId( ) != 0 )
             {
                 int newSize = this.pageIndex.length - 1;
                 resizeIndex( newSize );
                 this.pageIndex[newSize - 1] = page;
             }
         }
-        return this.lastPage;
     }
 
     public void resizeIndex(int newSize)
     {
-        int oldSize = this.pageIndex.length;
         Page[] newIndex = new Page[newSize];
         System.arraycopy( this.pageIndex,
                           0,
@@ -257,7 +253,7 @@ public class PrimitiveLongMap
     {
         // determine Page
         int pageId = (int) key >> this.doubleShifts;
-        Page page = null;
+        Page page;
 
         // if pageId is lastNodeId use lastNode reference
         if ( pageId == this.lastPageId )
@@ -277,7 +273,7 @@ public class PrimitiveLongMap
         else
         {
             // determine offset
-            int offset = (int) pageId >> intervalShifts;
+            int offset = pageId >> intervalShifts;
             // are we before or after the halfway point of an index interval
             if ( (offset != (this.pageIndex.length - 1)) && ((key - (offset << intervalShifts << this.doubleShifts)) > this.midIntervalPoint) )
             {
@@ -298,7 +294,7 @@ public class PrimitiveLongMap
                 }
             }
         }
-        
+
 
         return page;
     }
@@ -325,7 +321,7 @@ public class PrimitiveLongMap
             int size = 2;
             while ( size < tableSize )
             {
-                size = size << 1;
+                size <<= 1;
                 ++i;
             }
             // make sure table size is valid
@@ -374,7 +370,7 @@ public class PrimitiveLongMap
                 return null;
             }
             // normalise key
-            key = key - (this.pageSize * this.pageId);
+            key -= this.pageSize * this.pageId;
 
             // determine page
             int page = (int) key >> this.shifts;
@@ -396,7 +392,7 @@ public class PrimitiveLongMap
             }
 
             // normalise key
-            key = key - (this.pageSize * this.pageId);
+            key -= this.pageSize * this.pageId;
 
             // determine page
             int table = (int) key >> this.shifts;
@@ -412,11 +408,11 @@ public class PrimitiveLongMap
             this.tables[table][slot] = newValue;
 
             // update number of empty cells for TopNode
-            if ( (oldValue == null) && (newValue != null) )
+            if ( oldValue == null && newValue != null )
             {
                 this.filledSlots++;
             }
-            else if ( (oldValue != null) && (newValue == null) )
+            else if ( oldValue != null && newValue == null )
             {
                 this.filledSlots--;
             }
@@ -463,7 +459,7 @@ public class PrimitiveLongMap
 
         public boolean isEmpty()
         {
-            return (this.filledSlots != 0) ? false : true;
+            return this.filledSlots == 0;
         }
 
         void clear()

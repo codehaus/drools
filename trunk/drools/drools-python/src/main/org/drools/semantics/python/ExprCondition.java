@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: ExprCondition.java,v 1.10 2004-11-13 01:43:06 simon Exp $
+ * $Id: ExprCondition.java,v 1.11 2004-11-16 14:35:33 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,7 +52,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: ExprCondition.java,v 1.10 2004-11-13 01:43:06 simon Exp $
+ * @version $Id: ExprCondition.java,v 1.11 2004-11-16 14:35:33 simon Exp $
  */
 public class ExprCondition extends Eval implements Condition
 {
@@ -100,7 +100,7 @@ public class ExprCondition extends Eval implements Condition
                 throw new NonBooleanExprException( getText( ) );
             }
 
-            return ( ( ( ( Number ) answer ).intValue( ) == 0 ) ? false : true );
+            return ( ( Number ) answer ).intValue( ) != 0;
         }
         catch ( Exception e )
         {

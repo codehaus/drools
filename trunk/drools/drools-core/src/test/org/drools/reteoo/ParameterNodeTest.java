@@ -19,7 +19,7 @@ public class ParameterNodeTest extends DroolsTestCase
      */
     public void testAssertObject() throws Exception
     {
-        Object object1 = new String( "cheese" );
+        Object object1 = "cheese";
 
         Rule rule = new Rule( "test-rule 1" );
         Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
@@ -27,7 +27,7 @@ public class ParameterNodeTest extends DroolsTestCase
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-        
+
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
         ParameterNode node = new ParameterNode( rule, null, paramDecl );
@@ -39,7 +39,7 @@ public class ParameterNodeTest extends DroolsTestCase
         FactHandleImpl handle = new FactHandleImpl( 1 );
         WorkingMemoryImpl memory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
         memory.putObject(handle, object1);
-        
+
         node.assertObject( handle, object1, memory );
 
         List asserted = sink.getAssertedTuples( );

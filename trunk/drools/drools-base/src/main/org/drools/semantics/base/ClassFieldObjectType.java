@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.2 2004-10-26 09:22:27 mproctor Exp $
+ * $Id: ClassFieldObjectType.java,v 1.3 2004-11-16 14:35:32 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,7 @@ package org.drools.semantics.base;
  */
 
 import org.drools.spi.ObjectType;
-import java.lang.reflect.Field;
+
 import java.lang.reflect.Method;
 
 /**
@@ -50,7 +50,7 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.2 2004-10-26 09:22:27 mproctor Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.3 2004-11-16 14:35:32 simon Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
@@ -59,14 +59,12 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
     // ------------------------------------------------------------
     /** Java object field. */
     private String objectFieldName;
-    
-    private String objectFieldValue;  
-    
-    /** Java getter method. */
-    private Method getterMethod;    
 
-    /** cached hashCode */
-    private int hashCode;
+    private String objectFieldValue;
+
+    /** Java getter method. */
+    private Method getterMethod;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -91,7 +89,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
     public String getFieldName()
     {
         return this.objectFieldName;
-    }    
+    }
 
     /**
      * Return the Java object class.
@@ -101,7 +99,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
     public String getFieldValue()
     {
         return this.objectFieldValue;
-    }       
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.drools.spi.ObjectType
@@ -117,20 +115,20 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      *         object type, else <code>false</code>.
      */
     public boolean matches(Object object)
-    {        
+    {
         if (!getType( ).isInstance( object )) return false;
-        
+
         if (this.getterMethod == null )
         {
             String fieldName = getFieldName( );
-            String fieldGetter = "get" + fieldName.toUpperCase().charAt(0) 
-                                 + fieldName.substring(1);                   
+            String fieldGetter = "get" + fieldName.toUpperCase().charAt(0)
+                                 + fieldName.substring(1);
             try
             {
                 getterMethod = getType( ).getMethod(fieldGetter, null);
             }
             catch (Exception e)
-            {                
+            {
                 // shouldn't happen, this is checked in factory
             }
         }
@@ -140,11 +138,11 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
         }
         catch (Exception e)
         {
-               // shouldn't happen, this is checked in factory     
+               // shouldn't happen, this is checked in factory
         }
-        
+
         return false;
-        
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,14 +164,12 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
             return true;
         }
         ClassFieldObjectType thatClassField = ( ClassFieldObjectType ) thatObj;
-        boolean equal = false;
+
         if ( thatObj instanceof ClassFieldObjectType )
         {
-            equal = (getType( ) == thatClassField.getType( ));
-            equal = (equal && (getFieldName( ) == thatClassField.getFieldName( )));
-            equal = (equal && (getFieldValue( ) == thatClassField.getFieldValue( )));
-            return equal;
-            
+            return getType( ).equals( thatClassField.getType( ) )
+                   && getFieldName( ).equals( thatClassField.getFieldName( ) )
+                   && getFieldValue( ).equals( thatClassField.getFieldValue( ) );
         }
 
         return false;
@@ -186,21 +182,13 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      */
     public int hashCode()
     {
-        if (hashCode == 0)
-        {
-            int constant = 37;
-            int total = 17;
-            total = total * constant + getType( ).hashCode();
-            total = total * constant + getFieldName( ).hashCode();
-            this.hashCode = total * constant + getFieldValue( ).hashCode();
-        }
-        return this.hashCode;                
+        return getType( ).hashCode( ) ^ getFieldName().hashCode( ) ^ getFieldValue().hashCode();
     }
 
     public String toString()
     {
         String fieldName = getFieldName( );
-        return getType( ).getName( ) + ".get" + fieldName.toUpperCase().charAt(0) 
+        return getType( ).getName( ) + ".get" + fieldName.toUpperCase().charAt(0)
                + fieldName.substring(1) + "(\"" + getFieldValue( ) + "\")";
     }
 }

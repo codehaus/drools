@@ -24,7 +24,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
 
         WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
-        Object string1 = new String( "cheese" );
+        Object string1 = "cheese";
         Object object1 = new Object( );
 
         FactHandleImpl handle1 = new FactHandleImpl( 1 );
