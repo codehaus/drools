@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidActionException.java,v 1.4 2002-08-02 19:48:52 bob Exp $
+ $Id: SemanticComponentException.java,v 1.1 2002-08-02 19:48:52 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,20 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid action to
+/** Indicates an attempt to add an invalid semantic component to
  *  a semantic module.
- *
- *  @see SimpleSemanticModule#addAction
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidActionException extends SemanticComponentException
+public abstract class SemanticComponentException extends SemanticModuleException
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The invalid action. */
+    private Class cls;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -63,14 +68,23 @@ public class InvalidActionException extends SemanticComponentException
      *
      *  @param cls The invalid action.
      */
-    public InvalidActionException(Class cls)
+    public SemanticComponentException(Class cls)
     {
-        super( cls );
+        this.cls = cls;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    /** Retrieve the invalid class.
+     *
+     *  @return The invalid class.
+     */
+    public Class getInvalidClass()
+    {
+        return this.cls;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     java.lang.Throwable
@@ -80,8 +94,5 @@ public class InvalidActionException extends SemanticComponentException
      *
      *  @return The error message.
      */
-    public String getMessage()
-    {
-        return getClass().getName() + " is not a valid fact extractor";
-    }
+    public abstract String getMessage();
 }
