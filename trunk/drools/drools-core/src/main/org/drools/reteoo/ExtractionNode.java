@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.29 2004-11-16 12:12:57 simon Exp $
+ * $Id: ExtractionNode.java,v 1.30 2004-11-16 22:29:56 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -158,18 +158,18 @@ class ExtractionNode extends TupleSource implements TupleSink
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Object value = getExtractor( ).extractFact( tuple );
-        FactHandle handle = workingMemory.newFactHandle();
-        workingMemory.putObject(handle, value);
+
+        Object otherValue = tuple.get( this.targetDeclaration );        
 
         // Extractions should never evaluate to null
         // Extractions with same target should be of same type and value
-        if ( value == null || !checkExtractorOk( value, tuple ) )
+        // unless the otherValue is null
+        if ( value == null || !(otherValue == null || value.equals( otherValue )) )
         {
-            workingMemory.removeObject(handle);
             return;
-        }
+        }        
 
-        propagateAssertTuple( new ReteTuple( tuple, handle, getTargetDeclaration( ) ), workingMemory );
+        propagateAssertTuple( new ReteTuple( tuple, getTargetDeclaration( ) , value), workingMemory );
     }
 
     /**
@@ -183,23 +183,6 @@ class ExtractionNode extends TupleSource implements TupleSink
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
     {
         propagateRetractTuples( key, workingMemory );
-    }
-
-    /**
-     * For targets shared by extractors the
-     * extracted fact should be the same.
-     * If the given declaration is a targetDeclaration
-     * for one it must be for the other, as its a common
-     * declaration.
-     *
-     * @param value
-     * @param tuple
-     * @return
-     */
-    private boolean checkExtractorOk(Object value, ReteTuple tuple)
-    {
-        Object otherValue = tuple.get( this.targetDeclaration );
-        return otherValue == null || value.equals( otherValue );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
