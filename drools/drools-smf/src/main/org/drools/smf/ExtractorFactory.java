@@ -5,5 +5,5 @@ import org.drools.spi.Extractor;
 
 public interface ExtractorFactory
 {
-    Extractor newExtractor(Configuration config, Rule rule) throws FactoryException;
+    Extractor newExtractor(Configuration config, Rule rule) throws FactoryException;    
 }

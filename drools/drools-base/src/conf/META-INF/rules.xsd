@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://drools.org/rules"
            elementFormDefault="qualified"
@@ -7,13 +7,7 @@
   <xs:element name="rule-set">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="imports" minOccurs="0" maxOccurs="1" >
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element ref="rules:abstractImport" maxOccurs="unbounded"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        <xs:element ref="rules:abstractImport" minOccurs="0" maxOccurs="unbounded"/>
 
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule" />
       </xs:sequence>

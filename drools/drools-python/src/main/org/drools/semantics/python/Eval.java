@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Eval.java,v 1.12 2004-10-24 00:58:03 mproctor Exp $
+ * $Id: Eval.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,6 +42,7 @@ package org.drools.semantics.python;
  */
 
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Imports;
@@ -59,7 +60,7 @@ import org.python.core.__builtin__;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Eval.java,v 1.12 2004-10-24 00:58:03 mproctor Exp $
+ * @version $Id: Eval.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Eval extends Interp
 {
@@ -78,7 +79,7 @@ public class Eval extends Interp
     /**
      * Construct.
      */
-    protected Eval(String text, Imports imports, Declaration[] availDecls) throws Exception
+    protected Eval(String text, Set imports, Declaration[] availDecls) throws Exception
     {
         super( text, imports, "eval" );
 

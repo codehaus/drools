@@ -4,14 +4,13 @@
           xmlns="http://drools.org/rules"
           xmlns:java="http://drools.org/semantics/java">
 
-   <imports>
-     <java:import>org.drools.examples.fibonacci.Fibonacci</java:import>
-   </imports>
+  <java:import>org.drools.examples.fibonacci.Fibonacci</java:import>
 
   <rule name="Bootstrap 1" salience="20">
     <parameter identifier="f">
       <class>Fibonacci</class>
     </parameter>
+
     <java:condition>f.getSequence() == 1</java:condition>
     <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>

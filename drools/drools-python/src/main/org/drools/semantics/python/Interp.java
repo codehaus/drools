@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.17 2004-10-25 21:34:49 mproctor Exp $
+ * $Id: Interp.java,v 1.18 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -76,7 +76,7 @@ import org.drools.semantics.base.ClassObjectType;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Interp.java,v 1.17 2004-10-25 21:34:49 mproctor Exp $
+ * @version $Id: Interp.java,v 1.18 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Interp
 {
@@ -129,14 +129,14 @@ public class Interp
     /**
      * Construct.
      */
-    protected Interp(String text, Imports imports, String type)
+    protected Interp(String text, Set imports, String type)
     {
         this.origininalText = text;
         StringBuffer globalText = new StringBuffer();
 
-        if ((imports != null)&&(imports.getImportEntries() != null))
+        if (imports != null)
         {
-            Iterator it =imports.getImportEntries().iterator();
+            Iterator it =imports.iterator();
             
             while (it.hasNext())
             {                

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.3 2004-09-17 00:36:28 mproctor Exp $
+ * $Id: ExprAnalyzer.java,v 1.4 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -60,7 +60,7 @@ import org.drools.rule.Declaration;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: ExprAnalyzer.java,v 1.3 2004-09-17 00:36:28 mproctor Exp $
+ * @version $Id: ExprAnalyzer.java,v 1.4 2004-11-03 22:54:36 mproctor Exp $
  */
 public class ExprAnalyzer
 {
@@ -102,7 +102,7 @@ public class ExprAnalyzer
         MethodNode method = ( MethodNode ) methods.get( 0 );
         ASTNode expr = ( BlockStatement ) method.getCode( );
 
-        ExprVisitor visitor = new ExprVisitor( );
+        ExprVisitor visitor = new ExprVisitor( );        
         expr.visit( visitor );
         Set refs = visitor.getVariables( );
 

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Exec.java,v 1.10 2004-10-24 00:58:03 mproctor Exp $
+ * $Id: Exec.java,v 1.11 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,6 +42,7 @@ package org.drools.semantics.python;
  */
 
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.drools.rule.Imports;
 import org.drools.spi.Tuple;
@@ -56,7 +57,7 @@ import org.python.core.PyDictionary;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Exec.java,v 1.10 2004-10-24 00:58:03 mproctor Exp $
+ * @version $Id: Exec.java,v 1.11 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Exec extends Interp
 {
@@ -67,7 +68,7 @@ public class Exec extends Interp
     /**
      * Construct.
      */
-    protected Exec(String text, Imports imports)
+    protected Exec(String text, Set imports)
     {
         super( text, imports, "exec" );
     }

@@ -4,9 +4,7 @@
           xmlns="http://drools.org/rules"
           xmlns:groovy="http://drools.org/semantics/groovy">
 
-    <imports>
-      <groovy:import>org.drools.examples.state.State</groovy:import>
-    </imports>
+    <groovy:import>org.drools.examples.state.State</groovy:import>
 
     <rule name="Bootstrap">
         <parameter identifier="a">

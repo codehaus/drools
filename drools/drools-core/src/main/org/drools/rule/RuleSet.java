@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.12 2004-10-24 00:51:32 mproctor Exp $
+ * $Id: RuleSet.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -55,7 +55,7 @@ import org.drools.spi.ImportEntry;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.12 2004-10-24 00:51:32 mproctor Exp $
+ * @version $Id: RuleSet.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
  */
 public class RuleSet implements Serializable
 {
@@ -82,7 +82,7 @@ public class RuleSet implements Serializable
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
     private List                  rules;
     
-    private Imports               imports;
+    private Set                   imports;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -98,6 +98,7 @@ public class RuleSet implements Serializable
         this.name = name;
         this.ruleNames = new HashSet( );
         this.rules = new ArrayList( );
+        this.imports = new HashSet( );
     }
 
     // ------------------------------------------------------------
@@ -210,8 +211,13 @@ public class RuleSet implements Serializable
         return ( Rule[] ) this.rules.toArray( Rule.EMPTY_ARRAY );
     }
     
-    public void setImports(Imports imports)
+    public void addImport(ImportEntry importEntry)
     {
-        this.imports = imports;
+        this.imports.add(importEntry);
     }
+
+    public Set getImports()
+    {
+        return this.imports;
+    }    
 }

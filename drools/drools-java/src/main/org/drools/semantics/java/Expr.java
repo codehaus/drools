@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.25 2004-10-24 00:56:30 mproctor Exp $
+ * $Id: Expr.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -61,7 +61,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Expr.java,v 1.25 2004-10-24 00:56:30 mproctor Exp $
+ * @version $Id: Expr.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Expr implements Serializable
 {
@@ -143,9 +143,9 @@ public class Expr implements Serializable
         if ( conditionScript == null )
         {
             Set imports = new HashSet();  
-            if ((tuple.getRule().getImports() != null)&&(tuple.getRule().getImports().getImportEntries() != null))
+            if (tuple.getRule().getImports() != null)
             {
-                Iterator it = tuple.getRule().getImports().getImportEntries().iterator();
+                Iterator it = tuple.getRule().getImports().iterator();
                 ImportEntry importEntry;
                 while (it.hasNext())
                 {
@@ -181,9 +181,9 @@ public class Expr implements Serializable
         if ( extractorScript == null )
         {
             Set imports = new HashSet();
-            if ((tuple.getRule().getImports() != null)&&(tuple.getRule().getImports().getImportEntries() != null))
+            if (tuple.getRule().getImports() != null)
             {
-                Iterator it = tuple.getRule().getImports().getImportEntries().iterator();
+                Iterator it = tuple.getRule().getImports().iterator();
                 ImportEntry importEntry;
                 while (it.hasNext())
                 {

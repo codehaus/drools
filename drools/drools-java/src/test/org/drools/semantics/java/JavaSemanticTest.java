@@ -1,5 +1,8 @@
 package org.drools.semantics.java;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.drools.rule.Imports;
 import org.drools.smf.SMFTestFrameWork;
 
@@ -17,9 +20,9 @@ public class JavaSemanticTest extends SMFTestFrameWork
 
     public void setUp() throws Exception
     {
-        Imports imports = new Imports();               
-        imports.addImportEntry(new JavaImportEntry("java.math.*"));
-        imports.addImportEntry(new JavaImportEntry("org.drools.smf.SMFTestFrameWork"));                 
+        Set imports = new HashSet();               
+        imports.add(new JavaImportEntry("java.math.*"));
+        imports.add(new JavaImportEntry("org.drools.smf.SMFTestFrameWork"));                 
         super.setUp( "java", imports );
     }
 }

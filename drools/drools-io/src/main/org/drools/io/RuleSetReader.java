@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.25 2004-10-26 09:22:28 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,39 +45,22 @@ import java.io.Reader;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.drools.rule.Declaration;
-import org.drools.rule.Extraction;
-import org.drools.rule.Imports;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleConstructionException;
 import org.drools.rule.RuleSet;
-import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
-import org.drools.smf.ConsequenceFactory;
 import org.drools.smf.DefaultSemanticsRepository;
-import org.drools.smf.DurationFactory;
-import org.drools.smf.ExtractorFactory;
-import org.drools.smf.FactoryException;
-import org.drools.smf.ImportEntryFactory;
-import org.drools.smf.ImportsFactory;
 import org.drools.smf.NoSuchSemanticModuleException;
-import org.drools.smf.ObjectTypeFactory;
-import org.drools.smf.RuleFactory;
 import org.drools.smf.SemanticModule;
 import org.drools.smf.SemanticsRepository;
-import org.drools.spi.Condition;
-import org.drools.spi.Consequence;
-import org.drools.spi.Duration;
-import org.drools.spi.Extractor;
-import org.drools.spi.ImportEntry;
-import org.drools.spi.ObjectType;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -88,10 +71,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <code>RuleSet</code> loader.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleSetReader.java,v 1.25 2004-10-26 09:22:28 mproctor Exp $
+ * 
+ * @version $Id: RuleSetReader.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -100,76 +83,46 @@ public class RuleSetReader extends DefaultHandler
     // ----------------------------------------------------------------------
 
     /** Namespace URI for the general tags. */
-    public static final String  RULES_NAMESPACE_URI  = "http://drools.org/rules";
+    public static final String RULES_NAMESPACE_URI = "http://drools.org/rules";
 
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";
+    private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
-    private static final String SCHEMA_SOURCE        = "http://java.sun.com/xml/jaxp/properties/schemaSource";
-
-    private static final int    STATE_NONE           = 0;
-
-    private static final int    STATE_OBJECT_TYPE    = 2;
-
-    private static final int    STATE_CONDITION      = 3;
-
-    private static final int    STATE_EXTRACTION     = 4;
-
-    private static final int    STATE_CONSEQUENCE    = 5;
-
-    private static final int    STATE_DURATION       = 6;
-
-    private static final int    STATE_IMPORTENTRY    = 7;
-
-    private static final int    MODE_NONE            = 0;
-
-    private static final int    MODE_IMPORTS         = 1;
-
-    private static final int    MODE_RULE            = 2;
+    private static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
     // ----------------------------------------------------------------------
     //     Instance members
     // ----------------------------------------------------------------------
-
-    private int                 state;
-    private int                 mode;
-
     /** SAX parser. */
-    private SAXParser           parser;
+    private SAXParser parser;
 
     /** Locator for errors. */
-    private Locator             locator;
-
-    /** Current rule-set being built. */
-    private RuleSet             ruleSet;
-
-    /** Current rule. */
-    private Imports             imports;
-
-    /** Current rule. */
-    private Rule                rule;
-
-    /** Current declaration. */
-    private Declaration         declaration;
-
-    /** Current extraction. */
-    private Extraction          extraction;
-
-    /** Stack of configurations. */
-    private LinkedList          configurationStack;
-
-    /** Current configuration text. */
-    private StringBuffer        characters;
-
-    /** Start-tag functors. */
-    private Map                 starters;
-
-    /** End-tag functors. */
-    private Map                 enders;
+    private Locator locator;
 
     /** Repository of semantic modules. */
     private SemanticsRepository repo;
+    //private Map repo;
+
+    /** Stack of configurations. */
+    private LinkedList configurationStack;
+
+    /** Current configuration text. */
+    private StringBuffer characters2;
+
+    private Map localNameMap;
+
+    private boolean lastWasEndElement;
+
+    private LinkedList parents;
+
+    private Object peer;
+
+    private Object current;
+
+    private RuleSet ruleSet;
+
+    private MessageFormat message = new MessageFormat( "({0}: {1}, {2}): {3}" );
 
     // ----------------------------------------------------------------------
     //     Constructors
@@ -177,7 +130,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * <p>
      * Uses the default JAXP SAX parser and the default classpath-based
      * <code>DefaultSemanticModule</code>.
@@ -185,75 +138,35 @@ public class RuleSetReader extends DefaultHandler
      */
     public RuleSetReader()
     {
-        this.state = STATE_NONE;
-        this.mode = MODE_NONE;
-
-        this.starters = new HashMap( );
-        this.enders = new HashMap( );
+        //init
         this.configurationStack = new LinkedList( );
+        this.parents = new LinkedList( );
 
-        // - - - - - - - - - - - - - - - - - - - -
-        // - - - - - - - - - - - - - - - - - - - -
+        this.localNameMap = new HashMap( );
+        localNameMap.put( "rule-set", new RuleSetHandler( this ) );
+        localNameMap.put( "import", new ImportHandler( this ) );
+        localNameMap.put( "rule", new RuleHandler( this ) );
+        localNameMap.put( "parameter", new ParameterHandler( this ) );
+        localNameMap.put( "declaration", new DeclarationHandler( this ) );
+        localNameMap.put( "class", new ObjectTypeHandler( this ) );
+        localNameMap.put( "condition", new ConditionHandler( this ) );
+        localNameMap.put( "duration", new DurationHandler( this ) );
+        localNameMap.put( "extractor", new ExtractionHandler( this ) );
+        localNameMap.put( "consequence", new ConsequenceHandler( this ) );
 
-        bindStarter( RULES_NAMESPACE_URI, "rule-set", new Starter( )
-        {
-            void start(Attributes attrs) throws SAXException
-            {
-                startRuleSet( attrs );
-            }
-        } );
-
-        bindEnder( RULES_NAMESPACE_URI, "rule-set", new Ender( )
-        {
-            void end() throws SAXException
-            {
-                endRuleSet( );
-            }
-        } );
-
-        bindStarter( RULES_NAMESPACE_URI, "parameter", new Starter( )
-        {
-            void start(Attributes attrs) throws SAXException
-            {
-                startParameter( attrs );
-            }
-        } );
-
-        bindEnder( RULES_NAMESPACE_URI, "parameter", new Ender( )
-        {
-            void end() throws SAXException
-            {
-                endParameter( );
-            }
-        } );
-
-        bindStarter( RULES_NAMESPACE_URI, "declaration", new Starter( )
-        {
-            void start(Attributes attrs) throws SAXException
-            {
-                startDeclaration( attrs );
-            }
-        } );
-
-        bindEnder( RULES_NAMESPACE_URI, "declaration", new Ender( )
-        {
-            void end() throws SAXException
-            {
-                endDeclaration( );
-            }
-        } );
     }
 
     /**
      * Construct.
-     *
+     * 
      * <p>
      * Uses the default classpath-based <code>DefaultSemanticModule</code>.
      * </p>
-     *
-     * @param parser The SAX parser.
+     * 
+     * @param parser
+     *            The SAX parser.
      */
-    public RuleSetReader(SAXParser parser)
+    public RuleSetReader( SAXParser parser )
     {
         this( );
         this.parser = parser;
@@ -261,11 +174,13 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
-     * @param repo The semantics repository.
-     * @param parser The SAX parser.
+     * 
+     * @param repo
+     *            The semantics repository.
+     * @param parser
+     *            The SAX parser.
      */
-    public RuleSetReader(SemanticsRepository repo, SAXParser parser)
+    public RuleSetReader( SemanticsRepository repo, SAXParser parser )
     {
         this( parser );
         this.repo = repo;
@@ -273,10 +188,11 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
-     * @param repo The semantics repository.
+     * 
+     * @param repo
+     *            The semantics repository.
      */
-    public RuleSetReader(SemanticsRepository repo)
+    public RuleSetReader( SemanticsRepository repo )
     {
         this( );
         this.repo = repo;
@@ -288,70 +204,80 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>URL</code>.
-     *
-     * @param url The rule-set URL.
-     *
+     * 
+     * @param url
+     *            The rule-set URL.
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception If an error occurs during the parse.
+     * 
+     * @throws Exception
+     *             If an error occurs during the parse.
      */
-    public RuleSet read(URL url) throws Exception
+    public RuleSet read( URL url ) throws Exception
     {
         return read( new InputSource( url.toExternalForm( ) ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from a <code>Reader</code>.
-     *
-     * @param reader The reader containing the rule-set.
-     *
+     * 
+     * @param reader
+     *            The reader containing the rule-set.
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception If an error occurs during the parse.
+     * 
+     * @throws Exception
+     *             If an error occurs during the parse.
      */
-    public RuleSet read(Reader reader) throws Exception
+    public RuleSet read( Reader reader ) throws Exception
     {
         return read( new InputSource( reader ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputStream</code>.
-     *
-     * @param inputStream The input-stream containing the rule-set.
-     *
+     * 
+     * @param inputStream
+     *            The input-stream containing the rule-set.
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception If an error occurs during the parse.
+     * 
+     * @throws Exception
+     *             If an error occurs during the parse.
      */
-    public RuleSet read(InputStream inputStream) throws Exception
+    public RuleSet read( InputStream inputStream ) throws Exception
     {
         return read( new InputSource( inputStream ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from a URL.
-     *
-     * @param url The rule-set URL.
-     *
+     * 
+     * @param url
+     *            The rule-set URL.
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception If an error occurs during the parse.
+     * 
+     * @throws Exception
+     *             If an error occurs during the parse.
      */
-    public RuleSet read(String url) throws Exception
+    public RuleSet read( String url ) throws Exception
     {
         return read( new InputSource( url ) );
     }
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputSource</code>.
-     *
-     * @param in The rule-set input-source.
-     *
+     * 
+     * @param in
+     *            The rule-set input-source.
+     * 
      * @return The rule-set.
-     *
-     * @throws Exception If an error occurs during the parse.
+     * 
+     * @throws Exception
+     *             If an error occurs during the parse.
      */
-    public RuleSet read(InputSource in) throws Exception
+    public RuleSet read( InputSource in ) throws Exception
     {
         SAXParser parser = null;
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
@@ -366,42 +292,38 @@ public class RuleSetReader extends DefaultHandler
             SAXParserFactory factory = SAXParserFactory.newInstance( );
             factory.setNamespaceAware( true );
             String isValidating = System
-                                        .getProperty( "drools.schema.validating" );
+                    .getProperty( "drools.schema.validating" );
             if ( isValidating == null ) isValidating = "true";
 
             factory.setValidating( Boolean.valueOf( isValidating )
-                                          .booleanValue( ) );
+                    .booleanValue( ) );
             parser = factory.newSAXParser( );
             try
-            {                
+            {
                 InputStream java = cl.getResourceAsStream( "META-INF/java.xsd" );
                 InputStream python = cl
-                                       .getResourceAsStream( "META-INF/python.xsd" );
+                        .getResourceAsStream( "META-INF/python.xsd" );
                 InputStream groovy = cl
-                                       .getResourceAsStream( "META-INF/groovy.xsd" );
+                        .getResourceAsStream( "META-INF/groovy.xsd" );
                 InputStream rules = cl
-                                      .getResourceAsStream( "META-INF/rules.xsd" );
+                        .getResourceAsStream( "META-INF/rules.xsd" );
 
                 java.util.List schemaList = new java.util.ArrayList( );
 
-                if ( rules != null ) schemaList.add( rules );                
+                if ( rules != null ) schemaList.add( rules );
                 if ( java != null ) schemaList.add( java );
                 if ( python != null ) schemaList.add( python );
                 if ( groovy != null ) schemaList.add( groovy );
 
                 parser.setProperty( JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA );
-                parser
-                      .setProperty(
-                                    SCHEMA_SOURCE,
-                                    ( InputStream[] ) schemaList
-                                                                .toArray( new InputStream[0] ) );
-                                                                
+                parser.setProperty( SCHEMA_SOURCE, (InputStream[]) schemaList
+                        .toArray( new InputStream[0] ) );
+
             }
             catch ( SAXNotRecognizedException e )
             {
-                e.printStackTrace( );
                 System.err
-                          .println( "Your SAX parser is not JAXP 1.2 compliant." );
+                        .println( "Your SAX parser is not JAXP 1.2 compliant." );
             }
         }
         else
@@ -412,9 +334,9 @@ public class RuleSetReader extends DefaultHandler
         if ( !parser.isNamespaceAware( ) )
         {
             throw new ParserConfigurationException(
-                                                    "parser must be namespace-aware" );
+                    "parser must be namespace-aware" );
         }
-
+      
         if ( this.repo == null )
         {
             try
@@ -423,13 +345,23 @@ public class RuleSetReader extends DefaultHandler
             }
             catch ( Exception e )
             {
-                e.printStackTrace( );
+                throw new SAXException("Unable to reference a Semantics Repository");
             }
         }
 
         parser.parse( in, this );
 
         return this.ruleSet;
+    }
+
+    public SemanticsRepository getSemanticsRepository()
+    {
+        return this.repo;
+    }
+
+    void setRuleSet( RuleSet ruleSet )
+    {
+        this.ruleSet = ruleSet;
     }
 
     public RuleSet getRuleSet()
@@ -440,14 +372,14 @@ public class RuleSetReader extends DefaultHandler
     /**
      * @see org.xml.sax.ContentHandler
      */
-    public void setLocator(Locator locator)
+    public void setLocator( Locator locator )
     {
         this.locator = locator;
     }
 
     /**
      * Get the <code>Locator</code>.
-     *
+     * 
      * @return The locator.
      */
     public Locator getLocator()
@@ -457,818 +389,177 @@ public class RuleSetReader extends DefaultHandler
 
     public void startDocument()
     {
-        this.state        = STATE_NONE;
-        this.ruleSet      = null;
-        this.rule         = null;
-        this.declaration  = null;;
-        this.extraction   = null;
-        this.characters   = null;
+        this.ruleSet = null;
+        this.current = null;
+        this.peer = null;
+        this.lastWasEndElement = false;
+        this.parents.clear();
+        this.characters2 = null;
         this.configurationStack.clear();
     }
 
     /**
      * @see org.xml.sax.ContentHandler
      */
-    public void startElement(String uri,
+    public void startElement( String uri,
                              String localName,
                              String qname,
-                             Attributes attrs) throws SAXException
+                             Attributes attrs ) throws SAXException
     {
-        Starter starter = lookupStarter( uri, localName );
-
-        if ( starter != null )
+        //going down so no peer
+        if ( this.lastWasEndElement == false )
         {
-            starter.start( attrs );
-            return;
+            this.peer = null;
         }
+        Handler handler = getHandler( localName );
 
-        try
+        validate( uri, localName, handler );
+
+        Object node = handler.start( uri, localName, attrs );
+
+        if ( node != null )
         {
-            SemanticModule module = this.repo.lookupSemanticModule( uri );
-
-            switch (this.mode)
-            {
-                case (MODE_NONE) :
-                {
-                    setMode(module, localName, attrs);
-                    break;
-                }
-                case (MODE_RULE) :
-                {
-                    processRule(module, localName, attrs);
-                    break;
-                }
-                case (MODE_IMPORTS) :
-                {
-                    processImports(module, localName, attrs);
-                    break;
-                }
-            }
-
+            parents.add( node );
+            this.current = node;
         }
-        catch ( NoSuchSemanticModuleException e )
-        {
-            throw new SAXParseException(
-                                        "no semantic module for namespace '"
-                                        + uri
-                                        + "' ("
-                                        + localName
-                                        + ")",
-                                        getLocator( ) );
-        }
-
-    }
-
-    void setMode(SemanticModule module,
-                 String localName,
-                 Attributes attrs) throws SAXException
-    {
-        String uri = module.getUri();
-
-        if ( module.getRuleFactoryNames( ).contains( localName ) )
-        {
-            startRule( module, localName, attrs );
-        }
-        else if ( module.getImportsFactoryNames( ).contains( localName ) )
-        {
-            startImports( module, localName, attrs );
-        }
-        else
-        {
-            throw new SAXParseException( "unknown tag '"
-                                         + localName
-                                         + "' in namespace '" + uri
-                                         + "'", getLocator( ) );
-        }
-
-    }
-
-    void processRule(SemanticModule module,
-                     String localName,
-                     Attributes attrs) throws SAXException
-    {
-        String uri = module.getUri();
-
-        if ( this.declaration != null )
-        {
-            if ( module.getObjectTypeFactoryNames( )
-            .contains( localName ) )
-            {
-                startObjectType( module, localName, attrs );
-            }
-            else
-            {
-                throw new SAXParseException( "unknown tag '"
-                                             + localName
-                                             + "' in namespace '" + uri
-                                             + "'", getLocator( ) );
-            }
-        }
-        else
-        {
-            if ( module.getDurationFactoryNames( ).contains( localName ) )
-            {
-                startDuration( module, localName, attrs );
-            }
-            else if ( module.getConditionFactoryNames( )
-            .contains( localName ) )
-            {
-                startCondition( module, localName, attrs );
-            }
-            else if ( module.getExtractorFactoryNames( )
-            .contains( localName ) )
-            {
-                startExtraction( module, localName, attrs );
-            }
-            else if ( module.getConsequenceFactoryNames( )
-            .contains( localName ) )
-            {
-                startConsequence( module, localName, attrs );
-            }
-            else
-            {
-                throw new SAXParseException( "unknown tag '"
-                                             + localName
-                                             + "' in namespace '" + uri
-                                             + "'", getLocator( ) );
-            }
-        }
-    }
-
-    void processImports(SemanticModule module,
-                        String localName,
-                        Attributes attrs) throws SAXException
-    {
-
-        if ( module.getImportEntryFactoryNames( )
-        .contains( localName ) )
-        {
-            startImportEntry( module, localName, attrs );
-        }
+        this.lastWasEndElement = false;
     }
 
     /**
      * @see org.xml.sax.ContentHandler
      */
-    public void endElement(String uri, String localName, String qname) throws SAXException
+    public void endElement( String uri, String localName, String qname ) throws SAXException
     {
-        Ender ender = lookupEnder( uri, localName );
+        Handler handler = getHandler( localName );
 
-        if ( ender != null )
+        this.current = getParent( handler.generateNodeFor( ) );
+
+        Object node = handler.end( uri, localName );
+
+        //next
+        if ( (node != null) && (this.lastWasEndElement == false) )
         {
-            ender.end( );
+            this.peer = node;
+        }
+        //up or no children
+        else if ( (this.lastWasEndElement == true)
+                || (this.parents.getLast( )).getClass( )
+                        .isInstance( this.current ) )
+        {
+            this.peer = this.parents.removeLast( );
+        }
+
+        this.lastWasEndElement = true;
+    }
+
+    private void validate( String uri, String localName, Handler handler ) throws SAXParseException
+    {
+        boolean validParent = false;
+        boolean validPeer = false;
+        boolean invalidNesting = false;
+
+        Set validParents = handler.getValidParents( );
+        Set validPeers = handler.getValidPeers( );
+        boolean allowNesting = handler.allowNesting( );
+
+        //get parent
+        Object parent;
+        if ( this.parents.size( ) != 0 )
+        {
+            parent = this.parents.getLast( );
         }
         else
         {
-            if ( this.configurationStack.size( ) <= 1 )
+            parent = null;
+        }
+
+        // check valid parents
+        // null parent means localname is rule-set
+        // dont process if elements are the same
+        // instead check for allowed nesting
+        Class nodeClass = getHandler( localName ).generateNodeFor( );
+        if ( !nodeClass.isInstance( parent ) )
+        {
+            Object allowedParent;
+            Iterator it = validParents.iterator( );
+            while ( (validParent == false) && it.hasNext( ) )
             {
-                try
+                allowedParent = it.next( );
+                if ( (parent == null) && (allowedParent == null) )
                 {
-                    SemanticModule module = this.repo
-                                                     .lookupSemanticModule( uri );
-                    switch ( this.mode )
-                    {
-                        case MODE_RULE :
-                        {
-                            switch ( this.state )
-                            {
-                                case ( STATE_OBJECT_TYPE ) :
-                                {
-                                    endObjectType( module, localName );
-                                    break;
-                                }
-                                case ( STATE_CONDITION ) :
-                                {
-                                    endCondition( module, localName );
-                                    break;
-                                }
-                                case ( STATE_DURATION ) :
-                                {
-                                    endDuration( module, localName );
-                                    break;
-                                }
-                                case ( STATE_EXTRACTION ) :
-                                {
-                                    endExtraction( module, localName );
-                                    break;
-                                }
-                                case ( STATE_CONSEQUENCE ) :
-                                {
-                                    endConsequence( module, localName );
-                                    break;
-                                }
-                                default :
-                                {
-                                    endRule( );
-                                }
-                                break;
-                            }
-                            break;
-
-                        }
-                        case MODE_IMPORTS :
-                        {
-                            switch ( this.state )
-                            {
-                                case ( STATE_IMPORTENTRY ) :
-                                {
-                                    endImportEntry( module, localName );
-                                    break;
-                                }
-                                default :
-                                {
-                                    endImports( );
-                                }
-                                break;
-                            }
-
-                        }
-                    }
+                    validParent = true;
                 }
-                catch ( NoSuchSemanticModuleException e )
+                else if ( (allowedParent != null)
+                        && ((Class) allowedParent).isInstance( parent ) )
                 {
-                    throw new SAXParseException(
-                                                 "no semantic module for namespace '"
-                                                                                                                                                                                                    + uri
-                                                                                                                                                                                                    + "' ("
-                                                                                                                                                                                                    + localName
-                                                                                                                                                                                                    + ")",
-                                                 getLocator( ) );
+                    validParent = true;
                 }
             }
-            else
+            if ( !validParent )
             {
-                endConfiguration( );
-            }
-        }
-    }
-
-    /**
-     * Start a &lt;rule-set&gt;.
-     *
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startRuleSet(Attributes attrs) throws SAXException
-    {
-        if ( this.ruleSet != null )
-        {
-            throw new SAXParseException( "<rule-set> may not be nested",
-                                         getLocator( ) );
-        }
-
-        String ruleSetName = attrs.getValue( "name" );
-        String ruleSetDesc = attrs.getValue( "description" );
-
-        if ( ruleSetName == null || ruleSetName.trim( ).equals( "" ) )
-        {
-            throw new SAXParseException(
-                                         "<rule-set> requires a 'name' attribute",
-                                         getLocator( ) );
-        }
-
-        this.ruleSet = new RuleSet( ruleSetName.trim( ) );
-
-        if ( ruleSetDesc == null || ruleSetDesc.trim( ).equals( "" ) )
-        {
-            this.ruleSet.setDocumentation( "" );
-        }
-        else
-        {
-            this.ruleSet.setDocumentation( ruleSetDesc );
-        }
-
-    }
-
-    /**
-     * End a &lt;rule-set&gt;.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endRuleSet() throws SAXException
-    {
-        imports = null;
-        // nothing
-    }
-
-    protected void startImports(SemanticModule module,
-                                String localName,
-                                Attributes attrs) throws SAXException
-    {
-        this.mode = MODE_IMPORTS;
-
-        ImportsFactory factory = module.getImportsFactory( localName );
-
-        startConfiguration( localName, attrs );
-        Configuration config = endConfiguration( );
-
-        if (this.imports != null)
-        {
-            throw new SAXParseException(
-                                        "<imports> already defined",
-                                        getLocator( ) );
-        }
-        try
-        {
-
-            this.imports = factory.newImports(config);
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing rule",
-                                         getLocator( ), e );
-        }
-
-    }
-
-    protected void endImports( ) throws SAXException
-    {
-        this.mode = MODE_NONE;
-        this.ruleSet.setImports(imports);
-    }
-
-    protected void startImportEntry(SemanticModule module,
-                                String localName,
-                                Attributes attrs) throws SAXException
-    {
-        this.state = STATE_IMPORTENTRY;
-        startConfiguration( localName, attrs );
-    }
-
-    protected void endImportEntry(SemanticModule module,
-                              String localName) throws SAXException
-    {
-        this.state = STATE_NONE;
-        ImportEntryFactory factory = module.getImportEntryFactory( localName );
-
-        Configuration config = endConfiguration( );
-        try
-        {
-            ImportEntry importEntry = factory.newImportEntry(config);
-            this.imports.addImportEntry(importEntry);
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing rule",
-                                         getLocator( ), e );
-        }
-    }
-
-    protected void startRule(SemanticModule module,
-                             String localName,
-                             Attributes attrs) throws SAXException
-    {
-        this.mode = MODE_RULE;
-
-        RuleFactory factory = module.getRuleFactory( localName );
-
-        startConfiguration( localName, attrs );
-
-        Configuration config = endConfiguration( );
-
-        try
-        {
-            this.rule = factory.newRule( config );
-
-            startRule( rule, attrs );
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing rule",
-                                         getLocator( ), e );
-        }
-    }
-
-    protected void startRule(Rule rule, Attributes attrs) throws SAXException
-    {
-        String salienceStr = attrs.getValue( "salience" );
-        String noLoopStr = attrs.getValue("no-loop");
-        String ruleDesc = attrs.getValue( "description" );
-
-        if ( !( salienceStr == null || salienceStr.trim( ).equals( "" ) ) )
-        {
-            try
-            {
-                int salience = Integer.parseInt( salienceStr.trim( ) );
-
-                rule.setSalience( salience );
-            }
-            catch ( NumberFormatException e )
-            {
-                throw new SAXParseException(
-                                             "invalid number value for 'salience' attribute: "
-                                                                                                                                                                                    + salienceStr
-                                                                                                                                                                                                 .trim( ),
-                                             getLocator( ) );
+                throw new SAXParseException( "<" + localName
+                        + "> has an invalid parent element", getLocator( ) );
             }
         }
 
-        if ( !( noLoopStr == null || noLoopStr.trim( ).equals( "" ) ) )
+        // check valid peers
+        // null peer means localname is rule-set
+        Object peer = this.peer;
+
+        Object allowedPeer;
+        Iterator it = validPeers.iterator( );
+        while ( (validPeer == false) && it.hasNext( ) )
         {
-            try
+            allowedPeer = it.next( );
+            if ( (peer == null) && (allowedPeer == null) )
             {
-                boolean noLoop = new Boolean( noLoopStr.trim( ) ).booleanValue();
-                rule.setNoLoop( noLoop );
+                validPeer = true;
             }
-            catch ( NumberFormatException e )
+            else if ( (allowedPeer != null)
+                    && ((Class) allowedPeer).isInstance( peer ) )
             {
-                throw new SAXParseException(
-                                             "invalid boolean value for 'no-loop' attribute: "
-                                                                                                                                                                                    + salienceStr
-                                                                                                                                                                                                 .trim( ),
-                                             getLocator( ) );
+                validPeer = true;
             }
         }
-
-
-
-        if ( !( ruleDesc == null || ruleDesc.trim( ).equals( "" ) ) )
+        if ( !validPeer )
         {
-            rule.setDocumentation( ruleDesc );
+            throw new SAXParseException( "<" + localName
+                    + "> is after an invalid element", getLocator( ) );
         }
 
-        rule.setImports(this.imports);
-    }
-
-    /**
-     * End a &lt;rule&gt;.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endRule() throws SAXException
-    {
-        try
+        if ( allowNesting == false )
         {
-            this.mode = MODE_NONE;
-            this.ruleSet.addRule( this.rule );
-            this.rule = null;
+            it = this.parents.iterator( );
+            while ( (invalidNesting == false) && it.hasNext( ) )
+            {
+                if ( nodeClass.isInstance( it.next( ) ) )
+                {
+                    invalidNesting = true;
+                }
+            }
         }
-        catch ( RuleConstructionException e )
+        if ( invalidNesting )
         {
-            throw new SAXParseException( "error adding rule", getLocator( ), e );
-        }
-    }
-
-    /**
-     * Start a &lt;parameter&gt;.
-     *
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startParameter(Attributes attrs) throws SAXException
-    {
-        startParameterOrDeclaration( "parameter", attrs );
-    }
-
-    /**
-     * End a &lt;parameter&gt;.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endParameter() throws SAXException
-    {
-        if ( this.declaration.getObjectType( ) == null )
-        {
-            throw new SAXParseException( "<parameter> requires an object-type",
-                                         getLocator( ) );
+            throw new SAXParseException( "<" + localName
+                    + ">  may not be nested", getLocator( ) );
         }
 
-        this.rule.addParameterDeclaration( this.declaration );
-        this.declaration = null;
-    }
-
-    /**
-     * Start a &lt;declaration&gt;.
-     *
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startDeclaration(Attributes attrs) throws SAXException
-    {
-        startParameterOrDeclaration( "declaration", attrs );
-    }
-
-    /**
-     * End a &lt;declaration&gt;.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endDeclaration() throws SAXException
-    {
-        if ( this.declaration.getObjectType( ) == null )
-        {
-            throw new SAXParseException(
-                                         "<declaration> requires an object-type",
-                                         getLocator( ) );
-        }
-
-        this.rule.addDeclaration( this.declaration );
-        this.declaration = null;
-    }
-
-    /**
-     * Start a &lt;parameter&gt; or &lt;declaration&gt;.
-     *
-     * @param tagName Tag name.
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    private void startParameterOrDeclaration(String tagName, Attributes attrs) throws SAXException
-    {
-        if ( this.rule == null )
-        {
-            throw new SAXParseException( "<" + tagName
-                                         + "> must occur within a <rule>",
-                                         getLocator( ) );
-        }
-
-        String identifier = attrs.getValue( "identifier" );
-
-        if ( identifier == null || identifier.trim( ).equals( "" ) )
-        {
-            throw new SAXParseException(
-                                         "<"
-                                                                                                                                                                    + tagName
-                                                                                                                                                                    + "> requires an 'identifier' attribute",
-                                         getLocator( ) );
-        }
-
-        this.declaration = new Declaration( identifier.trim( ) );
-    }
-
-    /**
-     * Start an object-type.
-     *
-     * @param module SemanticModule.
-     * @param localName Tag name.
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startObjectType(SemanticModule module,
-                                   String localName,
-                                   Attributes attrs) throws SAXException
-    {
-        this.state = STATE_OBJECT_TYPE;        
-        startConfiguration( localName, attrs );
-    }
-
-    /**
-     * End object-type.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endObjectType(SemanticModule module, String localName) throws SAXException
-    {
-        Configuration config = endConfiguration( );
-        
-        ObjectTypeFactory factory = module.getObjectTypeFactory( localName );
-
-        try
-        {
-            ObjectType objectType = factory.newObjectType( config, this.imports );
-
-            this.declaration.setObjectType( objectType );
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing object type",
-                                         getLocator( ), e );
-        }
-        finally
-        {
-            this.state = STATE_NONE;
-        }
-    }
-
-    /**
-     * Start an extraction.
-     *
-     * @param module Semantic module.
-     * @param localName Tag name.
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startExtraction(SemanticModule module,
-                                   String localName,
-                                   Attributes attrs) throws SAXException
-    {
-        this.state = STATE_EXTRACTION;
-
-        String targetDeclName = attrs.getValue( "target" );
-
-        if ( targetDeclName == null || targetDeclName.trim( ).equals( "" ) )
-        {
-            throw new SAXParseException(
-                                         "extraction requires a 'target' attribute",
-                                         getLocator( ) );
-        }
-
-        Declaration targetDecl = this.rule
-                                          .getDeclaration( targetDeclName
-                                                                         .trim( ) );
-
-        if ( targetDecl == null )
-        {
-            throw new SAXParseException( "'" + targetDeclName
-                                         + "' is not a valid declaration",
-                                         getLocator( ) );
-        }
-
-        this.extraction = new Extraction( targetDecl );
-
-        startConfiguration( localName, attrs );
-    }
-
-    /**
-     * End an extraction.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endExtraction(SemanticModule module, String localName) throws SAXException
-    {
-        Configuration config = endConfiguration( );
-
-        ExtractorFactory factory = module.getExtractorFactory( localName );
-
-        try
-        {
-            Extractor extractor = factory
-                                         .newExtractor(
-                                                        config,
-                                                        this.rule );
-
-            this.extraction.setExtractor( extractor );
-
-            this.rule.addExtraction( this.extraction );
-
-            this.extraction = null;
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing extractor",
-                                         getLocator( ), e );
-        }
-        finally
-        {
-            this.state = STATE_NONE;
-        }
-    }
-
-    protected void startDuration(SemanticModule module,
-                                 String name,
-                                 Attributes attrs) throws SAXException
-    {
-        this.state = STATE_DURATION;
-
-        startConfiguration( name, attrs );
-    }
-
-    /**
-     * End a condition.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endDuration(SemanticModule module, String localName) throws SAXException
-    {
-        Configuration config = endConfiguration( );
-
-        DurationFactory factory = module.getDurationFactory( localName );
-
-        try
-        {
-            Duration duration = factory
-                                       .newDuration(
-                                                     config,
-                                                     this.rule
-                                                              .getAllDeclarations( ) );
-
-            this.rule.setDuration( duration );
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing duration",
-                                         getLocator( ), e );
-        }
-        finally
-        {
-            this.state = STATE_NONE;
-        }
-    }
-
-    /**
-     * Start a condition.
-     *
-     * @param module Semantic module.
-     * @param name Tag name.
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startCondition(SemanticModule module,
-                                  String name,
-                                  Attributes attrs) throws SAXException
-    {
-        this.state = STATE_CONDITION;
-
-        startConfiguration( name, attrs );
-    }
-
-    /**
-     * End a condition.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endCondition(SemanticModule module, String localName) throws SAXException
-    {
-        Configuration config = endConfiguration( );
-
-        ConditionFactory factory = module.getConditionFactory( localName );
-
-        try
-        {
-            Condition condition = factory
-                                         .newCondition(
-                                                        config,
-                                                        this.rule );
-
-            this.rule.addCondition( condition );
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing condition",
-                                         getLocator( ), e );
-        }
-        finally
-        {
-            this.state = STATE_NONE;
-        }
-    }
-
-    /**
-     * Start a consequence.
-     *
-     * @param module Semantic module.
-     * @param name Tag name.
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void startConsequence(SemanticModule module,
-                                    String name,
-                                    Attributes attrs) throws SAXException
-    {
-        this.state = STATE_CONSEQUENCE;
-        startConfiguration( name, attrs );
-    }
-
-    /**
-     * End a consequence.
-     *
-     * @throws SAXException If an error occurs during parse.
-     */
-    protected void endConsequence(SemanticModule module, String localName) throws SAXException
-    {
-        Configuration config = endConfiguration( );
-
-        ConsequenceFactory factory = module.getConsequenceFactory( localName );
-
-        try
-        {
-            Consequence consequence = factory
-                                             .newConsequence(
-                                                              config,
-                                                              this.rule );
-
-            this.rule.setConsequence( consequence );
-        }
-        catch ( FactoryException e )
-        {
-            throw new SAXParseException( "error constructing consequence",
-                                         getLocator( ), e );
-        }
-        finally
-        {
-            this.state = STATE_NONE;
-        }
     }
 
     /**
      * Start a configuration node.
-     *
-     * @param name Tag name.
-     * @param attrs Tag attributes.
-     *
-     * @throws SAXException If an error occurs during parse.
+     * 
+     * @param name
+     *            Tag name.
+     * @param attrs
+     *            Tag attributes.
+     * 
+     * @throws SAXException
+     *             If an error occurs during parse.
      */
-    protected void startConfiguration(String name, Attributes attrs) throws SAXException
+    protected void startConfiguration( String name, Attributes attrs ) throws SAXException
     {
-        this.characters = new StringBuffer( );
+        this.characters2 = new StringBuffer( );        
 
         DefaultConfiguration config = new DefaultConfiguration( name );
 
@@ -1285,143 +576,114 @@ public class RuleSetReader extends DefaultHandler
         }
         else
         {
-            ( ( DefaultConfiguration ) this.configurationStack.getLast( ) )
-                                                                           .addChild( config );
+            ((DefaultConfiguration) this.configurationStack.getLast( ))
+                    .addChild( config );
         }
     }
 
     /**
      * @see org.xml.sax.ContentHandler
      */
-    public void characters(char[] chars, int start, int len) throws SAXException
+    public void characters( char[] chars, int start, int len ) throws SAXException
     {
-        if ( this.characters != null )
-        {
-            this.characters.append( chars, start, len );
+        if ( this.characters2 != null )
+        {            
+            this.characters2.append( chars, start, len );
         }
     }
 
     /**
      * End a configuration node.
-     *
+     * 
      * @return The configuration.
      */
     protected Configuration endConfiguration()
     {
-        DefaultConfiguration config = ( DefaultConfiguration ) this.configurationStack
-                                                                                      .removeLast( );
+        DefaultConfiguration config = (DefaultConfiguration) this.configurationStack
+                .removeLast( );
+        
+        config.setText( this.characters2.toString( ) );
 
-        config.setText( this.characters.toString( ) );
-
-        this.characters = null;
+        this.characters2 = null;
 
         return config;
     }
 
-    /**
-     * Lookup a <code>Starter</code> functor.
-     *
-     * @param uri Tag uri.
-     * @param name Tag name.
-     *
-     * @return The starter.
-     */
-    Starter lookupStarter(String uri, String name)
+    SemanticModule lookupSemanticModule( String uri, String localName ) throws SAXParseException
     {
-        return ( Starter ) this.starters.get( uri + ">" + name );
+        SemanticModule module;
+        try
+        {
+            module = this.repo.lookupSemanticModule( uri );
+        }
+        catch ( NoSuchSemanticModuleException e )
+        {
+            throw new SAXParseException( "no semantic module for namespace '"
+                    + uri + "' (" + localName + ")", getLocator( ) );
+        }
+        return module;
     }
 
-    /**
-     * Bind a <code>Starter</code> functor.
-     *
-     * @param uri Tag uri.
-     * @param name Tag name.
-     * @param starter Starter.
-     */
-    void bindStarter(String uri, String name, Starter starter)
+    private Handler getHandler( String localName ) throws SAXParseException
     {
-        this.starters.put( uri + ">" + name, starter );
+        Handler handler = (Handler) this.localNameMap.get( localName );
+        if ( handler == null )
+        {
+            throw new SAXParseException( "unable to handle element <"
+                    + localName + ">", getLocator( ) );
+        }
+        return handler;
     }
 
-    /**
-     * Lookup an <code>Ender</code> functor.
-     *
-     * @param uri Tag uri.
-     * @param name Tag name.
-     *
-     * @return The starter.
-     */
-    Ender lookupEnder(String uri, String name)
+    LinkedList getParents()
     {
-        return ( Ender ) this.enders.get( uri + ">" + name );
+        return this.parents;
     }
 
-    /**
-     * Bind a <code>Ender</code> functor.
-     *
-     * @param uri Tag uri.
-     * @param name Tag name.
-     * @param ender Ender.
-     */
-    void bindEnder(String uri, String name, Ender ender)
+    Object getParent( Class parent )
     {
-        this.enders.put( uri + ">" + name, ender );
+        ListIterator it = this.parents.listIterator( parents.size( ) );
+        Object node = null;
+        while ( it.hasPrevious( ) )
+        {
+            node = it.previous( );
+            if ( parent.isInstance( node ) ) break;
+        }
+        return node;
     }
 
-    private MessageFormat message = new MessageFormat( "({0}: {1}, {2}): {3}" );
+    Object getPeer()
+    {
+        return this.peer;
+    }
 
-    private void print(SAXParseException x)
+    Object getCurrent()
+    {
+        return this.current;
+    }
+
+    private void print( SAXParseException x )
     {
         String msg = message.format( new Object[]{x.getSystemId( ),
-        new Integer( x.getLineNumber( ) ), new Integer( x.getColumnNumber( ) ),
-        x.getMessage( )} );
+                new Integer( x.getLineNumber( ) ),
+                new Integer( x.getColumnNumber( ) ), x.getMessage( )} );
         System.out.println( msg );
     }
 
-    public void warning(SAXParseException x)
+    public void warning( SAXParseException x )
     {
         print( x );
     }
 
-    public void error(SAXParseException x)
+    public void error( SAXParseException x )
     {
         print( x );
     }
 
-    public void fatalError(SAXParseException x) throws SAXParseException
+    public void fatalError( SAXParseException x ) throws SAXParseException
     {
         print( x );
         throw x;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Starter functor.
-     */
-    abstract static class Starter
-    {
-        /**
-         * Start tag.
-         *
-         * @param attrs Tag attributes.
-         *
-         * @throws SAXException If an error occurs during parse.
-         */
-        abstract void start(Attributes attrs) throws SAXException;
-    }
-
-    /**
-     * Starter functor.
-     */
-    abstract static class Ender
-    {
-        /**
-         * End tag.
-         *
-         * @throws SAXException If an error occurs during parse.
-         */
-        abstract void end() throws SAXException;
     }
 
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Exec.java,v 1.5 2004-10-24 00:59:11 mproctor Exp $
+ * $Id: Exec.java,v 1.6 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,6 +41,8 @@ package org.drools.semantics.groovy;
  *  
  */
 
+import java.util.Set;
+
 import groovy.lang.Binding;
 
 import org.drools.rule.Imports;
@@ -55,7 +57,7 @@ import org.drools.spi.Tuple;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Exec.java,v 1.5 2004-10-24 00:59:11 mproctor Exp $
+ * @version $Id: Exec.java,v 1.6 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Exec extends Interp
 {
@@ -66,7 +68,7 @@ public class Exec extends Interp
     /**
      * Construct.
      */
-    protected Exec(String text, Imports imports)
+    protected Exec(String text, Set imports)
     {
         super( text, imports, "exec" );
     }

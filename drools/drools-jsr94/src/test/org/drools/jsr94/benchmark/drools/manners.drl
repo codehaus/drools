@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
 The definition of a RuleExecutionSet is not within the scope of the JSR 94.
@@ -22,10 +22,10 @@ employs a depth-first search approach to the problem.
        -->
         <rule name="find first seat" salience="40">
            <parameter identifier="context">
-               <java:class>org.drools.jsr94.benchmark.Context</java:class>
+               <class>org.drools.jsr94.benchmark.Context</class>
            </parameter>
            <parameter identifier="guest">
-               <java:class>org.drools.jsr94.benchmark.Guest</java:class>
+               <class>org.drools.jsr94.benchmark.Guest</class>
            </parameter>
 
            <java:condition>
@@ -49,13 +49,13 @@ employs a depth-first search approach to the problem.
        -->
        <rule name="find seating" salience="30">
           <parameter identifier="context">
-              <java:class>org.drools.jsr94.benchmark.Context</java:class>
+              <class>org.drools.jsr94.benchmark.Context</class>
           </parameter>
           <parameter identifier="guest">
-              <java:class>org.drools.jsr94.benchmark.Guest</java:class>
+              <class>org.drools.jsr94.benchmark.Guest</class>
           </parameter>
           <parameter identifier="seating">
-              <java:class>org.drools.jsr94.benchmark.drools.Seating</java:class>
+              <class>org.drools.jsr94.benchmark.drools.Seating</class>
           </parameter>
 
           <java:condition>
@@ -97,13 +97,13 @@ employs a depth-first search approach to the problem.
        -->
        <rule name="try another path" salience="20">
           <parameter identifier="context">
-              <java:class>org.drools.jsr94.benchmark.Context</java:class>
+              <class>org.drools.jsr94.benchmark.Context</class>
           </parameter>
           <parameter identifier="lastSeat">
-              <java:class>org.drools.jsr94.benchmark.LastSeat</java:class>
+              <class>org.drools.jsr94.benchmark.LastSeat</class>
           </parameter>
           <parameter identifier="seating">
-              <java:class>org.drools.jsr94.benchmark.drools.Seating</java:class>
+              <class>org.drools.jsr94.benchmark.drools.Seating</class>
           </parameter>
 
           <java:condition>
@@ -134,13 +134,13 @@ employs a depth-first search approach to the problem.
        -->
        <rule name="we are done" salience="10">
           <parameter identifier="context">
-              <java:class>org.drools.jsr94.benchmark.Context</java:class>
+              <class>org.drools.jsr94.benchmark.Context</class>
           </parameter>
           <parameter identifier="lastSeat">
-              <java:class>org.drools.jsr94.benchmark.LastSeat</java:class>
+              <class>org.drools.jsr94.benchmark.LastSeat</class>
           </parameter>
           <parameter identifier="seating">
-              <java:class>org.drools.jsr94.benchmark.drools.Seating</java:class>
+              <class>org.drools.jsr94.benchmark.drools.Seating</class>
           </parameter>
 
           <java:condition>

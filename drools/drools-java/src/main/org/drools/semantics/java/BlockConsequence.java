@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.29 2004-10-24 00:56:30 mproctor Exp $
+ * $Id: BlockConsequence.java,v 1.30 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -64,7 +64,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  * 
- * @version $Id: BlockConsequence.java,v 1.29 2004-10-24 00:56:30 mproctor Exp $
+ * @version $Id: BlockConsequence.java,v 1.30 2004-11-03 22:54:36 mproctor Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
@@ -138,10 +138,10 @@ public class BlockConsequence implements Consequence, Serializable
             if ( script == null )
             {
                 Set imports = new HashSet(); 
-                if ((tuple.getRule().getImports() != null)&&(tuple.getRule().getImports().getImportEntries() != null))
+                if (tuple.getRule().getImports() != null)
                 {
                                       
-                    Iterator it = tuple.getRule().getImports().getImportEntries().iterator();
+                    Iterator it = tuple.getRule().getImports().iterator();
                     ImportEntry importEntry;
                     while (it.hasNext())
                     {
@@ -160,6 +160,7 @@ public class BlockConsequence implements Consequence, Serializable
                                                                    params,
                                                                    applicationData,
                                                                    imports);
+                
             }
 
             script.invoke( tuple, params, new KnowledgeHelper( tuple ),
