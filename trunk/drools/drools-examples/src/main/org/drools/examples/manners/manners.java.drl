@@ -17,6 +17,12 @@ employs a depth-first search approach to the problem.
           xmlns="http://drools.org/rules"
           xmlns:java="http://drools.org/semantics/java">
 
+        <imports>
+            <java:import>java.util.*</java:import>
+            <java:import>org.drools.examples.manners.model.Seating</java:import>
+            <java:import>org.drools.examples.manners.model.Seat</java:import>
+        </imports>
+
        <!--
        Initialize the root seating element.
        -->
@@ -33,8 +39,6 @@ employs a depth-first search approach to the problem.
            </java:condition>
 
             <java:consequence>
-               import org.drools.examples.manners.model.Seating;
-
                System.out.println("FIRE: find first seat: " + guest);
 
                drools.assertObject(new Seating(1, guest, null));
@@ -151,10 +155,6 @@ employs a depth-first search approach to the problem.
           </java:condition>
 
           <java:consequence>
-             import org.drools.examples.manners.model.Seat;
-             import java.util.List;
-             import java.util.ArrayList;
-
              System.out.println("FIRE: we are done");
 
              List list = new ArrayList();
