@@ -45,7 +45,7 @@ import org.drools.MockWorkingMemory;
  * }
  *
  * Each class that extends SMFTestFrameWork must create 3 data files;
- * conditions.data, extractors.java, consequences.data.
+ * conditions.data, extractors.data, consequences.data.
  * Each file is read depending the testType, a List of the specified tests
  * extracted from the file; usig the delimeter <!--drools-test--!>
  * to seperate each test block.
