@@ -39,7 +39,7 @@ target_all()
 
 target_site()
 {
-  #build javadoc pdf
+  build javadoc pdf
 
   echo "building site"
 
