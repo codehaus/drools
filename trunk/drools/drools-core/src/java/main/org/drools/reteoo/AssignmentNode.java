@@ -5,7 +5,6 @@ import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.spi.Declaration;
-import org.drools.spi.Tuple;
 import org.drools.spi.FactExtractor;
 
 import java.util.Set;
@@ -64,7 +63,7 @@ public class AssignmentNode extends TupleSource implements TupleSink
     }
 
     public void assertTuple(TupleSource tupleSource,
-                            Tuple tuple,
+                            ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
 
@@ -77,6 +76,8 @@ public class AssignmentNode extends TupleSource implements TupleSink
 
         newTuple.put( getTargetDeclaration(),
                       value );
+
+        newTuple.addAllRootFactObjects( tuple.getRootFactObjects() );
 
         propagateAssertTuple( newTuple,
                               workingMemory );

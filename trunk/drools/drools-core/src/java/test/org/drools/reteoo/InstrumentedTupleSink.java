@@ -2,7 +2,6 @@
 package org.drools.reteoo;
 
 import org.drools.WorkingMemory;
-import org.drools.spi.Tuple;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class InstrumentedTupleSink implements TupleSink
     }
 
     public void assertTuple(TupleSource tupleSource,
-                            Tuple tuple,
+                            ReteTuple tuple,
                             WorkingMemory workingMemory)
     {
         this.assertedTuples.add( tuple );

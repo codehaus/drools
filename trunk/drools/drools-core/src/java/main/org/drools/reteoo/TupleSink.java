@@ -5,9 +5,7 @@ import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 
-import org.drools.spi.Tuple;
-
-/** Receiver of propagated {@link Tuple}s from a {@link TupleSource}.
+/** Receiver of propagated {@link ReteTuple}s from a {@link TupleSource}.
  *
  *  @see TupleSource
  *
@@ -22,7 +20,7 @@ public interface TupleSink
      *  @param workingMemory The working memory seesion.
      */
     void assertTuple(TupleSource inputSource,
-                     Tuple tuple,
+                     ReteTuple tuple,
                      WorkingMemory workingMemory) throws AssertionException;
 
     /** Retract a fact <code>Object</code>.

@@ -7,6 +7,7 @@ import org.drools.spi.Declaration;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 
 /** Base Rete-OO {@link Tuple} implementation.
@@ -18,12 +19,34 @@ import java.util.Iterator;
 public class ReteTuple implements Tuple
 {
     private Map tuple;
+    private Set rootFactObjects;
 
     /** Construct.
      */
     public ReteTuple()
     {
-        this.tuple = new HashMap();
+        this.tuple           = new HashMap();
+        this.rootFactObjects = new HashSet( 11 );
+    }
+
+    void addRootFactObject(Object object)
+    {
+        this.rootFactObjects.add( object );
+    }
+
+    void addAllRootFactObjects(Set objects)
+    {
+        this.rootFactObjects.addAll( objects );
+    }
+
+    Set getRootFactObjects()
+    {
+        return this.rootFactObjects;
+    }
+
+    boolean containsRootFactObject(Object object)
+    {
+        return this.rootFactObjects.contains( object );
     }
 
     /** Construct.

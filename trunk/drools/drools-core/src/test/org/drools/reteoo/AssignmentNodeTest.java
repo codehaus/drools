@@ -3,7 +3,6 @@ package org.drools.reteoo;
 
 import org.drools.AssertionException;
 import org.drools.spi.Declaration;
-import org.drools.spi.Tuple;
 import org.drools.semantic.java.JavaObjectType;
 
 import org.drools.spi.InstrumentedFactExtractor;
@@ -88,7 +87,7 @@ public class AssignmentNodeTest extends TestCase
             assertEquals( 1,
                           assertedTuples.size() );
             
-            Tuple assertedTuple = (Tuple) assertedTuples.get( 0 );
+            ReteTuple assertedTuple = (ReteTuple) assertedTuples.get( 0 );
             
             Object value = assertedTuple.get( stringDecl );
             

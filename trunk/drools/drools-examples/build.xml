@@ -4,7 +4,7 @@
    <!-- only some of the supported models.   -->
  
    <patternset id="werken.drools">
-       <include name="org/drools/**/*"/>
+       <include name="**/*"/>
    </patternset>
 
   <!-- =================================================================== -->

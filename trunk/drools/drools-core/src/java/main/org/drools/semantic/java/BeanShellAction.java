@@ -61,8 +61,13 @@ public class BeanShellAction implements Action
         {
             BeanShellUtil.setUpInterpreter( this.interp,
                                             tuple );
+
+            this.interp.set( "drools$working$memory",
+                             workingMemory );
             
             this.interp.eval( this.getScript() );
+
+            this.interp.unset( "drools$working$memory" );
             
             BeanShellUtil.cleanUpInterpreter( this.interp,
                                               tuple );

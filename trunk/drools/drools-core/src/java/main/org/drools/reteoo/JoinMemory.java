@@ -1,10 +1,10 @@
 
 package org.drools.reteoo;
 
-import org.drools.spi.Tuple;
 import org.drools.spi.Declaration;
 
 import java.util.List;
+import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Iterator;
@@ -41,13 +41,49 @@ public class JoinMemory
      */
     public JoinMemory(JoinNode node)
     {
-        this.leftTuples  = new ArrayList();
-        this.rightTuples = new ArrayList();
+        this.leftTuples  = new LinkedList();
+        this.rightTuples = new LinkedList();
 
         this.joinDeclarations = node.getCommonDeclarations();
     }
 
-    /** Add a {@link Tuple} received from the <code>JoinNode's</code>
+    /** Produce output suitable for debugging.
+     */ 
+    public String toString()
+    {
+        return "[JoinMemory \n\tleft=" + this.leftTuples + "\n\tright=" + this.rightTuples + "]";
+    }
+
+    protected void retractObject(Object object)
+    {
+        ReteTuple eachTuple = null;
+
+        Iterator  tupleIter = leftTuples.iterator();
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            if ( eachTuple.containsRootFactObject( object ) )
+            {
+                tupleIter.remove();
+            }
+        }
+
+        tupleIter = rightTuples.iterator();
+        
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            if ( eachTuple.containsRootFactObject( object ) )
+            {
+                tupleIter.remove();
+            }
+        }
+    }
+
+    /** Add a {@link ReteTuple} received from the <code>JoinNode's</code>
      *  left input to the left side of this memory, and attempt
      *  to join to existing <code>Tuples</code> in the right
      *  side.
@@ -60,7 +96,7 @@ public class JoinMemory
      *          against existing <code>Tuples</code> on the right
      *          side memory.
      */
-    protected List addLeftTuple(Tuple tuple)
+    protected List addLeftTuple(ReteTuple tuple)
     {
         this.leftTuples.add( tuple );
 
@@ -90,7 +126,7 @@ public class JoinMemory
         return this.leftTuples.iterator();
     }
 
-    /** Add a {@link Tuple} received from the <code>JoinNode's</code>
+    /** Add a {@link ReteTuple} received from the <code>JoinNode's</code>
      *  right input to the right side of this memory, and attempt
      *  to join to existing <code>Tuples</code> in the left
      *  side.
@@ -103,7 +139,7 @@ public class JoinMemory
      *          against existing <code>Tuples</code> on the left
      *          side memory.
      */
-    protected List addRightTuple(Tuple tuple)
+    protected List addRightTuple(ReteTuple tuple)
     {
         this.rightTuples.add( tuple );
 
@@ -156,17 +192,17 @@ public class JoinMemory
      *  @return A possibly empty <code>List</code> of joined
      *         <code>Tuples</code>.
      */
-    protected List attemptJoin(Tuple tuple,
+    protected List attemptJoin(ReteTuple tuple,
                                Iterator tupleIter)
     {
         List joinedTuples = Collections.EMPTY_LIST;
 
-        Tuple eachTuple   = null;
-        Tuple joinedTuple = null;
+        ReteTuple eachTuple   = null;
+        ReteTuple joinedTuple = null;
 
         while ( tupleIter.hasNext() )
         {
-            eachTuple = (Tuple) tupleIter.next();
+            eachTuple = (ReteTuple) tupleIter.next();
             
             joinedTuple = attemptJoin( tuple,
                                        eachTuple );
@@ -194,8 +230,8 @@ public class JoinMemory
      *  @return A newly joined <code>Tuple</code> if a join
      *          is possible, else <code>null</code>.
      */
-    protected Tuple attemptJoin(Tuple left,
-                                Tuple right)
+    protected ReteTuple attemptJoin(ReteTuple left,
+                                    ReteTuple right)
     {
         
         Iterator    declIter = getJoinDeclarationIterator();
@@ -236,8 +272,8 @@ public class JoinMemory
             }
         }
 
-        Tuple joinedTuple = new JoinTuple( left,
-                                           right );
+        ReteTuple joinedTuple = new JoinTuple( left,
+                                               right );
 
         return joinedTuple;
 

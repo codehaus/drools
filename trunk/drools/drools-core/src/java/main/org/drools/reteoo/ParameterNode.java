@@ -7,13 +7,12 @@ import org.drools.RetractionException;
 import org.drools.ModificationException;
 
 import org.drools.spi.Declaration;
-import org.drools.spi.Tuple;
 
 import java.util.Set;
 import java.util.Collections;
 
 /** Receives <code>Objects</code> from an {@link ObjectTypeNode},
- *  and creates a {@link Tuple}, passing the result to the following node.
+ *  and creates a {@link ReteTuple}, passing the result to the following node.
  *
  *  <p>
  *  The <code>ParameterNode</code> is the first node that works in
@@ -22,7 +21,6 @@ import java.util.Collections;
  *  </p>
  *
  *  @see ObjectTypeNode
- *  @see Tuple
  *  @see TupleSink
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
@@ -64,8 +62,8 @@ public class ParameterNode extends TupleSource
     protected void assertObject(Object object,
                                 WorkingMemory workingMemory) throws AssertionException
     {
-        Tuple tuple = new ParameterTuple( getDeclaration(),
-                                          object );
+        ReteTuple tuple = new ParameterTuple( getDeclaration(),
+                                              object );
 
         propagateAssertTuple( tuple,
                               workingMemory );
@@ -81,5 +79,21 @@ public class ParameterNode extends TupleSource
     protected void modifyObject(Object object,
                                 WorkingMemory workingMemory) throws ModificationException
     {
+        try
+        {
+            propagateRetractObject( object,
+                                    workingMemory );
+            
+            assertObject( object,
+                          workingMemory );
+        }
+        catch (RetractionException e)
+        {
+            throw new ModificationException( e );
+        }
+        catch (AssertionException e)
+        {
+            throw new ModificationException( e );
+        }
     }
 }

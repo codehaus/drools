@@ -1,13 +1,12 @@
 
 package org.drools.reteoo;
 
-import org.drools.spi.Tuple;
 import org.drools.spi.Declaration;
 
 import java.util.Set;
 import java.util.HashSet;
 
-/** Implementation of {@link Tuple} with a single column,
+/** Implementation of {@link ReteTuple} with a single column,
  *  based upon a <i>root fact object parameter</i> of a rule.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
@@ -30,6 +29,8 @@ public class ParameterTuple extends ReteTuple
     {
         this.declaration = declaration;
         this.object      = object;
+
+        addRootFactObject( object );
     }
 
     /** Retrieve the object for the parameter.
