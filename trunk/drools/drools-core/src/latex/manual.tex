@@ -1,0 +1,190 @@
+
+\documentclass[10pt,oneside,letterpaper,colorhighlight]{book}
+
+\usepackage{alltt}
+\usepackage{cite}
+\usepackage{plain}
+\usepackage{hyperref}
+\usepackage{varioref}
+\usepackage{array}
+\usepackage{xypic}
+\usepackage{color}
+\usepackage{sectsty}
+\usepackage{fancyhdr}
+\usepackage{graphics}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{makeidx}
+
+\makeindex
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
+    \renewcommand{\footrulewidth}{0pt}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+\pagestyle{fancy}
+
+\fancyhf{}
+\fancyhead[L]{ \usefont{OT1}{phv}{b}{n}\selectfont \leftmark}
+\fancyhead[R]{ \usefont{OT1}{phv}{b}{n}\selectfont \rightmark }
+\fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\chaptermark}[1]{%
+	\markboth{#1}{}}
+
+\renewcommand{\sectionmark}[1]{%
+	\markright{#1\ : \thesection}}
+
+\allsectionsfont{\usefont{OT1}{phv}{b}{n}\selectfont}
+
+%%%%%%
+%%%%%%
+
+%\renewcommand{\theFancyVerbLine}{\small\textbf{\arabic{FancyVerbLine}}}
+
+\DefineVerbatimEnvironment%
+  {xmlCodelisting}{Verbatim}
+  {frame=single, 
+   framesep=5pt, 
+   rulecolor=\color{light}, 
+   numbers=left, 
+   numbersep=5pt
+   commandchars=\\\{\}}
+
+\DefineVerbatimEnvironment%
+  {tagExample}{Verbatim}
+  {frame=single, 
+   framesep=5pt, 
+   formatcom=\color{light},
+   rulecolor=\color{light},
+   commandchars=\\\{\}}
+
+%\lstnewenvironment{xmlCodelisting}%
+  %{\lstset{labelstep=1, language=HTML, frame=single, basicstyle=\footnotesize}}
+  %{}
+
+%\lstnewenvironment{simpleXmlCodelisting}%
+  %{\lstset{labelstep=0, language=HTML, basicstyle=\small}}
+  %{}
+%
+%\lstnewenvironment{javaCodelisting}%
+  %{\lstset{labelstep=1, language=Java, frame=single, basicstyle=\footnotesize}}
+  %{}
+
+
+\definecolor{light}{rgb}{0.5,0.5,0.5}
+
+\newenvironment{tagDesc}[1]%
+        {
+                \begin{center}
+                \begin{tabular}{p{0.28\textwidth}cp{0.6\linewidth}}
+                \hline 
+                \multicolumn{3}{r}{\texttt{<#1>}\hspace{1em}\rule[-0.6em]{0em}{1.7em}}\\
+        } {
+                \end{tabular}
+                \end{center}
+        }
+
+\newcommand{\attr}[2] { \texttt{#1} & \vline & {\small#2} \\ \hline }
+\newcommand{\childTag}[2] { \texttt{<#1>} & \vline & {\small#2} \\ \hline }
+\newcommand{\abstractChildTag}[2] { \textit{\texttt{<ns:#1>}} & \vline & {\small#2} \\ \hline }
+
+\newcommand{\attrs}{
+        \hline 
+        \textbf{\textsf{Attribute}} & \vline & \textbf{\textsf{Description}}\\ 
+        \hline 
+}
+
+\newcommand{\noattrs}{
+        \multicolumn{3}{c}{\emph{No attributes}}\\
+        \hline
+}
+
+\newcommand{\tags}{ 
+        \\
+        \hline
+        \textbf{\textsf{Tag}} & \vline & \textbf{\textsf{Description}}\\ 
+        \hline 
+}
+
+
+\let\footnoterule\hrule
+
+\newcommand{\indexClass}[1]{\texttt{#1}\index{#1@\texttt{#1} class}}
+\newcommand{\class}[1]{\texttt{#1}}
+
+\newcommand{\indexTag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
+\newcommand{\tag}[1]{\texttt{#1}}
+
+\makeatletter
+\renewcommand{\@makefntext}[1]%
+	{\noindent\makebox[1.8em][r]{\@makefnmark}#1}
+\makeatother
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+\usefont{OT1}{phv}{b}{n}\selectfont
+\rule{0pt}{3in}
+
+
+\noindent
+{\Huge Drools Usage Manual}\\
+\rule{\textwidth}{1pt}
+
+\vspace{8pt}
+\noindent
+\usefont{OT1}{phv}{m}{n}\selectfont
+{\large version \Large2.0-beta-12}\\
+{\small{generated \today}}
+
+\vspace{2in}
+\begin{flushright}
+\usefont{OT1}{phv}{b}{n}\selectfont
+\noindent
+{\Large The Drools Project}\\
+\rule{2in}{0.5pt}
+
+\vspace{6pt}
+{\Large drools.org}
+\end{flushright}
+\end{titlepage} 
+
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+\listoffigures
+\thispagestyle{empty}
+
+\mainmatter
+
+%\include{introduction}
+\include{functional_overview}
+\include{architecture}
+\include{drl}
+
+%\include{usage}
+%\include{drl}
+%\include{semantic-modules}
+%\include{assembly}
+%\include{semantics}
+\include{algo}
+
+\appendix
+
+\include{project-info}
+\include{license}
+
+\bibliography{manual}
+\bibliographystyle{acm}
+
+\printindex
+
+\end{document}
