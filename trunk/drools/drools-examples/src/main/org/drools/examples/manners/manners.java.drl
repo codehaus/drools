@@ -17,11 +17,9 @@ employs a depth-first search approach to the problem.
           xmlns="http://drools.org/rules"
           xmlns:java="http://drools.org/semantics/java">
 
-        <imports>
-            <java:import>java.util.*</java:import>
-            <java:import>org.drools.examples.manners.model.Seating</java:import>
-            <java:import>org.drools.examples.manners.model.Seat</java:import>
-        </imports>
+        <java:import>java.util.*</java:import>
+        <java:import>org.drools.examples.manners.model.Seating</java:import>
+        <java:import>org.drools.examples.manners.model.Seat</java:import>
 
        <!--
        Initialize the root seating element.
