@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.6 2002-08-18 19:17:51 bob Exp $
+ $Id: SemanticModule.java,v 1.7 2002-08-18 23:24:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -77,8 +77,19 @@ public interface SemanticModule
      */
     Set getObjectTypeNames();
 
+    /** Retrieve a semantic condition by name.
+     *
+     *  @param name the name.
+     *
+     *  @return The condition implementation or <code>null</code>
+     *          if none is bound to the name.
+     */   
     Class getCondition(String name);
 
+    /** Retrieve the set of all condition names.
+     *
+     *  @return The set of names.
+     */
     Set getConditionNames();
 
     /** Retrieve a semantic extractor by name.

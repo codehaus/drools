@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeInput.java,v 1.2 2002-08-10 20:57:34 bob Exp $
+ $Id: JoinNodeInput.java,v 1.3 2002-08-18 23:24:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,6 @@ import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.FactException;
-import org.drools.reteoo.TupleSink;
 
 /** Input <code>TupleSinkImpl</code> for a <code>JoinNodeImpl</code>.
  *
