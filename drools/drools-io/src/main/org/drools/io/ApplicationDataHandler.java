@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ApplicationDataHandler.java,v 1.1 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: ApplicationDataHandler.java,v 1.2 2004-12-13 20:54:51 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -95,7 +95,8 @@ class ApplicationDataHandler extends BaseAbstractHandler implements Handler
         ApplicationData applicationData;
         try
         {
-            applicationData = factory.newApplicationData( config );
+            applicationData = factory.newApplicationData( config, ruleSetReader.getRuleSet( )
+                .getImports( ) );
             ruleSetReader.getRuleSet( ).addApplicationData( applicationData );
         }
         catch ( FactoryException e )
