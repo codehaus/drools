@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
-$Id: FactorConsequence.java,v 1.1 2004-07-22 20:45:19 dbarnett Exp $
+$Id: FactorConsequence.java,v 1.2 2004-08-02 23:38:32 dbarnett Exp $
 
 Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -51,23 +51,23 @@ import org.drools.spi.Tuple;
 
 public class FactorConsequence implements Consequence
 {
-    private final long prime;
+    private final int prime;
 
-    public FactorConsequence(long prime)
+    public FactorConsequence(int prime)
     {
         this.prime = prime;
     }
 
     public void invoke(Tuple tuple, WorkingMemory workingMemory)
     {
-        Number f = (Number) tuple.get(PrimeFactors.factorsDecl);
+        Number number = (Number) tuple.get(PrimeFactors.numberDecl);
 
         do
         {
-            f.addFactor(prime);
-            f.setQuotient(f.getQuotient() / prime);
+            number.addFactor(prime);
+            number.setQuotient(number.getQuotient() / prime);
         }
-        while (f.getQuotient() % prime == 0);
+        while (number.getQuotient() % prime == 0);
     }
 
     public String toString()

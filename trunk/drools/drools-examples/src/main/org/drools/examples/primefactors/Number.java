@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
-$Id: Number.java,v 1.1 2004-07-22 20:45:19 dbarnett Exp $
+$Id: Number.java,v 1.2 2004-08-02 23:38:32 dbarnett Exp $
 
 Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -50,11 +50,11 @@ import java.util.List;
 
 public class Number
 {
-    private long value;
-    private long quotient = 1;
+    private int value;
+    private int quotient = 1;
     private List factors;
 
-    public Number(long value)
+    public Number(int value)
     {
         this.value = quotient = value;
         factors = new LinkedList();
@@ -65,29 +65,29 @@ public class Number
         return factors;
     }
 
-    public void addFactor(long factor)
+    public void addFactor(int factor)
     {
-        factors.add(new Long(factor));
+        factors.add(new Integer(factor));
     }
 
-    public long getValue()
+    public int getValue()
     {
         return value;
     }
 
-    public long getQuotient()
+    public int getQuotient()
     {
         return quotient;
     }
 
-    public void setQuotient(long value)
+    public void setQuotient(int value)
     {
         quotient = value;
     }
 
     public String toString()
     {
-        return "Number(" + value + " -> " + factors + ")";
+        return "Number(" + value + " -> " + factors + ")@" +
+            Integer.toHexString(hashCode());
     }
 }
-

@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
-$Id: FactorCondition.java,v 1.1 2004-07-22 20:45:19 dbarnett Exp $
+$Id: FactorCondition.java,v 1.2 2004-08-02 23:38:32 dbarnett Exp $
 
 Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -52,22 +52,22 @@ import org.drools.spi.Tuple;
 public class FactorCondition implements Condition
 {
 
-    private long prime;
+    private int prime;
 
-    public FactorCondition(long prime)
+    public FactorCondition(int prime)
     {
         this.prime = prime;
     }
 
     public boolean isAllowed(Tuple tuple)
     {
-        return ((Number) tuple.get(PrimeFactors.factorsDecl))
+        return ((Number) tuple.get(PrimeFactors.numberDecl))
             .getQuotient() % prime == 0;
     }
 
     public Declaration[] getRequiredTupleMembers()
     {
-        return new Declaration[] { PrimeFactors.factorsDecl };
+        return new Declaration[] { PrimeFactors.numberDecl };
     }
 
     public String toString()

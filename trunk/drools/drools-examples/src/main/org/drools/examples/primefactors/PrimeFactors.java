@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
-$Id: PrimeFactors.java,v 1.1 2004-07-22 20:45:19 dbarnett Exp $
+$Id: PrimeFactors.java,v 1.2 2004-08-02 23:38:32 dbarnett Exp $
 
 Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -45,13 +45,19 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
+import java.util.zip.GZIPInputStream;
 
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.WorkingMemory;
+import org.drools.io.RuleSetReader;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -59,169 +65,253 @@ import org.drools.semantics.java.ClassObjectType;
 
 public class PrimeFactors
 {
-    private static final ClassObjectType factorsType =
+    /** A list of the first X primes. */
+    private static final String PRIMES_FILE = "primes.txt.gz";
+
+    /** . */
+    private static final String DRL_FILE = "primes.java.drl";
+
+    /** . */
+    private static final ClassObjectType numberType =
         new ClassObjectType(Number.class);
 
-    static final Declaration factorsDecl = new Declaration(factorsType, "f");
+    /** . */
+    static final Declaration numberDecl = new Declaration(numberType, "Number");
 
-    /** Default number of iterations. */
-    private static long iterations = 1000;
+    /** Default number of numberOfRules. */
+    private static int numberOfRules = 100;
 
-    /** Set this to true to generate additional debugging output. */
-    private static boolean debug = false;
+    /** Default number of numberOfFacts. */
+    private static int numberOfFacts = 1000;
 
-    /** An array of the first 170 prime numbers. */
-    private static final long[] primes = {
-          2,     3,     5,     7,    11,    13,    17,    19,    23,    29,
-         31,    37,    41,    43,    47,    53,    59,    61,    67,    71,
-         73,    79,    83,    89,    97,   101,   103,   107,   109,   113,
-        127,   131,   137,   139,   149,   151,   157,   163,   167,   173,
-        179,   181,   191,   193,   197,   199,   211,   223,   227,   229,
-        233,   239,   241,   251,   257,   263,   269,   271,   277,   281,
-        283,   293,   307,   311,   313,   317,   331,   337,   347,   349,
-        353,   359,   367,   373,   379,   383,   389,   397,   401,   409,
-        419,   421,   431,   433,   439,   443,   449,   457,   461,   463,
-        467,   479,   487,   491,   499,   503,   509,   521,   523,   541,
-        547,   557,   563,   569,   571,   577,   587,   593,   599,   601,
-        607,   613,   617,   619,   631,   641,   643,   647,   653,   659,
-        661,   673,   677,   683,   691,   701,   709,   719,   727,   733,
-        739,   743,   751,   757,   761,   769,   773,   787,   797,   809,
-        811,   821,   823,   827,   829,   839,   853,   857,   859,   863,
-        877,   881,   883,   887,   907,   911,   919,   929,   937,   941,
-        947,   953,   967,   971,   977,   983,   991,   997,  1009,  1013
-    };
+    /** Default random seed. */
+    private static long randomSeed = 0;
 
+    /** Set this to true to generate additional output. */
+    private static boolean verbose = false;
+
+    /** An array of the first X prime numbers. */
+    private static int[] primes;
+
+    /** Used for recording elapsed time measurements. */
+    private static long[] timepoint = new long[2];
+
+    /**
+     * The main method where all the magic happens.
+     */
     public static void main(String[] args) throws Exception
     {
-        // Parse input arguments
+        // Parse input arguments:
+        // - Number of Rules (args[0])
         if (args.length > 0)
         {
-            iterations = Long.parseLong(args[0]);
+            numberOfRules = Integer.parseInt(args[0]);
         }
-        if (iterations > primes[primes.length - 1])
+        if (numberOfRules < 1)
         {
             System.out.println(
-                "This example only supports factoring numbers less than " +
-                primes[primes.length - 1] + 1);
+                "Please enter a number creater than 0 for the number of rules");
             return;
         }
-        System.out.println("Iterations: " + iterations);
+        System.out.println("Number of Rules: " + numberOfRules);
 
+        // - Number of Facts (args[1])
         if (args.length > 1)
         {
-            debug = Boolean.valueOf(args[1]).booleanValue();
+            numberOfFacts = Integer.parseInt(args[1]);
         }
-        System.out.println("Debug: " + debug);
+        if (numberOfFacts < 0)
+        {
+            System.out.println(
+                "Please enter a positive value for the number of facts.");
+            return;
+        }
+        System.out.println("Number of Facts: " + numberOfFacts);
+
+        // - Random Seed (args[2])
+        if (args.length > 2)
+        {
+            randomSeed = Long.parseLong(args[2]);
+        }
+        if (-1 == randomSeed)
+        {
+            randomSeed = System.currentTimeMillis();
+        }
+        System.out.println("Random Seed: " + randomSeed);
+
+        // - Verbose Output (args[3])
+        if (args.length > 3)
+        {
+            verbose = Boolean.valueOf(args[3]).booleanValue();
+        }
+        System.out.println("Verbose Output: " + verbose);
 
         // Dynamically construct rules based on Array of prime numbers
         RuleSet ruleSet = new RuleSet("Find Prime Number");
 
-        if (debug) System.out.println("Creating rules...");
-        for (int i = 0, max = primes.length; i < max; i++)
+        verbose("");
+        verbose("Reading " + numberOfRules + " primes...");
+        stopwatch(0);
+        readPrimes();
+        verbose("Read " + numberOfRules + " primes" + stopwatch(0));
+
+        verbose("Creating " + numberOfRules + " rules...");
+        for (int i = 0; i < numberOfRules; i++)
         {
             Rule rule = new Rule("Factor by " + primes[i]);
-            rule.addParameterDeclaration(factorsDecl);
+            rule.addParameterDeclaration(numberDecl);
             rule.addCondition(new FactorCondition(primes[i]));
             rule.setConsequence(new FactorConsequence(primes[i]));
             ruleSet.addRule(rule);
         }
-        if (debug) System.out.println("Creatd " + primes.length + "rules");
+        verbose("Created " + numberOfRules + " rules" + stopwatch(0));
 
-        // Build the RuleSet.
+        // Build the RuleSets.
+        verbose("Building RuleBase with " + numberOfRules + " rules...");
         RuleBaseBuilder builder = new RuleBaseBuilder();
         builder.addRuleSet(ruleSet);
+        builder.addRuleSet(
+            new RuleSetReader().read(PrimeFactors.class.getResource(DRL_FILE)));
         RuleBase ruleBase = builder.build();
+        verbose("Built RuleBase with " + numberOfRules + " rules" + stopwatch(0));
+
+        // Determine random set of Facts to assert
+        verbose("Generating " + numberOfFacts + " random numbers to assert...");
+        Random random = new Random(randomSeed);
+        int[] factValues = new int[numberOfFacts];
+        for (int i = 0; i < numberOfFacts; i++)
+        {
+            factValues[i] = random.nextInt(primes[numberOfRules - 1]) + 1;
+            if (factValues[i] < 1)
+            {
+                // Random() should only return numbers greater than or equal to 1
+                System.out.println(
+                    "Programmer Error: factValues[" + i + "]=" + factValues[i]);
+                return;
+            }
+        }
+        primes = null; // Free up unused memory
+        verbose("Generated " + numberOfFacts + " random numbers to assert" +
+            stopwatch(0));
 
         // Example 1
         System.out.println();
-        System.out.println("== Example #1 ========================================");
+        System.out.println(
+            "== Example #1 ========================================");
         System.out.println("foreach Number {");
         System.out.println("    new WorkingMemory();");
         System.out.println("    assertObject();");
         System.out.println("    fireAllRules();");
         System.out.println("}");
-        System.out.println("======================================================");
+        System.out.println(
+            "======================================================");
         List results = new LinkedList();
-        long totalStart = System.currentTimeMillis();
-        for (long i = 1, max = iterations; i < max; i++)
+        stopwatch(0);
+        for (int i = 0; i < numberOfFacts; i++)
         {
-            Number factors = new Number(i);
-
+            stopwatch(1);
             WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-            long start = System.currentTimeMillis();
-
-            workingMemory.assertObject(factors);
+            Number fact = new Number(factValues[i]);
+            workingMemory.assertObject(fact);
             workingMemory.fireAllRules();
             results.addAll(workingMemory.getObjects());
 
-            if (debug) System.out.println(factors + ": " +
-                (System.currentTimeMillis() - start) + "ms");
+            verbose(fact + ":" + stopwatch(1));
         }
-        System.out.println(
-            "Total time: " + (System.currentTimeMillis() - totalStart) + "ms");
+
+        System.out.println("Total time:" + stopwatch(0));
         validate(results);
 
         // Example 2
         System.out.println();
-        System.out.println("== Example #2 ========================================");
+        System.out.println(
+            "== Example #2 ========================================");
         System.out.println("new WorkingMemory();");
         System.out.println("foreach Number {");
         System.out.println("    assertObject();");
         System.out.println("    fireAllRules();");
         System.out.println("}");
-        System.out.println("======================================================");
+        System.out.println(
+            "======================================================");
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-        totalStart = System.currentTimeMillis();
-        for (long i = 1, max = iterations; i < max; i++)
+        stopwatch(0);
+        for (int i = 0; i < numberOfFacts; i++)
         {
-            Number factors = new Number(i);
+            stopwatch(1);
 
-            long start = System.currentTimeMillis();
-
-            workingMemory.assertObject(factors);
+            Number fact = new Number(factValues[i]);
+            workingMemory.assertObject(fact);
             workingMemory.fireAllRules();
 
-            if (debug) System.out.println(factors + ": " +
-                (System.currentTimeMillis() - start) + "ms");
+            verbose(fact + ":" + stopwatch(1));
         }
-        System.out.println(
-            "Total time: " + (System.currentTimeMillis() - totalStart) + "ms");
+
+        System.out.println("Total time:" + stopwatch(0));
         validate(workingMemory.getObjects());
 
         // Example 3
         System.out.println();
-        System.out.println("== Example #3 ========================================");
+        System.out.println(
+            "== Example #3 ========================================");
         System.out.println("new WorkingMemory();");
         System.out.println("foreach Number {");
         System.out.println("    assertObject();");
         System.out.println("}");
         System.out.println("fireAllRules()");
-        System.out.println("======================================================");
+        System.out.println(
+            "======================================================");
         workingMemory = ruleBase.newWorkingMemory();
 
-        long start = System.currentTimeMillis();
+        verbose("Asserting " + numberOfFacts + " facts...");
+        stopwatch(0);
 
-        if (debug) System.out.println("Asserting " + iterations + " numbers...");
-        for (long i = 1, max = iterations; i < max; i++)
+        for (int i = 0; i < numberOfFacts; i++)
         {
-            workingMemory.assertObject(new Number(i));
+            workingMemory.assertObject(new Number(factValues[i]));
         }
-        if (debug) System.out.println("Firing all rules...");
+        verbose("Firing all rules...");
         workingMemory.fireAllRules();
 
-        if (debug)
+        if (verbose)
         {
-            for (Iterator i = workingMemory.getObjects().iterator(); i.hasNext(); )
+            for (Iterator i = workingMemory.getObjects().iterator();
+                 i.hasNext();)
             {
                 System.out.println(i.next());
             }
         }
 
-        System.out.println(
-            "Total time: " + (System.currentTimeMillis() - start) + "ms" );
+        System.out.println("Total time:" + stopwatch(0));
         validate(workingMemory.getObjects());
+    }
+
+    /**
+     * Reads (optionally GZipped) file of prime numbers, one prime per line.
+     */
+    private static void readPrimes()
+    {
+        primes = new int[numberOfRules];
+        try {
+            BufferedReader br =
+                new BufferedReader(new InputStreamReader(new GZIPInputStream(
+                    PrimeFactors.class.getResource(PRIMES_FILE).openStream())));
+
+            String line;
+            for (int i = 0; i < numberOfRules; i++)
+            {
+                if (null == (line = br.readLine()))
+                {
+                    throw new IOException(
+                        PRIMES_FILE + " only contained " + i + " primes");
+                }
+                primes[i] = Integer.parseInt(line);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(
+                "Cannot access " + PRIMES_FILE + " properly", e);
+        }
     }
 
     /**
@@ -232,7 +322,7 @@ public class PrimeFactors
     {
         for (Iterator i = objects.iterator(); i.hasNext(); )
         {
-            long product = 1;
+            int product = 1;
             Number number = (Number) i.next();
 
             if (1 != number.getQuotient())
@@ -242,7 +332,7 @@ public class PrimeFactors
 
             for (Iterator j = number.getFactors().iterator(); j.hasNext(); )
             {
-                long factor = ((Long) j.next()).longValue();
+                int factor = ((Integer) j.next()).intValue();
                 product *= factor;
             }
 
@@ -253,5 +343,23 @@ public class PrimeFactors
             }
         }
     }
-}
 
+    private static String stopwatch(int i)
+    {
+        long now = System.currentTimeMillis();
+        String message = " [" + (now - timepoint[i])/1000 + " secs]";
+        timepoint[i] = now;
+        return message;
+    }
+
+    /**
+     * Helper method for printing out verbose messages.
+     */
+    private static void verbose(String message)
+    {
+        if (verbose)
+        {
+            System.out.println(message);
+        }
+    }
+}
