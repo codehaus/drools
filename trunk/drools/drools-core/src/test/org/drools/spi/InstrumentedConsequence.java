@@ -13,6 +13,7 @@ public class InstrumentedConsequence
 
     public InstrumentedConsequence()
     {
+        super();
         this.invokedTuples = new ArrayList();
     }
 

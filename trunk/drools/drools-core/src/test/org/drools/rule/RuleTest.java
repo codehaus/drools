@@ -7,6 +7,13 @@ import org.drools.spi.Consequence;
 import org.drools.spi.Tuple;
 import org.drools.spi.MockObjectType;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectInputStream;
+import java.io.ObjectInput;
 import java.util.Set;
 
 public class RuleTest
@@ -104,9 +111,9 @@ public class RuleTest
         rule.addExtraction( extraction );
 
         Declaration[] paramDecls = rule.getParameterDeclarations();
-
         assertLength( 1,
                       paramDecls );
+
 
         assertContains( paramDecl,
                         paramDecls );
@@ -227,5 +234,47 @@ public class RuleTest
 
         assertSame( consequence,
                     rule.getConsequence() );
+    }
+
+    public void testSerializeRuleSet() throws Exception
+    {
+
+        Rule rule = new Rule( "test-rule" );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+                                                 "paramVar" );
+
+        Declaration localDecl = new Declaration( new MockObjectType( true ),
+                                                 "localVar" );
+
+        Extraction extraction = new Extraction( localDecl,
+                                                null );
+
+        rule.addParameterDeclaration( paramDecl );
+        rule.addExtraction( extraction );
+
+        //add consequence
+        Consequence consequence = new org.drools.spi.InstrumentedConsequence();
+        rule.setConsequence( consequence );
+        rule.setSalience( 42 );
+        rule.setLoadOrder( 22 );
+
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+        ObjectOutput out = new ObjectOutputStream(bos) ;
+        out.writeObject(rule);
+        out.close();
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray();
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        rule = (Rule) in.readObject();
+        in.close();
+
+        assertEquals(42, rule.getSalience());
+        assertEquals(22, rule.getLoadOrder());
+        assertLength(1, rule.getLocalDeclarations());
+        assertLength(1, rule.getParameterDeclarations());
     }
 }
