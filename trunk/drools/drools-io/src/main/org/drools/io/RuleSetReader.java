@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.28 2004-11-05 10:05:03 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.29 2004-11-05 10:10:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -78,7 +78,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.28 2004-11-05 10:05:03 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.29 2004-11-05 10:10:38 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -92,8 +92,6 @@ public class RuleSetReader extends DefaultHandler
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
     private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
-
-    private static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
     // ----------------------------------------------------------------------
     //     Instance members
@@ -653,6 +651,12 @@ public class RuleSetReader extends DefaultHandler
                                      String systemId)
       throws SAXException
     {
+        //Schema files must end with xsd
+        if (!systemId.endsWithIgnoreCase("xsd")))
+        {
+            return null;
+        }
+
         //try the actual location given by systemId
         try
         {
