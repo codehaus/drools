@@ -1,6 +1,5 @@
 package org.drools.semantics.annotation.model;
 
-import org.drools.WorkingMemory;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;

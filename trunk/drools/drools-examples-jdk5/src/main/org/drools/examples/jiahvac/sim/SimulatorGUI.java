@@ -7,37 +7,37 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SimulatorGUI implements Runnable{
-    
+
     private Simulator simulator;
     private int floorCount;
     private JLabel[] labels;
     private JTextField outdoorField = new JTextField();
-    
+
     public SimulatorGUI(Simulator simulator) {
         this.simulator = simulator;
         floorCount = simulator.getFloors().length;
         JFrame frame = createControls();
-        renderFloors();        
+        renderFloors();
         frame.pack();
-        frame.setVisible(true);        
-    }        
-    
+        frame.setVisible(true);
+    }
+
     private JFrame createControls() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(floorCount, 3));
-        
+        JPanel floorsPanel = new JPanel();
+        floorsPanel.setLayout(new GridLayout(floorCount, 1));
+
         labels = new JLabel[floorCount];
         for (int floorIndex = 0; floorIndex < floorCount; floorIndex++) {
             JLabel label = new JLabel();
             label.setFont(new Font("Courier", 0, 12));
             labels[floorIndex] = label;
-            panel.add(labels[floorIndex]);
+            floorsPanel.add(labels[floorIndex]);
         }
-        
+
         String text = String.valueOf(simulator.getOutdoorTempurature());
-        outdoorField.setText(text);   
+        outdoorField.setText(text);
         outdoorField.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ae) {
                     double value = Double.parseDouble(outdoorField.getText());
@@ -47,16 +47,16 @@ public class SimulatorGUI implements Runnable{
 
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
-        content.add(panel, BorderLayout.CENTER);
+        content.add(floorsPanel, BorderLayout.CENTER);
         content.add(outdoorField, BorderLayout.SOUTH);
-        
+
         return frame;
     }
 
     public void run() {
         renderFloors();
     }
-    
+
     private void renderFloors() {
         Floor[] floors = simulator.getFloors();
         for (int i = 0; i < floors.length; i++) {

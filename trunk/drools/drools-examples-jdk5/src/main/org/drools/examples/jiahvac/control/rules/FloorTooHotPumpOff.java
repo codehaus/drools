@@ -1,4 +1,4 @@
-package org.drools.examples.jiahvac.control.pump;
+package org.drools.examples.jiahvac.control.rules;
 
 import org.drools.examples.jiahvac.model.HeatPump;
 import org.drools.examples.jiahvac.model.TempuratureControl;
@@ -13,18 +13,22 @@ import org.drools.semantics.annotation.DroolsConsequence;
 public class FloorTooHotPumpOff
 {
     @DroolsCondition
+    public boolean isPumpOff(@DroolsParameter("pump") HeatPump pump) {
+        return pump.getState() == OFF;
+     }
+
+    @DroolsCondition
+    public boolean isPumpServicingFloor(@DroolsParameter("pump") HeatPump pump,
+                                        @DroolsParameter("thermometer") Thermometer thermometer) {
+        return thermometer.getFloor().getHeatPump() == pump;
+    }
+
+    @DroolsCondition
     public boolean isTooHot(@DroolsParameter("thermometer") Thermometer thermometer,
                             @DroolsParameter("control") TempuratureControl control) {
         return control.isTooHot(thermometer.getReading());
     }
-    
-    @DroolsCondition
-    public boolean isPumpOff(@DroolsParameter("pump") HeatPump pump,
-                             @DroolsParameter("thermometer") Thermometer thermometer) {
-        return pump.getState() == OFF 
-                && thermometer.getFloor().getHeatPump() == pump;
-     }
-    
+
     @DroolsConsequence
     public void consequence(@DroolsParameter("pump") HeatPump pump) {
         pump.setState(COOLING);

@@ -2,7 +2,6 @@ package org.drools.semantics.annotation.model;
 
 import java.lang.reflect.Method;
 
-import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.semantics.annotation.model.PojoConsequence;
 import org.drools.spi.ConsequenceException;
