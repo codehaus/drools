@@ -1,4 +1,5 @@
 \chapter{Drools Rule Language}
+\label{drl}
 
 \section{Introduction}
 
@@ -80,6 +81,7 @@ A rule contains conditions, extractors and exactly one consequence.
 \begin{tagDesc}{rule}
 \attrs
   \attr{name}{Name of the rule.}
+  \attr{salience}{Optional rule salience/priority.}
 \tags
   \childTag{parameter}{Parameter declaration.}
   \childTag{declaration}{Additional local declaration.}
@@ -95,7 +97,8 @@ A rule contains conditions, extractors and exactly one consequence.
 <rule-set xmlns="http://drools.org/rules" 
           name="My First Rule Set">
 
-    \color{black}{<rule name="My First Rule">}
+    \color{black}{<rule name="My First Rule"}
+          \color{black}{salience="10">}
         ...
     \color{black}{</rule>}
 
@@ -187,7 +190,7 @@ duration of the rule.  The truthness duration determines how long
 the rule's conditions must be \emph{continually} true in order
 to activate the rule.
 
-\begin{tagDesc}{declaration}
+\begin{tagDesc}{duration}
 \attrs
   \attr{weeks}{Number of weeks.}
   \attr{days}{Number of days.}

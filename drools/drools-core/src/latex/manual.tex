@@ -48,12 +48,23 @@
 %\renewcommand{\theFancyVerbLine}{\small\textbf{\arabic{FancyVerbLine}}}
 
 \DefineVerbatimEnvironment%
+  {javaCodelisting}{Verbatim}
+  {frame=single, 
+   framesep=5pt, 
+   rulecolor=\color{light}, 
+   numbers=left, 
+   numbersep=5pt,
+   fontsize=\footnotesize,
+   commandchars=\\\{\}}
+
+\DefineVerbatimEnvironment%
   {xmlCodelisting}{Verbatim}
   {frame=single, 
    framesep=5pt, 
    rulecolor=\color{light}, 
    numbers=left, 
-   numbersep=5pt
+   numbersep=5pt,
+   fontsize=\footnotesize,
    commandchars=\\\{\}}
 
 \DefineVerbatimEnvironment%
@@ -121,6 +132,8 @@
 \newcommand{\indexTag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
 \newcommand{\tag}[1]{\texttt{#1}}
 
+\newcommand{\indexMethod}[2]{\texttt{#2}\index{#1@\texttt{#1} class!#2@\texttt{#2}}}
+
 \makeatletter
 \renewcommand{\@makefntext}[1]%
 	{\noindent\makebox[1.8em][r]{\@makefnmark}#1}
@@ -143,7 +156,7 @@
 \noindent
 \usefont{OT1}{phv}{m}{n}\selectfont
 {\large version \Large2.0-beta-12}\\
-{\small{generated \today}}
+{\small{\color{light}{generated \today}}}
 
 \vspace{2in}
 \begin{flushright}
@@ -157,24 +170,25 @@
 \end{flushright}
 \end{titlepage} 
 
-\thispagestyle{empty}
+\pagestyle{empty}
 \tableofcontents
-\thispagestyle{empty}
 \listoffigures
-\thispagestyle{empty}
 
+\pagestyle{fancy}
 \mainmatter
 
 %\include{introduction}
 \include{functional_overview}
 \include{architecture}
 \include{drl}
-
-%\include{usage}
-%\include{drl}
-%\include{semantic-modules}
-%\include{assembly}
-%\include{semantics}
+\include{java}
+\include{python}
+\include{xml}
+\include{client}
+\include{admin}
+\include{smf}
+\include{rule_assembly}
+\include{examples}
 \include{algo}
 
 \appendix
@@ -185,6 +199,11 @@
 \bibliography{manual}
 \bibliographystyle{acm}
 
+{\small
+\pagestyle{plain}
 \printindex
+}
+
+\include{colophon}
 
 \end{document}

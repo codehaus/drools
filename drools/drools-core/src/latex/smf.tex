@@ -1,0 +1,183 @@
+\chapter{Semantic Module Framework}
+\label{smf}
+
+The Semantic Module Framework\index{semantic module framework} (SMF)
+provides an extension point to the Drools Rule Language syntax
+(see Chapter \vref{drl}).  By creating semantic modules,
+domain-specific rule types, object-types, conditions, extractors and consequences
+can be added to the core DRL language.
+
+\section{Semantic components}
+
+\subsection{\indexClass{RuleType}}
+
+\subsection{\indexClass{ObjectType}}
+
+Implementations of \indexClass{ObjectType} allow rules to be
+defined in terms of semantic types. Instead of requiring all
+rules to be defined in terms of Java classes, rules may be
+defined in terms of higher semantics.  For example, while
+all XML documents may be instances of \texttt{org.w3c.dom.Document}
+each document may have a different semantic type based upon
+the name and namespace of the root tag.  Given an \texttt{Object},
+an \indexClass{ObjectType} implementation must simply determine
+if it matches its semantic type (Figure \vref{objecttype}).
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.spi;
+
+public interface ObjectType
+    extends SemanticComponent
+\{
+    boolean matches(Object object);
+\}
+\end{javaCodelisting}
+\caption{\indexClass{ObjectType} interface}
+\label{objecttype}
+\end{figure}
+
+\subsubsection{\indexClass{ConfigurableObjectType}}
+
+Configuration information may be passed to an \indexClass{ObjectType}
+if the implementation is marked with the
+\indexClass{ConfigurableObjectType} interface.
+A \indexMethod{ConfigurableObjectType}{configure(...)} method
+is added by the \indexClass{ConfigurableObjectType} interface.
+through which additional information may be passed
+(Figure~\vref{configurableobjecttype}).
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.smf;
+
+public interface ConfigurableObjectType
+    extends ObjectType
+\{
+    void configure(Configuration config) throws ConfigurationException;
+\}
+\end{javaCodelisting}
+\caption{\indexClass{ConfigurableObjectType} interface}
+\label{configurableobjecttype}
+\end{figure}
+
+
+
+\subsection{\indexClass{Condition}}
+
+\subsubsection{\indexClass{ConfigurableCondition}}
+
+\subsection{\indexClass{Extractor}}
+
+\subsubsection{\indexClass{ConfigurableExtractor}}
+
+\subsection{\indexClass{Condition}}
+
+\subsubsection{\indexClass{ConfigurableCondition}}
+
+\subsection{\indexClass{Consequence}}
+
+\subsubsection{\indexClass{ConfigurableConsequence}}
+
+\section{The \indexClass{Configuration} structure}
+
+For the \texttt{Configurable...} form of the semantic components, 
+configuration information is communicated through a tree of
+\indexClass{Configuration} objects.  Each \class{Configuration}
+object acts as a node in the tree, and may contain the following
+data:
+
+\begin{itemize}
+  \item \textbf{Attributes.} Zero or more name/value pairs of strings
+(Figure~\vref{configuration.attributes}).
+  \item \textbf{Text.} A single string text value
+(Figure~\vref{configuration.text}).
+  \item \textbf{Child \class{Configuration} nodes.} Zero or more named
+    child \class{Configuration} nodes
+(Figure~\vref{configuration.children}).
+\end{itemize}
+
+\begin{figure}
+\begin{javaCodelisting}
+String[] attrNames = config.getAttributeNames();
+String   someValue = config.getAttribute( someName );
+\end{javaCodelisting}
+\caption{Attribute-related operations of \indexClass{Configuration}}
+\label{configuration.attributes}
+\end{figure}
+
+\begin{figure}
+\begin{javaCodelisting}
+String nodeText = config.getText();
+\end{javaCodelisting}
+\caption{Text-related operation of \indexClass{Configuration}}
+\label{configuration.text}
+\end{figure}
+
+\begin{figure}
+\begin{javaCodelisting}
+Configuration[] allChildren    = config.getChildren();
+Configuration   someFirstChild = config.getChild( someName );
+Configuraiton[] someChildren   = config.getChildren( someName );
+\end{javaCodelisting}
+\caption{Child-related operations of \indexClass{Configuration}}
+\label{configuration.children}
+\end{figure}
+
+The tree of \indexClass{Configuration} nodes may be thought of as
+a simplified version of an XML structure.  For configurable semantic
+components used through the DRL (Chapter~\vref{drl}), the root 
+\class{Configuration} is based upon the component's own tag, and
+children tags are represetned by children \class{Configuration}
+nodes.
+
+\section{Semanitc Module Descriptor}
+\label{module.descriptor}
+
+
+\section{\indexClass{SemanticsRepository}}
+
+A \indexClass{SemanticsRepository} manages a set of
+\indexClass{SemanticModule} objects and allows each to be looked-up
+by its URI (Figure~\vref{semanticsrepo}).  Primary a \indexClass{SemanticsRepository} is used by
+a \indexClass{RuleSetReader} (Section~\vref{admin.rules.loading})
+in order to extend the core DRL (Chapter~\vref{drl}) syntax.
+
+\begin{figure}
+\begin{javaCodelisting}
+SemanticsRepository repo       = locateSemanticsRepository();
+SemanticModule[]    modules    = repo.getSemanticModules();
+SemanticModule      someModule = repo.lookupSemanticModule( someUri );
+\end{javaCodelisting}
+\caption{Usage of the \indexClass{SemanticsRepository}}
+\label{semanticsrepo}
+\end{figure}
+
+\section{The \indexClass{DefaultSemanticsRepository} helper}
+
+The \indexClass{DefaultSemanticsRepository} helper class is useful
+in that it contains all conforming semantic modules available on
+the classpath.  Each module that has a module descriptor
+(Section~\vref{module.descriptor}) located as
+\texttt{META-INF/drools-semantics.xml}
+will be automatically discovered by the
+\class{DefaultSemanticsRepository}
+upon first use.  
+
+Being a help class that is initialized once, it follows the
+singleton pattern.  To use the
+\indexClass{DefaultSemanticsRepository}, the
+\indexMethod{DefaultSemanticsRepository}{getInstance()}
+method will retrieve the singleton instance
+(Figure~\vref{defaultsemanticsrepo}).
+
+\begin{figure}
+\begin{javaCodelisting}
+SemanticsRepository repo    = DefaultSemanticsRepository.getInstance();
+SemanticModule[]    modules = repo.getSemanticModules();
+\end{javaCodelisting}
+\caption{Retrieving and using the
+\indexClass{DefaultSemanticsRepository} helper}
+\label{defaultsemanticsrepo}
+\end{figure}
+
