@@ -3,30 +3,25 @@ package org.drools;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.reteoo.Builder;
-import org.drools.reteoo.Rete;
-import org.drools.reteoo.RuleBaseImpl;
 
 public class RuleBaseBuilder
 {
-    private Rete rete;
     private Builder builder;
 
     public RuleBaseBuilder()
     {
+        this.builder = new Builder();
     }
 
     public void addRule(Rule rule)
         throws RuleIntegrationException
     {
-        init();
         this.builder.addRule( rule );
     }
 
     public void addRuleSet(RuleSet ruleSet)
         throws RuleIntegrationException
     {
-        init();
-        
         Rule[] rules = ruleSet.getRules();
 
         for ( int i = 0 ; i < rules.length ; ++i )
@@ -37,20 +32,6 @@ public class RuleBaseBuilder
 
     public RuleBase build()
     {
-        Rete rete= this.rete;
-
-        this.rete    = null;
-        this.builder = null;
-
-        return new RuleBaseImpl( this.rete );
-    }
-
-    void init()
-    {
-        if ( this.rete == null )
-        {
-            this.rete    = new Rete();
-            this.builder = new Builder( this.rete );
-        }
+        return this.builder.buildRuleBase();
     }
 }

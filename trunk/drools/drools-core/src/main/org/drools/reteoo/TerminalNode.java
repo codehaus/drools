@@ -4,6 +4,8 @@ import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.rule.Rule;
 
+import java.io.Serializable;
+
 /** Leaf Rete-OO node responsible for enacting <code>Action</code>s
  *  on a matched <code>Rule</code>.
  *
@@ -13,7 +15,7 @@ import org.drools.rule.Rule;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 class TerminalNode
-    implements TupleSink
+    implements TupleSink, Serializable
 {
     // ------------------------------------------------------------
     //     Instance members

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.28 2003-10-28 06:18:48 bob Exp $
+ $Id: Builder.java,v 1.29 2003-10-28 07:37:18 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.reteoo;
  
  */
 
+import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
@@ -86,9 +87,9 @@ public class Builder
      *
      *  @param rete The network to add to.
      */
-    public Builder(Rete rete)
+    public Builder()
     {
-        this.rete = (Rete) rete;
+        this.rete = new Rete();
     }
 
     // ------------------------------------------------------------
@@ -103,6 +104,15 @@ public class Builder
     public Rete getRete()
     {
         return this.rete;
+    }
+
+    public RuleBase buildRuleBase()
+    {
+        RuleBase ruleBase = new RuleBaseImpl( getRete() );
+
+        this.rete = null;
+
+        return ruleBase;
     }
 
     /** Add a <code>Rule</code> to the network.

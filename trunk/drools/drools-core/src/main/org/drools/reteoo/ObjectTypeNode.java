@@ -6,6 +6,7 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.Iterator;
  *  @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com</a>
  */
 class ObjectTypeNode
+    implements Serializable
 {
     // ------------------------------------------------------------
     //     Instance members

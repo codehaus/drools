@@ -7,6 +7,7 @@ import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.spi.Extractor;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,7 +20,7 @@ import java.util.Iterator;
  */
 class ExtractionNode
     extends TupleSource
-    implements TupleSink
+    implements TupleSink, Serializable
 {
     // ------------------------------------------------------------
     //     Instance members
