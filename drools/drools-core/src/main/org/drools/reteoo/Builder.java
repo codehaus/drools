@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.22 2002-08-22 19:21:58 bob Exp $
+ $Id: Builder.java,v 1.23 2002-11-22 03:08:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -178,12 +178,14 @@ public class Builder
                 continue;
             }
 
-            if ( leafNodes.size() == 1 )
+            if ( leafNodes.size() > 1 )
+            {
+                joinArbitrary( leafNodes );
+            }
+            else if ( ! attachedExtract )
             {
                 break;
             }
-
-            joinArbitrary( leafNodes );
         }
 
         if ( leafNodes.size() != 1 )
@@ -295,9 +297,7 @@ public class Builder
     protected boolean joinForCondition(Set conds,
                                        Set leafNodes)
     {
-        joinArbitrary( leafNodes );
-
-        return true;
+        return joinArbitrary( leafNodes );
     }
 
     /** Join two arbitrary leaves in order to satisfy a filter
@@ -305,11 +305,16 @@ public class Builder
      *
      *  @param leafNodes Available leaf nodes.
      */
-    protected void joinArbitrary(Set leafNodes)
+    protected boolean joinArbitrary(Set leafNodes)
     {
         Iterator leafIter = leafNodes.iterator();
 
         TupleSourceImpl left = (TupleSourceImpl) leafIter.next();
+
+        if ( ! leafIter.hasNext() )
+        {
+            return false;
+        }
 
         leafIter.remove();
 
@@ -321,6 +326,8 @@ public class Builder
                                               right );
 
         leafNodes.add( joinNode );
+
+        return true;
     }
 
     /** Create and attach <code>JoinNode</code>s to the network.
@@ -438,7 +445,7 @@ public class Builder
      *          attached, otherwise <code>false</code>.
      */
     protected boolean attachExtractions(Set factExtracts,
-                                            Set leafNodes)
+                                        Set leafNodes)
     {
         boolean attached      = false;
         boolean cycleAttached = false;
@@ -448,7 +455,7 @@ public class Builder
             cycleAttached = false;
             
             Iterator        extractIter = factExtracts.iterator();
-            Extraction  eachExtract = null;
+            Extraction      eachExtract = null;
             TupleSourceImpl tupleSource = null;
             
             ExtractionNode extractNode = null;
@@ -456,7 +463,7 @@ public class Builder
             while ( extractIter.hasNext() )
             {
                 eachExtract = (Extraction) extractIter.next();
-                
+
                 tupleSource = findMatchingTupleSourceForExtraction( eachExtract,
                                                                     leafNodes );
                 
@@ -468,9 +475,9 @@ public class Builder
                 extractIter.remove();
                 
                 extractNode = new ExtractionNodeImpl( tupleSource,
-                                                         eachExtract.getTargetDeclaration(),
-                                                         eachExtract.getExtractor() );
-                
+                                                      eachExtract.getTargetDeclaration(),
+                                                      eachExtract.getExtractor() );
+
                 leafNodes.remove( tupleSource );
                 leafNodes.add( extractNode );
                 
@@ -533,7 +540,7 @@ public class Builder
                                                                    Set sources)
     {
         Declaration targetDecl = extract.getTargetDeclaration();
-        
+
         Iterator        sourceIter = sources.iterator();
         TupleSourceImpl eachSource = null;
 

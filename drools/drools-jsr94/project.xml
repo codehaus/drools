@@ -228,9 +228,12 @@
 
     <unitTest>
       <includes>
+<!--
         <include>**/*Test.java</include>
+-->
       </includes>
       <excludes>
+        <exclude>**/*.java</exclude>
       </excludes>
 
       <resources>

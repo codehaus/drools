@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ExtractionNodeImpl.java,v 1.3 2002-08-21 05:46:13 bob Exp $
+ $Id: ExtractionNodeImpl.java,v 1.4 2002-11-22 03:08:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,6 +56,7 @@ import org.drools.spi.Extractor;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /** <i> extraction</i> node in the Rete-OO network.
  *
@@ -197,9 +198,38 @@ public class ExtractionNodeImpl extends TupleSourceImpl implements ExtractionNod
                              TupleSet newTuples,
                              WorkingMemory workingMemory) throws FactException
     {
-        propagateModifyTuples( trigger,
-                               newTuples,
-                               workingMemory );
+        Set retractedKeys = new HashSet();
+
+        Iterator  tupleIter = newTuples.iterator();
+        ReteTuple eachTuple = null;
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            retractedKeys.add( eachTuple.getKey() );
+        }
+
+        Iterator keyIter = retractedKeys.iterator();
+        TupleKey eachKey = null;
+
+        while ( keyIter.hasNext() )
+        {
+            eachKey = (TupleKey) keyIter.next();
+
+            propagateRetractTuples( eachKey,
+                                    workingMemory );
+        }
+
+        tupleIter = newTuples.iterator();
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            assertTuple( eachTuple,
+                         workingMemory );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
