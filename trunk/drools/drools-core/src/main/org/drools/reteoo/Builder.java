@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.58 2004-11-28 03:34:05 simon Exp $
+ * $Id: Builder.java,v 1.59 2004-11-28 05:55:46 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -172,12 +172,10 @@ public class Builder
      */
     protected void addRule(Rule rule) throws RuleIntegrationException
     {
-        List factExtracts = new LinkedList( rule.getExtractions( ) );
         List conds = new LinkedList( rule.getConditions( ) );
         List leafNodes = createParameterNodes( rule );
 
         boolean performedJoin;
-        boolean attachedExtract;
         boolean joinedForCondition;
 
         while ( true )
@@ -190,13 +188,9 @@ public class Builder
                                   leafNodes );
             }
 
-            attachedExtract = attachExtractions( rule,
-                                                 factExtracts,
-                                                 leafNodes );
-
             performedJoin = createJoinNodes( leafNodes );
 
-            if ( !performedJoin && !attachedExtract && !conds.isEmpty( ) )
+            if ( !performedJoin && !conds.isEmpty( ) )
             {
                 joinedForCondition = joinForCondition( conds,
                                                        leafNodes );
@@ -207,16 +201,14 @@ public class Builder
                 continue;
             }
 
-            if ( (performedJoin || attachedExtract) && leafNodes.size( ) > 1 )
-            {
-                continue;
-            }
-
             if ( leafNodes.size( ) > 1 )
             {
-                joinArbitrary( leafNodes );
+                if ( !performedJoin )
+                {
+                    joinArbitrary( leafNodes );
+                }
             }
-            else if ( !attachedExtract )
+            else
             {
                 break;
             }
@@ -440,88 +432,6 @@ public class Builder
         }
 
         return false;
-    }
-
-    /**
-     * Create and attach <code>Extraction</code> s to the network.
-     *
-     * <p>
-     * It may not be possible to satisfy all <code>Extraction</code>, in
-     * which case, unsatisfied conditions will remain in the <code>Set</code>
-     * passed in as <code>Extraction</code>.
-     * </p>
-     *
-     * @param factExtracts
-     *            Set of <code>Extractions</code> to attach to the network.
-     * @param leafNodes
-     *            The current attachable leaf nodes of the network.
-     *
-     * @return <code>true</code> if fact extractions have been attached,
-     *         otherwise <code>false</code>.
-     */
-    private boolean attachExtractions(Rule rule,
-                                      List factExtracts,
-                                      List leafNodes)
-    {
-        boolean attached = false;
-        boolean cycleAttached;
-        Declaration targetDeclaration;
-
-        do
-        {
-            cycleAttached = false;
-
-            Iterator extractIter = factExtracts.iterator( );
-            Extraction eachExtract;
-            TupleSource tupleSource;
-
-            ExtractionNode extractNode;
-            while ( extractIter.hasNext( ) )
-            {
-                eachExtract = (Extraction) extractIter.next( );
-
-                tupleSource = findMatchingTupleSourceForExtraction( eachExtract,
-                                                                    leafNodes );
-
-                if ( tupleSource == null )
-                {
-                    continue;
-                }
-
-                extractIter.remove( );
-
-                targetDeclaration = eachExtract.getTargetDeclaration( );
-
-                boolean isParameter = false;
-
-                Iterator it = rule.getParameterDeclarations( ).iterator( );
-                while ( !isParameter && it.hasNext( ) )
-                {
-                    if ( it.next( ).equals( targetDeclaration ) )
-                    {
-                        isParameter = true;
-                    }
-                }
-
-
-                extractNode = new ExtractionNode( tupleSource,
-                                                  targetDeclaration,
-                                                  eachExtract.getExtractor( ),
-                                                  isParameter);
-                leafNodes.remove( tupleSource );
-                leafNodes.add( extractNode );
-
-                cycleAttached = true;
-            }
-
-            if ( cycleAttached )
-            {
-                attached = true;
-            }
-        }
-        while ( cycleAttached );
-
-        return attached;
     }
 
     /**

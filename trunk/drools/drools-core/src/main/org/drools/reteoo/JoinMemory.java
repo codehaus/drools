@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.41 2004-11-28 03:34:05 simon Exp $
+ * $Id: JoinMemory.java,v 1.42 2004-11-28 05:55:46 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
