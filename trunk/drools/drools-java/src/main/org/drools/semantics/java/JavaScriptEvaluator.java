@@ -1,12 +1,12 @@
 package org.drools.semantics.java;
 
-import net.janino.EvaluatorBase;
-import net.janino.Java;
-import net.janino.Mod;
-import net.janino.Parser;
-import net.janino.Scanner;
-import net.janino.util.PrimitiveWrapper;
-import net.janino.DebuggingInformation;
+import org.codehaus.janino.EvaluatorBase;
+import org.codehaus.janino.Java;
+import org.codehaus.janino.Mod;
+import org.codehaus.janino.Parser;
+import org.codehaus.janino.Scanner;
+import org.codehaus.janino.util.PrimitiveWrapper;
+import org.codehaus.janino.DebuggingInformation;
 
 import org.drools.rule.Declaration;
 import org.drools.semantics.base.ClassObjectType;

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.8 2005-01-26 16:14:40 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.9 2005-02-02 02:03:07 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,7 @@ package org.drools.semantics.java;
  *
  */
 
-import net.janino.Scanner;
+import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
@@ -51,7 +51,6 @@ import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
 
 import javax.naming.ConfigurationException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -139,15 +138,15 @@ public class JavaCondition
     {
         try
         {
-            if (this.script == null)
+            if ( this.script == null )
             {
                 this.script = compile( );
-            }            
+            }
             return this.script.invoke( tuple,
-                                  requiredDeclarations,
-                                  new DefaultKnowledgeHelper( rule,
-                                                       tuple ),
-                                  tuple.getWorkingMemory( ).getApplicationDataMap( ) );
+                                       requiredDeclarations,
+                                       new DefaultKnowledgeHelper( rule,
+                                                                   tuple ),
+                                       tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }
         catch ( Scanner.LocatedException e )
         {

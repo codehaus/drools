@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.1 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.2 2005-02-02 02:03:07 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -43,14 +43,15 @@ package org.drools.semantics.java;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashMap;
 
-import net.janino.ByteArrayClassLoader;
-import net.janino.Scanner;
-import net.janino.Java.CompileException;
-import net.janino.Parser.ParseException;
-import net.janino.Scanner.ScanException;
+import org.codehaus.janino.ByteArrayClassLoader;
+import org.codehaus.janino.Scanner;
+import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 
-import net.janino.ClassBodyEvaluator;
+import org.codehaus.janino.ClassBodyEvaluator;
 import org.drools.spi.Functions;
 import org.drools.spi.RuleBaseContext;
 
@@ -61,7 +62,7 @@ import org.drools.rule.RuleSet;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.1 2004-12-14 21:00:28 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.2 2005-02-02 02:03:07 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -101,7 +102,7 @@ public class JavaFunctions
         ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
         if ( classLoader == null )
         {
-            classLoader = new ByteArrayClassLoader(Thread.currentThread().getContextClassLoader());
+            classLoader = new ByteArrayClassLoader( new HashMap(), Thread.currentThread().getContextClassLoader());
             ruleBaseContext.put( "java-classLoader",
                                  classLoader );
         }

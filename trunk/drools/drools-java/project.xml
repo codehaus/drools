@@ -15,7 +15,7 @@
 
         <dependency>
             <id>janino</id>
-            <version>2.0.16</version>
+            <version>2.3.0</version>
             <artifactId>janino</artifactId>
         </dependency>
 
