@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticModule.java,v 1.2 2004-09-17 00:32:24 mproctor Exp $
+ * $Id: SemanticModule.java,v 1.3 2004-10-24 00:54:29 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -146,4 +146,16 @@ public interface SemanticModule
     DurationFactory getDurationFactory(String name);
 
     Set getDurationFactoryNames();
+
+    public void addImportsFactory(String name, ImportsFactory factory);
+
+    public ImportsFactory getImportsFactory(String name);
+
+    public Set getImportsFactoryNames();
+
+    public void addImportEntryFactory(String name, ImportEntryFactory factory);
+
+    public ImportEntryFactory getImportEntryFactory(String name);
+
+    public Set getImportEntryFactoryNames();     
 }
