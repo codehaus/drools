@@ -9,10 +9,7 @@
   <body>
     <title>Frequently-Asked Questions</title>
 
-    <section name="Frequenly-Asked Questions">
-      <p>
-      Here, we try to address the most frequently-asked questions.
-      </p>
+    <section name="General">
     
     <subsection name="What is drools?">
       <p>
@@ -20,6 +17,9 @@
       Rete/Rete-OO algorithm and supported by a pluggable semantics modules.
       </p>
     </subsection>
+    </section>
+
+    <section name="Algorithms">
 
     <subsection name="What's Rete?">
       <p>
@@ -31,14 +31,53 @@
       </p>
     </subsection>
 
-    <subsection name="Relational joins?  I want objects!">
+    <subsection name="What's Rete-OO?">
       <p>
-      Yes, folks want objects, but Rete works in terms of
-      tables and tuples.  Thus, we've modified the algorithm and
-      named our adapatation <b>Rete-OO</b>, which is described
-      in <a href="/pdf/drools-guide.pdf">The <code>drools</code> Guide</a>.
+      Rete-OO is Bob McWhirter's adaptation of Charles Forgy's original Rete 
+      algorithm,
+      tailored for object-oriented constructs.  The base algorithm
+      is the same, but extra nodes in the network have been created.
+      These nodes aide the binding to object-oriented semantics
+      systems.
       </p>
     </subsection>
+
+    <subsection name="How do the graphs differ?">
+      <p>
+      In Rete, all 1-input/1-output nodes were conditions which
+      filtered passing tuples.  
+      </p>
+
+      <p>
+        <img src="./images/rete.gif" />
+      </p>
+      <p>
+      Rete-OO adds two other types of 1-input/1-output node: the <i>parameter</i> and 
+      <i>extraction</i> nodes.
+      </p>
+
+      <p>
+      An object by itself constitutes a fact.  The object may be unnamed and
+      anonymous.  The parameter nodes serve to create the initial tuple wrapper
+      with a single column and then bind the object to the column.  Parameter
+      effectively act as the initial symbol-table populator so that rules have
+      a named handle for accessing the object.
+      </p>
+
+      <p>
+      The extraction nodes serve to model inter-object navigation and relationships.
+      Given a single object, more information can be derived, or <i>extracted</i>,
+      by following references to other objects.  These nodes then store the extracted
+      data in new column in the tuple.
+      </p>
+      <p>
+        <img src="./images/reteoo.gif" />
+      </p>
+    </subsection>
+
+    </section>
+
+    <section name="Semantics">
 
     <subsection name="What's a Semantic Module?">
       <p width="50%">

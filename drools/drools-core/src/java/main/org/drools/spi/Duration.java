@@ -1,7 +1,7 @@
-package org.drools.tags.rule;
+package org.drools.spi;
 
 /*
- $Id: RuleTagLibrary.java,v 1.5 2002-08-22 07:42:39 bob Exp $
+ $Id: Duration.java,v 1.1 2002-08-22 07:42:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,55 +46,21 @@ package org.drools.tags.rule;
  
  */
 
-import org.apache.commons.jelly.TagLibrary;
-
-/** Rule-assembly tag library.
+/** Interface for specifying truthness duration.
+ *
+ *  @see org.drools.rule.Rule#setDuration
+ *  @see org.drools.rule.Rule#getDuration
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- *
- *  @version $Id: RuleTagLibrary.java,v 1.5 2002-08-22 07:42:39 bob Exp $
  */
-public class RuleTagLibrary extends TagLibrary
+public interface Duration
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
+    /** Retrieve the truthness duration.
+     *
+     *  @param tuple The tuple.
+     *
+     *  @return The number of seconds the rule must
+     *          hold true in order to fire.
      */
-    public RuleTagLibrary()
-    {
-        registerTag( "rules",
-                     RulesTag.class );
-
-        registerTag( "semantics",
-                     SemanticsTag.class );
-
-        registerTag( "rule-set",
-                     RuleSetTag.class );
-
-        registerTag( "rule",
-                     RuleTag.class );
-
-        registerTag( "declaration",
-                     DeclarationTag.class );
-
-        registerTag( "parameter",
-                     ParameterTag.class );
-
-        registerTag( "condition",
-                     ConditionTag.class );
-
-        registerTag( "extraction",
-                     ExtractionTag.class );
-
-        registerTag( "consequence",
-                     ConsequenceTag.class );
-
-        registerTag( "duration",
-                     DurationTag.class );
-
-        registerTag( "fixed-duration",
-                     FixedDurationTag.class );
-    }
+    long getDuration(Tuple tuple);
 }

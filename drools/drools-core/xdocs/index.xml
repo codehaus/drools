@@ -31,12 +31,14 @@
     <subsection name="Semantics Provider Interface &amp; Framework">
 
       <p>
-      At the core <code>drools</code> is purely an Rete-OO algorithmic
+      At the core, <code>drools</code> is purely an Rete-OO algorithmic
       engine.  The engine works in terms of very abstracted concepts,
-      such as <code>FilterCondition</code>s, <code>Declaration</code>s and
-      <code>FactExtractor</code>s.  Concrete <i>semantic modules</i>
-      are used to tightly bind application-specific semantics to 
-      the core of the algorithmic engine.
+      such as <a href="./apidocs/org/drools/spi/Condition.html">Condition</a>s, 
+      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectType</a>s and
+      <a href="./apidocs/org/drools/spi/Extractor.html">>Extractor</a>s.  
+      Concrete <i>semantic modules</i> are used to bind 
+      application-specific semantics tightly to the internals of the 
+      algorithmic engine.
       </p>
     </subsection>
   </section>

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaImpl.java,v 1.3 2002-08-10 19:34:32 bob Exp $
+ $Id: AgendaImpl.java,v 1.4 2002-08-22 07:42:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -124,7 +124,7 @@ public class AgendaImpl implements Agenda
 
         AgendaItem item = new AgendaItem( tuple,
                                           rule );
-        if ( rule.getDuration() > 0 )
+        if ( rule.getDuration( tuple ) > 0 )
         {
             this.scheduledItems.add( item );
             scheduleItem( item );
