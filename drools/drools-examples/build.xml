@@ -14,6 +14,11 @@
     <!-- Set default values for the build -->
     <property file="project.properties" />
 
+    <taskdef name="latex" classname="de.prima.shire.anttex.LaTeX">
+        <classpath>
+            <pathelement location="lib/anttex.jar"/>
+        </classpath>
+    </taskdef>
 
     <!-- maven:start -->
 
@@ -160,33 +165,55 @@
     <!-- maven:end -->
 
     <target name="prepareSources">
-
         <copy todir="${maven.prepareSourceDirectory}">
             <fileset dir="${maven.src.dir}/java/main"/>
         </copy>
 
         <antcall target="processAntlrGrammars"/>
-
     </target>
 
     <target name="processAntlrGrammars">
-
         <antlr target="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.g">
-            <classpath id="antlr.tools">
-                <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
+            <classpath>
+                <pathelement location="lib/antlrall-2.7.1.jar"/>
             </classpath>
         </antlr>
 
         <antlr target="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.tree.g">
-            <classpath refid="antlr.tools"/>
-	<!--
-                <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
+            <classpath>
+                <pathelement location="lib/antlrall-2.7.1.jar"/>
             </classpath>
-	-->
         </antlr>
-
     </target>
 
-   <target name="clean" depends="maven:clean"/>
+    <target name="preDocs">
+        <antcall target="processLatexSources"/>
+    </target>
+
+    <target name="processLatexSources">
+        <mkdir dir="${maven.build.dir}/latex"/>
+
+        <copy todir="${maven.build.dir}/latex">
+            <fileset dir="${maven.src.dir}/latex"/>
+        </copy>
+
+        <latex latexfile="rete-oo.tex"
+               pdftex="on"
+               bibtex="on"
+               verbose="off"
+               directory="${maven.build.dir}/latex"/>
+
+        <latex latexfile="drools-impl.tex"
+               pdftex="on"
+               bibtex="on"
+               verbose="off"
+               directory="${maven.build.dir}/latex"/>
+
+        <copy todir="${maven.docs.dest}">
+            <fileset dir="${maven.build.dir}/latex" includes="*.pdf"/>
+        </copy>
+    </target>
+
+    <target name="clean" depends="maven:clean"/>
 
 </project>
