@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <name>Drools</name>
+  <id>drools</id>
+  <currentVersion>1.0-dev</currentVersion>
+  <organization>
+    <name>Werker and Sons</name>
+    <url>http://code.werken.com/</url>
+  </organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.drools</package>
+
+  <shortDescription>Rete Based Rules Engine</shortDescription>
+
+  <description>
+    The drools project is a dynamic rules engine for Java.
+  </description>
+
+  <url>http://www.drools.org/</url>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;atid=418734</issueTrackingUrl>
+  <siteAddress>www.drools.org</siteAddress>
+  <siteDirectory></siteDirectory>
+  <distributionDirectory></distributionDirectory>
+  
+  <!--
+  <repository>
+    <connection>scm:cvs::pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools:drools-2</connection>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/drools/</url>
+  </repository>
+  -->
+
+  <versions/>
+  <branches/>
+
+  <mailingLists>
+    <mailingList>
+      <name>Maven User List</name>
+      <subscribe>turbine-maven-user-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>turbine-maven-user-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://www.mail-archive.com/turbine-maven-user@jakarta.apache.org/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Maven Developer List</name>
+      <subscribe>turbine-maven-dev-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>turbine-maven-dev-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://www.mail-archive.com/turbine-maven-dev@jakarta.apache.org/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Bob McWhirter</name>
+      <id>werken</id>
+      <email>bob@werken.com</email>
+      <organization>Werken and Sons</organization>
+    </developer>
+
+    <developer>
+      <name>James Strachan</name>
+      <id>jstrachan</id>
+      <email>james_strachan@yahoo.co.uk</email>
+      <organization>Spiritsoft</organization>
+    </developer>
+
+    <developer>
+      <name>David Kramer</name>
+      <id>dkramer</id>
+      <email></email>
+      <organization></organization>
+    </developer>
+
+  </developers>
+
+
+  <!-- Need to mark these as compile-time/run-time -->
+
+  <dependencies>
+
+    <dependency>
+      <id>antlr</id>
+      <version>2.7.1</version>
+    </dependency>
+
+    <dependency>
+      <id>bsh</id>
+      <version>1.2-b3</version>
+    </dependency>
+
+    <dependency>
+      <id>dom4j</id>
+      <version>1.4-dev</version>
+    </dependency>
+
+    <dependency>
+      <id>jaxen</id>
+      <version>1.0-FCS-full</version>
+    </dependency>
+
+    <dependency>
+      <id>jdring</id>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <id>saxpath</id>
+      <version>1.0-FCS</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>drools-interest@lists.sourceforge.net</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <!-- Unit test classes -->
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test.java</unitTestPattern>
+    </unitTestPatterns>
+
+    <!-- Integration unit test classes -->
+    <integrationUnitTestPatterns>
+    </integrationUnitTestPatterns>
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <jarResources>
+    </jarResources>
+
+    <jars>
+    </jars>
+  </build>
+</project>
+
