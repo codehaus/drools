@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.11 2003-10-26 22:06:49 bob Exp $
+ $Id: BlockConsequence.java,v 1.12 2003-11-28 06:43:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,9 +49,7 @@ package org.drools.semantics.java;
 import bsh.NameSpace;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
-import org.drools.smf.Configuration;
-import org.drools.smf.ConfigurableConsequence;
-import org.drools.smf.ConfigurationException;
+import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
@@ -59,22 +57,15 @@ import org.drools.spi.Tuple;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.11 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.12 2003-11-28 06:43:01 bob Exp $
  */
-public class BlockConsequence extends Interp implements ConfigurableConsequence
+public class BlockConsequence
+    extends Interp
+    implements Consequence
 {
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
-    /** Construct, partially.
-     *
-     *  @see Interp#setText
-     */
-    public BlockConsequence()
-    {
-        // intentionally left blank
-    }
 
     /** Construct.
      *
@@ -90,16 +81,6 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
     // ------------------------------------------------------------
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.smf.ConfigurableConsequence
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    public void configure(Configuration config,
-                          Declaration[] decls) throws ConfigurationException
-    {
-        setText( config.getText() );
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.drools.spi.Consequence
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -111,11 +92,10 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
      *
      *  @throws ConsequenceException If an error occurs while
      *          attempting to invoke the consequence.
-     *  @throws NullPointerException If the working memory is
-     *          <code>null</code>.
      */
     public void invoke(Tuple tuple,
-                       WorkingMemory workingMemory) throws ConsequenceException
+                       WorkingMemory workingMemory)
+        throws ConsequenceException
     {
         try
         {

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.9 2003-10-26 22:06:49 bob Exp $
+ $Id: ClassObjectType.java,v 1.10 2003-11-28 06:43:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,18 +46,16 @@ package org.drools.semantics.java;
  
  */
 
-import org.drools.smf.Configuration;
-import org.drools.smf.ConfigurableObjectType;
-import org.drools.smf.ConfigurationException;
+import org.drools.spi.ObjectType;
 
 /** Java class semantics <code>ObjectType</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.9 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.10 2003-11-28 06:43:01 bob Exp $
  */
 public class ClassObjectType
-    implements ConfigurableObjectType
+    implements ObjectType
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -69,15 +67,6 @@ public class ClassObjectType
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
-    /** Construct, partially.
-     *
-     *  @see #setType
-     */
-    public ClassObjectType()
-    {
-        this.objectTypeClass = java.lang.Object.class;
-    }
 
     /** Construct.
      *
@@ -91,15 +80,6 @@ public class ClassObjectType
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /** Set the Java object class.
-     *
-     *  @param objectTypeClass The Java object class.
-     */
-    public void setType(Class objectTypeClass)
-    {
-        this.objectTypeClass = objectTypeClass;
-    }
 
     /** Return the Java object class.
      *
@@ -128,35 +108,6 @@ public class ClassObjectType
         return getType().isInstance( object );
     }
 
-    public void configure(Configuration config)
-        throws ConfigurationException
-    {
-        String typeName = config.getAttribute( "type" );
-
-        if ( typeName == null
-             ||
-             typeName.trim().equals( "" ) )
-        {
-            throw new ConfigurationException( "attribute 'type' required" );
-        }
-
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        if ( cl == null )
-        {
-            cl = ClassObjectType.class.getClassLoader();
-        }
-
-        try
-        {
-            setType( cl.loadClass( typeName.trim() ) );
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new ConfigurationException( e );
-        }
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     java.lang.Object
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -180,15 +131,6 @@ public class ClassObjectType
         ClassObjectType that = (ClassObjectType) thatObj;
 
         return ( getType().equals( that.getType() ) );
-    }
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[ClassObjectType: type=" + getType().getName() + "]";
     }
 
     /** Produce the hash of this object.

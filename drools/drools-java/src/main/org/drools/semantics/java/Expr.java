@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.7 2003-10-26 22:06:49 bob Exp $
+ $Id: Expr.java,v 1.8 2003-11-28 06:43:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,8 +47,6 @@ package org.drools.semantics.java;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.smf.Configuration;
-import org.drools.smf.ConfigurationException;
 
 /** Base class for expression-based Java semantic components.
  *
@@ -57,9 +55,10 @@ import org.drools.smf.ConfigurationException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.7 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: Expr.java,v 1.8 2003-11-28 06:43:01 bob Exp $
  */
-public class Expr extends Interp
+public class Expr
+    extends Interp
 {
     // ------------------------------------------------------------
     //     Constants
@@ -80,13 +79,6 @@ public class Expr extends Interp
     // ------------------------------------------------------------
 
     /** Construct.
-     */
-    protected Expr()
-    {
-        this.requiredDecls = EMPTY_DECLS;
-    }
-
-    /** Construct.
      *
      *  @param expr The expression.
      *  @param availDecls The available declarations.
@@ -95,10 +87,13 @@ public class Expr extends Interp
      *          attempting to perform configuration.
      */
     protected Expr(String expr,
-                   Declaration[] availDecls) throws ConfigurationException
+                   Declaration[] availDecls)
+        throws Exception
     {
-        configure( expr,
-                   availDecls );
+        this.requiredDecls = analyze( expr,
+                                      availDecls );
+
+        setText( expr );
     }
 
     // ------------------------------------------------------------
@@ -114,40 +109,14 @@ public class Expr extends Interp
         return getText();
     }
 
-    /** Set the expression.
-     *
-     *  @param expr The expression.
-     */
-    protected void setExpression(String expr)
-    {
-        setText( expr );
-    }
-
-    public void configure(Configuration config,
-                          Declaration[] decls)
-        throws ConfigurationException
-    {
-        configure( config.getText(),
-                   decls );
-    }
-
-    public void configure(String expr,
-                          Declaration[] decls)
-        throws ConfigurationException
+    protected Declaration[] analyze(String expr,
+                                    Declaration[] available)
+        throws Exception
     {
         ExprAnalyzer analyzer = new ExprAnalyzer();
         
-        try
-        {
-            this.requiredDecls = analyzer.analyze( expr,
-                                                   decls );
-        }
-        catch (Exception e)
-        {
-            throw new ConfigurationException( e );
-        }
-
-        setExpression( expr );
+        return analyzer.analyze( expr,
+                                 available );
     }
 
     /** Retrieve the <code>Declaration</code>s required for
