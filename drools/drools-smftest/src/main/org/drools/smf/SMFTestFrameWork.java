@@ -17,10 +17,14 @@ import org.drools.WorkingMemory;
 
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
+import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;
+import org.drools.spi.ConsequenceException;
 import org.drools.spi.Extractor;
+import org.drools.spi.ExtractionException;
 import org.drools.spi.Tuple;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 
 import org.drools.MockWorkingMemory;
 
@@ -193,6 +197,21 @@ public abstract class SMFTestFrameWork  extends TestCase
 
         // test condition syntax with commas - Drools Issue #77
         assertTrue(testCondition(testNumber++, tuple, new Declaration[] {})); //18
+        
+        //test exceptions
+        Rule rule = new Rule("Test Rule 1");
+        tuple.setRule(rule);
+        try
+        {
+            testCondition(testNumber++, tuple, new Declaration[] {});
+            fail("Condition should throw an exception");
+        }
+        catch (ConditionException e)
+        {
+            assertEquals(rule, e.getRule());
+            assertEquals(tests.get(testNumber-1), e.getExpr());
+        }
+        
     }
 
     /**
@@ -295,6 +314,21 @@ public abstract class SMFTestFrameWork  extends TestCase
                                   "org.drools.smf.SMFTestFrameWork$Cheese",
                                   tuple,
                                   new Declaration[] {camembertDecl, stiltonDecl}));
+
+       // 7
+       //test exceptions
+       Rule rule = new Rule("Test Rule 1");
+       tuple.setRule(rule);
+       try
+       {
+           testExtractor(testNumber++, "java.lang.Boolean", tuple, new Declaration[] {camembertDecl});
+           fail("Condition should throw an exception");
+       }
+       catch (ExtractionException e)
+       {
+           assertEquals(rule, e.getRule());
+           assertEquals(tests.get(testNumber-1), e.getExpr());
+       }       
     }
 
     /**
@@ -372,11 +406,26 @@ public abstract class SMFTestFrameWork  extends TestCase
         assertEquals(camembert, map.get("favourite cheese"));
         assertEquals(3, ((Integer) map.get("bites")).intValue());
 
+        // 7
+        //test exceptions
+        Rule rule = new Rule("Test Rule 1");
+        tuple.setRule(rule);
+        try
+        {
+            testConsequence(4, tuple, new Declaration[] {camembertDecl});
+            fail("Condition should throw an exception");
+        }
+        catch (ConsequenceException e)
+        {
+            assertEquals(rule, e.getRule());
+        }           
+
         //test code works no matter what the order of decl are
         /* In java this doesn't actually do anything now as Declaration[]
            in the constructor is ignored, it uses the tuples.getDeclaration()
            of the invoke method to compiled and also invoke
         */
+        /*
         tuple = new MockTuple();
         workingMemory = new MockWorkingMemory();
         tuple.setWorkingMemory(workingMemory);
@@ -390,7 +439,7 @@ public abstract class SMFTestFrameWork  extends TestCase
         tuple.put(camembertDecl, new Cheese("camembert"));
         testConsequence(4, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl});
         testConsequence(5, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl});
-
+        */
     }
 
     /**
@@ -405,6 +454,28 @@ public abstract class SMFTestFrameWork  extends TestCase
         consequence.invoke(tuple, tuple.getWorkingMemory());
     }
 
+    public static boolean conditionExceptionTest() throws Exception
+    {
+        if (true) {
+            throw new Exception("this is a condition exception");   
+        }
+        return true;
+    }  
+
+    public static Boolean extractionExceptionTest() throws Exception
+    {
+        if (true) {
+            throw new Exception("this is an extraction exception");   
+        }
+        return new Boolean(true);
+    }  
+
+    public static void consequenceExceptionTest() throws Exception
+    {
+        if (true) {
+            throw new Exception("this is a consequence exception");   
+        }
+    }       
 
     /**
      * Simple nested class used with testing
@@ -446,6 +517,6 @@ public abstract class SMFTestFrameWork  extends TestCase
         public int hashCode()
         {
             return this.name.hashCode();
-        }
+        }        
     }
 }
