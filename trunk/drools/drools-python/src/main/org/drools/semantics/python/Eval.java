@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.9 2004-08-15 16:09:38 mproctor Exp $
+ $Id: Eval.java,v 1.10 2004-08-15 17:40:00 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -53,8 +53,6 @@ import org.python.util.PythonInterpreter;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
 import org.python.core.__builtin__;
-import org.python.core.PyFunction;
-import org.python.core.PyCode;
 import org.python.core.PyString;
 
 import org.drools.smf.SMFTestFrameWork;
@@ -69,7 +67,7 @@ import java.util.Hashtable;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Eval.java,v 1.9 2004-08-15 16:09:38 mproctor Exp $
+ *  @version $Id: Eval.java,v 1.10 2004-08-15 17:40:00 mproctor Exp $
  */
 public class Eval
     extends Interp
@@ -96,19 +94,6 @@ public class Eval
                "eval" );
 
         this.decls = analyze( availDecls );
-
-/*
-        String evalString = //"from org.drools.smf import SMFTestFrameWork\n" +
-                            //"from org.drools.smf import SMFTestFrameWork\n" +
-                            "def droolsFunction(code, globals, locals):\n" +
-                            "  return eval(code, globals, locals)\n";
-
-        Interp interp = new Interp(evalString, "exec");
-        PythonInterpreter pythonInterpreter = new PythonInterpreter();
-        pythonInterpreter.exec(interp.getCode());
-        evalFunc = (PyFunction) pythonInterpreter.get("droolsFunction", PyFunction.class);
-*/
-
     }
 
     // ------------------------------------------------------------

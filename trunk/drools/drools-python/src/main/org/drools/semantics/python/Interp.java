@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.9 2004-08-15 15:45:42 mproctor Exp $
+ $Id: Interp.java,v 1.10 2004-08-15 17:40:00 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -63,6 +63,7 @@ import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
 
 import org.python.core.Py;
+import org.python.core.PyFunction;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
 import org.python.core.PyString;
@@ -77,7 +78,7 @@ import org.python.util.PythonInterpreter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.9 2004-08-15 15:45:42 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.10 2004-08-15 17:40:00 mproctor Exp $
  */
 public class Interp
 {
@@ -111,6 +112,9 @@ public class Interp
     /** The AST node. */
     private modType node;
 
+    /** ternary function */
+    private PyFunction qFunc;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -129,6 +133,30 @@ public class Interp
                                             type );
         this.code = Py.compile( this.node,
                                 "<jython>");
+/*
+        String qString = "from inspect import isfunction\n" +
+                         "def q(cond,on_true,on_false):\n" +
+                         "  if cond:\n" +
+                         "    if not isfunction(on_true): return on_true \n" +
+                         "    else: return apply(on_true)\n" +
+                         "  else:\n" +
+                         "   if not isfunction(on_false): return on_false\n" +
+                         "   else: return apply(on_false)\n";
+*/
+        String qString = "def q(cond,on_true,on_false):\n" +
+                         "  if cond:\n" +
+                         "    return on_true\n" +
+                         "  else:\n" +
+                         "    return on_false\n";
+
+        modType qNode = (modType) parser.parse( qString,
+                                                "exec");
+        PyCode qCode = Py.compile( qNode,
+                                   "<jython>");
+
+        PythonInterpreter pythonInterpreter = new PythonInterpreter();
+        pythonInterpreter.exec(qCode);
+        qFunc = (PyFunction) pythonInterpreter.get("q", PyFunction.class);
     }
 
     /**
@@ -300,6 +328,8 @@ public class Interp
 
         PyDictionary dict = new PyDictionary();
 
+        dict.setdefault( new PyString("q"), qFunc ); //add tenerary function
+
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         if ( cl == null )
@@ -336,7 +366,6 @@ public class Interp
                     {
                         type =  type.substring(dotPosition + 1);
                     }
-                    System.err.println(type + ":" + clazz);
                     dict.setdefault(new PyString( type.intern()),
                                     Py.java2py(clazz));
                 }
