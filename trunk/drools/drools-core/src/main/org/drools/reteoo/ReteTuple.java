@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.54 2004-11-22 21:26:12 simon Exp $
+ * $Id: ReteTuple.java,v 1.55 2004-11-23 00:26:05 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

@@ -1,58 +1,22 @@
 package org.drools.reteoo;
 
 import junit.framework.TestCase;
+import org.drools.MockObjectType;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 
 public class ReteTupleTest extends TestCase
 {
-    public void testNothing()
+    public void testCanConstructTupleWithExtractedValueFromTupleWithOneExtractedValue()
     {
-        // intentionally left blank
-    }
+        Rule rule = new Rule( "rule" );
+        Declaration declarationB = rule.addLocalDeclaration( "declarationB", new MockObjectType( ) );
+        Declaration declarationC = rule.addLocalDeclaration( "declarationC", new MockObjectType( ) );
+        ReteTuple tupleA = new ReteTuple( new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) ), rule );
+        ReteTuple tupleB = new ReteTuple( tupleA, declarationB, this );
+        ReteTuple tupleC = new ReteTuple( tupleB, declarationC, this );
 
-    /*
-     * public void testConstruct_WithKey() { MockFactHandle handle = new
-     * MockFactHandle( 1 );
-     *
-     * ReteTuple tuple = new ReteTuple( this.rootDecl, handle, this.rootObj );
-     *
-     * assertSame( this.rootObj, tuple.get( this.rootDecl ) );
-     *
-     * assertTrue( tuple.getKey().containsDeclaration( this.rootDecl ) );
-     * assertTrue( tuple.getKey().containsFactHandle( handle ) ); }
-     *
-     * public void testDependsOn() { MockFactHandle handle = new MockFactHandle(
-     * 1 );
-     *
-     * ReteTuple tuple = new ReteTuple( this.rootDecl, handle, this.rootObj );
-     *
-     * MockFactHandle otherHandle = new MockFactHandle( 2 );
-     *
-     * tuple.putOtherColumn( this.otherDecl, this.otherObj );
-     *
-     * assertTrue( tuple.dependsOn( handle ) ); assertTrue( ! tuple.dependsOn(
-     * otherHandle ) ); }
-     *
-     * public void testGetOtherColumns() { MockFactHandle handle = new
-     * MockFactHandle( 1 );
-     *
-     * ReteTuple tuple = new ReteTuple( this.rootDecl, handle, this.rootObj );
-     *
-     * tuple.putOtherColumn( this.otherDecl, this.otherObj );
-     *
-     * Map otherCols = tuple.getOtherColumns();
-     *
-     * assertEquals( 1, otherCols.size() );
-     *
-     * assertTrue( otherCols.containsKey( this.otherDecl ) ); assertTrue( !
-     * otherCols.containsKey( this.rootDecl ) );
-     *
-     * assertSame( this.otherObj, otherCols.get( this.otherDecl ) ); }
-     *
-     * public void testGetFactHandleForObject() { MockFactHandle handle = new
-     * MockFactHandle( 1 );
-     *
-     * ReteTuple tuple = new ReteTuple( this.rootDecl, handle, this.rootObj );
-     *
-     * assertSame( handle, tuple.getFactHandleForObject( this.rootObj ) ); }
-     */
+        assertSame( this, tupleC.get( declarationB ) );
+        assertSame( this, tupleC.get( declarationC ) );
+    }
 }
