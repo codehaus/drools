@@ -108,7 +108,7 @@ public class RoughDom4jTest extends TestCase
             rule.addFactExtraction( new FactExtraction( id,
                                                         bExtract ) );
             
-            rule.setAction( new MyAction( doc1, doc2, id ) );
+            rule.setConsequence( new MyAction( doc1, doc2, id ) );
 
             ruleBase.addRule( rule );
 

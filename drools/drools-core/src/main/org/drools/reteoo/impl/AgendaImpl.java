@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaImpl.java,v 1.2 2002-08-01 18:47:33 bob Exp $
+ $Id: AgendaImpl.java,v 1.3 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 
 import org.drools.reteoo.Agenda;
 import org.drools.rule.Rule;
-import org.drools.spi.ActionInvokationException;
+import org.drools.spi.ConsequenceException;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -294,10 +294,10 @@ public class AgendaImpl implements Agenda
 
     /** Fire the next scheduled <code>Agenda</code> item.
      *
-     *  @throws ActionInvokationException If an error occurs while
+     *  @throws ConsequenceException If an error occurs while
      *          firing an agenda item.
      */
-    public void fireNextItem() throws ActionInvokationException
+    public void fireNextItem() throws ConsequenceException
     {
         if ( isEmpty() )
         {

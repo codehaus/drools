@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.17 2002-07-28 15:49:50 bob Exp $
+ $Id: Agenda.java,v 1.18 2002-08-10 19:34:31 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.spi.ActionInvokationException;
+import org.drools.spi.ConsequenceException;
 
 /** Rule-firing Agenda.
  *
@@ -76,8 +76,8 @@ public interface Agenda
 
     /** Fire the next scheduled <code>Agenda</code> item.
      *
-     *  @throws ActionInvokationException If an error occurs while
+     *  @throws ConsequenceException If an error occurs while
      *          firing an agenda item.
      */
-    void fireNextItem() throws ActionInvokationException;
+    void fireNextItem() throws ConsequenceException;
 }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.5 2002-08-02 22:35:27 bob Exp $
+ $Id: Rule.java,v 1.6 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package org.drools.rule;
  */
 
 import org.drools.spi.Condition;
-import org.drools.spi.Action;
+import org.drools.spi.Consequence;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -85,8 +85,8 @@ public class Rule
     /** Fact extractions */
     private Set factExtractions;
 
-    /** Action. */
-    private Action action;
+    /** Consequence. */
+    private Consequence consequence;
 
     /** Truthness duration. */
     private long duration;
@@ -294,23 +294,23 @@ public class Rule
         return this.factExtractions;
     }
 
-    /** Set the <code>Action</code> that is associated with the
+    /** Set the <code>Consequence</code> that is associated with the
      *  successful match of this rule.
      *
-     *  @param action The <code>Action</code> to attach to this <code>Rule</code>.
+     *  @param consequence The <code>Consequence</code> to attach to this <code>Rule</code>.
      */
-    public void setAction(Action action)
+    public void setConsequence(Consequence consequence)
     {
-        this.action = action;
+        this.consequence = consequence;
     }
 
-    /** Retrieve the <code>Action</code> associated with this <code>Rule</code>.
+    /** Retrieve the <code>Consequence</code> associated with this <code>Rule</code>.
      *
-     *  @return The <code>Action</code>.
+     *  @return The <code>Consequence</code>.
      */
-    public Action getAction()
+    public Consequence getConsequence()
     {
-        return this.action;
+        return this.consequence;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

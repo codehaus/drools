@@ -22,7 +22,7 @@ class ThenHandler extends BaseRuleSetHandler
 
         Rule rule = getReader().getCurrentRule();
 
-        rule.setAction( new BeanShellAction( thenBlock ) );
+        rule.setConsequence( new BeanShellAction( thenBlock ) );
     }
 }
 
