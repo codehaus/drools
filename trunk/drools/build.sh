@@ -1,3 +1,4 @@
+#!/bin/bash
 
 VERSION=2.0-beta-12
 JAVADOC=javadoc
@@ -38,7 +39,7 @@ target_all()
 
 target_site()
 {
-  build javadoc pdf
+  # build javadoc pdf
 
   echo "building site"
 
@@ -79,10 +80,10 @@ generate_root_page()
 
   echo "" > $out
 
-  cat $BASE/lib/site/first.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g >> $out
+  cat $BASE/lib/site/first.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
   generate_root_nav $page $out
   cat $BASE/lib/site/middle.html >> $out
-  cat ./site/$page | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g >> $out
+  cat ./site/$page | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
   cat $BASE/lib/site/last.html >> $out
 }
 
@@ -660,5 +661,7 @@ else
 fi
 
 BASE=$PWD
+export NOW_DAY="$(date +'%d')"
+export NOW_MONTH="$(date +'%B')"
 
 build $targets
