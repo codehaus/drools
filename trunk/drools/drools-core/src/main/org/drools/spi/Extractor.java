@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Extractor.java,v 1.1 2002-08-18 19:17:51 bob Exp $
+ $Id: Extractor.java,v 1.2 2002-08-19 00:38:43 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,14 +52,14 @@ import org.drools.rule.Declaration;
  *
  *  @see Tuple
  *  @see org.drools.rule.Declaration
- *  @see org.drools.rule.FactExtraction
+ *  @see org.drools.rule.Extraction
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public interface Extractor extends SemanticComponent
 {
     /** Retrieve the array of <code>Declaration</code>s required
-     *  by this <code>FactExtractor</code> to perform its duties.
+     *  by this <code>Extractor</code> to perform its duties.
      *
      *  @return The array of <code>Declarations</code> expected
      *          on incoming <code>Tuple</code>s.

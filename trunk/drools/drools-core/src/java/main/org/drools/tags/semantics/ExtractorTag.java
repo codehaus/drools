@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: ExtractorTag.java,v 1.2 2002-08-18 19:17:51 bob Exp $
+ $Id: ExtractorTag.java,v 1.3 2002-08-19 00:38:43 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,9 +51,9 @@ import org.drools.smf.SimpleSemanticModule;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 
-/** Defines a <code>FactExtractor</code>.
+/** Defines a <code>Extractor</code>.
  *
- *  @see org.drools.spi.FactExtractor
+ *  @see org.drools.spi.Extractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
