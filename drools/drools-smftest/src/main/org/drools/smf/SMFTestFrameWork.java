@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.24 2004-11-28 20:01:13 mproctor Exp $
+ * $Id: SMFTestFrameWork.java,v 1.25 2004-12-04 02:46:38 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,19 +40,6 @@ package org.drools.smf;
  *
  */
 
-import junit.framework.TestCase;
-import org.drools.MockTuple;
-import org.drools.MockWorkingMemory;
-import org.drools.WorkingMemory;
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.spi.Condition;
-import org.drools.spi.ConditionException;
-import org.drools.spi.Consequence;
-import org.drools.spi.ConsequenceException;
-import org.drools.spi.ObjectType;
-import org.drools.spi.Tuple;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -62,6 +49,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import junit.framework.TestCase;
+
+import org.drools.MockWorkingMemory;
+import org.drools.WorkingMemory;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.spi.Condition;
+import org.drools.spi.ConditionException;
+import org.drools.spi.Consequence;
+import org.drools.spi.ConsequenceException;
+import org.drools.spi.MockTuple;
+import org.drools.spi.ObjectType;
+import org.drools.spi.Tuple;
 
 /**
  * @author mproctor
