@@ -1,7 +1,7 @@
-package org.drools.io;
+package org.drools.tags.rule;
 
 /*
- $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
+ $Id: RuleSetTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,29 +46,31 @@ package org.drools.io;
  
  */
 
-import org.drools.smf.SemanticModule;
-import org.drools.tags.semantics.SemanticsTagLibrary;
+import org.drools.rule.RuleSet;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.parser.XMLParser;
 
-import java.io.IOException;
-import java.net.URL;
-
-/** Loads <code>SemanticModule</code> definition from XML descriptor.
+/** Construct a <code>RuleSet</code>.
+ *
+ *  @see RuleSet
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuleSetTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
  */
-public class SemanticsLoader
+public class RuleSetTag extends RuleTagSupport
 {
     // ------------------------------------------------------------
-    //     Constants
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Name of smf descriptor. */
-    public static final String DESCRIPTOR_NAME = "semantics.xml";
+    /** Rule-set name. */
+    private String name;
+
+    /** The rule-set. */
+    private RuleSet ruleSet;
+
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -76,62 +78,79 @@ public class SemanticsLoader
 
     /** Construct.
      */
-    public SemanticsLoader()
+    public RuleSetTag()
     {
-        // intentionally left blank.
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Load a <code>SemanticModule</code> deifnition from a URL.
+    /** Set the <code>RuleSet</code> name.
      *
-     *  @param packageName The java package containing the module.
-     *
-     *  @return The loaded semantic module or <code>null</code> if none found.
-     *
-     *  @throws IOException If an IO errors occurs.
-     *  @throws Exception If an error occurs evaluating the definition.
+     *  @param name The name.
      */
-    public SemanticModule load(String packageName) throws IOException, Exception
+    public void setName(String name)
     {
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        if ( cl == null )
-        {
-            cl = ClassLoader.getSystemClassLoader();
-        }
-
-        String moduleDescriptor = packageName.replace( '.',
-                                                       '/' );
-        moduleDescriptor += "/" + DESCRIPTOR_NAME;
-
-        System.err.println( "descriptor: " + moduleDescriptor );
-
-        URL url = cl.getResource( moduleDescriptor );
-
-        if ( url == null )
-        {
-            return null;
-        }
-
-        XMLParser parser = new XMLParser();
-
-        JellyContext context = new JellyContext();
-
-        context.registerTagLibrary( "http://drools.org/semantic-module",
-                                    new SemanticsTagLibrary() );
-
-        parser.setContext( context );
-
-        Script script = parser.parse( url.toExternalForm() );
-        
-        XMLOutput output = XMLOutput.createXMLOutput( System.err );
-        
-        script.run( context,
-                    output );
-
-        return (SemanticModule) context.getVariable( "org.drools.semantic-module" );
+        this.name = name;
     }
-}     
+
+    /** Retrieve the <code>RuleSet</code> name.
+     *
+     *  @return The name.
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
+
+    /** Retrieve the <code>RuleSet</code>.
+     *
+     *  @return The rule-set.
+     */
+    public RuleSet getRuleSet()
+    {
+        return this.ruleSet;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Perform this tag.
+     *
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
+     */
+    public void doTag(XMLOutput output) throws Exception
+    {
+        requiredAttribute( "name",
+                           this.name );
+
+        this.ruleSet = new RuleSet( this.name );
+
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      this.ruleSet );
+        }
+
+        getContext().setVariable( "org.drools.rule-set",
+                                  this.ruleSet );
+
+        invokeBody( output );
+    }
+}

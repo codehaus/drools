@@ -1,7 +1,7 @@
-package org.drools.io;
+package org.drools.tags.rule;
 
 /*
- $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
+ $Id: RuleTagSupport.java,v 1.1 2002-08-19 16:43:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,92 +46,87 @@ package org.drools.io;
  
  */
 
-import org.drools.smf.SemanticModule;
-import org.drools.tags.semantics.SemanticsTagLibrary;
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.parser.XMLParser;
+import org.apache.commons.jelly.TagSupport;
+import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
-import java.io.IOException;
-import java.net.URL;
-
-/** Loads <code>SemanticModule</code> definition from XML descriptor.
+/** Support for rule tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuleTagSupport.java,v 1.1 2002-08-19 16:43:46 bob Exp $
  */
-public class SemanticsLoader
+public abstract class RuleTagSupport extends TagSupport
 {
-    // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Name of smf descriptor. */
-    public static final String DESCRIPTOR_NAME = "semantics.xml";
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      */
-    public SemanticsLoader()
+    protected RuleTagSupport()
     {
-        // intentionally left blank.
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Load a <code>SemanticModule</code> deifnition from a URL.
+    /** Retrieve the current <code>RuleSet</code>.
      *
-     *  @param packageName The java package containing the module.
-     *
-     *  @return The loaded semantic module or <code>null</code> if none found.
-     *
-     *  @throws IOException If an IO errors occurs.
-     *  @throws Exception If an error occurs evaluating the definition.
+     *  @return The current rule-set or <code>null</code> if
+     *          no rule-set is in scope.
      */
-    public SemanticModule load(String packageName) throws IOException, Exception
+    protected RuleSet getRuleSet() throws JellyException
     {
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        RuleSetTag ruleSetTag = (RuleSetTag) findAncestorWithClass( RuleSetTag.class );
 
-        if ( cl == null )
-        {
-            cl = ClassLoader.getSystemClassLoader();
-        }
-
-        String moduleDescriptor = packageName.replace( '.',
-                                                       '/' );
-        moduleDescriptor += "/" + DESCRIPTOR_NAME;
-
-        System.err.println( "descriptor: " + moduleDescriptor );
-
-        URL url = cl.getResource( moduleDescriptor );
-
-        if ( url == null )
+        if ( ruleSetTag == null )
         {
             return null;
         }
 
-        XMLParser parser = new XMLParser();
-
-        JellyContext context = new JellyContext();
-
-        context.registerTagLibrary( "http://drools.org/semantic-module",
-                                    new SemanticsTagLibrary() );
-
-        parser.setContext( context );
-
-        Script script = parser.parse( url.toExternalForm() );
-        
-        XMLOutput output = XMLOutput.createXMLOutput( System.err );
-        
-        script.run( context,
-                    output );
-
-        return (SemanticModule) context.getVariable( "org.drools.semantic-module" );
+        return ruleSetTag.getRuleSet();
     }
-}     
+
+    /** Retrieve the current <code>Rule<code>.
+     *
+     *  @return The current rule.
+     *
+     *  @throws JellyException If no rule can be found.
+     */
+    protected Rule getRule() throws JellyException
+    {
+        RuleTag ruleTag = (RuleTag) findAncestorWithClass( RuleSetTag.class );
+
+        if ( ruleTag == null )
+        {
+            throw new JellyException( "No rule available" );
+        }
+
+        return ruleTag.getRule();
+    }
+
+    /** Check required attribute.
+     *
+     *  @param name Attribute name.
+     *  @param value Attribute value.
+     *
+     *  @throws MissingAttributeException If the value is either <code>null</code>
+     *          or contains only whitespace.
+     */
+    protected void requiredAttribute(String name,
+                                     String value) throws MissingAttributeException
+    {
+        if ( value == null
+             ||
+             value.trim().equals( "" ) )
+        {
+            throw new MissingAttributeException( name );
+        }
+    }
+}

@@ -1,7 +1,7 @@
-package org.drools.io;
+package org.drools.tags.rule;
 
 /*
- $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
+ $Id: SemanticsTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,28 +47,31 @@ package org.drools.io;
  */
 
 import org.drools.smf.SemanticModule;
-import org.drools.tags.semantics.SemanticsTagLibrary;
+import org.drools.io.SemanticsLoader;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.parser.XMLParser;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.JellyException;
 
-import java.io.IOException;
-import java.net.URL;
-
-/** Loads <code>SemanticModule</code> definition from XML descriptor.
+/** Load semantics.
+ *
+ *  @see SemanticModule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: SemanticsTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
  */
-public class SemanticsLoader
+public class SemanticsTag extends TagSupport
 {
     // ------------------------------------------------------------
-    //     Constants
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Name of smf descriptor. */
-    public static final String DESCRIPTOR_NAME = "semantics.xml";
+    /** The module id. */
+    private String module;
+
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -76,62 +79,91 @@ public class SemanticsLoader
 
     /** Construct.
      */
-    public SemanticsLoader()
+    public SemanticsTag()
     {
-        // intentionally left blank.
+        this.module = null;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Load a <code>SemanticModule</code> deifnition from a URL.
+    /** Set the module id to load.
      *
-     *  @param packageName The java package containing the module.
-     *
-     *  @return The loaded semantic module or <code>null</code> if none found.
-     *
-     *  @throws IOException If an IO errors occurs.
-     *  @throws Exception If an error occurs evaluating the definition.
+     *  @param module The module id.
      */
-    public SemanticModule load(String packageName) throws IOException, Exception
+    public void setModule(String module)
     {
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
-        if ( cl == null )
-        {
-            cl = ClassLoader.getSystemClassLoader();
-        }
-
-        String moduleDescriptor = packageName.replace( '.',
-                                                       '/' );
-        moduleDescriptor += "/" + DESCRIPTOR_NAME;
-
-        System.err.println( "descriptor: " + moduleDescriptor );
-
-        URL url = cl.getResource( moduleDescriptor );
-
-        if ( url == null )
-        {
-            return null;
-        }
-
-        XMLParser parser = new XMLParser();
-
-        JellyContext context = new JellyContext();
-
-        context.registerTagLibrary( "http://drools.org/semantic-module",
-                                    new SemanticsTagLibrary() );
-
-        parser.setContext( context );
-
-        Script script = parser.parse( url.toExternalForm() );
-        
-        XMLOutput output = XMLOutput.createXMLOutput( System.err );
-        
-        script.run( context,
-                    output );
-
-        return (SemanticModule) context.getVariable( "org.drools.semantic-module" );
+        this.module = module;
     }
-}     
+
+    /** Retrieve the module id.
+     *
+     *  @return The module id.
+     */
+    public String getModule()
+    {
+        return this.module;
+    }
+
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
+
+    /** Retrieve the <code>SemanticModule</code>.
+     *
+     *  @return The semantic module.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to load the semantic module.
+     */
+    protected SemanticModule getSemanticModule() throws Exception
+    {
+        SemanticsLoader loader = new SemanticsLoader();
+
+        return loader.load( getModule() );
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Perform this tag.
+     *
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
+     */
+    public void doTag(XMLOutput output) throws Exception
+    {
+        if ( this.module == null
+             ||
+             this.module.trim().equals( "" ) )
+        {
+            throw new MissingAttributeException( "module" );
+        }
+
+        SemanticModule semanticModule = getSemanticModule();
+
+        if ( semanticModule == null )
+        {
+            throw new JellyException( "Unknown semantic module: " + this.module );
+        }
+
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      semanticModule );
+        }
+
+        getContext().registerTagLibrary( semanticModule.getUri(),
+                                         new SemanticsTagLibrary( semanticModule ) );
+    }
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+
+<test:suite xmlns:j="jelly:core" 
+            xmlns:test="jelly:junit"
+            xmlns="jelly:org.drools.tags.rule.RuleTagLibrary">
+
+  <!-- 
+    ||
+    ||    <rule-set>
+    ||
+    -->
+
+  <test:case name="testRuleSet_NoName">
+    <j:catch var="e">
+      <rule-set>
+      </rule-set>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown MissingArgumentException: name</test:assert> 
+  </test:case>
+
+  <test:case name="testRuleSet_Valid">
+    <rule-set name="my rule-set">
+    </rule-set>
+    <test:assert test="${org.drools.ruleset != null}">No RuleSet created</test:assert>
+  </test:case>
+
+  <test:case name="testRuleSet_Var">
+    <rule-set name="my rule-set" var="myruleset">
+    </rule-set>
+    <test:assert test="${org.drools.ruleset != null}">No RuleSet created</test:assert>
+    <test:assert test="${myruleset != null}">RuleSet not stored in var</test:assert>
+  </test:case>
+
+  <!-- 
+    ||
+    ||    <rule>
+    ||
+    -->
+
+  <test:case name="testRule_NoName">
+    <j:catch var="e">
+      <rule>
+      </rule>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown MissingArgumentException: name</test:assert> 
+  </test:case>
+
+  <test:case name="testRule_Valid">
+    <rule name="my rule">
+    </rule>
+    <test:assert test="${org.drools.rule != null}">No Rule created</test:assert>
+  </test:case>
+
+  <test:case name="testRule_Var">
+    <rule name="my rule" var="myrule">
+    </rule>
+    <test:assert test="${org.drools.rule != null}">No Rule created</test:assert>
+    <test:assert test="${myrule != null}">Rule not stored in var</test:assert>
+  </test:case>
+
+  <!-- 
+    ||
+    ||    <semantics>
+    ||
+    -->
+
+  <test:case name="testSemantics_NoModule">
+    <j:catch var="e">
+      <semantics/>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown MissingArgumentException: name</test:assert> 
+  </test:case>
+
+  <test:case name="testSemantics_InvalidModule">
+    <j:catch var="e">
+      <semantics module="bork.bork.bork"/>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown Exception</test:assert> 
+  </test:case>
+
+  <test:case name="testSemantics_Valid">
+    <semantics module="org.drools.semantics.java"/>
+  </test:case>
+
+  <test:case name="testSemantics_Var">
+    <semantics module="org.drools.semantics.java" var="javasemantics"/>
+    <test:assert test="${javasemantics != null}">SemanticModule not stored in var</test:assert>
+  </test:case>
+
+  <!-- 
+    ||
+    ||    <declaration>
+    ||
+    -->
+
+  <test:case name="testDeclaration_NoRule">
+    <semantics module="org.drools.semantics.java"/>
+
+    <j:catch var="e">
+      <rule name="test rule">
+        <declaration xmlns:java="http://drools.org/semantics/java">
+          <java:class classname="java.lang.String"/> 
+        </declaration>
+      </rule>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown MissingArgumentException: identifier</test:assert> 
+  </test:case>
+
+
+ 
+
+
+</test:suite>
