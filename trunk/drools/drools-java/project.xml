@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>drools</name>
   <id>drools</id>
-  <currentVersion>2.0-beta-8</currentVersion>
+  <currentVersion>2.0-beta-9</currentVersion>
 
   <organization>
     <name>The Werken Company</name>
@@ -232,14 +232,13 @@
 
     <unitTest>
       <includes>
-<!--
         <include>**/*Test.java</include>
--->
       </includes>
+<!--
       <excludes>
         <exclude>**/*.java</exclude>
       </excludes>
-
+-->
       <resources>
         <resource>
           <directory>src/java/test</directory>

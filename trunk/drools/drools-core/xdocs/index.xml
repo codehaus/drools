@@ -31,7 +31,7 @@
     <subsection name="Semantics Provider Interface &amp; Framework">
 
       <p>
-      At the core, <code>drools</code> is purely an Rete-OO algorithmic
+      At the core, <code>drools</code> is purely a Rete-OO algorithmic
       engine.  The engine works in terms of very abstracted concepts,
       such as <a href="./apidocs/org/drools/spi/Condition.html">Conditions</a>, 
       <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectTypes</a> and
