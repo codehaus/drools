@@ -81,6 +81,16 @@ public class RuleBase
         return new WorkingMemory( this );
     }
 
+    /** Create a {@link TransactionalWorkingMemory} session for
+     *  this <code>RuleBase</code>.
+     *
+     *  @return A newly initialized <code>TransactionalWorkingMemory</code>.
+     */
+    public TransactionalWorkingMemory createTransactionalWorkingMemory()
+    {
+        return new TransactionalWorkingMemory( this );
+    }
+
     /** Retrieve the Rete-OO {@link RootNode} for this
      *  <code>RuleBase</code>.
      */
