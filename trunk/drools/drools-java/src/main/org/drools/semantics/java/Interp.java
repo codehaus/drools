@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.21 2004-07-28 13:55:41 mproctor Exp $
+ $Id: Interp.java,v 1.22 2004-07-28 20:49:52 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.21 2004-07-28 13:55:41 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.22 2004-07-28 20:49:52 dbarnett Exp $
  */
 public class Interp implements Serializable
 {
@@ -100,37 +100,66 @@ public class Interp implements Serializable
 
 
     protected Interp(String text)
-   {
-        StringTokenizer st = new StringTokenizer(text, newline, true);
-        int i = 0;
-        int k = 0;
+    {
         //get last import
-        while (st.hasMoreTokens())
+        int i = 0;
+        boolean lastImportFound = false;
+        for (StringTokenizer st = new StringTokenizer(text, newline, false);
+             st.hasMoreTokens();)
         {
-            if (st.nextToken().trim().startsWith("import"))
+            String line = st.nextToken().trim();
+            
+            // skip blank lines
+            if ("".equals(line))
             {
+                if (!lastImportFound)
+                {
+                    i++;
+                }
+                continue;
+            }
+            
+            if (line.startsWith("import"))
+            {
+                if (lastImportFound)
+                {
+                    throw new RuntimeException(
+                        "Error: Import statements must occur before all other code");
+                }
+                
                 i++;
             }
-            k++;
-        }
-
-        StringBuffer newImports = new StringBuffer();
-        StringBuffer newText = new StringBuffer();
-        st = new StringTokenizer(text, newline, true);
-        int j = 0;
-        while (st.hasMoreTokens())
-        {
-            if ((i != 0)&&(j <= i+1))
-            //if (j <= i)
+            else
             {
-                newImports.append(st.nextToken());
-            } else
-            {
-                newText.append(st.nextToken());
+                lastImportFound = true;
             }
-            j++;
         }
-        newImports.append(newline);
+        
+        StringBuffer newImports = new StringBuffer();
+        StringBuffer newText = null;
+        
+        if (0 == i)
+        {
+            newText = new StringBuffer(text);
+        }
+        else
+        {
+            int j = 0;
+            newText = new StringBuffer();
+            for (StringTokenizer st = new StringTokenizer(text, newline, false);
+                 st.hasMoreTokens(); j++)
+            {
+                if (j < i)
+                {
+                    newImports.append(st.nextToken() + newline);
+                }
+                else
+                {
+                    newText.append(st.nextToken() + newline);
+                }
+            }
+        }
+        
         this.imports = newImports.toString();
         if (this instanceof ExprCondition)
         {
@@ -145,11 +174,6 @@ public class Interp implements Serializable
             this.text = newText.toString();
         }
     }
-
-    //protected void setCode(EvaluatorBase code)
-    //{
-    //    this.code = code;
-    //}
 
     // ------------------------------------------------------------
     //     Instance methods
