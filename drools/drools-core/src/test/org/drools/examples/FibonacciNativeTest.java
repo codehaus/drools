@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.1 2004-11-07 16:49:00 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.2 2004-11-07 18:34:44 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,15 +54,13 @@ import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
-import org.drools.event.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-
+import java.io.Serializable;
 
 import junit.framework.TestCase;
 
@@ -455,8 +453,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
         WorkingMemory workingMemory = getWorkingMemory( ruleBase );
-        TestWorkingMemoryEventListener listener = new TestWorkingMemoryEventListener();
-        workingMemory.addEventListener(listener);
+        workingMemory.addEventListener(new TestWorkingMemoryEventListener());
 
         workingMemory.setApplicationData("fibtotal", new FibTotal());
 
@@ -490,7 +487,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         assertEquals(50, total.getTotal());
 
         //test listener
-        listener = (TestWorkingMemoryEventListener) workingMemory.getListeners().get(0);
+        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getListeners().get(0);
         assertEquals(50, listener.asserted);
         assertEquals(48, listener.retracted);
         assertEquals(50, listener.modified);
@@ -547,59 +544,6 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         public int getTotal()
         {
             return this.total;
-        }
-    }
-
-    public static class TestWorkingMemoryEventListener
-         implements WorkingMemoryEventListener, Serializable
-    {
-
-        public int asserted;
-        public int modified;
-        public int retracted;
-        public int tested;
-        public int created;
-        public int cancelled;
-        public int fired;
-
-        public TestWorkingMemoryEventListener()
-        {
-            // intentionally left blank
-        }
-
-        public void objectAsserted(ObjectAssertedEvent event)
-        {
-            asserted++;
-        }
-
-        public void objectModified(ObjectModifiedEvent event)
-        {
-            modified++;
-        }
-
-        public void objectRetracted(ObjectRetractedEvent event)
-        {
-            retracted++;
-        }
-
-        public void conditionTested(ConditionTestedEvent event)
-        {
-            tested++;
-        }
-
-        public void activationCreated(ActivationCreatedEvent event)
-        {
-            created++;
-        }
-
-        public void activationCancelled(ActivationCancelledEvent event)
-        {
-            cancelled++;
-        }
-
-        public void activationFired(ActivationFiredEvent event)
-        {
-            fired++;
         }
     }
 
