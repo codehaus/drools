@@ -1,655 +1,190 @@
-<project default="dev" basedir=".">
+<?xml version="1.0"?>
 
-   <!-- Patternsets for compiling support for -->
-   <!-- only some of the supported models.   -->
- 
-   <patternset id="werken.drools">
-       <include name="**/*"/>
-   </patternset>
+<project name="drools" default="maven:jar" basedir=".">
 
-  <taskdef name="latex" classname="de.prima.shire.anttex.LaTeX"/>
+    <!-- Give user a chance to override without editing this file
+         (and without typing -D each time they invoke a target) -->
 
-  <!-- =================================================================== -->
-  <!-- Properties                                                          -->
-  <!-- =================================================================== -->
-
-  <property name="name.marketing"  value="werken drools"/>
-  <property name="name"            value="drools"/>
-  <property name="version"         value="2.0-beta-1"/>
-  <property name="version.dist"    value="2.0-beta-2-daily"/>
-  <property name="year"            value="2001"/>
-
-  <property name="copyright.owner"  value="The Werken Company"/>
-  <property name="copyright.year"   value="2001"/>
-
-  <!-- Compilation Properties -->
-
-  <property name="build.compiler" value="classic"/>
-  <property name="debug"          value="on"/>
-  <property name="optimize"       value="on"/>
-  <property name="deprecation"    value="on"/>
-
-  <property name="src.dir"      value="./src/java/main"/>
-  <property name="doc.dir"      value="./src/doc"/>
-  <property name="examples.dir" value="./src/java/examples"/>
-  <property name="test.dir"     value="./src/java/test"/>
-  <property name="lib.dir"      value="./lib"/>
-  <property name="latex.dir"    value="./src/latex"/>
-
-  <property name="packages.all"  value="org.drools.*"/>
-
-  <property name="build.dir"           value="./build"/>
-  <property name="build.src"           value="./build/src"/>
-  <property name="build.src.main"      value="./build/src/main"/>
-  <property name="build.src.test"      value="./build/src/test"/>
-  <property name="build.src.examples"  value="./build/src/examples"/>
-  <property name="build.src.latex"     value="./build/src/latex"/>
-
-  <property name="build.dest"          value="./build/classes"/>
-  <property name="build.dest.main"     value="./build/classes/main"/>
-  <property name="build.dest.test"     value="./build/classes/test"/>
-  <property name="build.dest.examples" value="./build/classes/examples"/>
-
-  <property name="build.doc"  value="./build/doc"/>
-
-  <property name="build.apidocs"       value="./build/doc/apidocs"/>
-  <property name="build.javadocs"      value="./build/doc/javadoc"/>
-  <property name="build.generated.src" value="./build/generated"/>
-
-  <property name="dist.root"     value="./dist"/>
-  <property name="dist.dir"      value="${dist.root}/tmp/${name}-${version.dist}"/>
-  <property name="dist.jar.dir"  value="${dist.root}/tmp"/>
-  <property name="dist.target"   value="${dist.root}"/>
-
-  <property name="build.deploy"     value="./build/deploy"/>
-
-  <property name="javadoc.overview" value="${build.src.main}/org/drools/overview.html"/>
-
-  <property name="test.packages" value="**"/>
-
-  <property name="xml.format.options" value="-indentSize 2 -trimText -newlines"/>
-
-    <!--
-    <filter token="year"    value="${year}"/>
-    <filter token="version" value="${version}"/>
-    <filter token="date"    value="${TODAY}"/>
-    <filter token="log"     value="true"/>
-    <filter token="verbose" value="true"/>
-    -->
-
-  <target name="init">
-
-    <tstamp/>
-
-    <echo message="${name.marketing} -- ${version}"/>
-    <echo message="copyright ${copyright.year} by ${copyright.owner}"/>
-
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Help on usage                                                       -->
-  <!-- =================================================================== -->
-
-  <target name="usage">
-    <echo message="Available targets:"/>
-    <echo message="    &lt;none&gt;         -- The implicit target is 'dev'"/>
-    <echo message="    dev            -- Do the least amount of compiling necessary"/>
-    <echo message="    all            -- Build everything"/>
-    <echo message="    test           -- Build and run the tests"/>
-    <echo message="    examples       -- Build and run the examples"/>
-    <echo message="    clean          -- Remove all built item"/>
-    <echo message="    dist           -- Produce .zip and .tar.gz distributions"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Prepares the build directory                                        -->
-  <!-- =================================================================== -->
-
-  <target name="prepare" depends="init">
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${build.dest}"/>
-    <mkdir dir="${build.dest.main}"/>
-    <mkdir dir="${build.dest.test}"/>
-    <mkdir dir="${build.dest.examples}"/>
-    <mkdir dir="${build.src}"/>
-    <mkdir dir="${build.src.main}"/>
-    <mkdir dir="${build.src.test}"/>
-    <mkdir dir="${build.src.latex}"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Modular compilation structure                                       -->
-  <!-- =================================================================== -->
-
-  <target name="rule.compile">
-    <javac destdir="${build.dest.main}"
-           debug="${debug}"
-           optimize="${optimize}"
-           deprecation="${deprecation}">
-        <src path="${build.src.main}"/>
-        <patternset refid="${compile.target}"/>
-    </javac>
-  </target>
-
-  <target name="rule.compile.test">
-    <javac destdir="${build.dest.test}"
-           debug="${debug}"
-           optimize="${optimize}"
-           deprecation="${deprecation}">
-        <src path="${build.src.test}"/>
-        <classpath path="${build.dest.test}"/>
-        <classpath path="${build.dest.main}"/>
-        <patternset refid="${compile.target}"/>
-    </javac>
-  </target>
-
-  <target name="rule.compile.examples">
-    <javac destdir="${build.dest.examples}"
-           debug="${debug}"
-           optimize="${optimize}"
-           deprecation="${deprecation}">
-      <src path="${build.src.examples}"/>
-      <classpath path="${build.dest.examples}"/>
-      <classpath path="${build.dest.main}"/>
-      <patternset refid="${compile.target}"/>
-    </javac>
-  </target>
-
-
-
-  <target name="rule.jar">
-    <jar jarfile="${build.dir}/${name}.jar"
-         basedir="${build.dest.main}">
-      <patternset refid="${compile.target}"/>
-    </jar>
-  </target>
-
-  <target name="rule.test">
-
-    <mkdir dir="${build.dir}/test-results"/>
-
-    <junit printsummary="yes" haltonfailure="yes">
-      <formatter type="plain"/>
-
-      <classpath>
-        <pathelement location="${build.dest.main}" />
-        <pathelement location="${build.dest.test}" />
-        <pathelement path="${java.class.path}" />
-      </classpath>
-
-      <batchtest fork="yes" todir="${build.dir}/test-results">
-        <fileset dir="${test.dir}">
-          <include name="**/*Test.java"/>
-          <!-- <include name="${test.packages}/*Test.java"/> -->
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
-
-  <!-- ======================================================================== -->
-  <!-- Werken All                                                               -->
-  <!-- ======================================================================== -->
+    <!-- Allow any user specific values to override the defaults -->  
+    <property file="${user.home}/build.properties" />
   
-  <target name="compile.all" 
-          depends="compile.drools">
-  </target>
-
-  <target name="compile.all.test" 
-          depends="compile.drools.test">
-  </target>
-
-  <target name="test.all"
-          depends="test.drools">
-  </target>
-
-  <target name="jar.all"
-          depends="jar.drools">
-  </target>
-
-  <target name="prepare.all"
-          depends="prepare.drools">
-  </target>
-
-  <!--
-  <target name="jar.full" depends="compile.all">
-    <jar jarfile="${build.dir}/${name}.jar"
-         basedir="${build.dest.main}">
-    </jar>
-  </target>
-  -->
-
-  <!-- ======================================================================== -->
-  <!-- Werken Common                                                            -->
-  <!-- ======================================================================== -->
-
-  <target name="prepare.drools" 
-          depends="prepare">
- 
-    <tstamp>
-        <format property="build.stamp" pattern="dd MMMMMM yyyy hh:mm aa"/>
-    </tstamp>
-
-    <filter token="MARKETING_NAME"    value="${name.marketing}"/>
-    <filter token="MARKETING_VERSION" value="${version}"/>
-    <filter token="BUILD_DATE"        value="${build.stamp}"/>
-
-    <copy todir="${build.src.main}" filtering="true">
-      <fileset dir="${src.dir}">
-         <patternset refid="werken.drools"/>
-      </fileset>
-    </copy>
-
-    <antlr target="${build.src.main}/org/drools/semantic/java/parser/java.g"/>
-    <antlr target="${build.src.main}/org/drools/semantic/java/parser/java.tree.g"/>
-
-  </target>
-
-  <target name="compile.drools" 
-          depends="prepare.drools">
-    <antcall target="rule.compile">
-      <param name="compile.target" value="werken.drools"/> 
-    </antcall>
-  </target>
-
-  <target name="prepare.drools.test"
-          depends="prepare">
-    <copy todir="${build.src.test}">
-      <fileset dir="${test.dir}">
-         <patternset refid="werken.drools"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <target name="compile.drools.test" 
-          depends="compile.drools,prepare.drools.test">
-    <antcall target="rule.compile.test">
-      <param name="compile.target" value="werken.drools"/> 
-    </antcall>
-  </target>
-
-  <target name="test.drools"
-          depends="compile.drools.test">
-    <antcall target="rule.test">
-       <param name="test.packages" value="com/werken"/>
-    </antcall>
-  </target>
-
-  <target name="jar.drools"
-          depends="compile.drools">
-    <antcall target="rule.jar">
-      <param name="compile.target" value="werken.drools"/>
-    </antcall>
-  </target>
-
-  <!-- ======================================================================== -->
-  <!-- Documentation                                                            -->
-  <!-- ======================================================================== -->
-
-  <target name="javadoc.all" depends="prepare.all">
-    <mkdir dir="${build.javadocs}"/>
-    <antcall target="rule.javadoc">
-      <param name="javadoc.packages" value="${packages.all}"/>
-      <param name="javadoc.dest"     value="${build.javadocs}"/>
-      <param name="javadoc.private"  value="false"/>
-    </antcall>
-  </target>
-
-  <target name="javadoc.api" depends="prepare.all">
-    <mkdir dir="${build.apidocs}"/>
-    <antcall target="rule.javadoc">
-      <param name="javadoc.packages" value="${packages.all}"/>
-      <param name="javadoc.dest"     value="${build.apidocs}"/>
-      <param name="javadoc.private"  value="false"/>
-    </antcall>
-  </target>
-
-  <target name="javadoc.devel" depends="prepare.all">
-    <mkdir dir="${build.apidocs}"/>
-    <antcall target="rule.javadoc">
-      <param name="javadoc.packages" value="${packages.all}"/>
-      <param name="javadoc.dest"     value="${build.apidocs}"/>
-      <param name="javadoc.private"  value="true"/>
-    </antcall>
-  </target>
-
-  <target name="rule.javadoc">
-    <javadoc packagenames="${javadoc.packages}"
-             sourcepath="${build.src.main}"
-             destdir="${javadoc.dest}"
-             private="${javadoc.private}"
-             author="true"
-             version="true"
-             use="true"
-             splitindex="true"
-             noindex="false"
-             windowtitle="${name.marketing} api"
-             doctitle="${name.marketing}"
-             overview="${javadoc.overview}"
-             bottom="Copyright &#169; ${copyright.year} ${copyright.owner}. All Rights Reserved."
-             stylesheetfile="${doc.dir}/style/javadoc.css">
-
-      <group title="drools Logic Engine"           packages="org.drools*" />
-      <group title="Semantics Provider Interface"  packages="org.drools.spi*" />
-      <group title="Java Semantics module"         packages="org.drools.semantic.java*" />
-      <group title="XML Semantics module"          packages="org.drools.semantic.xml*" />
-
-      <!--  
-      <link href="http://java.sun.com/products/jdk/1.3/docs/api"
-            offline="true"
-            packagelistLoc="./src/javadoc/j2se"/>
-
-      <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"
-            offline="true"
-            packagelistLoc="./src/javadoc/jaxp"/>
-      -->
-
-    </javadoc>
-  </target>
-
-  <!-- Build the documentation -->
-  <target name="doc" depends="prepare">
-    <!-- <mkdir    dir="${doc.dir}/images"/> -->
-
-    <mkdir    dir="${build.doc}"/>
-
-    <style    basedir="${doc.dir}"
-              destdir="${build.doc}" 
-              style="${doc.dir}/style/style.xsl"
-              includes="**/*.xml" excludes="style/**,project.xml,cookbook/**"/>
-
-    <copy todir="${build.doc}" overwrite="yes"> 
-      <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
-    </copy>
-    <!--
-    <copy todir="${build.doc}/images" overwrite="yes">
-      <fileset dir="${doc.dir}/images"/>
-    </copy>
-    -->
-    <copy todir="${build.doc}" overwrite="yes">
-      <fileset dir="${doc.dir}" includes="*.css"/>
-    </copy>
-    <copy todir="${build.doc}/style" overwrite="yes">
-      <fileset dir="${doc.dir}/style" includes="images/**"/>
-    </copy>
-
-    <replace file="${build.doc}/index.html" token="$$VERSION$$" value="${version}"/>
-    <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${version}"/>
-
-  </target>
-
-
-  <!-- =================================================================== -->
-  <!-- Creates the distribution                                            -->
-  <!-- =================================================================== -->
-
-  <target name="dist" depends="clean,jar.all,doc">
-    <mkdir dir="${dist.dir}"/>
-    <mkdir dir="${dist.dir}/lib"/>
-    <mkdir dir="${dist.dir}/src"/>
-    <mkdir dir="${dist.dir}/doc"/>
-    <mkdir dir="${dist.dir}/doc/apidocs"/>
-    <mkdir dir="${dist.dir}/xml"/>
-
-    <copy todir="${dist.dir}">
-      <fileset dir="${build.dir}">
-        <patternset>
-          <include name="*.jar"/>
-        </patternset>
-      </fileset>
-    </copy>
-
-    <copy todir="${dist.dir}/src">
-      <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g,**/*.txt"/>
-    </copy>
-
-    <copy todir="${dist.dir}/lib">
-      <fileset dir="./lib" />
-    </copy>
-
-    <copy todir="${dist.dir}/doc">
-      <fileset dir="${build.doc}" />
-    </copy>
-
-    <copy todir="${dist.dir}/test_data">
-      <fileset dir="./test_data"/>
-    </copy>
-
-    <copy todir="${dist.dir}/example_data">
-      <fileset dir="./example_data"/>
-    </copy>
-
-    <copy todir="${dist.dir}">
-      <fileset dir="." includes="build.pl, *.xml, *.html, *.txt, INSTALL, LICENSE" />
-    </copy>
-
-    <chmod perm="+x" file="${dist.dir}/build.pl"/>
-
-    <fixcrlf srcdir="${dist.dir}" includes="build.pl" eol="lf"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Packages the distribution as .zip                                   -->
-  <!-- =================================================================== -->
-
-  <target name="dist-zip" depends="dist">
-    <zip zipfile="${dist.target}/${name}-daily.zip" basedir="${dist.jar.dir}"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Packages the distribution as .jar                                   -->
-  <!-- =================================================================== -->
-
-  <target name="dist-jar" depends="dist">
-    <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.jar.dir}"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Packages the distribution with .tar.gzip                            -->
-  <!-- =================================================================== -->
-
-  <target name="dist-tgz" depends="dist">
-    <tar tarfile="${dist.target}/${name}-daily.tar" basedir="${dist.jar.dir}"/>
-    <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
-  </target>
-
+    <!-- Allow user defaults for this project -->
+    <property file="build.properties" />
   
-  <!-- =================================================================== -->
-  <!-- Daily distribution                                                  --> 
-  <!-- =================================================================== -->
-
-  <target name="dist.daily" depends="all,test,examples,docs.latex,dist-jar,dist-zip,dist-tgz"/>
-
-  <target name="prepare.latex" depends="prepare">
-    <copy todir="${build.doc}" filtering="true">
-      <fileset dir="${latex.dir}" includes="*.tex,*.bib"/>
-    </copy>
-  </target>
-
-  <target name="docs.latex" depends="prepare.latex">
-
-    <latex latexfile="rete-oo.tex"
-           pdftex="on"
-           bibtex="on"
-           verbose="off"
-           directory="${build.doc}"/>
-
-    <latex latexfile="drools-impl.tex"
-           pdftex="on"
-           bibtex="on"
-           verbose="off"
-           directory="${build.doc}"/>
-
-    <delete>
-       <fileset dir="${build.doc}" includes="*.aux,*.log,*.bbl,*.blg,*.toc,*.out"/>
-    </delete>
-
-  </target>
-
-  <target name="web.stage" depends="dist.daily">
-
-    <mkdir dir="${build.deploy}"/>
-    <mkdir dir="${build.deploy}/htdocs"/>
-    <mkdir dir="${build.deploy}/htdocs/dist"/>
-
-    <copy todir="${build.deploy}/htdocs">
-        <fileset dir="${build.doc}"/>
-    </copy>
-
-    <copy todir="${build.deploy}/htdocs/dist">
-      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.gz"/>
-    </copy>
-
-    <tar tarfile="${build.deploy}/drools-web.tar" 
-         basedir="${build.deploy}/"/>
-    <gzip zipfile="${build.deploy}/drools-web.tar.gz" 
-          src="${build.deploy}/drools-web.tar"/>
-
-  </target>
-
-  <target name="pdfdocs" depends="docs.latex"/>
-
-  <!-- =================================================================== -->
-  <!-- Performs a release on the website                                   -->
-  <!-- =================================================================== -->
-
-  <target name="release" depends="clean,compile.all,javadoc.all,javadoc.api,dist-zip,dist-tgz,dist-jar">
-     <copy file="${dist.target}/${name}-daily.tar.gz"
-           tofile="${dist.target}/${name}-${version.dist}.tar.gz"/>
-     <copy file="${dist.target}/${name}-daily.zip"
-           tofile="${dist.target}/${name}-${version.dist}.zip"/>
-  </target>
-
-  <!--
-  <target name="ftp" depends="dist-zip,dist-tgz,dist-jar">
-    <mkdir dir="${web.ftp}"/>
-    <copy todir="${web.ftp}" overwrite="yes">
-      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
-    </copy>
-  </target>
-  -->
+    <!-- Set default values for the build -->
+    <property file="project.properties" />
 
 
-  <!-- =================================================================== -->
-  <!-- Samples targets                                                      -->
-  <!-- =================================================================== -->
+    <!-- maven:start -->
 
-  <target name="prepare.examples" 
-            depends="prepare">
-    <copy todir="${build.src.examples}">
-      <fileset dir="${examples.dir}">
-        <patternset refid="werken.drools"/>
-      </fileset>
-    </copy>
-  </target>
+    <!-- ======================================================== -->
+    <!-- D E L E G A T O R S                                      -->
+    <!-- ======================================================== -->
 
-  <target name="compile.examples" 
-          depends="compile.all,prepare.examples">
-    <antcall target="rule.compile.examples">
-      <param name="compile.target" value="werken.drools"/> 
-    </antcall>
-  </target>
+    <target name="maven:gump-descriptor">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="gump-descriptor"/>
+    </target>
 
-  <target name="examples.supply" depends="compile.examples">
-    <java classname="SupplyAndDemand" fork="true">
-      <arg value="example_data/supply_and_demand.xml"/>
-      <classpath>
-        <pathelement location="${build.dest.main}"/>
-        <pathelement location="${build.dest.examples}"/>
-        <pathelement location="${lib.dir}/drools.jar"/>
-        <pathelement path="${java.class.path}"/>
-      </classpath>
-    </java>
-  </target>
+    <target name="maven:maven-update">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="maven-update"/>
+    </target>
 
-  <target name="examples.fish" depends="compile.examples">
-    <java classname="FishMonger" fork="true">
-      <arg value="example_data/fish_monger.xml"/>
-      <classpath>
-        <pathelement location="${build.dest.main}"/>
-        <pathelement location="${build.dest.examples}"/>
-        <pathelement location="${lib.dir}/drools.jar"/>
-        <pathelement path="${java.class.path}"/>
-      </classpath>
-    </java>
-  </target>
+    <target name="maven:update-jars">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="update-jars"/>
+    </target>
 
-  <target name="examples.escalate" depends="compile.examples">
-    <java classname="Escalation" fork="true">
-      <arg value="example_data/escalation.xml"/>
-      <classpath>
-        <pathelement location="${build.dest.main}"/>
-        <pathelement location="${build.dest.examples}"/>
-        <pathelement location="${lib.dir}/drools.jar"/>
-        <pathelement path="${java.class.path}"/>
-      </classpath>
-    </java>
-  </target>
+    <target name="maven:jar">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="jar"/>
+    </target>
 
-  <target name="examples.email_engine" depends="compile.examples">
-    <java classname="emailEngine.EventEngine" fork="true">
-      <!-- uncomment the following to have the event 
-           engine dump the rules to the screen 
-      <arg value="-rules"/>
-      -->
-      <classpath>
-        <pathelement location="${build.dest.main}"/>
-        <pathelement location="${build.dest.examples}"/>
-        <pathelement location="${lib.dir}/drools.jar"/>
-        <pathelement path="${java.class.path}"/>
-      </classpath>
-    </java>
-  </target>
+    <target name="maven:docs-quick">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="docs-quick"/>
+    </target>
 
-  <!-- =================================================================== -->
-  <!-- Clean targets                                                       -->
-  <!-- =================================================================== -->
-  <target name="clean" depends="init">
-    <delete dir="${build.dir}"/>
-    <delete dir="${dist.root}"/>
-  </target>
+    <target name="maven:run-singletest">
+        <ant antfile="${maven.home}/plugins/test/build.xml" target="run-singletest"/>
+    </target>
 
-  <target name="distclean" depends="clean">
-    <delete dir="${dist.root}"/>
-    <delete file="${name}-daily.tar.gz"/>
-    <delete file="${name}-daily.tar"/>
-    <delete file="${name}-daily.zip"/>
-  </target>
+    <target name="maven:compile">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="compile"/>
+    </target>
 
-  <!-- =================================================================== -->
-  <!-- Helper targets                                                      -->
-  <!-- =================================================================== -->
+    <target name="maven:fo">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="fo"/>
+    </target>
 
+    <target name="maven:cvs-change-log">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="cvs-change-log"/>
+    </target>
 
-  <target name="check"
-          depends="all, test, examples"/>
+    <target name="maven:war">
+        <ant antfile="${maven.home}/plugins/j2ee/build.xml" target="war"/>
+    </target>
 
-  <target name="all"     
-          depends="clean,jar.all,doc,javadoc"/>
+    <target name="maven:generate-reactor">
+        <ant antfile="${maven.home}/plugins/reactor/build.xml" target="generate-reactor"/>
+    </target>
 
-  <target name="dev"     
-          depends="jar.all"/>
+    <target name="maven:cross-ref">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="cross-ref"/>
+    </target>
 
-  <target name="package"
-          depends="jar.all"/>
+    <target name="maven:deploy-site">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="deploy-site"/>
+    </target>
 
-  <target name="jars"
-          depends="jar.all"/>
+    <target name="maven:ear">
+        <ant antfile="${maven.home}/plugins/j2ee/build.xml" target="ear"/>
+    </target>
 
-  <target name="compile"
-          depends="compile.all"/>
+    <target name="maven:install-jar">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="install-jar"/>
+    </target>
 
-  <target name="api" 
-          depends="javadoc.api"/>
+    <target name="maven:task-list">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="task-list"/>
+    </target>
 
-  <target name="javadoc" 
-          depends="javadoc.all"/>
+    <target name="maven:docs">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="docs"/>
+    </target>
 
-  <target name="test" 
-          depends="test.all"/>
+    <target name="maven:site">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="site"/>
+    </target>
 
-  <target name="examples"
-          depends="examples.supply, examples.fish, examples.escalate"/>
+    <target name="maven:deploy-dist">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="deploy-dist"/>
+    </target>
+
+    <target name="maven:javadocs">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="javadocs"/>
+    </target>
+
+    <target name="maven:announce">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="announce"/>
+    </target>
+
+    <target name="maven:check-source">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="check-source"/>
+    </target>
+
+    <target name="maven:dist">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="dist"/>
+    </target>
+
+    <target name="maven:dist-build">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="dist-build"/>
+    </target>
+
+    <target name="maven:metrics">
+        <ant antfile="${maven.home}/plugins/metrics/build.xml" target="metrics"/>
+    </target>
+
+    <target name="maven:clean">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="clean"/>
+    </target>
+
+    <target name="maven:env">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="env"/>
+    </target>
+
+    <target name="maven:test">
+        <ant antfile="${maven.home}/plugins/test/build.xml" target="test"/>
+    </target>
+
+    <target name="maven:pdf">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="pdf"/>
+    </target>
+
+    <target name="maven:iutest">
+        <ant antfile="${maven.home}/plugins/iutest/build.xml" target="iutest"/>
+    </target>
+
+    <target name="maven:activity-log">
+        <ant antfile="${maven.home}/plugins/docs/build.xml" target="activity-log"/>
+    </target>
+
+    <target name="maven:verify-project">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="verify-project"/>
+    </target>
+
+    <target name="maven:validate-pom">
+        <ant antfile="${maven.home}/plugins/core/build.xml" target="validate-pom"/>
+    </target>
+
+    <target name="maven:validate-war">
+        <ant antfile="${maven.home}/plugins/j2ee/build.xml" target="validate-war"/>
+    </target>
+
+    <!-- maven:end -->
+
+    <target name="prepareSources">
+
+        <copy todir="${maven.prepareSourceDirectory}">
+            <fileset dir="${maven.src.dir}/java/main"/>
+        </copy>
+
+        <java classname="antlr.Tool" fork="true">
+            <classpath>
+                <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
+            </classpath>
+            <arg value="-o"/>
+            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/"/>
+            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.g"/>
+        </java>
+
+        <java classname="antlr.Tool" fork="true">
+            <classpath>
+                <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
+            </classpath>
+            <arg value="-o"/>
+            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/"/>
+            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.tree.g"/>
+        </java>
+
+    </target>
+
+   <target name="clean" depends="maven:clean"/>
 
 </project>
-
-<!-- End of file -->
