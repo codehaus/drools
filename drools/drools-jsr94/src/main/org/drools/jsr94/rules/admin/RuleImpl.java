@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleImpl.java,v 1.5 2004-04-02 22:34:39 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -51,26 +51,49 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This interface defines a production rule. Related <code>Rule</code> instances are assembled
- * into <code>RuleExecutionSets</code>, which in turn, can be executed by a rules engine via the
- * <code>RuleSession</code> interface.
+ * This interface defines a production rule. Related <code>Rule</code>
+ * instances are assembled into <code>RuleExecutionSets</code>, which in turn,
+ * can be executed by a rules engine via the <code>RuleSession</code>
+ * interface.
  *
  * @see Rule
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 public class RuleImpl implements Rule
 {
-
     private String name;
     private String description;
-    private Map props = new HashMap();
+    private Map properties = new HashMap();
+    private org.drools.rule.Rule rule;
 
-    RuleImpl( String name, String description )
+    /**
+     * Creates a <code>RuleImpl</code> object by wrapping an
+     * <code>org.drools.rule.Rule</code> object.
+     *
+     * @param rule
+     */
+    RuleImpl( org.drools.rule.Rule rule )
     {
-        this.name = name;
-        this.description = description;
+        this.rule = rule;
+        this.name = rule.getName();
+        this.description = rule.getDocumentation();
     }
+
+    /**
+     * Returns the <code>org.drools.rule.Rule</code> that lies at the
+     * core of this <code>javax.rules.admin.Rule</code> object. This method
+     * is package private.
+     *
+     * @return org.drools.rule.Rule at the core of this object
+     */
+    org.drools.rule.Rule getRule()
+    {
+        return this.rule;
+    }
+
+    /* Rule interface methods */
 
     public String getName()
     {
@@ -84,11 +107,13 @@ public class RuleImpl implements Rule
 
     public Object getProperty( Object key )
     {
-        return props.get( key );
+        // TODO: certain keys should reference internal rule accessor methods
+        return properties.get( key );
     }
 
     public void setProperty( Object key, Object val )
     {
-        props.put( key, val );
+        // TODO: certain keys should alter internal rule accessor methods
+        properties.put( key, val );
     }
 }
