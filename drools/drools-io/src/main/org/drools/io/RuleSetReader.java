@@ -1,10 +1,10 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.10 2004-08-06 03:40:49 dbarnett Exp $
+ $Id: RuleSetReader.java,v 1.11 2004-09-10 01:55:47 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.io;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.io;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import org.drools.rule.Rule;
@@ -55,6 +55,7 @@ import org.drools.spi.ObjectType;
 import org.drools.spi.Extractor;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
+import org.drools.spi.Duration;
 import org.drools.smf.Configuration;
 import org.drools.smf.SemanticModule;
 import org.drools.smf.SemanticsRepository;
@@ -63,6 +64,7 @@ import org.drools.smf.ObjectTypeFactory;
 import org.drools.smf.ConditionFactory;
 import org.drools.smf.ExtractorFactory;
 import org.drools.smf.ConsequenceFactory;
+import org.drools.smf.DurationFactory;
 import org.drools.smf.FactoryException;
 import org.drools.smf.DefaultSemanticsRepository;
 import org.drools.smf.NoSuchSemanticModuleException;
@@ -89,7 +91,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.10 2004-08-06 03:40:49 dbarnett Exp $
+ *  @version $Id: RuleSetReader.java,v 1.11 2004-09-10 01:55:47 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -106,6 +108,7 @@ public class RuleSetReader
     private static final int STATE_CONDITION   = 3;
     private static final int STATE_EXTRACTION  = 4;
     private static final int STATE_CONSEQUENCE = 5;
+    private static final int STATE_DURATION    = 6;
 
     // ----------------------------------------------------------------------
     //     Instance members
@@ -347,9 +350,9 @@ public class RuleSetReader
         if ( this.parser == null )
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
-            
+
             factory.setNamespaceAware( true );
-            
+
             parser = factory.newSAXParser();
         }
         else
@@ -411,7 +414,7 @@ public class RuleSetReader
     {
         Starter starter = lookupStarter( uri,
                                          localName );
-        
+
         if ( starter != null )
         {
             starter.start( attrs );
@@ -421,7 +424,7 @@ public class RuleSetReader
             try
             {
                 SemanticModule module = this.repo.lookupSemanticModule( uri );
-                
+
                 if ( this.rule == null )
                 {
                     if ( module.getRuleFactoryNames().contains( localName ) )
@@ -452,7 +455,12 @@ public class RuleSetReader
                 }
                 else
                 {
-                    if ( module.getConditionFactoryNames().contains( localName ) )
+                   if ( module.getDurationFactoryNames().contains( localName ) )
+                    {
+                        startDuration(  module,
+                                        localName,
+                                        attrs );
+                    } else if ( module.getConditionFactoryNames().contains( localName ) )
                     {
                         startCondition( module,
                                         localName,
@@ -506,7 +514,7 @@ public class RuleSetReader
                 try
                 {
                     SemanticModule module = this.repo.lookupSemanticModule( uri );
-                
+
                     switch ( this.state )
                     {
                         case ( STATE_OBJECT_TYPE ):
@@ -518,6 +526,12 @@ public class RuleSetReader
                         case ( STATE_CONDITION ):
                         {
                             endCondition( module,
+                                          localName );
+                            break;
+                        }
+                        case ( STATE_DURATION ):
+                        {
+                            endDuration( module,
                                           localName );
                             break;
                         }
@@ -602,7 +616,7 @@ public class RuleSetReader
     {
         // nothing
     }
-    
+
     protected void startRule(SemanticModule module,
                              String localName,
                              Attributes attrs)
@@ -636,7 +650,7 @@ public class RuleSetReader
     {
         String salienceStr = attrs.getValue( "salience" );
         String ruleDesc = attrs.getValue( "description" );
-        
+
         if ( ! ( salienceStr == null
                  ||
                  salienceStr.trim().equals( "" ) ) )
@@ -644,7 +658,7 @@ public class RuleSetReader
             try
             {
                 int salience = Integer.parseInt( salienceStr.trim() );
-                
+
                 rule.setSalience( salience );
             }
             catch (NumberFormatException e)
@@ -653,7 +667,7 @@ public class RuleSetReader
                                              getLocator() );
             }
         }
-        
+
         if ( ! ( ruleDesc == null
                  ||
                  ruleDesc.trim().equals( "" ) ) )
@@ -760,7 +774,7 @@ public class RuleSetReader
         }
 
         String identifier = attrs.getValue( "identifier" );
-        
+
         if ( identifier == null
              ||
              identifier.trim().equals( "" ) )
@@ -805,7 +819,7 @@ public class RuleSetReader
         try
         {
             ObjectType objectType = factory.newObjectType( config );
-            
+
             this.declaration.setObjectType( objectType );
         }
         catch (FactoryException e)
@@ -844,7 +858,7 @@ public class RuleSetReader
             throw new SAXParseException( "extraction requires a 'target' attribute",
                                          getLocator() );
         }
-        
+
         Declaration targetDecl = this.rule.getDeclaration( targetDeclName.trim() );
 
         if ( targetDecl == null )
@@ -875,11 +889,11 @@ public class RuleSetReader
         {
             Extractor extractor = factory.newExtractor( config,
                                                         this.rule.getAllDeclarations() );
-            
+
             this.extraction.setExtractor( extractor );
-            
+
             this.rule.addExtraction( this.extraction );
-            
+
             this.extraction = null;
         }
         catch (FactoryException e)
@@ -893,6 +907,49 @@ public class RuleSetReader
             this.state = STATE_NONE;
         }
     }
+
+    protected void startDuration(SemanticModule module,
+    														 String name,
+    														 Attributes attrs)
+				throws SAXException
+		{
+        this.state = STATE_DURATION;
+
+        startConfiguration( name,
+                            attrs );
+		}
+
+    /** End a condition.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
+    protected void endDuration( SemanticModule module,
+                                String localName)
+        throws SAXException
+    {
+        Configuration config = endConfiguration();
+
+        DurationFactory factory = module.getDurationFactory( localName );
+
+        try
+        {
+            Duration duration = factory.newDuration( config,
+                                                     this.rule.getAllDeclarations() );
+
+            this.rule.setDuration( duration );
+        }
+        catch (FactoryException e)
+        {
+            throw new SAXParseException( "error constructing duration",
+                                         getLocator(),
+                                         e );
+        }
+        finally
+        {
+            this.state = STATE_NONE;
+        }
+    }
+
 
     /** Start a condition.
      *
@@ -929,7 +986,7 @@ public class RuleSetReader
         {
             Condition condition = factory.newCondition( config,
                                                         this.rule.getAllDeclarations() );
-            
+
             this.rule.addCondition( condition );
         }
         catch (FactoryException e)
@@ -974,12 +1031,12 @@ public class RuleSetReader
         Configuration config = endConfiguration();
 
         ConsequenceFactory factory = module.getConsequenceFactory( localName );
-        
+
         try
         {
             Consequence consequence = factory.newConsequence( config,
                                                               this.rule.getAllDeclarations() );
-            
+
             this.rule.setConsequence( consequence );
         }
         catch (FactoryException e)
@@ -1111,7 +1168,7 @@ public class RuleSetReader
                          ender );
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /** Starter functor.
      */
