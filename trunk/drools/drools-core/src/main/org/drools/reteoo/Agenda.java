@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.32 2004-10-05 12:30:33 mproctor Exp $
+ * $Id: Agenda.java,v 1.33 2004-10-06 13:33:38 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,20 +40,18 @@ package org.drools.reteoo;
  *  
  */
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Collections;
-
 import org.drools.FactHandle;
+import org.drools.PriorityQueue;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Rule-firing Agenda.
@@ -70,6 +68,7 @@ import org.drools.spi.Duration;
  * </p>
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
 class Agenda implements Serializable
 {
@@ -78,20 +77,17 @@ class Agenda implements Serializable
     // ------------------------------------------------------------
 
     /** Working memory of this Agenda. */
-    private WorkingMemory    workingMemory;
-
-    /** Conflict resolver. */
-    private ConflictResolver conflictResolver;
+    private WorkingMemory workingMemory;
 
     /** Items in the agenda. */
-    private LinkedList       items;
+    private PriorityQueue items;
 
     /** Items time-delayed. */
-    private Set              scheduledItems;
+    private Set           scheduledItems;
 
-    private AgendaItem       item;
-    
-    
+    /** The current agenda item being fired; or null if none. */
+    private AgendaItem    item;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -105,9 +101,7 @@ class Agenda implements Serializable
     public Agenda(WorkingMemory workingMemory, ConflictResolver conflictResolver)
     {
         this.workingMemory = workingMemory;
-        this.conflictResolver = conflictResolver;
-
-        this.items = new LinkedList( );
+        this.items = new PriorityQueue( conflictResolver );
         this.scheduledItems = new HashSet( );
     }
 
@@ -116,28 +110,27 @@ class Agenda implements Serializable
     // ------------------------------------------------------------
 
     /**
-     * Schedule a rule action invokation on this <code>Agenda</code>.
-     * Rules specified with noNoop=true that are active should not
-     * be added to the agenda
+     * Schedule a rule action invokation on this <code>Agenda</code>. Rules
+     * specified with noNoop=true that are active should not be added to the
+     * agenda
      * 
      * @param tuple The matching <code>Tuple</code>.
      * @param rule The rule to fire.
      */
     void addToAgenda(ReteTuple tuple, Rule rule)
-    {              
+    {
         if ( rule == null )
         {
             return;
         }
 
-        /* if no-loop is true for this rule
-         * and the current rule is active then do not
-         * not re-add to the agenda
+        /*
+         * if no-loop is true for this rule and the current rule is active then
+         * do not not re-add to the agenda
          */
-        
-        if (this.item != null 
-            &&
-            rule.getNoLoop() && rule.equals(this.item.getRule()))
+
+        if ( this.item != null && rule.getNoLoop( )
+             && rule.equals( this.item.getRule( ) ) )
         {
             return;
         }
@@ -153,7 +146,7 @@ class Agenda implements Serializable
         }
         else
         {
-            this.conflictResolver.insert( item, this.items );
+            this.items.add( item );
         }
     }
 
@@ -312,16 +305,11 @@ class Agenda implements Serializable
         return this.items.isEmpty( );
     }
 
-    public AgendaItem getActiveItem()
+    public int size()
     {
-        return this.item;
+        return items.size( );
     }
-    
-    public List getItems()
-    {
-        return Collections.unmodifiableList(items);
-    }
-    
+
     /**
      * Fire the next scheduled <code>Agenda</code> item.
      * 
@@ -335,12 +323,12 @@ class Agenda implements Serializable
             return;
         }
 
-        item = ( AgendaItem ) this.items.removeFirst( );
+        item = ( AgendaItem ) this.items.remove( );
 
         try
-        {            
-            item.fire( this.workingMemory );        
-        } 
+        {
+            item.fire( this.workingMemory );
+        }
         finally
         {
             item = null;
