@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+    <title>Documentation</title>
+  </properties>
+
+  <body>
+    <section name="Documentation">
+
+      <p>
+      The papers previously available here have been subsumed by
+      the new and improved <i>Theory, Usage and Reference</i>
+      manual.
+      </p>
+
+      <ul>
+        <li><a href="pdf/drools-tur.pdf">Theory, Usage and Reference</a></li>
+      </ul>
+
+    </section>
+  </body>
+
+</document>
+
