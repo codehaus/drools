@@ -15,33 +15,7 @@
             file="${basedir}/target/docs/clover/pkgs-summary.html"/>
     </postGoal>
 
-<goal name="ydocs" >
-		<javadoc
-			destdir="doc/api"
-			author="true"
-			additionalparam="-breakiterator">
-			<packageset dir="./src/main">
-				<include name="org/drools/rule"/>
-			</packageset>
-			<doclet
-				name="ydoc.doclets.YStandard"
-				path="./lib/ydoc.jar;./lib/class2svg.jar;./resources;./doc;./src/main">
-				<param name="-generic"/>
-				<param name="-umlautogen"/>
-				<param name="-filterpath" value="./lib/ydoc.jar"/>
-				<param name="-filter"     value="ydoc.filters.ExcludeFilter"/>
-				<param name="-tag" value="y.precondition"/>
-				<param name="-tag" value="y.postcondition"/>
-				<param name="-tag" value="y.complexity"/>
-				<param name="-tag" value="param"/>
-				<param name="-tag" value="return"/>
-				<param name="-tag" value="see"/>
-				<param name="-tag" value="y.uml"/>
-			</doclet>
-		</javadoc>
-</goal>
-
-     <goal name="get-deps">
+   <goal name="get-deps">
       <j:forEach var="dep" items="${pom.artifacts}">
         <j:if test="${dep.path.indexOf('drools') &lt;= 0}">
           <copy file="${dep.path}"
