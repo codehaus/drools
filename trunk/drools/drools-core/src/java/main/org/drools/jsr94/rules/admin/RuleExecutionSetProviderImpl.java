@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.5 2003-08-20 23:48:36 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -87,6 +87,9 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
     /**
      * Creates a <code>RuleExecutionSet</code> implementation from a vendor specific AST representation
      * and vendor-specific properties.
+     * <p>
+     * This method accepts <code>org.drools.rule.Rule</code> and <code>org.drools.rule.RuleSet</code> objects or
+     * a <code>List</code> of these objects.
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable,Map)
      */
