@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Condition.java,v 1.5 2002-08-01 18:47:33 bob Exp $
+ $Id: Condition.java,v 1.6 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,15 +48,13 @@ package org.drools.spi;
 
 import org.drools.rule.Declaration;
 
-/** A test of facts for a <code>Rule</code>.
+/** A <code>Condition</code> that filters facts.
  *
  *  @see Tuple
- *  @see Declaration
- *  @see Rule
- *
+ *  
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface Condition
+public interface Condition 
 {
     /** Retrieve the array of <code>Declaration</code>s required
      *  by this condition to perform its duties.
@@ -65,4 +63,17 @@ public interface Condition
      *          on incoming <code>Tuples</code>.
      */
     Declaration[] getRequiredTupleMembers();
+
+    /** Determine if the supplied <code>Tuple</code> is allowed
+     *  by this condition.
+     *
+     *  @param tuple The <code>Tuple</code> to test.
+     *
+     *  @return <code>true</code> if the <code>Tuple</code>
+     *          passes this condition, else <code>false</code>.
+     *
+     *  @throws ConditionException if an error occurs during filtering.
+     */
+    boolean isAllowed(Tuple tuple) throws ConditionException;
 }
+

@@ -7,12 +7,12 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class InstrumentedFilterCondition implements FilterCondition
+public class InstrumentedCondition implements Condition
 {
     private Set     decls;
     private boolean isAllowed;
 
-    public InstrumentedFilterCondition()
+    public InstrumentedCondition()
     {
         this.decls = new HashSet();
     }

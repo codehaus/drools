@@ -2,7 +2,7 @@
 package org.drools.semantic.java;
 
 import org.drools.rule.Declaration;
-import org.drools.spi.FilterException;
+import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 import org.drools.reteoo.impl.ReteTuple;
 
@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 import java.util.Collections;
 
-public class BeanShellFilterConditionTest extends TestCase
+public class BeanShellExprConditionTest extends TestCase
 {
     private Declaration objectDecl;
     private Declaration stringDecl;
@@ -20,7 +20,7 @@ public class BeanShellFilterConditionTest extends TestCase
     private Object      object;
     private String      string;
 
-    public BeanShellFilterConditionTest(String name)
+    public BeanShellExprConditionTest(String name)
     {
         super( name );
     }
@@ -51,8 +51,8 @@ public class BeanShellFilterConditionTest extends TestCase
 
     public void testIsAllowedPasses()
     {
-        BeanShellFilterCondition cond = new BeanShellFilterCondition( "string.length() > 5",
-                                                                      Collections.EMPTY_SET );
+        BeanShellExprCondition cond = new BeanShellExprCondition( "string.length() > 5",
+                                                                  Collections.EMPTY_SET );
 
         try
         {
@@ -60,7 +60,7 @@ public class BeanShellFilterConditionTest extends TestCase
 
             assertTrue( result );
         }
-        catch (FilterException e)
+        catch (ConditionException e)
         {
             fail( e.toString() );
         }
@@ -68,8 +68,8 @@ public class BeanShellFilterConditionTest extends TestCase
 
     public void testIsAllowedFails()
     {
-        BeanShellFilterCondition cond = new BeanShellFilterCondition( "string.length() > 50",
-                                                                      Collections.EMPTY_SET );
+        BeanShellExprCondition cond = new BeanShellExprCondition( "string.length() > 50",
+                                                                  Collections.EMPTY_SET );
 
         try
         {
@@ -77,7 +77,7 @@ public class BeanShellFilterConditionTest extends TestCase
 
             assertTrue( ! result );
         }
-        catch (FilterException e)
+        catch (ConditionException e)
         {
             fail( e.toString() );
         }
@@ -85,8 +85,8 @@ public class BeanShellFilterConditionTest extends TestCase
 
     public void testIsAllowedBadReference()
     {
-        BeanShellFilterCondition cond = new BeanShellFilterCondition( "cheese.length()",
-                                                                      Collections.EMPTY_SET );
+        BeanShellExprCondition cond = new BeanShellExprCondition( "cheese.length()",
+                                                                  Collections.EMPTY_SET );
 
         try
         {
@@ -94,7 +94,7 @@ public class BeanShellFilterConditionTest extends TestCase
 
             fail( "Should have thrown FilterException" );
         }
-        catch (FilterException e)
+        catch (ConditionException e)
         {
             // expected and correct
         }
@@ -102,8 +102,8 @@ public class BeanShellFilterConditionTest extends TestCase
 
     public void testIsAllowedNonBoolean()
     {
-        BeanShellFilterCondition cond = new BeanShellFilterCondition( "string.length()",
-                                                                      Collections.EMPTY_SET );
+        BeanShellExprCondition cond = new BeanShellExprCondition( "string.length()",
+                                                                  Collections.EMPTY_SET );
 
         try
         {
@@ -115,7 +115,7 @@ public class BeanShellFilterConditionTest extends TestCase
         {
             // expected and correct
         }
-        catch (FilterException e)
+        catch (ConditionException e)
         {
             fail( e.toString() );
         }

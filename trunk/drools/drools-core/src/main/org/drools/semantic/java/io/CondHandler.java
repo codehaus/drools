@@ -3,7 +3,7 @@ package org.drools.semantic.java.io;
 
 import org.drools.semantic.java.JavaObjectType;
 import org.drools.semantic.java.BeanShellFactExtractor;
-import org.drools.semantic.java.BeanShellFilterCondition;
+import org.drools.semantic.java.BeanShellExprCondition;
 
 import org.drools.semantic.java.parser.JavaLexer;
 import org.drools.semantic.java.parser.JavaRecognizer;
@@ -72,19 +72,19 @@ class CondHandler extends BaseRuleSetHandler
         }
         else
         {
-            integrateFilterCondition( expr,
-                                      ast );
+            integrateExprCondition( expr,
+                                    ast );
         }
     }
 
-    private void integrateFilterCondition(String expr,
-                                          AST ast) throws RecognitionException
+    private void integrateExprCondition(String expr,
+                                        AST ast) throws RecognitionException
     {
         JavaTreeParser treeParser = new JavaTreeParser();
 
         treeParser.init();
 
-        treeParser.filterCondition( ast );
+        treeParser.exprCondition( ast );
 
         List refs = treeParser.getVariableReferences();
 
@@ -106,10 +106,10 @@ class CondHandler extends BaseRuleSetHandler
             }
         }
 
-        BeanShellFilterCondition filterCond = new BeanShellFilterCondition( expr,
-                                                                            decls );
+        BeanShellExprCondition cond = new BeanShellExprCondition( expr,
+                                                                  decls );
 
-        getReader().getCurrentRule().addFilterCondition( filterCond );
+        getReader().getCurrentRule().addCondition( cond );
     }
 
     private void integrateAssignmentCondition(String expr,

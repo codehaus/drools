@@ -2,11 +2,11 @@ package org.drools.spi;
 
 import org.drools.rule.Declaration;
 
-public class FalseFilterCondition implements FilterCondition
+public class TrueCondition implements Condition
 {
     public boolean isAllowed(Tuple tuple)
     {
-        return false;
+        return true;
     }
 
     public Declaration[] getRequiredTupleMembers()

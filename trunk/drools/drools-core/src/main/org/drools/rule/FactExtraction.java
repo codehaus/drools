@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: FactExtraction.java,v 1.1 2002-08-01 19:27:11 bob Exp $
+ $Id: FactExtraction.java,v 1.2 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -55,12 +55,11 @@ import org.drools.spi.Condition;
  *  The assignment occurs through the process of extracting a
  *  new fact from existing facts.
  *
- *  @see Condition
  *  @see FactExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FactExtraction implements Condition
+public class FactExtraction 
 {
     // ------------------------------------------------------------
     //     Instance members

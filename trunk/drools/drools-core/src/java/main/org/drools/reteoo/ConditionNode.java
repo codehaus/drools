@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.reteoo;
 
 /*
- $Id: FilterCondition.java,v 1.5 2002-08-01 18:47:33 bob Exp $
+ $Id: ConditionNode.java,v 1.1 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,34 +46,26 @@ package org.drools.spi;
  
  */
 
-import org.drools.rule.Declaration;
+import org.drools.spi.Condition;
 
-/** A <code>Condition</code> that filters facts.
+/** Node which filters <code>ReteTuple</code>s.
  *
- *  @see Tuple
- *  
+ *  <p>
+ *  Using a semantic <code>FilterCondition</code>, this node
+ *  may allow or disallow <code>Tuples</code> to proceed
+ *  further through the Rete-OO network.
+ *  </p>
+ *
+ *  @see Condition
+ *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface FilterCondition extends Condition
+public interface ConditionNode extends TupleSource, TupleSink
 {
-    /** Retrieve the array of <code>Declaration</code>s required
-     *  by this condition to perform its duties.
+    /** Retrieve the <code>Condition</code> associated
+     *  with this node.
      *
-     *  @return The array of <code>Declarations</code> expected
-     *          on incoming <code>Tuples</code>.
+     *  @return The <code>Condition</code>.
      */
-    Declaration[] getRequiredTupleMembers();
-
-    /** Determine if the supplied <code>Tuple</code> is allowed
-     *  by this filter.
-     *
-     *  @param tuple The <code>Tuple</code> to test.
-     *
-     *  @return <code>true</code> if the <code>Tuple</code>
-     *          passes this filter, else <code>false</code>.
-     *
-     *  @throws FilterException if an error occurs during filtering.
-     */
-    boolean isAllowed(Tuple tuple) throws FilterException;
+    Condition getCondition();
 }
-

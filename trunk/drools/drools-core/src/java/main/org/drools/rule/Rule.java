@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.2 2002-08-01 19:27:11 bob Exp $
+ $Id: Rule.java,v 1.3 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.rule;
  
  */
 
-import org.drools.spi.FilterCondition;
+import org.drools.spi.Condition;
 import org.drools.spi.Action;
 
 import java.util.Set;
@@ -92,8 +92,8 @@ public class Rule
     /** Other local decls of the rule. */
     private Set localDeclarations;
 
-    /** Filter conditions. */
-    private Set filterConditions;
+    /** Conditions. */
+    private Set conditions;
 
     /** Fact extractions */
     private Set factExtractions;
@@ -121,7 +121,7 @@ public class Rule
         this.parameterDeclarations = Collections.EMPTY_SET;
         this.localDeclarations     = Collections.EMPTY_SET;
 
-        this.filterConditions      = Collections.EMPTY_SET;
+        this.conditions            = Collections.EMPTY_SET;
         this.factExtractions       = Collections.EMPTY_SET;
     }
 
@@ -171,7 +171,7 @@ public class Rule
     {
         return ( ( ! getParameterDeclarations().isEmpty() )
                  &&
-                 ( ! ( getFilterConditions().isEmpty()
+                 ( ! ( getConditions().isEmpty()
                        &&
                        getFactExtractions().isEmpty() ) ) );
     }
@@ -202,7 +202,7 @@ public class Rule
             throw new NoParameterDeclarationException( this );
         }
 
-        if ( getFilterConditions().isEmpty()
+        if ( getConditions().isEmpty()
              &&
              getFactExtractions().isEmpty() )
         {
@@ -289,20 +289,20 @@ public class Rule
         return this.localDeclarations;
     }
 
-    /** Add a <code>FilterCondition</code> to this rule.
+    /** Add a <code>Condition</code> to this rule.
      *
-     *  @param filterCondition The <code>FilterCondition</code> to add.
+     *  @param condition The <code>Condition</code> to add.
      */
-    public void addFilterCondition(FilterCondition filterCondition)
+    public void addCondition(Condition condition)
     {
         setState( STATE_OTHER );
 
-        if ( this.filterConditions == Collections.EMPTY_SET )
+        if ( this.conditions == Collections.EMPTY_SET )
         {
-            this.filterConditions = new HashSet();
+            this.conditions = new HashSet();
         }
 
-        this.filterConditions.add( filterCondition );
+        this.conditions.add( condition );
     }
 
     /** Add a consistent <code>FactExtraction</code> to this rule.
@@ -328,14 +328,14 @@ public class Rule
         }
     }
 
-    /** Retrieve the <code>Set</code> of <code>FilterConditions</code> for
+    /** Retrieve the <code>Set</code> of <code>Conditions</code> for
      *  this rule.
      *
-     *  @return The <code>Set</code> of <code>FilterConditions</code>.
+     *  @return The <code>Set</code> of <code>Conditions</code>.
      */
-    public Set getFilterConditions()
+    public Set getConditions()
     {
-        return this.filterConditions;
+        return this.conditions;
     }
 
     /** Retrieve the <code>Set</code> of <code>FactExtractions</code> for
@@ -380,7 +380,7 @@ public class Rule
         return "[Rule: name='" + this.name
             + "'; paramDecls=" + this.parameterDeclarations
             + "; localDecls=" + this.localDeclarations
-            + "; filterConds=" + this.filterConditions
+            + "; conds=" + this.conditions
             + "; factExtracts=" + this.factExtractions
             + "]";
     }
