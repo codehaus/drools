@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.12 2004-09-14 16:57:09 mproctor Exp $
+ $Id: RuleSetReader.java,v 1.13 2004-09-14 19:06:24 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -96,7 +96,7 @@ import java.text.MessageFormat;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.12 2004-09-14 16:57:09 mproctor Exp $
+ *  @version $Id: RuleSetReader.java,v 1.13 2004-09-14 19:06:24 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -374,15 +374,28 @@ public class RuleSetReader
             try
             {
                parser.setProperty(SCHEMA_LANGUAGE,XML_SCHEMA);
-               parser.setProperty(SCHEMA_SOURCE,
-                 new InputStream[]
-                 {
-                   cl.getResourceAsStream("java.xsd"),
-                   cl.getResourceAsStream("groovy.xsd"),
-                   cl.getResourceAsStream("python.xsd"),
-                   cl.getResourceAsStream("rules.xsd")                   
-                 }
-              );
+               InputStream java = cl.getResourceAsStream("java.xsd");
+               InputStream python = cl.getResourceAsStream("python.xsd");
+               InputStream groovy = cl.getResourceAsStream("groovy.xsd");
+               InputStream rules = cl.getResourceAsStream("rules.xsd");
+               int schemas = 0;
+
+               if (java != null) schemas++;
+               if (python != null) schemas++;
+               if (groovy != null) schemas++;
+               if (rules != null) schemas++;
+               
+               InputStream[] sources = new InputStream[schemas];
+
+               schemas = 0;
+               if (java != null) sources[schemas++] = java;
+               if (python != null) sources[schemas++] = python;
+               if (groovy != null) sources[schemas++] = groovy;
+               if (rules != null)sources[schemas++] = rules;   
+               
+               System.out.println(sources);
+               
+               parser.setProperty(SCHEMA_SOURCE, sources);
             }
             catch(SAXNotRecognizedException e)
             {
