@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.16 2004-07-28 13:24:46 mproctor Exp $
+ $Id: Expr.java,v 1.17 2004-07-28 13:34:31 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -64,7 +64,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.16 2004-07-28 13:24:46 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.17 2004-07-28 13:34:31 mproctor Exp $
  */
 public class Expr
     extends Interp
@@ -133,9 +133,7 @@ public class Expr
 
     private void compile(Tuple tuple) throws Exception
     {
-        String[] paramNames = new String[this.requiredDecls.length];
-        Class[] paramTypes = new Class[this.requiredDecls.length];
-        String expr = getPreparedText(tuple, this.requiredDecls, paramNames, paramTypes);
+        String expr = getPreparedText(tuple, this.requiredDecls);
 
         //System.err.println( "expr-----" );
         //System.err.println( expr );

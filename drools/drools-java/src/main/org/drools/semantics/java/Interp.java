@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.19 2004-07-28 13:24:46 mproctor Exp $
+ $Id: Interp.java,v 1.20 2004-07-28 13:34:31 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.19 2004-07-28 13:24:46 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.20 2004-07-28 13:34:31 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -155,7 +155,7 @@ public class Interp implements Serializable
     //     Instance methods
     // ------------------------------------------------------------
 
-    public String getPreparedText(Tuple tuple, Declaration[] availDecls, String[] paramNames, Class[] paramTypes)
+    public String getPreparedText(Tuple tuple, Declaration[] availDecls)
     {
         WorkingMemory workingMemory = tuple.getWorkingMemory();
         Map appData = workingMemory.getApplicationDataMap();
@@ -164,20 +164,11 @@ public class Interp implements Serializable
         Declaration eachDecl = null;
         Declaration[] params = availDecls;
 
-        /*
-        paramNames[0] = "drools";
-        paramTypes[0] = KnowledgeHelper.class;
-        paramNames[1] = "applicationData";
-        paramTypes[1] = Map.class;
-        */
-
         String type;
         int nestedClassPosition;
         for ( int i = 0 ; i < params.length; i++ ) {
             eachDecl = params[i];
             objectType = eachDecl.getObjectType();
-            paramNames[i] = eachDecl.getIdentifier();
-            paramTypes[i] = ((ClassObjectType)objectType).getType();
 
             //Import classes for each of the declarations
 
