@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: DeclarationTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
+ $Id: DeclarationTag.java,v 1.4 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DeclarationTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: DeclarationTag.java,v 1.4 2002-08-20 05:06:24 bob Exp $
  */
 public class DeclarationTag extends RuleTagSupport
 {
@@ -201,10 +201,5 @@ public class DeclarationTag extends RuleTagSupport
         {
             rule.addDeclaration( decl );
         }
-        else
-        {
-            System.err.println( "rule is null" );
-        }
     }
-        
 }

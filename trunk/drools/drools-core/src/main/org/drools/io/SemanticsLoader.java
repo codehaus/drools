@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsLoader.java,v 1.4 2002-08-19 17:24:00 bob Exp $
+ $Id: SemanticsLoader.java,v 1.5 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -100,7 +100,7 @@ public class SemanticsLoader
 
         if ( cl == null )
         {
-            cl = ClassLoader.getSystemClassLoader();
+            cl = getClass().getClassLoader();
         }
 
         String moduleDescriptor = packageName.replace( '.',

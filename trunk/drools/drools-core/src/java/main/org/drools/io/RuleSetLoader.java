@@ -1,7 +1,7 @@
-package org.drools.tags.rule;
+package org.drools.io;
 
 /*
- $Id: RuleSetTag.java,v 1.3 2002-08-20 05:06:24 bob Exp $
+ $Id: RuleSetLoader.java,v 1.1 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,33 +46,33 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.io.RuleSetLoader;
 import org.drools.rule.RuleSet;
+import org.drools.tags.rule.RuleTagLibrary;
 
+import org.apache.commons.jelly.Script;
+import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.parser.XMLParser;
 
-/** Construct a <code>RuleSet</code>.
- *
- *  @see RuleSet
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+/** Loads <code>RuleSet</code> definitions from XML descriptor.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetTag.java,v 1.3 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: RuleSetLoader.java,v 1.1 2002-08-20 05:06:24 bob Exp $
  */
-public class RuleSetTag extends RuleTagSupport
+public class RuleSetLoader
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Rule-set name. */
-    private String name;
-
-    /** The rule-set. */
-    private RuleSet ruleSet;
-
-    /** Var name. */
-    private String var;
+    /** Rule-sets. */
+    private List ruleSets;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -80,7 +80,7 @@ public class RuleSetTag extends RuleTagSupport
 
     /** Construct.
      */
-    public RuleSetTag()
+    public RuleSetLoader()
     {
         // intentionally left blank
     }
@@ -89,85 +89,66 @@ public class RuleSetTag extends RuleTagSupport
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the <code>RuleSet</code> name.
+    /** Add a <code>RuleSet</code> to this loader.
      *
-     *  @param name The name.
+     *  @param ruleSet The rule-set to add.
      */
-    public void setName(String name)
+    public void addRuleSet(RuleSet ruleSet)
     {
-        this.name = name;
+        this.ruleSets.add( ruleSet );
     }
 
-    /** Retrieve the <code>RuleSet</code> name.
+    /** Load <code>RuleSet</code> deifnitions from a URL.
      *
-     *  @return The name.
+     *  @param url The URL of the rule-set definitions.
+     *
+     *  @return The list of loaded rule-sets.
+     *
+     *  @throws IOException If an IO errors occurs.
+     *  @throws Exception If an error occurs evaluating the definition.
      */
-    public String getName()
+    public List load(URL url) throws IOException, Exception
     {
-        return this.name;
+        this.ruleSets = new ArrayList();
+
+        XMLParser parser = new XMLParser();
+
+        JellyContext context = new JellyContext();
+        
+        context.registerTagLibrary( "http://drools.org/rules",
+                                    new RuleTagLibrary() );
+        
+        context.setVariable( "org.drools.io.RuleSetLoader",
+                             this );
+
+        parser.setContext( context );
+        
+        Script script = parser.parse( url.toExternalForm() );
+
+        XMLOutput output = XMLOutput.createXMLOutput( System.err,
+                                                      false );
+
+        script.run( context,
+                    output );
+
+        List answer = this.ruleSets;
+
+        this.ruleSets = null;
+
+        return answer;
     }
 
-    /** Set the variable in which to store the <code>RuleSet</code>.
+    /** Load <code>RuleSet</code> deifnitions from a URL.
      *
-     *  @param var The variable name.
+     *  @param url The URL of the rule-set definitions.
+     *
+     *  @return The list of loaded rule-sets.
+     *
+     *  @throws IOException If an IO errors occurs.
+     *  @throws Exception If an error occurs evaluating the definition.
      */
-    public void setVar(String var)
+    public List load(String url) throws IOException, Exception
     {
-        this.var = var;
-    }
-
-    /** Retrieve the variable in which to store the <code>RuleSet</code>.
-     *
-     *  @return The variable name.
-     */
-    public String getVar()
-    {
-        return this.var;
-    }
-
-    /** Retrieve the <code>RuleSet</code>.
-     *
-     *  @return The rule-set.
-     */
-    public RuleSet getRuleSet()
-    {
-        return this.ruleSet;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.apache.commons.jelly.Tag
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Perform this tag.
-     *
-     *  @param output The output sink.
-     *
-     *  @throws Exception If an error occurs while attempting
-     *          to perform this tag.
-     */
-    public void doTag(XMLOutput output) throws Exception
-    {
-        requiredAttribute( "name",
-                           this.name );
-
-        this.ruleSet = new RuleSet( this.name );
-
-        if ( this.var != null )
-        {
-            getContext().setVariable( this.var,
-                                      this.ruleSet );
-        }
-
-        getContext().setVariable( "org.drools.rule-set",
-                                  this.ruleSet );
-
-        invokeBody( output );
-
-        RuleSetLoader loader = (RuleSetLoader) getContext().getVariable( "org.drools.io.RuleSetLoader" );
-
-        if ( loader != null )
-        {
-            loader.addRuleSet( this.ruleSet );
-        }
+        return load( new URL( url ) );
     }
 }

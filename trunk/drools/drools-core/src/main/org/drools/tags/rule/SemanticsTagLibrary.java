@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.4 2002-08-19 21:15:42 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.5 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -72,7 +72,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.4 2002-08-19 21:15:42 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.5 2002-08-20 05:06:24 bob Exp $
  */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -196,7 +196,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  try
                                                  {
                                                      ((ConfigurableObjectType)this.objectType)
-                                                         .configure( getBodyText() );
+                                                         .configure( getBodyText( false ) );
                                                  }
                                                  catch (ConfigurationException e)
                                                  {
@@ -285,7 +285,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  try
                                                  {
                                                      ((ConfigurableCondition)this.condition)
-                                                         .configure( getBodyText(),
+                                                         .configure( getBodyText( false ),
                                                                      tag.getAvailableDeclarations() );
                                                  }
                                                  catch (ConfigurationException e)
@@ -375,7 +375,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  try
                                                  {
                                                      ((ConfigurableExtractor)this.extractor)
-                                                         .configure( getBodyText(),
+                                                         .configure( getBodyText( false ),
                                                                      tag.getAvailableDeclarations() );
                                                  }
                                                  catch (ConfigurationException e)
@@ -465,7 +465,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  try
                                                  {
                                                      ((ConfigurableConsequence)this.consequence)
-                                                         .configure( getBodyText(),
+                                                         .configure( getBodyText( false ),
                                                                      tag.getAvailableDeclarations() );
                                                  }
                                                  catch (ConfigurationException e)

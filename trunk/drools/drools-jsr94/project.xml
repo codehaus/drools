@@ -130,7 +130,7 @@
 
     <dependency>
       <id>dom4j</id>
-      <version>1.4-dev</version>
+      <version>1.4-dev-7</version>
       <url>http://dom4j.org/</url>
     </dependency>
 
