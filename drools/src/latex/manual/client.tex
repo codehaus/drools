@@ -8,7 +8,7 @@ starting a session, manipulating knowledge and executing rules.
 
 \section{Retrieving a \indexClass{RuleBase}}
 
-Before any activites may be performed, the client application must
+Before any activities may be performed, the client application must
 obtain a \indexClass{RuleBase} through either building one using
 the administrative API or by performing a lookup within a JNDI
 directory or other managed object data source.  Building
@@ -53,7 +53,7 @@ File ser = new File(...);
 \section{Creating a \indexClass{WorkingMemory}}
 
 A \class{WorkingMemory} object represents an isolated rule
-sessio n where knowledge is manipulated and evaluated to determine
+session where knowledge is manipulated and evaluated to determine
 which rules should fire.  Each \class{WorkingMemory} is independent
 from all other instances. Each \class{WorkingMemory} is backed by the
 \indexClass{RuleBase} that created it
@@ -106,7 +106,7 @@ FactHandle handle1 = memory.assertObject( factOne );
 FactHandle handle2 = memory.assertObject( factTwo );
 FactHandle handle3 = memory.assertObject( factThree );
 \end{javaCodelisting}
-\caption{Aasserting knowledge into a \indexClass{WorkingMemory}}
+\caption{Asserting knowledge into a \indexClass{WorkingMemory}}
 \label{workingmemory.assert}
 \end{figure}
 
