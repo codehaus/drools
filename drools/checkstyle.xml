@@ -167,7 +167,10 @@
         <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
+	<!-- Broken in Checkstyle v3.4 but fixed in v3.5 (Checkstyle bug 952508)
+	     Unfortunately, the latest maven-checkstyle plugin v2.5 uses Checkstyle v3.4!
         <module name="RequireThis"/>
+	-->
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
