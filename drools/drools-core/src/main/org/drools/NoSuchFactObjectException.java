@@ -10,14 +10,14 @@ public class NoSuchFactObjectException
         this.handle = handle;
     }
 
-    public FactHandle getHandle()
+    public FactHandle getFactHandle()
     {
         return this.handle;
     }
 
     public String getMessage()
     {
-        return "No such fact object for handle: " + getHandle();
+        return "no such fact object for handle: " + getFactHandle().toExternalForm();
     }
 }
 

@@ -27,8 +27,13 @@ class FactHandleImpl
         return (int) ( this.id % (long) Integer.MAX_VALUE );
     }
 
+    public String toExternalForm()
+    {
+        return "[fid:" + this.id + "]";
+    }
+
     public String toString()
     {
-        return "[FactHandle:" + this.id + "]";
+        return toExternalForm();
     }
 }
