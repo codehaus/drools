@@ -154,6 +154,14 @@
                 <role>JSR-94 Lead</role>
             </roles>
         </developer>
+        <developer>
+            <name>Andy Barnett</name>
+            <id>dbarnett</id>
+            <email>abarnett@cantilevertech.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
     </developers>
     <contributors>
         <contributor>
