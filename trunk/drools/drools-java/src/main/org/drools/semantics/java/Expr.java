@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.10 2004-06-22 17:17:27 bob Exp $
+ $Id: Expr.java,v 1.11 2004-06-23 06:45:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.drools.rule.Declaration;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.10 2004-06-22 17:17:27 bob Exp $
+ *  @version $Id: Expr.java,v 1.11 2004-06-23 06:45:46 bob Exp $
  */
 public class Expr
     extends Interp
@@ -120,9 +120,11 @@ public class Expr
 
     public void setText(String text)
     {
-        this.methodName = "drools$condition$" + (++counter);
+        this.methodName = "drools$expression$" + (++counter);
 
         this.ns = new NameSpace( getInterpreter().getClassManager(), "" );
+
+        this.ns.importCommands( "bsh" );
         
         StringBuffer method = new StringBuffer();
         
@@ -143,6 +145,8 @@ public class Expr
         method.append( "{" );
         method.append( "return " + text + ";" );
         method.append( "}" );
+
+        System.err.println( "defining " + method );
         
         try
         {
