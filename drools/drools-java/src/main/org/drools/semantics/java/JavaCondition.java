@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.6 2004-12-29 19:29:04 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.7 2005-01-24 20:51:58 brianm Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,8 +46,9 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
-import org.drools.spi.KnowledgeHelper;
+import org.drools.spi.KnowledgeHelperDrools;
 import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelper;
 
 import javax.naming.ConfigurationException;
 import java.io.ObjectInputStream;
@@ -144,7 +145,7 @@ public class JavaCondition
             }            
             return this.script.invoke( tuple,
                                   requiredDeclarations,
-                                  new KnowledgeHelper( rule,
+                                  new KnowledgeHelperDrools( rule,
                                                        tuple ),
                                   tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }

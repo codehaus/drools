@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.3 2004-12-29 16:13:08 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.4 2005-01-24 20:51:58 brianm Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,8 +49,9 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Functions;
-import org.drools.spi.KnowledgeHelper;
+import org.drools.spi.KnowledgeHelperDrools;
 import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelperDrools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -169,7 +170,7 @@ public class GroovyInterp implements Serializable
 
         WorkingMemory workingMemory = tuple.getWorkingMemory( );
 
-        dict.setVariable( "drools".intern( ), new KnowledgeHelper( this.rule, tuple ) );
+        dict.setVariable( "drools".intern( ), new KnowledgeHelperDrools( this.rule, tuple ) );
 
         Map appDataMap = workingMemory.getApplicationDataMap( );
 
