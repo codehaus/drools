@@ -52,8 +52,7 @@ public class HelloWorldBuilder
                     for ( int k = 0; k < conditions.size( ); k++ )
                     {
                         TerminalNode terminal = new TerminalNode( new ConditionNode( rule, parameterNode,
-                                                                                     ( Condition ) conditions.get( k ),
-                                                                                     k ),
+                                                                                     ( Condition ) conditions.get( k ) ),
                                                                   rule );
                     }
                 }

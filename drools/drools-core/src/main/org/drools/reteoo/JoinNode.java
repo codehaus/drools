@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.36 2004-12-03 03:26:17 simon Exp $
+ * $Id: JoinNode.java,v 1.37 2004-12-04 02:27:20 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -118,14 +118,14 @@ class JoinNode extends TupleSource
             return true;
         }
 
-        if ( object instanceof JoinNode )
+        if ( object == null || getClass( ) != object.getClass( ) )
         {
-            JoinNode other = ( JoinNode ) object;
-
-            return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
+            return false;
         }
 
-        return false;
+        JoinNode other = ( JoinNode ) object;
+
+        return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
     }
 
     // ------------------------------------------------------------
