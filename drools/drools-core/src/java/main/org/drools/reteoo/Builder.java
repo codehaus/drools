@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.21 2002-08-21 05:46:13 bob Exp $
+ $Id: Builder.java,v 1.22 2002-08-22 19:21:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -178,7 +178,12 @@ public class Builder
                 continue;
             }
 
-            break;
+            if ( leafNodes.size() == 1 )
+            {
+                break;
+            }
+
+            joinArbitrary( leafNodes );
         }
 
         if ( leafNodes.size() != 1 )
@@ -290,6 +295,18 @@ public class Builder
     protected boolean joinForCondition(Set conds,
                                        Set leafNodes)
     {
+        joinArbitrary( leafNodes );
+
+        return true;
+    }
+
+    /** Join two arbitrary leaves in order to satisfy a filter
+     *  that currently cannot be applied.
+     *
+     *  @param leafNodes Available leaf nodes.
+     */
+    protected void joinArbitrary(Set leafNodes)
+    {
         Iterator leafIter = leafNodes.iterator();
 
         TupleSourceImpl left = (TupleSourceImpl) leafIter.next();
@@ -304,8 +321,6 @@ public class Builder
                                               right );
 
         leafNodes.add( joinNode );
-
-        return true;
     }
 
     /** Create and attach <code>JoinNode</code>s to the network.

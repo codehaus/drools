@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.13 2002-08-22 07:42:39 bob Exp $
+ $Id: Rule.java,v 1.14 2002-08-22 19:21:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,7 +67,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.13 2002-08-22 07:42:39 bob Exp $
+ *  @version $Id: Rule.java,v 1.14 2002-08-22 19:21:58 bob Exp $
  */
 public class Rule
 {
@@ -173,7 +173,6 @@ public class Rule
      * 
      *  <pre>
      *      NoParameterDeclarationException
-     *      NoConditionException
      *  </pre>
      *
      *  <p>
@@ -188,13 +187,6 @@ public class Rule
         if ( getParameterDeclarations().isEmpty() )
         {
             throw new NoParameterDeclarationException( this );
-        }
-
-        if ( getConditions().isEmpty()
-             &&
-             getExtractions().isEmpty() )
-        {
-            throw new NoConditionException( this );
         }
     }
 
