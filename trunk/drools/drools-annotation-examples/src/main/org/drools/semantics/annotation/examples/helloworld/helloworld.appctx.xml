@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="ruleSet" abstract="true"
+        class="org.drools.semantics.annotation.spring.SpringAnnotationRuleSetFactory" />
+
+    <bean id="rule" abstract="true"
+        class="org.drools.semantics.annotation.spring.SpringAnnotationRuleFactory" />
+
+    <bean id="innerPojosRuleSet" parent="ruleSet">
+        <property name="name">
+            <value>"nested class rule-set"</value>
+        </property>
+        <property name="rules">
+            <set>
+                <bean parent="rule">
+                    <property name="name">
+                        <value>Hello</value>
+                    </property>
+                    <property name="pojo">
+                        <bean
+                            class="org.drools.semantics.annotation.examples.helloworld.HelloWorldRules$Hello" />
+                    </property>
+                </bean>
+                <bean parent="rule">
+                    <property name="name">
+                        <value>Goodbye</value>
+                    </property>
+                    <property name="pojo">
+                        <bean
+                            class="org.drools.semantics.annotation.examples.helloworld.HelloWorldRules$Goodbye" />
+                    </property>
+                </bean>
+                <bean parent="rule">
+                    <property name="name">
+                        <value>Debug</value>
+                    </property>
+                    <property name="pojo">
+                        <bean
+                            class="org.drools.semantics.annotation.examples.helloworld.HelloWorldRules$Debug" />
+                    </property>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+
+    <bean id="messagePrinter"
+        class="org.drools.semantics.annotation.examples.helloworld.MessagePrinter" />
+
+    <bean id="messagePrintingBean" abstract="true">
+        <property name="messagePrinter">
+            <ref local="messagePrinter" />
+        </property>
+    </bean>
+
+    <bean id="outerPojosRuleSet" parent="ruleSet">
+        <property name="name">
+            <value>"individual classes rule-set"</value>
+        </property>
+        <property name="rules">
+            <set>
+                <bean parent="rule">
+                    <property name="name">
+                        <value>Hello</value>
+                    </property>
+                    <property name="pojo">
+                        <bean parent="messagePrintingBean"
+                            class="org.drools.semantics.annotation.examples.helloworld.HelloRule" />
+                    </property>
+                </bean>
+                <bean parent="rule">
+                    <property name="name">
+                        <value>Goodbye</value>
+                    </property>
+                    <property name="pojo">
+                        <bean parent="messagePrintingBean"
+                            class="org.drools.semantics.annotation.examples.helloworld.GoodbyeRule" />
+                    </property>
+                </bean>
+                <bean parent="rule">
+                    <property name="name">
+                        <value>Debug</value>
+                    </property>
+                    <property name="pojo">
+                        <bean
+                            class="org.drools.semantics.annotation.examples.helloworld.DebugRule" />
+                    </property>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+</beans>

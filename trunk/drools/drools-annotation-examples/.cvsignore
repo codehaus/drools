@@ -1,0 +1,9 @@
+*.log
+*.ipr
+*.iws
+target
+cachedir
+.classpath
+.project
+.settings
+.clover
