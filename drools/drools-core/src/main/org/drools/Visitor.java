@@ -1,7 +1,7 @@
-package org.drools.reteoo;
+package org.drools;
 
 /*
- $Id: TupleSink.java,v 1.16 2004-08-07 16:23:31 mproctor Exp $
+ $Id: Visitor.java,v 1.1 2004-08-07 16:23:31 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,56 +46,6 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.FactException;
-
-import java.io.Serializable;
-
-/** Receiver of propagated <code>ReteTuple</code>s from a <code>TupleSource</code>.
- *
- *  @see TupleSource
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-interface TupleSink extends Serializable
-{
-    /** Assert a new <code>Tuple</code>.
-     *
-     *  @param tuple The <code>Tuple</code> being asserted.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws AssertionException If an error occurs while asserting.
-     */
-    void assertTuple(ReteTuple tuple,
-                     WorkingMemoryImpl workingMemory) throws AssertionException;
-
-    /** Retract tuples.
-     *
-     *  @param key The tuple key.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws RetractionException If an error occurs while retracting.
-     */
-    void retractTuples(TupleKey key,
-                       WorkingMemoryImpl workingMemory) throws RetractionException;
-
-    /** Modify tuples.
-     *
-     *  @param trigger The root fact object handle.
-     *  @param newTuples Modification replacement tuples.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException If an error occurs while modifying.
-     */
-    void modifyTuples(FactHandle trigger,
-                      TupleSet newTuples,
-                      WorkingMemoryImpl workingMemory) throws FactException;
-
-    /**
-     * Compatible with the GraphViz DOT format.
-     * @returns the next node number to be used
-     */
-    public long dumpToDot(StringBuffer buffer, long thisNode);
+public interface Visitor {
+   public void visit(Object o);
 }

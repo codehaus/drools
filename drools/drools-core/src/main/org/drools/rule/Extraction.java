@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Extraction.java,v 1.9 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: Extraction.java,v 1.10 2004-08-07 16:23:32 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -144,6 +144,12 @@ public class Extraction implements Serializable
         return getExtractor().getRequiredTupleMembers();
     }
 
+    public String toString()
+    {
+        return "[Extraction: " + extractor + "]";
+    }
+
+/*
     public String dump(String indent)
     {
         StringBuffer buffer = new StringBuffer();
@@ -159,4 +165,6 @@ public class Extraction implements Serializable
 
         return buffer.toString();
     }
+*/
+
 }

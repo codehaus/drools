@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.15 2004-07-13 17:19:41 dbarnett Exp $
+ $Id: ObjectTypeNode.java,v 1.16 2004-08-07 16:23:31 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -261,21 +261,6 @@ class ObjectTypeNode
         }
     }
 
-    public String dump(String indent)
-    {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(indent + "ObjectTypeNode\n");
-        buffer.append(indent + "--------------\n");
-        buffer.append(indent + "objectType: " + objectType + "\n");
-        Iterator it = getParameterNodeIterator();
-        while (it.hasNext())
-        {
-            ParameterNode o = (ParameterNode) it.next();
-            buffer.append(o.dump(indent + " "));
-        }
-        return buffer.toString();
-    }
-
     /**
      * Compatible with the GraphViz DOT format.
      */
@@ -283,7 +268,7 @@ class ObjectTypeNode
     {
         buffer.append(thisNode + " [label=\"ObjectTypeNode\\n" +
             "objectType: " + objectType + "\"];\n");
-        
+
         long nextNode = thisNode + 1;
         for (Iterator i = getParameterNodeIterator(); i.hasNext(); )
         {

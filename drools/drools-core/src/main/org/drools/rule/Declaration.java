@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.15 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: Declaration.java,v 1.16 2004-08-07 16:23:32 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -158,20 +158,6 @@ public class Declaration implements Serializable
 
     public String toString()
     {
-        return "[" + this.identifier + "]";
-    }
-
-    public String dump(String indent)
-    {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(indent + "Declaration\n");
-        buffer.append(indent + "-----------\n");
-        buffer.append(indent + "identifier: ");
-        buffer.append(indent + identifier);
-        buffer.append(indent + "\n");
-        buffer.append(indent + "objectType: ");
-        buffer.append(indent + objectType);
-        buffer.append(indent + "\n");
-        return buffer.toString();
+        return "[Declaration: " + this.identifier + "]";
     }
 }

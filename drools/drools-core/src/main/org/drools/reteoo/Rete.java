@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.13 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: Rete.java,v 1.14 2004-08-07 16:23:31 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -248,19 +248,6 @@ class Rete
         return node;
     }
 
-    public String dump()
-    {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("Rete\n");
-        buffer.append("----\n");
-        Iterator it = getObjectTypeNodeIterator();
-        while (it.hasNext()) {
-          ObjectTypeNode o = (ObjectTypeNode) it.next();
-          buffer.append(o.dump(" "));
-        }
-        return buffer.toString();
-    }
-
     /**
      * Compatible with the GraphViz DOT format.
      */
@@ -268,11 +255,11 @@ class Rete
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append("digraph RETEOO {\n");
-        
+
         // Node 0 will be the root of the Rete itself
         long thisNode = 0;
         buffer.append(thisNode + " [label=\"RETE-OO\"];\n");
-        
+
         long nextNode = thisNode + 1;
         for (Iterator i = getObjectTypeNodeIterator(); i.hasNext(); )
         {
@@ -280,9 +267,9 @@ class Rete
             buffer.append(thisNode + " -> " + nextNode + ";\n");
             nextNode = o.dumpToDot(buffer, nextNode);
         }
-        
+
         buffer.append("}");
-        
+
         return buffer.toString();
     }
 }

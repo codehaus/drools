@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Dumper.java,v 1.4 2004-08-07 16:23:31 mproctor Exp $
+ $Id: ReflectiveVisitor.java,v 1.1 2004-08-07 16:23:31 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,86 +46,81 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.RuleBase;
+import java.lang.reflect.Method;
+
 import org.drools.Visitor;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-
-/** Implementation of <code>RuleBase</code>.
- *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
- *
- *  @version $Id: Dumper.java,v 1.4 2004-08-07 16:23:31 mproctor Exp $
- */
-public class Dumper
+public abstract class ReflectiveVisitor implements Visitor
 {
-    private RuleBaseImpl ruleBase;
-
-    public Dumper(RuleBase ruleBase)
-    {
-        this.ruleBase = (RuleBaseImpl) ruleBase;
-    }
-
-    public void dumpRete(PrintStream out)
-    {
-        dumpRete(out, "  ");
-    }
-
-    public void dumpRete(PrintStream out, String indent)
-    {
-        Visitor visitor = new ReteooPrintDumpVisitor(out, indent);
-        visitor.visit(ruleBase);
-    }
-
-    /**
-     * Compatible with the GraphViz DOT format.
-     */
-    public void dumpReteToDot(PrintStream out)
-    {
-        JoinNodeInput.resetDump();
-        out.println(ruleBase.dumpReteToDot());
-    }
-
-    /**
-     * Converts line-breaks into \n for GraphViz DOT compatibility.
-     */
-    static String formatForDot(Object object)
-    {
-        if (null == object)
-        {
-            return "<NULL>";
-        }
-
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader(
-                new ByteArrayInputStream(object.toString().getBytes())));
-
-        StringBuffer buffer = new StringBuffer();
+    public void visit(Object object) {
         try
         {
-            boolean firstLine = true;
-            for (String line = br.readLine(); null != line; line = br.readLine())
+            if (object != null)
             {
-                if (line.trim().length() == 0)
-                {
-                    continue;
-                }
-                if (!firstLine)
-                {
-                    buffer.append("\\n");
-                }
-                buffer.append(line);
+                 Method method = getMethod(object.getClass());
+                 method.invoke(this, new Object[] {object});
+            }
+            else
+            {
+                Method method = this.getClass().getMethod("visitNull", null);
+                method.invoke(this, null);
             }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            throw new RuntimeException("Error formatting '" + object + "'", e);
+             e.printStackTrace();
+        }
+    }
+
+    protected Method getMethod(Class clazz)
+    {
+        Class newClazz = clazz;
+        Method method = null;
+
+        // Try the superclasses
+        while (method == null && newClazz != Object.class)
+        {
+            String methodName = newClazz.getName();
+            methodName = "visit" + methodName.substring(methodName.lastIndexOf('.') + 1);
+            try
+            {
+               method = getClass().getMethod(methodName, new Class[] {newClazz});
+            }
+            catch (NoSuchMethodException e)
+            {
+               newClazz = newClazz.getSuperclass();
+            }
         }
 
-        return buffer.toString();
+        // Try the interfaces.
+        if (newClazz == Object.class)
+        {
+            Class[] interfaces = clazz.getInterfaces();
+            for (int i = 0; i < interfaces.length; i++)
+            {
+                String methodName = interfaces[i].getName();
+                methodName = "visit" + methodName.substring(methodName.lastIndexOf('.') + 1);
+                try
+                {
+                    method = getClass().getMethod(methodName, new Class[] {interfaces[i]});
+                }
+                catch (NoSuchMethodException e)
+                {
+                    //swallow
+                }
+            }
+        }
+        if (method == null)
+        {
+            try
+            {
+                method = this.getClass().getMethod("visitObject", new Class[] {Object.class});
+            }
+            catch (Exception e)
+            {
+                // Can't happen
+            }
+        }
+        return method;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.31 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: Rule.java,v 1.32 2004-08-07 16:23:32 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.31 2004-08-05 02:13:48 dbarnett Exp $
+ *  @version $Id: Rule.java,v 1.32 2004-08-07 16:23:32 mproctor Exp $
  */
 public class Rule implements Serializable
 {
@@ -481,14 +481,13 @@ public class Rule implements Serializable
         Declaration[] declarations = getAllDeclarations();
         for (int i = 0; i < declarations.length; i++)
         {
-          buffer.append(declarations[i].dump(indent + " "));
+          buffer.append(indent + declarations[i]);
         }
 
         Extraction[] extractions = getExtractions();
         for (int i = 0; i < extractions.length; i++)
         {
-          buffer.append(indent + "extraction:\n");
-          buffer.append(extractions[i].dump(indent + " "));
+          buffer.append(indent + extractions[i]);
         }
 
         Condition[] conditions = getConditions();
