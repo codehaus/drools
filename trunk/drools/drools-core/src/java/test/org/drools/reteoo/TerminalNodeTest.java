@@ -30,7 +30,8 @@ public class TerminalNodeTest extends TestCase
     public void testAssertTuple()
     {
         InstrumentedAction action = new InstrumentedAction();
-        TerminalNode       node = new TerminalNode( action );
+        TerminalNode       node = new TerminalNode( null,
+                                                    action );
 
         Tuple tuple = new ReteTuple();
 

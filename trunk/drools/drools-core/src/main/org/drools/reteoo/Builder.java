@@ -39,6 +39,8 @@ public class Builder
         
         attachableNodes = createParameterNodes( rule );
 
+        System.err.println( " 1->" + attachableNodes );
+
         do 
         {
             performedJoin = false;
@@ -50,10 +52,16 @@ public class Builder
                                         attachableNodes );
             }
 
+            System.err.println( " 2->" + attachableNodes );
+
             attachAssign = attachAssignmentConditions( assignmentConds,
                                                        attachableNodes );
 
+            System.err.println( " 3->" + attachableNodes );
+
             performedJoin = createJoinNodes( attachableNodes );
+
+            System.err.println( " 4->" + attachableNodes );
         }
         while ( ! attachableNodes.isEmpty() 
                 &&
@@ -61,6 +69,11 @@ public class Builder
                   ||
                   attachAssign
                   ) );
+
+        TupleSource lastNode = (TupleSource) attachableNodes.iterator().next();
+
+        TerminalNode terminal = new TerminalNode( lastNode,
+                                                  rule.getAction() );
     }
 
     protected Set createParameterNodes(Rule rule)
@@ -128,6 +141,7 @@ public class Builder
 
     protected boolean createJoinNodes(Set attachableNodes)
     {
+        System.err.println( "ENTER joinNodes" );
         boolean performedJoin = false;
 
         Object[] leftNodes  = attachableNodes.toArray();
@@ -138,22 +152,24 @@ public class Builder
 
         JoinNode joinNode = null;
 
+      outter:
         for ( int i = 0 ; i < leftNodes.length ; ++i )
         {
             left = (TupleSource) leftNodes[i];
 
             if ( ! attachableNodes.contains( left ) )
             {
-                continue;
+                continue outter;
             }
 
-            for ( int j = i ; j < rightNodes.length ; ++i )
+          inner:
+            for ( int j = i + 1; j < rightNodes.length ; ++j )
             {
-                right = (TupleSource) rightNodes[i];
+                right = (TupleSource) rightNodes[j];
 
                 if ( ! attachableNodes.contains( right ) )
                 {
-                    continue;
+                    continue inner;
                 }
 
                 if ( canBeJoined( left,
@@ -169,10 +185,16 @@ public class Builder
                     attachableNodes.add( joinNode );
 
                     performedJoin = true;
+
+                    System.err.println( joinNode + " from " + left + " and " + right );
+                    System.err.println( attachableNodes );
+
+                    continue outter;
                 }
             }
         }
 
+        System.err.println( "EXIT joinNodes" );
         return performedJoin;
     }
 
@@ -282,6 +304,7 @@ public class Builder
             eachSource = (TupleSource) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
+            System.err.println( "decls -> " + decls );
 
             if ( decls.contains( targetDecl ) )
             {

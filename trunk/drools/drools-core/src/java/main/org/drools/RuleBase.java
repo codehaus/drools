@@ -2,6 +2,8 @@
 package org.drools;
 
 import org.drools.reteoo.RootNode;
+import org.drools.reteoo.Builder;
+import org.drools.reteoo.ReteConstructionException;
 import org.drools.spi.Rule;
 import org.drools.spi.RuleSet;
 
@@ -19,6 +21,13 @@ public class RuleBase
     public RuleBase()
     {
         this.rootNode = new RootNode();
+    }
+
+    public void addRule(Rule rule) throws ReteConstructionException
+    {
+        Builder builder = new Builder( getRootNode() );
+
+        builder.addRule( rule );
     }
 
     /** Create a {@link WorkingMemory} session for
