@@ -173,18 +173,12 @@
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
-                <include>**/*TestCase.java</include>
             </includes>
-            <excludes>
-                <exclude>**/DroolsBenchmarkTestCase.java</exclude>
-                <exclude>**/jsr94/**</exclude>
-            </excludes>
             <resources>
                 <resource>
                     <directory>src/test</directory>
                     <includes>
                         <include>**/*.drl</include>
-                        <include>**/*.jelly</include>
                     </includes>
                 </resource>
             </resources>

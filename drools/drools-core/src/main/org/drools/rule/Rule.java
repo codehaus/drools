@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.19 2003-10-28 08:00:14 bob Exp $
+ $Id: Rule.java,v 1.20 2003-10-28 19:16:52 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -69,7 +69,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.19 2003-10-28 08:00:14 bob Exp $
+ *  @version $Id: Rule.java,v 1.20 2003-10-28 19:16:52 bob Exp $
  */
 public class Rule
 {
@@ -176,15 +176,16 @@ public class Rule
      */
     public boolean isValid()
     {
-        return ! ( getParameterDeclarations().isEmpty()
-                   ||
-                   getConditions().isEmpty()
-                   ||
-                   getExtractions().isEmpty() );
+        return ( ! ( getParameterDeclarations().length == 0
+                     ||
+                     getConditions().length == 0
+                     ||
+                     getExtractions().length == 0 )
+                 &&
+                 getConsequence() != null );
     }
 
-    /** Check the validity of this rule, and throw exceptions if
-     *  it failed validity tests.
+    /** Check the validity of this rule, and throw exceptions if it fails validity tests.
      *
      *  <p>
      *  Possibly exceptions include:
@@ -201,9 +202,10 @@ public class Rule
      *
      *  @throws InvalidRuleException if this rule is in any way invalid.
      */
-    public void checkValidity() throws InvalidRuleException
+    public void checkValidity()
+        throws InvalidRuleException
     {
-        if ( getParameterDeclarations().isEmpty() )
+        if ( ! isValid() )
         {
             throw new NoParameterDeclarationException( this );
         }
@@ -322,9 +324,9 @@ public class Rule
      *  @return The <code>Set</code> of <code>Declarations</code> which
      *          specify the <i>root fact objects</i>.
      */
-    public Set getParameterDeclarations()
+    public Declaration[] getParameterDeclarations()
     {
-        return this.parameterDeclarations;
+        return (Declaration[]) this.parameterDeclarations.toArray( Declaration.EMPTY_ARRAY );
     }
 
     /** Retrieve the set of all implied local Declarations.
@@ -332,13 +334,13 @@ public class Rule
      *  @return The <code>Set</code> of all implied <code>Declarations</code>
      *          which are implied by the conditions.
      */
-    public Set getLocalDeclarations()
+    public Declaration[] getLocalDeclarations()
     {
         Set localDecls = new HashSet( this.allDeclarations );
 
         localDecls.removeAll( this.parameterDeclarations );
 
-        return localDecls;
+        return (Declaration[]) localDecls.toArray( Declaration.EMPTY_ARRAY );
     }
 
     /** Retrieve the array of all <code>Declaration</code>s of
@@ -388,9 +390,9 @@ public class Rule
      *
      *  @return The <code>Set</code> of <code>Conditions</code>.
      */
-    public List getConditions()
+    public Condition[] getConditions()
     {
-        return this.conditions;
+        return (Condition[]) this.conditions.toArray( Condition.EMPTY_ARRAY );
     }
 
     /** Retrieve the <code>Set</code> of <code>Extractions</code> for
@@ -398,9 +400,9 @@ public class Rule
      *
      *  @return The <code>Set</code> of <code>Extractions</code>.
      */
-    public Set getExtractions()
+    public Extraction[] getExtractions()
     {
-        return this.extractions;
+        return (Extraction[]) this.extractions.toArray( Extraction.EMPTY_ARRAY );
     }
 
     /** Set the <code>Consequence</code> that is associated with the
