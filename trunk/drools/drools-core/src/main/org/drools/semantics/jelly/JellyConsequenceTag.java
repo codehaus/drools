@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequenceTag.java,v 1.1 2002-08-25 22:22:42 bob Exp $
+ $Id: JellyConsequenceTag.java,v 1.2 2002-08-28 20:24:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,15 +50,16 @@ import org.drools.tags.rule.ConsequenceTag;
 
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.DynaTag;
 import org.apache.commons.jelly.JellyException;
 
 /** Jelly semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyConsequenceTag.java,v 1.1 2002-08-25 22:22:42 bob Exp $
+ *  @version $Id: JellyConsequenceTag.java,v 1.2 2002-08-28 20:24:59 bob Exp $
  */
-public class JellyConsequenceTag extends TagSupport
+public class JellyConsequenceTag extends TagSupport implements DynaTag
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -95,5 +96,10 @@ public class JellyConsequenceTag extends TagSupport
                                                              output );
 
         tag.setConsequence( consequence );
+    }
+
+    public void setAttribute(String name,
+                             Object value)
+    {
     }
 }

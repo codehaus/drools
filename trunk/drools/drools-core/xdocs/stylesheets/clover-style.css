@@ -47,15 +47,26 @@ TD.itemList a {
 }
 
 DIV.navBar {
+ font-size: 8pt;
  padding-top:4px; 
+ color:#222222;
+}
+
+DIV.navBar a {
+ color:#222222;
 }
 
 FONT.navBarCurrent {
-    padding: 2px; font-weight: bold; color: #FFFFFF; background-color:#990000;
+    padding: 4px; font-weight: bold; color: #FFFFFF; background-color:#990000;
 }
 
 TD.reportHeader {
-	 BACKGROUND: #dddddd; PADDING: 5px; FONT-WEIGHT: bold; FONT-SIZE: 12px; BORDER: #555555 1px solid;
+	 BACKGROUND: #eeeeee; 
+	PADDING: 5px; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	BORDER: #555555 1px solid;
+	border: none;
 }
 
 .titleText {
@@ -83,6 +94,7 @@ TD.headerStats {
 
 TD.headerStats table td {
 	border: none;
+	color:#555555;
 }
 TD.graphHeaderLeft {
          BACKGROUND: #cccccc; 
@@ -100,7 +112,7 @@ TD.graphHeader {
 }
 
 TD.graphItem {
-	BACKGROUND: #dddddd; 
+	BACKGROUND: #eeeeee; 
 	BORDER-BOTTOM: #777777 1px solid; 
 	BORDER-LEFT: #777777 1px solid; 
 	BORDER-RIGHT: #777777 1px solid; 
@@ -122,9 +134,8 @@ TD.graphBarLeft {
 	border-right: 1px solid #777777;
 } 
 TD.graphBar {
-	BACKGROUND: #dddddd; 
-	BORDER-BOTTOM: #777777 1px solid; 
-	BORDER-RIGHT: #777777 1px solid; 
+	BACKGROUND: white;
+	border: none;
 	padding:2px;
 	width: 80%;
 } 
@@ -135,8 +146,8 @@ TD.hspacer {
 
 TABLE.barGraph {
 	WIDTH: 100%;
-	background: #dddddd;
 }
+
 TD.empty {
 	FONT-SIZE: 2px; BACKGROUND: #c0c0c0; BORDER:#9c9c9c 1px solid;
 }
@@ -145,12 +156,13 @@ TD.fullcover {
 }
 TD.covered {
 	FONT-SIZE: 2px; BACKGROUND: #009900; 
-	border:none;
+	border:1px solid black;
 }
 
 TD.uncovered {
 	FONT-SIZE: 2px; BACKGROUND: #990000; 
 	border:none;
+	border:1px solid black;
 }
 TD.tabText {
 	PADDING-RIGHT: 12px; 
@@ -158,6 +170,7 @@ TD.tabText {
 
 DIV.timestamp {
 	FONT-SIZE: 10px; font-weight: normal; padding-left: 1px;
+	color:#555555;
 }
 SPAN.srcFile {
 	FONT-SIZE: 9px
@@ -213,5 +226,10 @@ PRE.srcLine {
 }
 
 TD.footer {
-  BORDER-TOP:#dcdcdc 1px solid;	 FONT-SIZE: 9px
+FONT-SIZE: 9px;
+background-color:#dddddd;
+}
+
+TD.footer td {
+  color:#777777;
 }
