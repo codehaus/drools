@@ -14,20 +14,20 @@
       </p>
 
       <p>
-      The latest official build is <b>2.0-beta-10</b>.
+      The latest official build is <b>2.0-beta-11</b>.
       </p>
 
       <subsection name="Binary Distributions">
         <ul>
-          <li><a href="http://drools.org/dists/drools-2.0-beta-10.zip">2.0-beta-10 in zip format.</a></li>
-          <li><a href="http://drools.org/dists/drools-2.0-beta-10.tar.gz">2.0-beta-10 in tar/gz format.</a></li>
+          <li><a href="http://drools.org/dists/drools-2.0-beta-11.zip">2.0-beta-11 in zip format.</a></li>
+          <li><a href="http://drools.org/dists/drools-2.0-beta-11.tar.gz">2.0-beta-11 in tar/gz format.</a></li>
         </ul>
       </subsection>
 
       <subsection name="Source Distributions">
         <ul>
-          <li><a href="http://drools.org/dists/drools-2.0-beta-10-src.zip">2.0-beta-10 in zip format.</a></li>
-          <li><a href="http://drools.org/dists/drools-2.0-beta-10-src.tar.gz">2.0-beta-10 in tar/gz format.</a></li>
+          <li><a href="http://drools.org/dists/drools-2.0-beta-11-src.zip">2.0-beta-11 in zip format.</a></li>
+          <li><a href="http://drools.org/dists/drools-2.0-beta-11-src.tar.gz">2.0-beta-11 in tar/gz format.</a></li>
         </ul>
       </subsection>
 
