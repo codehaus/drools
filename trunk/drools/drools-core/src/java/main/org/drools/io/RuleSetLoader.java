@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetLoader.java,v 1.4 2003-06-19 09:27:10 tdiesler Exp $
+ $Id: RuleSetLoader.java,v 1.5 2003-08-21 00:56:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -69,7 +69,7 @@ import java.util.HashMap;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetLoader.java,v 1.4 2003-06-19 09:27:10 tdiesler Exp $
+ *  @version $Id: RuleSetLoader.java,v 1.5 2003-08-21 00:56:46 tdiesler Exp $
  */
 public class RuleSetLoader
 {
@@ -151,6 +151,31 @@ public class RuleSetLoader
         return answer;
     }
 
+   /** Load <code>RuleSet</code> deifintions from a Reader
+    *  into a <code>RuleBase</code>.
+    *
+    *  @param reader The Reader of the rule-set definitions.
+    *  @param ruleBase The rule-base to populate.
+    *
+    *  @throws IOException If an IO errors occurs.
+    *  @throws Exception If an error occurs evaluating the definition.
+    */
+   public void load(Reader reader,
+                    RuleBase ruleBase) throws IOException, Exception
+   {
+       List ruleSets = load(reader);
+
+       Iterator ruleSetIter = ruleSets.iterator();
+       RuleSet eachRuleSet = null;
+
+       while (ruleSetIter.hasNext())
+       {
+           eachRuleSet = (RuleSet) ruleSetIter.next();
+
+           ruleBase.addRuleSet(eachRuleSet);
+       }
+   }
+
     /** Load <code>RuleSet</code> definitions from a URL.
      *
      *  @param url The URL of the rule-set definitions.
@@ -186,7 +211,7 @@ public class RuleSetLoader
         }
     }
 
-    /** Load <code>RuleSet</code> deifnitions from a URL
+    /** Load <code>RuleSet</code> deifintions from a URL
      *  into a <code>RuleBase</code>.
      *
      *  @param url The URL of the rule-set definitions.
