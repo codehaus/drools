@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<module xmlns="http://drools.org/semantics"
+        uri="http://drools.org/test/semantics">
+
+  <type name="testType"
+        classname="org.drools.spi.ObjectType"/>
+
+  <extractor name="testExtractor"
+             classname="org.drools.spi.FactExtractor"/>
+
+  <action name="testAction"
+          classname="org.drools.spi.Action"/>
+
+</module>

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticsRepository.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: SimpleSemanticsRepository.java,v 1.2 2002-08-10 04:26:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ import java.util.HashMap;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class SimpleSemanticsRepository
+public class SimpleSemanticsRepository implements SemanticsRepository
 {
     // ------------------------------------------------------------
     //     Instance members

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticsLoader.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticsLoader.java,v 1.2 2002-08-10 04:26:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,7 @@ import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.parser.XMLParser;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.net.URL;
@@ -84,6 +85,35 @@ public class SemanticsLoader
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    /** Load a <code>SemanticModule</code> deifnition from a file.
+     *
+     *  @param file The file to load.
+     *
+     *  @throws IOException If an IO errors occurs.
+     *  @throws Exception If an error occurs evaluating the definition.
+     */
+    public void load(File file) throws IOException, Exception
+    {
+        XMLParser parser = new XMLParser();
+
+        JellyContext context = new JellyContext();
+
+        context.registerTagLibrary( "http://drools.org/semantics",
+                                    new SmfTagLibrary() );
+
+        context.setVariable( "drools.semantics.loader",
+                             this );
+
+        parser.setContext(context);
+
+        Script script = parser.parse( file );
+        
+        XMLOutput output = XMLOutput.createXMLOutput( System.err );
+        
+        script.run( context,
+                    output );
+    }
 
     /** Load a <code>SemanticModule</code> deifnition from a URL.
      *
