@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: JavaBlockConsequence.java,v 1.3 2004-12-29 19:29:04 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -125,7 +125,11 @@ public class JavaBlockConsequence
     {
         try
         {
-            script.invoke( tuple,
+            if (this.script == null)
+            {
+                this.script = compile( );
+            }
+            this.script.invoke( tuple,
                            this.declarations,
                            new KnowledgeHelper( this.rule,
                                                 tuple ),
@@ -146,13 +150,6 @@ public class JavaBlockConsequence
                                               this.block,
                                               this.block,
                                               this.declarations );
-    }
-
-    private void readObject(ObjectInputStream s) throws Exception
-    {
-        s.defaultReadObject( );
-
-        this.script = compile( );
     }
 
     public static interface Script

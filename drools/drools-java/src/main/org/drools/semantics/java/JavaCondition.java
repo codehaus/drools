@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.5 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.6 2004-12-29 19:29:04 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -138,7 +138,11 @@ public class JavaCondition
     {
         try
         {
-            return script.invoke( tuple,
+            if (this.script == null)
+            {
+                this.script = compile( );
+            }            
+            return this.script.invoke( tuple,
                                   requiredDeclarations,
                                   new KnowledgeHelper( rule,
                                                        tuple ),
@@ -187,13 +191,6 @@ public class JavaCondition
     }
 
     // ------------------------------------------------------------
-
-    private void readObject(ObjectInputStream stream) throws Exception
-    {
-        stream.defaultReadObject( );
-
-        this.script = compile( );
-    }
 
     public int hashCode()
     {
