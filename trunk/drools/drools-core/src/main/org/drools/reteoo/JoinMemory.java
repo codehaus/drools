@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.29 2004-11-02 10:15:36 simon Exp $
+ * $Id: JoinMemory.java,v 1.30 2004-11-02 12:01:11 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -267,7 +267,7 @@ class JoinMemory implements Serializable
      * @see JoinNode
      * @see ReteTuple
      */
-    protected Set addLeftTuple( JoinNode node, ReteTuple tuple )
+    protected Set addLeftTuple( ReteTuple tuple )
     {
         this.leftTuples.addTuple( tuple );
 
@@ -304,7 +304,7 @@ class JoinMemory implements Serializable
      * @see JoinNode
      * @see ReteTuple
      */
-    protected Set addRightTuple( JoinNode node, ReteTuple tuple )
+    protected Set addRightTuple( ReteTuple tuple )
     {
         this.rightTuples.addTuple( tuple );
 
