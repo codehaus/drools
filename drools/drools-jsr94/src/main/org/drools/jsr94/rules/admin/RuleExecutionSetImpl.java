@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.13 2004-10-22 15:20:51 simon Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.14 2004-10-27 06:47:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,8 +66,6 @@ import java.util.Map;
  */
 public class RuleExecutionSetImpl implements RuleExecutionSet
 {
-    private static final Jsr94FactHandleFactory FACT_HANDLE_FACTORY = new Jsr94FactHandleFactory( );
-
     private String       description;
 
     private String       defaultObjectFilterClassName;
@@ -94,7 +92,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         this.description = ruleSet.getDocumentation( );
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder( );
-        builder.setFactHandleFactory( FACT_HANDLE_FACTORY );
+        builder.setFactHandleFactory( Jsr94FactHandleFactory.getInstance( ) );
         try
         {
             builder.addRuleSet( ruleSet );
