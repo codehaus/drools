@@ -8,9 +8,9 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
-public class TerminalNodeTest extends TestCase
+public class TerminalNodeImplTest extends TestCase
 {
-    public TerminalNodeTest(String name)
+    public TerminalNodeImplTest(String name)
     {
         super( name );
     }
