@@ -3,7 +3,7 @@ index.html|Introduction
 releases.html|Releases
 license.html|Licensing
 documentation.html|Documentation
-api/index.html|JavaDocs
+api/index.html|Javadocs
 drools-manual-2.0-beta-13.pdf|The Drools Manual (PDF)
 faq.html|Frequently Asked Questions
 unified-drl.html|Unified DRL Reference
@@ -13,6 +13,6 @@ mail.html|Mail Lists
 issues.html|Bug &amp; Issue Tracking
 +http://codehaus.org/|The Codehaus
 =Development
-cvs.html|CVS Acceess
+cvs.html|CVS Access
 building.html|Building from source
 contributors.html|Development Contributors
