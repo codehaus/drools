@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+
+<test:suite xmlns:j="jelly:core" 
+            xmlns:test="jelly:junit"
+            xmlns:rule="jelly:org.drools.tags.rule.RuleTagLibrary"
+            xmlns="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary" 
+            trim="true"
+            var="suite">
+
+  <!-- 
+	||
+	||    <rule-base>
+	||
+	-->
+
+  <test:case name="testRuleBase_NoVar">
+    <j:catch var="e">
+      <rule-base>
+      </rule-base>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown MissingArgumentException: var</test:assert>
+  </test:case>
+
+  <test:case name="testRuleBase_Valid">
+    <rule-base var="rulebase_testRuleBase_Valid"/>
+    <test:assert test="${rulebase_testRuleBase_Valid != null}">RuleBase not stored in var</test:assert>
+  </test:case>
+
+  <test:case name="testRuleBase_WithRule">
+    <rule:semantics module="org.drools.semantics.java"/>
+    <rule-base var="rulebase_testRuleBase_WithRule"
+               xmlns:java="http://drools.org/semantics/java">
+      <rule:rule name="rule.1">      
+        <rule:parameter identifier="str">
+          <java:class type="java.lang.String"/>
+        </rule:parameter>
+        <rule:parameter identifier="maxLen">
+          <java:class type="java.lang.Integer"/>
+        </rule:parameter>
+        <rule:declaration identifier="strLen">
+          <java:class type="java.lang.Integer"/>
+        </rule:declaration>
+        <rule:extraction target="strLen">
+          <java:extractor>str.length()</java:extractor>
+        </rule:extraction>
+        <rule:condition>
+          <java:condition>strLen &gt; 5</java:condition>
+        </rule:condition>
+        <rule:condition>
+          <java:condition>strLen.intValue() &lt; maxLen.intValue()</java:condition>
+        </rule:condition>
+        <rule:consequence>
+          <java:consequence>
+            System.err.println( "str: " + str );
+            System.err.println( "strLen: " + strLen );
+            System.err.println( "maxLen: " + maxLen );
+          </java:consequence>
+        </rule:consequence>
+      </rule:rule>
+    </rule-base>
+  </test:case>
+  
+  <test:case name="testRuleBase_WithRuleSet">
+    <rule:semantics module="org.drools.semantics.java"/>
+    <rule-base var="rulebase_testRuleBase_WithRuleSet"
+               xmlns:java="http://drools.org/semantics/java">
+      <rule:rule-set name="ruleset.1">
+        <rule:rule name="rule.1">      
+          <rule:parameter identifier="str">
+            <java:class type="java.lang.String"/>
+          </rule:parameter>
+          <rule:parameter identifier="maxLen">
+            <java:class type="java.lang.Integer"/>
+          </rule:parameter>
+          <rule:declaration identifier="strLen">
+            <java:class type="java.lang.Integer"/>
+          </rule:declaration>
+          <rule:extraction target="strLen">
+            <java:extractor>str.length()</java:extractor>
+          </rule:extraction>
+          <rule:condition>
+            <java:condition>strLen &gt; 5</java:condition>
+          </rule:condition>
+          <rule:condition>
+            <java:condition>strLen.intValue() &lt; maxLen.intValue()</java:condition>
+          </rule:condition>
+          <rule:consequence>
+            <java:consequence>
+              System.err.println( "str: " + str );
+              System.err.println( "strLen: " + strLen );
+              System.err.println( "maxLen: " + maxLen );
+            </java:consequence>
+          </rule:consequence>
+        </rule:rule>
+      </rule:rule-set>
+    </rule-base>
+  </test:case>
+
+  <!-- 
+	||
+	||    <load-rules>
+	||
+	-->
+
+  <test:case name="testLoadRules_Invalid">
+    <j:catch var="e">
+      <rule-base var="testLoadRules_Invalid">
+        <load-rules uri="file:///i/am/on/a/path/to/nowhere.drl"/>
+      </rule-base>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown JellyTagException: invalid uri</test:assert>
+  </test:case>
+
+  <test:case name="testLoadRules_Valid">
+    <rule-base var="testLoadRules_Valid">
+      <load-rules file="${basedir}/src/java/test/org/drools/io/RuleSetLoaderTest-2.drl"/>
+    </rule-base>
+  </test:case>
+  
+  <!-- 
+	||
+	||    <assert>
+	||
+	-->
+
+  <test:case name="testAssert">
+
+    <rule-base var="rulebase_testAssert">
+      <load-rules file="${basedir}/src/java/test/org/drools/io/RuleSetLoaderTest-2.drl"/>
+    </rule-base>
+
+    <knowledge rules="${rulebase_testAssert}">
+      <assert fact="${20}"/>
+      <assert fact="12345678"/>
+      <assert fact="1234"/>
+      <assert fact="123456789012345678901234567890"/>
+    </knowledge>
+
+  </test:case>
+
+</test:suite>

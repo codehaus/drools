@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: build.xml,v 1.45 2003-07-04 14:44:58 tdiesler Exp $ -->
+
+<project default="jar" name="drools" basedir=".">
+
+    <property name="basename" value="drools"/>
+    <property name="version" value="2.0-beta-11"/>
+
+    <property name="jarname" value="${basename}-${version}"/>
+    <property name="rarname" value="${basename}-jsr94-${version}"/>
+    <property name="warname" value="${basename}"/>
+
+    <property environment="env"/>
+
+    <property name="defaulttargetdir" value="target"/>
+    <property name="classesdir" value="target/classes"/>
+    <property name="antlr.src.dir" value="target/antlr"/>
+    <property name="testclassesdir" value="target/test-classes"/>
+    <property name="examplesclassesdir" value="target/examples-classes"/>
+    <property name="testreportdir" value="target/test-reports"/>
+
+    <property name="examplesdir" value="src/java/examples"/>
+    <property name="resourcedir" value="src/java/main"/>
+    <property name="testdir" value="src/java/test"/>
+    <property name="webappdir" value="src/webapp"/>
+    <property name="commonlibdir" value="common-lib"/>
+    <property name="libdir" value="target/lib"/>
+    <property name="etcdir" value="etc"/>
+
+    <property name="distdir" value="dist"/>
+    <property name="javadocdir" value="target/docs/apidocs"/>
+
+    <!-- property name="noget" value="true"/ -->
+    <!-- property name="notest" value="true"/ -->
+
+    <target name="init"
+        description="o Initializes some properties">
+        <mkdir dir="${libdir}"/>
+        <condition property="noget">
+            <equals arg2="only" arg1="${build.sysclasspath}"></equals>
+        </condition>
+    </target>
+
+    <target name="compile"
+        description="o Compile the code"
+        depends="get-deps, antlr">
+
+        <mkdir dir="${classesdir}"/>
+
+        <javac destdir="${classesdir}"
+            deprecation="true"
+            debug="true"
+            optimize="false"
+            excludes="**/package.html">
+            <src>
+                <pathelement location="src/java/main"/>
+                <pathelement location="${antlr.src.dir}"/>
+            </src>
+            <classpath>
+                <fileset dir="${libdir}" includes="*.jar"/>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+            </classpath>
+        </javac>
+
+        <copy todir="${classesdir}">
+            <fileset dir="src/java/main">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="antlr" depends="get-deps" >
+        <mkdir dir="${antlr.src.dir}/org/drools/semantics/java/parser"/>
+
+        <antlr target="src/java/main/org/drools/semantics/java/parser/java.g"
+            dir="src/java/main/org/drools/semantics/java/parser"
+            outputdirectory="${antlr.src.dir}/org/drools/semantics/java/parser">
+            <classpath>
+                <path location="${libdir}/antlr-2.7.2.jar"/>
+            </classpath>
+        </antlr>
+
+        <antlr target="src/java/main/org/drools/semantics/java/parser/java.tree.g"
+            dir="src/java/main/org/drools/semantics/java/parser"
+            outputdirectory="${antlr.src.dir}/org/drools/semantics/java/parser">
+            <classpath>
+                <path location="${libdir}/antlr-2.7.2.jar"/>
+            </classpath>
+        </antlr>
+
+    </target>
+
+    <target name="jar"
+        description="o Create the jar"
+        depends="compile,test">
+        <jar jarfile="target/${jarname}.jar" excludes="**/package.html" basedir="${classesdir}"></jar>
+    </target>
+
+    <target name="clean"
+        description="o Clean up the generated directories">
+        <delete dir="${defaulttargetdir}"></delete>
+        <delete dir="${distdir}"></delete>
+    </target>
+
+    <target name="dist"
+        description="o Create a distribution"
+        depends="jar, javadoc">
+        <mkdir dir="dist"/>
+        <copy todir="dist">
+            <fileset dir="${defaulttargetdir}"></fileset>
+        </copy>
+    </target>
+
+    <target name="test"
+        description="o Run the test cases"
+        if="test.failure"
+        depends="internal-test,jsr94-test">
+        <fail message="There were test failures."></fail>
+    </target>
+
+    <target name="internal-test"
+        unless="notest"
+        depends="compile-tests">
+
+        <mkdir dir="${testreportdir}"/>
+        <junit dir="./"
+            failureproperty="test.failure"
+            printSummary="yes"
+            fork="true"
+            haltonerror="false">
+
+            <sysproperty key="basedir" value="${basedir}"/>
+            <formatter type="xml"></formatter>
+            <formatter usefile="true" type="plain"></formatter>
+            <classpath>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <fileset dir="${libdir}" includes="*.jar"/>
+                <pathelement path="${testclassesdir}"/>
+                <pathelement path="${classesdir}"/>
+            </classpath>
+            <batchtest todir="${testreportdir}">
+                <fileset dir="src/java/test">
+                    <include name="**/*Test.java"/>
+                    <exclude name="org/drools/jsr94/**"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+    </target>
+
+    <target name="jsr94-test"
+        unless="notest"
+        depends="compile-tests">
+
+        <mkdir dir="${testreportdir}"/>
+
+        <junit dir="./"
+            failureproperty="test.failure"
+            printSummary="yes"
+            fork="true"
+            haltonerror="false">
+
+            <sysproperty key="basedir" value="${basedir}"/>
+            <formatter type="xml"></formatter>
+            <formatter usefile="true" type="plain"></formatter>
+            <classpath>
+                <fileset dir="${libdir}" includes="*.jar"/>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <pathelement path="${testclassesdir}"/>
+                <pathelement path="${classesdir}"/>
+            </classpath>
+            <batchtest todir="${testreportdir}">
+                <fileset dir="src/java/test">
+                    <include name="org/drools/jsr94/rules/*TestCase.java"/>
+                    <include name="org/drools/jsr94/rules/admin/*TestCase.java"/>
+                    <exclude name="org/drools/jsr94/rules/admin/RuleExecutionSetProviderTestCase.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+    </target>
+
+    <target name="compile-tests"
+        depends="compile">
+        <mkdir dir="${testclassesdir}"/>
+
+        <copy todir="${testclassesdir}">
+            <fileset dir="src/java/test">
+                <include name="**/*.drl"/>
+                <include name="**/*.jelly"/>
+            </fileset>
+        </copy>
+
+        <javac destdir="${testclassesdir}" deprecation="true" debug="true" optimize="false"
+            excludes="**/JessBenchmarkTestCase.java">
+            <src path="src/java/test"/>
+            <classpath>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <fileset dir="${libdir}" includes="*.jar"/>
+                <pathelement path="${classesdir}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="compile-examples" >
+        <mkdir dir="${examplesclassesdir}"/>
+        <javac destdir="${examplesclassesdir}" deprecation="true" debug="true" optimize="false" excludes="**/package.html">
+            <src path="src/java/examples"/>
+            <classpath>
+                <path location="target/${jarname}.jar"/>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <fileset dir="${libdir}" includes="*.jar"/>
+            </classpath>
+        </javac>
+        <copy todir="${examplesclassesdir}">
+            <fileset dir="src/java/examples">
+                <include name="**/*.drl"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="example-escalation"
+        depends="compile-examples">
+        <echo>running escalation example</echo>
+        <java classname="escalation.Escalation" fork="true">
+            <classpath>
+                <path location="target/${jarname}.jar"/>
+                <path location="${examplesclassesdir}"/>
+                <fileset dir="${libdir}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="example-sisters"
+        depends="compile-examples">
+        <echo>running sisters example</echo>
+        <java classname="sisters.Sisters" fork="true">
+            <classpath>
+                <path location="target/${jarname}.jar"/>
+                <path location="${examplesclassesdir}"/>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <fileset dir="${libdir}" includes="*.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="example-fishmonger"
+        depends="compile-examples">
+        <echo>running fishmonger example</echo>
+        <java classname="fishmonger.FishMonger" fork="true">
+            <classpath>
+                <path location="target/${jarname}.jar"/>
+                <path location="${examplesclassesdir}"/>
+                <fileset dir="${libdir}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="examples" description="o build the examples"
+        depends="example-escalation,example-sisters,example-fishmonger"/>
+
+    <target name="javadoc"
+        description="o Generate javadoc" depends="jar">
+
+        <mkdir dir="${javadocdir}"/>
+
+        <tstamp>
+            <format pattern="2001-yyyy" property="year"></format>
+        </tstamp>
+
+        <property name="copyright" value="Copyright &amp;copy;  The Werken Company. All Rights Reserved."/>
+        <property name="title" value="${jarname} API"/>
+
+        <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="src/java/main" packagenames="org.drools.*">
+            <classpath>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <fileset dir="${libdir}" includes="*.jar"/>
+                <pathelement location="target/${jarname}.jar"/>
+            </classpath>
+        </javadoc>
+
+    </target>
+
+    <target name="get-deps"
+        unless="noget"
+        depends="init">
+        <get dest="${libdir}/antlr-2.7.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/antlr/jars/antlr-2.7.2.jar"/>
+        <get dest="${libdir}/bsh-1.2b7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/bsh/jars/bsh-1.2b7.jar"/>
+        <get dest="${libdir}/commons-beanutils-1.6.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-beanutils/jars/commons-beanutils-1.6.jar"/>
+        <get dest="${libdir}/commons-collections-2.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar"/>
+        <get dest="${libdir}/commons-jelly-20030609.133047.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-20030609.133047.jar"/>
+        <get dest="${libdir}/commons-jelly-tags-junit-20030211.141731.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-tags-junit-20030211.141731.jar"/>
+        <get dest="${libdir}/commons-jexl-1.0-beta-2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jexl/jars/commons-jexl-1.0-beta-2.jar"/>
+        <get dest="${libdir}/commons-logging-1.0.3.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-logging/jars/commons-logging-1.0.3.jar"/>
+        <get dest="${libdir}/dom4j-1.4.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/dom4j/jars/dom4j-1.4.jar"/>
+        <get dest="${libdir}/junit-3.8.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar"/>
+        <!-- copied/renamed jython to our common-lib (also removed the oro classes)
+        <get dest="${libdir}/jython-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jython/jars/jython-SNAPSHOT.jar"/>
+        -->
+        <get dest="${libdir}/oro-2.0.7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/oro/jars/oro-2.0.7.jar"/>
+        <get dest="${libdir}/xerces-2.3.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-2.3.0.jar"/>
+        <get dest="${libdir}/xml-apis-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xml-apis/jars/xml-apis-2.0.2.jar"/>
+    </target>
+
+</project>
+

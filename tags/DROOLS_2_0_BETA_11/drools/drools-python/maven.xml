@@ -1,0 +1,279 @@
+
+<project default="drools:build" xmlns:j="jelly:core">
+
+    <!-- pre goals ************************************************************************************************* -->
+
+    <!--
+        site:generate
+        run clover test coverage
+    -->
+    <preGoal name="site:generate">
+        <attainGoal name="clover"/>
+    </preGoal>
+
+    <!--
+        dist:build-bin
+        copy additional stuff to bin assembly dir
+    -->
+    <preGoal name="test:test">
+        <!-- ${maven.test.dest} is not available here ??? -->
+        <copy toDir="${maven.build.dir}/test-classes">
+            <fileset dir="${basedir}/src/java/main/">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+    </preGoal>
+
+    <!-- post goals ************************************************************************************************ -->
+
+    <postGoal name="clover">
+        <copy tofile="${basedir}/target/docs/clover/style.css"
+            file="${basedir}/xdocs/stylesheets/clover-style.css"
+            overwrite="true"/>
+        <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
+            file="${basedir}/target/docs/clover/pkgs-summary.html"/>
+    </postGoal>
+
+    <!--
+        dist:prepare-bin-filesystem
+        copy additional stuff to bin assembly dir
+    -->
+    <postGoal name="dist:prepare-bin-filesystem">
+
+        <!-- copy drools bin stuff to bin-assembly/bin -->
+        <mkdir dir="${maven.dist.bin.assembly.dir}/bin"/>
+        <copy todir="${maven.dist.bin.assembly.dir}/bin">
+            <fileset dir="${maven.src.dir}/bin" includes="*.*"/>
+        </copy>
+
+        <!-- copy jboss stuff to bin-assembly/etc -->
+        <mkdir dir="${maven.dist.bin.assembly.dir}/etc"/>
+        <copy file="${maven.src.dir}/etc/drools-jsr94-ds.xml" todir="${maven.dist.bin.assembly.dir}/etc"/>
+        <copy file="${maven.build.dir}/${maven.final.name}.rar" todir="${maven.dist.bin.assembly.dir}/etc"/>
+
+        <!-- copy examples to bin-assembly/examples -->
+        <mkdir dir="${maven.dist.bin.assembly.dir}/examples"/>
+        <copy file="${maven.build.dir}/${maven.final.name}-examples.jar" todir="${maven.dist.bin.assembly.dir}/examples"/>
+        <copy file="${maven.build.dir}/${maven.final.name}-examples.war" tofile="${maven.dist.bin.assembly.dir}/examples/drools.war"/>
+
+        <!-- copy drools jars to bin-assembly lib -->
+        <mkdir dir="${maven.dist.bin.assembly.dir}/lib"/>
+        <copy todir="${maven.dist.bin.assembly.dir}/lib" flatten="true">
+            <fileset dir="${maven.build.dir}/lib">
+                <j:forEach var="dep" items="${pom.dependencies}">
+                    <j:if test="${dep.getProperty('bin_dist')=='true'}">
+                        <include name="${dep.artifact}"/>
+                    </j:if>
+                </j:forEach>
+            </fileset>
+        </copy>
+
+        <!-- move drools jar to bin-assembly lib -->
+        <move file="${maven.dist.bin.assembly.dir}/${maven.final.name}.jar" todir="${maven.dist.bin.assembly.dir}/lib"/>
+    </postGoal>
+
+    <!-- goals ***************************************************************************************************** -->
+
+    <!--
+        ant:generate-build
+        ant build not supported
+    -->
+    <goal name="ant:generate-build">
+        <echo>ant build not supported</echo>
+    </goal>
+
+    <!--
+        drools:build
+        build all of drools
+    -->
+    <goal name="drools:build" prereqs="jar:jar, drools:rar, drools:war"
+        description="build all of drools">
+    </goal>
+
+    <!--
+        drools:compile-examples
+        compile the drools examples
+    -->
+    <goal name="drools:compile-examples"
+        description="compile the drools examples">
+
+        <echo>compiling examples</echo>
+        <mkdir dir="${drools.examples.dest.dir}"/>
+        <javac srcdir="${drools.examples.src.dir}"
+            destdir="${drools.examples.dest.dir}">
+            <classpath>
+                <path refid="maven.dependency.classpath"/>
+                <path location="target/${maven.final.name}.jar"/>
+            </classpath>
+        </javac>
+
+        <copy toDir="${drools.examples.dest.dir}">
+            <fileset dir="${drools.examples.src.dir}">
+                <include name="**/*.drl"/>
+            </fileset>
+        </copy>
+
+        <jar jarfile="${maven.build.dir}/${maven.final.name}-examples.jar">
+            <fileset dir="${drools.examples.dest.dir}">
+                <include name="**/*.class"/>
+                <include name="**/*.drl"/>
+            </fileset>
+        </jar>
+    </goal>
+
+    <!--
+        drools:deploy-catalina
+        deploy drools to catalina
+    -->
+    <goal name="drools:deploy-catalina" prereqs="drools:war"
+        description="deploy drools to catalina">
+
+        <delete dir="${maven.catalina.home}/webapps/drools"/>
+        <copy file="${maven.build.dir}/${maven.final.name}-examples.war" tofile="${maven.catalina.home}/webapps/drools.war"/>
+    </goal>
+
+    <!--
+        drools:deploy-jboss
+        deploy drools to jboss
+    -->
+    <goal name="drools:deploy-jboss" prereqs="drools:rar, drools:war"
+        description="deploy drools to jboss">
+
+        <copy file="${maven.build.dir}/${maven.final.name}.rar" todir="${maven.jboss.home}/server/default/deploy"/>
+        <copy file="${maven.src.dir}/etc/drools-jsr94-ds.xml" todir="${maven.jboss.home}/server/default/deploy"/>
+        <copy file="${maven.build.dir}/${maven.final.name}-examples.war" tofile="${maven.jboss.home}/server/default/deploy/drools.war"/>
+    </goal>
+
+    <!--
+        drools:examples
+        run the drools examples and build the examples jar
+    -->
+    <goal name="drools:examples" prereqs="drools:example-escalation, drools:example-fishmonger, drools:example-sisters">
+    </goal>
+
+    <!--
+        drools:example-escalation
+        run the escalation example
+    -->
+    <goal name="drools:example-escalation" prereqs="drools:compile-examples"
+        description="run the escalation example">
+
+        <echo>running escalation example</echo>
+        <java classname="escalation.Escalation" fork="true">
+            <classpath>
+                <path refid="maven.dependency.classpath"/>
+                <path location="target/${maven.final.name}.jar"/>
+                <path location="${drools.examples.dest.dir}"/>
+            </classpath>
+        </java>
+    </goal>
+
+    <!--
+        drools:example-sisters
+        run the sisters example
+    -->
+    <goal name="drools:example-sisters" prereqs="drools:compile-examples"
+        description="run the sisters example">
+
+        <echo>running sisters example</echo>
+        <java classname="sisters.Sisters" fork="true">
+            <classpath>
+                <path refid="maven.dependency.classpath"/>
+                <path location="target/${maven.final.name}.jar"/>
+                <path location="${drools.examples.dest.dir}"/>
+            </classpath>
+        </java>
+    </goal>
+
+    <!--
+        drools:example-fishmonger
+        run the fishmonger example
+    -->
+    <goal name="drools:example-fishmonger" prereqs="drools:compile-examples"
+        description="run the fishmonger example">
+
+        <echo>running fishmonger example</echo>
+        <java classname="fishmonger.FishMonger" fork="true">
+            <classpath>
+                <path refid="maven.dependency.classpath"/>
+                <path location="target/${maven.final.name}.jar"/>
+                <path location="${drools.examples.dest.dir}"/>
+            </classpath>
+        </java>
+    </goal>
+
+    <!--
+        drools:get-deps
+        copy dependency jars to the target lib
+    -->
+    <goal name="drools:get-deps"
+        description="copy maven repository jars to target lib">
+
+        <mkdir dir="${maven.build.dir}/lib"/>
+
+        <!-- copy maven repository jars to the target lib -->
+        <copy todir="${maven.build.dir}/lib" flatten="true">
+            <fileset dir="${maven.repo.local}">
+                <j:forEach var="dep" items="${pom.dependencies}">
+                    <include name="${dep.artifactDirectory}/jars/${dep.artifact}"/>
+                </j:forEach>
+            </fileset>
+        </copy>
+
+        <!-- copy project jars to target lib -->
+        <copy todir="${maven.build.dir}/lib" flatten="true">
+            <fileset dir="${basedir}/common-lib" includes="*.jar"/>
+        </copy>
+    </goal>
+
+    <!--
+        drools:rar
+        build drools as resource archieve for an app server
+    -->
+    <goal name="drools:rar" prereqs="drools:get-deps, jar:jar"
+        description="build drools as resource archieve for an app server">
+
+        <jar jarfile="${maven.build.dir}/${maven.final.name}.rar">
+            <fileset dir="${maven.build.dir}">
+                <include name="${maven.final.name}.jar"/>
+            </fileset>
+            <fileset dir="${maven.build.dir}/lib">
+                <j:forEach var="dep" items="${pom.dependencies}">
+                    <j:if test="${dep.getProperty('rar_bundle')=='true'}">
+                        <include name="${dep.artifact}"/>
+                    </j:if>
+                </j:forEach>
+            </fileset>
+            <metainf dir="${maven.src.dir}/etc" includes="ra.xml"/>
+        </jar>
+
+    </goal>
+
+    <!--
+        drools:war
+        build the war file that demonstrates drools through JSR94
+    -->
+    <goal name="drools:war" prereqs="drools:get-deps, jar:jar, drools:compile-examples"
+        description="build the war file that demonstrates drools through JSR94">
+
+        <war destfile="${maven.build.dir}/${maven.final.name}-examples.war"
+            webxml="${maven.src.dir}/webapp/web-inf/web.xml">
+            <fileset dir="${maven.src.dir}/webapp">
+                <include name="**/*.*"/>
+                <exclude name="**/web.xml"/>
+            </fileset>
+            <lib dir="${maven.build.dir}/lib">
+                <j:forEach var="dep" items="${pom.dependencies}">
+                    <j:if test="${dep.getProperty('war_bundle')=='true'}">
+                        <include name="${dep.artifact}"/>
+                    </j:if>
+                </j:forEach>
+            </lib>
+            <lib dir="${maven.build.dir}">
+                <include name="${maven.final.name}-examples.jar"/>
+                <include name="${maven.final.name}.jar"/>
+            </lib>
+        </war>
+    </goal>
+
+</project>
