@@ -361,5 +361,16 @@
       </java>
     </goal>
 
+<!-- Waltz Benchmark -->
+    <goal name="waltz-benchmark" prereqs="jar:jar">
+      <java classname="org.drools.examples.benchmarks.waltz.WaltzBenchmark"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
 </project>
 

@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+The Waltz Algorithm
+-->
+<rule-set name="Miss Manners"
+        xmlns="http://drools.org/rules"
+        xmlns:java="http://drools.org/semantics/java"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+        xs:schemaLocation="http://drools.org/rules rules.xsd
+                           http://drools.org/semantics/java java.xsd">
+
+    <java:import>org.drools.examples.benchmarks.waltz.WaltzUtil</java:import>
+    <java:import>org.drools.examples.benchmarks.waltz.WaltzWMEL</java:import>
+    <java:import>org.drools.examples.benchmarks.waltz.model.Edge</java:import>
+    <java:import>org.drools.examples.benchmarks.waltz.model.Junction</java:import>
+    <java:import>org.drools.examples.benchmarks.waltz.model.Line</java:import>
+    <java:import>org.drools.examples.benchmarks.waltz.model.Stage</java:import>
+
+    <!--
+    Our starting production.  It checks to see if the start flag is in WM,
+    and if it is, it deletes it, and clears the screen.
+
+    Note: Use waltz0.dat instead.
+    -->
+    <rule name="begin">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <java:condition>"start".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            System.out.println( "clr" );
+            drools.assertObject( new Line(  122,  107 ) );
+            drools.assertObject( new Line(  107, 2207 ) );
+            drools.assertObject( new Line( 2207, 3204 ) );
+            drools.assertObject( new Line( 3204, 6404 ) );
+            drools.assertObject( new Line( 2216, 2207 ) );
+            drools.assertObject( new Line( 3213, 3204 ) );
+            drools.assertObject( new Line( 2216, 3213 ) );
+            drools.assertObject( new Line(  107, 2601 ) );
+            drools.assertObject( new Line( 2601, 7401 ) );
+            drools.assertObject( new Line( 6404, 7401 ) );
+            drools.assertObject( new Line( 3213, 6413 ) );
+            drools.assertObject( new Line( 6413, 6404 ) );
+            drools.assertObject( new Line( 7416, 7401 ) );
+            drools.assertObject( new Line( 5216, 6413 ) );
+            drools.assertObject( new Line( 2216, 5216 ) );
+            drools.assertObject( new Line(  122, 5222 ) );
+            drools.assertObject( new Line( 5222, 7416 ) );
+            drools.assertObject( new Line( 5222, 5216 ) );
+            stage.setValue( "duplicate" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If the duplicate flag is set, and there is still a line in WM, delete the
+    line and add two edges. One edge runs from p1 to p2 and the other runs from
+    p2 to p1.  We then plot the edge.
+    -->
+    <rule name="reverse_edges">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="line"><class>Line</class></parameter>
+        <java:condition>"duplicate".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            int p1 = line.getP1( );
+            int p2 = line.getP2( );
+            System.out.println( "draw " + p1 + " " + p2 );
+            drools.assertObject( new Edge( p1, p2, false ) );
+            drools.assertObject( new Edge( p2, p1, false ) );
+            drools.retractObject( line );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If the duplicating flag is set, and there are no more lines, then remove
+    the duplicating flag and set the make junctions flag.
+    -->
+    <rule name="done_reversing">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <java:condition>"duplicate".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.lineExists( ) ) return;
+            stage.setValue( "detect_junctions" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If three edges meet at a point and none of them have already been joined in
+    a junction, then make the corresponding type of junction and label the
+    edges joined.  This production calls make-3_junction to determine
+    what type of junction it is based on the angles inscribed by the
+    intersecting edges
+    -->
+    <rule name="make-3_junction">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"detect_junctions".equals( stage.getValue( ) )</java:condition>
+        <java:condition>edge1.getP1( ) == edge2.getP1( )</java:condition>
+        <java:condition>edge1.getP1( ) == edge3.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>edge2.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>!edge1.isJoined( )</java:condition>
+        <java:condition>!edge2.isJoined( )</java:condition>
+        <java:condition>!edge3.isJoined( )</java:condition>
+        <java:consequence>
+            int basePoint = edge1.getP1( );
+            int p1 = edge1.getP2( );
+            int p2 = edge2.getP2( );
+            int p3 = edge3.getP2( );
+
+            drools.assertObject( WaltzUtil.make_3_junction( basePoint, p1, p2, p3 ) );
+            edge1.setJoined( true );
+            drools.modifyObject( edge1 );
+            edge2.setJoined( true );
+            drools.modifyObject( edge2 );
+            edge3.setJoined( true );
+            drools.modifyObject( edge3 );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If two, and only two, edges meet that have not already been joined, then
+    the junction is an "L"
+    -->
+    <rule name="make_L">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"detect_junctions".equals( stage.getValue( ) )</java:condition>
+        <java:condition>edge1.getP1( ) == edge2.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>!edge1.isJoined( )</java:condition>
+        <java:condition>!edge2.isJoined( )</java:condition>
+        <java:consequence>
+            int basePoint = edge1.getP1( );
+            int p2 = edge1.getP2( );
+            int p3 = edge2.getP2( );
+            if ( WaltzWMEL.edgeExists( basePoint, p2, p3 ) ) return;
+            edge1.setJoined( true );
+            drools.modifyObject( edge1 );
+            edge2.setJoined( true );
+            drools.modifyObject( edge2 );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If the detect junctions flag is set, and there are no more un_joined edges,
+    set the find_initial_boundary flag
+    -->
+    <rule name="done_detecting">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <java:condition>"detect_junctions".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.joinedEdgeExists( ) ) return;
+            stage.setValue( "find_initial_boundary" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If the initial boundary junction is an L, then we know its labelling
+    -->
+    <rule name="initial_boundary_junction_L">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"find_initial_boundary".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"L".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.greaterJunctionExists( junction.getBasePoint( ) ) ) return;
+            edge1.setLabel( "B" );
+            drools.modifyObject( edge1 );
+            edge2.setLabel( "B" );
+            drools.modifyObject( edge2 );
+            stage.setValue( "find_second_boundary" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    Ditto for an arrow
+    -->
+    <rule name="initial_boundary_junction_arrow">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"find_initial_boundary".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.greaterJunctionExists( junction.getBasePoint( ) ) ) return;
+            edge1.setLabel( "B" );
+            drools.modifyObject( edge1 );
+            edge2.setLabel( "+" );
+            drools.modifyObject( edge2 );
+            edge3.setLabel( "B" );
+            drools.modifyObject( edge3 );
+            stage.setValue( "find_second_boundary" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If we have already found the first boundary point, then find the second
+    boundary point, and label it.
+    -->
+    <rule name="second_boundary_junction_L">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"find_second_boundary".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"L".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.smallerJunctionExists( junction.getBasePoint( ) ) ) return;
+            edge1.setLabel( "B" );
+            drools.modifyObject( edge1 );
+            edge2.setLabel( "B" );
+            drools.modifyObject( edge2 );
+            stage.setValue( "labeling" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <rule name="second_boundary_junction_arrow">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"find_second_boundary".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.smallerJunctionExists( junction.getBasePoint( ) ) ) return;
+            edge1.setLabel( "B" );
+            drools.modifyObject( edge1 );
+            edge2.setLabel( "+" );
+            drools.modifyObject( edge2 );
+            edge3.setLabel( "B" );
+            drools.modifyObject( edge3 );
+            stage.setValue( "labeling" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If we have an edge whose label we already know definitely, then
+    label the corresponding edge in the other direction
+    -->
+    <rule name="match_edge">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>edge1.getP1( ) == edge2.getP2( )</java:condition>
+        <java:condition>edge1.getP2( ) == edge2.getP1( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )
+                     || "-".equals( edge1.getLabel( ) )
+                     || "B".equals( edge1.getLabel( ) )
+        </java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            int p1 = edge1.getP1( );
+            int p2 = edge1.getP2( );
+            String label = edge1.getLabel( );
+            edge1.setPlotted( true );
+            drools.modifyObject( edge1 );
+            edge2.setPlotted( true );
+            edge2.setLabel( label );
+            drools.modifyObject( edge2 );
+            System.out.println( "plot " + label + " " + p1 + " " + p2 );
+        </java:consequence>
+    </rule>
+
+    <!--
+    The following productions propogate the possible labellings of the edges
+    based on the labellings of edges incident on adjacent junctions.  Since
+    from the initial boundary productions, we have determined the labellings of
+    of atleast two junctions, this propogation will label all of the junctions
+    with the possible labellings.  The search space is pruned due to filtering,
+    i.e. - only label a junction in the ways physically possible based on the
+    labellings of adjacent junctions.
+    -->
+
+    <rule name="label_L">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"L".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )
+                     || "-".equals( edge1.getLabel( ) )
+        </java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "B" );
+            drools.modifyObject ( edge2 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_tee_A">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"tee".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge2.getP2( )</java:condition>
+        <java:condition>null == edge1.getLabel( )</java:condition>
+        <java:consequence>
+            edge1.setLabel( "B" );
+            drools.modifyObject ( edge1 );
+            edge2.setLabel( "B" );
+            drools.modifyObject ( edge2 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_tee_B">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"tee".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge2.getP2( )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge1.setLabel( "B" );
+            drools.modifyObject ( edge1 );
+            edge2.setLabel( "B" );
+            drools.modifyObject ( edge2 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_fork-1">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"fork".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>edge2.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_fork-2">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"fork".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>edge2.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>"B".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>"-".equals( edge2.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge3.setLabel( "B" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_fork-3">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"fork".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>edge2.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>"B".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>"B".equals( edge2.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge3.setLabel( "-" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_fork-4">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"fork".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge2.getP2( )</java:condition>
+        <java:condition>edge1.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>edge2.getP2( ) != edge3.getP2( )</java:condition>
+        <java:condition>"-".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>"-".equals( edge2.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge3.setLabel( "-" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-1A">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:condition>"B".equals( edge1.getLabel( ) )
+                     || "-".equals( edge1.getLabel( ) )
+        </java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( edge1.getLabel( ) );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-1B">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:condition>"B".equals( edge1.getLabel( ) )
+                     || "-".equals( edge1.getLabel( ) )
+        </java:condition>
+        <java:condition>null == edge3.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( edge1.getLabel( ) );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-2A">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP3( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP1( ) == edge3.getP2( )</java:condition>
+        <java:condition>"B".equals( edge1.getLabel( ) )
+                     || "-".equals( edge1.getLabel( ) )
+        </java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( edge1.getLabel( ) );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-2B">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP3( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP1( ) == edge3.getP2( )</java:condition>
+        <java:condition>"B".equals( edge1.getLabel( ) )
+                     || "-".equals( edge1.getLabel( ) )
+        </java:condition>
+        <java:condition>null == edge3.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( edge1.getLabel( ) );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-3A">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "-" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-3B">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP1( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge3.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "-" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-4A">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP3( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP1( ) == edge3.getP2( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "-" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-4B">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP3( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP2( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP1( ) == edge3.getP2( )</java:condition>
+        <java:condition>"+".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge3.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "-" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-5A">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP2( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP1( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:condition>"-".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge3.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <rule name="label_arrow-5B">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="junction"><class>Junction</class></parameter>
+        <parameter identifier="edge1"><class>Edge</class></parameter>
+        <parameter identifier="edge2"><class>Edge</class></parameter>
+        <parameter identifier="edge3"><class>Edge</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:condition>"arrow".equals( junction.getType( ) )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge1.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge2.getP1( )</java:condition>
+        <java:condition>junction.getBasePoint( ) == edge3.getP1( )</java:condition>
+        <java:condition>junction.getP2( ) == edge1.getP2( )</java:condition>
+        <java:condition>junction.getP1( ) == edge2.getP2( )</java:condition>
+        <java:condition>junction.getP3( ) == edge3.getP2( )</java:condition>
+        <java:condition>"-".equals( edge1.getLabel( ) )</java:condition>
+        <java:condition>null == edge2.getLabel( )</java:condition>
+        <java:consequence>
+            edge2.setLabel( "+" );
+            drools.modifyObject ( edge2 );
+            edge3.setLabel( "+" );
+            drools.modifyObject ( edge3 );
+        </java:consequence>
+    </rule>
+
+    <!--
+    The conflict resolution mechanism will only execute a production if no
+    productions that are more complicated are satisfied.  This production is
+    simple, so all of the above dictionary productions will fire before this
+    change of state production
+    -->
+    <rule name="done_labeling">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <java:condition>"labeling".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            stage.setValue( "plot_remaining_edges" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    At this point, some labellings may have not been plotted, so plot them
+    -->
+    <rule name="plot_remaining">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="edge"><class>Edge</class></parameter>
+        <java:condition>"plot_remaining_edges".equals( stage.getValue( ) )</java:condition>
+        <java:condition>!edge.isPlotted( )</java:condition>
+        <java:condition>null != edge.getLabel( )</java:condition>
+        <java:consequence>
+            System.out.println( "plot " + edge.getLabel( ) + " " + edge.getP1( ) + " " + edge.getP2( ) );
+            edge.setPlotted( true );
+            drools.modifyObject( edge );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If we have been unable to label an edge, assume that it is a boundary.
+    This is a total Kludge, but what the hell. (if we assume only valid drawings
+    will be given for labeling, this assumption generally is true!)
+    -->
+    <rule name="plot_boundaries">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <parameter identifier="edge"><class>Edge</class></parameter>
+        <java:condition>"plot_remaining_edges".equals( stage.getValue( ) )</java:condition>
+        <java:condition>!edge.isPlotted( )</java:condition>
+        <java:condition>null == edge.getLabel( )</java:condition>
+        <java:consequence>
+            System.out.println( "plot B " + edge.getP1( ) + " " + edge.getP2( ) );
+            edge.setPlotted( true );
+            drools.modifyObject( edge );
+        </java:consequence>
+    </rule>
+
+    <!--
+    If there is no more work to do, then we are done and flag it.
+    -->
+    <rule name="done_plotting">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <java:condition>"plot_remaining_edges".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            if ( WaltzWMEL.plottedEdgeExists( ) ) return;
+            stage.setValue( "done" );
+            drools.modifyObject( stage );
+        </java:consequence>
+    </rule>
+
+    <!--
+    Prompt the user as to where he can see a trace of the OPS5
+    execution
+    -->
+    <rule name="done">
+        <parameter identifier="stage"><class>Stage</class></parameter>
+        <java:condition>"done".equals( stage.getValue( ) )</java:condition>
+        <java:consequence>
+            //System.out.println( "see trace.waltz for description of execution- hit CR to end" );
+            drools.clearAgenda( );
+        </java:consequence>
+    </rule>
+
+</rule-set>
