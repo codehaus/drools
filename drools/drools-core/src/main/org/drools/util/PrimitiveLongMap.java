@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.6 2004-11-16 14:35:33 simon Exp $
+ * $Id: PrimitiveLongMap.java,v 1.7 2004-11-17 13:37:07 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -435,6 +435,10 @@ public class PrimitiveLongMap
         Object[] getValues()
         {
             Object[] values = new Object[this.filledSlots];
+            if (values.length == 0)
+            {
+                return values;
+            }
             int x = 0;
             Object value;
             for ( int i = 0; i < this.tableSize; i++ )
