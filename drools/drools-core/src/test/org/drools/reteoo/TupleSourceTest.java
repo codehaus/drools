@@ -10,16 +10,6 @@ import java.util.List;
 
 public class TupleSourceTest extends TestCase
 {
-    public void setUp()
-    {
-
-    }
-
-    public void tearDown()
-    {
-
-    }
-
     public void testPropagateAssertTuple()
     {
         TupleSource source = new MockTupleSource( );
@@ -50,9 +40,7 @@ public class TupleSourceTest extends TestCase
 
             assertSame( tuple, tuples.get( 0 ) );
 
-            List objects = sink.getRetractedObjects( );
-
-            assertEquals( 0, objects.size( ) );
+            assertTrue( sink.getRetractedKeys( ).isEmpty( ) );
         }
         catch ( AssertionException e )
         {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.53 2004-11-13 13:46:00 simon Exp $
+ * $Id: Builder.java,v 1.54 2004-11-16 13:37:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -153,20 +153,19 @@ public class Builder
 
         for ( int i = 0; i < rules.length; ++i )
         {
-            addRule( ruleSet, rules[i] );
+            addRule( rules[i] );
         }
     }
 
     /**
      * Add a <code>Rule</code> to the network.
      *
-     * @param ruleSet The rule-set containing the rule.
      * @param rule The rule to add.
      *
      * @throws RuleIntegrationException if an error prevents complete
      *         construction of the network for the <code>Rule</code>.
      */
-    protected void addRule(RuleSet ruleSet, Rule rule) throws RuleIntegrationException
+    protected void addRule( Rule rule ) throws RuleIntegrationException
     {
         Set factExtracts = new HashSet( rule.getExtractions( ) );
         List conds = new LinkedList( rule.getConditions( ) );

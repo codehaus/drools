@@ -1,23 +1,12 @@
 package org.drools.reteoo;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-
-import org.drools.FactHandle;
 
 public class InstrumentedTupleSink implements TupleSink
 {
-    private List assertedTuples;
-
-    private List retractedObjects;
-
-    private List retractedKeys;
-
-    public InstrumentedTupleSink()
-    {
-        this.assertedTuples = new ArrayList( );
-        this.retractedObjects = new ArrayList( );
-    }
+    private final List assertedTuples = new LinkedList( );
+    private final List retractedKeys = new LinkedList( );
 
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory)
     {
@@ -29,22 +18,12 @@ public class InstrumentedTupleSink implements TupleSink
         return this.assertedTuples;
     }
 
-    public void retractObject(Object object, WorkingMemoryImpl workingMemory)
-    {
-        this.retractedObjects.add( object );
-    }
-
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory)
     {
         this.retractedKeys.add( key );
     }
 
-    public List getRetractedObjects()
-    {
-        return this.retractedObjects;
-    }
-
-    public List getRetractedTupleKeys()
+    public List getRetractedKeys()
     {
         return this.retractedKeys;
     }

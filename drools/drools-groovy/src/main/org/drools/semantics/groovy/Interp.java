@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.8 2004-11-13 13:27:16 simon Exp $
+ * $Id: Interp.java,v 1.9 2004-11-16 13:37:53 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,7 +66,7 @@ import java.util.Set;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Interp.java,v 1.8 2004-11-13 13:27:16 simon Exp $
+ * @version $Id: Interp.java,v 1.9 2004-11-16 13:37:53 simon Exp $
  */
 public class Interp implements Serializable
 {
@@ -89,7 +89,7 @@ public class Interp implements Serializable
     /**
      * Construct.
      */
-    protected Interp(String text, Set imports, String type)
+    protected Interp( String text, Set imports )
     {
         this.text = text;
         try

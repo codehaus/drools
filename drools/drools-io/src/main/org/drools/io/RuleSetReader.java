@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.30 2004-11-05 15:26:14 simon Exp $
+ * $Id: RuleSetReader.java,v 1.31 2004-11-16 13:37:53 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.30 2004-11-05 15:26:14 simon Exp $
+ * @version $Id: RuleSetReader.java,v 1.31 2004-11-16 13:37:53 simon Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -395,7 +395,7 @@ public class RuleSetReader extends DefaultHandler
         }
         Handler handler = getHandler( localName );
 
-        validate( uri, localName, handler );
+        validate( localName, handler );
 
         Object node = handler.start( uri, localName, attrs );
 
@@ -434,7 +434,7 @@ public class RuleSetReader extends DefaultHandler
         this.lastWasEndElement = true;
     }
 
-    private void validate( String uri, String localName, Handler handler ) throws SAXParseException
+    private void validate( String localName, Handler handler ) throws SAXParseException
     {
         boolean validParent = false;
         boolean validPeer = false;
