@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.6 2004-06-11 23:31:27 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.7 2004-07-31 17:09:32 doug Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -61,7 +61,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.6 2004-06-11 23:31:27 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.7 2004-07-31 17:09:32 doug Exp $
  */
 public class BlockConsequence
     extends Exec
@@ -108,11 +108,10 @@ public class BlockConsequence
         Map appData = workingMemory.getApplicationDataMap();
         for (Iterator iterator = appData.keySet().iterator(); iterator.hasNext();)
         {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            String key = (String)entry.getKey();
+            String key = (String) iterator.next();
 
             dict.setdefault(new PyString(key),
-                            Py.java2py( entry.getValue() ) );
+                            Py.java2py( appData.get(key) ) );
         }
 
         try
