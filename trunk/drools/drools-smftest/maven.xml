@@ -15,9 +15,7 @@
             file="${basedir}/target/docs/clover/pkgs-summary.html"/>
     </postGoal>
 
-		<goal name="get-deps">
-
-    </goal>
+		<goal name="get-deps" />
 
     <goal name="reports:publish">
         <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-smf"/>

@@ -165,31 +165,33 @@
       </ant:delete>
     </goal>
 
-    <goal name="drools-dist" prereqs="javadoc-all">
+		<!--
+			creates .zip and .gz.zip of drools source, also includes compiled drools-*.jar and javadocs
+		-->
+    <goal name="drools-dist" >
       <copy todir="./lib" flatten="true">
-        <fileset dir=".">
-          <include name="**/drools-*.jar"/>
-        </fileset>
+        <fileset dir="." includes="**/drools-*.jar" />
       </copy>
 
       <zip destfile="target/drools-${pom.currentVersion}.zip">
     		 <zipfileset dir="target/docs" prefix="docs" />
-
     		 <zipfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </zip>
 
       <tar destfile="target/drools-${pom.currentVersion}.tar.gz" compression="gzip">
     		 <tarfileset dir="target/docs" prefix="docs" />
-
     		 <tarfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </tar>
 		</goal>
 
-    <goal name="drools-dist-deps" prereqs="javadoc-all">
+
+		<!--
+			creates .zip and .gz.zip of drools source, also includes compiled drools-*.jar and javadocs
+			and all dependencies
+		-->
+    <goal name="drools-dist-deps" >
       <copy todir="./lib" flatten="true">
-        <fileset dir=".">
-          <include name="**/drools-*.jar"/>
-        </fileset>
+        <fileset dir="." includes="**/drools-*.jar" />
       </copy>
 
       <j:set var="goal" value="get-deps"/>
@@ -197,22 +199,23 @@
 
       <zip destfile="target/drools-deps-${pom.currentVersion}.zip">
     		 <zipfileset dir="target/docs" prefix="docs" />
-
-    		 <zipfileset dir="." prefix="lib" includes="drools-*/lib/**" />
-
     		 <zipfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </zip>
 
       <tar destfile="target/drools-deps-${pom.currentVersion}.tar.gz" compression="gzip">
     		 <tarfileset dir="target/docs" prefix="docs" />
-
-    		 <tarfileset dir="." prefix="lib" includes="drools-*/lib/**" />
-
     		 <tarfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </tar>
+
+      <ant:delete>
+        <fileset dir="lib" includes="*.jar" excludes="drools-*, jca-1.0.jar, jsr94-1.0.jar" />
+      </ant:delete>
     </goal>
 
 
+		<!--
+			creates .zip and .gz.zip of drools source
+		-->
     <goal name="drools-src-dist">
       <zip destfile="target/drools-src-${pom.currentVersion}.zip"
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
