@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.6 2004-10-24 00:59:11 mproctor Exp $
+ * $Id: Interp.java,v 1.7 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -69,7 +69,7 @@ import org.drools.spi.Tuple;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Interp.java,v 1.6 2004-10-24 00:59:11 mproctor Exp $
+ * @version $Id: Interp.java,v 1.7 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -92,15 +92,15 @@ public class Interp implements Serializable
     /**
      * Construct.
      */
-    protected Interp(String text, Imports imports, String type)
+    protected Interp(String text, Set imports, String type)
     {
         this.text = text;
         try
         {
             StringBuffer newText = new StringBuffer();
-            if ((imports != null)&&(imports.getImportEntries() != null))
+            if (imports != null)
             {
-                Iterator it =imports.getImportEntries().iterator();
+                Iterator it =imports.iterator();
                 
                 while (it.hasNext())
                 {

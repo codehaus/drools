@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReader.java,v 1.4 2004-10-24 00:54:29 mproctor Exp $
+ * $Id: SemanticsReader.java,v 1.5 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -66,7 +66,7 @@ import java.util.Properties;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: SemanticsReader.java,v 1.4 2004-10-24 00:54:29 mproctor Exp $
+ * @version $Id: SemanticsReader.java,v 1.5 2004-11-03 22:54:36 mproctor Exp $
  */
 public class SemanticsReader
 {
@@ -235,14 +235,7 @@ public class SemanticsReader
                                                                           .newInstance( );
 
                 module.addDurationFactory( componentName, factory );
-            }
-            else if ( "Imports".equals( type ) )
-            {
-                ImportsFactory factory = ( ImportsFactory ) factoryClass
-                                                                          .newInstance( );
-
-                module.addImportsFactory( componentName, factory );
-            }       
+            }   
             else if ( "ImportEntry".equals( type ) )
             {
                 ImportEntryFactory factory = ( ImportEntryFactory ) factoryClass

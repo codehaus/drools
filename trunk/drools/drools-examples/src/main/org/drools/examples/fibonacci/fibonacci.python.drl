@@ -4,9 +4,7 @@
           xmlns="http://drools.org/rules"
           xmlns:python="http://drools.org/semantics/python">
 
-   <imports>
-     <python:import>from org.drools.examples.fibonacci import Fibonacci</python:import>
-   </imports>
+  <python:import>from org.drools.examples.fibonacci import Fibonacci</python:import>
 
   <rule name="Bootstrap 1"   salience="20">
     <parameter identifier="f">

@@ -4,9 +4,7 @@
           xmlns="http://drools.org/rules"
           xmlns:java="http://drools.org/semantics/java">
 
-   <imports>
-     <java:import>org.drools.examples.state.State</java:import>
-   </imports>
+    <java:import>org.drools.examples.state.State</java:import>
 
     <rule name="Bootstrap">
         <parameter identifier="a">

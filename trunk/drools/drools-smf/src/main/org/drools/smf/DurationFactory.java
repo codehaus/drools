@@ -5,5 +5,5 @@ import org.drools.spi.Duration;
 
 public interface DurationFactory
 {
-    Duration newDuration(Configuration config, Declaration[] availDecls) throws FactoryException;
+    Duration newDuration(Configuration config, Declaration[] availDecls) throws FactoryException;    
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: BlockConsequence.java,v 1.12 2004-10-24 00:58:03 mproctor Exp $
+ * $Id: BlockConsequence.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,6 +41,8 @@ package org.drools.semantics.python;
  *  
  */
 
+import java.util.Set;
+
 import org.drools.WorkingMemory;
 import org.drools.rule.Imports;
 import org.drools.spi.Consequence;
@@ -53,7 +55,7 @@ import org.python.core.PyDictionary;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: BlockConsequence.java,v 1.12 2004-10-24 00:58:03 mproctor Exp $
+ * @version $Id: BlockConsequence.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
  */
 public class BlockConsequence extends Exec implements Consequence
 {
@@ -66,7 +68,7 @@ public class BlockConsequence extends Exec implements Consequence
      * 
      * @param text The block text.
      */
-    public BlockConsequence(String text, Imports imports)
+    public BlockConsequence(String text, Set imports)
     {
         super( text, imports );
     }

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DefaultConfiguration.java,v 1.2 2004-09-17 00:25:09 mproctor Exp $
+ * $Id: DefaultConfiguration.java,v 1.3 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -53,7 +53,8 @@ import org.drools.smf.Configuration;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: DefaultConfiguration.java,v 1.2 2004-09-17 00:25:09 mproctor Exp $
+ * @version $Id: DefaultConfiguration.java,v 1.2 2004/09/17 00:25:09 mproctor
+ *          Exp $
  */
 class DefaultConfiguration implements Configuration
 {
@@ -69,16 +70,16 @@ class DefaultConfiguration implements Configuration
     // ----------------------------------------------------------------------
 
     /** Node name. */
-    private String                name;
+    private String name;
 
     /** Node text. */
-    private String                text;
+    private String text;
 
     /** Node attributes. */
-    private Map                   attrs;
+    private Map attrs;
 
     /** Children nodes. */
-    private List                  children;
+    private List children;
 
     // ----------------------------------------------------------------------
     //     Constructors
@@ -87,9 +88,10 @@ class DefaultConfiguration implements Configuration
     /**
      * Construct.
      * 
-     * @param name The name of the node.
+     * @param name
+     *            The name of the node.
      */
-    DefaultConfiguration(String name)
+    DefaultConfiguration( String name )
     {
         this.name = name;
         this.attrs = new HashMap( );
@@ -107,9 +109,10 @@ class DefaultConfiguration implements Configuration
     /**
      * Set the node text.
      * 
-     * @param text The text.
+     * @param text
+     *            The text.
      */
-    void setText(String text)
+    void setText( String text )
     {
         this.text = text;
     }
@@ -125,10 +128,12 @@ class DefaultConfiguration implements Configuration
     /**
      * Set an attribute value.
      * 
-     * @param name The attribute name.
-     * @param value The attribute value.
+     * @param name
+     *            The attribute name.
+     * @param value
+     *            The attribute value.
      */
-    void setAttribute(String name, String value)
+    void setAttribute( String name, String value )
     {
         this.attrs.put( name, value );
     }
@@ -136,9 +141,9 @@ class DefaultConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public String getAttribute(String name)
+    public String getAttribute( String name )
     {
-        return ( String ) this.attrs.get( name );
+        return (String) this.attrs.get( name );
     }
 
     /**
@@ -146,15 +151,16 @@ class DefaultConfiguration implements Configuration
      */
     public String[] getAttributeNames()
     {
-        return ( String[] ) this.attrs.keySet( ).toArray( EMPTY_STRING_ARRAY );
+        return (String[]) this.attrs.keySet( ).toArray( EMPTY_STRING_ARRAY );
     }
 
     /**
      * Add a child <code>Configuration</code>.
      * 
-     * @param config The child.
+     * @param config
+     *            The child.
      */
-    void addChild(Configuration config)
+    void addChild( Configuration config )
     {
         this.children.add( config );
     }
@@ -162,12 +168,12 @@ class DefaultConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public Configuration getChild(String name)
+    public Configuration getChild( String name )
     {
         for ( Iterator childIter = this.children.iterator( ); childIter
-                                                                       .hasNext( ); )
+                .hasNext( ); )
         {
-            Configuration eachConfig = ( Configuration ) childIter.next( );
+            Configuration eachConfig = (Configuration) childIter.next( );
 
             if ( eachConfig.getName( ).equals( name ) )
             {
@@ -181,14 +187,14 @@ class DefaultConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public Configuration[] getChildren(String name)
+    public Configuration[] getChildren( String name )
     {
         List result = new ArrayList( );
 
         for ( Iterator childIter = this.children.iterator( ); childIter
-                                                                       .hasNext( ); )
+                .hasNext( ); )
         {
-            Configuration eachConfig = ( Configuration ) childIter.next( );
+            Configuration eachConfig = (Configuration) childIter.next( );
 
             if ( eachConfig.getName( ).equals( name ) )
             {
@@ -196,7 +202,7 @@ class DefaultConfiguration implements Configuration
             }
         }
 
-        return ( Configuration[] ) result.toArray( Configuration.EMPTY_ARRAY );
+        return (Configuration[]) result.toArray( Configuration.EMPTY_ARRAY );
     }
 
     /**
@@ -204,7 +210,7 @@ class DefaultConfiguration implements Configuration
      */
     public Configuration[] getChildren()
     {
-        return ( Configuration[] ) this.children
-                                                .toArray( Configuration.EMPTY_ARRAY );
+        return (Configuration[]) this.children
+                .toArray( Configuration.EMPTY_ARRAY );
     }
 }

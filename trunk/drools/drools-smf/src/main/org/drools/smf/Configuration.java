@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: Configuration.java,v 1.3 2004-09-17 00:32:24 mproctor Exp $
+ * $Id: Configuration.java,v 1.4 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -52,7 +52,7 @@ package org.drools.smf;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Configuration.java,v 1.3 2004-09-17 00:32:24 mproctor Exp $
+ * @version $Id: Configuration.java,v 1.4 2004-11-03 22:54:36 mproctor Exp $
  */
 public interface Configuration
 {
@@ -124,5 +124,5 @@ public interface Configuration
      * @return All children nodes, otherwise an empty array if this node
      *         contains no children.
      */
-    Configuration[] getChildren();
+    Configuration[] getChildren();    
 }

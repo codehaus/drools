@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.39 2004-11-03 14:27:00 simon Exp $
+ * $Id: Rule.java,v 1.40 2004-11-03 22:54:36 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,7 +66,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Rule.java,v 1.39 2004-11-03 14:27:00 simon Exp $
+ * @version $Id: Rule.java,v 1.40 2004-11-03 22:54:36 mproctor Exp $
  */
 public class Rule implements Serializable
 {
@@ -121,7 +121,7 @@ public class Rule implements Serializable
     /** is the consequence of the rule currently being executed? */
     private boolean            noLoop;
 
-    private Imports            imports;
+    private Set            imports;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -572,12 +572,12 @@ public class Rule implements Serializable
         return buffer.toString( );
     }
 
-    public void setImports(Imports imports)
+    public void setImports(Set imports)
     {
         this.imports = imports;
     }
-
-    public Imports getImports()
+    
+    public Set getImports()
     {
         return this.imports;
     }

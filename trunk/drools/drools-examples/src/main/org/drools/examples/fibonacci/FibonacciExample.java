@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciExample.java,v 1.13 2004-09-17 00:37:51 mproctor Exp $
+ * $Id: FibonacciExample.java,v 1.14 2004-11-03 22:54:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -60,7 +60,8 @@ public class FibonacciExample
         {
             RuleBase ruleBase = RuleBaseBuilder
                                                .buildFromUrl( FibonacciExample.class
-                                                                                    .getResource( args[0] ) );
+                                                                                   .getResource( args[0] ) );
+            
             WorkingMemory workingMemory;
             Fibonacci fibonacci;
             long start;
@@ -92,6 +93,7 @@ public class FibonacciExample
             System.err.println( "fibonacci(" + fibonacci.getSequence( )
                                 + ") == " + fibonacci.getValue( ) + " took "
                                 + ( stop - start ) + "ms" );
+                                     
         }
         catch ( Exception e )
         {

@@ -5,11 +5,11 @@
     <rule name="Find Sisters">
 
         <parameter identifier="person">
-          <java:class> org.drools.jsr94.rules.Person </java:class>
+          <class> org.drools.jsr94.rules.Person </class>
         </parameter>
 
         <parameter identifier="sister">
-          <java:class> org.drools.jsr94.rules.Person </java:class>
+          <class> org.drools.jsr94.rules.Person </class>
         </parameter>
 
         <!--<java:condition> person.getName().compareTo( sister.getName() ) &gt; 0</java:condition>-->

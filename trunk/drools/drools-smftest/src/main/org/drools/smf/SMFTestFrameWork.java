@@ -7,8 +7,10 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -67,7 +69,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
     private String              newline = System.getProperty( "line.separator" );
     
-    private Imports             imports;
+    private Set             imports;
 
     public SMFTestFrameWork(String name)
     {
@@ -80,7 +82,7 @@ public abstract class SMFTestFrameWork extends TestCase
      * Reads in the specified data file and extracts to a List of tests using
      * the delimter <!--drools-test--!>
      */
-    public void setUp(String semantic, Imports imports) throws Exception
+    public void setUp(String semantic, Set imports) throws Exception
     {
 
         this.semantic = semantic;
@@ -137,11 +139,11 @@ public abstract class SMFTestFrameWork extends TestCase
         ObjectTypeFactory objectTypeFactory = module
                                                     .getObjectTypeFactory( "class" );
         ObjectType cheeseType = objectTypeFactory
-                                                 .newObjectType( cheeseConfiguration, null );
+                                                 .newObjectType( cheeseConfiguration, new HashSet() );
 
         tuple = new MockTuple( );
         Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
@@ -165,7 +167,7 @@ public abstract class SMFTestFrameWork extends TestCase
         //condition check with a single declaration
         tuple = new MockTuple( );
         rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());        
         tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl, new Cheese( "stilton" ) );
@@ -177,7 +179,7 @@ public abstract class SMFTestFrameWork extends TestCase
         //condition check with two declarations
         tuple = new MockTuple( );
         rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl, new Cheese( "stilton" ) );
@@ -208,7 +210,7 @@ public abstract class SMFTestFrameWork extends TestCase
         //test code works no matter what the order of decl are
         tuple = new MockTuple( );
         rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );        
         workingMemory = new MockWorkingMemory( );
         tuple.setWorkingMemory( workingMemory );
@@ -216,7 +218,7 @@ public abstract class SMFTestFrameWork extends TestCase
         MockConfiguration stringConfiguration = new MockConfiguration( "test2" );
         stringConfiguration.setText( String.class.getName( ) );
         ObjectType stringType = objectTypeFactory
-                                                 .newObjectType( stringConfiguration, null );
+                                                 .newObjectType( stringConfiguration, new HashSet() );
         Declaration favouriteCheeseDecl = new Declaration( stringType,
                                                            "favouriteCheese" );
 
@@ -232,7 +234,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         //test exceptions
         rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );
         try
         {
@@ -313,7 +315,7 @@ public abstract class SMFTestFrameWork extends TestCase
         int testNumber = 0;
         tuple = new MockTuple( );
         Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
@@ -377,7 +379,7 @@ public abstract class SMFTestFrameWork extends TestCase
         // 7
         //test exceptions
         rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );
         try
         {
@@ -455,7 +457,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         tuple = new MockTuple( );
         Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );        
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
@@ -503,7 +505,7 @@ public abstract class SMFTestFrameWork extends TestCase
         // 4
         //test exceptions
         rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new Imports());
+        rule.setImports(new HashSet());
         tuple.setRule( rule );
         try
         {

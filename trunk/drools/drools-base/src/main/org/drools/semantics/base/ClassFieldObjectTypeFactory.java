@@ -21,7 +21,7 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType(Configuration config, Imports imports) throws FactoryException
+    public ObjectType newObjectType(Configuration config, Set imports) throws FactoryException
     {
         String className = config.getText( );
         String fieldName = config.getAttribute("field");
@@ -46,10 +46,10 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         {
             //get imports
             Set importSet = new HashSet(); 
-            if ((imports != null)&&(imports.getImportEntries() != null))
+            if (imports != null)
             {
                                   
-                Iterator it = imports.getImportEntries().iterator();
+                Iterator it = imports.iterator();
                 ImportEntry importEntry;
                 while (it.hasNext())
                 {

@@ -4,5 +4,5 @@ import org.drools.spi.ImportEntry;
 
 public interface ImportEntryFactory
 {
-    ImportEntry newImportEntry(Configuration config) throws FactoryException;
+    ImportEntry newImportEntry(Configuration config) throws FactoryException;   
 }
