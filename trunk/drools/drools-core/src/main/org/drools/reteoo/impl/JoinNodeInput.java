@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSinkImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
+ $Id: JoinNodeInput.java,v 1.1 2002-08-10 19:16:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,16 +52,43 @@ import org.drools.RetractionException;
 import org.drools.FactException;
 import org.drools.reteoo.TupleSink;
 
-/** Receiver of propagated <code>ReteTuple</code>s from a <code>TupleSource</code>.
- *
- *  @see TupleSink
- *  @see TupleSourceImpl
- *  @see ReteTuple
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public interface TupleSinkImpl extends TupleSink
+class JoinNodeInput implements TupleSinkImpl
 {
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    static final int LEFT  = 41;
+    static final int RIGHT = 42;
+    
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    private int side;
+    private JoinNodeImpl joinNode;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    JoinNodeInput(JoinNodeImpl joinNode,
+                  int side)
+    {
+        this.joinNode = joinNode;
+        this.side     = side;
+    }
+
+    int getSide()
+    {
+        return this.side;
+    }
+
+    JoinNodeImpl getJoinNode()
+    {
+        return this.joinNode;
+    }
+
     /** Assert a new <code>Tuple</code>.
      *
      *  @param tuple The <code>Tuple</code> being asserted.
@@ -69,8 +96,20 @@ public interface TupleSinkImpl extends TupleSink
      *
      *  @throws AssertionException If an error occurs while asserting.
      */
-    void assertTuple(ReteTuple tuple,
-                     WorkingMemory workingMemory) throws AssertionException;
+    public void assertTuple(ReteTuple tuple,
+                            WorkingMemory workingMemory) throws AssertionException
+    {
+        if ( this.side == LEFT )
+        {
+            getJoinNode().assertLeftTuple( tuple,
+                                           workingMemory  );
+        }
+        else
+        {
+            getJoinNode().assertRightTuple( tuple,
+                                            workingMemory );
+        }
+    }
 
     /** Retract tuples.
      *
@@ -79,8 +118,12 @@ public interface TupleSinkImpl extends TupleSink
      *
      *  @throws RetractionException If an error occurs while retracting.
      */
-    void retractTuples(TupleKey key,
-                       WorkingMemory workingMemory) throws RetractionException;
+    public void retractTuples(TupleKey key,
+                              WorkingMemory workingMemory) throws RetractionException
+    {
+        getJoinNode().retractTuples( key,
+                                     workingMemory );
+    }
 
     /** Modify tuples.
      *
@@ -90,7 +133,21 @@ public interface TupleSinkImpl extends TupleSink
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    void modifyTuples(Object trigger,
-                      TupleSet newTuples,
-                      WorkingMemory workingMemory) throws FactException;
+    public void modifyTuples(Object trigger,
+                             TupleSet newTuples,
+                             WorkingMemory workingMemory) throws FactException
+    {
+        if ( this.side == LEFT )
+        {
+            getJoinNode().modifyLeftTuples( trigger,
+                                            newTuples,
+                                            workingMemory );
+        }
+        else
+        {
+            getJoinNode().modifyRightTuples( trigger,
+                                             newTuples,
+                                             workingMemory );
+        }
+    }
 }

@@ -78,8 +78,7 @@ public class FactExtractionNodeImplTest extends TestCase
 
         try
         {
-            extractNode.assertTuple( source,
-                                     tuple,
+            extractNode.assertTuple( tuple,
                                      null );
             
             List assertedTuples = sink.getAssertedTuples();
