@@ -46,7 +46,7 @@ public class ConditionNodeTest extends TestCase
      */
     public void testAllowed()
     {
-        ConditionNode node = new ConditionNode( rule, null, new TrueCondition( ), 0 );
+        ConditionNode node = new ConditionNode( rule, null, new TrueCondition( ) );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
@@ -77,7 +77,7 @@ public class ConditionNodeTest extends TestCase
      */
     public void testNotAllowed()
     {
-        ConditionNode node = new ConditionNode( rule, null, new FalseCondition( ), 0 );
+        ConditionNode node = new ConditionNode( rule, null, new FalseCondition( ) );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
@@ -107,7 +107,7 @@ public class ConditionNodeTest extends TestCase
 
         ParameterNode paramNode = new ParameterNode( null, decl );
 
-        ConditionNode condNode = new ConditionNode( rule, paramNode, null, 0 );
+        ConditionNode condNode = new ConditionNode( rule, paramNode, null );
 
         Set decls = condNode.getTupleDeclarations( );
 

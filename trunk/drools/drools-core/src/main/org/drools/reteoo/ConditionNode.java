@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.29 2004-12-03 03:26:17 simon Exp $
+ * $Id: ConditionNode.java,v 1.30 2004-12-04 02:27:20 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -82,9 +82,6 @@ class ConditionNode extends TupleSource
     /** The source of incoming <code>Tuples</code>. */
     private final TupleSource tupleSource;
 
-    /** The order the condition is declared in its rule */
-    private final int order;
-
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
@@ -96,12 +93,11 @@ class ConditionNode extends TupleSource
      * @param tupleSource The source of incoming <code>Tuples</code>.
      * @param condition
      */
-    ConditionNode( Rule rule, TupleSource tupleSource, Condition condition, int order )
+    ConditionNode( Rule rule, TupleSource tupleSource, Condition condition )
     {
         this.rule = rule;
         this.condition = condition;
         this.tupleSource = tupleSource;
-        this.order = order;
 
         if ( tupleSource != null )
         {
@@ -268,13 +264,13 @@ class ConditionNode extends TupleSource
             return true;
         }
 
-        if ( object instanceof ConditionNode )
+        if ( object == null || getClass( ) != object.getClass( ) )
         {
-            ConditionNode other = ( ConditionNode ) object;
-
-            return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
+            return false;
         }
 
-        return false;
+        ConditionNode other = ( ConditionNode ) object;
+
+        return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
     }
 }
