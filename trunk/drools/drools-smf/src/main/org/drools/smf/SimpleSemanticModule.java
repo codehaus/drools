@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.2 2004-06-17 21:42:39 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -168,7 +168,7 @@ public class SimpleSemanticModule
     /** Add a semantic <code>ConditionFactory</code>.
      *
      *  @param name The condition name.
-     *  @param condition The condition factory.
+     *  @param factory The condition factory.
      */
     public void addConditionFactory(String name,
                                     ConditionFactory factory) 
@@ -220,7 +220,7 @@ public class SimpleSemanticModule
     /** Add a semantic <code>ConsequenceFactory</code>.
      *
      *  @param name The consequence name.
-     *  @param consequence The consequence factory.
+     *  @param factory The consequence factory.
      */
     public void addConsequenceFactory(String name,
                                       ConsequenceFactory factory) 

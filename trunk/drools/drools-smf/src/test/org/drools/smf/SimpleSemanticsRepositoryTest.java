@@ -33,5 +33,8 @@ public class SimpleSemanticsRepositoryTest
 
         assertSame( module,
                     repo.lookupSemanticModule( "http://cheese.org/" ) );
+
+        SemanticModule[] modules = repo.getSemanticModules();
+        assertEquals("Not the correct number of modules. ", modules.length, 1);
     }
 }
