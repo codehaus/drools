@@ -3,7 +3,7 @@ package org.drools.reteoo.impl;
 import org.drools.AssertionException;
 import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
-import org.drools.semantic.java.JavaObjectType;
+import org.drools.semantics.java.ClassObjectType;
 
 import org.drools.spi.InstrumentedFactExtractor;
 
@@ -31,10 +31,10 @@ public class FactExtractionNodeImplTest extends TestCase
 
     public void testGetTupleDeclarations()
     {
-        Declaration stringDecl = new Declaration( new JavaObjectType( String.class ),
+        Declaration stringDecl = new Declaration( new ClassObjectType( String.class ),
                                                   "string" );
 
-        Declaration objectDecl = new Declaration( new JavaObjectType( Object.class),
+        Declaration objectDecl = new Declaration( new ClassObjectType( Object.class),
                                                   "object" );
 
         MockTupleSource source = new MockTupleSource();
@@ -56,10 +56,10 @@ public class FactExtractionNodeImplTest extends TestCase
 
     public void testAssertTuple()
     {
-        Declaration stringDecl = new Declaration( new JavaObjectType( String.class ),
+        Declaration stringDecl = new Declaration( new ClassObjectType( String.class ),
                                                   "string" );
 
-        Declaration objectDecl = new Declaration( new JavaObjectType( Object.class),
+        Declaration objectDecl = new Declaration( new ClassObjectType( Object.class),
                                                   "object" );
 
         MockTupleSource source = new MockTupleSource();

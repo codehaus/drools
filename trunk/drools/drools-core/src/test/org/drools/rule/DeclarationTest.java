@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 import org.drools.spi.ObjectType;
-import org.drools.semantic.java.JavaObjectType;
+import org.drools.semantics.java.ClassObjectType;
 
 import junit.framework.TestCase;
 
@@ -22,7 +22,7 @@ public class DeclarationTest extends TestCase
 
     public void testConstruct()
     {
-        ObjectType type = new JavaObjectType( String.class );
+        ClassObjectType type = new ClassObjectType( String.class );
 
         Declaration decl = new Declaration( type,
                                             "cheese" );
@@ -36,13 +36,13 @@ public class DeclarationTest extends TestCase
 
     public void testEquals()
     {
-        Declaration decl1 = new Declaration( new JavaObjectType( String.class ),
+        Declaration decl1 = new Declaration( new ClassObjectType( String.class ),
                                              "cheese" );
 
-        Declaration decl2 = new Declaration( new JavaObjectType( String.class ),
+        Declaration decl2 = new Declaration( new ClassObjectType( String.class ),
                                              "cheese" );
 
-        Declaration decl3 = new Declaration( new JavaObjectType( Object.class ),
+        Declaration decl3 = new Declaration( new ClassObjectType( Object.class ),
                                              "cheese" );
 
         assertTrue( decl1.equals( decl2 ) );

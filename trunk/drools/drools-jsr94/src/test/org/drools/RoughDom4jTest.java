@@ -9,7 +9,7 @@ import org.drools.rule.FactExtraction;
 import org.drools.spi.Tuple;
 import org.drools.spi.Action;
 import org.drools.spi.FactExtractor;
-import org.drools.semantic.java.JavaObjectType;
+import org.drools.semantics.java.ClassObjectType;
 import org.drools.semantic.xml.Dom4jXmlObjectType;
 import org.drools.semantic.xml.Dom4jXPathFactExtractor;
 
@@ -93,7 +93,7 @@ public class RoughDom4jTest extends TestCase
             rule.addParameterDeclaration( doc1 );
             rule.addParameterDeclaration( doc2 );
 
-            Declaration id = new Declaration( new JavaObjectType( String.class ),
+            Declaration id = new Declaration( new ClassObjectType( String.class ),
                                               "id" );
             
             FactExtractor aExtract = new Dom4jXPathFactExtractor( doc1,

@@ -187,7 +187,6 @@
         <include>**/*Test.java</include>
       </includes>
       <excludes>
-        <exclude>**/SemanticsLoaderTest.java</exclude>
       </excludes>
     </unitTest>
 
