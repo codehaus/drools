@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleSessionImpl.java,v 1.7 2004-06-11 23:31:27 mproctor Exp $
+ $Id: RuleSessionImpl.java,v 1.8 2004-06-15 17:41:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,6 +47,7 @@ package org.drools.jsr94.rules;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.event.DebugWorkingMemoryEventListener;
 import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
 import javax.rules.*;
 import java.util.Map;
@@ -93,6 +94,8 @@ abstract class RuleSessionImpl
                 workingMemory.setApplicationData((String) entry.getKey(), entry.getValue());
             }
         }
+
+        workingMemory.addEventListener( new DebugWorkingMemoryEventListener() );
 
         return workingMemory;
     }
