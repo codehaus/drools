@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.1.1.1 2003-12-30 21:18:57 bob Exp $
+ $Id: RuleSetReader.java,v 1.2 2004-01-01 04:13:46 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -88,7 +88,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.1.1.1 2003-12-30 21:18:57 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.2 2004-01-01 04:13:46 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -189,28 +189,6 @@ public class RuleSetReader
                        }
                    } );
         
-        bindStarter( RULES_NAMESPACE_URI,
-                     "rule",
-                     new Starter()
-                     {
-                         void start(Attributes attrs)
-                             throws SAXException
-                         {
-                             startRule( attrs );
-                         }
-                     } );
-
-        bindEnder( RULES_NAMESPACE_URI,
-                   "rule",
-                   new Ender()
-                   {
-                       void end()
-                           throws SAXException
-                       {
-                           endRule();
-                       }
-                   } );
-
         bindStarter( RULES_NAMESPACE_URI,
                      "parameter",
                      new Starter()

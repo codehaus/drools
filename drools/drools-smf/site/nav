@@ -1,0 +1,8 @@
+=Semantic Module Framework
+configuration.html|Configuration Trees
+rule.html|Rules
+object-type.html|Object Types
+condition.html|Conditions
+extractor.html|Extractors
+consequence.html|Consequences
+duration.html|Durations
