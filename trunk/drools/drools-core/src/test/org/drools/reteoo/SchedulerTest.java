@@ -1,6 +1,6 @@
 package org.drools.reteoo;
 /*
- * $Id: SchedulerTest.java,v 1.2 2005-01-11 15:13:56 mproctor Exp $
+ * $Id: SchedulerTest.java,v 1.3 2005-01-11 15:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,11 +47,8 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.rule.FixedDuration;
 import org.drools.rule.Rule;
-import org.drools.spi.Activation;
-import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.Duration;
 import org.drools.spi.MockObjectType;
 
 /**
