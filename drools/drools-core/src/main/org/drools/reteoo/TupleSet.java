@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.24 2004-11-29 13:20:52 simon Exp $
+ * $Id: TupleSet.java,v 1.25 2004-11-30 00:32:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -152,24 +152,9 @@ class TupleSet
     }
 
     /**
-     * Determine if this set contains a <code>Tuple</code> matching the
-     * specified <code>TupleKey</code>.
-     *
-     * @param key The tuple key.
-     *
-     * @return <code>true</code> if a matching tuple exists within this set,
-     *         otherwise <code>false<code>.
-     */
-    public boolean containsTuple(TupleKey key)
-    {
-        return this.tuples.containsKey( key );
-    }
-
-    /**
      * Retrieve a <code>Tuple</code> by <code>TupleKey</code>.
      *
      * @see org.drools.spi.Tuple
-     * @see #containsTuple
      *
      * @param key The tuple key.
      *
