@@ -1,6 +1,5 @@
 package org.drools.semantics.python;
 
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ExtractorFactory;
@@ -9,7 +8,6 @@ import org.drools.spi.Extractor;
 
 public class ExprExtractorFactory implements ExtractorFactory
 {
-
     private static final ExprExtractorFactory INSTANCE = new ExprExtractorFactory( );
 
     public static ExprExtractorFactory getInstance()

@@ -13,6 +13,7 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.SortedSet;
 
 public class RuleTest extends DroolsTestCase
 {
@@ -52,7 +53,7 @@ public class RuleTest extends DroolsTestCase
 
         Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        Declaration[] paramDecls = rule.getParameterDeclarations( );
+        SortedSet paramDecls = rule.getParameterDeclarations( );
 
         assertLength( 1, paramDecls );
 
@@ -62,11 +63,11 @@ public class RuleTest extends DroolsTestCase
 
         assertNull( rule.getParameterDeclaration( "betty" ) );
 
-        Declaration[] localDecls = rule.getLocalDeclarations( );
+        SortedSet localDecls = rule.getLocalDeclarations( );
 
         assertLength( 0, localDecls );
 
-        Declaration[] allDecls = rule.getAllDeclarations( );
+        SortedSet allDecls = rule.getAllDeclarations( );
 
         assertLength( 1, allDecls );
 
@@ -81,16 +82,16 @@ public class RuleTest extends DroolsTestCase
 
         Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        Declaration localDecl = rule.addDeclaration( "localVar", new MockObjectType( true ) );
+        Declaration localDecl = rule.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
         rule.addExtraction( "localVar", null );
 
-        Declaration[] paramDecls = rule.getParameterDeclarations( );
+        SortedSet paramDecls = rule.getParameterDeclarations( );
         assertLength( 1, paramDecls );
 
         assertContains( paramDecl, paramDecls );
 
-        Declaration[] localDecls = rule.getLocalDeclarations( );
+        SortedSet localDecls = rule.getLocalDeclarations( );
 
         assertLength( 1, localDecls );
 
@@ -98,7 +99,7 @@ public class RuleTest extends DroolsTestCase
 
         assertSame( localDecl, rule.getDeclaration( "localVar" ) );
 
-        Declaration[] allDecls = rule.getAllDeclarations( );
+        SortedSet allDecls = rule.getAllDeclarations( );
 
         assertLength( 2, allDecls );
 
@@ -142,12 +143,12 @@ public class RuleTest extends DroolsTestCase
         assertEquals( 42, rule.getLoadOrder( ) );
     }
 
-    public void testParameterOrder() throws Exception
+    public void testDeclarationOrder() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
 
         assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getOrder( ) );
-        assertEquals( 1, rule.addDeclaration( "localVar1", new MockObjectType( true ) ).getOrder( ) );
+        assertEquals( 1, rule.addLocalDeclaration( "localVar1", new MockObjectType( true ) ).getOrder( ) );
         assertEquals( 2, rule.addParameterDeclaration( "paramVar2", new MockObjectType( true ) ).getOrder( ) );
     }
 
@@ -203,7 +204,7 @@ public class RuleTest extends DroolsTestCase
 
         rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        rule.addDeclaration( "localVar", new MockObjectType( true ) );
+        rule.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
         rule.addExtraction( "localVar", null );
 

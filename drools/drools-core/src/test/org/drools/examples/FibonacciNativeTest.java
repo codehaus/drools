@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.6 2004-11-12 17:11:15 simon Exp $
+ * $Id: FibonacciNativeTest.java,v 1.7 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -222,7 +222,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration1 );
+                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
                 f.setValue( 1 );
 
                 try

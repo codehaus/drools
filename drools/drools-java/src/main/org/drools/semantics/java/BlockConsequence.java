@@ -1,32 +1,32 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.31 2004-11-07 22:39:43 bob Exp $
- * 
+ * $Id: BlockConsequence.java,v 1.32 2004-11-13 01:43:07 simon Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,19 +38,10 @@ package org.drools.semantics.java;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import net.janino.Scanner;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.Consequence;
@@ -59,21 +50,21 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
-import net.janino.Scanner;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Java block semantics <code>Consequence</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
- * 
- * @version $Id: BlockConsequence.java,v 1.31 2004-11-07 22:39:43 bob Exp $
+ *
+ * @version $Id: BlockConsequence.java,v 1.32 2004-11-13 01:43:07 simon Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
-    /** Interpreted text. */
-    private String                newline          = System
-    .getProperty( "line.separator" );
-
     private transient Script      script;
 
     private String                block;
@@ -87,10 +78,10 @@ public class BlockConsequence implements Consequence, Serializable
 
     /**
      * Construct.
-     * 
+     *
      * @param block The statement block.
      */
-    public BlockConsequence(String block, Declaration[] availDecls) throws Exception
+    public BlockConsequence( String block ) throws Exception
     {
         //super(block);
         this.block = block;
@@ -106,43 +97,27 @@ public class BlockConsequence implements Consequence, Serializable
 
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     * 
+     *
      * @param tuple The matching tuple.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws ConsequenceException If an error occurs while attempting to
      *         invoke the consequence.
      */
     public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
-    {       
+    {
         try
         {
-            List decls = new ArrayList( tuple.getDeclarations( ) );
-
-            Collections.sort( decls, new Comparator( )
-                {
-                    public int compare(Object left, Object right)
-                    {
-                        return ( ( Declaration ) left )
-                            .getIdentifier( )
-                            .compareTo(
-                                ( ( Declaration ) right )
-                                .getIdentifier( ) );
-                    }
-
-                } );
-
-            Declaration[] params = ( Declaration[] ) decls
-                .toArray( Declaration.EMPTY_ARRAY );
-            Map applicationData = tuple.getWorkingMemory( )
-                .getApplicationDataMap( );                
+            Set decls = tuple.getDeclarations( );
+            Declaration[] params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
+            Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
 
             if ( script == null )
             {
-                Set imports = new HashSet(); 
+                Set imports = new HashSet();
                 if (tuple.getRule().getImports() != null)
                 {
-                                      
+
                     Iterator it = tuple.getRule().getImports().iterator();
                     ImportEntry importEntry;
                     while (it.hasNext())
@@ -152,7 +127,7 @@ public class BlockConsequence implements Consequence, Serializable
                         {
                             imports.add(importEntry.getImportEntry());
                         }
-                    }                
+                    }
                 }
                 try
                 {
@@ -167,13 +142,11 @@ public class BlockConsequence implements Consequence, Serializable
                 }
                 catch (Scanner.LocatedException e)
                 {
-                    throw new ConsequenceException( e.getMessage(),
-                                                    tuple.getRule() );
+                    throw new ConsequenceException( e.getMessage(), tuple.getRule() );
                 }
             }
 
-            script.invoke( tuple, params, new KnowledgeHelper( tuple ),
-                           applicationData );
+            script.invoke( tuple, params, new KnowledgeHelper( tuple ), applicationData );
         }
         catch ( Exception e )
         {
@@ -183,7 +156,7 @@ public class BlockConsequence implements Consequence, Serializable
 
     /**
      * Retrieve the expression.
-     * 
+     *
      * @return The expression.
      */
     public String getBlock()

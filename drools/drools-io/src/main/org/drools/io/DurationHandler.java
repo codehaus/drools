@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.1 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: DurationHandler.java,v 1.2 2004-11-13 01:43:06 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,12 +39,9 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import java.util.HashSet;
-
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
-import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
 import org.drools.smf.FactoryException;
@@ -55,9 +52,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import java.util.HashSet;
+
 /**
  * @author mproctor
- * 
+ *
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
@@ -66,8 +65,8 @@ class DurationHandler extends BaseAbstractHandler implements Handler
     DurationHandler( RuleSetReader ruleSetReader )
     {
         this.ruleSetReader = ruleSetReader;
-        
-        if ( (this.validParents == null) && (validPeers == null) )
+
+        if ( this.validParents == null && validPeers == null )
         {
             this.validParents = new HashSet( );
             this.validParents.add( Rule.class );

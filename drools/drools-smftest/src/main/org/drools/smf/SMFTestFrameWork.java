@@ -141,8 +141,8 @@ public abstract class SMFTestFrameWork extends TestCase
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //3
         assertTrue( testCondition( testNumber++, tuple, new Declaration[]{}, rule ) ); //4
 
-        Declaration camembertDecl = rule.addDeclaration( "camembert", cheeseType );
-        Declaration stiltonDecl = rule.addDeclaration( "stilton", cheeseType );
+        Declaration camembertDecl = rule.addLocalDeclaration( "camembert", cheeseType );
+        Declaration stiltonDecl = rule.addLocalDeclaration( "stilton", cheeseType );
 
         //condition check with a single declaration
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
@@ -197,7 +197,7 @@ public abstract class SMFTestFrameWork extends TestCase
         MockConfiguration stringConfiguration = new MockConfiguration( "test2" );
         stringConfiguration.setText( String.class.getName( ) );
         ObjectType stringType = objectTypeFactory.newObjectType( stringConfiguration, new HashSet() );
-        Declaration favouriteCheeseDecl = rule.addDeclaration( "favouriteCheese", stringType );
+        Declaration favouriteCheeseDecl = rule.addLocalDeclaration( "favouriteCheese", stringType );
 
         tuple.put( favouriteCheeseDecl, "camembert" );
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
@@ -273,9 +273,9 @@ public abstract class SMFTestFrameWork extends TestCase
         ObjectType integerType = objectTypeFactory.newObjectType( integerConfiguration, null );
 
         // Declarations
-        Declaration camembertDecl = rule.addDeclaration( "camembert", cheeseType );
-        Declaration stiltonDecl = rule.addDeclaration( "stilton", cheeseType );
-        Declaration integerDecl = rule.addDeclaration( "bitesLeft", integerType );
+        Declaration camembertDecl = rule.addLocalDeclaration( "camembert", cheeseType );
+        Declaration stiltonDecl = rule.addLocalDeclaration( "stilton", cheeseType );
+        Declaration integerDecl = rule.addLocalDeclaration( "bitesLeft", integerType );
 
         // Setup
         int testNumber = 0;
@@ -424,8 +424,8 @@ public abstract class SMFTestFrameWork extends TestCase
 
         //need to declare so that the tests have SMFTestFrameWork.Cheese
         // imported
-        Declaration camembertDecl = rule.addDeclaration( "camembert", cheeseType );
-        Declaration stiltonDecl = rule.addDeclaration( "stilton", cheeseType );
+        Declaration camembertDecl = rule.addLocalDeclaration( "camembert", cheeseType );
+        Declaration stiltonDecl = rule.addLocalDeclaration( "stilton", cheeseType );
 
         Cheese camembert = new Cheese( "camembert" );
         Cheese stilton = new Cheese( "stilton" );

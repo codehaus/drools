@@ -22,7 +22,7 @@ public class RuleBaseTest extends DroolsTestCase
         Rule rule1 = new Rule( "test-rule 1" );
         rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        rule1.addDeclaration( "localVar", new MockObjectType( true ) );
+        rule1.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
         rule1.addExtraction( "localVar", new InstrumentedExtractor() );
 
@@ -39,7 +39,7 @@ public class RuleBaseTest extends DroolsTestCase
 
         rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        rule2.addDeclaration( "localVar", new MockObjectType( true ) );
+        rule2.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
         rule2.addExtraction( "localVar", new InstrumentedExtractor( ) );
 

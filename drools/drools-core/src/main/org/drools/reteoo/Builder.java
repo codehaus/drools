@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.51 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: Builder.java,v 1.52 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,11 +52,12 @@ import org.drools.spi.ConflictResolver;
 import org.drools.spi.ObjectType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Builds the Rete-OO network for a <code>RuleSet</code>.
@@ -167,8 +168,8 @@ public class Builder
      */
     protected void addRule(RuleSet ruleSet, Rule rule) throws RuleIntegrationException
     {
-        Set factExtracts = new HashSet( Arrays.asList( rule.getExtractions( ) ) );
-        List conds = new ArrayList( Arrays.asList( rule.getConditions( ) ) );
+        Set factExtracts = new HashSet( rule.getExtractions( ) );
+        List conds = new LinkedList( rule.getConditions( ) );
 
         Set leafNodes;
 
@@ -177,7 +178,7 @@ public class Builder
         boolean joinedForCondition;
 
         leafNodes = createParameterNodes( rule );
-        
+
 
         while ( true )
         {
@@ -240,7 +241,7 @@ public class Builder
     {
         Set leafNodes = new HashSet( );
 
-        Set parameterDecls = new HashSet( Arrays.asList( rule.getParameterDeclarations() ) );
+        SortedSet parameterDecls = rule.getParameterDeclarations( );
 
         Iterator declIter = parameterDecls.iterator( );
         Declaration eachDecl;
@@ -468,9 +469,7 @@ public class Builder
             {
                 eachExtract = ( Extraction ) extractIter.next( );
 
-                tupleSource = findMatchingTupleSourceForExtraction(
-                                                                    eachExtract,
-                                                                    leafNodes );
+                tupleSource = findMatchingTupleSourceForExtraction( eachExtract, leafNodes );
 
                 if ( tupleSource == null )
                 {
@@ -479,10 +478,7 @@ public class Builder
 
                 extractIter.remove( );
 
-                extractNode = new ExtractionNode(
-                                                  tupleSource,
-                                                  eachExtract
-                                                             .getTargetDeclaration( ),
+                extractNode = new ExtractionNode( tupleSource, eachExtract.getTargetDeclaration(),
                                                   eachExtract.getExtractor( ) );
 
                 leafNodes.remove( tupleSource );
@@ -543,7 +539,8 @@ public class Builder
     TupleSource findMatchingTupleSourceForExtraction(Extraction extract,
                                                      Set sources)
     {
-        Declaration targetDecl = extract.getTargetDeclaration( );
+// TODO: Can this line go?
+//        Declaration targetDecl = extract.getTargetDeclaration( );
 
         Iterator sourceIter = sources.iterator( );
         TupleSource eachSource;
@@ -579,7 +576,7 @@ public class Builder
      */
     boolean matches(Condition condition, Set declarations)
     {
-        return matches( condition.getRequiredTupleMembers( ), declarations );
+        return containsAll( declarations, condition.getRequiredTupleMembers( ) );
     }
 
     /**
@@ -596,29 +593,30 @@ public class Builder
      */
     boolean matches(Extraction extract, Set declarations)
     {
-        return matches( extract.getRequiredTupleMembers( ), declarations );
+        return containsAll( declarations, extract.getRequiredTupleMembers( ) );
     }
 
     /**
      * Determine if a set of <code>Declarations</code> is a super set of
      * required <code>Declarations</code>
      *
-     * @param requiredDecls The required <code>Declarations</code>.
      * @param declarations The set of <code>Declarations</code> to compare
      *        against.
      *
+     * @param requiredDecls The required <code>Declarations</code>.
      * @return <code>true</code> if the set of <code>Declarations</code> is
      *         a super-set of the <code>Declarations</code> required by the
      *         <code>Condition</code>.
      */
-    boolean matches(Declaration[] requiredDecls, Set declarations)
+    private boolean containsAll( Set declarations, Declaration[] requiredDecls )
     {
-        for ( int i = 0; i < requiredDecls.length; ++i )
+        for ( int i = requiredDecls.length - 1; i >= 0; i-- )
         {
-            if ( !declarations.contains( requiredDecls[i] ) )
+            if ( !declarations.contains( requiredDecls[ i ] ) )
             {
                 return false;
             }
+
         }
 
         return true;
