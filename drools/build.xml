@@ -152,9 +152,9 @@
     <property name="xml-apis.jar" value="xml-apis-2.0.2.jar"/>
     <property name="bsh.jar" value="bsh-2.0b1.jar"/>
     <property name="clover.jar" value="clover-1.2.3.jar"/>
-    <property name="groovy.jar" value="groovy-1.0-rc1-snapshot.jar"/>
-    <property name="asm.jar" value="asm-1.4.1.jar"/>
-    <property name="asm-util.jar" value="asm-util-1.4.1.jar"/>
+    <property name="groovy.jar" value="groovy-1.0-beta-6.jar"/>
+    <property name="asm.jar" value="asm-1.4.3.jar"/>
+    <property name="asm-util.jar" value="asm-util-1.4.3.jar"/>
     <property name="jca.jar" value="jca-1.0.jar"/>
     <property name="jsr94.jar" value="jsr94-1.0.jar"/>
 
