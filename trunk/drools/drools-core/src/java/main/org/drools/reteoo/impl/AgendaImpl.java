@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaImpl.java,v 1.4 2002-08-22 07:42:39 bob Exp $
+ $Id: AgendaImpl.java,v 1.5 2003-10-14 19:16:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,9 +51,12 @@ import org.drools.WorkingMemory;
 import org.drools.reteoo.Agenda;
 import org.drools.rule.Rule;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.ConflictResolutionStrategy;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /** Rule-firing Agenda.
@@ -81,11 +84,19 @@ public class AgendaImpl implements Agenda
     /** Working memory of this Agenda. */
     private WorkingMemory workingMemory;
 
+    /** Conflict resolution strategy. */
+    private ConflictResolutionStrategy conflictResolutionStrategy;
+
+    /** Conflict resolution strategy comparator. */
+    private ConflictResolutionComparator conflictResolutionComparator;
+
     /** Items in the agenda. */
-    private PriorityQueue items;
+    private LinkedList items;
 
     /** Items time-delayed. */
     private Set scheduledItems;
+
+    private boolean needsSort;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -95,11 +106,14 @@ public class AgendaImpl implements Agenda
      *
      *  @param workingMemory The <code>WorkingMemory</code> of this agenda.
      */
-    public AgendaImpl(WorkingMemory workingMemory)
+    public AgendaImpl(WorkingMemory workingMemory,
+                      ConflictResolutionStrategy conflictResolutionStrategy)
     {
-        this.workingMemory = workingMemory;
+        this.workingMemory                = workingMemory;
+        this.conflictResolutionStrategy   = conflictResolutionStrategy;
+        this.conflictResolutionComparator = new ConflictResolutionComparator( conflictResolutionStrategy );
 
-        this.items          = new PriorityQueue();
+        this.items          = new LinkedList();
         this.scheduledItems = new HashSet();
     }
 
@@ -111,11 +125,9 @@ public class AgendaImpl implements Agenda
      *
      *  @param tuple The matching <code>Tuple</code>.
      *  @param rule The rule to fire.
-     *  @param priority The rule-firing priority.
      */
     void addToAgenda(ReteTuple tuple,
-                     Rule rule,
-                     int priority)
+                     Rule rule)
     {
         if ( rule == null )
         {
@@ -131,8 +143,8 @@ public class AgendaImpl implements Agenda
         }
         else
         {
-            this.items.add( item,
-                            priority );
+            this.items.add( item );
+            this.needsSort = true;
         }
     }
 
@@ -158,7 +170,7 @@ public class AgendaImpl implements Agenda
 
             if ( eachItem.getRule() == rule )
             {
-                if ( eachItem.getTuple().getKey().containsAll( key ) )
+                if ( eachItem.getKey().containsAll( key ) )
                 {
                     itemIter.remove();
                 }
@@ -174,7 +186,7 @@ public class AgendaImpl implements Agenda
 
             if ( eachItem.getRule() == rule )
             {
-                if ( eachItem.getTuple().getKey().containsAll( key ) )
+                if ( eachItem.getKey().containsAll( key ) )
                 {
                     cancelItem( eachItem );
                     itemIter.remove();
@@ -188,12 +200,10 @@ public class AgendaImpl implements Agenda
      *  @param trigger The triggering root object.
      *  @param newTuples New tuples from the modification.
      *  @param rule The rule.
-     *  @param priority Firing priority.
      */
     void modifyAgenda(Object trigger,
                       TupleSet newTuples,
-                      Rule rule,
-                      int priority)
+                      Rule rule)
     {
         Iterator   itemIter  = this.items.iterator();
         AgendaItem eachItem  = null;
@@ -205,18 +215,16 @@ public class AgendaImpl implements Agenda
 
             if ( eachItem.getRule() == rule )
             {
-                eachTuple = eachItem.getTuple();
-
-                if ( eachTuple.dependsOn( trigger ) )
+                if ( eachItem.dependsOn( trigger ) )
                 {
-                    if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                    if ( ! newTuples.containsTuple( eachItem.getKey() ) )
                     {
                         itemIter.remove();
                     }
                     else
                     {
-                        eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
-                        newTuples.removeTuple( eachTuple.getKey() );
+                        eachItem.setTuple( newTuples.getTuple( eachItem.getKey() ) );
+                        newTuples.removeTuple( eachItem.getKey() );
                     }
                 }
             }
@@ -231,11 +239,9 @@ public class AgendaImpl implements Agenda
 
             if ( eachItem.getRule() == rule )
             {
-                eachTuple = eachItem.getTuple();
-
-                if ( eachTuple.dependsOn( trigger ) )
+                if ( eachItem.dependsOn( trigger ) )
                 {
-                    if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                    if ( ! newTuples.containsTuple( eachItem.getKey() ) )
                     {
                         cancelItem( eachItem );
                         itemIter.remove();
@@ -243,8 +249,8 @@ public class AgendaImpl implements Agenda
 
                     else
                     {
-                        eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
-                        newTuples.removeTuple( eachTuple.getKey() );
+                        eachItem.setTuple( newTuples.getTuple( eachItem.getKey() ) );
+                        newTuples.removeTuple( eachItem.getKey() );
                     }
                 }
             }
@@ -257,8 +263,7 @@ public class AgendaImpl implements Agenda
             eachTuple = (ReteTuple) tupleIter.next();
 
             addToAgenda( eachTuple,
-                         rule,
-                         priority );
+                         rule );
         }
     }
 
@@ -302,6 +307,14 @@ public class AgendaImpl implements Agenda
         if ( isEmpty() )
         {
             return;
+        }
+
+        if ( this.needsSort )
+        {
+            Collections.sort( this.items,
+                              this.conflictResolutionComparator );
+
+            this.needsSort = false;
         }
 
         AgendaItem item = (AgendaItem) this.items.removeFirst();

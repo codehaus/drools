@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TerminalNodeImpl.java,v 1.4 2003-08-21 00:57:46 tdiesler Exp $
+ $Id: TerminalNodeImpl.java,v 1.5 2003-10-14 19:16:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,9 +66,6 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Total-ordering priority of this terminal node for rule-firings. */
-    private int priority;
-
     /** The rule to invoke upon match. */
     private Rule rule;
 
@@ -80,15 +77,11 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *
      *  @param inputSource The parent tuple source.
      *  @param rule The rule.
-     *  @param priority The priority.
      */
-    public TerminalNodeImpl( TupleSource inputSource,
-                             Rule rule,
-                             int priority )
+    public TerminalNodeImpl(TupleSource inputSource,
+                            Rule rule)
     {
         this.rule = rule;
-
-        this.priority = priority;
 
         if ( inputSource != null )
         {
@@ -99,15 +92,6 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /** Retrieve the priority
-     *
-     *  @return The priority.
-     */
-    public int getPriority()
-    {
-        return this.priority;
-    }
 
     /** Retrieve the <code>Action</code> associated with
      *  this node.
@@ -137,8 +121,7 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
         agenda.addToAgenda( tuple,
-                getRule(),
-                getPriority() );
+                            getRule() );
     }
 
     /** Retract tuples.
@@ -152,7 +135,7 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
         agenda.removeFromAgenda( key,
-                getRule() );
+                                 getRule() );
     }
 
     /** Modify tuples.
@@ -168,9 +151,8 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
         agenda.modifyAgenda( trigger,
-                newTuples,
-                getRule(),
-                getPriority() );
+                             newTuples,
+                             getRule() );
     }
 
     /** Return a string representation of this object.
@@ -179,6 +161,6 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      */
     public String toString()
     {
-      return "[TerminalNodeImpl: priority=" + priority + ",rule=" + rule + "]";
+      return "[TerminalNodeImpl: rule=" + rule + "]";
     }
 }
