@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.41 2004-12-16 18:48:14 dbarnett Exp $
+ * $Id: RuleSetReader.java,v 1.42 2004-12-16 19:13:08 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -77,7 +77,7 @@ import java.util.Set;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.41 2004-12-16 18:48:14 dbarnett Exp $
+ * @version $Id: RuleSetReader.java,v 1.42 2004-12-16 19:13:08 dbarnett Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -296,9 +296,6 @@ public class RuleSetReader extends DefaultHandler
      *            The rule-set URL.
      * 
      * @return The rule-set.
-     * 
-     * @throws Exception
-     *             If an error occurs during the parse.
      */
     public RuleSet read(URL url) throws SAXException,
                                         IOException
@@ -313,9 +310,6 @@ public class RuleSetReader extends DefaultHandler
      *            The reader containing the rule-set.
      * 
      * @return The rule-set.
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException
      */
     public RuleSet read(Reader reader) throws SAXException,
                                               IOException
@@ -330,9 +324,6 @@ public class RuleSetReader extends DefaultHandler
      *            The input-stream containing the rule-set.
      * 
      * @return The rule-set.
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException
      */
     public RuleSet read(InputStream inputStream) throws SAXException,
                                                         IOException
@@ -347,9 +338,6 @@ public class RuleSetReader extends DefaultHandler
      *            The rule-set URL.
      * 
      * @return The rule-set.
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException
      */
     public RuleSet read(String url) throws SAXException,
                                            IOException
@@ -364,9 +352,6 @@ public class RuleSetReader extends DefaultHandler
      *            The rule-set input-source.
      * 
      * @return The rule-set.
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException
      */
     public RuleSet read( InputSource in ) throws SAXException,
                                                  IOException
