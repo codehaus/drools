@@ -1,3 +1,9 @@
 "camembert"
-<!--drools-test--!>
+<!--drools-test--!> // 1
 "I have " + camembert.getBitesLeft() + " bites of " + camembert.getName() + " left"
+<!--drools-test--!> // 2
+"I have " + stilton.getBitesLeft() + " bites of " + stilton.getName() + " left"
+<!--drools-test--!> // 3
+new Integer(camembert.getBitesLeft())
+<!--drools-test--!> // 4
+new Integer(stilton.getBitesLeft())
