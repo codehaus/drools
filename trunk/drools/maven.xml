@@ -39,5 +39,15 @@
     <goal name="idea">
       <attainGoal name="idea:multiproject"/>
     </goal>
+
+    <goal name="crlf">
+      <ant:fixcrlf
+        srcdir="${basedir}"
+        eol="lf"
+        tab="remove"
+        tablength="4"
+        includes="**/*.*"
+        eof="remove"/>
+    </goal>
 </project>
 
