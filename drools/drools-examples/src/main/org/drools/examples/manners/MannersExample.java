@@ -1,32 +1,32 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersExample.java,v 1.2 2004-09-17 00:37:54 mproctor Exp $
- * 
+ * $Id: MannersExample.java,v 1.3 2004-11-13 14:51:01 simon Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -40,13 +40,13 @@ package org.drools.examples.manners;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseBuilder;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * An example of executing a rulebase with Drools without all the JSR-94 cruft
@@ -69,9 +69,7 @@ public class MannersExample extends MannersBase
 
     protected void setUp() throws Exception
     {
-        RuleBase ruleBase = RuleBaseBuilder
-                                           .buildFromUrl( MannersExample.class
-                                                                              .getResource( ruleUri ) );
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( MannersExample.class.getResource( ruleUri ) );
 
         workingMemory = ruleBase.newWorkingMemory( );
     }
