@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.16 2003-11-21 04:18:13 bob Exp $
+ $Id: ParameterNode.java,v 1.17 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -139,7 +139,8 @@ class ParameterNode
                        WorkingMemoryImpl workingMemory)
         throws RetractionException
     {
-        TupleKey key = new TupleKey( handle );
+        TupleKey key = new TupleKey( getDeclaration(),
+                                     handle );
 
         propagateRetractTuples( key,
                                 workingMemory );

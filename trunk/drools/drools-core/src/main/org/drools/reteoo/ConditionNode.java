@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ConditionNode.java,v 1.4 2003-11-19 21:31:10 bob Exp $
+ $Id: ConditionNode.java,v 1.5 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -212,9 +212,12 @@ class ConditionNode
                                     workingMemory );
         }
 
-        propagateModifyTuples( trigger,
-                               newTuples,
-                               workingMemory );
+        if ( newTuples.size() != 0 )
+        {
+            propagateModifyTuples( trigger,
+                                   newTuples,
+                                   workingMemory );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

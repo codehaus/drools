@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: DefaultSemanticsRepository.java,v 1.1 2003-11-27 04:32:22 bob Exp $
+ $Id: DefaultSemanticsRepository.java,v 1.2 2003-12-05 04:26:24 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -66,7 +66,7 @@ import java.util.Enumeration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefaultSemanticsRepository.java,v 1.1 2003-11-27 04:32:22 bob Exp $
+ *  @version $Id: DefaultSemanticsRepository.java,v 1.2 2003-12-05 04:26:24 bob Exp $
  */
 public final class DefaultSemanticsRepository
     implements SemanticsRepository
@@ -137,14 +137,14 @@ public final class DefaultSemanticsRepository
     {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
-        Enumeration moduleDescriptors = cl.getResources( "META-INF/drools-semantics.xml" );
+        Enumeration moduleDescriptors = cl.getResources( "META-INF/drools-semantics.properties" );
         
         SemanticsReader semanticsReader = new SemanticsReader();
         
         while ( moduleDescriptors.hasMoreElements() )
         {
             URL moduleDescriptor = (URL) moduleDescriptors.nextElement();
-            
+
             SemanticModule module = semanticsReader.read( moduleDescriptor );
             
             this.repository.registerSemanticModule( module );

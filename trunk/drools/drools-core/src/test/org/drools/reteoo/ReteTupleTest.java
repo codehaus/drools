@@ -48,6 +48,7 @@ public class ReteTupleTest
         // intentionally left blank
     }
 
+/*
     public void testConstruct_WithKey()
     {
         MockFactHandle handle = new MockFactHandle( 1 );
@@ -114,4 +115,5 @@ public class ReteTupleTest
         assertSame( handle,
                     tuple.getFactHandleForObject( this.rootObj ) );
     }
+*/
 }

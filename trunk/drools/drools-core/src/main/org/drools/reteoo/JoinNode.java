@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.15 2003-11-21 04:18:13 bob Exp $
+ $Id: JoinNode.java,v 1.16 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -106,6 +106,11 @@ class JoinNode
         rightInput.setTupleSink( getRightNodeInput() );
     }
 
+    public String toString()
+    {
+        return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + getTupleDeclarations() + "]";
+    }
+
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
@@ -199,7 +204,8 @@ class JoinNode
                          WorkingMemoryImpl workingMemory) throws AssertionException
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
-        Set joinedTuples = memory.addLeftTuple( tuple );
+        Set joinedTuples = memory.addLeftTuple( this,
+                                                tuple );
 
         if ( joinedTuples.isEmpty() )
         {
@@ -221,7 +227,8 @@ class JoinNode
                           WorkingMemoryImpl workingMemory) throws AssertionException
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
-        Set joinedTuples = memory.addRightTuple( tuple );
+        Set joinedTuples = memory.addRightTuple( this,
+                                                 tuple );
 
         if ( joinedTuples.isEmpty() )
         {

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.9 2003-11-28 07:29:03 bob Exp $
+ $Id: RuleSetReader.java,v 1.10 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -88,7 +88,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.9 2003-11-28 07:29:03 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.10 2003-12-05 04:26:23 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -380,7 +380,14 @@ public class RuleSetReader
 
         if ( this.repo == null )
         {
-            this.repo = DefaultSemanticsRepository.getInstance();
+            try
+            {
+                this.repo = DefaultSemanticsRepository.getInstance();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         parser.parse( in,

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSet.java,v 1.11 2003-11-21 04:18:13 bob Exp $
+ $Id: TupleSet.java,v 1.12 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -266,6 +266,11 @@ class TupleSet
     public boolean containsTuple(TupleKey key)
     {
         return this.tuples.containsKey( key );
+    }
+
+    public String toString()
+    {
+        return this.tuples.values().toString();
     }
 
     /** Iterator over tuples.

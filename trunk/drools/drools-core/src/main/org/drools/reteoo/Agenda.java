@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.24 2003-12-02 23:12:41 bob Exp $
+ $Id: Agenda.java,v 1.25 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -145,7 +145,6 @@ class Agenda
         {
             this.conflictResolver.insert( item,
                                           this.items );
-            //this.items.add( item );
         }
     }
 
@@ -220,7 +219,8 @@ class Agenda
                 {
                     if ( ! newTuples.containsTuple( eachItem.getKey() ) )
                     {
-                        itemIter.remove();
+                        // System.err.println( "REMOVE: " + eachItem );
+                        // itemIter.remove();
                     }
                     else
                     {
@@ -303,9 +303,9 @@ class Agenda
      *  @throws ConsequenceException If an error occurs while
      *          firing an agenda item.
      */
-    public void fireNextItem() throws ConsequenceException
+    public void fireNextItem()
+        throws ConsequenceException
     {
-
         if ( isEmpty() )
         {
             return;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ExtractionNode.java,v 1.5 2003-11-19 21:31:10 bob Exp $
+ $Id: ExtractionNode.java,v 1.6 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -168,8 +168,8 @@ class ExtractionNode
 
         ReteTuple newTuple = new ReteTuple( tuple );
 
-        newTuple.putOtherColumn( getTargetDeclaration(),
-                                 value );
+        newTuple.putColumn( getTargetDeclaration(),
+                            value );
 
         propagateAssertTuple( newTuple,
                               workingMemory );
