@@ -8,7 +8,7 @@ public interface WorkingMemoryEventListener
     void objectAsserted(ObjectAssertedEvent event);
     void objectModified(ObjectModifiedEvent event);
     void objectRetracted(ObjectRetractedEvent event);
-    //void conditionTested(ConditionTestedEvent event);
-    //void activationCreated(ActivationCreatedEvent event);
-    //void activationFired(ActivationFiredEvent event);
+    void conditionTested(ConditionTestedEvent event);
+    void activationCreated(ActivationCreatedEvent event);
+    void activationFired(ActivationFiredEvent event);
 }

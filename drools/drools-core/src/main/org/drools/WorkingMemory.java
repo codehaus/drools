@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.21 2003-11-19 21:31:09 bob Exp $
+ $Id: WorkingMemory.java,v 1.22 2004-06-05 10:55:45 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,12 +48,33 @@ package org.drools;
 
 import java.util.List;
 
+import org.drools.event.WorkingMemoryEventListener;
+
 /** A knowledge session for a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public interface WorkingMemory
 {
+    
+    /**
+     * add event listener to listeners ArrayList
+     * @param listener
+     */
+    public void addEventListener(WorkingMemoryEventListener listener);
+
+    /**
+     * remove event listener from listeners ArrayList
+     * @param listener
+     */
+    public void removeEventListener(WorkingMemoryEventListener listener);
+    
+    /**
+     * Returns a list of listeners
+     * @return listeners
+     */
+    public List getListeners();
+    
     /** Retrieve the application data that is associated with
      *  this memory.
      *
