@@ -1,0 +1,24 @@
+
+<import>org.dom4j.Document</import>
+
+<ruleset name="My Rule Set">
+
+	<rule name="My Rule">
+
+		<param type="Document">doc1</param>
+		<param type="Document">doc2</param>
+
+		<decl type="String">id</decl>
+
+		<when>
+			<cond>id = doc1.selectSingleNode(...)</cond>
+			<cond>id = doc1.selectSingleNode(...)</cond>
+		</when>
+
+		<then>
+			// anything beanshell
+		</then>
+	</rule>
+
+</ruleset>
+
