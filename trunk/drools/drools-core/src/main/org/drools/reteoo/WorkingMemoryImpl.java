@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.18 2004-09-11 13:00:08 mproctor Exp $
+ $Id: WorkingMemoryImpl.java,v 1.19 2004-09-11 16:35:42 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.18 2004-09-11 13:00:08 mproctor Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.19 2004-09-11 16:35:42 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -95,7 +95,7 @@ class WorkingMemoryImpl
     /** Handle-to-object mapping. */
     private Map objects;
 
-    private FactHandleFactory factHandleFactory;
+    private static FactHandleFactory factHandleFactory;
 
     /** Array of listeners */
     private ArrayList listeners = new ArrayList();
@@ -130,7 +130,13 @@ class WorkingMemoryImpl
 
         this.agenda = new Agenda( this,
                                   conflictResolver );
-        initializeFactHandleFactory();
+        synchronized(getClass()) 
+        {
+            if(factHandleFactory == null)
+            {
+                initializeFactHandleFactory();
+            }
+        }
     }
 
     // ------------------------------------------------------------
@@ -201,11 +207,11 @@ class WorkingMemoryImpl
 
         try
         {
-            this.factHandleFactory = (FactHandleFactory) jsrHandleFactoryClass.newInstance();
+            factHandleFactory = (FactHandleFactory) jsrHandleFactoryClass.newInstance();
         }
         catch (Exception e2)
         {
-            this.factHandleFactory = new DefaultFactHandleFactory();
+            factHandleFactory = new DefaultFactHandleFactory();
         }
     }
 
@@ -215,7 +221,10 @@ class WorkingMemoryImpl
      */
     protected FactHandle newFactHandle()
     {
-        return this.factHandleFactory.newFactHandle();
+        synchronized(getClass()) 
+        {
+            return factHandleFactory.newFactHandle();
+        }
     }
 
     /** @see WorkingMemory
