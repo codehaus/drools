@@ -128,7 +128,6 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             builder.buildRule(rule, pojo);
             fail("Expected DroolsException");
         } catch (DroolsException e) {
-            e.printStackTrace();
             // expected
         }
     }
@@ -165,7 +164,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             // expected
         }
     }
-
+    
     public void testConditionDroolsParameter() throws Exception {
         class Pojo {
             @DroolsCondition
