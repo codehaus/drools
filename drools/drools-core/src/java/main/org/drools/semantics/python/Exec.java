@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Exec.java,v 1.2 2002-08-27 05:06:45 bob Exp $
+ $Id: Exec.java,v 1.3 2002-08-27 20:10:23 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,9 @@ package org.drools.semantics.python;
 
 import org.drools.spi.Tuple;
 
+import org.drools.rule.Declaration;
+import org.drools.smf.ConfigurationException;
+
 import org.python.core.Py;
 import org.python.core.PyDictionary;
 import org.python.util.PythonInterpreter;
@@ -60,7 +63,7 @@ import java.util.Hashtable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Exec.java,v 1.2 2002-08-27 05:06:45 bob Exp $
+ *  @version $Id: Exec.java,v 1.3 2002-08-27 20:10:23 bob Exp $
  */
 public class Exec extends Interp
 {
@@ -127,5 +130,19 @@ public class Exec extends Interp
     {
         setText( text,
                  "exec" );
+    }
+
+    /** Configure.
+     *
+     *  @param text Configuration text.
+     *  @param availDecls Available declarations.
+     *
+     *  @throws ConfigurationException If an error occurs while
+     *          attempting to perform configuration.
+     */
+    public void configure(String text,
+                          Declaration[] availDecls) throws ConfigurationException
+    {
+        setText( text );
     }
 }
