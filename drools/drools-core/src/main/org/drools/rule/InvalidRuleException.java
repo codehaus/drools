@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: InvalidRuleException.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
+ * $Id: InvalidRuleException.java,v 1.5 2004-12-06 01:30:37 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 

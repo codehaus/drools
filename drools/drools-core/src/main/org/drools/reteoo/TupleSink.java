@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSink.java,v 1.22 2004-12-05 01:53:52 simon Exp $
+ * $Id: TupleSink.java,v 1.23 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

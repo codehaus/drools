@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.30 2004-12-01 13:41:57 simon Exp $
+ * $Id: TupleKey.java,v 1.31 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

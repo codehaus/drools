@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: ApplicationData.java,v 1.1 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: ApplicationData.java,v 1.2 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *

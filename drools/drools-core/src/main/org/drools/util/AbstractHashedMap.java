@@ -48,7 +48,7 @@ import java.util.Set;
  * extends clause will be removed in v4.0.
  *
  * @since Commons Collections 3.0
- * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ * @version $Revision: 1.4 $ $Date: 2004-12-06 01:30:38 $
  *
  * @author java util HashMap
  * @author Stephen Colebourne

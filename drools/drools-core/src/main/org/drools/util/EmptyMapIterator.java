@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
  * Provides an implementation of an empty map iterator.
  *
  * @since Commons Collections 3.1
- * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ * @version $Revision: 1.4 $ $Date: 2004-12-06 01:30:38 $
  *
  * @author Stephen Colebourne
  */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.26 2004-12-05 01:56:39 simon Exp $
+ * $Id: TupleSource.java,v 1.27 2004-12-06 01:30:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

@@ -30,7 +30,7 @@ import java.util.Iterator;
  * strategy. If no strategy is provided then add and remove are unsupported.
  *
  * @since Commons Collections 3.0
- * @version $Revision: 1.4 $ $Date: 2004-11-28 03:34:05 $
+ * @version $Revision: 1.5 $ $Date: 2004-12-06 01:30:38 $
  *
  * @author Brian McCallister
  * @author Stephen Colebourne

@@ -42,7 +42,7 @@ import java.util.List;
  * this case the class will function as an empty iterator.
  *
  * @since Commons Collections 2.1
- * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ * @version $Revision: 1.4 $ $Date: 2004-12-06 01:30:38 $
  *
  * @author Morgan Delagrange
  * @author Stephen Colebourne
