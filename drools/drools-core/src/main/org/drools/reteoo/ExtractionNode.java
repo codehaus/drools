@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.18 2004-10-25 15:40:12 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.19 2004-10-25 15:40:50 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -240,9 +240,8 @@ class ExtractionNode extends TupleSource implements TupleSink
      * for one it must be for the other, as its a common
      * declaration. 
      * 
-     * @param decl
-     * @param left
-     * @param right
+     * @param value
+     * @param tuple
      * @return
      */
     boolean checkExtractorOk(Object value, ReteTuple tuple)
