@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprCondition.java,v 1.3 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: ExprCondition.java,v 1.4 2003-11-29 02:50:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,8 @@ package org.drools.semantics.python;
  
  */
 
-import org.drools.smf.ConfigurableCondition;
+import org.drools.rule.Declaration;
+import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 import org.python.core.PyException;
@@ -55,9 +56,11 @@ import org.python.core.PyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprCondition.java,v 1.3 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: ExprCondition.java,v 1.4 2003-11-29 02:50:50 bob Exp $
  */
-public class ExprCondition extends Eval implements ConfigurableCondition
+public class ExprCondition
+    extends Eval
+    implements Condition
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -67,16 +70,12 @@ public class ExprCondition extends Eval implements ConfigurableCondition
      *
      *  @param expr The expression.
      */
-    public ExprCondition(String expr)
+    public ExprCondition(String expr,
+                         Declaration[] availDecls)
+        throws Exception 
     {
-        setExpression( expr );
-    }
-
-    /** Construct, partially.
-     */
-    public ExprCondition()
-    {
-        // intentionally left blank.
+        super( expr,
+               availDecls );
     }
 
     // ------------------------------------------------------------
@@ -97,15 +96,16 @@ public class ExprCondition extends Eval implements ConfigurableCondition
      *
      *  @throws ConditionException if an error occurs during filtering.
      */
-    public boolean isAllowed(Tuple tuple) throws ConditionException
+    public boolean isAllowed(Tuple tuple)
+        throws ConditionException
     {
         try
         {
             Object answer = evaluate( tuple );
-
+            
             if ( ! ( answer instanceof Number ) )
             {
-                throw new NonBooleanExprException( getExpression() );
+                throw new NonBooleanExprException( getText() );
             }
             
             return ( ( ((Number)answer).intValue() == 0 )
@@ -117,18 +117,5 @@ public class ExprCondition extends Eval implements ConfigurableCondition
         {
             throw new ConditionException( e );
         }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.String
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[ExprCondition: expr=" + getExpression() + "]";
     }
 }
