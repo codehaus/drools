@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.8 2004-08-15 15:53:18 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.9 2004-08-15 16:09:38 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -61,7 +61,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.8 2004-08-15 15:53:18 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.9 2004-08-15 16:09:38 mproctor Exp $
  */
 public class BlockConsequence
     extends Exec
@@ -100,10 +100,9 @@ public class BlockConsequence
     public void invoke(Tuple tuple,
                        WorkingMemory workingMemory) throws ConsequenceException
     {
-        PyDictionary dict = setUpDictionary( tuple );
-
         try
         {
+            PyDictionary dict = setUpDictionary( tuple );
             execute( dict );
         }
         catch (Exception e)

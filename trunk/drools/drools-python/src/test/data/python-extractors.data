@@ -8,16 +8,6 @@ camembert.getBitesLeft()
 <!--drools-test--!> // 4
 camembert.getBitesLeft() + stilton.getBitesLeft()
 <!--drools-test--!> // 5
-from org.drools.smf import SMFTestFrameWork
-from org.drools.smf.SMFTestFrameWork import Cheese
-if camembert.getBitesLeft() + stilton.getBitesLeft() == 6:
-	return Cheese("cheddar")
-else:
-	return Cheese("mozzerella")
+SMFTestFrameWork.Cheese("cheddar")
 <!--drools-test--!> // 6
-from org.drools.smf import SMFTestFrameWork
-from org.drools.smf.SMFTestFrameWork import Cheese
-if camembert.getBitesLeft() + stilton.getBitesLeft() == 6:
-	return Cheese("cheddar")
-else:
-	return Cheese("mozzerella")
+SMFTestFrameWork.Cheese("mozzerella")
