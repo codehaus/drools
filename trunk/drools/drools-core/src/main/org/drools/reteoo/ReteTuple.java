@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.39 2004-10-28 06:27:48 simon Exp $
+ * $Id: ReteTuple.java,v 1.40 2004-10-30 01:11:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.39 2004-10-28 06:27:48 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.40 2004-10-30 01:11:48 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -85,7 +85,7 @@ class ReteTuple implements Tuple, Serializable
 
     private FactHandleImpl leastRecentFact;
 
-    private boolean        isChanged = false;
+    private boolean        isChanged = true;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -116,9 +116,6 @@ class ReteTuple implements Tuple, Serializable
         this.key = new TupleKey( that.key );
         this.columns = new HashMap( that.columns );
         this.conditionTimeStamps = that.getConditionTimeStamps();
-
-        this.mostRecentFact = ( FactHandleImpl ) that.getMostRecentFact( );
-        this.leastRecentFact = ( FactHandleImpl ) that.getLeastRecentFact( );
     }
 
     /**
@@ -139,10 +136,6 @@ class ReteTuple implements Tuple, Serializable
         key.put( declaration, handle );
 
         putTargetDeclarationColumn( declaration, value );
-
-        isChanged = true;
-        this.mostRecentFact = (FactHandleImpl) handle;
-        this.leastRecentFact = (FactHandleImpl) handle;
     }
 
     public String toString()
@@ -173,6 +166,8 @@ class ReteTuple implements Tuple, Serializable
                 this.conditionTimeStamps[i] = conditionTimeStamps[i];
             }
         }
+
+        this.isChanged = true;
     }
 
     /**
@@ -185,6 +180,8 @@ class ReteTuple implements Tuple, Serializable
     public void putTargetDeclarationColumn(Declaration declaration, Object value)
     {
         this.columns.put( declaration, value );
+
+        this.isChanged = true;
     }
 
     /**
@@ -257,71 +254,16 @@ class ReteTuple implements Tuple, Serializable
         return this.workingMemory;
     }
 
-    FactHandle getMostRecentFact()
-    {
-        FactHandleImpl fact = null;
-        long currentRecency = ( this.mostRecentFact != null )
-                                                             ? this.mostRecentFact
-                                                                                  .getRecency( )
-                                                             : -1;
-
-        if ( isChanged == true )
-        {
-            Iterator it = this.key.iterator( );
-            while ( it.hasNext( ) )
-            {
-                Declaration decl = ( Declaration ) it.next( );
-                fact = ( FactHandleImpl ) this.key.get( decl );
-                if ( fact.getRecency( ) > currentRecency )
-                {
-                    this.mostRecentFact = fact;
-                }
-            }
-        }
-        this.isChanged = false;
-        return fact;
-    }
-
-    FactHandle getLeastRecentFact()
-    {
-        FactHandleImpl fact = null;
-        long currentRecency = ( this.leastRecentFact != null )
-                                                              ? this.leastRecentFact
-                                                                                    .getRecency( )
-                                                              : -1;
-        if ( isChanged == true )
-        {
-            Iterator it = this.key.iterator( );
-            while ( it.hasNext( ) )
-            {
-                fact = ( FactHandleImpl ) this.key
-                                                  .get( ( Declaration ) it
-                                                                          .next( ) );
-                if ( fact.getRecency( ) < currentRecency )
-                {
-                    this.leastRecentFact = fact;
-                }
-            }
-        }
-        this.isChanged = false;
-        return fact;
-    }
-
     public long getMostRecentFactTimeStamp()
     {
-        return ( this.mostRecentFact != null )
-                                              ? this.mostRecentFact
-                                                                   .getRecency( )
-                                              : -1;
-
+        FactHandleImpl mostRecentFact = getMostRecentFact( );
+        return ( mostRecentFact != null ) ? mostRecentFact.getRecency() : -1;
     }
 
     public long getLeastRecentFactTimeStamp()
     {
-        return ( this.leastRecentFact != null )
-                                               ? this.leastRecentFact
-                                                                     .getRecency( )
-                                               : -1;
+        FactHandleImpl leastRecentFact = getLeastRecentFact();
+        return ( leastRecentFact != null ) ? leastRecentFact.getRecency() : -1;
     }
 
     public void setConditionTimeStamp(int order, long timeStamp)
@@ -337,5 +279,53 @@ class ReteTuple implements Tuple, Serializable
     long[] getConditionTimeStamps()
     {
         return this.conditionTimeStamps;
+    }
+
+    private FactHandleImpl getMostRecentFact()
+    {
+        if ( this.isChanged )
+        {
+            long currentRecency = ( this.mostRecentFact != null ) ? this.mostRecentFact.getRecency() : Long.MIN_VALUE;
+            FactHandleImpl fact;
+            long recency;
+
+            for ( Iterator i = this.key.iterator(); i.hasNext(); )
+            {
+                fact = ( FactHandleImpl ) this.key.get( ( Declaration ) i.next() );
+                recency = fact.getRecency();
+                if ( recency > currentRecency )
+                {
+                    currentRecency = recency;
+                    this.mostRecentFact = fact;
+                }
+            }
+
+            this.isChanged = false;
+        }
+        return this.mostRecentFact;
+    }
+
+    private FactHandleImpl getLeastRecentFact()
+    {
+        if ( this.isChanged )
+        {
+            long currentRecency = ( this.mostRecentFact != null ) ? this.mostRecentFact.getRecency() : Long.MAX_VALUE;
+            FactHandleImpl fact;
+            long recency;
+
+            for ( Iterator i = this.key.iterator(); i.hasNext(); )
+            {
+                fact = ( FactHandleImpl ) this.key.get( ( Declaration ) i.next() );
+                recency = fact.getRecency();
+                if ( recency < currentRecency )
+                {
+                    currentRecency = recency;
+                    this.leastRecentFact = fact;
+                }
+            }
+
+            this.isChanged = false;
+        }
+        return this.leastRecentFact;
     }
 }
