@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.28 2004-11-29 13:20:52 simon Exp $
+ * $Id: TupleKey.java,v 1.29 2004-11-29 13:47:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -139,8 +139,7 @@ class TupleKey
     /**
      * Determine if the specified key is a subset of this key.
      *
-     * @param that
-     *            The key to compare.
+     * @param that The key to compare.
      *
      * @return <code>true</code> if the specified key is a subset of this key.
      */
@@ -239,6 +238,6 @@ class TupleKey
      */
     public int hashCode()
     {
-        return hashCode;
+        return this.hashCode;
     }
 }
