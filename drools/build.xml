@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
+
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+    statements and notices.  Redistributions must also contain a
+    copy of this document.
+
+ 2. Redistributions in binary form must reproduce the
+    above copyright notice, this list of conditions and the
+    following disclaimer in the documentation and/or other
+    materials provided with the distribution.
+
+ 3. The name "drools" must not be used to endorse or promote
+    products derived from this Software without prior written
+    permission of The Werken Company.  For written permission,
+    please contact bob@werken.com.
+
+ 4. Products derived from this Software may not be called "drools"
+    nor may "drools" appear in their names without prior written
+    permission of The Werken Company. "drools" is a trademark of
+    The Werken Company.
+
+ 5. Due credit should be given to The Werken Company.
+    (http://werken.com/)
+
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<project name="drools" default="usage">
+
+    <!-- ================================================================== -->
+    <!-- ===========vvvv============== Usage ===============vvvv=========== -->
+    <!-- ================================================================== -->
+
+    <target name="usage" depends="clover.check,antlr.check"
+            description="Displays usage information for this build file.">
+        <echo level="info" message="This build file will compile all code and run all tests"/>
+        <echo level="info" message="  from all modules and record Clover coverage data"/>
+        <echo level="info" message="  for the whole process with the command:"/>
+        <echo level="info" message=" "/>
+        <echo level="info" message="    ant clean with.clover test"/>
+        <echo level="info" message=" "/>
+        <echo level="info" message="You can run all the examples with the command:"/>
+        <echo level="info" message="    ant examples"/>
+        <echo level="info" message=" "/>
+        <echo level="info" message="You can run the examples individually with the commands:"/>
+        <echo level="info" message="    ant example-familytree"/>
+        <echo level="info" message="    ant example-fibonacci"/>
+        <echo level="info" message="    ant example-petstore"/>
+
+        <antcall target="usage.clover">
+            <param name="clover.enable" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="usage.clover" if="clover.enable">
+        <echo level="info" message=" "/>
+        <echo level="info" message="You can view the resulting Clover coverage data with the commands:"/>
+        <echo level="info" message="    ant clover.log"/>
+        <echo level="info" message="    ant clover.swing"/>
+        <echo level="info" message="    ant clover.html"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- ===========vvvv==== Environment Sanity Checks =====vvvv=========== -->
+    <!-- ================================================================== -->
+
+    <condition property="clover.present">
+        <and>
+            <available resource="clovertypes" property="clovertypes.present"/>
+            <available resource="clovertasks" property="clovertasks.present"/>
+        </and>
+    </condition>
+    <target name="clover.check" unless="clover.present">
+        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="You do not appear to have Ant configured to use Clover."/>
+        <echo level="warning" message="If you see Ant errors about Clover, try downloading the Clover JAR"/>
+	<echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="    http://www.ibiblio.org/maven/clover/jars/${clover.jar}"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="And then copy the file to Ant's lib directory: "/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="    ${env.ANT_HOME}/lib"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
+    </target>
+
+    <available classname="antlr.Tool" property="antlr.present"/>
+    <target name="antlr.check" unless="antlr.present">
+        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="You do not appear to have Ant configured to use ANTLR."/>
+        <echo level="warning" message="If you see Ant errors about ANTLR, try downloading the ANTLR JAR"/>
+	<echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="    http://www.ibiblio.org/maven/antlr/jars/${antlr.jar}"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="And then copy the file to Ant's lib directory: "/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="    ${env.ANT_HOME}/lib"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
+    </target>
+
+    <available classname="antlr.Tool" property="antlr.present"/>
+    <target name="antlr.check" unless="antlr.present">
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
+        <echo level="warning" message="WARNING: You do not appear to have Ant configured to use Clover!"/>
+        <echo level="warning" message="If you see Ant errors about ANTLR, try adding the"/>
+        <echo level="warning" message="  following argument to the front of your Ant commands:"/>
+        <echo level="warning" message="    -lib drools-java/lib/${antlr.jar}"/>
+        <echo level="warning" message=" "/>
+        <echo level="warning" message="Alternatively, copy the ANTLR JAR file"/>
+        <echo level="warning" message="  to your Ant installation's lib directory like so:"/>
+        <echo level="warning" message="    cp drools-java/lib/${antlr.jar} ${env.ANT_HOME}/lib"/>
+        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- ===========vvvv==== Configuration Properties  =====vvvv=========== -->
+    <!-- ================================================================== -->
+
+    <property environment="env"/>
+
+    <!-- Configure JAR versions here. -->
+    <property name="antlr.jar" value="antlr-2.7.2.jar"/>
+    <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
+    <property name="xerces.jar" value="xerces-2.3.0.jar"/>
+    <property name="xml-apis.jar" value="xml-apis-2.0.2.jar"/>
+    <property name="bsh.jar" value="bsh-2.0b1.jar"/>
+    <property name="clover.jar" value="clover-1.2.3.jar"/>
+    <property name="groovy.jar" value="groovy-1.0-rc1-snapshot.jar"/>
+    <property name="jca.jar" value="jca-1.0.jar"/>
+    <property name="jsr94.jar" value="jsr94-1.0.jar"/>
+
+    <!-- These configure where all the output goes. -->
+    <property name="output.dir" value="clover"/>
+    <property name="src.dir" value="${output.dir}/src/main"/>
+    <property name="test-src.dir" value="${output.dir}/src/main"/>
+    <property name="classes.dir" value="${output.dir}/classes"/>
+    <property name="clover-db.dir" value="${output.dir}/db"/>
+    <property name="reports.dir" value="${output.dir}/reports"/>
+    <property name="lib.dir" value="${output.dir}/lib"/>
+    <property name="meta-inf-base.dir" value="${output.dir}/META-INF-base"/>
+    <property name="meta-inf-java.dir" value="${output.dir}/META-INF-java"/>
+    <property name="meta-inf-python.dir" value="${output.dir}/META-INF-python"/>
+
+    <!-- ================================================================== -->
+    <!-- ===========vvvv============ Core Tasks ============vvvv=========== -->
+    <!-- ================================================================== -->
+
+    <target name="clean"
+            description="Deletes entire output directory.">
+        <delete dir="${output.dir}"/>
+    </target>
+
+    <!-- <property name="noget" value="true"/> -->
+    <target name="get-deps" unless="noget"
+            description="Downloads required JAR files.">
+        <mkdir dir="${lib.dir}"/>
+
+        <!-- ibiblio Maven JARs -->
+        <get dest="${lib.dir}/${antlr.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/antlr/jars/${antlr.jar}"/>
+        <get dest="${lib.dir}/${jython.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/jython/jars/${jython.jar}"/>
+        <get dest="${lib.dir}/${xerces.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
+        <get dest="${lib.dir}/${xml-apis.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/xml-apis/jars/${xml-apis.jar}"/>
+        <get dest="${lib.dir}/${bsh.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/bsh/jars/${bsh.jar}"/>
+        <get dest="${lib.dir}/${clover.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/clover/jars/${clover.jar}"/>
+
+        <get dest="${lib.dir}/${groovy.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/groovy/jars/${groovy.jar}"/>
+        <!-- This JAR can also be found in the Codehaus repository.
+        <get dest="${lib.dir}/${groovy.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://dist.codehaus.org/groovy/jars/${groovy.jar}"/> -->
+
+        <!-- Local JARs not found at ibiblio -->
+        <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="file://${basedir}/drools-jsr94/lib/${jca.jar}"/>
+        <get dest="${lib.dir}/${jsr94.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="file://${basedir}/drools-jsr94/lib/${jsr94.jar}"/>
+    </target>
+
+    <target name="antlr" depends="get-deps,antlr.check"
+            description="Generates Java files from the ANTLR grammar files.">
+        <property name="parser.dir" value="org/drools/semantics/java/parser"/>
+        <mkdir dir="${src.dir}/${parser.dir}"/>
+        <antlr target="drools-java/src/main/${parser.dir}/java.g"
+            outputdirectory="${src.dir}/${parser.dir}"/>
+        <antlr target="drools-java/src/main/${parser.dir}/java.tree.g"
+            outputdirectory="${src.dir}/${parser.dir}"/>
+    </target>
+
+    <target name="merge-src"
+            description="Copies all the Java code from all the modules into a single integrated source tree.">
+        <mkdir dir="${src.dir}"/>
+        <copy todir="${src.dir}">
+            <fileset dir="drools-base/src/main"/>
+            <fileset dir="drools-core/src/main"/>
+            <fileset dir="drools-io/src/main"/>
+            <fileset dir="drools-smf/src/main"/>
+            <fileset dir="drools-java/src/main"/>
+            <fileset dir="drools-jsr94/src/main"/>
+            <fileset dir="drools-groovy/src/main"/>
+            <fileset dir="drools-python/src/main"/>
+            <fileset dir="drools-examples/src/main"/>
+        </copy>
+
+        <mkdir dir="${test-src.dir}"/>
+        <copy todir="${test-src.dir}">
+            <fileset dir="drools-base/src/test"/>
+            <fileset dir="drools-core/src/test"/>
+            <fileset dir="drools-io/src/test"/>
+            <fileset dir="drools-smf/src/test"/>
+            <fileset dir="drools-java/src/test"/>
+            <fileset dir="drools-jsr94/src/test"/>
+            <fileset dir="drools-groovy/src/test"/>
+            <fileset dir="drools-python/src/test"/>
+       <!-- <fileset dir="drools-examples/src/test"/> -->
+        </copy>
+    </target>
+
+    <target name="compile" depends="merge-src,antlr"
+            description="Compiles all the Java code.">
+        <mkdir dir="${classes.dir}"/>
+        <javac destdir="${classes.dir}" debug="true" debuglevel="source,lines">
+            <src path="${src.dir}"/>
+            <src path="${test-src.dir}"/>
+            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${jca.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${jython.jar}"/>
+            <classpath location="${lib.dir}/${groovy.jar}"/>
+        </javac>
+    </target>
+
+    <target name="copy-resources"
+            description="Copies all the resources required to run the tests.">
+        <copy todir="${classes.dir}">
+            <fileset dir="drools-base/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-core/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-io/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-smf/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-java/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-jsr94/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-groovy/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-python/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-examples/src/main" excludes="**/*.java"/>
+        </copy>
+
+        <copy todir="${classes.dir}">
+            <fileset dir="drools-base/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-core/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-io/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-smf/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-java/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-jsr94/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-groovy/src/test" excludes="**/*.java"/>
+            <fileset dir="drools-python/src/test" excludes="**/*.java"/>
+       <!-- <fileset dir="drools-examples/src/test" excludes="**/*.java"/> -->
+        </copy>
+
+        <mkdir dir="${meta-inf-base.dir}/META-INF"/>
+        <copy todir="${meta-inf-base.dir}/META-INF">
+            <fileset file="drools-base/src/conf/META-INF/drools.conf"/>
+            <fileset file="drools-base/src/conf/META-INF/drools-base.conf"/>
+        </copy>
+
+        <mkdir dir="${meta-inf-java.dir}/META-INF"/>
+        <copy todir="${meta-inf-java.dir}/META-INF">
+            <fileset file="drools-java/src/conf/META-INF/drools.conf"/>
+            <fileset file="drools-java/src/conf/META-INF/drools-java.conf"/>
+        </copy>
+
+        <mkdir dir="${meta-inf-python.dir}/META-INF"/>
+        <copy todir="${meta-inf-python.dir}/META-INF">
+            <fileset file="drools-python/src/conf/META-INF/drools.conf"/>
+            <fileset file="drools-python/src/conf/META-INF/drools-python.conf"/>
+        </copy>
+    </target>
+
+    <target name="test" depends="compile,copy-resources"
+            description="Runs all the JUnit tests.">
+        <junit haltonfailure="yes">
+            <formatter type="brief" usefile="no"/>
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-python.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
+            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+            <batchtest>
+                <fileset dir="${test-src.dir}">
+                    <include name="**/*Test.java"/>
+                    <include name="**/jsr94/**/*TestCase.java"/>
+
+                    <!-- http://jira.codehaus.org/browse/DROOLS-84 -->
+                    <exclude name="**/DroolsBenchmarkTestCase.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <antcall target="usage.clover"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- ===========vvvv========== Example Tasks ===========vvvv=========== -->
+    <!-- ================================================================== -->
+
+    <target name="examples" depends="example-familytree,example-fibonacci,example-petstore"
+            description="Run all examples."/>
+
+    <target name="example-familytree" depends="compile,copy-resources"
+            description="Run the FamilyTree example.">
+        <java classname="org.drools.examples.java.familytree.FamilyTree" fork="true">
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-python.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
+            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-fibonacci" depends="compile,copy-resources"
+            description="Run the Fibonacci example.">
+        <java classname="org.drools.examples.java.fibonacci.FibonacciExample" fork="true">
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-python.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
+            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-petstore" depends="compile,copy-resources"
+            description="Run the Pet Store example.">
+        <java classname="org.drools.examples.java.petstore.PetStore" fork="true">
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-python.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
+            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+        </java>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- ===========vvvv=========== Clover Tasks ===========vvvv=========== -->
+    <!-- ================================================================== -->
+
+    <target name="with.clover" depends="clover.check"
+            description="Initializes Clover for use with this project.">
+        <typedef resource="clovertypes"/>
+        <taskdef resource="clovertasks"/>
+        <mkdir dir="${clover-db.dir}"/>
+        <clover-setup initString="${clover-db.dir}/clover_multiproject.db">
+            <files>
+                <exclude name="**/Mock*.java"/>
+                <exclude name="**/*Test*.java"/>
+                <exclude name="org/drools/examples/**/*"/>
+            </files>
+        </clover-setup>
+    </target>
+
+    <target name="clover.swing" depends="with.clover"
+            description="Launches the Clover Swing coverage viewer. The Ant build will pause until the viewer is closed.">
+        <clover-view/>
+    </target>
+
+    <target name="clover.html" depends="with.clover"
+            description="Generates HTML report showing the results of the last Clover test run.">
+        <clover-report>
+            <current outfile="${reports.dir}/clover_html">
+                <format type="html"/>
+            </current>
+        </clover-report>
+        <echo level="info" message=" "/>
+        <echo level="info" message="Results can be browsed at ${basedir}/${reports.dir}/clover_html/index.html"/>
+        <echo level="info" message=" "/>
+    </target>
+
+    <target name="clover.log" depends="with.clover"
+            description="Displays results of the last Clover test run in a simple emacs-style report to the console.">
+        <clover-log/>
+    </target>
+
+</project>
+
