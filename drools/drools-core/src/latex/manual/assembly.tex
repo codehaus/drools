@@ -13,16 +13,12 @@ instance of the \verb|Rule| class which may be a member of a
 	\item Add a \verb|Declaration| for each root fact object.
 	\item Add a \verb|FactExtraction| for each fact extraction.
 	\item Add a \verb|Condition| for each restrictive condition.
+	\item Add a \verb|Consequence| for performing the result of a match.
 	\item Add the \verb|Rule| to a \verb|RuleBase|.
-	\item Register the \verb|RuleBase| with a \verb|RuleBaseRepository|
+	\item Optionally register the \verb|RuleBase| with a \verb|RuleBaseRepository|
 \end{enumerate}
 
-The \verb|FactExtraction| is a special condition related to
-fact extraction.  It couples a \verb|FactExtractor| with a target
-\verb|Declaration| as the location to deposit the extract fact
-within the \verb|Tuple|.
-
-When adding a \verb|Rule| toa  \verb|RuleBase|, it is possible that
+When adding a \verb|Rule| to a  \verb|RuleBase|, it is possible that
 the rule cannot be integrated into the network.  This is caused
 by \verb|FactExtraction| or \verb|Condition| objects that expect
 \verb|Declarations| that are otherwise not present in the rule.
@@ -51,6 +47,7 @@ ObjectType personType = new ObjectType() \{
     \};
 
 // -- Create the semantic String object type.
+// -- which maps directly to java String type.
 
 ObjectType stringType = new ObjectType() \{
         public boolean matches(Object object) \{ 
@@ -135,7 +132,7 @@ rule.addCondition( new Condition() \{
 
 // -- Attach an action to fire when matched.
 
-rule.setAction( new Action() \{
+rule.setConsequence( new Action() \{
         public void invoke(Tuple tuple, WorkingMemory memory) \{
             System.err.println( "sisOne: " + tuple.get( sisOneDecl ) );
             System.err.println( "sisTwo: " + tuple.get( sisTwoDecl ) );
