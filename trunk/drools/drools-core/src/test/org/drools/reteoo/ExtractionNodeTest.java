@@ -2,7 +2,7 @@ package org.drools.reteoo;
 
 import org.drools.AssertionException;
 import org.drools.RuleBase;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
 import org.drools.rule.RuleSet;
@@ -68,25 +68,25 @@ public class ExtractionNodeTest
 
         extractNode.setTupleSink( sink );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());    	
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
         ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
 
         try
         {
             extractNode.assertTuple( tuple,
                                      null );
-            
+
             List assertedTuples = sink.getAssertedTuples();
-            
+
             assertEquals( 1,
                           assertedTuples.size() );
-            
+
             ReteTuple assertedTuple = (ReteTuple) assertedTuples.get( 0 );
-            
+
             Object value = assertedTuple.get( stringDecl );
-            
+
             assertNotNull( value );
-            
+
             assertEquals( "cheese",
                           value );
         }

@@ -3,7 +3,7 @@ package org.drools.reteoo;
 import org.drools.MockFactHandle;
 import org.drools.AssertionException;
 import org.drools.RuleBase;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.InstrumentedConsequence;
@@ -18,8 +18,8 @@ public class TerminalNodeTest
         throws Exception
     {
         final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  SalienceConflictResolver.getInstance() );
-        
+                                                                  DefaultConflictResolver.getInstance() );
+
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
             {
                 public Agenda getAgenda()
@@ -28,7 +28,7 @@ public class TerminalNodeTest
                 }
             };
 
-        
+
 
         Rule rule = new Rule( "test-rule" );
 
@@ -39,15 +39,15 @@ public class TerminalNodeTest
         TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());    	
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
         ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
 
         node.assertTuple( tuple,
                           memory );
-        
+
         assertLength( 1,
                       agenda.getAdded() );
-        
+
         assertContains( tuple,
                         agenda.getAdded() );
     }
@@ -56,8 +56,8 @@ public class TerminalNodeTest
         throws Exception
     {
         final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  SalienceConflictResolver.getInstance() );
-        
+                                                                  DefaultConflictResolver.getInstance() );
+
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
             {
                 public Agenda getAgenda()
@@ -66,7 +66,7 @@ public class TerminalNodeTest
                 }
             };
 
-        
+
 
         Rule rule = new Rule( "test-rule" );
 
@@ -81,10 +81,10 @@ public class TerminalNodeTest
 
         node.retractTuples( key,
                             memory );
-        
+
         assertLength( 1,
                       agenda.getRemoved() );
-        
+
         assertContains( key,
                         agenda.getRemoved() );
     }
@@ -93,8 +93,8 @@ public class TerminalNodeTest
         throws Exception
     {
         final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  SalienceConflictResolver.getInstance() );
-        
+                                                                  DefaultConflictResolver.getInstance() );
+
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
             {
                 public Agenda getAgenda()
@@ -103,7 +103,7 @@ public class TerminalNodeTest
                 }
             };
 
-        
+
 
         Rule rule = new Rule( "test-rule" );
 
@@ -119,10 +119,10 @@ public class TerminalNodeTest
         node.modifyTuples( handle,
                            new TupleSet(),
                            memory );
-        
+
         assertLength( 1,
                       agenda.getModified() );
-        
+
         assertContains( handle,
                         agenda.getModified() );
     }

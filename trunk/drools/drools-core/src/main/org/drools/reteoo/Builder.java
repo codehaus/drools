@@ -1,10 +1,10 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.39 2004-03-26 15:16:27 bob Exp $
+ $Id: Builder.java,v 1.40 2004-06-25 11:46:58 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.reteoo;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,12 +43,12 @@ package org.drools.reteoo;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
@@ -100,7 +100,7 @@ public class Builder
     {
         this.rete             = new Rete();
         this.ruleSets         = new ArrayList();
-        this.conflictResolver = SalienceConflictResolver.getInstance();
+        this.conflictResolver = DefaultConflictResolver.getInstance();
     }
 
     // ------------------------------------------------------------
@@ -129,7 +129,7 @@ public class Builder
 
         this.rete = null;
         this.ruleSets.clear();
-        this.conflictResolver = SalienceConflictResolver.getInstance();
+        this.conflictResolver = DefaultConflictResolver.getInstance();
 
         return ruleBase;
     }
@@ -184,7 +184,7 @@ public class Builder
         boolean performedJoin      = false;
         boolean attachedExtract    = false;
         boolean joinedForCondition = false;
-        
+
         leafNodes = createParameterNodes( rule );
 
         while ( true )
@@ -283,12 +283,12 @@ public class Builder
                                            eachDecl );
 
             leafNodes.add( paramNode );
-            
+
         }
 
         return leafNodes;
     }
-    
+
 
     /** Create and attach <code>Condition</code>s to the network.
      *
@@ -435,7 +435,7 @@ public class Builder
 
                 if ( canBeJoined( left,
                                   right ) )
-                
+
                 {
                     joinNode = new JoinNode( left,
                                                  right );
@@ -506,34 +506,34 @@ public class Builder
         do
         {
             cycleAttached = false;
-            
+
             Iterator        extractIter = factExtracts.iterator();
             Extraction      eachExtract = null;
             TupleSource tupleSource = null;
-            
+
             ExtractionNode extractNode = null;
-            
+
             while ( extractIter.hasNext() )
             {
                 eachExtract = (Extraction) extractIter.next();
 
                 tupleSource = findMatchingTupleSourceForExtraction( eachExtract,
                                                                     leafNodes );
-                
+
                 if ( tupleSource == null )
                 {
                     continue;
                 }
-                
+
                 extractIter.remove();
-                
+
                 extractNode = new ExtractionNode( tupleSource,
                                                       eachExtract.getTargetDeclaration(),
                                                       eachExtract.getExtractor() );
 
                 leafNodes.remove( tupleSource );
                 leafNodes.add( extractNode );
-                
+
                 cycleAttached = true;
             }
 
@@ -677,5 +677,5 @@ public class Builder
 
         return true;
     }
-                                                  
+
 }

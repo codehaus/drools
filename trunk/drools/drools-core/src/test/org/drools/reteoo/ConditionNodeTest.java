@@ -2,7 +2,7 @@ package org.drools.reteoo;
 
 import org.drools.AssertionException;
 import org.drools.RuleBase;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
@@ -27,7 +27,7 @@ public class ConditionNodeTest
 
     public void setUp()
     {
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());    	
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
         this.tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
     }
 
@@ -42,7 +42,7 @@ public class ConditionNodeTest
     {
         ConditionNode node = new ConditionNode( null,
                                                 new TrueCondition() );
-                                         
+
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
@@ -50,17 +50,17 @@ public class ConditionNodeTest
 
         try
         {
-        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());
+        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
             node.assertTuple( this.tuple,
             		(WorkingMemoryImpl) ruleBase.newWorkingMemory() );
-            
+
             List asserted = sink.getAssertedTuples();
-            
+
             assertEquals( 1,
                           asserted.size() );
-            
+
             ReteTuple tuple = (ReteTuple) asserted.get( 0 );
-            
+
             assertSame( this.tuple,
                         tuple );
         }
@@ -84,12 +84,12 @@ public class ConditionNodeTest
 
         try
         {
-        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());        	
+        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
             node.assertTuple( this.tuple,
                               (WorkingMemoryImpl) ruleBase.newWorkingMemory() );
-            
+
             List asserted = sink.getAssertedTuples();
-            
+
             assertEquals( 0,
                           asserted.size() );
         }
