@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.12 2003-12-30 03:54:50 bob Exp $
+ $Id: RuleSetReader.java,v 1.13 2003-12-30 03:57:43 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -57,6 +57,7 @@ import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.smf.Configuration;
 import org.drools.smf.SemanticModule;
+import org.drools.smf.BaseSemanticModule;
 import org.drools.smf.SemanticsRepository;
 import org.drools.smf.RuleFactory;
 import org.drools.smf.ObjectTypeFactory;
@@ -88,7 +89,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.12 2003-12-30 03:54:50 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.13 2003-12-30 03:57:43 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -431,7 +432,16 @@ public class RuleSetReader
         {
             try
             {
-                SemanticModule module = this.repo.lookupSemanticModule( uri );
+                SemanticModule module = null;
+
+                if ( uri.equals( BaseSemanticModule.NAMESPACE_URI ) )
+                {
+                    module = BaseSemanticModule.getInstance();
+                }
+                else
+                {
+                    module = this.repo.lookupSemanticModule( uri );
+                }
                 
                 if ( this.rule == null )
                 {
@@ -516,8 +526,17 @@ public class RuleSetReader
             {
                 try
                 {
-                    SemanticModule module = this.repo.lookupSemanticModule( uri );
+                    SemanticModule module = null;
                     
+                    if ( uri.equals( BaseSemanticModule.NAMESPACE_URI ) )
+                    {
+                        module = BaseSemanticModule.getInstance();
+                    }
+                    else
+                    {
+                        module = this.repo.lookupSemanticModule( uri );
+                    }
+                
                     switch ( this.state )
                     {
                         case ( STATE_OBJECT_TYPE ):
