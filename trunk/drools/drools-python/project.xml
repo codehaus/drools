@@ -139,7 +139,7 @@
 
     <dependency>
       <id>commons-jelly</id>
-      <version>SNAPSHOT</version>
+      <version>1.0-beta-4.20020923.123659</version>
       <url>http://jakarta.apache.org/commons/sandbox/jelly/</url>
     </dependency>
 
