@@ -8,22 +8,22 @@
 
     <dependencies>
         <dependency>
-	    <!-- Note: groovy-1.0-beta-7.jar depends on JDK1.4
+	       <!-- Note: groovy-1.0-beta-7.jar depends on JDK1.4
 	         so this module is really not JDK1.3-compatible. -->
             <groupId>groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>1.0-beta-7</version>
+            <artifactId>groovy-all</artifactId>
+            <version>1.0-beta-8</version>
         </dependency>
         <dependency>
           <groupId>asm</groupId>
           <artifactId>asm</artifactId>
-          <version>1.4.3</version>
+          <version>1.5.2</version>
           <url>http://asm.objectweb.org/</url>
         </dependency>
         <dependency>
           <groupId>asm</groupId>
           <artifactId>asm-util</artifactId>
-          <version>1.4.3</version>
+          <version>1.5.2</version>
           <url>http://asm.objectweb.org/</url>
         </dependency>
         <dependency>
