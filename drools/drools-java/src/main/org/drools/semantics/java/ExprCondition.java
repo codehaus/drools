@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.11 2003-11-28 06:43:01 bob Exp $
+ $Id: ExprCondition.java,v 1.12 2004-06-22 16:57:18 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,12 @@ package org.drools.semantics.java;
  
  */
 
+import bsh.NameSpace;
+import bsh.Interpreter;
+import bsh.Primitive;
+
+import java.util.Arrays;
+
 import org.drools.rule.Declaration;
 import org.drools.smf.Configuration;
 import org.drools.spi.Tuple;
@@ -56,7 +62,7 @@ import org.drools.spi.ConditionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.11 2003-11-28 06:43:01 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.12 2004-06-22 16:57:18 bob Exp $
  */
 public class ExprCondition
     extends Expr
@@ -104,12 +110,38 @@ public class ExprCondition
     {
         try
         {
+            NameSpace ns = setUpNameSpace( tuple, getNameSpace() );
+
+            Declaration[] params = getRequiredTupleMembers();
+
+            Object[] paramValues = new Object[ params.length ];
+
+            for ( int i = 0 ; i < params.length ; ++i ) {
+                paramValues[i] = tuple.get( params[i] );
+            }
+
+            Object result = ns.invokeMethod( getMethodName(),
+                                             paramValues,
+                                             getInterpreter() );
+
+            if ( result instanceof Primitive )
+            {
+                result = Primitive.unwrap( result );
+            }
+
+            if ( result instanceof Boolean )
+            {
+                return ((Boolean)result).booleanValue();
+            }
+
+            /*
             Object result = evaluate( tuple );
 
             if ( result instanceof Boolean )
             {
                 return ((Boolean)result).booleanValue();
             }
+            */
         }
         catch (Exception e)
         {
