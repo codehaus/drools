@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.68 2004-12-06 15:44:23 simon Exp $
+ * $Id: Builder.java,v 1.69 2004-12-06 16:11:40 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -275,9 +275,15 @@ public class Builder
         return leafNodes;
     }
 
-    private void attachNode( ParameterNode candidate, List leafNodes )
+    /**
+     * Attaches a node into the network. If a node already exists that could substitute, it is used instead.
+     * @param candidate The node to attach.
+     * @param leafNodes The list to which the newly added node will be added.
+     */
+    private void attachNode( TupleSource candidate,
+                             List leafNodes )
     {
-        ParameterNode node = ( ParameterNode ) this.attachedNodes.get( candidate );
+        TupleSource node = ( TupleSource ) this.attachedNodes.get( candidate );
 
         if ( node == null )
         {
@@ -328,9 +334,10 @@ public class Builder
 
             condIter.remove( );
 
-            leafNodes.add( new ConditionNode( rule,
-                                              tupleSource,
-                                              eachCond ) );
+            attachNode( new ConditionNode( rule,
+                                           tupleSource,
+                                           eachCond ),
+                        leafNodes );
         }
     }
 

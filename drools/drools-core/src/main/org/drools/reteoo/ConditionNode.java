@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.33 2004-12-06 15:36:15 simon Exp $
+ * $Id: ConditionNode.java,v 1.34 2004-12-06 16:11:40 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -99,11 +99,14 @@ class ConditionNode extends TupleSource
         this.rule = rule;
         this.condition = condition;
         this.tupleSource = tupleSource;
+    }
 
-        if ( tupleSource != null )
-        {
-            this.tupleSource.addTupleSink( this );
-        }
+    /**
+     * Attaches this node into the network.
+     */
+    public void attach()
+    {
+        this.tupleSource.addTupleSink( this );
     }
 
     // ------------------------------------------------------------
@@ -243,25 +246,25 @@ class ConditionNode extends TupleSource
         return "[ConditionNode: cond=" + this.condition + "]";
     }
 
-//    public int hashCode()
-//    {
-//        return this.tupleSource.hashCode( ) ^ this.condition.hashCode( );
-//    }
-//
-//    public boolean equals( Object object )
-//    {
-//        if ( this == object )
-//        {
-//            return true;
-//        }
-//
-//        if ( object == null || getClass( ) != object.getClass( ) )
-//        {
-//            return false;
-//        }
-//
-//        ConditionNode other = ( ConditionNode ) object;
-//
-//        return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
-//    }
+    public int hashCode()
+    {
+        return this.tupleSource.hashCode( ) ^ this.condition.hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object == null || getClass( ) != object.getClass( ) )
+        {
+            return false;
+        }
+
+        ConditionNode other = ( ConditionNode ) object;
+
+        return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
+    }
 }
