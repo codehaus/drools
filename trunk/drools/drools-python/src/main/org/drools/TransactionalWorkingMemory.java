@@ -1,50 +1,50 @@
 package org.drools;
 
 /*
- $Id: TransactionalWorkingMemory.java,v 1.6 2002-07-27 05:55:59 bob Exp $
+  $Id: TransactionalWorkingMemory.java,v 1.7 2003-01-14 03:09:25 bob Exp $
 
- Copyright 2002 (C) The Werken Company. All Rights Reserved.
+  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
- Redistribution and use of this software and associated documentation
- ("Software"), with or without modification, are permitted provided
- that the following conditions are met:
+  Redistribution and use of this software and associated documentation
+  ("Software"), with or without modification, are permitted provided
+  that the following conditions are met:
 
- 1. Redistributions of source code must retain copyright
-    statements and notices.  Redistributions must also contain a
-    copy of this document.
+  1. Redistributions of source code must retain copyright
+  statements and notices.  Redistributions must also contain a
+  copy of this document.
  
- 2. Redistributions in binary form must reproduce the
-    above copyright notice, this list of conditions and the
-    following disclaimer in the documentation and/or other
-    materials provided with the distribution.
+  2. Redistributions in binary form must reproduce the
+  above copyright notice, this list of conditions and the
+  following disclaimer in the documentation and/or other
+  materials provided with the distribution.
  
- 3. The name "drools" must not be used to endorse or promote
-    products derived from this Software without prior written
-    permission of The Werken Company.  For written permission,
-    please contact bob@werken.com.
+  3. The name "drools" must not be used to endorse or promote
+  products derived from this Software without prior written
+  permission of The Werken Company.  For written permission,
+  please contact bob@werken.com.
  
- 4. Products derived from this Software may not be called "drools"
-    nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a registered
-    trademark of The Werken Company.
+  4. Products derived from this Software may not be called "drools"
+  nor may "drools" appear in their names without prior written
+  permission of The Werken Company. "drools" is a registered
+  trademark of The Werken Company.
  
- 5. Due credit should be given to The Werken Company.
-    (http://drools.werken.com/).
+  5. Due credit should be given to The Werken Company.
+  (http://drools.werken.com/).
  
- THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
- ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- OF THE POSSIBILITY OF SUCH DAMAGE.
+  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+  THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+  OF THE POSSIBILITY OF SUCH DAMAGE.
  
- */
+*/
 
 import java.util.Set;
 import java.util.HashSet;
@@ -62,6 +62,7 @@ import java.util.Iterator;
  *  @see RuleBase
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:tomv@aic.net.au">Tom Vasak</a>
  */
 public class TransactionalWorkingMemory extends WorkingMemory
 {
@@ -74,6 +75,9 @@ public class TransactionalWorkingMemory extends WorkingMemory
 
     /** Objects retracted during commit. */
     private Set     retractedObjects;
+
+    /** Performing commit. */
+    private boolean committing;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -88,6 +92,8 @@ public class TransactionalWorkingMemory extends WorkingMemory
         super( ruleBase );
 
         this.assertedObjects = new HashSet();
+        this.retractedObjects = new HashSet();
+        this.committing = false;
     }
 
     // ------------------------------------------------------------
@@ -102,6 +108,7 @@ public class TransactionalWorkingMemory extends WorkingMemory
     public synchronized void abort()
     {
         this.assertedObjects.clear();
+        this.retractedObjects.clear();
     }
 
     /** Commit all asserted objects into the logic engine,
@@ -114,7 +121,7 @@ public class TransactionalWorkingMemory extends WorkingMemory
     {
         try
         {
-            this.retractedObjects = new HashSet();
+            this.committing = true;
 
             Iterator objIter = this.assertedObjects.iterator();
             Object   eachObj = null;
@@ -123,12 +130,19 @@ public class TransactionalWorkingMemory extends WorkingMemory
             {
                 eachObj = objIter.next();
 
-                if ( this.retractedObjects.contains( eachObj ) )
-                {
-                    continue;
-                }
-                
                 super.assertObject( eachObj );
+
+                objIter.remove();
+            }
+
+            objIter = this.retractedObjects.iterator();
+            eachObj = null;
+            
+            while ( objIter.hasNext() )
+            {
+                eachObj = objIter.next();
+
+                super.retractObject( eachObj );
 
                 objIter.remove();
             }
@@ -136,7 +150,8 @@ public class TransactionalWorkingMemory extends WorkingMemory
         finally
         {
             this.assertedObjects.clear();
-            this.retractedObjects = null;
+            this.retractedObjects.clear();
+            this.committing = false;
         }
     }
 
@@ -148,12 +163,16 @@ public class TransactionalWorkingMemory extends WorkingMemory
      */
     public synchronized void assertObject(Object object) throws AssertionException
     {
-        if ( this.retractedObjects != null )
+        if ( this.committing )
         {
             super.assertObject( object );
         }
         else
         {
+            if ( this.retractedObjects.contains( object ) )
+            {
+                this.retractedObjects.remove( object );
+            }
             this.assertedObjects.add( object );
         }
     }
@@ -170,12 +189,18 @@ public class TransactionalWorkingMemory extends WorkingMemory
      */
     public synchronized void modifyObject(Object object) throws FactException
     {
-        if ( this.retractedObjects != null )
+        if ( this.committing )
         {
             super.modifyObject( object );
         }
         else
         {
+            if ( this.retractedObjects.contains( object ) )
+            {
+                // Should throw a FactException since you are modifying
+                // after retracting. Let it go for now.
+                this.retractedObjects.remove( object );
+            }
             this.assertedObjects.add( object );
         }
     }
@@ -188,14 +213,30 @@ public class TransactionalWorkingMemory extends WorkingMemory
      */
     public synchronized void retractObject(Object object) throws RetractionException
     {
-        if ( this.retractedObjects != null )
+        if ( this.committing )
         {
             super.retractObject( object );
             this.retractedObjects.add( object );
         }
         else
         {
-            this.assertedObjects.remove( object );
+            if ( this.retractedObjects.contains( object ) )
+            {
+                // Maybe should throw a RetractionException since you are
+                // retracting again after a previous retraction.
+            }
+            else if ( this.assertedObjects.contains( object ) )
+            {
+                this.assertedObjects.remove( object );
+
+                // Object may still be currently asserted as a fact so
+                // still need to retract.
+                this.retractedObjects.add( object );
+            }
+            else
+            {
+                this.retractedObjects.add( object );
+            }
         }
     }
 }
