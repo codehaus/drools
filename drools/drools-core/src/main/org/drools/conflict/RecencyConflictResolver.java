@@ -1,9 +1,9 @@
 package org.drools.conflict;
 
 /*
- * $Id: RecencyConflictResolver.java,v 1.4 2004-11-28 05:02:38 simon Exp $
+ * $Id: RecencyConflictResolver.java,v 1.5 2004-12-06 23:07:37 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -22,9 +22,10 @@ package org.drools.conflict;
  *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a trademark of The Werken Company.
+ * Company. "drools" is a registered trademark of The Werken Company.
  *
- * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 5. Due credit should be given to The Werken Company.
+ * (http://drools.werken.com/).
  *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -42,14 +43,13 @@ package org.drools.conflict;
 
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
-import org.drools.spi.Tuple;
 
 /**
  * <code>ConflictResolver</code> that uses the mostRecentFactTimeStamp of
  * rules to resolve conflict.
  *
  * @see #getInstance
- * @see Tuple#getMostRecentFactTimeStamp
+ * @see org.drools.spi.Tuple#getMostRecentFactTimeStamp
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
@@ -72,7 +72,7 @@ public class RecencyConflictResolver extends AbstractConflictResolver
      *
      * @return The singleton instance.
      */
-    public static ConflictResolver getInstance()
+    public static ConflictResolver getInstance( )
     {
         return INSTANCE;
     }
@@ -84,7 +84,7 @@ public class RecencyConflictResolver extends AbstractConflictResolver
     /**
      * Construct.
      */
-    public RecencyConflictResolver()
+    public RecencyConflictResolver( )
     {
         // intentionally left blank
     }
@@ -94,9 +94,10 @@ public class RecencyConflictResolver extends AbstractConflictResolver
     /**
      * @see ConflictResolver
      */
-    public int compare(Activation lhs,
-                       Activation rhs)
+    public int compare( Activation lhs,
+                        Activation rhs )
     {
-        return (int) ( lhs.getTuple( ).getMostRecentFactTimeStamp( ) - rhs.getTuple( ).getMostRecentFactTimeStamp( ) );
+        return ( int ) (  lhs.getTuple( ).getMostRecentFactTimeStamp( )
+                        - rhs.getTuple( ).getMostRecentFactTimeStamp( ) );
     }
 }
