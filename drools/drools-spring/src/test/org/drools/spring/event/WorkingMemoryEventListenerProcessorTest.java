@@ -13,17 +13,14 @@ import org.drools.event.WorkingMemoryEventListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public abstract class WorkingMemoryEventListenerProcessorTestCase extends TestCase {
+public class WorkingMemoryEventListenerProcessorTest extends TestCase {
 
     public static class Listener_A extends DefaultWorkingMemoryEventListener { }
     public static class Listener_B extends DefaultWorkingMemoryEventListener { }
 
-    protected abstract String getContextFilename();
-    protected abstract String getWorkingMemoryBeanName();
-
     public void testRegisterListeners() throws Exception {
-        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(getContextFilename());
-        WorkingMemory workingMemory = (WorkingMemory) context.getBean(getWorkingMemoryBeanName());
+        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("org/drools/spring/event/explicit-workingmemory.appctx.xml");
+        WorkingMemory workingMemory = (WorkingMemory) context.getBean("workingMemory");
 
         Set expectedListenerClasses = new HashSet();
         expectedListenerClasses.add(Listener_A.class);

@@ -9,12 +9,16 @@ import java.util.Map.Entry;
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
-public class DeferedCreationWorkingMemoryFactoryBean implements FactoryBean, InitializingBean {
+public class DeferedCreationWorkingMemoryFactoryBean implements FactoryBean, InitializingBean, BeanFactoryAware {
 
-    private RuleBase ruleBase;
+    private BeanFactory beanFactory;
+    private String ruleBaseName;
     // TODO Async exception hanlder
     private Map applicationData ;
     private WorkingMemory workingMemoryProxy;
@@ -31,6 +35,7 @@ public class DeferedCreationWorkingMemoryFactoryBean implements FactoryBean, Ini
         }
 
         private WorkingMemory createObject() {
+            RuleBase ruleBase = (RuleBase) beanFactory.getBean(ruleBaseName);
             WorkingMemory workingMemory = ruleBase.newWorkingMemory();
             if (applicationData != null) {
                 for (Iterator iter = applicationData.entrySet().iterator(); iter.hasNext();) {
@@ -43,8 +48,8 @@ public class DeferedCreationWorkingMemoryFactoryBean implements FactoryBean, Ini
 
     };
 
-    public void setRuleBase(RuleBase ruleBase) {
-        this.ruleBase = ruleBase;
+    public void setRuleBase(String ruleBaseName) {
+        this.ruleBaseName = ruleBaseName;
     }
 
     public void setApplicationData(Map data) {
@@ -52,8 +57,8 @@ public class DeferedCreationWorkingMemoryFactoryBean implements FactoryBean, Ini
     }
 
     public void afterPropertiesSet() throws Exception {
-        if (ruleBase == null) {
-            throw new IllegalArgumentException("ruleBase property not specified");
+        if (ruleBaseName == null) {
+            throw new IllegalArgumentException("RuleBase property not specified");
         }
     }
 
@@ -73,5 +78,9 @@ public class DeferedCreationWorkingMemoryFactoryBean implements FactoryBean, Ini
                     invocationHandler);
         }
         return workingMemoryProxy;
+    }
+
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 }
