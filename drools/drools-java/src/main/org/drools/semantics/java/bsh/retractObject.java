@@ -1,7 +1,7 @@
-package bsh.commands;
+package org.drools.semantics.java.bsh;
 
 /*
- $Id: retractObject.java,v 1.1 2004-03-22 21:14:50 bob Exp $
+ $Id: retractObject.java,v 1.2 2004-03-22 21:20:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
