@@ -1,10 +1,9 @@
 package org.drools.examples.state;
 
-
-
 public class State
 {
     private String name;
+
     private String state;
 
     public State(String name)
@@ -30,7 +29,7 @@ public class State
 
     public boolean inState(String name, String state)
     {
-        boolean b = this.name.equals(name) && this.state.equals(state);
+        boolean b = this.name.equals( name ) && this.state.equals( state );
         return b;
     }
 

@@ -1,78 +1,74 @@
 package org.drools.smf;
 
 /*
- $Id: DefaultSemanticsRepository.java,v 1.4 2004-06-22 17:17:27 bob Exp $
-
- Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
- Redistribution and use of this software and associated documentation
- ("Software"), with or without modification, are permitted provided
- that the following conditions are met:
-
- 1. Redistributions of source code must retain copyright
-    statements and notices.  Redistributions must also contain a
-    copy of this document.
- 
- 2. Redistributions in binary form must reproduce the
-    above copyright notice, this list of conditions and the
-    following disclaimer in the documentation and/or other
-    materials provided with the distribution.
- 
- 3. The name "drools" must not be used to endorse or promote
-    products derived from this Software without prior written
-    permission of The Werken Company.  For written permission,
-    please contact bob@werken.com.
- 
- 4. Products derived from this Software may not be called "drools"
-    nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
-    The Werken Company.
- 
- 5. Due credit should be given to The Werken Company.
-    (http://werken.com/)
- 
- THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
- ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+ * $Id: DefaultSemanticsRepository.java,v 1.5 2004-09-17 00:32:24 mproctor Exp $
+ * 
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * 
+ * Redistribution and use of this software and associated documentation
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "drools" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of The Werken Company.
+ * For written permission, please contact bob@werken.com.
+ * 
+ * 4. Products derived from this Software may not be called "drools" nor may
+ * "drools" appear in their names without prior written permission of The Werken
+ * Company. "drools" is a trademark of The Werken Company.
+ * 
+ * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
+ * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *  
  */
 
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Set;
-import java.util.HashSet;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
-/** Default <code>SemanticsRepository</code> which uses discovery to autoload
- *  semantic modules.
- *
- *  <p>
- *  Any <b>semantic module</b> that conforms to the SMF contract will be
- *  discovered and autoloaded upon first access of the <code>DefaultSemanticsRepository</code>.
- *  </p>
- *
- *  <p>
- *  To be discovered, the module should be in a jar with a module descriptor
- *  located at <code>/META-INF/drools-semantics.properties</code>.
- *  </p>
- *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
- *
- *  @version $Id: DefaultSemanticsRepository.java,v 1.4 2004-06-22 17:17:27 bob Exp $
+/**
+ * Default <code>SemanticsRepository</code> which uses discovery to autoload
+ * semantic modules.
+ * 
+ * <p>
+ * Any <b>semantic module </b> that conforms to the SMF contract will be
+ * discovered and autoloaded upon first access of the
+ * <code>DefaultSemanticsRepository</code>.
+ * </p>
+ * 
+ * <p>
+ * To be discovered, the module should be in a jar with a module descriptor
+ * located at <code>/META-INF/drools-semantics.properties</code>.
+ * </p>
+ * 
+ * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * 
+ * @version $Id: DefaultSemanticsRepository.java,v 1.4 2004/06/22 17:17:27 bob
+ *          Exp $
  */
-public final class DefaultSemanticsRepository
-    implements SemanticsRepository
+public final class DefaultSemanticsRepository implements SemanticsRepository
 {
     // ----------------------------------------------------------------------
     //     Class members
@@ -85,19 +81,19 @@ public final class DefaultSemanticsRepository
     //     Class methods
     // ----------------------------------------------------------------------
 
-    /** Retrieve the singleton instance.
-     *
-     *  @return The singleton instance.
-     *
-     *  @throws Exception If an error occurs while performing discovery
-     *          and loading of the semantic modules.
+    /**
+     * Retrieve the singleton instance.
+     * 
+     * @return The singleton instance.
+     * 
+     * @throws Exception If an error occurs while performing discovery and
+     *         loading of the semantic modules.
      */
-    public static synchronized SemanticsRepository getInstance()
-        throws Exception
+    public static synchronized SemanticsRepository getInstance() throws Exception
     {
         if ( INSTANCE == null )
         {
-            INSTANCE = new DefaultSemanticsRepository();
+            INSTANCE = new DefaultSemanticsRepository( );
         }
 
         return INSTANCE;
@@ -107,7 +103,7 @@ public final class DefaultSemanticsRepository
     //     Instance members
     // ----------------------------------------------------------------------
 
-    private Set loadedSemantics;
+    private Set                       loadedSemantics;
 
     /** Module repository. */
     private SimpleSemanticsRepository repository;
@@ -116,37 +112,36 @@ public final class DefaultSemanticsRepository
     //     Constructors
     // ----------------------------------------------------------------------
 
-    /** Construct.
-     *
-     *  @throws Exception If an error occurs while performing discovery
-     *          and loading of the semantic modules.
+    /**
+     * Construct.
+     * 
+     * @throws Exception If an error occurs while performing discovery and
+     *         loading of the semantic modules.
      */
-    private DefaultSemanticsRepository()
-        throws Exception
+    private DefaultSemanticsRepository() throws Exception
     {
-        this.loadedSemantics = new HashSet();
-        this.repository  = new SimpleSemanticsRepository();
-        init();
+        this.loadedSemantics = new HashSet( );
+        this.repository = new SimpleSemanticsRepository( );
+        init( );
     }
 
     // ----------------------------------------------------------------------
     //     Instance methods
     // ----------------------------------------------------------------------
 
-
-        /** Initialize and perform discovery.
-     *
-     *  @throws Exception If an error occurs while performing discovery
-     *          and loading of the semantic modules.
+    /**
+     * Initialize and perform discovery.
+     * 
+     * @throws Exception If an error occurs while performing discovery and
+     *         loading of the semantic modules.
      */
-    protected void init()
-        throws Exception
+    protected void init() throws Exception
     {
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
         if ( cl == null )
         {
-            cl = getClass().getClassLoader();
+            cl = getClass( ).getClassLoader( );
         }
 
         String droolsConfigProp = System.getProperty( "drools.config" );
@@ -157,113 +152,110 @@ public final class DefaultSemanticsRepository
         }
 
         Enumeration configUrls = cl.getResources( "META-INF/drools.conf" );
-        
-        while ( configUrls.hasMoreElements() )
+
+        while ( configUrls.hasMoreElements( ) )
         {
-            URL configUrl = (URL) configUrls.nextElement();
-            
+            URL configUrl = ( URL ) configUrls.nextElement( );
+
             loadConfig( configUrl );
         }
     }
 
-    protected void loadConfig(String path)
-        throws Exception
+    protected void loadConfig(String path) throws Exception
     {
 
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
         if ( cl == null )
         {
-            cl = getClass().getClassLoader();
+            cl = getClass( ).getClassLoader( );
         }
 
         URL url = cl.getResource( path );
 
         if ( url == null )
         {
-            System.err.println( "INVALID PATH: [" + path + "]");
+            System.err.println( "INVALID PATH: [" + path + "]" );
             return;
         }
 
         loadConfig( url );
     }
 
-    protected void loadConfig(URL url)
-        throws Exception
+    protected void loadConfig(URL url) throws Exception
     {
-        InputStream config = url.openStream();
+        InputStream config = url.openStream( );
 
         BufferedReader in = new BufferedReader( new InputStreamReader( config ) );
-        
+
         try
         {
             String line;
-            
-            while ( ( line = in.readLine() ) != null )
-            {
-                line = line.trim();
 
-                if ( line.equals( "" )
-                     ||
-                     line.startsWith( "#" ) )
+            while ( ( line = in.readLine( ) ) != null )
+            {
+                line = line.trim( );
+
+                if ( line.equals( "" ) || line.startsWith( "#" ) )
                 {
                     continue;
                 }
-                
+
                 loadSemantics( line );
             }
         }
         finally
         {
-            in.close();
-        } 
+            in.close( );
+        }
     }
 
-    protected void loadSemantics(String semanticsName)
-        throws Exception
+    protected void loadSemantics(String semanticsName) throws Exception
     {
-        if ( this.loadedSemantics.contains( semanticsName ) ) {
+        if ( this.loadedSemantics.contains( semanticsName ) )
+        {
             return;
         }
 
         this.loadedSemantics.add( semanticsName );
 
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
         if ( cl == null )
         {
-            cl = getClass().getClassLoader();
+            cl = getClass( ).getClassLoader( );
         }
 
         String semanticsFile = "META-INF/" + semanticsName + ".conf";
-        
+
         URL descriptor = cl.getResource( semanticsFile );
-        
+
         if ( descriptor == null )
         {
             System.err.println( "cannot load " + semanticsFile );
             return;
         }
 
-        SemanticsReader semanticsReader = new SemanticsReader();
+        SemanticsReader semanticsReader = new SemanticsReader( );
 
         SemanticModule module = semanticsReader.read( descriptor );
 
         this.repository.registerSemanticModule( module );
     }
 
-    /** @see SemanticsRepository
+    /**
+     * @see SemanticsRepository
      */
-    public SemanticModule lookupSemanticModule(String uri)
-        throws NoSuchSemanticModuleException
+    public SemanticModule lookupSemanticModule(String uri) throws NoSuchSemanticModuleException
     {
         return this.repository.lookupSemanticModule( uri );
     }
 
-    /** @see SemanticsRepository
+    /**
+     * @see SemanticsRepository
      */
     public SemanticModule[] getSemanticModules()
     {
-        return this.repository.getSemanticModules();
+        return this.repository.getSemanticModules( );
     }
 }

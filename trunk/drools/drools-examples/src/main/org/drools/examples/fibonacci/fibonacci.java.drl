@@ -4,7 +4,7 @@
           xmlns="http://drools.org/rules"
           xmlns:java="http://drools.org/semantics/java">
 
-  <rule name="Bootstrap 1"   salience="20">
+  <rule name="Bootstrap 1" salience="20">
     <parameter identifier="f">
       <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
     </parameter>

@@ -1,7 +1,6 @@
 package org.drools.smf;
 
-public class MissingAttributeException
-    extends FactoryException
+public class MissingAttributeException extends FactoryException
 {
     private String name;
 
@@ -17,6 +16,6 @@ public class MissingAttributeException
 
     public String getMessage()
     {
-        return "missing attribute '" + getName() + "'";
+        return "missing attribute '" + getName( ) + "'";
     }
 }

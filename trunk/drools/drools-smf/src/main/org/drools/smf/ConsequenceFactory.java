@@ -5,7 +5,5 @@ import org.drools.spi.Consequence;
 
 public interface ConsequenceFactory
 {
-    Consequence newConsequence(Configuration config,
-                               Declaration[] availDecls)
-        throws FactoryException;
+    Consequence newConsequence(Configuration config, Declaration[] availDecls) throws FactoryException;
 }

@@ -1,7 +1,7 @@
 package org.drools.examples.petstore;
 
 /*
- * $Id: PetStore.java,v 1.1 2004-07-07 04:45:22 dbarnett Exp $
+ * $Id: PetStore.java,v 1.2 2004-09-17 00:37:57 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,34 +48,36 @@ import org.drools.io.RuleBaseBuilder;
 
 public class PetStore
 {
-	public static void main( String[] args )
-	{
-		if (args.length != 1) {
-			System.out.println("Usage: " + PetStore.class.getName() + " [drl file]");
-			return;
-		}
-		System.out.println("Using drl: " + args[0]);
+    public static void main(String[] args)
+    {
+        if ( args.length != 1 )
+        {
+            System.out.println( "Usage: " + PetStore.class.getName( )
+                                + " [drl file]" );
+            return;
+        }
+        System.out.println( "Using drl: " + args[0] );
 
-		try
-		{
-			URL url = PetStore.class.getResource( args[0] );
-			RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
+        try
+        {
+            URL url = PetStore.class.getResource( args[0] );
+            RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
 
-			Vector stock = new Vector( );
-			stock.add( new CartItem( "Gold Fish", 5 ) );
-			stock.add( new CartItem( "Fish Tank", 25 ) );
-			stock.add( new CartItem( "Fish Food", 2 ) );
+            Vector stock = new Vector( );
+            stock.add( new CartItem( "Gold Fish", 5 ) );
+            stock.add( new CartItem( "Fish Tank", 25 ) );
+            stock.add( new CartItem( "Fish Food", 2 ) );
 
-			//The callback is responsible for populating working memory and
-			// fireing all rules
-			PetStoreUI ui = new PetStoreUI( stock, new CheckoutCallback(
-					ruleBase ) );
-			ui.createAndShowGUI( );
-		}
-		catch ( Exception e )
-		{
-			e.printStackTrace( );
-		}
-	}
+            //The callback is responsible for populating working memory and
+            // fireing all rules
+            PetStoreUI ui = new PetStoreUI( stock,
+                                            new CheckoutCallback( ruleBase ) );
+            ui.createAndShowGUI( );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace( );
+        }
+    }
 
 }

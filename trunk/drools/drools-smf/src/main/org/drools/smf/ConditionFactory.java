@@ -5,7 +5,5 @@ import org.drools.spi.Condition;
 
 public interface ConditionFactory
 {
-    Condition newCondition(Configuration config, 
-                           Declaration[] availDecls)
-        throws FactoryException;
+    Condition newCondition(Configuration config, Declaration[] availDecls) throws FactoryException;
 }

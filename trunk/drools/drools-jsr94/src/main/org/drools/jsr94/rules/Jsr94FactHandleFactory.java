@@ -3,8 +3,7 @@ package org.drools.jsr94.rules;
 import org.drools.FactHandle;
 import org.drools.reteoo.FactHandleFactory;
 
-public class Jsr94FactHandleFactory
-    implements FactHandleFactory
+public class Jsr94FactHandleFactory implements FactHandleFactory
 {
     private long counter;
 

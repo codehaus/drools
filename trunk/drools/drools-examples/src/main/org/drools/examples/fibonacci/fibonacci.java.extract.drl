@@ -12,12 +12,14 @@
     <declaration identifier="sequence">
       <java:class>java.lang.Integer</java:class>
     </declaration>
-    <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>
 
-    <declaration identifier="value">
+    <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>    
+
+    <declaration identifier="value" >
       <java:class>java.lang.Long</java:class>
     </declaration>
-    <java:extractor target="value">new Long(f.getValue())</java:extractor>
+
+    <java:extractor target="value">new Long(f.getSequence())</java:extractor>
 
     <java:condition>sequence.intValue() == 1</java:condition>
     <java:condition>value.longValue() == -1</java:condition>
@@ -37,16 +39,18 @@
     <declaration identifier="sequence">
       <java:class>java.lang.Integer</java:class>
     </declaration>
+
     <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>
 
     <declaration identifier="value">
       <java:class>java.lang.Long</java:class>
     </declaration>
+
     <java:extractor target="value">new Long(f.getValue())</java:extractor>
 
     <java:condition>sequence.intValue() == 2</java:condition>
     <java:condition>value.longValue() == -1</java:condition>
-    
+
     <java:consequence>
       f.setValue( 1 );
       System.err.println( f.getSequence() + " == " + f.getValue() );
@@ -62,6 +66,7 @@
     <declaration identifier="value">
       <java:class>java.lang.Long</java:class>
     </declaration>
+
     <java:extractor target="value">new Long(f.getValue())</java:extractor>
 
     <java:condition>value.longValue() == -1</java:condition>
@@ -82,19 +87,23 @@
     <parameter identifier="f3">
       <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
     </parameter>
-    
+
     <!-- <java:condition>f2.getSequence() == f1.getSequence() + 1</java:condition> -->
     <declaration identifier="sequence">
       <java:class>java.lang.Integer</java:class>
     </declaration>
+
     <java:extractor target="sequence">new Integer(f2.getSequence())</java:extractor>
+
     <java:extractor target="sequence">new Integer(f1.getSequence() + 1)</java:extractor>
 
     <!-- <java:condition>f3.getSequence() == f2.getSequence() + 1</java:condition> -->
     <declaration identifier="sequence2">
       <java:class>java.lang.Integer</java:class>
     </declaration>
+
     <java:extractor target="sequence2">new Integer(f3.getSequence())</java:extractor>
+
     <java:extractor target="sequence2">new Integer(f2.getSequence() + 1)</java:extractor>
 
     <java:condition>f1.getValue() != -1</java:condition>
