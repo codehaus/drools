@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.25 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: TupleKey.java,v 1.26 2004-11-21 13:51:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,9 +52,9 @@ import java.util.Map;
 
 /**
  * A composite key to match tuples.
- * 
+ *
  * @see Tuple
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class TupleKey
@@ -109,10 +109,10 @@ class TupleKey
 
     /**
      * Retrieve a <code>FactHandle</code> by declaration.
-     * 
+     *
      * @param declaration
      *            The declaration.
-     * 
+     *
      * @return The fact handle.
      */
     public FactHandle get(Declaration declaration)
@@ -122,10 +122,10 @@ class TupleKey
 
     /**
      * Determine if this key contains the specified root fact object.
-     * 
+     *
      * @param handle
      *            The fact-handle to test.
-     * 
+     *
      * @return <code>true</code> if this key contains the specified root
      *         fact-handle, otherwise <code>false</code>.
      */
@@ -136,10 +136,10 @@ class TupleKey
 
     /**
      * Determine if the specified key is a subset of this key.
-     * 
+     *
      * @param that
      *            The key to compare.
-     * 
+     *
      * @return <code>true</code> if the specified key is a subset of this key.
      */
     public boolean containsAll(TupleKey that)
