@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.22 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: JoinMemory.java,v 1.23 2004-10-16 23:59:53 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -462,6 +462,8 @@ class JoinMemory implements Serializable
                 joinedTuples.add( joinedTuple );
             }
         }
+        
+        
 
         return joinedTuples;
     }
@@ -505,6 +507,62 @@ class JoinMemory implements Serializable
                 return null;
             }
         }
+        
+        /* now check extractors
+         * Only looking for shared target declarations
+         * that have  different values, ie not allowed
+         * So will defualt to left side, but could check
+         * any side.
+         */
+        Set leftDecls = left.getTargetDeclarations();
+        Set rightDecls = right.getTargetDeclarations();
+        if ((leftDecls != null)&&(rightDecls != null))
+        {
+        	Object leftValue;
+        	Object rightValue;
+        	declIter = leftDecls.iterator();
+        	while (declIter.hasNext())
+        	{
+        		eachDecl = ( Declaration ) declIter.next( );
+        		//System.out.println("left:" + eachDecl.getIdentifier());
+        		
+        		leftValue = left.get(eachDecl);
+        		rightValue = right.get(eachDecl);
+        		if (
+        				(leftValue != null)
+						&&
+						(rightValue != null)
+        				&&
+						(!leftValue.equals(rightValue))
+					)
+        		{
+        			return null;
+        		}
+        		
+        	}
+
+        	declIter = rightDecls.iterator();
+        	while (declIter.hasNext())
+        	{
+        		eachDecl = ( Declaration ) declIter.next( );
+        		
+        		//System.out.println("right:" + eachDecl.getIdentifier());
+        		
+        		leftValue = left.get(eachDecl);
+        		rightValue = right.get(eachDecl);
+        		if (
+        				(leftValue != null)
+						&&
+						(rightValue != null)
+        				&&
+						(!leftValue.equals(rightValue))						
+					)
+        		{
+        			return null;
+        		}
+        		
+        	}        	
+        }       
 
         ReteTuple joinedTuple = new JoinTuple( left, right );
 
