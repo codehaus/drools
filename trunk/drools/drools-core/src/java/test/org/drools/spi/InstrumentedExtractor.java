@@ -7,18 +7,18 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class InstrumentedFactExtractor implements FactExtractor
+public class InstrumentedExtractor implements Extractor
 {
     private Object value;
     private Set    decls;
 
-    public InstrumentedFactExtractor()
+    public InstrumentedExtractor()
     {
         this.value = null;
         this.decls = new HashSet(); 
     }
 
-    public InstrumentedFactExtractor(Object value)
+    public InstrumentedExtractor(Object value)
     {
         this.value = value;
     }

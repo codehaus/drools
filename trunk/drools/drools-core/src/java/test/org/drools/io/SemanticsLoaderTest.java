@@ -75,10 +75,10 @@ public class SemanticsLoaderTest extends TestCase
                       module.getCondition( "condition" ) );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //     FactExtractor
+        //     Extractor
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        names = module.getFactExtractorNames();
+        names = module.getExtractorNames();
 
         assertEquals( 1,
                       names.size() );
@@ -86,7 +86,7 @@ public class SemanticsLoaderTest extends TestCase
         assertTrue( names.contains( "extractor" ) );
 
         assertEquals( org.drools.semantics.java.ExprExtractor.class,
-                      module.getFactExtractor( "extractor" ) );
+                      module.getExtractor( "extractor" ) );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
         //     Consequence

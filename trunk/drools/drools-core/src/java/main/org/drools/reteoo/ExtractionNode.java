@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FactExtractionNode.java,v 1.2 2002-08-13 04:12:26 bob Exp $
+ $Id: ExtractionNode.java,v 1.1 2002-08-18 19:17:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,13 +47,13 @@ package org.drools.reteoo;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.spi.FactExtractor;
+import org.drools.spi.Extractor;
 
 /** <i>Fact extraction</i> node in the Rete-OO network.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface FactExtractionNode extends TupleSource, TupleSink
+public interface ExtractionNode extends TupleSource, TupleSink
 {
     /** Retrieve the <code>Declaration</code> which is the target of
      *  the extraction.
@@ -67,9 +67,9 @@ public interface FactExtractionNode extends TupleSource, TupleSink
     /** Retrieve the <code>FactExtractor</code> used to generate the
      *  right-hand-side value for the extraction.
      *
-     *  @see FactExtractor
+     *  @see Extractor
      *
      *  @return The <code>FactExtrator</code>.
      */
-    FactExtractor getFactExtractor();
+    Extractor getExtractor();
 }

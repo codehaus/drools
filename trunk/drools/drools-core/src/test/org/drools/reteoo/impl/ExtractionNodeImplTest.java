@@ -5,16 +5,16 @@ import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
 import org.drools.semantics.java.ClassObjectType;
 
-import org.drools.spi.InstrumentedFactExtractor;
+import org.drools.spi.InstrumentedExtractor;
 
 import junit.framework.TestCase;
 
 import java.util.Set;
 import java.util.List;
 
-public class FactExtractionNodeImplTest extends TestCase
+public class ExtractionNodeImplTest extends TestCase
 {
-    public FactExtractionNodeImplTest(String name)
+    public ExtractionNodeImplTest(String name)
     {
         super( name );
     }
@@ -41,9 +41,9 @@ public class FactExtractionNodeImplTest extends TestCase
 
         source.addTupleDeclaration( stringDecl );
 
-        FactExtractionNodeImpl extractNode = new FactExtractionNodeImpl( source,
-                                                                         objectDecl,
-                                                                         null );
+        ExtractionNodeImpl extractNode = new ExtractionNodeImpl( source,
+                                                                 objectDecl,
+                                                                 null );
 
         Set decls = extractNode.getTupleDeclarations();
 
@@ -66,9 +66,9 @@ public class FactExtractionNodeImplTest extends TestCase
 
         source.addTupleDeclaration( objectDecl );
 
-        FactExtractionNodeImpl extractNode = new FactExtractionNodeImpl( source,
-                                                                         stringDecl,
-                                                                         new InstrumentedFactExtractor( "cheese" ) );
+        ExtractionNodeImpl extractNode = new ExtractionNodeImpl( source,
+                                                                 stringDecl,
+                                                                 new InstrumentedExtractor( "cheese" ) );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 

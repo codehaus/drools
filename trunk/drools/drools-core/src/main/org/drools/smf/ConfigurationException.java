@@ -1,4 +1,4 @@
-package org.drools.spi;
+package org.drools.smf;
 
 import org.drools.DroolsException;
 

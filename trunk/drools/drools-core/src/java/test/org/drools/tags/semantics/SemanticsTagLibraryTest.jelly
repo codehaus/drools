@@ -103,7 +103,7 @@
       <extractor name="testExtractor"
                  classname="org.drools.semantics.java.ExprExtractor"/>
 
-     <test:assert test="${semantic_module.getFactExtractorNames().contains('testExtractor')}"/>
+     <test:assert test="${semantic_module.getExtractorNames().contains('testExtractor')}"/>
 
     </module> 
   </test:case>

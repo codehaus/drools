@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.2 2002-08-18 05:47:20 bob Exp $
+ $Id: ExprExtractor.java,v 1.3 2002-08-18 19:17:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,26 +46,26 @@ package org.drools.semantics.java;
  
  */
 
-import org.drools.spi.ConfigurableFactExtractor;
+import org.drools.smf.ConfigurableExtractor;
+import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
-import org.drools.spi.FactExtractionException;
-import org.drools.spi.ConfigurationException;
+import org.drools.spi.ExtractionException;
 
 import bsh.EvalError;
 
-/** Java expression semantics <code>FactExtractor</code>.
+/** Java expression semantics <code>Extractor</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.2 2002-08-18 05:47:20 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.3 2002-08-18 19:17:50 bob Exp $
  */
-public class ExprExtractor extends Expr implements ConfigurableFactExtractor
+public class ExprExtractor extends Expr implements ConfigurableExtractor
 {
     public ExprExtractor()
     {
     }
 
-    public Object extractFact(Tuple tuple) throws FactExtractionException
+    public Object extractFact(Tuple tuple) throws ExtractionException
     {
         try
         {
@@ -73,7 +73,7 @@ public class ExprExtractor extends Expr implements ConfigurableFactExtractor
         }
         catch (EvalError e)
         {
-            throw new FactExtractionException( e );
+            throw new ExtractionException( e );
         }
     }
 }

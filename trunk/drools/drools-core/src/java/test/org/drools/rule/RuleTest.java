@@ -71,11 +71,11 @@ public class RuleTest extends TestCase
         Declaration localDecl = new Declaration( new MockObjectType( true ),
                                                  "paramVar" );
 
-        FactExtraction extraction = new FactExtraction( localDecl,
-                                                        null );
+        Extraction extraction = new Extraction( localDecl,
+                                                null );
 
         rule.addParameterDeclaration( paramDecl );
-        rule.addFactExtraction( extraction );
+        rule.addExtraction( extraction );
 
         Set paramDecls = rule.getParameterDeclarations();
 

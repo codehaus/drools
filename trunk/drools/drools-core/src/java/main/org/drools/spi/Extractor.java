@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FactExtractionException.java,v 1.2 2002-07-26 21:10:43 bob Exp $
+ $Id: Extractor.java,v 1.1 2002-08-18 19:17:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,32 +46,34 @@ package org.drools.spi;
  
  */
 
-import org.drools.AssertionException;
+import org.drools.rule.Declaration;
 
-/** Indicates an error while extracting a fact from
- *  a <i>root fact object</i>.
+/** Extracts new facts from existing facts.
+ *
+ *  @see Tuple
+ *  @see org.drools.rule.Declaration
+ *  @see org.drools.rule.FactExtraction
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FactExtractionException extends AssertionException
+public interface Extractor extends SemanticComponent
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    public FactExtractionException()
-    {
-        // intentionally left blank
-    }
-
-    /** Construct with a root cause.
+    /** Retrieve the array of <code>Declaration</code>s required
+     *  by this <code>FactExtractor</code> to perform its duties.
      *
-     *  @param rootCause The root cause of this exception.
+     *  @return The array of <code>Declarations</code> expected
+     *          on incoming <code>Tuple</code>s.
      */
-    public FactExtractionException(Throwable rootCause)
-    {
-        super( rootCause );
-    }
+    Declaration[] getRequiredTupleMembers();
+
+    /** Extract a new fact from the incoming <code>Tuple</code>
+     *
+     *  @param tuple The source data tuple.
+     *
+     *  @return The newly extract fact object.
+     *
+     *  @throws ExtractionException if an error occurs during
+     *          fact extraction activities.
+     */
+    Object extractFact(Tuple tuple) throws ExtractionException;
 }

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.4 2002-08-17 05:49:22 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.5 2002-08-18 19:17:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools.smf;
 
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
-import org.drools.spi.FactExtractor;
+import org.drools.spi.Extractor;
 import org.drools.spi.Consequence;
 
 import java.util.Map;
@@ -76,8 +76,8 @@ public class SimpleSemanticModule implements SemanticModule
     /** Condition implementations. */
     private Map conditions;
 
-    /** Fact extractor implementations. */
-    private Map factExtractors;
+    /** Extractor implementations. */
+    private Map extractors;
 
     /** Consequence implementations. */
     private Map consequences;
@@ -94,10 +94,10 @@ public class SimpleSemanticModule implements SemanticModule
     {
         this.uri = uri;
 
-        this.objectTypes    = new HashMap();
-        this.conditions     = new HashMap();
-        this.factExtractors = new HashMap();
-        this.consequences        = new HashMap();
+        this.objectTypes  = new HashMap();
+        this.conditions   = new HashMap();
+        this.extractors   = new HashMap();
+        this.consequences = new HashMap();
     }
 
     // ------------------------------------------------------------
@@ -188,42 +188,42 @@ public class SimpleSemanticModule implements SemanticModule
     /** Add a semantic object type.
      *
      *  @param name The object type name.
-     *  @param factExtractor The object type implementation.
+     *  @param extractor The object type implementation.
      *
-     *  @throws InvalidFactExtractorException If a class that is not a
+     *  @throws InvalidExtractorException If a class that is not a
      *          object type is added.
      */
-    public void addFactExtractor(String name,
-                                 Class factExtractor) throws InvalidFactExtractorException
+    public void addExtractor(String name,
+                             Class extractor) throws InvalidExtractorException
     {
-        if ( ! FactExtractor.class.isAssignableFrom( factExtractor ) )
+        if ( ! Extractor.class.isAssignableFrom( extractor ) )
         {
-            throw new InvalidFactExtractorException( factExtractor );
+            throw new InvalidExtractorException( extractor );
         }
 
-        this.factExtractors.put( name,
-                                 factExtractor );
+        this.extractors.put( name,
+                             extractor );
     }
 
-    /** Retrieve a semantic fact extractor by name.
+    /** Retrieve a semantic extractor by name.
      *
      *  @param name the name.
      *
-     *  @return The fact extractor implementation or <code>null</code>
+     *  @return The extractor implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    public Class getFactExtractor(String name)
+    public Class getExtractor(String name)
     {
-        return (Class) this.factExtractors.get( name );
+        return (Class) this.extractors.get( name );
     }
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    public Set getFactExtractorNames()
+    public Set getExtractorNames()
     {
-        return this.factExtractors.keySet();
+        return this.extractors.keySet();
     }
 
     /** Add a semantic consequence.

@@ -3,7 +3,7 @@ package org.drools.tags.ruleset;
 import org.drools.smf.SemanticModule;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
-import org.drools.spi.FactExtractor;
+import org.drools.spi.Extractor;
 import org.drools.spi.Consequence;
 
 import org.apache.commons.beanutils.ConvertingWrapDynaBean;
@@ -167,7 +167,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
 
     protected void registerExtractions() throws Exception
     {
-        Set names = getSemanticModule().getFactExtractorNames();
+        Set names = getSemanticModule().getExtractorNames();
 
         Iterator nameIter  = names.iterator();
         String   eachName  = null;
@@ -176,7 +176,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
         while ( nameIter.hasNext() )
         {
             eachName = (String) nameIter.next();
-            eachClass = getSemanticModule().getFactExtractor( eachName );
+            eachClass = getSemanticModule().getExtractor( eachName );
 
             registerExtraction( eachName,
                                 eachClass );
@@ -194,13 +194,13 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                  Tag tag =
                                      new DynaBeanTagSupport()
                                      {
-                                         private FactExtractor extractor;
+                                         private Extractor extractor;
                                          
                                          public void beforeSetAttributes() throws Exception
                                          {
                                              try
                                              {
-                                                 this.extractor = (FactExtractor) beanClass.newInstance();
+                                                 this.extractor = (Extractor) beanClass.newInstance();
                                                  setDynaBean( new ConvertingWrapDynaBean( this.extractor ) );
                                              }
                                              catch (Exception e)
@@ -218,7 +218,7 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                                  throw new JellyException( "No wrapper for extraction" );
                                              }
 
-                                             tag.setFactExtractor( this.extractor );
+                                             tag.setExtractor( this.extractor );
                                          }
                                      };
 

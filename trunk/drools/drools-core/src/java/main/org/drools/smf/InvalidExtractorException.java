@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidActionException.java,v 1.4 2002-08-02 19:48:52 bob Exp $
+ $Id: InvalidExtractorException.java,v 1.1 2002-08-18 19:17:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,14 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid action to
+/** Indicates an attempt to add an invalid fact extractor to
  *  a semantic module.
  *
- *  @see SimpleSemanticModule#addAction
+ *  @see SimpleSemanticModule#addExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidActionException extends SemanticComponentException
+public class InvalidExtractorException extends SemanticComponentException
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -61,9 +61,9 @@ public class InvalidActionException extends SemanticComponentException
 
     /** Construct.
      *
-     *  @param cls The invalid action.
+     *  @param cls The invalid fact extractor.
      */
-    public InvalidActionException(Class cls)
+    public InvalidExtractorException(Class cls)
     {
         super( cls );
     }
