@@ -267,8 +267,6 @@
             </includes>
             <excludes>
                 <exclude>**/DroolsBenchmarkTestCase.java</exclude>
-                <!-- so far we've only implemented LocalRuleExecutionSetProvider -->
-                <exclude>**/RuleExecutionSetProviderTestCase.java</exclude>
             </excludes>
             <resources>
                 <resource>
