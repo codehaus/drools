@@ -21,20 +21,19 @@
 \usepackage{varioref}
 \usepackage{array}
 \usepackage{xypic}
+\usepackage{color}
 
 %%
 %% Extra Commands and Evironments
 %%
 
 \newenvironment{codelisting}%
-	{\begin{minipage}{250pt}\footnotesize\begin{alltt}}%
-	{\end{alltt}\end{minipage}}
+	{\bigskip\begin{minipage}{250pt}\footnotesize\begin{alltt}}%
+	{\end{alltt}\end{minipage}\bigskip}
 
 \newcommand{\drools}{{\textsf{drools}}}
 
-
-%% \newcommand{\url}[1]{\textt{#1}}
-
+\definecolor{light}{rgb}{0.4,0.4,0.4}
 
 \begin{document}
 
@@ -68,6 +67,7 @@
 
 \include{introduction}
 \include{usage}
+\include{drl}
 \include{algo}
 \include{semantics}
 \include{assembly}

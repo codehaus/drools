@@ -11,7 +11,7 @@ instance of the \verb|Rule| class which may be a member of a
 \begin{enumerate}
 	\item Instantiate a \verb|Rule|.
 	\item Add a \verb|Declaration| for each root fact object.
-	\item Add a \verb|FactExtraction| for each fact extraction.
+	\item Add a \verb|Extraction| for each fact extraction.
 	\item Add a \verb|Condition| for each restrictive condition.
 	\item Add a \verb|Consequence| for performing the result of a match.
 	\item Add the \verb|Rule| to a \verb|RuleBase|.
@@ -20,7 +20,7 @@ instance of the \verb|Rule| class which may be a member of a
 
 When adding a \verb|Rule| to a  \verb|RuleBase|, it is possible that
 the rule cannot be integrated into the network.  This is caused
-by \verb|FactExtraction| or \verb|Condition| objects that expect
+by \verb|Extraction| or \verb|Condition| objects that expect
 \verb|Declarations| that are otherwise not present in the rule.
 
 \newpage
@@ -80,7 +80,7 @@ rule.addParameterDeclaration( sisTwoDecl );
 
 // -- Create the fact extractor for the dog name
 
-FactExtractor dogNameExtractor = new FactExtractor() \{
+Extractor dogNameExtractor = new Extractor() \{
         public Declaration[] getRequiredTupleMembers() \{
             return new Declaration[] \{ sisOneDecl \};
         \}
@@ -93,7 +93,7 @@ FactExtractor dogNameExtractor = new FactExtractor() \{
 
 // -- Create the fact extractor for the cat name
 
-FactExtractor catNameExtractor = new FactExtractor() \{
+Extractor catNameExtractor = new Extractor() \{
         public Declaration[] getRequiredTupleMembers() \{
             return new Declaration[] \{ sisTwoDecl \};
         \}
@@ -107,11 +107,11 @@ FactExtractor catNameExtractor = new FactExtractor() \{
 // -- Add the extractions for the dog and cat
 // -- name, both to the 'petName' variable.
 
-rule.addFactExtraction( new FactExtraction( petNameDecl,
-                                            dogNameExtractor ) );
+rule.addExtraction( new Extraction( petNameDecl,
+                                    dogNameExtractor ) );
 
-rule.addFactExtraction( new FactExtraction( petNameDecl,
-                                            catNameExtractor ) );
+rule.addExtraction( new Extraction( petNameDecl,
+                                    catNameExtractor ) );
 
 // -- Add a filter that only allows two
 // -- Persons who are sisters to pass.
