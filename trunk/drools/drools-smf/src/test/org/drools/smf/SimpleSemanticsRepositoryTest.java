@@ -24,8 +24,7 @@ public class SimpleSemanticsRepositoryTest extends DroolsTestCase
                           e.getMessage( ) );
         }
 
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org/" );
+        SimpleSemanticModule module = new SimpleSemanticModule("http://cheese.org/" );
 
         repo.registerSemanticModule( module );
 
