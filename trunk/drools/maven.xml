@@ -35,7 +35,7 @@
       <attainGoal name="multiproject:install"/>
     </goal>
 
-    <goal name="clean-all"prereqs="clean-all:prepare">
+    <goal name="clean-all" prereqs="clean-all:prepare">
       <attainGoal name="multiproject:clean"/>
       <attainGoal name="clean"/>
       </goal>
