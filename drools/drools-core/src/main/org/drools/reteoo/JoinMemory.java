@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.35 2004-11-16 11:37:12 simon Exp $
+ * $Id: JoinMemory.java,v 1.36 2004-11-16 22:29:56 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -173,11 +173,14 @@ class JoinMemory implements Serializable
 
     private ReteTuple attemptJoin( ReteTuple left, ReteTuple right )
     {
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) left.getWorkingMemory();
         Iterator declIter = this.joinDeclarations.iterator( );
         Declaration eachDecl;
 
         FactHandle leftHandle;
         FactHandle rightHandle;
+        Object leftValue;
+        Object rightValue;
 
         while ( declIter.hasNext() )
         {
@@ -189,7 +192,8 @@ class JoinMemory implements Serializable
             }
 
             leftHandle = left.getKey().get( eachDecl );
-            rightHandle = right.getKey().get( eachDecl );
+            rightHandle = right.getKey().get( eachDecl );          
+
 
             if ( leftHandle == null && rightHandle == null )
             {
@@ -199,7 +203,7 @@ class JoinMemory implements Serializable
             if ( leftHandle == null || rightHandle == null )
             {
                 return null;
-            }
+            }    
 
             if ( leftHandle.equals( rightHandle ) )
             {
@@ -228,7 +232,7 @@ class JoinMemory implements Serializable
     {
         Object leftValue = left.get( decl );
         Object rightValue = right.get( decl );
-
+        
         if ( leftValue == null )
         {
             return rightValue == null;

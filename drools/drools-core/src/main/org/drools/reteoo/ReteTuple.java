@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.50 2004-11-16 12:12:57 simon Exp $
+ * $Id: ReteTuple.java,v 1.51 2004-11-16 22:29:56 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,7 +50,9 @@ import org.drools.spi.Tuple;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -72,10 +74,11 @@ class ReteTuple implements Tuple, Serializable
 
     /** Key objects for this tuple. */
     private final TupleKey      key;
-
-    /** Value objects in this tuple. */
-    //private final Map           objects;
+   
     private final Set           declarations;
+
+    /** Extraction value objects in this tuple. */
+    private final Map           extractions;    
 
     private FactHandleImpl      mostRecentFact;
 
@@ -91,6 +94,7 @@ class ReteTuple implements Tuple, Serializable
         this.rule = rule;
         this.key = TupleKey.EMPTY;
         this.declarations = Collections.EMPTY_SET;
+        this.extractions = Collections.EMPTY_MAP;
     }
 
     ReteTuple(ReteTuple left, ReteTuple right)
@@ -101,6 +105,15 @@ class ReteTuple implements Tuple, Serializable
         this.declarations = new HashSet( left.declarations.size( ) + right.declarations.size( ), 1 );
         this.declarations.addAll( left.declarations );
         this.declarations.addAll( right.declarations );
+        if (left.extractions != Collections.EMPTY_MAP)
+        {
+            this.extractions = left.extractions;
+        	this.extractions.putAll(right.extractions);
+        }
+        else
+        {
+            this.extractions = right.extractions;
+        }
     }
 
     ReteTuple( ReteTuple that, FactHandle handle, Declaration declaration )
@@ -111,7 +124,29 @@ class ReteTuple implements Tuple, Serializable
         this.declarations = new HashSet( that.declarations.size( ) + 1, 1 );
         this.declarations.addAll( that.declarations );
         this.declarations.add( declaration );
+        this.extractions = that.extractions;
     }
+
+    ReteTuple( ReteTuple that, Declaration declaration, Object value)
+    {
+        this.workingMemory = that.workingMemory;
+        this.rule = that.rule;
+        this.key = that.key;
+        this.declarations = new HashSet( that.declarations.size( ) + 1, 1 );
+        this.declarations.addAll( that.declarations );
+        this.declarations.add( declaration );
+        
+        if (that.extractions == Collections.EMPTY_MAP)
+        {
+            this.extractions = new HashMap( );
+        }
+        else
+        {
+            this.extractions = that.extractions;
+        }
+
+        this.extractions.put(declaration, value);
+    }    
 
     ReteTuple( WorkingMemory workingMemory, Rule rule, Declaration declaration, FactHandle handle )
     {
@@ -119,6 +154,8 @@ class ReteTuple implements Tuple, Serializable
         this.rule = rule;
         this.key = new TupleKey( declaration, handle );
         this.declarations = Collections.singleton( declaration );
+        this.extractions = Collections.EMPTY_MAP;
+        
     }
 
     public String toString()
@@ -170,6 +207,11 @@ class ReteTuple implements Tuple, Serializable
             catch ( NoSuchFactObjectException e )
             {
             }
+        } 
+        else
+        //could be a extraction value
+        {
+            return this.extractions.get(declaration);
         }
         return null;
     }
