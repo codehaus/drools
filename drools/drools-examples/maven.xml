@@ -114,8 +114,9 @@
       </java>
     </goal>
 
+<!-- Hello World Examples -->
     <goal name="helloworld-native" prereqs="jar:jar">
-      <java classname="org.drools.examples.helloworld.HelloWorld"
+      <java classname="org.drools.examples.helloworld.HelloWorldNative"
             fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
@@ -123,4 +124,27 @@
         </classpath>
       </java>
     </goal>
+
+    <goal name="helloworld-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="helloworld-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.groovy.drl"/>
+      </java>
+    </goal>
+
 </project>
