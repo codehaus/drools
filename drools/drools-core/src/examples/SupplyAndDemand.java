@@ -97,11 +97,14 @@ public class SupplyAndDemand
             System.err.println( "----------------------------------------" );
             System.err.println( "    POST" );
             System.err.println( "----------------------------------------" );
+
             System.err.println( buyer1 );
             System.err.println( buyer2 );
             System.err.println( seller1 );
             System.err.println( seller2 );
             System.err.println( seller3 );
+
+            System.err.println( "----------------------------------------" );
         }
         catch (DroolsException e)
         {

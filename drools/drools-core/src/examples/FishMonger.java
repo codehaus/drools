@@ -54,22 +54,39 @@ public class FishMonger
                 cart.addItem( new CartItem( "tropical fish",
                                             12.99 ) );
 
+                if ( false )
+                {
+                    cart.addItem( new CartItem( "tropical fish food",
+                                                8.00 ) );
+                }
+
+                if ( false )
+                {
+                    cart.addItem( new CartItem( "tank",
+                                                80.00 ) );
+                }
+                              
+
                 System.err.println( "----------------------------------------");
-                System.err.println( "PRE" );
+                System.err.println( "    PRE" );
                 System.err.println( "----------------------------------------");
 
                 System.err.println( cart );
                 
+                System.err.println( "----------------------------------------");
+
                 // Now, simply assert them into the [org.drools.WorkingMemory]
                 // and let the logic engine do the rest.
 
                 workingMemory.assertObject( cart );
 
                 System.err.println( "----------------------------------------");
-                System.err.println( "POST" );
+                System.err.println( "    POST" );
                 System.err.println( "----------------------------------------");
 
                 System.err.println( cart );
+
+                System.err.println( "----------------------------------------");
             }
             catch (AssertionException e)
             {

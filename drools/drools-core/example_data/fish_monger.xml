@@ -40,6 +40,9 @@
 			<cond>
 				item.getName().equals("tropical fish");
 			</cond>
+			<cond>
+				cart.getItems("tropical fish food").size() == 0;
+			</cond>
 		</when>
 
 		<then>
@@ -69,10 +72,11 @@
 
 		<when>
 			<cond>cart.getItems("tropical fish").size() &gt;= 4</cond>
+			<cond>cart.getItems("tank").size() == 0</cond>
 		</when>
 
 		<then>
-			System.err.println( "Would you like to buy a tank for your " + cart.getItems("tropical fish").size() + " tropical fish?" );
+			System.err.println( "** SUGGESTION: \n**\tWould you like to buy a tank\n**\tfor your " + cart.getItems("tropical fish").size() + " tropical fish?" );
 		</then>
 	</rule>
 
