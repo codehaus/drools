@@ -2,8 +2,8 @@
 <project>
 
     <pomVersion>3</pomVersion>
-    <name>drools</name>
-    <id>drools</id>
+    <name>drools-core</name>
+    <id>drools-core</id>
     <currentVersion>2.0-beta-12-dev</currentVersion>
 
     <organization>
