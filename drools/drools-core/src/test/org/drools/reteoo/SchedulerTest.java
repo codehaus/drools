@@ -1,6 +1,6 @@
 package org.drools.reteoo;
 /*
- * $Id: SchedulerTest.java,v 1.3 2005-01-11 15:14:48 mproctor Exp $
+ * $Id: SchedulerTest.java,v 1.4 2005-01-11 21:42:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -132,7 +132,7 @@ public class SchedulerTest extends DroolsTestCase
         
         AsyncExceptionHandler handler = new AsyncExceptionHandler()
         {
-            public void handleException(ConsequenceException exception, WorkingMemory workingMemory)
+            public void handleException(WorkingMemory workingMemory, ConsequenceException exception)
             {
                 data.put("tested", "yes");
             }

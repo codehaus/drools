@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.14 2005-01-11 15:04:59 mproctor Exp $
+ * $Id: Scheduler.java,v 1.15 2005-01-11 21:42:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -216,7 +216,7 @@ class AgendaItemFireListener extends TimerTask
         catch ( ConsequenceException e )
         {
             
-            Scheduler.getInstance().getAsyncExceptionHandler().handleException(e, this.workingMemory);           
+            Scheduler.getInstance().getAsyncExceptionHandler().handleException( this.workingMemory, e);           
         }
     }
 }
