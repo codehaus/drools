@@ -49,7 +49,7 @@
         <pre>
 cvs -d:pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools login 
 
-cvs -d:pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools co drools
+cvs -d:pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools co drools-2
         </pre>
         <p>Updates from within the module's directory do not need the -d parameter.
         </p>
