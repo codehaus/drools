@@ -1,6 +1,6 @@
-\section{Semantics Provider Interface}
+\chapter{Semantics Provider Interface}
 
-\subsection{Overview}
+\section{Overview}
 
 \drools{} at its core is merely an algorithmic engine. The 
 \emph{Semantics Provide Interface} also known as the SPI
@@ -51,9 +51,9 @@ semantic objects, classes for assembling complete rules also exist.
 The assembly classes allow whatever UI is required for building rule
 sets in a particular application.  
 
-\subsection{Semantic Objects}
+\section{Semantic Objects}
 
-\subsubsection{org.drools.spi.ObjectType}
+\subsection{org.drools.spi.ObjectType}
 
 While the type of any object presented to \drools{} though
 the fact manipulation methods of a \verb|WorkingMemory| is determined
@@ -98,7 +98,7 @@ object to every \verb|ObjectType| for type determination.  This
 allows for a rule-base to contain a multitude of rules with different
 semantics.  
 
-\subsubsection{org.drools.spi.Declaration}
+\subsection{org.drools.spi.Declaration}
 
 A \verb|Declaration| represents a named and type object.  Internally,
 the \drools{} engine uses strongly-typed semantic objects.  Named objects
@@ -138,7 +138,7 @@ public class Declaration
 \caption{\texttt{org.drools.spi.Declaration} class}
 \end{figure}
 
-\subsubsection{org.drools.spi.Tuple}
+\subsection{org.drools.spi.Tuple}
 
 While the external \drools{} API is object-oriented, the core is still
 constructed of nodes through which \emph{tuples} flow.  A tuple is
@@ -180,7 +180,7 @@ public interface Tuple
 \caption{\texttt{org.drools.spi.Tuple} interface}
 \end{figure}
 
-\subsubsection{org.drools.spi.FactExtractor}
+\subsection{org.drools.spi.FactExtractor}
 
 Fact extration is the process of performing an operation upon a
 \verb|Tuple| to create additional columns or attribute on the
@@ -231,7 +231,7 @@ public interface FactExtractor
 \caption{\texttt{org.drools.spi.FactExtractor} interface}
 \end{figure}
 
-\subsubsection{org.drools.spi.FilterCondition}
+\subsection{org.drools.spi.FilterCondition}
 
 A \verb|FilterCondition| is a predicate which evaluates against
 a \verb|Tuple| to determine if the \verb|Tuple| should pass or
@@ -276,7 +276,7 @@ public interface FilterCondition extends Condition
 \caption{\texttt{org.drools.spi.FilterCondition} interface}
 \end{figure}
 
-\subsubsection{org.drools.spi.Action}
+\subsection{org.drools.spi.Action}
 
 When a collection of facts, represented by a \verb|Tuple| satisifies
 all conditions of a rule then an \verb|Action| is given an opportunity
