@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.20 2004-07-05 21:18:43 mproctor Exp $
+ $Id: ParameterNode.java,v 1.21 2004-07-05 21:51:36 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -217,10 +217,10 @@ class ParameterNode
         StringBuffer buffer = new StringBuffer();
         buffer.append(indent + "ParameterNode\n");
         buffer.append(indent + "-------------\n");
+        buffer.append(declaration.dump(indent + " "));
         buffer.append(indent + "tupleSink:\n");
         buffer.append(getTupleSink().dump(indent + " "));
-        buffer.append(declaration.dump(indent + " "));
-        buffer.append(rule.dump(indent + " "));
+        //buffer.append(rule.dump(indent + " "));
         return buffer.toString();
     }
 }
