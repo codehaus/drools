@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.34 2004-11-17 15:09:12 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.35 2004-11-18 09:46:23 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.34 2004-11-17 15:09:12 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.35 2004-11-18 09:46:23 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -659,17 +659,21 @@ public class RuleSetReader extends DefaultHandler
         }
 
         //Try and get the index for the filename, else return null
+        String xsd;
         int index = systemId.lastIndexOf("/");
         if (index == -1)
         {
           index = systemId.lastIndexOf("\\");
         }
-        if (index == -1)
+        if (index != -1)
         {
-            return null;
+            xsd = systemId.substring(index+1);            
+        } 
+        else 
+        {
+            xsd = systemId;
         }
 
-        String xsd = systemId.substring(index+1);
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
         if ( cl == null )
