@@ -47,7 +47,7 @@
     <!-- ===========vvvv============== Usage ===============vvvv=========== -->
     <!-- ================================================================== -->
 
-    <target name="usage" depends="clover.check,antlr.check"
+    <target name="usage" depends="clover.check"
             description="Displays usage information for this build file.">
         <echo level="info" message="This build file will compile all code and run all tests"/>
         <echo level="info" message="  from all modules and record Clover coverage data"/>
@@ -97,23 +97,6 @@
         <echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
         <echo level="warning" message=" "/>
         <echo level="warning" message="    http://www.ibiblio.org/maven/clover/jars/${clover.jar}"/>
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="And then copy the file to Ant's lib directory: "/>
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="    ${env.ANT_HOME}/lib"/>
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
-    </target>
-
-    <available classname="antlr.Tool" property="antlr.present"/>
-    <target name="antlr.check" unless="antlr.present">
-        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="You do not appear to have Ant configured to use ANTLR."/>
-        <echo level="warning" message="If you see Ant errors about ANTLR, try downloading the ANTLR JAR"/>
-        <echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="    http://www.ibiblio.org/maven/antlr/jars/${antlr.jar}"/>
         <echo level="warning" message=" "/>
         <echo level="warning" message="And then copy the file to Ant's lib directory: "/>
         <echo level="warning" message=" "/>
@@ -195,16 +178,6 @@
             src="file://${basedir}/lib/${sigtest.jar}"/>
     </target>
 
-    <target name="antlr" depends="get-deps,antlr.check"
-            description="Generates Java files from the ANTLR grammar files.">
-        <property name="parser.dir" value="org/drools/semantics/java/parser"/>
-        <mkdir dir="${src.dir}/${parser.dir}"/>
-        <antlr target="drools-java/src/main/${parser.dir}/java.g"
-            outputdirectory="${src.dir}/${parser.dir}"/>
-        <antlr target="drools-java/src/main/${parser.dir}/java.tree.g"
-            outputdirectory="${src.dir}/${parser.dir}"/>
-    </target>
-
     <target name="merge-src"
             description="Copies all the Java code from all the modules into a single integrated source tree.">
         <mkdir dir="${src.dir}"/>
@@ -236,7 +209,7 @@
         </copy>
     </target>
 
-    <target name="compile" depends="merge-src,antlr"
+    <target name="compile" depends="merge-src,get-deps"
             description="Compiles all the Java code.">
         <mkdir dir="${classes.dir}"/>
         <javac destdir="${classes.dir}" debug="true" debuglevel="source,lines">
