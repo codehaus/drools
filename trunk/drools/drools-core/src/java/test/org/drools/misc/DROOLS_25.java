@@ -7,7 +7,9 @@
 * Current issue: if a rule has 2 params, and the 2nd param is modified the condition isn't reeval'd
 *
 */
-package org.drools.io;
+package org.drools.misc;
+
+import org.drools.io.RuleSetLoader;
 
 import junit.framework.TestCase;
 
@@ -18,10 +20,10 @@ import org.drools.rule.RuleSet;
 import java.net.URL;
 import java.util.*;
 
-public class BugTest extends TestCase {
+public class DROOLS_25 extends TestCase {
     private WorkingMemory workingMemory;
 
-    public BugTest(String name) {
+    public DROOLS_25(String name) {
         super( name );
     }
 
@@ -55,10 +57,6 @@ public class BugTest extends TestCase {
         }
     }
 
-    /**
-     * Currently works
-     */
-/*
     public void testSuccessWithRetractAndAssert() {
         try {
             //create vars to place in working memory
@@ -92,11 +90,7 @@ public class BugTest extends TestCase {
             fail( e.getMessage() );
         }
     }
-*/
 
-    /**
-     * Currently doesn't work
-     */
     public void testSuccessWithModify() {
         try {
             //create vars to place in working memory
