@@ -171,6 +171,12 @@
     </dependency>
 
     <dependency>
+      <id>jython</id>
+      <version>2.1</version>
+      <url>http://jython.org/</url>
+    </dependency>
+
+    <dependency>
       <id>saxpath</id>
       <version>1.0-FCS</version>
       <url>http://saxpath.org/</url>

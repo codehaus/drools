@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.4 2002-08-19 00:31:42 bob Exp $
+ $Id: Interp.java,v 1.5 2002-08-26 17:59:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,8 +48,10 @@ package org.drools.semantics.java;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
+import org.drools.spi.ObjectType;
 
 import bsh.Interpreter;
+import bsh.NameSpace;
 import bsh.EvalError;
 
 import java.util.Set;
@@ -63,7 +65,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.4 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: Interp.java,v 1.5 2002-08-26 17:59:22 bob Exp $
  */
 public class Interp
 {
@@ -104,28 +106,24 @@ public class Interp
      */
     public Object evaluate(Tuple tuple) throws EvalError
     {
-        try
-        {
-            setUpInterpreter( tuple );
-
-            return evaluate();
-        }
-        finally
-        {
-            cleanUpInterpreter( tuple );
-        }
+        NameSpace ns = setUpNamespace( tuple );
+        
+        return evaluate( ns );
     }
 
     /** Evaluate.
+     *
+     *  @param ns The evaluation namespace.
      *
      *  @return The result of evaluation.
      *
      *  @throws EvalError If an error occurs while attempting
      *          to evaluate.
      */
-    protected Object evaluate() throws EvalError
+    protected Object evaluate(NameSpace ns) throws EvalError
     {
-        return this.interp.eval( getText() );
+        return this.interp.eval( getText(),
+                                 ns );
     }
 
     /** Retrieve the text to evaluate.
@@ -146,28 +144,43 @@ public class Interp
         this.text = text;
     }
 
-    /** Configure the interpreter using a <code>Tuple</code>
+    /** Configure a <code>NameSpace</code> using a <code>Tuple</code>
      *  for variable bindings.
      *
      *  @param tuple Tuple containing variable bindings.
      *
+     *  @return The namespace
+     *
      *  @throws EvalError If an error occurs while attempting
      *          to bind variables.
      */
-    protected void setUpInterpreter(Tuple tuple) throws EvalError
+    protected NameSpace setUpNamespace(Tuple tuple) throws EvalError
     {
+        NameSpace ns = new NameSpace( "" );
+
         Set         decls    = tuple.getDeclarations();
 
         Iterator    declIter = decls.iterator();
         Declaration eachDecl = null;
 
+        ObjectType objectType = null;
+
         while ( declIter.hasNext() )
         {
             eachDecl = (Declaration) declIter.next();
             
-            setVariable( eachDecl.getIdentifier(),
-                         tuple.get( eachDecl ) );
+            ns.setVariable( eachDecl.getIdentifier(),
+                            tuple.get( eachDecl ) );
+
+            objectType = eachDecl.getObjectType();
+
+            if ( objectType instanceof ClassObjectType )
+            {
+                ns.importClass( ((ClassObjectType)objectType).getType().getName() );
+            }
         }
+
+        return ns;
     }
 
     /** Set a variable for the interpreter.
@@ -183,29 +196,6 @@ public class Interp
     {
         this.interp.set( name,
                          value );
-    }
-
-    /** Unconfigure the interpreter using a <code>Tuple</code>
-     *  for variable bindings.
-     *
-     *  @param tuple Tuple containing variable bindings.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to unbind variables.
-     */
-    protected void cleanUpInterpreter(Tuple tuple) throws EvalError
-    {
-        Set         decls    = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-            
-            unsetVariable( eachDecl.getIdentifier() );
-        }
     }
 
     /** Set a variable for the interpreter.
