@@ -2,11 +2,11 @@ package org.drools.semantics.annotation.testrules;
 
 import org.drools.FactException;
 import org.drools.spi.KnowledgeHelper;
-import org.drools.semantics.annotation.DroolsRule;
-import org.drools.semantics.annotation.DroolsCondition;
+import org.drools.semantics.annotation.Rule;
+import org.drools.semantics.annotation.Condition;
 import org.drools.semantics.annotation.*;
 
-@DroolsRule
+@Rule
 public class InjectedRule
 {
     private int conditionMinValue;
@@ -30,14 +30,14 @@ public class InjectedRule
         this.consequenceValue = value;
     }
 
-    @DroolsCondition
-    public boolean condition(@DroolsParameter("fooBar1") FooBar fooBar) {
+    @Condition
+    public boolean condition(@Parameter("fooBar1") FooBar fooBar) {
         return fooBar.getMin() > conditionMinValue && fooBar.getMax() < conditionMaxValue;
     }
 
-    @DroolsConsequence
+    @Consequence
     public void consequence(KnowledgeHelper knowledgeHelper,
-                            @DroolsParameter("fooBar1") FooBar fooBar) throws FactException {
+                            @Parameter("fooBar1") FooBar fooBar) throws FactException {
 
         fooBar.setValue(consequenceValue);
         knowledgeHelper.retractObject(fooBar);

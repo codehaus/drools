@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.DroolsParameter;
+import org.drools.semantics.annotation.Parameter;
 import org.drools.semantics.annotation.model.ArgumentSource;
 import org.drools.semantics.annotation.model.TupleArgumentSourceFactory;
 import org.drools.semantics.base.ClassObjectType;
@@ -25,10 +25,10 @@ public class TupleArgumentSourceFactoryTestCase extends TestCase {
     private static class TestObject extends Object {}
 
     private static class TestRule {
-        public void identifierSpecified(@DroolsParameter("v") int value) {}
-        public void identifierDefaultedPrimitive(@DroolsParameter int value) {}
-        public void identifierDefaultedWrapper(@DroolsParameter Double value) {}
-        public void identifierDefaultedObject(@DroolsParameter TestObject value) {}
+        public void identifierSpecified(@Parameter("v") int value) {}
+        public void identifierDefaultedPrimitive(@Parameter int value) {}
+        public void identifierDefaultedWrapper(@Parameter Double value) {}
+        public void identifierDefaultedObject(@Parameter TestObject value) {}
     }
 
     private TupleArgumentSourceFactory factory = new TupleArgumentSourceFactory();

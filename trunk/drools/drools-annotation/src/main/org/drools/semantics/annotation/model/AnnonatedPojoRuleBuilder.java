@@ -9,9 +9,8 @@ import java.util.Set;
 
 import org.drools.DroolsException;
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.DroolsCondition;
-import org.drools.semantics.annotation.DroolsConsequence;
-import org.drools.spi.Consequence;
+import org.drools.semantics.annotation.Condition;
+import org.drools.semantics.annotation.Consequence;
 
 public class AnnonatedPojoRuleBuilder
 {
@@ -77,7 +76,7 @@ public class AnnonatedPojoRuleBuilder
 
     private static void buildConditions(Rule rule, Class<?> ruleClass, Object pojo) throws DroolsException {
         for (Method method : ruleClass.getMethods()) {
-            DroolsCondition conditionAnnotation = method.getAnnotation(DroolsCondition.class);
+            Condition conditionAnnotation = method.getAnnotation(Condition.class);
             if (conditionAnnotation != null) {
                 PojoCondition condition = newPojoCondition(rule, pojo, method);
                 rule.addCondition(condition);
@@ -86,17 +85,16 @@ public class AnnonatedPojoRuleBuilder
     }
 
     private static void buildConsequence(Rule rule, Class< ? > ruleClass, Object pojo) throws DroolsException {
-        Consequence consequence = null;
+        PojoConsequence consequence = null;
         List<RuleReflectMethod> ruleReflectMethods = new ArrayList<RuleReflectMethod>();
         for (Method method : ruleClass.getMethods()) {
-            DroolsConsequence consequenceAnnotation = method.getAnnotation(DroolsConsequence.class);
+            Consequence consequenceAnnotation = method.getAnnotation(Consequence.class);
             if (consequenceAnnotation != null) {
                 ruleReflectMethods.add(newConsequenceRuleReflectMethod(rule, pojo, method));
             }
         }
-        // TODO Replace this check with a call to Rule.checkValidity
         if (ruleReflectMethods.isEmpty()) {
-            throw new MissingConsequenceMethodException( 
+            throw new MissingConsequenceMethodException(
                     "Rule must define at least one consequence method" + ": class = " + ruleClass);
         }
         consequence = new PojoConsequence(

@@ -5,29 +5,29 @@ import org.drools.examples.jiahvac.model.HeatPump;
 import org.drools.examples.jiahvac.model.TempuratureControl;
 import org.drools.examples.jiahvac.model.Thermometer;
 import static org.drools.examples.jiahvac.model.HeatPump.State.*;
-import org.drools.semantics.annotation.DroolsRule;
-import org.drools.semantics.annotation.DroolsParameter;
-import org.drools.semantics.annotation.DroolsCondition;
-import org.drools.semantics.annotation.DroolsConsequence;
+import org.drools.semantics.annotation.Rule;
+import org.drools.semantics.annotation.Parameter;
+import org.drools.semantics.annotation.Condition;
+import org.drools.semantics.annotation.Consequence;
 
-@DroolsRule
+@Rule
 public class FloorsCoolEnough
 {
-    @DroolsCondition
-    public boolean isPumpCooling(@DroolsParameter("pump") HeatPump pump) {
+    @Condition
+    public boolean isPumpCooling(@Parameter("pump") HeatPump pump) {
         return pump.getState() == COOLING;
     }
 
-    @DroolsCondition
-    public boolean isPumpServicingFloor(@DroolsParameter("pump") HeatPump pump,
-                                        @DroolsParameter("thermometer") Thermometer thermometer) {
+    @Condition
+    public boolean isPumpServicingFloor(@Parameter("pump") HeatPump pump,
+                                        @Parameter("thermometer") Thermometer thermometer) {
         return thermometer.getFloor().getHeatPump() == pump;
     }
 
-    @DroolsCondition
-    public boolean isAllFloorsCoolEnough(@DroolsParameter("pump") HeatPump pump,
-                                         @DroolsParameter("thermometer") Thermometer thermometer,
-                                         @DroolsParameter("control") TempuratureControl control) {
+    @Condition
+    public boolean isAllFloorsCoolEnough(@Parameter("pump") HeatPump pump,
+                                         @Parameter("thermometer") Thermometer thermometer,
+                                         @Parameter("control") TempuratureControl control) {
         if (!control.isCoolEnough(thermometer.getReading())) {
             return false;
         }
@@ -42,8 +42,8 @@ public class FloorsCoolEnough
         return true;
      }
 
-    @DroolsConsequence
-    public void consequence(@DroolsParameter("pump") HeatPump pump) {
+    @Consequence
+    public void consequence(@Parameter("pump") HeatPump pump) {
         pump.setState(OFF);
         System.out.println("FloorsCoolEnough: " + pump);
     }
