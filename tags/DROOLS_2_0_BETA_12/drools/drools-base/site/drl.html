@@ -1,0 +1,72 @@
+<div class="section">
+
+  <div class="sectionTitle">Base Semantic Module DRL Reference</div>
+    <div class="subsection">
+      <div class="subsectionTitle">Namespace URI</div>
+  <p>
+  The Java Semantic Module is available through the Drools Rule Language (DRL)
+  by binding the namespace of <code>http://drools.org/rules</code> to
+  either the default namespace or a specific prefix.  Typically it is bound to
+  the default prefix.  This module augments the DRL syntax and exists
+  within the same namespace as the core tags.
+  </p>
+
+      <div class="code">
+<pre>
+&lt;rule-set <span class="highlight">xmlns="http://drools.org/rules"</span>
+      ...&gt;
+</pre>
+      </div>
+
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle">Tag Reference</div>
+        <div class="subsubsection">
+          <div class="subsubsectionTitle">&lt;rule&gt;</div>
+            <p>
+            The base <code>&lt;rule&gt;</code> tag allows the definition
+            of a simple empty rule.  The <code>name</code> attribute is
+            required to uniquely identify a rule within a <code>&lt;rule-set&gt;</code>
+            </p>
+
+            <div class="code">
+<pre>
+&lt;rule-set xmlns="http://drools.org/rules" name="Employee Termination Rules"&gt;
+  <span class="highlight">&lt;rule name="Fire Slacker"&gt;</span>
+      ...
+  <span class="highlight">&lt;/rule&gt;</span>
+&lt;/rule-set&gt;
+</pre>
+            </div>
+        </div>
+        <div class="subsubsection">
+          <div class="subsubsectionTitle">&lt;duration&gt;</div>
+            <p>
+            The <code>&lt;duration&gt;</code> tag allows for the definition
+            of rules with that require a <b>truth duration</b>.  This base
+            tag allows a statically-defined duration which a rule must hold
+            true before firing the consequence.  A duration on a rule may be
+            thought to be a time-delay between the matching of a rule and the
+            subsequent firing of a rule.  
+            </p>
+
+            <p>
+            The tag accepts the attributes of <code>days</code>, <code>hours</code>,
+            <code>minutes</code>, and <code>seconds</code> to specify the delay.
+            </p>
+
+            <div class="code">
+<pre>
+&lt;rule-set xmlns="http://drools.org/rules" name="Employee Termination Rules"gt;
+  &lt;rule name="Fire Slacker"&gt;
+      ...
+    <span class="highlight">&lt;duration days="1" 
+              minutes="1"/&gt;</span>
+  &lt;/rule&gt;
+&lt;/rule-set&gt;
+</pre>
+             </div>
+        </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+\chapter{Functional Overview}
+
+\section{Rules}
+
+\subsection{Declarative Form}
+
+Drools directly supports \emph{declarative}\index{declarative} rules,
+as opposed to \emph{procedural}\index{procedural} logic.  Declarative
+rules typically take the form as follows:
+
+\begin{quote}
+  \textbf{if} \emph{condition} \\
+    \textbf{then} \emph{consequence}
+\end{quote}
+
+By ``declarative', it is meant that the rules \emph{declare}, by
+way of the \emph{condition}, what should occur but do not specify the
+procedure for actually testing the conditions. 
+For example, a procedural method for ensuring you have an umbrella if
+it is raining would be:
+
+\begin{quote}
+    Step outside and determine if it is raining.  If it is raining,
+then go to the closet and get an umbrella.
+\end{quote}
+
+\noindent
+In a declarative form, the above could be represented by two rules:
+
+\begin{itemize}
+  \item \textbf{if} \emph{it is raining} \\
+    \textbf{then} \emph{you need an umbrella}
+  \item \textbf{if} \emph{you need an umbrella} \\
+    \textbf{then} \emph{get one from the closet}
+\end{itemize}
+
+Given declarative rules, the knowledge that it is raining could
+produce two courses of action:
+
+\begin{enumerate}
+  \item You already have an umbrella, perhaps because you always carry
+one, in which case, you're ready.
+  \item You don't have an umbrella, so you go get one from the closet.
+\end{enumerate}
+
+\subsection{Applicable Context}
+
+The set of rules to be considered at any point of time depend upon the
+current context.  As a human, you have certain rules to think about
+when you dine at a fine restaurant, which are exclusive to the set of
+rules you consider when spending a sunny day at the swimming pool.
+Even so, there are some other overriding rules that may be important
+regardless of the context, such as laws against homocide.
+
+So, in a given context, different sets of rules are pertinent.  A
+single set of rules may be user in one context, while a different set
+is used in a different context. Within a rule-engine, available sets 
+of rules are called \emph{rule sets}\index{rule set}.  The set or 
+sets of rules currently applicable given the context is called a 
+\emph{rule base}\index{rule base}.
+
+\section{Knowledge\index{knowledge}}
+
+You become aware of knowledge, in the form of facts, over time.
+Likewise, over time, facts may change or cease to be true, in 
+which case, they facts as you know them must be altered or purged
+from your memory.  Likewise, within a rule-engine, there are
+operations for becoming aware of a fact, purging a fact, or
+modifying a known fact.  These operations are as follow:
+
+\begin{itemize}
+  \item \textbf{Assert\index{assert}} Add a fact to what is known.\\
+    \emph{The weather is rainy.} \emph{Betty is in the room.}
+  \item \textbf{Retract\index{retract}} Remove a fact from what is known.\\
+    Removing the fact \emph{Betty is in the room} when Betty leave the
+    room.
+  \item \textbf{Modify\index{modify}} Alter a fact from what is know.\\
+    Changing the knowledge about the weather from \emph{The weather is
+    rainy} to \emph{The weather is sunny} when the rain stops and the
+    clouds go away.
+\end{itemize}
+
+Within a rule-engine, the collected knowledge is called the
+\emph{working memory}\index{working memory}.  Knowledge is
+asserted, retracted and modified within the working memory and the
+rules are evaluated to determine what actions, if any, should be
+taken.
+
+\section{Why a rule-engine?\index{rule-engine}}
+
+While the logic expressed in a rule can and has often been writen
+within the code a system, a rule-engine offers many benefits.  Instead
+of locking the logic up in code written by developers, the logic can
+be moved out-board external to the actual application.  In this way
+it is possible for non-developers to change the logic without having
+to rebuild the system.  Additionally, by codifying all of the system
+rules in a central location, they are no longer scattered throughout
+the application.  This allows for easier validation of the system's
+requirements and analysis of the logic of the system.
+
+Additionally, a rule-engine such as Drools is built upon an
+intelligent algorithm that allows for the evaluation of many
+rules against many facts in an effecient manner.  In a procedural
+system, a change in a single fact might require double-checking
+\emph{every} rule to determine if any action needs to be taken.
+A rule-engine which uses the \emph{Rete}\index{Rete} algorithm
+is optimized to minimize the amount of processing effort that is
+required to evaluate the rules that may have been affected by
+a change in knowledge.
+
+\section{A note about ``business rules''}
+
+A higher-level form of rule is the \emph{business rule}\index{business
+rules}.  Business rules do not necessarily follow the \emph{if-then}
+form, but may be specified in different formats that are not as
+closely linked to the underlying rule-engine implementation.  Business
+rules tend to use the \emph{must} or \emph{must not} form to
+expression constraints or inferences.
+
+\begin{itemize}
+  \item An order \textbf{must not} be billed before it ships.
+  \item An applicant for store credit \textbf{must} be 18 years of age.
+\end{itemize}
+
+Drools does not directly support this level of business rules, but
+other projects built upon Drools\footnote{The
+\textbf{Fluxtapose\index{Fluxtapose}}
+suite of tools from The Werken Company is one such product that
+supports business rules.} may easily support such
+notation.
+

@@ -1,0 +1,309 @@
+\chapter{Semantic Module Framework}
+\label{smf}
+
+\section{Introduction}
+
+\begin{implnote}
+Wait wait wait...
+
+Reworking the SMF.  ConfigurableFoo is just crappy.
+\end{implnote}
+
+The Semantic Module Framework\index{semantic module framework} (SMF)
+provides an extension point to the Drools Rule Language syntax
+(see Chapter \vref{drl}).  By creating semantic modules,
+domain-specific rule types, object-types, conditions, extractors and consequences
+can be added to the core DRL language.
+
+\section{\indexClass{Declaration} objects}
+\label{smf.declaration}
+
+Each \index{Rule} has a set of parameters that specify what input objects
+are required through the evaluation of the rule.  Each parameter is
+modelled through a \indexClass{Declaration} object which specifies the
+parameter's \emph{identifier} and \emph{object type}.  The
+identifier of a \class{Declaration} is simply a string name that
+uniquely distinguishes one parameter from another.  The object type
+is defined through an \class{ObjectType} component
+(Section~\vref{smf.objectype}).  Various semantic components, notably
+\indexClass{Condition} and \indexClass{Consequence} implementations
+must be cognizant of the available declarations of a rule.
+
+\section{\indexClass{Tuple} objects}
+
+Object flow through the conditions and consequence of a rule in the
+form of a \indexClass{Tuple}.  A tuple is merely an associative
+array, not unlike a \class{HashMap}, which indexes the value of
+the objects by its \indexClass{Declaration}.  \class{Condition} and
+\class{Consequence} implementations operate upon \class{Tuple} objects
+by retrieving values by their \class{Declaration}
+(Figure~\vref{smf.tuple}).
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.spi;
+
+public interface Tuple
+\{
+    ...
+    Object get(Declaration declaration);
+    ...
+\}
+\end{javaCodelisting}
+\caption{Method to retrieve an object by its 
+\indexClass{Declaration} from a \indexClass{Tuple}}
+\label{smf.tuple}
+\end{figure}
+
+
+
+\section{Semantic components}
+
+\subsection{\indexClass{RuleType}}
+
+\begin{implnote}
+This doesn't exist at the moment, but will soon.  \class{RuleType}
+components will allow a module to be responsible for the
+initialization of rule, possibly adding parameters, condition and
+consequences implicitly.
+\end{implnote}
+
+Implementations of \indexClass{RuleType} allow a module to initialize
+a new rule, possibly by adding parameters, conditions or consequences.
+The \class{RuleType} is passed the new \indexClass{Rule} for
+initialization.
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.smf;
+
+public interface RuleType
+\{
+    void initializeRule(Rule rule,
+                        Configuration config)
+        throws RuleTypeException;
+\}
+\end{javaCodelisting}
+\caption{\indexClass{RuleType} interface}
+\label{ruletype}
+\end{figure}
+
+\subsection{\indexClass{ObjectType}}
+\label{smf.objecttype}
+
+Implementations of \indexClass{ObjectType} allow rules to be
+defined in terms of semantic types. Instead of requiring all
+rules to be defined in terms of Java classes, rules may be
+defined in terms of higher semantics.  For example, while
+all XML documents may be instances of \texttt{org.w3c.dom.Document}
+each document may have a different semantic type based upon
+the name and namespace of the root tag.  Given an \texttt{Object},
+an \indexClass{ObjectType} implementation must simply determine
+if it matches its semantic type (Figure \vref{objecttype}).
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.spi;
+
+public interface ObjectType
+    extends SemanticComponent
+\{
+    boolean matches(Object object);
+\}
+\end{javaCodelisting}
+\caption{\indexClass{ObjectType} interface}
+\label{objecttype}
+\end{figure}
+
+\subsubsection{\indexClass{ConfigurableObjectType}}
+
+Configuration information may be passed to an \indexClass{ObjectType}
+if the implementation is marked with the
+\indexClass{ConfigurableObjectType} interface.
+A \indexMethod{ConfigurableObjectType}{configure(...)} method
+is added by the \indexClass{ConfigurableObjectType} interface.
+through which additional information may be passed
+(Figure~\vref{configurableobjecttype}).
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.smf;
+
+public interface ConfigurableObjectType
+    extends ObjectType
+\{
+    void configure(Configuration config) throws ConfigurationException;
+\}
+\end{javaCodelisting}
+\caption{\indexClass{ConfigurableObjectType} interface}
+\label{configurableobjecttype}
+\end{figure}
+
+\subsection{\indexClass{Condition}}
+
+Implementations of the \indexClass{Condition} interface allow for
+custom conditions to be created.  Each condition is effectively
+a predicate object that returns a boolean value given some input
+data.  In order to insert the \indexClass{Condition} into the
+appropriate location within the Rete\index{Rete} graph, each
+\class{Condition} must specify the declarations of the variables
+with which is analyzes (Section~\vref{smf.declaration}).
+
+Figure~\vref{condition} show \indexClass{Condition} interface.
+Any value expected to be used by the
+\indexMethod{Condition}{isAllowed(...)}
+method must be accounted for in the array of \indexClass{Declaration}
+objects returned by \indexMethod{Condition}{getRequiredTupleMembers}.
+For example, a rule may declares three object: \texttt{a}, \texttt{b},
+and \texttt{c}.  A particular \class{Condition} implementation might
+only test attributes of the \texttt{b} object.  In that case, the
+\indexClass{Declaration} associated with the \texttt{b} object must
+be returned from
+\indexMethod{Condition}{getRequiredTupleMembers(...)}.
+
+The \indexMethod{Condition}{isAllowed(...)} method is passed a
+\indexClass{Tuple} when enough knowledge to satisfy the required
+members is available.  It may then use the operations of \class{Tuple}
+to retrieve the objects and perform its test to return a boolean.
+
+\begin{figure}
+\begin{javaCodelisting}
+package org.drools.spi;
+
+public interface Condition
+    extends SemanticComponent
+\{
+    Declaration[] getRequiredTupleMembers();
+
+    boolean isAllowed(Tuple tuple) throws ConditionException;
+\}
+\end{javaCodelisting}
+\caption{\indexClass{Condition} interface}
+\label{condition}
+\end{figure}
+
+\subsubsection{\indexClass{ConfigurableCondition}}
+
+\subsection{\indexClass{Extractor}}
+
+\subsubsection{\indexClass{ConfigurableExtractor}}
+
+\subsection{\indexClass{Condition}}
+
+\subsubsection{\indexClass{ConfigurableCondition}}
+
+\subsection{\indexClass{Consequence}}
+
+\subsubsection{\indexClass{ConfigurableConsequence}}
+
+\section{The \indexClass{Configuration} structure}
+
+For the \texttt{Configurable...} form of the semantic components, 
+configuration information is communicated through a tree of
+\indexClass{Configuration} objects.  Each \class{Configuration}
+object acts as a node in the tree, and may contain the following
+data:
+
+\begin{itemize}
+  \item \textbf{Attributes.} Zero or more name/value pairs of strings
+(Figure~\vref{configuration.attributes}).
+  \item \textbf{Text.} A single string text value
+(Figure~\vref{configuration.text}).
+  \item \textbf{Child \class{Configuration} nodes.} Zero or more named
+    child \class{Configuration} nodes
+(Figure~\vref{configuration.children}).
+\end{itemize}
+
+\begin{figure}
+\begin{javaCodelisting}
+String[] attrNames = config.getAttributeNames();
+String   someValue = config.getAttribute( someName );
+\end{javaCodelisting}
+\caption{Attribute-related operations of \indexClass{Configuration}}
+\label{configuration.attributes}
+\end{figure}
+
+\begin{figure}
+\begin{javaCodelisting}
+String nodeText = config.getText();
+\end{javaCodelisting}
+\caption{Text-related operation of \indexClass{Configuration}}
+\label{configuration.text}
+\end{figure}
+
+\begin{figure}
+\begin{javaCodelisting}
+Configuration[] allChildren    = config.getChildren();
+Configuration   someFirstChild = config.getChild( someName );
+Configuraiton[] someChildren   = config.getChildren( someName );
+\end{javaCodelisting}
+\caption{Child-related operations of \indexClass{Configuration}}
+\label{configuration.children}
+\end{figure}
+
+The tree of \indexClass{Configuration} nodes may be thought of as
+a simplified version of an XML structure.  For configurable semantic
+components used through the DRL (Chapter~\vref{drl}), the root 
+\class{Configuration} is based upon the component's own tag, and
+children tags are represetned by children \class{Configuration}
+nodes.
+
+\section{Semanitc Module Descriptor}
+\label{module.descriptor}
+
+Conforming semantic modules are packaged as individual JAR files which
+can be added to the application's classpath.  Each JAR should contain,
+in the \texttt{META-INF} directory a file named
+\texttt{drools-semantics.properties} which provides meta-information about
+the module and its available semantic components.
+
+\begin{implnote}
+Still working on the module descriptor format.
+\end{implnote}
+
+\section{\indexClass{SemanticsRepository}}
+
+A \indexClass{SemanticsRepository} manages a set of
+\indexClass{SemanticModule} objects and allows each to be looked-up
+by its URI (Figure~\vref{semanticsrepo}).  Primary a \indexClass{SemanticsRepository} is used by
+a \indexClass{RuleSetReader} (Section~\vref{admin.rules.loading})
+in order to extend the core DRL (Chapter~\vref{drl}) syntax.
+
+\begin{figure}
+\begin{javaCodelisting}
+SemanticsRepository repo       = locateSemanticsRepository();
+SemanticModule[]    modules    = repo.getSemanticModules();
+SemanticModule      someModule = repo.lookupSemanticModule( someUri );
+\end{javaCodelisting}
+\caption{Usage of the \indexClass{SemanticsRepository}}
+\label{semanticsrepo}
+\end{figure}
+
+\section{The \indexClass{DefaultSemanticsRepository} helper}
+
+The \indexClass{DefaultSemanticsRepository} helper class is useful
+in that it contains all conforming semantic modules available on
+the classpath.  Each module that has a module descriptor
+(Section~\vref{module.descriptor}) located within the 
+\texttt{META-INF} directory.  Each \texttt{drools-semantics.properties}
+will be automatically discovered by the
+\class{DefaultSemanticsRepository}
+upon first use.  
+
+Being a help class that is initialized once, it follows the
+singleton pattern.  To use the
+\indexClass{DefaultSemanticsRepository}, the
+\indexMethod{DefaultSemanticsRepository}{getInstance()}
+method will retrieve the singleton instance
+(Figure~\vref{defaultsemanticsrepo}).
+
+\begin{figure}
+\begin{javaCodelisting}
+SemanticsRepository repo    = DefaultSemanticsRepository.getInstance();
+SemanticModule[]    modules = repo.getSemanticModules();
+\end{javaCodelisting}
+\caption{Retrieving and using the
+\indexClass{DefaultSemanticsRepository} helper}
+\label{defaultsemanticsrepo}
+\end{figure}
+

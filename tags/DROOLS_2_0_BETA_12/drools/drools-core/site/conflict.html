@@ -1,0 +1,32 @@
+<div class="section">
+
+  <div class="sectionTitle">Conflict Resolution Strategies</div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a href="TOP/api/org/drools/conflict/SalienceConflictResolver.html">SalienceConflictResolver</a></div> 
+      <p>
+      The <a href="TOP/api/org/drools/conflict/SalienceConflictResolver.html">SalienceConflictResolver</a>  
+      resolves conflicts between rules by using their <a href="TOP/api/org/drools/rule/Rule.html#getSalience()">salience</a>
+      value.  Rules with the same salience will be selected in an arbitrary order.
+      <p>
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a href="TOP/api/org/drools/conflict/ComplexityConflictResolver.html">ComplexityConflictResolver</a></div> 
+      <p>
+      The <a href="TOP/api/org/drools/conflict/ComplexityConflictResolver.html">ComplexityConflictResolver</a> resolves
+      conflicts between rules based upon the number of conditions, with a rule containing more conditions is given
+      priority over one with fewer conditions.  In the event that two conflicting rules have the same complexity
+      measure, the resolver falls back to the strategy used by the <code>SalienceConflictResolver</code>.
+      </p>
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a href="TOP/api/org/drools/conflict/SimplicityConflictResolver.html">SimplicityConflictResolver</a></div> 
+      <p>
+      The <a href="TOP/api/org/drools/conflict/SimplicityConflictResolver.html">SimplicityConflictResolver</a> resolves
+      conflicts between rules based upon the number of conditions, with a rule containing fewer conditions is given
+      priority over one with more conditions.  In the event that two conflicting rules have the same complexity
+      measure, the resolver falls back to the strategy used by the <code>SalienceConflictResolver</code>.
+      </p>
+    </div>
+  </div>
+</div>
+
