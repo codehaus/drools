@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.35 2003-03-25 20:19:06 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.36 2003-05-23 14:31:26 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
     <property name="basename" value="drools"/>
-    <property name="version" value="2.0-beta-10"/>
+    <property name="version" value="2.0-beta-11-SNAPSHOT"/>
 
     <property name="jarname" value="${basename}-${version}"/>
     <property name="rarname" value="${basename}-jsr94-${version}"/>
@@ -62,13 +62,6 @@
                 <fileset dir="${commonlibdir}" includes="*.jar"/>
             </classpath>
         </javac>
-
-        <copy todir="${testclassesdir}">
-            <fileset dir="src/java/test">
-                <include name="**/*.drl"/>
-                <include name="**/*.jelly"/>
-            </fileset>
-        </copy>
 
         <copy todir="${classesdir}">
             <fileset dir="src/java/main">
@@ -191,9 +184,16 @@
     <target name="compile-tests"
         depends="compile">
         <mkdir dir="${testclassesdir}"/>
+
+        <copy todir="${testclassesdir}">
+            <fileset dir="src/java/test">
+                <include name="**/*.drl"/>
+                <include name="**/*.jelly"/>
+            </fileset>
+        </copy>
+
         <javac destdir="${testclassesdir}" deprecation="true" debug="true" optimize="false"
             excludes="**/JessBenchmarkTestCase.java">
-            <src path="src/java/examples"/>
             <src path="src/java/test"/>
             <classpath>
                 <fileset dir="${commonlibdir}" includes="*.jar"/>
@@ -207,9 +207,7 @@
         depends="jar">
         <mkdir dir="${examplesclassesdir}"/>
         <javac destdir="${examplesclassesdir}" deprecation="true" debug="true" optimize="false" excludes="**/package.html">
-            <src>
-                <pathelement location="src/java/examples"/>
-            </src>
+            <src path="src/java/examples"/>
             <classpath>
                 <path location="target/${jarname}.jar"/>
                 <fileset dir="${commonlibdir}" includes="*.jar"/>
@@ -299,7 +297,6 @@
             </fileset>
             <fileset dir="${libdir}">
                 <include name="antlrall-*.jar"/>
-                <include name="bsh-*.jar"/>
                 <include name="commons-*.jar"/>
                 <include name="dom4j-*.jar"/>
                 <include name="xerces-*.jar"/>
@@ -313,11 +310,11 @@
 
     </target>
 
-    <target name="war"
+    <target name="war-jboss"
         unless="test.failure"
         depends="jar, compile-examples">
 
-        <war destfile="${defaulttargetdir}/${warname}.war" webxml="${webappdir}/web-inf/web.xml">
+        <war destfile="${defaulttargetdir}/${warname}-jboss.war" webxml="${webappdir}/web-inf/web.xml">
 
             <fileset dir="${webappdir}">
                 <include name="*.*"/>
@@ -344,6 +341,53 @@
 
     </target>
 
+    <target name="war-catalina"
+        unless="test.failure"
+        depends="jar, compile-examples">
+
+        <war destfile="${defaulttargetdir}/${warname}-catalina.war" webxml="${webappdir}/web-inf/web.xml">
+            <fileset dir="${webappdir}">
+                <include name="*.*"/>
+            </fileset>
+            <fileset dir="${testdir}/org/drools/jsr94">
+                <include name="sisters.drl"/>
+            </fileset>
+            <classes dir="${examplesclassesdir}">
+                <include name="**/Sisters.class"/>
+                <include name="**/Person.class"/>
+            </classes>
+            <lib dir="${defaulttargetdir}">
+                <include name="${jarname}.jar"/>
+            </lib>
+            <lib dir="${commonlibdir}">
+                <include name="jsr94-*.jar"/>
+            </lib>
+            <lib dir="${libdir}">
+                <include name="antlrall-*.jar"/>
+                <include name="bsh-*.jar"/>
+                <include name="commons-beanutils-*.jar"/>
+                <include name="commons-jelly-*.jar"/>
+                <include name="commons-jexl-*.jar"/>
+                <include name="dom4j-*.jar"/>
+                <exclude name="commons-jelly-tags-junit*.jar"/>
+            </lib>
+        </war>
+    </target>
+
+    <target name="check-catalina" unless="env.CATALINA_HOME">
+        <fail>
+            Environment entry CATALINA_HOME is not set.
+        </fail>
+    </target>
+
+    <target name="wrong-catalina" unless="catalina.present">
+        <fail>
+            Environment entry "CATALINA_HOME" is set but it does not seem
+            to point to the right directory.
+            The file "${env.CATALINA_HOME}/bin/catalina.bat" must be available.
+        </fail>
+    </target>
+
     <target name="check-jboss" unless="env.JBOSS_HOME">
         <fail>
             Environment entry JBOSS_HOME is not set. It must point to the directory which
@@ -363,14 +407,29 @@
         <antcall target="check-jboss"/>
         <available property="jboss.present" file="${env.JBOSS_HOME}/bin/run.jar"/>
         <antcall target="wrong-jboss"/>
+        <antcall target="check-catalina"/>
+        <available property="catalina.present" file="${env.CATALINA_HOME}/bin/catalina.bat"/>
+        <antcall target="wrong-catalina"/>
+    </target>
+
+    <target name="deploy-catalina" description="o Deploy test webapp to Catalina"
+        depends="check-environment, war-catalina">
+
+        <delete dir="${env.CATALINA_HOME}/webapps/${warname}"/>
+        <copy file="${defaulttargetdir}/${warname}-catalina.war" tofile="${env.CATALINA_HOME}/webapps/${warname}.war"/>
+
+        <echo/>
+        <echo message="http://localhost:8080/drools"/>
     </target>
 
     <target name="deploy-jboss" description="o Deploy test webapp to JBoss"
-        depends="check-environment, rar, war">
+        depends="check-environment, rar, war-jboss">
+
+        <copy file="${etcdir}/drools-jsr94-service.xml" todir="${defaulttargetdir}"/>
 
         <copy file="${defaulttargetdir}/${rarname}.rar" todir="${env.JBOSS_HOME}/server/default/deploy"/>
-        <copy file="${etcdir}/drools-jsr94-service.xml" todir="${env.JBOSS_HOME}/server/default/deploy"/>
-        <copy file="${defaulttargetdir}/${warname}.war" todir="${env.JBOSS_HOME}/server/default/deploy"/>
+        <copy file="${defaulttargetdir}/drools-jsr94-service.xml" todir="${env.JBOSS_HOME}/server/default/deploy"/>
+        <copy file="${defaulttargetdir}/${warname}-jboss.war" tofile="${env.JBOSS_HOME}/server/default/deploy/${warname}.war"/>
 
         <echo/>
         <echo message="http://localhost:8080/drools"/>
@@ -381,17 +440,17 @@
         depends="init">
         <get dest="${libdir}/antlrall-2.7.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/antlr/jars/antlrall-2.7.1.jar"/>
         <get dest="${libdir}/bsh-1.2-b3.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/bsh/jars/bsh-1.2-b3.jar"/>
-        <get dest="${libdir}/commons-beanutils-1.4-dev.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-beanutils/jars/commons-beanutils-1.4-dev.jar"/>
-        <get dest="${libdir}/commons-collections-2.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.0.jar"/>
-        <get dest="${libdir}/commons-jelly-20030211.141339.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-20030211.141339.jar"/>
-        <get dest="${libdir}/commons-jelly-tags-junit-20030211.141731.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-tags-junit-20030211.141731.jar"/>
-        <get dest="${libdir}/commons-jexl-1.0-beta-1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jexl/jars/commons-jexl-1.0-beta-1.jar"/>
+        <get dest="${libdir}/commons-beanutils-1.6.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-beanutils/jars/commons-beanutils-1.6.jar"/>
+        <get dest="${libdir}/commons-collections-2.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar"/>
+        <get dest="${libdir}/commons-jelly-1.0-beta-4-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-1.0-beta-4-SNAPSHOT.jar"/>
+        <get dest="${libdir}/commons-jelly-tags-junit-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-tags-junit-SNAPSHOT.jar"/>
+        <get dest="${libdir}/commons-jexl-1.0-beta-2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jexl/jars/commons-jexl-1.0-beta-2.jar"/>
         <get dest="${libdir}/commons-logging-1.1-dev.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-logging/jars/commons-logging-1.1-dev.jar"/>
-        <get dest="${libdir}/dom4j-1.4-dev-7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/dom4j/jars/dom4j-1.4-dev-7.jar"/>
+        <get dest="${libdir}/dom4j-1.4.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/dom4j/jars/dom4j-1.4.jar"/>
         <get dest="${libdir}/junit-3.8.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar"/>
         <get dest="${libdir}/jython-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jython/jars/jython-SNAPSHOT.jar"/>
         <get dest="${libdir}/xml-apis-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xml-apis/jars/xml-apis-2.0.2.jar"/>
-        <get dest="${libdir}/xerces-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-2.0.2.jar"/>
+        <get dest="${libdir}/xerces-2.3.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-2.3.0.jar"/>
     </target>
 
 </project>
