@@ -112,7 +112,7 @@
 
         <unitTest>
             <includes>
-                <include>**/*TestCase.java</include>
+                <include>**/org/drools/jsr94/AllTests.java</include>
                 <include>**/org/jcp/jsr94/tck/AllTests.java</include>
             </includes>
             <resources>
