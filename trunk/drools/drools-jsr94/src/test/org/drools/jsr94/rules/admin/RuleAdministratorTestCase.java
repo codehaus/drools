@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorTestCase.java,v 1.3 2004-04-04 02:54:56 n_alex Exp $
+ $Id: RuleAdministratorTestCase.java,v 1.4 2004-04-04 03:13:21 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -99,7 +99,7 @@ public class RuleAdministratorTestCase extends RuleEngineTestBase {
    /**
     * Test deregisterRuleExecutionSet.
     */
-   public void testUnregisterRuleExecutionSet() throws Exception {
+   public void testDeregisterRuleExecutionSet() throws Exception {
       try {
          // that it works is tested else where
          ruleAdministrator.deregisterRuleExecutionSet("test URI", null);
