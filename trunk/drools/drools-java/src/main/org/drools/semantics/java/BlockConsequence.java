@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ $Id: BlockConsequence.java,v 1.2 2002-08-18 05:54:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,13 +53,15 @@ import org.drools.spi.Tuple;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.ConfigurationException;
 
+import bsh.EvalError;
+
 /** Java block semantics <code>Consequence</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.2 2002-08-18 05:54:51 bob Exp $
  */
-public class BlockConsequence implements ConfigurableConsequence
+public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
     public BlockConsequence()
     {
@@ -69,12 +71,24 @@ public class BlockConsequence implements ConfigurableConsequence
     public void configure(String text,
                           Declaration[] decls) throws ConfigurationException
     {
-
+        setText( text );
     }
 
     public void invoke(Tuple tuple,
                        WorkingMemory workingMemory) throws ConsequenceException
     {
+        try
+        {
+            setVariable( "drools$working$memory",
+                         workingMemory );
+            
+            evaluate( tuple );
 
+            unsetVariable( "drools$working$memory" );
+        }
+        catch (EvalError e)
+        {
+            throw new ConsequenceException( e );
+        }
     }
 }
