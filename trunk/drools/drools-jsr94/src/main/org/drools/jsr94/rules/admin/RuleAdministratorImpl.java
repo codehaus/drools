@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleAdministratorImpl.java,v 1.11 2004-11-14 20:12:37 dbarnett Exp $
+ * $Id: RuleAdministratorImpl.java,v 1.12 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,8 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  * The <code>RuleAdministrator</code> should be accessed by calling:
  * <p/>
  * <code>
- * RuleServiceProvider ruleServiceProvider = RuleServiceProvider.newInstance();
+ * RuleServiceProvider ruleServiceProvider =
+ *     RuleServiceProvider.newInstance();<br/>
  * RuleAdministrator ruleAdministration =
  *     ruleServiceProvider.getRuleAdministrator();
  * </code>

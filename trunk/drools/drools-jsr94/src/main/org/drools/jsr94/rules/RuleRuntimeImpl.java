@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleRuntimeImpl.java,v 1.11 2004-11-05 20:49:33 dbarnett Exp $
+ * $Id: RuleRuntimeImpl.java,v 1.12 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,7 +52,24 @@ import javax.rules.RuleSessionTypeUnsupportedException;
 import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
 
 /**
- * <code>RuleRuntime</code> interface.
+ * The Drools implementation of the <code>RuleRuntime</code> interface which is
+ * the access point for runtime execution of <code>RuleExecutionSet</code>s.
+ * It provides methods to create <code>RuleSession</code> implementation as well
+ * as methods to retrieve <code>RuleExecutionSet</code>s that have been
+ * previously registered using the <code>RuleAdministrator</code>.
+ * <p/>
+ * The <code>RuleRuntime</code> should be accessed through the
+ * <code>RuleServiceProvider</code>. An instance of the <code>RuleRuntime</code>
+ * can be retrieved by calling:
+ * <p/>
+ * <code>
+ * RuleServiceProvider ruleServiceProvider =
+ *     RuleServiceProvider.newInstance();<br/>
+ * RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+ * </code>
+ * <p/>
+ * Note: the release method must be called on the <code>RuleSession</code> to
+ * clean up all resources used by the <code>RuleSession</code>.
  *
  * @see RuleRuntime
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
@@ -60,28 +77,46 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
 public class RuleRuntimeImpl implements RuleRuntime
 {
     /**
+     * Create a new <code>RuleRuntimeImpl</code>.
+     */
+    public RuleRuntimeImpl( )
+    {
+        // no special initialization required
+    }
+
+    /**
      * Creates a <code>RuleSession</code> implementation using the supplied
-     * vendor-specific rule execution set registration URI.
+     * Drools-specific rule execution set registration URI.
      *
-     * @see RuleRuntime#createRuleSession
+     * @param uri the URI for the <code>RuleExecutionSet</code>
+     * @param properties additional properties used to create the
+     *        <code>RuleSession</code> implementation.
+     * @param ruleSessionType the type of rule session to create.
+     *
+     * @throws RuleSessionTypeUnsupportedException if the ruleSessionType is not
+     *         supported by Drools or the RuleExecutionSet
+     * @throws RuleExecutionSetNotFoundException if the URI could not be
+     *         resolved into a <code>RuleExecutionSet</code>
+     *
+     * @return The created <code>RuleSession</code>.
      */
     public RuleSession createRuleSession(
-            String bindUri, Map properties, int ruleSessionType )
-        throws RuleExecutionSetNotFoundException,
-               RuleSessionTypeUnsupportedException
+            String uri, Map properties, int ruleSessionType )
+        throws RuleSessionTypeUnsupportedException,
+               RuleExecutionSetNotFoundException
     {
 
         if ( ruleSessionType == RuleRuntime.STATELESS_SESSION_TYPE )
         {
             StatelessRuleSessionImpl session =
-                new StatelessRuleSessionImpl( bindUri, properties );
+                new StatelessRuleSessionImpl( uri, properties );
             return session;
         }
 
         if ( ruleSessionType == RuleRuntime.STATEFUL_SESSION_TYPE )
         {
             StatefulRuleSessionImpl session =
-                new StatefulRuleSessionImpl( bindUri, properties );
+                new StatefulRuleSessionImpl( uri, properties );
             return session;
         }
 
@@ -90,12 +125,11 @@ public class RuleRuntimeImpl implements RuleRuntime
     }
 
     /**
-     * Retrieves a List of the URIs that currently have
-     * <code>RuleExecutionSets</code> associated with them.
-     *
+     * Retrieves a <code>List</code> of the URIs that currently have
+     * <code>RuleExecutionSet</code>s associated with them.
      * An empty list is returned is there are no associations.
      *
-     * @see RuleRuntime#getRegistrations
+     * @return a <code>List</code> of <code>String</code>s (URIs)
      */
     public List getRegistrations( )
     {

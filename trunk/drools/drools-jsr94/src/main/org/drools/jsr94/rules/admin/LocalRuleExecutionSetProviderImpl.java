@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.15 2004-11-14 20:12:37 dbarnett Exp $
+ * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.16 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -89,7 +89,7 @@ public class LocalRuleExecutionSetProviderImpl
      *
      * @throws RuleExecutionSetCreateException
      *         on rule execution set creation error.
-     * 
+     *
      * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(
@@ -122,7 +122,7 @@ public class LocalRuleExecutionSetProviderImpl
      *
      * @throws RuleExecutionSetCreateException
      *         on rule execution set creation error.
-     * 
+     *
      * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(
@@ -154,7 +154,7 @@ public class LocalRuleExecutionSetProviderImpl
      *
      * @throws RuleExecutionSetCreateException
      *         on rule execution set creation error.
-     * 
+     *
      * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(

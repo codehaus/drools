@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.13 2004-11-06 11:02:27 mproctor Exp $
+ * $Id: RuleSessionImpl.java,v 1.14 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,19 +55,21 @@ import javax.rules.StatelessRuleSession;
 import javax.rules.admin.RuleExecutionSet;
 
 import org.drools.WorkingMemory;
-import org.drools.event.DebugWorkingMemoryEventListener;
 import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
 import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
 
 /**
- * This interface is a representation of a client session with a rules engine.
- *
- * <p>
- * A rules engine session serves as an entry point into an underlying rules
- * engine. The <code>RuleSession</code> is bound to a rules engine instance
- * and exposes a vendor-neutral rule processing API for executing Rule(s) within
- * a bound <code>RuleExecutionSet</code>.
- * </p>
+ * The Drools implementation of the <code>RuleSession</code> interface which is
+ * a representation of a client session with a rules engine. A rules engine
+ * session serves as an entry point into an underlying rules engine. The
+ * <code>RuleSession</code> is bound to a rules engine instance and exposes a
+ * vendor-neutral rule processing API for executing <code>Rule</code>s within a
+ * bound <code>RuleExecutionSet</code>.
+ * <p/>
+ * Note: the <code>release</code> method must be called to clean up all
+ * resources used by the <code>RuleSession</code>. Calling <code>release</code>
+ * may make the <code>RuleSession</code> eligible to be returned to a
+ * <code>RuleSession</code> pool.
  *
  * @see RuleSession
  *
@@ -76,11 +78,11 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
  */
 abstract class RuleSessionImpl implements RuleSession
 {
-    private WorkingMemory        workingMemory;
+    private WorkingMemory workingMemory;
 
     private RuleExecutionSetImpl ruleSet;
 
-    private Map                  properties;
+    private Map properties;
 
     protected void initWorkingMemory( )
     {
@@ -103,9 +105,6 @@ abstract class RuleSessionImpl implements RuleSession
                     ( String ) entry.getKey( ), entry.getValue( ) );
             }
         }
-
-        //newWorkingMemory.addEventListener(
-        //    new DebugWorkingMemoryEventListener( ) );
 
         return newWorkingMemory;
     }
@@ -149,9 +148,28 @@ abstract class RuleSessionImpl implements RuleSession
         }
     }
 
+    protected void applyFilter( List objects, ObjectFilter objectFilter )
+    {
+        if ( objectFilter != null )
+        {
+            for ( Iterator objectIter = objects.iterator( );
+                  objectIter.hasNext( ); )
+            {
+                if ( objectFilter.filter( objectIter.next( ) ) == null )
+                {
+                    objectIter.remove( );
+                }
+            }
+        }
+    }
+
+    // JSR94 interface methods start here -------------------------------------
+
     /**
      * Returns the meta data for the rule execution set bound to this rule
      * session.
+     *
+     * @return the RuleExecutionSetMetaData bound to this rule session.
      */
     public RuleExecutionSetMetadata getRuleExecutionSetMetadata( )
     {
@@ -177,8 +195,15 @@ abstract class RuleSessionImpl implements RuleSession
     }
 
     /**
-     * Returns the type identifier for this RuleSession. The type identifiers
-     * are defined in the RuleRuntime interface.
+     * Returns the type identifier for this <code>RuleSession</code>. The
+     * type identifiers are defined in the <code>RuleRuntime</code> interface.
+     *
+     * @return the type identifier for this <code>RuleSession</code>
+     *
+     * @throws InvalidRuleSessionException on illegal rule session state.
+     *
+     * @see RuleRuntime#STATEFUL_SESSION_TYPE
+     * @see RuleRuntime#STATELESS_SESSION_TYPE
      */
     public int getType( ) throws InvalidRuleSessionException
     {
@@ -195,11 +220,11 @@ abstract class RuleSessionImpl implements RuleSession
         throw new InvalidRuleSessionException( "unknown type" );
     }
 
-    public void reset( )
-    {
-        initWorkingMemory( );
-    }
-
+    /**
+     * Releases all resources used by this rule session.
+     * This method renders this rule session unusable until
+     * it is reacquired through the <code>RuleRuntime</code>.
+     */
     public void release( )
     {
         setProperties( null );
@@ -207,18 +232,16 @@ abstract class RuleSessionImpl implements RuleSession
         setRuleExecutionSet( null );
     }
 
-    protected void applyFilter( List objects, ObjectFilter objectFilter )
+    /**
+     * Resets this rule session. Calling this method will bring the rule session
+     * state to its initial state for this rule session and will reset any other
+     * state associated with this rule session.
+     * <p/>
+     * A reset will not reset the state on the default object filter for a
+     * <code>RuleExecutionSet</code>.
+     */
+    public void reset( )
     {
-        if ( objectFilter != null )
-        {
-            for ( Iterator objectIter = objects.iterator( );
-                  objectIter.hasNext( ); )
-            {
-                if ( objectFilter.filter( objectIter.next( ) ) == null )
-                {
-                    objectIter.remove( );
-                }
-            }
-        }
+        initWorkingMemory( );
     }
 }
