@@ -40,6 +40,7 @@ public class RuleSetReader
 {
     public static final String RULES_NAMESPACE_URI = "http://drools.org/rules";
 
+    private SAXParser parser;
     private Locator locator;
 
     private RuleSet ruleSet;
@@ -57,6 +58,14 @@ public class RuleSetReader
     private Map enders;
 
     private SemanticsRepository repo;
+
+    public RuleSetReader(SemanticsRepository repo,
+                         SAXParser parser)
+    {
+        this( repo );
+
+        this.parser = parser;
+    }
 
     public RuleSetReader(SemanticsRepository repo)
     {
@@ -184,17 +193,27 @@ public class RuleSetReader
     public RuleSet read(InputSource in)
         throws Exception
     {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        
-        factory.setNamespaceAware( true );
-        
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = null;
+
+        if ( this.parser == null )
+        {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            
+            factory.setNamespaceAware( true );
+            
+            parser = factory.newSAXParser();
+        }
+        else
+        {
+            parser = this.parser;
+        }
 
         parser.parse( in,
                       this );
 
         return this.ruleSet;
     }
+
     public void setLocator(Locator locator)
     {
         this.locator = locator;
