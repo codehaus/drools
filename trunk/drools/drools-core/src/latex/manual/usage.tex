@@ -35,8 +35,12 @@ to retrieve a \verb|RuleBase| from its URI.
 \begin{codelisting}
 RuleBaseRepository repo = myUtilities.getRepository();
 
-RuleBase ruleBase = repo.lookupRuleBase( "http://rules.werken.com/client-scoring" );
+String ruleBaseUri = "http://rules.werken.com/family-relationships";
+
+RuleBase ruleBase = repo.lookupRuleBase( ruleBaseUri );
 \end{codelisting}
+
+\newpage
 
 \subsection{Creating a Working Memory}
 
