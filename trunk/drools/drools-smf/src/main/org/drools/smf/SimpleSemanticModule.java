@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticModule.java,v 1.8 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: SimpleSemanticModule.java,v 1.9 2005-01-23 18:16:20 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,6 +84,8 @@ public class SimpleSemanticModule implements SemanticModule
     
     /** functions factories */
     private Map    functionFactories;    
+    
+    private Map    types;
 
 
     // ------------------------------------------------------------
@@ -106,7 +108,8 @@ public class SimpleSemanticModule implements SemanticModule
         this.durationFactories = new HashMap( );
         this.importEntryFactories = new HashMap( );
         this.applicationDataFactories = new HashMap( ); 
-        this.functionFactories = new HashMap( );        
+        this.functionFactories = new HashMap( );    
+        this.types = new HashMap( );
     }
 
     // ------------------------------------------------------------
@@ -120,10 +123,16 @@ public class SimpleSemanticModule implements SemanticModule
     {
         return this.uri;
     }
+    
+    public String getType(String name)
+    {
+        return (String) this.types.get(name);
+    }
 
     public void addRuleFactory(String name, RuleFactory factory)
     {
         this.ruleFactories.put( name, factory );
+        this.types.put(name, "Rule");
     }
 
     /**
@@ -149,6 +158,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addObjectTypeFactory(String name, ObjectTypeFactory factory)
     {
         this.objectTypeFactories.put( name, factory );
+        this.types.put(name, "ObjectType");
     }
 
     /**
@@ -176,6 +186,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addConditionFactory(String name, ConditionFactory factory)
     {
         this.conditionFactories.put( name, factory );
+        this.types.put(name, "Condition");
     }
 
     /**
@@ -203,6 +214,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addConsequenceFactory(String name, ConsequenceFactory factory)
     {
         this.consequenceFactories.put( name, factory );
+        this.types.put(name, "Consequence");
     }
 
     /**
@@ -224,6 +236,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addDurationFactory(String name, DurationFactory factory)
     {
         this.durationFactories.put( name, factory );
+        this.types.put(name, "Duration");
     }
 
     public DurationFactory getDurationFactory(String name)
@@ -239,6 +252,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addImportEntryFactory(String name, ImportEntryFactory factory)
     {
         this.importEntryFactories.put( name, factory );
+        this.types.put(name, "ImportEntry");
     }
 
     public ImportEntryFactory getImportEntryFactory(String name)
@@ -254,6 +268,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addApplicationDataFactory(String name, ApplicationDataFactory factory)
     {
         this.applicationDataFactories.put( name, factory );
+        this.types.put(name, "ApplicationData");
     }
 
     public ApplicationDataFactory getApplicationDataFactory(String name)
@@ -269,6 +284,7 @@ public class SimpleSemanticModule implements SemanticModule
     public void addFunctionsFactory(String name, FunctionsFactory factory)
     {
         this.functionFactories.put( name, factory );
+        this.types.put(name, "Functions");
     }    
 
     public FunctionsFactory getFunctionsFactory(String name)

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.27 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: SMFTestFrameWork.java,v 1.28 2005-01-23 18:16:20 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -349,7 +349,7 @@ public abstract class SMFTestFrameWork extends TestCase
         conditionConfiguration.setText( (String) tests.get( testNumber ) );
         Condition condition = conditionFactory.newCondition( rule,
                                                              this.ruleBaseContext,
-                                                             conditionConfiguration );
+                                                             conditionConfiguration )[0];
         return condition.isAllowed( tuple );
     }
 

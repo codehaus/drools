@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyConditionFactory.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: GroovyConditionFactory.java,v 1.4 2005-01-23 18:16:18 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,14 +59,14 @@ public class GroovyConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition( Rule rule,
+    public Condition[] newCondition( Rule rule,
                                    RuleBaseContext context,
                                    Configuration config ) throws FactoryException
     {
         try
         {
-            return new GroovyCondition( config.getText( ),
-                                        rule );
+            return new Condition[] { new GroovyCondition( config.getText( ),
+                                                           rule ) };
         }
         catch ( Exception e )
         {

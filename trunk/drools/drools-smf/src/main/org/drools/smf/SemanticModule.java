@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticModule.java,v 1.7 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: SemanticModule.java,v 1.8 2005-01-23 18:16:20 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -72,7 +72,9 @@ public interface SemanticModule
      * @return The URI.
      */
     String getUri();
-
+    
+    String getType(String name);
+    
     RuleFactory getRuleFactory(String name);
 
     Set getRuleFactoryNames();
