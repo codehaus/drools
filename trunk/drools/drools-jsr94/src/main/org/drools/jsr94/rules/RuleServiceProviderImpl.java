@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleServiceProviderImpl.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleServiceProviderImpl.java,v 1.6 2004-04-02 22:37:48 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -60,7 +60,6 @@ import javax.rules.admin.RuleAdministrator;
  */
 public class RuleServiceProviderImpl extends RuleServiceProvider
 {
-
     private RuleAdministrator ruleAdministrator;
     private RuleRuntime ruleRuntime;
 

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionImpl.java,v 1.8 2003-12-04 03:36:46 bob Exp $
+ $Id: StatefulRuleSessionImpl.java,v 1.9 2004-04-02 22:37:48 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -49,7 +49,6 @@ package org.drools.jsr94.rules;
 import org.drools.DroolsException;
 import org.drools.FactException;
 import org.drools.FactHandle;
-import org.drools.WorkingMemory;
 import org.drools.NoSuchFactObjectException;
 import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
 import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
@@ -133,8 +132,7 @@ public class StatefulRuleSessionImpl
         }
         catch (FactException e)
         {
-            throw new InvalidRuleSessionException( "cannot assert object",
-                                                   e );
+            throw new InvalidRuleSessionException( "cannot assert object", e );
         }
     }
 

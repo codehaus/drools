@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleRuntimeImpl.java,v 1.6 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleRuntimeImpl.java,v 1.7 2004-04-02 22:37:48 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -62,7 +62,6 @@ import java.util.Map;
  */
 public class RuleRuntimeImpl implements RuleRuntime
 {
-
     /**
      * Creates a <code>RuleSession</code> implementation using the supplied
      * vendor-specific rule execution set registration URI.
