@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.47 2004-11-03 02:35:15 simon Exp $
+ * $Id: Builder.java,v 1.48 2004-11-03 11:54:20 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -259,7 +259,6 @@ public class Builder
             paramNode = new ParameterNode( rule, objectTypeNode, eachDecl );
 
             leafNodes.add( paramNode );
-
         }
 
         return leafNodes;
