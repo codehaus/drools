@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionTestCase.java,v 1.2 2003-06-18 17:04:36 tdiesler Exp $
+ $Id: StatefulRuleSessionTestCase.java,v 1.3 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,210 +46,202 @@ package org.drools.jsr94.rules;
 
  */
 
-
 import javax.rules.Handle;
 import javax.rules.ObjectFilter;
-import javax.rules.RuleRuntime;
 import javax.rules.StatefulRuleSession;
-import javax.rules.admin.LocalRuleExecutionSetProvider;
-import javax.rules.admin.RuleAdministrator;
-import javax.rules.admin.RuleExecutionSet;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Test the <code>StatefulRuleSession</code> implementation.
  *
- * @see StatefulRuleSession
- *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
+ * @see StatefulRuleSession
  */
-public class StatefulRuleSessionTestCase extends JSR94TestBase {
+public class StatefulRuleSessionTestCase extends RuleEngineTestBase {
 
-   private StatefulRuleSession statefulSession;
+    /**
+     * Setup the test case.
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-   /**
-    * Setup the test case.
-    */
-   protected void setUp() throws Exception {
-      super.setUp();
-      RuleAdministrator ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
-      LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
-      RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+    /**
+     * Test containsObject.
+     */
+    public void testContainsObject() throws Exception {
+        Person bob = new Person("bob");
+        Handle handle = statefulSession.addObject(bob);
+        assertTrue("where is bob", statefulSession.containsObject(handle));
+    }
 
-      // read rules and register with administrator
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
-      ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
+    /**
+     * Test addObject.
+     */
+    public void testAddObject() throws Exception {
+        // tested in testContainsObject
+    }
 
-      // obtain the stateless rule session
-      statefulSession = (StatefulRuleSession)ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATEFUL_SESSION_TYPE);
-   }
+    public void testJsr94FactHandleFactoryAvailable() throws ClassNotFoundException {
+        this.getClass().getClassLoader().loadClass("org.drools.jsr94.rules.Jsr94FactHandleFactory");
+    }
 
-   /**
-    * Test containsObject.
-    */
-   public void testContainsObject() throws Exception {
-      Person bob = new Person("bob");
-      Handle handle = statefulSession.addObject(bob);
-      assertTrue("where is bob", statefulSession.containsObject(handle));
-   }
+    /**
+     * Test addObjects.
+     */
+    public void testAddObjects() throws Exception {
 
-   /**
-    * Test addObject.
-    */
-   public void testAddObject() throws Exception {
-      // tested in testContainsObject
-   }
+        List inObjects = new ArrayList();
 
-   /**
-    * Test addObjects.
-    */
-   public void testAddObjects() throws Exception {
+        Person bob = new Person("bob");
+        inObjects.add(bob);
 
-      List inObjects = new ArrayList();
+        Person rebecca = new Person("rebecca");
+        rebecca.addSister("jeannie");
+        inObjects.add(rebecca);
 
-      Person bob = new Person("bob");
-      inObjects.add(bob);
+        Person jeannie = new Person("jeannie");
+        jeannie.addSister("rebecca");
+        inObjects.add(jeannie);
 
-      Person rebecca = new Person("rebecca");
-      rebecca.addSister("jeannie");
-      inObjects.add(rebecca);
+        List handleList = statefulSession.addObjects(inObjects);
+        assertEquals("incorrect size", 3, handleList.size());
+        assertEquals("where is bob", bob, statefulSession.getObject((Handle) handleList.get(0)));
+        assertEquals("where is rebecca", rebecca, statefulSession.getObject((Handle) handleList.get(1)));
+        assertEquals("where is jeannie", jeannie, statefulSession.getObject((Handle) handleList.get(2)));
+    }
 
-      Person jeannie = new Person("jeannie");
-      jeannie.addSister("rebecca");
-      inObjects.add(jeannie);
+    /**
+     * Test getObject.
+     */
+    public void testGetObject() throws Exception {
+        // tested in testAddObjects
+    }
 
-      List handleList = statefulSession.addObjects(inObjects);
-      assertEquals("incorrect size", 3, handleList.size());
-      assertEquals("where is bob", bob, statefulSession.getObject((Handle)handleList.get(0)));
-      assertEquals("where is rebecca", rebecca, statefulSession.getObject((Handle)handleList.get(1)));
-      assertEquals("where is jeannie", jeannie, statefulSession.getObject((Handle)handleList.get(2)));
-   }
+    /**
+     * Test updateObject.
+     */
+    public void testUpdateObject() throws Exception {
+        Person bob = new Person("bob");
+        Handle handle = statefulSession.addObject(bob);
+        statefulSession.updateObject(handle, bob = new Person("boby"));
+        assertEquals("where is boby", bob, statefulSession.getObject(handle));
+    }
 
-   /**
-    * Test getObject.
-    */
-   public void testGetObject() throws Exception {
-      // tested in testAddObjects
-   }
+    /**
+     * Test removeObject.
+     */
+    public void testRemoveObject() throws Exception {
+        Person bob = new Person("bob");
+        Handle handle = statefulSession.addObject(bob);
+        assertTrue("where is bob", statefulSession.containsObject(handle));
 
-   /**
-    * Test updateObject.
-    */
-   public void testUpdateObject() throws Exception {
-      Person bob = new Person("bob");
-      Handle handle = statefulSession.addObject(bob);
-      statefulSession.updateObject(handle, bob = new Person("boby"));
-      assertEquals("where is boby", bob, statefulSession.getObject(handle));
-   }
+        statefulSession.removeObject(handle);
+        assertTrue("bob still there", !statefulSession.containsObject(handle));
+    }
 
-   /**
-    * Test removeObject.
-    */
-   public void testRemoveObject() throws Exception {
-      Person bob = new Person("bob");
-      Handle handle = statefulSession.addObject(bob);
-      assertTrue("where is bob", statefulSession.containsObject(handle));
+    /**
+     * Test getObjects.
+     */
+    public void testGetObjects() throws Exception {
 
-      statefulSession.removeObject(handle);
-      assertTrue("bob still there", !statefulSession.containsObject(handle));
-   }
+        Person bob = new Person("bob");
+        statefulSession.addObject(bob);
 
-   /**
-    * Test getObjects.
-    */
-   public void testGetObjects() throws Exception {
+        Person rebecca = new Person("rebecca");
+        rebecca.addSister("jeannie");
+        statefulSession.addObject(rebecca);
 
-      Person bob = new Person("bob");
-      statefulSession.addObject(bob);
+        Person jeannie = new Person("jeannie");
+        jeannie.addSister("rebecca");
+        statefulSession.addObject(jeannie);
 
-      Person rebecca = new Person("rebecca");
-      rebecca.addSister("jeannie");
-      statefulSession.addObject(rebecca);
+        // execute the rules
+        statefulSession.executeRules();
+        List outList = statefulSession.getObjects();
+        assertEquals("incorrect size", 7, outList.size());
 
-      Person jeannie = new Person("jeannie");
-      jeannie.addSister("rebecca");
-      statefulSession.addObject(jeannie);
+        assertTrue("where is bob", outList.contains(bob));
+        assertTrue("where is rebecca", outList.contains(rebecca));
+        assertTrue("where is jeannie", outList.contains(jeannie));
 
-      // execute the rules
-      statefulSession.executeRules();
-      List outList = statefulSession.getObjects();
-      assertEquals("incorrect size", 7, outList.size());
+        assertTrue(outList.contains("bob says: rebecca and jeannie are sisters"));
+        assertTrue(outList.contains("bob says: jeannie and rebecca are sisters"));
 
-      assertTrue("where is bob", outList.contains(bob));
-      assertTrue("where is rebecca", outList.contains(rebecca));
-      assertTrue("where is jeannie", outList.contains(jeannie));
+        assertTrue(outList.contains("rebecca: I like cheese"));
+        assertTrue(outList.contains("jeannie: I like cheese"));
 
-      assertTrue(outList.contains("bob says: rebecca and jeannie are sisters"));
-      assertTrue(outList.contains("bob says: jeannie and rebecca are sisters"));
+        statefulSession.release();
+    }
 
-      assertTrue(outList.contains("rebecca: I like cheese"));
-      assertTrue(outList.contains("jeannie: I like cheese"));
+    /**
+     * Test getObjects with ObjectFilter.
+     */
+    public void testGetObjectsWithFilter() throws Exception {
 
-      statefulSession.release();
-   }
+        Person bob = new Person("bob");
+        statefulSession.addObject(bob);
 
-   /**
-    * Test getObjects with ObjectFilter.
-    */
-   public void testGetObjectsWithFilter() throws Exception {
+        Person rebecca = new Person("rebecca");
+        rebecca.addSister("jeannie");
+        statefulSession.addObject(rebecca);
 
-      Person bob = new Person("bob");
-      statefulSession.addObject(bob);
+        Person jeannie = new Person("jeannie");
+        jeannie.addSister("rebecca");
+        statefulSession.addObject(jeannie);
 
-      Person rebecca = new Person("rebecca");
-      rebecca.addSister("jeannie");
-      statefulSession.addObject(rebecca);
+        // execute the rules
+        statefulSession.executeRules();
+        List outList = statefulSession.getObjects(new PersonFilter());
+        assertEquals("incorrect size", 3, outList.size());
 
-      Person jeannie = new Person("jeannie");
-      jeannie.addSister("rebecca");
-      statefulSession.addObject(jeannie);
+        assertTrue("where is bob", outList.contains(bob));
+        assertTrue("where is rebecca", outList.contains(rebecca));
+        assertTrue("where is jeannie", outList.contains(jeannie));
 
-      // execute the rules
-      statefulSession.executeRules();
-      List outList = statefulSession.getObjects(new PersonFilter());
-      assertEquals("incorrect size", 3, outList.size());
+        statefulSession.release();
+    }
 
-      assertTrue("where is bob", outList.contains(bob));
-      assertTrue("where is rebecca", outList.contains(rebecca));
-      assertTrue("where is jeannie", outList.contains(jeannie));
+    /**
+     * Test executeRules.
+     */
+    public void testExecuteRules() throws Exception {
+        // tested in testGetObjects, testGetObjectsWithFilter
+    }
 
-      statefulSession.release();
-   }
+    /**
+     * Test reset.
+     */
+    public void testReset() throws Exception {
+        Person bob = new Person("bob");
+        Handle handle = statefulSession.addObject(bob);
+        assertTrue("where is bob", statefulSession.containsObject(handle));
 
-   /**
-    * Test executeRules.
-    */
-   public void testExecuteRules() throws Exception {
-      // tested in testGetObjects, testGetObjectsWithFilter
-   }
-
-   /**
-    * Test reset.
-    */
-   public void testReset() throws Exception {
-      Person bob = new Person("bob");
-      Handle handle = statefulSession.addObject(bob);
-      assertTrue("where is bob", statefulSession.containsObject(handle));
-
-      statefulSession.reset();
-      assertTrue("bob still there", !statefulSession.containsObject(handle));
-   }
+        statefulSession.reset();
+        assertTrue("bob still there", !statefulSession.containsObject(handle));
+    }
 
 
-   /**
-    * Filter accepts only objects of type Person.
-    */
-   static class PersonFilter implements ObjectFilter {
+    /**
+     * Filter accepts only objects of type Person.
+     */
+    static class PersonFilter implements ObjectFilter {
 
-      public Object filter(Object object) {
-         return (object instanceof Person ? object : null);
-      }
+        public Object filter(Object object) {
+            return (object instanceof Person ? object : null);
+        }
 
-      public void reset() {
-      }
-   }
+        public void reset() {
+        }
+    }
+
+    public static void main (String[] args) throws Exception {
+        String[] name = { StatefulRuleSessionTestCase.class.getName() };
+        junit.textui.TestRunner.main(name);
+
+        //String factoryName = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
+        //StatefulRuleSessionTestCase.class.getClassLoader().loadClass(factoryName);
+    }
 }

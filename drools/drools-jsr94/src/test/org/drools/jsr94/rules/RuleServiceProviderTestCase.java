@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleServiceProviderTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: RuleServiceProviderTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -52,9 +52,10 @@ import javax.rules.admin.RuleAdministrator;
 /**
  * Test the RuleServiceProvider implementation.
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleServiceProviderTestCase extends JSR94TestBase {
+public class RuleServiceProviderTestCase extends RuleEngineTestBase {
 
    /**
     * Test getRuleRuntime.

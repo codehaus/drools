@@ -1,15 +1,15 @@
 package org.drools.jsr94.rules.admin;
 
-import org.drools.jsr94.rules.JSR94TestBase;
-
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetProvider;
 
 /**
- * Test the RuleRuntime implementation.
+ * Test the RuleExecutionSetProvider implementation.
+ *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  */
-public class RuleExecutionSetProviderTestCase extends JSR94TestBase
+public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
 {
 
     private RuleAdministrator ruleAdministrator;
@@ -30,6 +30,7 @@ public class RuleExecutionSetProviderTestCase extends JSR94TestBase
      */
     public void testCreateFromDOM() throws Exception
     {
+        // TODO: implement testCreateFromDOM()
         // not implemented
     }
 
@@ -39,6 +40,7 @@ public class RuleExecutionSetProviderTestCase extends JSR94TestBase
      */
     public void testCreateFromSerializable() throws Exception
     {
+        // TODO: implement testCreateFromSerializable()
         // not implemented
     }
 
@@ -47,7 +49,7 @@ public class RuleExecutionSetProviderTestCase extends JSR94TestBase
      */
     public void testCreateFromURI() throws Exception
     {
-        String rulesUri = getResource(RULES_RESOURCE).toExternalForm();
+        String rulesUri = org.drools.jsr94.rules.RuleEngineTestBase.class.getResource(bindUri).toExternalForm();
         RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesUri, null);
         assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
         assertEquals("number of rules", 2, ruleSet.getRules().size());

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: RuleAdministratorTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,16 +46,15 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.jsr94.rules.JSR94TestBase;
-
 import javax.rules.admin.*;
 
 /**
  * Test the RuleRuntime implementation.
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleAdministratorTestCase extends JSR94TestBase {
+public class RuleAdministratorTestCase extends RuleEngineTestBase {
 
    private RuleAdministrator ruleAdministrator;
 
@@ -74,7 +73,6 @@ public class RuleAdministratorTestCase extends JSR94TestBase {
       RuleExecutionSetProvider ruleExecutionSetProvider = ruleAdministrator.getRuleExecutionSetProvider(null);
       assertNotNull("cannot obtain RuleExecutionSetProvider", ruleExecutionSetProvider);
    }
-
 
    /**
     * Test getLocalRuleExecutionSetProvider.
