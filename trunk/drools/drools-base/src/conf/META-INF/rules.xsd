@@ -52,7 +52,7 @@
         </xs:choice>
         
         <!-- make sure extractor targets are specified 
-             after decleration identifiers -->
+             after decleration identifiers
         <xs:key name="identifierKey">
           <xs:selector xpath="./declaration and ./parameter" />
           <xs:field xpath="@identifier" />
@@ -61,6 +61,7 @@
           <xs:selector xpath="./java:extractor" />
           <xs:field xpath="@target" />
         </xs:keyref>  
+	-->
         
         
         
