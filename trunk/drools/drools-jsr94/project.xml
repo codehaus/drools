@@ -98,13 +98,6 @@
             <artifactId>xercesImpl</artifactId>
             <version>2.6.2</version>
         </dependency>
-
-        <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.2</version>
-        </dependency>
-
     </dependencies>
 
     <build>

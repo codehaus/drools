@@ -106,11 +106,6 @@
             <artifactId>janino</artifactId>
         </dependency>
         <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
             <id>simple-jndi</id>
             <version>0.9.1</version>
         </dependency>
