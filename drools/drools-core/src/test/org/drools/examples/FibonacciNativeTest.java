@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.2 2004-11-07 18:34:44 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.3 2004-11-07 18:38:53 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,7 +48,6 @@ import org.drools.reteoo.Dumper;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.ClassObjectType;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
