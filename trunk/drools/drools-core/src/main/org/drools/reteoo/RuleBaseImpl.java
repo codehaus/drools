@@ -4,6 +4,7 @@ import org.drools.WorkingMemory;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.FactException;
+import org.drools.spi.ConflictResolutionStrategy;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
@@ -39,6 +40,12 @@ class RuleBaseImpl
     public WorkingMemory newWorkingMemory()
     {
         return new WorkingMemoryImpl( this );
+    }
+
+    public WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy)
+    {
+        return new WorkingMemoryImpl( this,
+                                      strategy );
     }
 
     /** Retrieve the Rete-OO network for this <code>RuleBase</code>.

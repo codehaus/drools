@@ -1,5 +1,7 @@
 package org.drools;
 
+import org.drools.spi.ConflictResolutionStrategy;
+
 import java.io.Serializable;
 
 public interface RuleBase
@@ -13,4 +15,6 @@ public interface RuleBase
      *  @return A newly initialized <code>WorkingMemory</code>.
      */
     WorkingMemory newWorkingMemory();
+
+    WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy);
 }
