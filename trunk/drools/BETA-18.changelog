@@ -23,3 +23,4 @@ DROOLS-163 Filters can now be added to an Agenda to block activations via Agenda
 DROOLS-207 Support JavaBean property change events (Andy Barnett)
 DROOLS-208 Extractors are no longer supported, and the external API has been disabled (Mark Proctor)
 DROOLS-210 Joins are now deterministic, which should create repeatable deterministic behaviour for Rete networks (Simon Harris)
+DROOLS-211 Application Data should be predefined so that java can precompile (Mark Proctor)
