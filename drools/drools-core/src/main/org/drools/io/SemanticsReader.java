@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsReader.java,v 1.5 2003-11-30 03:05:43 bob Exp $
+ $Id: SemanticsReader.java,v 1.6 2003-12-03 03:08:17 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -77,7 +77,7 @@ import java.util.Enumeration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsReader.java,v 1.5 2003-11-30 03:05:43 bob Exp $
+ *  @version $Id: SemanticsReader.java,v 1.6 2003-12-03 03:08:17 bob Exp $
  */
 public class SemanticsReader
 {
@@ -193,11 +193,23 @@ public class SemanticsReader
                 throw new Exception( "invalid key: " + key );
             }
 
-            String type = key.substring( 0,
-                                         key.indexOf( "(" ) );
+            String type = parseType( key );
 
-            String componentName = key.substring( key.indexOf( "(" ) + 1,
-                                                  key.indexOf( ")" ) );
+            if ( type == null
+                 ||
+                 type.equals( "" ) )
+            {
+                throw new Exception( "no type specified" );
+            }
+
+            String componentName = parseName( key );
+
+            if ( componentName == null
+                 ||
+                 componentName.equals( "" ) )
+            {
+                throw new Exception( "no component name specified" );
+            }
 
             if ( "ObjectType".equals( type ) )
             {
@@ -227,8 +239,41 @@ public class SemanticsReader
                 module.addConsequenceFactory( componentName,
                                               factory );
             }
+            else
+            {
+                throw new Exception( "unknown type '" + type + "'" );
+            }
         }
 
         return module;
+    }
+
+    protected String parseType(String key)
+    {
+        int leftParen = key.indexOf( "(" );
+
+        if ( leftParen < 0 )
+        {
+            return null;
+        }
+
+        return key.substring( 0,
+                              leftParen ).trim();
+    }
+
+    protected String parseName(String key)
+    {
+        int leftParen  = key.indexOf( "(" );
+        int rightParen = key.indexOf( ")" );
+
+        if ( leftParen < 0
+             ||
+             rightParen < 0 )
+        {
+            return null;
+        }
+
+        return key.substring( leftParen + 1,
+                              rightParen ).trim();
     }
 }
