@@ -1,0 +1,35 @@
+<rule-set name="Sisters Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="Find Sisters">
+
+        <parameter identifier="person">
+          <java:class> org.drools.jsr94.rules.Person </java:class>
+        </parameter>
+
+        <parameter identifier="sister">
+          <java:class> org.drools.jsr94.rules.Person </java:class>
+        </parameter>
+
+        <java:condition> person.hasSister( sister ) </java:condition>
+
+        <java:consequence>
+            assertObject( person + ": I like cheese" );
+            assertObject( "bob says: " + person + " and " + sister + " are sisters" );
+        </java:consequence>
+    </rule>
+
+    <rule name="Message Received">
+        <parameter identifier="message">
+            <java:class> java.lang.String </java:class>
+        </parameter>
+
+        <java:condition> message.startsWith( "bob says:" ) </java:condition>
+
+        <java:consequence>
+        </java:consequence>
+
+    </rule>
+
+</rule-set>
