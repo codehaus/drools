@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.19 2004-10-09 06:59:01 simon Exp $
+ * $Id: Declaration.java,v 1.20 2004-10-11 22:59:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -71,6 +71,9 @@ public class Declaration implements Serializable
     /** The identifier for the variable. */
     private String                    identifier;
 
+    /** cache the hashcode for optimisation */
+    private int                       hashcode;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -85,6 +88,7 @@ public class Declaration implements Serializable
     {
         this.objectType = objectType;
         this.identifier = identifier;
+        this.hashcode = innerHashCode();
     }
 
     /**
@@ -109,6 +113,7 @@ public class Declaration implements Serializable
     public void setObjectType(ObjectType objectType)
     {
         this.objectType = objectType;
+        this.hashcode = innerHashCode();
     }
 
     /**
@@ -157,6 +162,11 @@ public class Declaration implements Serializable
      * @see Object
      */
     public int hashCode()
+    {
+        return hashcode;
+    }
+
+    private int innerHashCode()
     {
         return this.objectType.hashCode( ) ^ this.identifier.hashCode( );
     }
