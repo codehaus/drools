@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConditionException.java,v 1.4 2004-09-17 00:14:12 mproctor Exp $
+ * $Id: ConditionException.java,v 1.5 2004-11-07 22:39:43 bob Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -52,9 +52,8 @@ import org.drools.rule.Rule;
  */
 public class ConditionException extends AssertionException
 {
-    private Rule   rule;
-
-    private String expr;
+    private Rule rule;
+    private String info;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -68,6 +67,11 @@ public class ConditionException extends AssertionException
         // intentionally left blank
     }
 
+    public ConditionException(String message)
+    {
+        super( message );
+    }
+
     /**
      * Construct with a root cause.
      * 
@@ -78,16 +82,32 @@ public class ConditionException extends AssertionException
         super( rootCause );
     }
 
+    public ConditionException(Rule rule)
+    {
+        this.rule = rule;
+    }
+
+    public ConditionException(String message,
+                              Rule rule,
+                              String info)
+    {
+        super( message );
+        this.rule = rule;
+        this.info = info;
+    }
+
     /**
      * Construct with a root cause.
      * 
      * @param rootCause The root cause of this exception.
      */
-    public ConditionException(Throwable rootCause, Rule rule, String expr)
+    public ConditionException(Throwable rootCause,
+                              Rule rule,
+                              String info)
     {
         super( rootCause );
         this.rule = rule;
-        this.expr = expr;
+        this.info = info;
     }
 
     public void setRule(Rule rule)
@@ -100,13 +120,21 @@ public class ConditionException extends AssertionException
         return this.rule;
     }
 
-    public void setExpr(String expr)
+    /** Set arbitrary extra information about the condition.
+     *
+     *  <p>
+     *  The info property may be used to communicate the actual
+     *  expression text or other information in the case that
+     *  Condition does not have expression text.
+     *  </p>
+     */
+    public void setInfo(String info)
     {
-        this.expr = expr;
+        this.info = info;
     }
 
-    public String getExpr()
+    public String getInfo()
     {
-        return this.expr;
+        return this.info;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: Expr.java,v 1.27 2004-11-07 22:39:43 bob Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -46,12 +46,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.ConfigurationException;
-
 import org.drools.rule.Declaration;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
+
+import net.janino.Scanner;
+
+import java.io.IOException;
+import javax.naming.ConfigurationException;
+
 
 /**
  * Base class for expression-based Java semantic components.
@@ -61,7 +65,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Expr.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
+ * @version $Id: Expr.java,v 1.27 2004-11-07 22:39:43 bob Exp $
  */
 public class Expr implements Serializable
 {
@@ -155,8 +159,10 @@ public class Expr implements Serializable
                         imports.add(importEntry.getImportEntry());
                     }
                 }                
-            }            
-            conditionScript = ( ConditionScript ) DroolsScriptEvaluator
+            }
+            try
+            {            
+            	conditionScript = ( ConditionScript ) DroolsScriptEvaluator
                                                                        .compile(
                                                                                  this.expr,
                                                                                  ConditionScript.class,
@@ -164,6 +170,15 @@ public class Expr implements Serializable
                                                                                  params,
                                                                                  applicationData,
                                                                                  imports);
+            }
+            catch (Scanner.LocatedException e)
+            {
+                throw new CompilationException( tuple.getRule(),
+                                                getExpression(),
+                                                e.getLocation().getLineNumber(),
+                                                e.getLocation().getColumnNumber(),
+                                                e.getMessage() );
+            }
         }
 
         return conditionScript.invoke( tuple, this.requiredDecls,

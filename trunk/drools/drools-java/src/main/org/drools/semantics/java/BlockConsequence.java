@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.30 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: BlockConsequence.java,v 1.31 2004-11-07 22:39:43 bob Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -59,25 +59,27 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
+import net.janino.Scanner;
+
 /**
  * Java block semantics <code>Consequence</code>.
  * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  * 
- * @version $Id: BlockConsequence.java,v 1.30 2004-11-03 22:54:36 mproctor Exp $
+ * @version $Id: BlockConsequence.java,v 1.31 2004-11-07 22:39:43 bob Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
     /** Interpreted text. */
     private String                newline          = System
-                                                           .getProperty( "line.separator" );
+    .getProperty( "line.separator" );
 
     private transient Script      script;
 
     private String                block;
 
     private static final String[] scriptParamNames = new String[]{"tuple",
-    "decls", "drools", "applicationData"           };
+                                                                  "decls", "drools", "applicationData"           };
 
     // ------------------------------------------------------------
     //     Constructors
@@ -118,22 +120,22 @@ public class BlockConsequence implements Consequence, Serializable
             List decls = new ArrayList( tuple.getDeclarations( ) );
 
             Collections.sort( decls, new Comparator( )
-            {
-                public int compare(Object left, Object right)
                 {
-                    return ( ( Declaration ) left )
-                                                   .getIdentifier( )
-                                                   .compareTo(
-                                                               ( ( Declaration ) right )
-                                                                                        .getIdentifier( ) );
-                }
+                    public int compare(Object left, Object right)
+                    {
+                        return ( ( Declaration ) left )
+                            .getIdentifier( )
+                            .compareTo(
+                                ( ( Declaration ) right )
+                                .getIdentifier( ) );
+                    }
 
-            } );
+                } );
 
             Declaration[] params = ( Declaration[] ) decls
-                                                          .toArray( Declaration.EMPTY_ARRAY );
+                .toArray( Declaration.EMPTY_ARRAY );
             Map applicationData = tuple.getWorkingMemory( )
-                                       .getApplicationDataMap( );                
+                .getApplicationDataMap( );                
 
             if ( script == null )
             {
@@ -152,15 +154,22 @@ public class BlockConsequence implements Consequence, Serializable
                         }
                     }                
                 }
-                script = ( Script ) DroolsScriptEvaluator
-                                                         .compile(
-                                                                   this.block,
-                                                                   Script.class,
-                                                                   scriptParamNames,
-                                                                   params,
-                                                                   applicationData,
-                                                                   imports);
-                
+                try
+                {
+                	script = ( Script ) DroolsScriptEvaluator
+                        .compile(
+                            this.block,
+                            Script.class,
+                            scriptParamNames,
+                            params,
+                            applicationData,
+                            imports);
+                }
+                catch (Scanner.LocatedException e)
+                {
+                    throw new ConsequenceException( e.getMessage(),
+                                                    tuple.getRule() );
+                }
             }
 
             script.invoke( tuple, params, new KnowledgeHelper( tuple ),

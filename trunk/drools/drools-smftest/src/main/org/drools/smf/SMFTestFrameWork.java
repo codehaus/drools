@@ -241,10 +241,11 @@ public abstract class SMFTestFrameWork extends TestCase
             testCondition( testNumber++, tuple, new Declaration[]{}, rule );
             fail( "Condition should throw an exception" );
         }
-        catch ( ConditionException e )
+        catch (ConditionException e)
         {
             assertEquals( rule, e.getRule( ) );
-            assertEquals( tests.get( testNumber - 1 ), e.getExpr( ) );
+            assertEquals( tests.get( testNumber - 1 ),
+                          e.getInfo() );
         }
         
         // need to add a test for declaration order

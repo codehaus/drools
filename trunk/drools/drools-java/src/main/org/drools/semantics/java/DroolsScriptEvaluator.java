@@ -329,18 +329,16 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                      Scanner.ScanException,
                                                      IOException
     {
-        DroolsScriptEvaluator scriptEvaluator = new DroolsScriptEvaluator(
-                                                                           block,
+        DroolsScriptEvaluator scriptEvaluator = new DroolsScriptEvaluator( block,
                                                                            interfaceToImplement,
                                                                            parameterNames,
                                                                            declarations,
                                                                            applicationData,
-                                                                           imports);
-
+                                                                           imports );
+        
         try
         {
-            return scriptEvaluator.getMethod( ).getDeclaringClass( )
-                                  .newInstance( );
+            return scriptEvaluator.getMethod().getDeclaringClass().newInstance();
         }
         catch ( InstantiationException e )
         {

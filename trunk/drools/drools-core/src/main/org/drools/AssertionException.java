@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: AssertionException.java,v 1.8 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: AssertionException.java,v 1.9 2004-11-07 22:39:43 bob Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -70,5 +70,10 @@ public class AssertionException extends FactException
     public AssertionException(Throwable rootCause)
     {
         super( rootCause );
+    }
+
+    public AssertionException(String message)
+    {
+        super( message );
     }
 }

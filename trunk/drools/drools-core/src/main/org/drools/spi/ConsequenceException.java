@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConsequenceException.java,v 1.4 2004-09-17 00:14:13 mproctor Exp $
+ * $Id: ConsequenceException.java,v 1.5 2004-11-07 22:39:43 bob Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -64,6 +64,13 @@ public class ConsequenceException extends AssertionException
     public ConsequenceException()
     {
         // intentionally left blank
+    }
+
+    public ConsequenceException(String message,
+                                Rule rule)
+    {
+        super( message );
+        this.rule = rule;
     }
 
     /**
