@@ -1,10 +1,10 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetLoader.java,v 1.2 2002-08-22 05:15:26 bob Exp $
+ $Id: RuleSetLoader.java,v 1.3 2003-06-18 17:04:36 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.io;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
     permission of The Werken Company. "drools" is a registered
     trademark of The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://drools.werken.com/).
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.io;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import org.drools.RuleBase;
@@ -60,12 +60,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.util.HashMap;
 
 /** Loads <code>RuleSet</code> definitions from XML descriptor.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetLoader.java,v 1.2 2002-08-22 05:15:26 bob Exp $
+ *  @version $Id: RuleSetLoader.java,v 1.3 2003-06-18 17:04:36 tdiesler Exp $
  */
 public class RuleSetLoader
 {
@@ -75,6 +76,12 @@ public class RuleSetLoader
 
     /** Rule-sets. */
     private List ruleSets;
+
+    /**
+     * Cache a list of RuleSet objects, key is the url.
+     * This is a temporary workaround for the OutOfMemoryError in OutOfMemory when a script is parsed repeatedly.
+     */
+    private static HashMap ruleSetCache = new HashMap();
 
     // ------------------------------------------------------------
     //     Constructors
@@ -97,7 +104,7 @@ public class RuleSetLoader
      */
     public void addRuleSet(RuleSet ruleSet)
     {
-        this.ruleSets.add( ruleSet );
+        this.ruleSets.add(ruleSet);
     }
 
     /** Load <code>RuleSet</code> deifnitions from a URL.
@@ -111,29 +118,39 @@ public class RuleSetLoader
      */
     public List load(URL url) throws IOException, Exception
     {
+        // this is a workaround for an OutOfMemoryError in OutOfMemory when a script is parsed repeatedly
+        // note, the rules for a given url cannot change any more
+        List cachedRuleSets = (List) ruleSetCache.get(url);
+        if (cachedRuleSets != null)
+        {
+            return cachedRuleSets;
+        }
+
         this.ruleSets = new ArrayList();
 
         XMLParser parser = new XMLParser();
 
         JellyContext context = new JellyContext();
-        
-        context.registerTagLibrary( "http://drools.org/rules",
-                                    new RuleTagLibrary() );
-        
-        context.setVariable( "org.drools.io.RuleSetLoader",
-                             this );
-        
-        parser.setContext( context );
 
-        Script script = parser.parse( url.toExternalForm() );
+        context.registerTagLibrary("http://drools.org/rules",
+                new RuleTagLibrary());
 
-        XMLOutput output = XMLOutput.createXMLOutput( System.err,
-                                                      false );
+        context.setVariable("org.drools.io.RuleSetLoader",
+                this);
 
-        script.run( context,
-                    output );
+        parser.setContext(context);
+
+        Script script = parser.parse(url.toExternalForm());
+
+        XMLOutput output = XMLOutput.createXMLOutput(System.err,
+                false);
+
+        script.run(context,
+                output);
 
         List answer = this.ruleSets;
+
+        //ruleSetCache.put(url, answer);
 
         this.ruleSets = null;
 
@@ -152,16 +169,16 @@ public class RuleSetLoader
     public void load(URL url,
                      RuleBase ruleBase) throws IOException, Exception
     {
-        List ruleSets = load( url );
+        List ruleSets = load(url);
 
         Iterator ruleSetIter = ruleSets.iterator();
-        RuleSet  eachRuleSet = null;
+        RuleSet eachRuleSet = null;
 
-        while ( ruleSetIter.hasNext() )
+        while (ruleSetIter.hasNext())
         {
             eachRuleSet = (RuleSet) ruleSetIter.next();
 
-            ruleBase.addRuleSet( eachRuleSet );
+            ruleBase.addRuleSet(eachRuleSet);
         }
     }
 
@@ -176,6 +193,6 @@ public class RuleSetLoader
      */
     public List load(String url) throws IOException, Exception
     {
-        return load( new URL( url ) );
+        return load(new URL(url));
     }
 }
