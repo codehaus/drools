@@ -1,4 +1,4 @@
-\section{Rete-OO}
+\section{Rete-OO\index{Rete-OO}}
 
 The Rete algorithm works wonderfully in language systems 
 such as Lisp where pertinent attributes about objects 
@@ -12,7 +12,8 @@ object is all that should be asserted, since attributes
 and relationships can be \emph{extracted} using normal
 language constructs.
 
-Bob McWhirter of The Werken Company adapted Forgy's original Rete 
+Bob McWhirter\index{McWhirter, Bob} of The Werken Company adapted
+Forgy's original Rete\index{Rete}
 algorithm to object-oriented constructs, creating the Rete-OO algorithm.
 As with Rete, there are \emph{1/1} nodes and \emph{2/1}
 nodes.  Unlike Rete, there are nodes that exist simply 
@@ -22,7 +23,7 @@ the root of the tree leaving the bottom portion to be
 comprised of purely aggregating \emph{2/1} \emph{join} nodes.  
 Rete-OO must interleave both \emph{1/1} and \emph{2/1} nodes.
 
-The same example as in section \ref{algo.rete}, 
+The same example as in Section \ref{algo.rete}, 
 the conditions could be expressed in terms of object-oriented
 language boolean and assignment expressions.  The choice
 of Java as the expression language is purely arbitrary.
@@ -93,6 +94,6 @@ and rearrangement of some nodes.
 	}
   \end{minipage}
 \end{center}
-\label{network.rete-oo}
 \caption{Rete-OO network}
+\label{network.rete-oo}
 \end{figure}

@@ -1,0 +1,47 @@
+\chapter{Administrative API}
+
+The administrative functions of drools include the assembly
+and deployment of rules.  These activities may certainly be
+performed by the same application that acts as the client,
+The API has been designed to allow for the separation between
+the client and administrative responsibilities.
+
+\section{Building rules}
+
+Programmatically building rules using the Java API is covered
+in Chapter~\vref{rule.assembly}.  The next section discusses
+loading rules that were built using the Drools Rule Language,
+which is described in depth in Chapter~\vref{drl}.
+
+\section{Loading rules}
+\label{admin.rules.loading}
+
+Rule-sets can be loaded using the \indexClass{RuleSetReader} from
+a variety of sources including \class{URL}, \class{InputStream} and
+\class{Reader} objects.  A \class{RuleSetReader} builds a
+\indexClass{RuleSet} from the contents of a DRL document (Chapter~\vref{drl}).
+
+The \indexClass{RuleSetReader} by default may use any and all semantic
+modules available on the classpath (see Chapter~\vref{smf}).  It may
+be optionally parameterized with a \indexClass{SAXReader} and a
+\indexClass{SemanticsRepository}.  By default, the
+\indexClass{RuleSetReader} uses the Java API for XML Parsing (JAXP) \index{JAXP}
+for reading the XML documents. See Figure~\vref{rulesetreader} for an
+example of loading a \indexClass{RuleSet} from a \class{URL}.
+
+\begin{figure}
+\begin{javaCodelisting}
+RuleSetReader reader     = new RuleSetReader();
+URL           ruleSetUrl = new URL( "http://myco.com/theRuleSet.xml" );
+RuleSet       ruleSet    = reader.read( ruleSetUrl );
+\end{javaCodelisting}
+\caption{Loading a \indexClass{RuleSet} from a \class{URL}}
+\label{rulesetreader}
+\end{figure}
+
+\section{Building a \indexClass{RuleBase}}
+
+\section{Deploying a \indexClass{RuleBase} to a JNDI\index{JNDI} data store}
+
+\section{Serializing a \indexClass{RuleBase} to a file}
+

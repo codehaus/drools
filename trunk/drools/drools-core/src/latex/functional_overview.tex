@@ -59,7 +59,7 @@ of rules are called \emph{rule sets}\index{rule set}.  The set or
 sets of rules currently applicable given the context is called a 
 \emph{rule base}\index{rule base}.
 
-\section{Knowledge}
+\section{Knowledge\index{knowledge}}
 
 You become aware of knowledge, in the form of facts, over time.
 Likewise, over time, facts may change or cease to be true, in 
@@ -69,12 +69,12 @@ operations for becoming aware of a fact, purging a fact, or
 modifying a known fact.  These operations are as follow:
 
 \begin{itemize}
-  \item \textbf{Assert} Add a fact to what is known.\\
+  \item \textbf{Assert\index{assert}} Add a fact to what is known.\\
     \emph{The weather is rainy.} \emph{Betty is in the room.}
-  \item \textbf{Retract} Remove a fact from what is known.\\
+  \item \textbf{Retract\index{retract}} Remove a fact from what is known.\\
     Removing the fact \emph{Betty is in the room} when Betty leave the
     room.
-  \item \textbf{Modify} Alter a fact from what is know.\\
+  \item \textbf{Modify\index{modify}} Alter a fact from what is know.\\
     Changing the knowledge about the weather from \emph{The weather is
     rainy} to \emph{The weather is sunny} when the rain stops and the
     clouds go away.
@@ -86,7 +86,7 @@ asserted, retracted and modified within the working memory and the
 rules are evaluated to determine what actions, if any, should be
 taken.
 
-\section{Why a rule-engine?}
+\section{Why a rule-engine?\index{rule-engine}}
 
 While the logic expressed in a rule can and has often been writen
 within the code a system, a rule-engine offers many benefits.  Instead
@@ -111,7 +111,7 @@ a change in knowledge.
 \section{A note about ``business rules''}
 
 A higher-level form of rule is the \emph{business rule}\index{business
-rule}.  Business rules do not necessarily follow the \emph{if-then}
+rules}.  Business rules do not necessarily follow the \emph{if-then}
 form, but may be specified in different formats that are not as
 closely linked to the underlying rule-engine implementation.  Business
 rules tend to use the \emph{must} or \emph{must not} form to
@@ -123,7 +123,8 @@ expression constraints or inferences.
 \end{itemize}
 
 Drools does not directly support this level of business rules, but
-other projects built upon Drools\footnote{The \textbf{Fluxtapose}
+other projects built upon Drools\footnote{The
+\textbf{Fluxtapose\index{Fluxtapose}}
 suite of tools from The Werken Company is one such product that
 supports business rules.} may easily support such
 notation.
