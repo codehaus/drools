@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleImpl.java,v 1.9 2004-11-14 20:12:37 dbarnett Exp $
+ * $Id: RuleImpl.java,v 1.10 2004-11-17 00:44:06 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -131,7 +131,7 @@ public class RuleImpl implements Rule
      */
     public Object getProperty( Object key )
     {
-        // TODO: certain keys should reference internal rule accessor methods
+        // TODO certain keys should reference internal rule accessor methods
         return properties.get( key );
     }
 
@@ -143,7 +143,7 @@ public class RuleImpl implements Rule
      */
     public void setProperty( Object key, Object value )
     {
-        // TODO: certain keys should alter internal rule accessor methods
+        // TODO certain keys should alter internal rule accessor methods
         properties.put( key, value );
     }
 }
