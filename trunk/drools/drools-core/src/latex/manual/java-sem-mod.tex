@@ -72,23 +72,9 @@ used as the content of both \verb|<drl:parameter>| and
 \textcolor{light}{</drl:declaration>}
 \end{codelisting}
 
-\subsection{\texttt{java:condition}}
-
-The \verb|<java:condition>| tag defines an \emph{condition} that
-adheres to Java boolean expression semantics.  It has no
-attributes and the body content is the boolean expression to
-evaluate.  The tag may be used as the content of a \verb|<drl:condition>|
-tag.
-
-\begin{codelisting}
-\textcolor{light}{<drl:condition>}
-  <java:condition>acctBalance == 0</java:condition>
-\textcolor{light}{</drl:condition>}
-\end{codelisting}
-
 \subsection{\texttt{java:extractor}}
 
-The \verb|java:extractor| tags defines a \emph{fact extractor}
+The \verb|<java:extractor>| tag defines a \emph{fact extractor}
 that adheres to Java expression semantics.  It has
 no attributes and the body content is the expression to generate
 the new fact.  The tag may be used as the content of a 
@@ -98,6 +84,20 @@ the new fact.  The tag may be used as the content of a
 \textcolor{light}{<drl:extraction target="accountBalance">}
   <java:extractor>person.getAccount().getBalance()</java:extractor>
 \textcolor{light}{</drl:extraction>}
+\end{codelisting}
+
+\subsection{\texttt{java:condition}}
+
+The \verb|<java:condition>| tag defines a \emph{condition} that
+adheres to Java boolean expression semantics.  It has no
+attributes and the body content is the boolean expression to
+evaluate.  The tag may be used as the content of a \verb|<drl:condition>|
+tag.
+
+\begin{codelisting}
+\textcolor{light}{<drl:condition>}
+  <java:condition>acctBalance == 0</java:condition>
+\textcolor{light}{</drl:condition>}
 \end{codelisting}
 
 \subsection{\texttt{java:consequence}}
@@ -111,9 +111,11 @@ to execute upon rule match.
 
 \begin{codelisting}
 \textcolor{light}{<drl:consequence>}
-   System.err.println( "The balance is: " + acctBalance );
-   theRepoMan.addAccount( account );
-   assertObject( theRepoMan );
+  <java:consequence>
+    System.err.println( "The balance is: " + acctBalance );
+    theRepoMan.addAccount( account );
+    assertObject( theRepoMan );
+  </java:consequence>
 \textcolor{light}{</drl:consequence>}
 \end{codelisting}
 
