@@ -50,8 +50,8 @@
             </properties>
         </dependency>
         <dependency>
-	    <!-- Note: groovy-1.0-beta-7.jar depends on JDK1.4
-	         so this module is really not JDK1.3-compatible. -->
+            <!-- Note: Groovy depends on JDK1.4 so this
+                 module is really not JDK1.3-compatible. -->
             <groupId>drools</groupId>
             <artifactId>drools-groovy</artifactId>
             <version>${pom.currentVersion}</version>
@@ -81,8 +81,8 @@
             <version>20020827-no-oro</version>
         </dependency>
         <dependency>
-	      <!-- Note: groovy-1.0-beta-7.jar depends on JDK1.4
-	         so this module is really not JDK1.3-compatible. -->
+            <!-- Note: Groovy depends on JDK1.4 so this
+                 module is really not JDK1.3-compatible. -->
             <groupId>groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>1.0-beta-9</version>
