@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinMemory.java,v 1.18 2003-11-21 04:18:13 bob Exp $
+ $Id: JoinMemory.java,v 1.19 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -252,27 +252,21 @@ class JoinMemory
                                 JoinNode joinNode,
                                 WorkingMemoryImpl workingMemory) throws FactException
     {
-        Set retractedKeys = new HashSet();
+        Set origModified   = new HashSet();
+        Set newModified    = new HashSet();
 
-        Set origModified = new HashSet();
-        Set newModified = new HashSet();
-        
-        ReteTuple origTuple = null;
-        ReteTuple newTuple  = null;
-        
-        Iterator  tupleIter = thisSideTuples.iterator();
-
-        while ( tupleIter.hasNext() )
+        for ( Iterator tupleIter = thisSideTuples.iterator();
+              tupleIter.hasNext(); )
         {
-            origTuple = (ReteTuple) tupleIter.next();
+            ReteTuple origTuple = (ReteTuple) tupleIter.next();
 
             if ( origTuple.dependsOn( trigger ) )
             {
-                newTuple = newTuples.getTuple( origTuple.getKey() );
-
+                ReteTuple newTuple  = newTuples.getTuple( origTuple.getKey() );
+                
                 if ( newTuple == null )
                 {
-                    retractedKeys.add( origTuple.getKey() );
+                    tupleIter.remove();
                 }
                 else
                 {
@@ -284,15 +278,12 @@ class JoinMemory
 
         newModified.addAll( newTuples.getTuples() );
 
-        ReteTuple eachTuple = null;
-
         TupleSet origJoined = new TupleSet();
 
-        tupleIter = origModified.iterator();
-
-        while ( tupleIter.hasNext() )
+        for ( Iterator tupleIter = origModified.iterator();
+              tupleIter.hasNext(); )
         {
-            eachTuple = (ReteTuple) tupleIter.next();
+            ReteTuple eachTuple = (ReteTuple) tupleIter.next();
 
             origJoined.addAllTuples( attemptJoin( eachTuple,
                                                   thatSideTuples.iterator() ) );
@@ -300,34 +291,16 @@ class JoinMemory
 
         TupleSet newJoined = new TupleSet();
 
-        tupleIter = newModified.iterator();
-
-        while ( tupleIter.hasNext() )
+        for ( Iterator tupleIter = newModified.iterator();
+              tupleIter.hasNext(); )
         {
-            eachTuple = (ReteTuple) tupleIter.next();
-
+            ReteTuple eachTuple = (ReteTuple) tupleIter.next();
+            
             newJoined.addAllTuples( attemptJoin( eachTuple,
                                                  thatSideTuples.iterator() ) );
         }
 
-        tupleIter = origJoined.iterator();
-
-        while ( tupleIter.hasNext() )
-        {
-            eachTuple = (ReteTuple) tupleIter.next();
-
-            if ( ! newJoined.containsTuple( eachTuple.getKey() ) )
-            {
-                retractedKeys.add( eachTuple.getKey() );
-            }
-        }
-
         thisSideTuples.addAllTuples( newTuples );
-
-        propagateRetractTuples( trigger,
-                                retractedKeys,
-                                joinNode,
-                                workingMemory );
 
         joinNode.propagateModifyTuples( trigger,
                                         newJoined,
@@ -377,7 +350,8 @@ class JoinMemory
      *          against existing <code>Tuples</code> on the right
      *          side memory.
      */
-    protected Set addLeftTuple(ReteTuple tuple)
+    protected Set addLeftTuple(JoinNode node,
+                               ReteTuple tuple)
     {
         this.leftTuples.addTuple( tuple );
 
@@ -426,7 +400,8 @@ class JoinMemory
      *          against existing <code>Tuples</code> on the left
      *          side memory.
      */
-    protected Set addRightTuple(ReteTuple tuple)
+    protected Set addRightTuple(JoinNode node,
+                                ReteTuple tuple)
     {
         this.rightTuples.addTuple( tuple );
 
@@ -508,47 +483,41 @@ class JoinMemory
         return joinedTuples;
     }
 
-    /** Attempt to join two <code>Tuples</code>.
+    /** Produce debug string.
      *
-     *  @param left The left-side <code>Tuple</code>.
-     *  @param right The right-side <code>Tuple</code>.
-     *
-     *  @return A newly joined <code>Tuple</code> if a join
-     *          is possible, else <code>null</code>.
-     */
+     *  @return The debug string.
+     */ 
     protected ReteTuple attemptJoin(ReteTuple left,
                                     ReteTuple right)
     {
-        
         Iterator    declIter = getJoinDeclarationIterator();
         Declaration eachDecl = null;
 
-        Object leftValue  = null;
-        Object rightValue = null;
+        FactHandle leftHandle  = null;
+        FactHandle rightHandle = null;
 
         while ( declIter.hasNext() )
         {
-
             eachDecl = (Declaration) declIter.next();
 
-            leftValue  = left.get( eachDecl );
-            rightValue = right.get( eachDecl );
+            leftHandle  = left.getKey().get( eachDecl );
+            rightHandle = right.getKey().get( eachDecl );
 
-            if ( leftValue == null
+            if ( leftHandle == null
                  &&
-                 rightValue == null )
+                 rightHandle == null )
             {
                 continue;
             }
 
-            if ( leftValue == null
+            if ( leftHandle == null
                  ||
-                 rightValue == null )
+                 rightHandle == null )
             {
                 return null;
             }
 
-            if ( leftValue.equals( rightValue ) )
+            if ( leftHandle.equals( rightHandle ) )
             {
                 continue;
             }

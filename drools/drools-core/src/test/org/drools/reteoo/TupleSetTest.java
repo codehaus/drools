@@ -23,6 +23,7 @@ public class TupleSetTest
         assertFalse( set.iterator().hasNext() );
     }
 
+/*
     public void testConstruct_WithSingleTuple()
     {
         ReteTuple tuple = new ReteTuple();
@@ -370,4 +371,5 @@ public class TupleSetTest
         assertContains( tuple2,
                         set.getTuples() );
     }
+    */
 }

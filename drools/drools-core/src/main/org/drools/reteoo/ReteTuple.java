@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.18 2003-11-21 04:18:13 bob Exp $
+ $Id: ReteTuple.java,v 1.19 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -61,7 +61,7 @@ import java.util.HashSet;
  *  
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.18 2003-11-21 04:18:13 bob Exp $ 
+ *  @version $Id: ReteTuple.java,v 1.19 2003-12-05 04:26:23 bob Exp $ 
  */
 class ReteTuple
     implements Tuple
@@ -71,10 +71,12 @@ class ReteTuple
     // ------------------------------------------------------------
 
     /** Key colums for this tuple. */
-    private TupleKey keyColumns;
+    private TupleKey key;
 
-    /** Other columns in this tuple. */
-    private Map otherColumns;
+    /** Value columns in this tuple. */
+    private Map columns;
+
+    private Map objectToHandle;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -84,8 +86,9 @@ class ReteTuple
      */
     public ReteTuple()
     {
-        this.keyColumns      = new TupleKey();
-        this.otherColumns    = new HashMap();
+        this.key            = new TupleKey();
+        this.columns        = new HashMap();
+        this.objectToHandle = new HashMap();
     }
 
     /** Copy constructor.
@@ -94,8 +97,9 @@ class ReteTuple
      */
     ReteTuple(ReteTuple that)
     {
-        this.keyColumns      = new TupleKey( that.keyColumns );
-        this.otherColumns    = new HashMap( that.otherColumns );
+        this.key            = new TupleKey( that.key );
+        this.columns        = new HashMap( that.columns );
+        this.objectToHandle = new HashMap( that.objectToHandle );
     }
 
     /** Construct a simple 1-column tuple.
@@ -114,6 +118,11 @@ class ReteTuple
                       value );
     }
 
+    public String toString()
+    {
+        return "[Tuple: key=" + this.key + "; columns=" + this.columns + "; o2h=" + this.objectToHandle + "]";
+    }
+
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
@@ -128,9 +137,14 @@ class ReteTuple
                              FactHandle handle,
                              Object value)
     {
-        this.keyColumns.put( declaration,
-                             handle,
-                             value );
+        this.key.put( declaration,
+                      handle );
+
+        this.objectToHandle.put( value,
+                                 handle );
+        
+        putColumn( declaration,
+                   value );
     }
 
     /** Add all columns from another tuple.
@@ -139,8 +153,9 @@ class ReteTuple
      */
     public void putAll(ReteTuple that)
     {
-        this.keyColumns.putAll( that.keyColumns );
-        this.otherColumns.putAll( that.otherColumns );
+        this.key.putAll( that.key );
+        this.columns.putAll( that.columns );
+        this.objectToHandle.putAll( that.objectToHandle );
     }
 
     /** Set an other column's value.
@@ -148,10 +163,10 @@ class ReteTuple
      *  @param declaration The column declaration.
      *  @param value The value.
      */
-    public void putOtherColumn(Declaration declaration,
-                               Object value)
+    public void putColumn(Declaration declaration,
+                          Object value)
     {
-        this.otherColumns.put( declaration,
+        this.columns.put( declaration,
                                value );
     }
 
@@ -161,7 +176,7 @@ class ReteTuple
      */
     TupleKey getKey()
     {
-        return this.keyColumns;
+        return this.key;
     }
 
     /** Retrieve the other columns for this tuple.
@@ -170,7 +185,7 @@ class ReteTuple
      */
     Map getOtherColumns()
     {
-        return this.otherColumns;
+        return this.columns;
     }
 
     /** Determine if this tuple depends upon
@@ -183,7 +198,7 @@ class ReteTuple
      */
     boolean dependsOn(FactHandle handle)
     {
-        return this.keyColumns.containsRootFactHandle( handle );
+        return this.key.containsRootFactHandle( handle );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -192,31 +207,20 @@ class ReteTuple
      */
     public Object get(Declaration declaration)
     {
-        if ( this.keyColumns.containsDeclaration( declaration ) )
-        {
-            return this.keyColumns.get( declaration );
-        }
-        
-        return this.otherColumns.get( declaration );
+        return this.columns.get( declaration );
     }
 
     /** @see Tuple
      */
     public Set getDeclarations()
     {
-        Set decls = new HashSet( this.keyColumns.size() 
-                                 + this.otherColumns.size() );
-
-        decls.addAll( this.keyColumns.getDeclarations() );
-        decls.addAll( this.otherColumns.keySet() );
-
-        return decls;
+        return this.columns.keySet();
     }
 
     /** @see Tuple
      */
     public FactHandle getFactHandleForObject(Object object)
     {
-        return this.keyColumns.getRootFactHandle( object );
+        return (FactHandle) this.objectToHandle.get( object );
     }
 }

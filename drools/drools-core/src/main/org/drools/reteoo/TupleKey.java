@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleKey.java,v 1.9 2003-11-21 04:18:13 bob Exp $
+ $Id: TupleKey.java,v 1.10 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.Iterator;
 
 /** A composite key to match tuples.
  *
@@ -70,9 +71,6 @@ class TupleKey
     /** Columns. */
     private Map columns;
 
-    /** Root fact object handles. */
-    private Map rootFactHandles;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -82,18 +80,6 @@ class TupleKey
     public TupleKey()
     {
         this.columns         = new HashMap();
-        this.rootFactHandles = new HashMap();
-    }
-
-    /** Construct.
-     *
-     *  @param handle The fact handle.
-     */
-    public TupleKey(FactHandle handle)
-    {
-        this();
-        this.rootFactHandles.put( new Object(),
-                                  handle );
     }
 
     /** Copy constructor.
@@ -106,19 +92,22 @@ class TupleKey
         putAll( that );
     }
 
+    public TupleKey(Declaration declaration,
+                    FactHandle factHandle)
+    {
+        this();
+        put( declaration,
+             factHandle );
+    }
+
+    public String toString()
+    {
+        return "[TupleKey: columns=" + this.columns + "]";
+    }
+
     // ------------------------------------------------------------
     //
     // ------------------------------------------------------------
-
-    /** Add a root fact handle.
-     *
-     *  @param handle The handle
-     */
-    void addRootFactHandle(FactHandle handle)
-    {
-        this.rootFactHandles.put( new Object(),
-                                  handle );
-    }
 
     /** Put all values from another key into this key.
      *
@@ -127,7 +116,6 @@ class TupleKey
     public void putAll(TupleKey key)
     {
         this.columns.putAll( key.columns );
-        this.rootFactHandles.putAll( key.rootFactHandles );
     }
 
     /** Put a value for a declaration.
@@ -137,25 +125,21 @@ class TupleKey
      *  @param value The value.
      */
     public void put(Declaration declaration,
-                    FactHandle handle,
-                    Object value)
+                    FactHandle handle)
     {
         this.columns.put( declaration,
-                          value );
-
-        this.rootFactHandles.put( value,
-                                  handle );
+                          handle );
     }
 
-    /** Retrieve a value by declaration.
+    /** Retrieve a <code>FactHandle</code> by declaration.
      *
      *  @param declaration The declaration.
      *
-     *  @return The value.
+     *  @return The fact handle.
      */
-    public Object get(Declaration declaration)
+    public FactHandle get(Declaration declaration)
     {
-        return this.columns.get( declaration );
+        return (FactHandle) this.columns.get( declaration );
     }
 
     /** Determine if this key contains the specified declaration.
@@ -180,27 +164,7 @@ class TupleKey
      */
     public boolean containsRootFactHandle(FactHandle handle)
     {
-        return this.rootFactHandles.values().contains( handle );
-    }
-
-    /** Retrieve the <code>FactHandle</code> for a given object.
-     *
-     *  <p>
-     *  Within a consequence of a rule, if the desire is to
-     *  retract or modify a root fact this method provides a
-     *  way to retrieve the <code>FactHandle</code>.
-     *  Facts that are <b>not</b> root fact objects have no
-     *  handle.
-     *  </p>
-     *
-     *  @param object The object.
-     *
-     *  @return The fact-handle or <code>null</code> if the
-     *          supplied object is not a root fact object.
-     */
-    public FactHandle getRootFactHandle(Object object)
-    {
-        return (FactHandle) this.rootFactHandles.get( object );
+        return this.columns.values().contains( handle );
     }
 
     /** Retrieve the number of columns in this key.
@@ -232,7 +196,23 @@ class TupleKey
      */
     public boolean containsAll(TupleKey that)
     {
-        return this.rootFactHandles.values().containsAll( that.rootFactHandles.values() );
+        // return this.columns.containsAll( that.columns );
+
+        for ( Iterator declIter = that.getDeclarations().iterator();
+              declIter.hasNext(); )
+        {
+            Declaration eachDecl = (Declaration) declIter.next();
+
+            FactHandle thatHandle = that.get( eachDecl );
+            FactHandle thisHandle = this.get( eachDecl );
+            
+            if ( ! thatHandle.equals( thisHandle ) )
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -245,14 +225,7 @@ class TupleKey
         {
             TupleKey that = (TupleKey) thatObj;
 
-            Collection thisKeys = this.rootFactHandles.values();
-            Collection thatKeys = that.rootFactHandles.values();
-
-            boolean result = ( thisKeys.size() == thatKeys.size()
-                               &&
-                               thisKeys.containsAll( thatKeys ) );
-
-            return result;
+            return this.columns.equals( that.columns );
         }
         
         return false;
@@ -262,6 +235,6 @@ class TupleKey
      */
     public int hashCode()
     {
-        return new HashSet( this.rootFactHandles.values() ).hashCode();
+        return this.columns.hashCode();
     }
 }

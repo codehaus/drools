@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.9 2003-11-21 04:18:13 bob Exp $
+ $Id: Declaration.java,v 1.10 2003-12-05 04:26:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -153,5 +153,10 @@ public class Declaration
     public int hashCode()
     {
         return ( this.objectType.hashCode() + this.identifier.hashCode() );
+    }
+
+    public String toString()
+    {
+        return "[" + this.identifier + "]";
     }
 }
