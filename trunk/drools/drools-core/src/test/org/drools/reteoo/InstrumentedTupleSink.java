@@ -39,13 +39,6 @@ public class InstrumentedTupleSink implements TupleSink
         this.retractedKeys.add( key );
     }
 
-    public void modifyTuples(FactHandle trigger,
-                             TupleSet tupleSet,
-                             WorkingMemoryImpl workingMemory)
-    {
-
-    }
-
     public List getRetractedObjects()
     {
         return this.retractedObjects;

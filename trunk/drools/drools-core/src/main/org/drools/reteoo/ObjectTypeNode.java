@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.20 2004-11-02 10:15:37 simon Exp $
+ * $Id: ObjectTypeNode.java,v 1.21 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -207,48 +207,6 @@ class ObjectTypeNode implements Serializable
             eachNode = ( ParameterNode ) nodeIter.next( );
 
             eachNode.retractObject( handle, workingMemory );
-        }
-    }
-
-    /**
-     * Modify a fact object in this <code>RuleBase</code> and the specified
-     * <code>WorkingMemory</code>.
-     *
-     * With the exception of time-based nodes, modification of a fact object is
-     * semantically equivelent to retracting and re-asserting it.
-     *
-     * @param handle The fact handle.
-     * @param object The modified value object.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException if an error occurs during assertion.
-     */
-    void modifyObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws FactException
-    {
-        ObjectType objectType = getObjectType( );
-
-        Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode;
-
-        if ( !objectType.matches( object ) )
-        {
-            while ( nodeIter.hasNext( ) )
-            {
-                eachNode = ( ParameterNode ) nodeIter.next( );
-
-                eachNode.retractObject( handle, workingMemory );
-            }
-        }
-        else
-        {
-            while ( nodeIter.hasNext( ) )
-            {
-                eachNode = ( ParameterNode ) nodeIter.next( );
-
-                eachNode.modifyObject( handle, object, workingMemory );
-            }
         }
     }
 }

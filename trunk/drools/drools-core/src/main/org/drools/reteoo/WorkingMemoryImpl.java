@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.38 2004-11-09 08:40:02 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.39 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,7 +66,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.38 2004-11-09 08:40:02 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.39 2004-11-09 09:03:35 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -418,7 +418,10 @@ class WorkingMemoryImpl implements WorkingMemory
 
         this.handles.put( object, handle );
 
-        this.ruleBase.modifyObject( handle, object, this );
+        this.ruleBase.retractObject( handle, this );
+
+        this.ruleBase.assertObject( handle, object, this );
+
         if ( !this.listeners.isEmpty( ) )
         {
             ObjectModifiedEvent objectModifiedEvent =  new ObjectModifiedEvent( this, handle, object );

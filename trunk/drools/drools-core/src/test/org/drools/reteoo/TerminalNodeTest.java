@@ -83,37 +83,4 @@ public class TerminalNodeTest extends DroolsTestCase
 
         assertContains( key, agenda.getRemoved( ) );
     }
-
-    public void testModifyTuples() throws Exception
-    {
-        final Agenda[] agendas = new Agenda[1];
-
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) )
-        {
-            public Agenda getAgenda()
-            {
-                return agendas[0];
-            }
-        };
-
-        final InstrumentedAgenda agenda = new InstrumentedAgenda(memory,
-                                                                  DefaultConflictResolver.getInstance( ) );
-        agendas[0] = agenda;
-
-        Rule rule = new Rule( "test-rule" );
-
-        InstrumentedConsequence consequence = new InstrumentedConsequence( );
-
-        rule.setConsequence( consequence );
-
-        TerminalNode node = new TerminalNode( new MockTupleSource( ), rule );
-
-        FactHandleImpl handle = new FactHandleImpl( 42 );
-
-        node.modifyTuples( handle, new TupleSet( ), memory );
-
-        assertLength( 1, agenda.getModified( ) );
-
-        assertContains( handle, agenda.getModified( ) );
-    }
 }

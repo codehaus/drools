@@ -1,11 +1,11 @@
 package org.drools.reteoo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.spi.ObjectType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InstrumentedObjectTypeNode extends ObjectTypeNode
 {
@@ -31,15 +31,6 @@ public class InstrumentedObjectTypeNode extends ObjectTypeNode
         super.assertObject( handle, object, memory );
 
         this.assertedObjects.add( object );
-    }
-
-    public void modifyObject(FactHandle handle,
-                             Object object,
-                             WorkingMemoryImpl memory) throws FactException
-    {
-        super.modifyObject( handle, object, memory );
-
-        this.modifiedHandles.add( handle );
     }
 
     public void retractObject(FactHandle handle, WorkingMemoryImpl memory) throws FactException

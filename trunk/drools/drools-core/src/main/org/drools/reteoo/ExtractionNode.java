@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.23 2004-11-03 14:27:00 simon Exp $
+ * $Id: ExtractionNode.java,v 1.24 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -182,39 +182,6 @@ class ExtractionNode extends TupleSource implements TupleSink
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
     {
         propagateRetractTuples( key, workingMemory );
-    }
-
-    /**
-     * Modify tuples.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    public void modifyTuples(FactHandle trigger,
-                             TupleSet newTuples,
-                             WorkingMemoryImpl workingMemory) throws FactException
-    {
-        Set retractedKeys = new HashSet( );
-
-        Iterator tupleIter = newTuples.iterator( );
-        ReteTuple eachTuple;
-        TupleKey eachKey;
-
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-            eachKey = eachTuple.getKey( );
-
-            if ( retractedKeys.add( eachKey ) )
-            {
-                propagateRetractTuples( eachKey, workingMemory );
-            }
-
-            assertTuple( eachTuple, workingMemory );
-        }
     }
 
     /**

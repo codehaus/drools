@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.22 2004-11-06 04:08:42 mproctor Exp $
+ * $Id: ConditionNode.java,v 1.23 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -186,70 +186,6 @@ class ConditionNode extends TupleSource implements TupleSink
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
     {
         propagateRetractTuples( key, workingMemory );
-    }
-
-    /**
-     * Modify tuples.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    public void modifyTuples(FactHandle trigger,
-                             TupleSet newTuples,
-                             WorkingMemoryImpl workingMemory) throws FactException
-    {
-        Set retractedKeys = new HashSet( );
-
-        Iterator tupleIter = newTuples.iterator( );
-        ReteTuple eachTuple;
-        TupleKey eachKey;
-
-        Condition condition = getCondition( );
-        ConditionTestedEvent conditionTestedEvent;
-        Iterator iter;
-        WorkingMemoryEventListener listener;
-        boolean isAllowed;
-        List listeners = workingMemory.getListeners( );
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            isAllowed = condition.isAllowed( eachTuple );
-
-
-            if ( !listeners.isEmpty( ) )
-            {
-                conditionTestedEvent =  new ConditionTestedEvent(workingMemory, eachTuple.getRule(), condition, eachTuple, isAllowed);
-                iter = listeners.iterator( );
-                while ( iter.hasNext( ) )
-                {
-                    listener = ( WorkingMemoryEventListener ) iter.next( );
-                    listener.conditionTested( conditionTestedEvent );
-                }
-            }
-
-
-            if ( !isAllowed )
-            {
-                tupleIter.remove();
-
-                eachKey = eachTuple.getKey();
-
-                if ( retractedKeys.add( eachKey ) )
-                {
-                    propagateRetractTuples( eachKey, workingMemory );
-
-                }
-            }
-        }
-
-        if ( newTuples.size( ) != 0 )
-        {
-            propagateModifyTuples( trigger, newTuples, workingMemory );
-        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

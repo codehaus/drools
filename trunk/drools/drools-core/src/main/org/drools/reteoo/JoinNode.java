@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.26 2004-11-03 03:14:57 simon Exp $
+ * $Id: JoinNode.java,v 1.27 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,8 +41,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 
@@ -270,46 +268,6 @@ class JoinNode extends TupleSource implements JoinMemoryFactory
         memory.retractTuples( key );
 
         propagateRetractTuples( key, workingMemory );
-    }
-
-    /**
-     * Modify tuples from the left input.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    void modifyLeftTuples(FactHandle trigger,
-                          TupleSet newTuples,
-                          WorkingMemoryImpl workingMemory) throws FactException
-    {
-        JoinMemory memory = workingMemory.getJoinMemory( this, this );
-
-        TupleSet newJoined = memory.modifyLeftTuples( trigger, newTuples, workingMemory );
-
-        propagateModifyTuples( trigger, newJoined, workingMemory );
-    }
-
-    /**
-     * Modify tuples from the right input.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    void modifyRightTuples(FactHandle trigger,
-                           TupleSet newTuples,
-                           WorkingMemoryImpl workingMemory) throws FactException
-    {
-        JoinMemory memory = workingMemory.getJoinMemory( this, this );
-
-        TupleSet newJoined = memory.modifyRightTuples( trigger, newTuples, workingMemory );
-
-        propagateModifyTuples( trigger, newJoined, workingMemory );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
