@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: Eval.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: Eval.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.semantics.groovy;
  
  */
 
-import groovy.lang.ScriptContext;
+import groovy.lang.Binding;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
@@ -57,8 +57,9 @@ import org.drools.spi.Tuple;
  *  @see ExprExtractor
  *
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>  
+ *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Eval.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ *  @version $Id: Eval.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
  */
 public class Eval extends Interp {
     // ------------------------------------------------------------
@@ -91,7 +92,7 @@ public class Eval extends Interp {
      *  @return The result of evaluation.
      */
     public Object evaluate(Tuple tuple) {
-        ScriptContext dict = setUpDictionary(tuple);
+        Binding dict = setUpDictionary(tuple);
 
         return evaluate(dict);
     }
@@ -102,9 +103,9 @@ public class Eval extends Interp {
      *
      *  @return The result of evaluation.
      */
-    protected Object evaluate(ScriptContext locals) {
+    protected Object evaluate(Binding locals) {
         //ScriptContext globals = new ScriptContext();
-        getCode().setBindings(locals);
+        getCode().setBinding(locals);
         return getCode().run();
     }
 
@@ -113,7 +114,7 @@ public class Eval extends Interp {
      *  @return The result of evaluation.
      */
     protected Object evaluate() {
-        ScriptContext locals = new ScriptContext();
+        Binding locals = new Binding();
 
         return evaluate(locals);
     }
@@ -131,6 +132,6 @@ public class Eval extends Interp {
     protected Declaration[] analyze(Declaration[] availDecls) throws Exception {
         ExprAnalyzer analyzer = new ExprAnalyzer();
 
-        return analyzer.analyze(getNode(), availDecls);
+        return analyzer.analyze(getText(), availDecls);
     }
 }
