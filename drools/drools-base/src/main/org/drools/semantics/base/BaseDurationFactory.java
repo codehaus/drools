@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseDurationFactory.java,v 1.8 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: BaseDurationFactory.java,v 1.9 2004-12-06 01:12:44 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,35 +45,61 @@ import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
 import org.drools.spi.Duration;
 
+/**
+ * An implementation of the <code>DurationFactory</code> interface.
+ */
 public class BaseDurationFactory implements DurationFactory
 {
+    /** The number of seconds in one minute (60). */
+    private static final int SECONDS_IN_A_MINUTE = 60;
+    
+    /** The number of seconds in one hour (60 * 60). */
+    private static final int SECONDS_IN_AN_HOUR = 60 * SECONDS_IN_A_MINUTE;
+    
+    /** The number of seconds in one day (60 * 60 * 24). */
+    private static final int SECONDS_IN_A_DAY = 24 * SECONDS_IN_AN_HOUR;
+    
+    /**
+     * Returns a new <code>Duration</code> object configured
+     * using the given <code>Configuration</code>.
+     * 
+     * @param config a <code>Configuration</code> object containing "days",
+     *        "hours", "minutes", and/or "seconds" attributes. All attributes
+     *        are optional and the given <code>Configuration</code> object
+     *        may be <code>null</code>.
+     * 
+     * @return a new <code>Duration</code> object.
+     */
     public Duration newDuration( Configuration config )
     {
-        String daysStr = config.getAttribute( "days" );
-        String hoursStr = config.getAttribute( "hours" );
-        String minutesStr = config.getAttribute( "minutes" );
-        String secondsStr = config.getAttribute( "seconds" );
-
         long seconds = 0;
 
-        if ( daysStr != null && !daysStr.trim( ).equals( "" ) )
+        if ( null != config )
         {
-            seconds += Integer.parseInt( daysStr.trim( ) );
-        }
-
-        if ( hoursStr != null && !hoursStr.trim( ).equals( "" ) )
-        {
-            seconds += Integer.parseInt( hoursStr.trim( ) );
-        }
-
-        if ( minutesStr != null && !minutesStr.trim( ).equals( "" ) )
-        {
-            seconds += Integer.parseInt( minutesStr.trim( ) );
-        }
-
-        if ( secondsStr != null && !secondsStr.trim( ).equals( "" ) )
-        {
-            seconds += Integer.parseInt( secondsStr.trim( ) );
+            String daysStr = config.getAttribute( "days" );
+            String hoursStr = config.getAttribute( "hours" );
+            String minutesStr = config.getAttribute( "minutes" );
+            String secondsStr = config.getAttribute( "seconds" );
+    
+            if ( daysStr != null && !daysStr.trim( ).equals( "" ) )
+            {
+                seconds += Integer.parseInt( daysStr.trim( ) ) * SECONDS_IN_A_DAY;
+            }
+    
+            if ( hoursStr != null && !hoursStr.trim( ).equals( "" ) )
+            {
+                seconds += Integer.parseInt( hoursStr.trim( ) ) * SECONDS_IN_AN_HOUR;
+            }
+    
+            if ( minutesStr != null && !minutesStr.trim( ).equals( "" ) )
+            {
+                seconds += Integer.parseInt( minutesStr.trim( ) ) * SECONDS_IN_A_MINUTE;
+            }
+    
+            if ( secondsStr != null && !secondsStr.trim( ).equals( "" ) )
+            {
+                seconds += Integer.parseInt( secondsStr.trim( ) );
+            }
         }
 
         return new BaseDuration( seconds );
