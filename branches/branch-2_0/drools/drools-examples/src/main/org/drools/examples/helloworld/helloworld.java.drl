@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<rule-set name="HelloWorld"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+  <java:import>java.lang.Object</java:import>
+  <java:import>java.lang.String</java:import>
+
+  <java:functions>
+  	public void helloWorld(String hello)
+  	{
+  		System.err.println(hello + " World");
+  	}
+
+  	public void goodbyeWorld(String goodbye)
+  	{
+  		System.out.println(goodbye + " Cruel World");
+  	}
+  </java:functions>
+
+
+  <rule name="Hello World">
+    <parameter identifier="hello">
+      <class>String</class>
+    </parameter>
+
+    <java:condition>hello.equals("Hello")</java:condition>
+
+    <java:consequence>
+      helloWorld( hello );
+    </java:consequence>
+  </rule>
+
+  <rule name="Goodbye Cruel World">
+    <parameter identifier="goodbye">
+      <class>String</class>
+    </parameter>
+
+    <java:condition>goodbye.equals("Goodbye")</java:condition>
+
+    <java:consequence>
+      goodbyeWorld( goodbye );
+    </java:consequence>
+  </rule>
+
+  <rule name="Debug">
+    <parameter identifier="object">
+      <class>Object</class>
+    </parameter>
+
+    <java:consequence>
+      System.out.println("Asserted object: " + object);
+    </java:consequence>
+  </rule>
+
+</rule-set>

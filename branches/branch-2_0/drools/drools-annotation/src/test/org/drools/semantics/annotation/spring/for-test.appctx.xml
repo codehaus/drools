@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="auditService"
+		class="org.drools.semantics.annotation.testrules.AuditService" />
+
+	<bean id="ruleOne"
+		class="org.drools.semantics.annotation.testrules.RuleOne" />
+
+	<bean id="ruleTwo"
+		class="org.drools.semantics.annotation.testrules.RuleTwo" />
+
+	<bean id="abstractRuleSet" abstract="true"
+		class="org.drools.semantics.annotation.spring.SpringAnnotationRuleSetFactory">
+		<property name="name">
+			<value>"rule-set"</value>
+		</property>
+	</bean>
+
+	<bean id="rule" abstract="true"
+		class="org.drools.semantics.annotation.spring.SpringAnnotationRuleFactory" />
+
+
+    <bean id="ruleSet_missingRuleSetName" lazy-init="true"
+        class="org.drools.semantics.annotation.spring.SpringAnnotationRuleSetFactory">
+    </bean>
+
+	<bean id="ruleSet_missingRuleName" lazy-init="true"
+		parent="abstractRuleSet">
+		<property name="rules">
+			<set>
+				<bean parent="rule">
+					<property name="pojo">
+						<ref local="ruleOne" />
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="ruleSet_missingPojo" lazy-init="true"
+		parent="abstractRuleSet">
+		<property name="rules">
+			<set>
+				<bean parent="rule">
+					<property name="name">
+						<value>Rule Name</value>
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="ruleSet_explicitRuleProperties" lazy-init="true"
+		parent="abstractRuleSet">
+		<property name="rules">
+			<set>
+				<bean parent="rule">
+					<property name="name">
+						<value>Rule One</value>
+					</property>
+					<property name="salience">
+						<value>88</value>
+					</property>
+					<property name="noLoop">
+						<value>true</value>
+					</property>
+					<property name="documentation">
+						<value>RuleOne</value>
+					</property>
+					<property name="pojo">
+						<bean
+							class="org.drools.semantics.annotation.testrules.RuleOne" />
+					</property>
+				</bean>
+				<bean parent="rule">
+					<property name="name">
+						<value>Rule Two</value>
+					</property>
+					<property name="salience">
+						<value>99</value>
+					</property>
+					<property name="noLoop">
+						<value>false</value>
+					</property>
+					<property name="documentation">
+						<value>RuleTwo</value>
+					</property>
+					<property name="pojo">
+						<bean
+							class="org.drools.semantics.annotation.testrules.RuleTwo" />
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="ruleSet_injectedRules" lazy-init="true"
+		parent="abstractRuleSet">
+		<property name="rules">
+			<set>
+				<bean parent="rule">
+					<property name="name">
+						<value>injected-rule-1</value>
+					</property>
+					<property name="pojo">
+						<bean
+							class="org.drools.semantics.annotation.testrules.InjectedRule">
+							<property name="conditionMinValue">
+								<value>10</value>
+							</property>
+							<property name="conditionMaxValue">
+								<value>20</value>
+							</property>
+							<property name="consequenceValue">
+								<value>99</value>
+							</property>
+							<property name="auditService">
+								<ref local="auditService" />
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="rule">
+					<property name="name">
+						<value>injected-rule-2</value>
+					</property>
+					<property name="pojo">
+						<bean
+							class="org.drools.semantics.annotation.testrules.InjectedRule">
+							<property name="conditionMinValue">
+								<value>30</value>
+							</property>
+							<property name="conditionMaxValue">
+								<value>40</value>
+							</property>
+							<property name="consequenceValue">
+								<value>77</value>
+							</property>
+							<property name="auditService">
+								<ref local="auditService" />
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<rule-set name="PetStore Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:groovy="http://drools.org/semantics/groovy"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/groovy groovy.xsd">
+
+   <application-data identifier="frame">javax.swing.JFrame</application-data>
+
+    <!-- assert each item in the shopping cart into the Working Memory -->
+    <rule name="Explode Cart" salience="20">
+        <parameter identifier="cart">
+            <class>org.drools.examples.petstore.ShoppingCart</class>
+        </parameter>
+
+        <groovy:condition>cart.getState( "Exploded" ) == false</groovy:condition>
+
+        <groovy:consequence>
+            println "Examining each item in the shopping cart." ;
+
+	        cart.getItems().each { item | drools.assertObject( item ) } ;
+            cart.setState( "Exploded", true);
+            drools.modifyObject( cart );
+        </groovy:consequence>
+    </rule>
+
+    <!-- Free Fish Food sample when we buy a Gold Fish if we haven't already  bought Fish Food and dont already have a Fish Food Sample-->
+    <rule name="Free Fish Food Sample">
+        <parameter identifier="cart">
+            <class>org.drools.examples.petstore.ShoppingCart</class>
+        </parameter>
+        <parameter identifier="item">
+            <class>org.drools.examples.petstore.CartItem</class>
+        </parameter>
+
+        <groovy:condition>cart.getItems( "Fish Food Sample" ).size() == 0</groovy:condition>
+        <groovy:condition>cart.getItems( "Fish Food" ).size() == 0</groovy:condition>
+        <groovy:condition>item.getName().equals( "Gold Fish" )</groovy:condition>
+
+        <groovy:consequence>
+            println "Adding free Fish Food Sample to cart" ;
+            cart.addItem( new org.drools.examples.petstore.CartItem( "Fish Food Sample", 0 ) );
+            drools.modifyObject( cart );
+        </groovy:consequence>
+
+    </rule>
+
+    <!-- Suggest a tank if we have bought more than 5 gold fish and dont already have one-->
+    <rule name="Suggest Tank" salience="10">
+        <parameter identifier="cart">
+            <class>org.drools.examples.petstore.ShoppingCart</class>
+        </parameter>
+
+        <groovy:condition>cart.getState( "Suggested Fish Tank" ) == false</groovy:condition>
+        <groovy:condition>cart.getItems( "Gold Fish" ).size() &gt;= 5</groovy:condition>
+        <groovy:condition>cart.getItems( "Fish Tank" ).size() == 0</groovy:condition>
+
+        <groovy:consequence>
+            import javax.swing.JOptionPane;
+
+            options = new Object[] {"Yes", "No"};
+            int n = JOptionPane.showOptionDialog(frame, "Would you like to buy a tank for your " + cart.getItems( "Gold Fish" ).size() + " fish?","Purchase Suggestion",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            println "SUGGESTION: Would you like to buy a tank for your " + cart.getItems( "Gold Fish" ).size() + " fish? - " ;
+            if (n == 0) {
+              cart.addItem( new org.drools.examples.petstore.CartItem( "Fish Tank", 25 ) );
+              println "Yes" ;
+            } else {
+              println "No" ;
+            }
+
+            cart.setState( "Suggested Fish Tank", true );
+            drools.modifyObject( cart );
+        </groovy:consequence>
+    </rule>
+
+    <!-- Give 5% discount if gross cost is more than 20.00 -->
+    <rule name="Apply 5% Discount">
+        <parameter identifier="cart">
+            <class>org.drools.examples.petstore.ShoppingCart</class>
+        </parameter>
+
+        <groovy:condition>cart.getGrossCost() &gt;= 10.00</groovy:condition>
+        <groovy:condition>cart.getGrossCost() &lt; 19.9</groovy:condition>
+
+        <groovy:condition>cart.getDiscount() &lt; 0.05</groovy:condition>
+
+        <groovy:consequence>
+            println "Applying 5% discount to cart" ;
+            cart.setDiscount( 0.05 );
+        </groovy:consequence>
+    </rule>
+
+    <!-- Give 10% discount if gross cost is more than 20.00 -->
+    <rule name="Apply 10% Discount">
+        <parameter identifier="cart">
+            <class>org.drools.examples.petstore.ShoppingCart</class>
+        </parameter>
+
+        <groovy:condition>cart.getGrossCost() &gt;= 20.00</groovy:condition>
+        <groovy:condition>cart.getDiscount() &lt; 0.10</groovy:condition>
+
+        <groovy:consequence>
+            println "Applying 10% discount to cart" ;
+            cart.setDiscount( 0.10 );
+        </groovy:consequence>
+    </rule>
+  </rule-set>
+

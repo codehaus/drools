@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<project>
+    <extend>../project.xml</extend>
+    <pomVersion>3</pomVersion>
+    <name>Drools :: Example Library - JDK5</name>
+    <artifactId>drools-examples-jdk5</artifactId>
+    <groupId>drools</groupId>
+
+    <dependencies>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-base</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-io</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-smf</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-annotation</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-java</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-python</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-groovy</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>janino</id>
+            <version>2.1.0</version>
+            <artifactId>janino</artifactId>
+            <properties>
+                <requiredBy>drools:drools-smf</requiredBy>
+                <scope>compile, run, test</scope>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.2</version>
+            <properties>
+                <requiredBy>??</requiredBy>
+                <scope>??</scope>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>jython</groupId>
+            <artifactId>jython</artifactId>
+            <version>20020827-no-oro</version>
+            <properties>
+                <requiredBy>drools:drools-jython</requiredBy>
+                <scope>compile, run, test</scope>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>1.0-beta-9</version>
+            <properties>
+                <requiredBy>drools:drools-groovy</requiredBy>
+                <scope>compile, run, test</scope>
+            </properties>
+        </dependency>
+
+		<dependency>
+			<groupId>springframework</groupId>
+			<artifactId>spring</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.4</version>
+            <properties>
+                <requiredBy>springframework:spring</requiredBy>
+                <scope>compile, run, test</scope>
+            </properties>
+		</dependency>
+
+        <dependency>
+            <groupId>easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>1.1</version>
+            <properties>
+                <scope>compile, test</scope>
+            </properties>
+        </dependency>
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymockclassextension</artifactId>
+			<version>1.1</version>
+            <properties>
+                <scope>compile, test</scope>
+            </properties>
+		</dependency>
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymockcontainer-jdk5</artifactId>
+			<version>1.0.1</version>
+            <properties>
+                <scope>compile, test</scope>
+            </properties>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-full</artifactId>
+			<version>2.0.2</version>
+            <properties>
+                <requiredBy>easymock</requiredBy>
+                <scope>compile, test</scope>
+            </properties>
+		</dependency>
+
+    </dependencies>
+
+    <build>
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <resources>
+                <resource>
+                    <directory>src/test/data</directory>
+                    <includes>
+                        <include>**/*.data</include>
+                    </includes>
+                </resource>
+                <resource>
+                    <directory>src/test</directory>
+                    <includes>
+                        <include>**/*.xml</include>
+                        <include>**/*.drl</include>
+                    </includes>
+                </resource>
+            </resources>
+        </unitTest>
+
+        <!-- J A R  R E S O U R C E S -->
+        <!-- Resources that are packaged up inside the JAR file -->
+        <resources>
+            <resource>
+                <directory>src/main</directory>
+                <includes>
+                    <include>**/*.drl</include>
+                    <include>**/*.xml</include>
+                    <include>**/primes.txt.gz</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
+
+</project>
+

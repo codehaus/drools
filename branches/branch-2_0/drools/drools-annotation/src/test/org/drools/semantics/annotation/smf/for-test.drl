@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<!-- 
+  TODO This works, but generates console warnings:
+  
+  (file:/Q:/thirdparty/drools/head/drools/drools-annotation/target/bin/org/drools/semantics/annotation/smf/for-test.drl: 14, 63): cvc-complex-type.2.4.a: Invalid content was found starting with element 'annotation:rule'. One of '{"http://drools.org/rules":abstractImport, "http://drools.org/rules":application-data, "http://drools.org/rules":abstractFunctions, "http://drools.org/rules":rule}' is expected.  
+  
+  Need to look into why.
+-->
+
+<rule-set name="HelloWorld" xmlns="http://drools.org/rules"
+	xmlns:annotation="http://drools.org/semantics/annotation"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+	xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/pojo pojo.xsd">
+
+	<annotation:rule name="Rule One" 
+		class="org.drools.semantics.annotation.testrules.RuleOne" />
+	<annotation:rule name="Rule Two"
+		class="org.drools.semantics.annotation.testrules.RuleTwo" />
+        
+</rule-set>
