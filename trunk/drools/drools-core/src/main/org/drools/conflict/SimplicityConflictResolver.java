@@ -22,11 +22,11 @@ public class SimplicityConflictResolver
 
     }
 
-    public void insert(Activation activation,
+    public List insert(Activation activation,
                        List list)
     {
         int numConditions = activation.getRule().getConditions().length;
-        
+
         for ( ListIterator listIter = list.listIterator();
               listIter.hasNext(); )
         {
@@ -59,10 +59,11 @@ public class SimplicityConflictResolver
                 super.insert( activation,
                               list.subList( startIndex,
                                             endIndex ) );
-                return;
+                return list;
             }
         }
 
         list.add( activation );
+        return list;
     }
 }
