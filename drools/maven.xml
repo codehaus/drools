@@ -17,7 +17,7 @@
 
     <goal name="damagecontrol">
       <j:set var="maven.multiproject.excludes" value="drools-examples/*"/>
-      <j:set var="goal" value="clean,clover:report,javadoc,reports:publish"/>
+      <j:set var="goal" value="clean,clover:report,javadoc:generate,reports:publish"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
 
