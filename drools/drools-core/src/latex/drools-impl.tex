@@ -1,0 +1,365 @@
+
+%%
+%%
+%% Rete-OO
+%%
+%%
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+
+%%
+%% Package Imports
+%%
+
+\usepackage{fullpage}
+\usepackage{alltt}
+\usepackage{cite}
+\usepackage{plain}
+\usepackage{epic}
+\usepackage{ecltree}
+%\usepackage{fancybox}
+\usepackage{ftnright}
+\usepackage{hyperref}
+\usepackage{eepic}
+
+%%
+%% Margin Adjustments
+%%
+
+\addtolength{\oddsidemargin}{-.5in}
+\addtolength{\evensidemargin}{-.5in}
+\addtolength{\textwidth}{.75in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.25in}
+
+%%
+%% Extra Commands and Evironments
+%%
+
+% \newenvironment{codelisting}%
+	% {\begin{Sbox}\begin{minipage}{250pt}\small\begin{alltt}}%
+	% {\end{alltt}\end{minipage}\end{Sbox}\fbox{\TheSbox}}
+
+\newenvironment{codelisting}%
+	{\begin{minipage}{250pt}\small\begin{alltt}}%
+	{\end{alltt}\end{minipage}}
+
+
+\begin{document}
+
+\let\footnoterule\hrule
+\setlength{\skip\footins}{10pt plus 5pt minus 3pt}
+
+\makeatletter
+
+\renewcommand{\@makefntext}[1]%
+	{\noindent\makebox[1.8em][r]{\@makefnmark}#1}
+
+\makeatother
+
+% \long\def\@makefntext#1{\parindent 1em
+  % \noindent\hbox to 2em{}%
+  % \llap{$\@thefnmark.\;\;$}#1}
+
+
+%% \preparefootins
+
+\title{The Design and Implementation of \emph{drools},\\an Extensible Rules
+Engine for Java}
+
+\author{Bob McWhirter\\bob@werken.com\\http://werken.com/}
+\maketitle
+
+%% 
+%% Abstract
+%% 
+
+\begin{abstract}
+The \emph{drools} project aims to create an open, extensible
+implementation of the Rete-OO algorithm, with a framework to
+allow integration by ways of multiple constructs.  Ideally the 
+engine can be used to enact rules across Java objects, XML
+documents, and a multitude of different data structures.
+
+Additionally, it acknowledges the multi-user aspects of today's
+enterprise systems and provides mechanisms for assisting in
+maintaing multiple distinct \emph{fact bases} against single 
+reusable \emph{rule bases}.
+\end{abstract}
+
+\section{The Rete-OO Algorithm}
+
+The author adapted Forgy's Rete algorithm\cite{forgy82rete} to work in an
+object-oriented environment\cite{werken01reteoo}, able to lazily pull facts%
+	\footnote{Pulling facts is different than infering facts.} 
+from initial fact objects. All objects reachable from an
+initial fact object is an object-tree%
+	\footnote{It may even actually be a directed cyclic graph.}
+containing all facts available to the system.  A single object
+may potentially give rise to thousands of facts through traversal.
+
+\section{Framework}
+
+The \emph{drools engine} implements the standard seven node types
+as described by the algorithm.  Certain semantics have been left
+open, leaving room for developers to enhance and adapt the system
+to their needs.  The following semantics are to be defined by
+additional modules that build upon the engine.
+
+\begin{enumerate}
+
+	\item \emph{Object type differentiation.} For \emph{object type
+	nodes} which inspect incoming \emph{root fact objects}, delegation
+	to a \emph{semantic module} is provided to allow custom differentiation of object
+	types.
+
+	\item \emph{Column generation.} For \emph{column generator nodes},
+	delegation to a \emph{semantic module} is provided to allow custom methods for
+	generating additional columns on a \emph{tuple}.
+
+\end{enumerate}
+
+The engine also provides the general infrastructure for maintaining
+multiple isolated \emph{fact bases} within the context of a single
+shared \emph{rule base}.  Modules built upon the base \emph{drools
+engine} may add significantly more functionality.
+
+
+\section{Semantic Modules}
+
+\subsection{Object Type Differentiation}
+
+\emph{Object type differentiation} revolves around being able
+to divide objects into sets, based upon some idea of ``type''.  In 
+Java, the class of the object, as returned by the
+\verb|Object::getClass()| method provides one way of differentiating
+objects.  Introducing polymorphism into the type model allows for
+an object to actually be classified as belonging to multiple object
+types.  In Java, all objects would fall into the
+\verb|java.lang.Object| type classification, while one some would
+be categorized as \verb|com.werken.Developer| objects.
+
+In terms of XML documents, the type of the document could be defined
+in one of many ways, depending on the desired semantics.  Using only normal
+Java semantics, it is possible that all XML documents, regardless of
+content, would be categorized by the Java type of
+\verb|org.dom4j.Document|, possibly%
+	\footnote{\emph{dom4j} is an alternative Java object-model 
+		for XML document representation, and may be obtained 
+		from \emph{http://dom4j.org/}.}.
+An XML-specific semantic module may instead assert different object
+type differentiation rules.  For example, even though all documents
+may be of the class \verb|org.dom4j.Document|, the semantic module
+may categorize each document based upon the namespace of the root
+element of the document.  It may further classify each by the tagname
+of the root element within the namespace.
+
+\subsubsection{The Object Differentiation Interface}
+
+Two interfaces are provided by the \emph{drools engine} that related
+to \emph{object type differentiation}.  Each semantic module must 
+supply an implementation of the \verb|org.drools.semantic.ObjectType| 
+interface Figure \ref{semantic.interface.object-type}).
+
+\begin{figure*}[p]
+	\begin{codelisting}
+	public interface ObjectType
+	\{
+	     boolean matches(Object theObject);
+	\}
+	\end{codelisting}
+	\caption{The \emph{ObjectType} interface.}
+	\label{semantic.interface.object-type}
+\end{figure*}
+
+An instance of \verb|ObjectType| is required for each type of objects
+that needs to be differentiated.  Using Java semantics, it may be
+possible to write a \verb|JavaObjectType| class which is 
+initialized with a \verb|java.lang.Class| and internally uses
+\verb|isAssignableFrom(...)| to determine membership 
+(Figure \ref{semantic.object-type.java-example}).
+
+\begin{figure*}[p]
+	\begin{codelisting}
+	public class JavaObjectType 
+	             implements ObjectType
+	\{
+	     private Class objectClass;
+
+	     public JavaClassObjectType(Class objectClass)
+	     \{
+	          this.objectClass = objectClass;
+	     \}
+
+	     public boolean matches(Object theObject)
+	     \{
+	          return this.objectClass.isAssignableFrom( theObject.getClass() );
+	     \}
+	\}
+	\end{codelisting}
+	\caption{Example \emph{ObjectType} implementing Java class semantics, including polymorphism.} 
+	\label{semantic.object-type.java-example}
+\end{figure*}
+
+Objects that implement the \verb|ObjectType| interface are never
+passed directly to the \emph{drools engine}, but are made available
+through the rule-building constructs, to be explained later.
+
+\subsection{Column Generation}
+
+\emph{Column generation} consists of extracting facts from other
+facts.  In Java, this may be accomplished using method calls on
+objects to produce more objects.  with XML, a new column may be
+generated by applying an XPath to a document or element.  Column
+generation \emph{does not} include fact inference, but rather
+it is an extraction of a fact implicit in another already-known
+fact.
+
+The only interface that pertains to column generation is the
+\verb|org.drools.semantic.FactExtractor| (Figure
+\ref{semantic.interface.fact-extractor}).
+Given an object, the \verb|FactExtractor| must perform whatever 
+duties necessary to extract the fact. In a Java semantic module, a 
+\verb|ReflectionFactExtractor| may be possible, that uses the
+\verb|java.lang.reflect.*| package for performing fact 
+extractions (Figure \ref{semantic.fact-extractor.java-example}).
+Alternatively, an XPath-based XML fact extrator may also
+be an option (Fiture \ref{semantic.fact-extractor.xml-example}).
+
+\begin{figure*}[p]
+	\begin{codelisting}
+	public interface FactExtractor
+	\{
+	     Object extractFact(Tuple tuple);
+	     String[] getRequiredColumnNames();
+	\}
+	\end{codelisting}
+	\caption{The \emph{FactExtractor} interface.}
+	\label{semantic.interface.fact-extractor}
+\end{figure*}
+
+\begin{figure*}[p]
+	\begin{codelisting}
+	public class ReflectionFactExtractor 
+	             implements FactExtractor
+	\{
+	     private String columnName;
+	     private Method method;
+
+	     public ReflectionFactExtractor(String columnName,
+	                                    Method method)
+	     \{
+	          this.columnName = columnName;
+	          this.method     = method;
+	     \}
+
+	     public Object extractFact(Tuple tuple)
+	     \{
+	          Object self = tuple.get( this.columnName );
+
+	          return this.method.invoke( self,
+	                                     ... );
+	     \}
+
+	     public String[] getRequiredColumnNames()
+	     \{
+	          return new String[] \{ this.columnName \};
+	     \}
+	\}
+	\end{codelisting}
+	\caption{Example \emph{FactExtractor} implementing Java method semantics.}
+	\label{semantic.fact-extractor.java-example}
+\end{figure*}
+
+\begin{figure*}[p]
+	\begin{codelisting}
+	public class XPathFactExtractor 
+	             implements FactExtractor
+	\{
+	     private String columnName;
+	     private XPath  xpath;
+
+	     public XPathFactExtractor(String columnName,
+	                               XPath xpath)
+	     \{
+	          this.columnName = columnName;
+	          this.xpath      = xpath;
+	     \}
+
+	     public Object extractFact(Tuple tuple)
+	     \{
+	          Object context = tuple.get( this.columnName );
+
+	          return this.xpath.evaluate( context );
+	     \}
+
+	     public String[] getRequiredColumnNames()
+	     \{
+	          return new String[] \{ this.columnName \};
+	     \}
+	\}
+	\end{codelisting}
+	\caption{Example \emph{FactExtractor} implementing XML XPath semantics.}
+	\label{semantic.fact-extractor.xml-example}
+\end{figure*}
+
+The execution context of the \verb|FactExtrator| is the \verb|Tuple|
+paramater to the \verb|extractFact(...)| method.  The \verb|Tuple|
+class simply maintains name and value bindings.  Initially, a tuple
+contains columns matching only the \emph{rule object parameters}.
+When the engine uses a \verb|FactExtractor|, it adds the result as
+another column on the tuple.  Tuples flowing through \emph{join nodes}
+also accumulate extra columns. The \emph{drools engines} ensures that
+the columns expected by a particular \verb|FactExtractor| have been
+populated before being passed to the extractor. 
+
+\section{Rule Construction}
+
+Rules are constructed programmatically using the following classes:
+
+\begin{enumerate}
+	\item \verb|org.drools.Rule|\\
+		A \verb|Rule| is the container for all conditions and
+		actions.
+	\item \verb|org.drools.Declaration|\\
+		A \verb|Declaration| represents either a
+		\emph{parameter object declaration} or one of a
+		rule's \emph{local fact object declarations}.
+	\item \verb|org.drools.semantic.ObjectType|\\
+		An \verb|ObjectType| parameterizes all \verb|Declarations|,
+		to inform the system of the types of objects expected.
+	\item \verb|org.drools.Condition|
+		A \verb|Condition| abstract and has two concrete
+		subclasses.
+		\begin{enumerate}
+			\item \verb|org.drools.FilterCondition|\\
+			A \verb|FilterCondition| represents any boolean
+			condition that either allows or disallows single
+			\emph{tuple}.
+			\item \verb|org.drools.semantic.FactExtractor|\\
+			A \verb|FactExtractor| is responsible
+			for taking a well-formed \emph{tuple} and 
+			extracting a new fact.
+		\end{enumerate}
+	\item \verb|org.drools.Action|\\
+		An \verb|Action| performs the required tasks when 
+		a rules conditions are met.
+\end{enumerate}
+
+The rule base is built by creating instances of \verb|Rule|, 
+and attaching \verb|Declarations| for the parameter objects and any
+local named objects, along with affixing \verb|Conditions|
+and an \verb|Action|.
+
+\section{Knowledge Management\\Infrastructure}
+
+\section{Java Semantic Module}
+
+\section{XML Semantic Module}
+
+\bibliography{werken}
+\bibliographystyle{acm}
+
+\end{document}
+
