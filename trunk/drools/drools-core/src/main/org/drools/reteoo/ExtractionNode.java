@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.15 2004-10-17 02:22:06 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.16 2004-10-17 02:25:22 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -161,7 +161,12 @@ class ExtractionNode extends TupleSource implements TupleSink
     {
         Object value = getExtractor( ).extractFact( tuple );
         
-        if (value == null) return;
+        // Extractions should never evaluate to null
+        // if null do not propogate
+        if (value == null)
+        {
+            return;
+        }
         
         ReteTuple newTuple = new ReteTuple( tuple );
 
