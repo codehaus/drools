@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.28 2004-09-17 00:27:34 mproctor Exp $
+ * $Id: BlockConsequence.java,v 1.29 2004-10-24 00:56:30 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -45,13 +45,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
@@ -60,7 +64,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  * 
- * @version $Id: BlockConsequence.java,v 1.28 2004-09-17 00:27:34 mproctor Exp $
+ * @version $Id: BlockConsequence.java,v 1.29 2004-10-24 00:56:30 mproctor Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
@@ -108,7 +112,7 @@ public class BlockConsequence implements Consequence, Serializable
      *         invoke the consequence.
      */
     public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
-    {
+    {       
         try
         {
             List decls = new ArrayList( tuple.getDeclarations( ) );
@@ -129,17 +133,33 @@ public class BlockConsequence implements Consequence, Serializable
             Declaration[] params = ( Declaration[] ) decls
                                                           .toArray( Declaration.EMPTY_ARRAY );
             Map applicationData = tuple.getWorkingMemory( )
-                                       .getApplicationDataMap( );
+                                       .getApplicationDataMap( );                
 
             if ( script == null )
             {
+                Set imports = new HashSet(); 
+                if ((tuple.getRule().getImports() != null)&&(tuple.getRule().getImports().getImportEntries() != null))
+                {
+                                      
+                    Iterator it = tuple.getRule().getImports().getImportEntries().iterator();
+                    ImportEntry importEntry;
+                    while (it.hasNext())
+                    {
+                        importEntry = (ImportEntry) it.next();
+                        if (importEntry instanceof JavaImportEntry)
+                        {
+                            imports.add(importEntry.getImportEntry());
+                        }
+                    }                
+                }
                 script = ( Script ) DroolsScriptEvaluator
                                                          .compile(
                                                                    this.block,
                                                                    Script.class,
                                                                    scriptParamNames,
                                                                    params,
-                                                                   applicationData );
+                                                                   applicationData,
+                                                                   imports);
             }
 
             script.invoke( tuple, params, new KnowledgeHelper( tuple ),

@@ -1,6 +1,6 @@
 package org.drools.semantics.java;
 
-import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
@@ -15,11 +15,11 @@ public class ExprConditionFactory implements ConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition(Configuration config, Declaration[] availDecls) throws FactoryException
+    public Condition newCondition(Configuration config, Rule rule) throws FactoryException
     {
         try
         {
-            return new ExprCondition( config.getText( ), availDecls );
+            return new ExprCondition( config.getText( ), rule.getAllDeclarations() );
         }
         catch ( Exception e )
         {

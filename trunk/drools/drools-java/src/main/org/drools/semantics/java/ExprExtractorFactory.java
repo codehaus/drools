@@ -1,6 +1,6 @@
 package org.drools.semantics.java;
 
-import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ExtractorFactory;
 import org.drools.smf.FactoryException;
@@ -15,11 +15,11 @@ public class ExprExtractorFactory implements ExtractorFactory
         return INSTANCE;
     }
 
-    public Extractor newExtractor(Configuration config, Declaration[] availDecls) throws FactoryException
+    public Extractor newExtractor(Configuration config, Rule rule) throws FactoryException
     {
         try
         {
-            return new ExprExtractor( config.getText( ), availDecls );
+            return new ExprExtractor( config.getText( ), rule.getAllDeclarations() );
         }
         catch ( Exception e )
         {

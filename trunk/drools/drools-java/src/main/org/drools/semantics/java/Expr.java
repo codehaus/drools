@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.24 2004-10-17 00:01:39 mproctor Exp $
+ * $Id: Expr.java,v 1.25 2004-10-24 00:56:30 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,11 +41,15 @@ package org.drools.semantics.java;
  *  
  */
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.naming.ConfigurationException;
 
 import org.drools.rule.Declaration;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
@@ -57,7 +61,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Expr.java,v 1.24 2004-10-17 00:01:39 mproctor Exp $
+ * @version $Id: Expr.java,v 1.25 2004-10-24 00:56:30 mproctor Exp $
  */
 public class Expr implements Serializable
 {
@@ -136,16 +140,30 @@ public class Expr implements Serializable
     {
         Declaration[] params = this.requiredDecls;
         Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
-
         if ( conditionScript == null )
         {
+            Set imports = new HashSet();  
+            if ((tuple.getRule().getImports() != null)&&(tuple.getRule().getImports().getImportEntries() != null))
+            {
+                Iterator it = tuple.getRule().getImports().getImportEntries().iterator();
+                ImportEntry importEntry;
+                while (it.hasNext())
+                {
+                    importEntry = (ImportEntry) it.next();
+                    if (importEntry instanceof JavaImportEntry)
+                    {
+                        imports.add(importEntry.getImportEntry());
+                    }
+                }                
+            }            
             conditionScript = ( ConditionScript ) DroolsScriptEvaluator
                                                                        .compile(
                                                                                  this.expr,
                                                                                  ConditionScript.class,
                                                                                  scriptParamNames,
                                                                                  params,
-                                                                                 applicationData );
+                                                                                 applicationData,
+                                                                                 imports);
         }
 
         return conditionScript.invoke( tuple, this.requiredDecls,
@@ -162,13 +180,28 @@ public class Expr implements Serializable
 
         if ( extractorScript == null )
         {
+            Set imports = new HashSet();
+            if ((tuple.getRule().getImports() != null)&&(tuple.getRule().getImports().getImportEntries() != null))
+            {
+                Iterator it = tuple.getRule().getImports().getImportEntries().iterator();
+                ImportEntry importEntry;
+                while (it.hasNext())
+                {
+                    importEntry = (ImportEntry) it.next();
+                    if (importEntry instanceof JavaImportEntry)
+                    {
+                        imports.add(importEntry.getImportEntry());
+                    }
+                }                
+            }                
             extractorScript = ( ExtractorScript ) DroolsScriptEvaluator
                                                                        .compile(
                                                                                  this.expr,
                                                                                  ExtractorScript.class,
                                                                                  scriptParamNames,
                                                                                  params,
-                                                                                 applicationData );
+                                                                                 applicationData,
+                                                                                 imports);
         }
 
         return extractorScript.invoke( tuple, this.requiredDecls,
