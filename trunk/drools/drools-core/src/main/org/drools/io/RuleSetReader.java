@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.13 2003-12-30 03:57:43 bob Exp $
+ $Id: RuleSetReader.java,v 1.14 2003-12-30 04:55:39 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -89,7 +89,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.13 2003-12-30 03:57:43 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.14 2003-12-30 04:55:39 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -1024,7 +1024,8 @@ public class RuleSetReader
         
         try
         {
-            Consequence consequence = factory.newConsequence( config );
+            Consequence consequence = factory.newConsequence( config,
+                                                              this.rule.getAllDeclarations() );
             
             this.rule.setConsequence( consequence );
         }
