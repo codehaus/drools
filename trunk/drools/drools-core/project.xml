@@ -160,12 +160,6 @@
     </dependency>
 
     <dependency>
-      <id>junit</id>
-      <version>3.7</version>
-      <url>http://junit.org/</url>
-    </dependency>
-
-    <dependency>
       <id>jython</id>
       <version>SNAPSHOT</version>
       <url>http://jython.org/</url>
@@ -239,6 +233,14 @@
       </includes>
     </resources>
 
+    <testResources>
+      <testResource>
+        <directory>src/java/test</directory>
+        <includes>
+          <include>**/*.drl</include>
+        </includes>
+      </testResource>
+    </testResources>
 
   </build>
 
