@@ -19,16 +19,12 @@
     <shortDescription>Rete Based Rules Engine</shortDescription>
 
     <description>
-        The drools project is a dynamic rules engine for Java.
-        It uses a modified implementation of Forgy's RETE algorithm to
-        allow natural expression of rules within an object-oriented language.
     </description>
 
     <url>http://drools.org</url>
 
     <siteAddress>drools.codehaus.org</siteAddress>
-    <siteDirectory>/www/drools.codehaus.org</siteDirectory>
-    <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
+    <siteDirectory>/www/drools.codehaus.org/java</siteDirectory>
 
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-java</connection>
@@ -54,7 +50,6 @@
     </mailingLists>
 
     <developers>
-
         <developer>
             <name>Bob McWhirter</name>
             <id>bob</id>
@@ -65,97 +60,7 @@
                 <role>Lead Developer</role>
             </roles>
         </developer>
-
-        <developer>
-            <name>James Strachan</name>
-            <id>jstrachan</id>
-            <email>james_strachan@yahoo.co.uk</email>
-            <organization>Spiritsoft</organization>
-            <roles>
-                <role>Pontificator</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>David Cramer</name>
-            <id>dcramer</id>
-            <email>davec@fastcrypt.com</email>
-            <roles>
-                <role>Instigator</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>Martin Hald</name>
-            <id>mhald</id>
-            <email>martin.hald@bigfoot.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>Pete Kazmier</name>
-            <id>kaz</id>
-            <email>pete-codehaus-dev@kazmier.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>James Roome</name>
-            <email>refux@hotmail.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>Christiaan ten Klooster</name>
-            <email>christiaan@dacelo.nl</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>Tom Vasak</name>
-            <email>tomv@aic.net.au</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>Matt Ho</name>
-            <email>matt@indigoegg.com</email>
-            <id>savaki</id>
-            <organization>Indigo Egg</organization>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-
-        <developer>
-            <name>Thomas Diesler</name>
-            <id>tdiesler</id>
-            <email>thomas.diesler@softcon-itec.de</email>
-            <roles>
-                <role>JSR-94 and JCA Lead</role>
-            </roles>
-        </developer>
-
     </developers>
-
-    <contributors>
-        <contributor>
-            <name>Roger F. Gay</name>
-            <roles>
-                <role>XML Schema Lead</role>
-            </roles>
-        </contributor>
-    </contributors>
 
     <dependencies>
         <dependency>
@@ -171,6 +76,11 @@
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
+            <version>2.0-beta-12-dev</version>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-smf</artifactId>
             <version>2.0-beta-12-dev</version>
         </dependency>
     </dependencies>
