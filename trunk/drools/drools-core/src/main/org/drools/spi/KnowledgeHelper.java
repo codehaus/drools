@@ -3,6 +3,8 @@ package org.drools.spi;
 import org.drools.FactException;
 import org.drools.FactHandle;
 
+import java.util.List;
+
 public class KnowledgeHelper
 {
     private Tuple tuple;
@@ -46,12 +48,12 @@ public class KnowledgeHelper
         return this.tuple.getRule( ).getName( );
     }
 
-    public Object getObjects()
+    public List getObjects()
     {
         return this.tuple.getWorkingMemory( ).getObjects( );
     }
 
-    public Object getObjects(Class objectClass)
+    public List getObjects(Class objectClass)
     {
         return this.tuple.getWorkingMemory( ).getObjects( objectClass );
     }
