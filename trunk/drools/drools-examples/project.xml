@@ -173,9 +173,8 @@
     <!-- Resources that are packaged up inside the JAR file -->
 
     <resources>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
+      <inclues>
+      </inclues>
     </resources>
 
   </build>
