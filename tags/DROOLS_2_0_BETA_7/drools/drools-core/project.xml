@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<project>
+
+  <pomVersion>3</pomVersion>
+  <name>drools</name>
+  <id>drools</id>
+  <currentVersion>2.0-beta-7</currentVersion>
+
+  <organization>
+    <name>The Werken Company</name>
+    <url>http://www.werken.com/</url>
+    <logo>http://images.werken.com/werken_large.gif</logo>
+  </organization>
+  <inceptionYear>2001</inceptionYear>
+  <package>org.drools</package>
+  <logo>http://images.werken.com/drools.gif</logo>
+
+  <shortDescription>Rete Based Rules Engine</shortDescription>
+
+  <description>
+    The drools project is a dynamic rules engine for Java.
+    It uses a modified implementation of Forgy's RETE algorithm to
+    allow natural expression of rules within an object-oriented language.
+  </description>
+
+  <url>http://drools.org/</url>
+
+  <siteAddress>drools.werken.com</siteAddress>
+  <siteDirectory>/www/drools.werken.com</siteDirectory>
+  <issueTrackingUrl>http://jira.werken.com/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
+
+  <repository>
+    <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
+    <url>http://cvs.werken.com/viewcvs.cgi/drools/drools/</url>
+  </repository>
+
+  <versions/>
+  <branches/>
+
+  <mailingLists>
+    <mailingList>
+      <name>drools interest</name>
+      <subscribe>http://lists.werken.com/mailman/listinfo/drools-interest</subscribe>
+      <unsubscribe>http://lists.werken.com/mailman/listinfo/drools-interest</unsubscribe>
+      <archive>http://lists.werken.com/pipermail/drools-interest/</archive>
+    </mailingList>
+    <mailingList>
+      <name>drools cvs messages</name>
+      <subscribe>http://lists.werken.com/mailman/listinfo/drools-cvs</subscribe>
+      <unsubscribe>http://lists.werken.com/mailman/listinfo/drools-cvs</unsubscribe>
+      <archive>http://lists.werken.com/pipermail/drools-cvs/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Bob McWhirter</name>
+      <id>bob</id>
+      <email>bob@werken.com</email>
+      <organization>The Werken Company</organization>
+      <roles>
+        <role>Founder</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>James Strachan</name>
+      <id>jstrachan</id>
+      <email>james_strachan@yahoo.co.uk</email>
+      <organization>Spiritsoft</organization>
+      <roles>
+        <role>Pontificator</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>David Cramer</name>
+      <id>dcramer</id>
+      <email>davec@fastcrypt.com</email>
+      <roles>
+        <role>Instigator</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Martin Hald</name>
+      <id>mhald</id>
+      <email>martin.hald@bigfoot.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>James Roome</name>
+      <email>refux@hotmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+  <!-- Need to mark these as compile-time/run-time -->
+
+  <dependencies>
+
+    <dependency>
+      <id>antlr</id>
+      <version>2.7.1</version>
+      <jar>antlrall-2.7.1.jar</jar>
+      <url>http://antlr.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>bsh</id>
+      <version>1.2-b3</version>
+      <url>http://beanshell.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-beanutils</id>
+      <version>1.4-dev</version>
+      <url>http://jakarta.apache.org/commons/beanutils/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-collections</id>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
+      <id>commons-jelly</id>
+      <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/sandbox/jelly/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-jexl</id>
+      <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/sandbox/jexl/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-logging</id>
+      <version>1.1-dev</version>
+      <url>http://jakarta.apache.org/commons/logging/</url>
+    </dependency>
+
+    <dependency>
+      <id>dom4j</id>
+      <version>1.4-dev-7</version>
+      <url>http://dom4j.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>jaxen</id>
+      <version>1.0-FCS-full</version>
+      <url>http://jaxen.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>jython</id>
+      <version>SNAPSHOT</version>
+      <url>http://jython.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>jsr94</id>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <id>saxpath</id>
+      <version>1.0-FCS</version>
+      <url>http://saxpath.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>velocity</id>
+      <version>1.4-dev</version>
+      <url>http://jakarta.apache.org/velocity/</url>
+    </dependency>
+
+    <dependency>
+      <id>xml-apis</id>
+      <version>2.0.2</version>
+    </dependency>
+
+    <dependency>
+      <id>xerces</id>
+      <version>2.0.2</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>drools-cvs@lists.werken.com</nagEmailAddress>
+
+    <sourceDirectory>src/java/main</sourceDirectory>
+
+    <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
+
+    <integrationUnitTestSourceDirectory/>
+
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <!-- Unit test classes -->
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <excludes>
+      </excludes>
+    </unitTest>
+
+    <!-- Integration unit test classes -->
+
+    <integrationUnitTestPatterns>
+    </integrationUnitTestPatterns>
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <resources>
+      <includes>
+        <include>**/*.properties</include>
+        <include>**/*.xml</include>
+      </includes>
+    </resources>
+
+    <testResources>
+      <testResource>
+        <directory>src/java/test</directory>
+        <includes>
+          <include>**/*.drl</include>
+        </includes>
+      </testResource>
+    </testResources>
+
+  </build>
+
+</project>
+
