@@ -1,6 +1,6 @@
 package org.drools.semantics.java;
 
-import org.drools.WorkingMemory;
+import org.drools.MockWorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
 import org.drools.spi.ConsequenceException;
@@ -38,7 +38,7 @@ public class BlockConsequenceTest extends TestCase
         try
         {
             conseq.invoke( tuple,
-                           new TestWorkingMemory() );
+                           new MockWorkingMemory() );
         }
         catch (ConsequenceException e)
         {
@@ -59,7 +59,8 @@ public class BlockConsequenceTest extends TestCase
                                     "test" ),
                    this );
 
-        WorkingMemory memory = new TestWorkingMemory();
+        MockWorkingMemory memory = new MockWorkingMemory();
+
         memory.setApplicationData( "This is app data" );
 
         conseq.invoke( tuple,
@@ -80,15 +81,6 @@ public class BlockConsequenceTest extends TestCase
         if ( appData.equals( "This is app data" ) )
         {
             this.prodded = true;
-        }
-    }
-
-    /** Simple subclass so we can call the protected constructor */
-    private static class TestWorkingMemory extends WorkingMemory
-    {
-        public TestWorkingMemory()
-        {
-            super( null );
         }
     }
 }
