@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.44 2004-11-28 07:40:23 simon Exp $
+ * $Id: JoinMemory.java,v 1.45 2004-11-28 08:05:49 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -109,12 +109,6 @@ class JoinMemory
         this.leftTuples.removeAllTuples( key );
 
         this.rightTuples.removeAllTuples( key );
-
-        /*
-         * ReteTuple tuple; Iterator tupleIter = this.joins.iterator( ); while (
-         * tupleIter.hasNext( ) ) { tuple = (ReteTuple)tupleIter.next(); if
-         * (tuple.getKey().containsAll(key)) { tupleIter.remove(); } }
-         */
     }
 
     /**
