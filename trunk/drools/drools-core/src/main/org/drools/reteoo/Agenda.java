@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.33 2004-10-06 13:33:38 mproctor Exp $
- * 
+ * $Id: Agenda.java,v 1.34 2004-10-31 12:30:10 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,7 +37,7 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import org.drools.FactHandle;
@@ -55,18 +55,18 @@ import java.util.Set;
 
 /**
  * Rule-firing Agenda.
- * 
+ *
  * <p>
  * Since many rules may be matched by a single assertObject(...) all scheduled
  * actions are placed into the <code>Agenda</code>.
  * </p>
- * 
+ *
  * <p>
  * While processing a scheduled action, it may modify or retract objects in
  * other scheduled actions, which must then be removed from the agenda.
  * Non-invalidated actions are left on the agenda, and are executed in turn.
  * </p>
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -77,16 +77,16 @@ class Agenda implements Serializable
     // ------------------------------------------------------------
 
     /** Working memory of this Agenda. */
-    private WorkingMemory workingMemory;
+    private final WorkingMemory workingMemory;
 
     /** Items in the agenda. */
-    private PriorityQueue items;
+    private final PriorityQueue items;
 
     /** Items time-delayed. */
-    private Set           scheduledItems;
+    private final Set           scheduledItems;
 
     /** The current agenda item being fired; or null if none. */
-    private AgendaItem    item;
+    private AgendaItem          item;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -94,7 +94,7 @@ class Agenda implements Serializable
 
     /**
      * Construct.
-     * 
+     *
      * @param workingMemory The <code>WorkingMemory</code> of this agenda.
      * @param conflictResolver The conflict resolver.
      */
@@ -113,7 +113,7 @@ class Agenda implements Serializable
      * Schedule a rule action invokation on this <code>Agenda</code>. Rules
      * specified with noNoop=true that are active should not be added to the
      * agenda
-     * 
+     *
      * @param tuple The matching <code>Tuple</code>.
      * @param rule The rule to fire.
      */
@@ -152,7 +152,7 @@ class Agenda implements Serializable
 
     /**
      * Remove a tuple from the agenda.
-     * 
+     *
      * @param key The key to the tuple to be removed.
      * @param rule The rule to remove.
      */
@@ -199,7 +199,7 @@ class Agenda implements Serializable
 
     /**
      * Modify the agenda.
-     * 
+     *
      * @param trigger The triggering root object handle.
      * @param newTuples New tuples from the modification.
      * @param rule The rule.
@@ -276,7 +276,7 @@ class Agenda implements Serializable
 
     /**
      * Schedule an agenda item for delayed firing.
-     * 
+     *
      * @param item The item to schedule.
      */
     void scheduleItem(AgendaItem item)
@@ -286,7 +286,7 @@ class Agenda implements Serializable
 
     /**
      * Cancel a scheduled agenda item for delayed firing.
-     * 
+     *
      * @param item The item to cancel.
      */
     void cancelItem(AgendaItem item)
@@ -296,7 +296,7 @@ class Agenda implements Serializable
 
     /**
      * Determine if this <code>Agenda</code> has any scheduled items.
-     * 
+     *
      * @return <code>true<code> if the agenda is empty, otherwise
      *          <code>false</code>.
      */
@@ -312,7 +312,7 @@ class Agenda implements Serializable
 
     /**
      * Fire the next scheduled <code>Agenda</code> item.
-     * 
+     *
      * @throws ConsequenceException If an error occurs while firing an agenda
      *         item.
      */
