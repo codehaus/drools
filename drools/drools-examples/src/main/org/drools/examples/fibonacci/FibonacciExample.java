@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciExample.java,v 1.11 2004-07-09 00:40:55 dbarnett Exp $
+$Id: FibonacciExample.java,v 1.12 2004-07-21 12:46:39 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -62,14 +62,32 @@ public class FibonacciExample
 
         try {
             RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( args[0] ) );
-            WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+            WorkingMemory workingMemory;
+            Fibonacci fibonacci;
+            long start;
+            long stop;
 
-            Fibonacci fibonacci = new Fibonacci( 50 );
-            long start = System.currentTimeMillis();
+            System.err.println("\nFirst run - code compiled on the fly");
+            workingMemory = ruleBase.newWorkingMemory();
+
+            fibonacci = new Fibonacci( 50 );
+            start = System.currentTimeMillis();
             workingMemory.assertObject( fibonacci );
 
             workingMemory.fireAllRules();
-            long stop = System.currentTimeMillis();
+            stop = System.currentTimeMillis();
+
+            System.err.println( "fibonacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
+            System.err.println("\nSecond run - code already compiled");
+
+            workingMemory = ruleBase.newWorkingMemory();
+
+            fibonacci = new Fibonacci( 50 );
+            start = System.currentTimeMillis();
+            workingMemory.assertObject( fibonacci );
+
+            workingMemory.fireAllRules();
+            stop = System.currentTimeMillis();
             System.err.println( "fibonacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
         } catch (Exception e) {
             e.printStackTrace();
