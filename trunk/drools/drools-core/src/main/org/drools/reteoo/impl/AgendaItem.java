@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaItem.java,v 1.5 2003-10-14 22:57:58 bob Exp $
+ $Id: AgendaItem.java,v 1.6 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 
 import org.drools.rule.Rule;
 import org.drools.spi.Firing;
@@ -102,14 +103,14 @@ class AgendaItem
     /** Determine if this tuple depends on the values 
      *  derrived from a particular root object.
      *
-     *  @param object The root object.
+     *  @param object The root object handle.
      *
      *  @return <code>true<code> if this agenda item depends
      *          upon the item, otherwise <code>false</code>.
      */
-    boolean dependsOn(Object object)
+    boolean dependsOn(FactHandle handle)
     {
-        return this.tuple.dependsOn( object );
+        return this.tuple.dependsOn( handle );
     }
 
     /** Set the tuple.

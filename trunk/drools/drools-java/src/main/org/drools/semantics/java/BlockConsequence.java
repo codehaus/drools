@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.9 2003-03-25 19:47:29 tdiesler Exp $
+ $Id: BlockConsequence.java,v 1.10 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.drools.spi.Tuple;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.9 2003-03-25 19:47:29 tdiesler Exp $
+ *  @version $Id: BlockConsequence.java,v 1.10 2003-10-15 20:03:59 bob Exp $
  */
 public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
@@ -130,6 +130,9 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
 
             ns.setVariable( "drools$working$memory",
                             workingMemory );
+
+            ns.setVariable( "drools$tuple",
+                            tuple );
 
             ns.setVariable( "appData",
                             workingMemory.getApplicationData() );

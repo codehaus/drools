@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
-  $Id: WorkingMemory.java,v 1.16 2003-10-14 22:57:57 bob Exp $
+  $Id: WorkingMemory.java,v 1.17 2003-10-15 20:03:59 bob Exp $
 
   Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,6 +59,9 @@ import org.drools.conflict.SalienceConflictResolutionStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Collection;
+import java.util.Iterator;
 
 /** A knowledge session for a <code>RuleBase</code>.
  *
@@ -88,6 +91,10 @@ public class WorkingMemory
     /** Application data which is associated with this memory. */
     private Object applicationData;
 
+    private Map objects;
+
+    private long handleCounter;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -105,8 +112,10 @@ public class WorkingMemory
     protected WorkingMemory(RuleBase ruleBase,
                             ConflictResolutionStrategy conflictResolution)
     {
-        this.ruleBase     = ruleBase;
-        this.joinMemories = new HashMap();
+        this.ruleBase      = ruleBase;
+        this.joinMemories  = new HashMap();
+        this.objects       = new HashMap();
+        this.handleCounter = 0;
 
         this.agenda = new AgendaImpl( this,
                                       conflictResolution );
@@ -115,6 +124,11 @@ public class WorkingMemory
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    protected FactHandle newFactHandle()
+    {
+        return new FactHandle( ++this.handleCounter );
+    }
 
     /** Retrieve the application data that is associated with
      *  this memory.
@@ -187,50 +201,72 @@ public class WorkingMemory
         }
     }
 
+    public Object getObject(FactHandle handle)
+        throws NoSuchFactObjectException
+    {
+        if ( ! this.objects.containsKey( handle ) )
+        {
+            throw new NoSuchFactObjectException( handle );
+        }
+
+        return this.objects.get( handle );
+    }
+
+    public boolean containsObject(FactHandle handle)
+    {
+        return this.objects.containsKey( handle );
+    }
+
     /** Assert a new fact object into this working memory.
      *
      *  @param object The object to assert.
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public synchronized void assertObject(Object object) throws AssertionException
+    public synchronized FactHandle assertObject(Object object)
+        throws FactException
     {
         log.debug( "assertObject: " + object );
 
-        getRuleBase().assertObject( object,
+        FactHandle handle = newFactHandle();
+
+        getRuleBase().assertObject( handle,
+                                    object,
                                     this );
+
+        this.objects.put( handle,
+                          object );
+
+        return handle;
     }
 
-    /** Retract a fact object from this working memory.
-     *
-     *  @param object The object to retract.
-     *
-     *  @throws RetractionException if an error occurs during retraction.
-     */
-    public synchronized void retractObject(Object object) throws RetractionException
+    public synchronized void retractObject(FactHandle handle)
+        throws FactException
     {
-        log.debug( "retractObject: " + object );
+        Object object = getObject( handle );
 
-        getRuleBase().retractObject( object,
+        getRuleBase().retractObject( handle,
+                                     object,
                                      this );
+
+        this.objects.remove( handle );
     }
 
-    /** Modify a fact object in this working memory.
-     *
-     *  With the exception of time-based nodes, modification of
-     *  a fact object is semantically equivelent to retracting and
-     *  re-asserting it.
-     *
-     *  @param object The object to modify.
-     *
-     *  @throws FactException if an error occurs during modification.
-     */
-    public synchronized void modifyObject(Object object) throws FactException
+    public synchronized void modifyObject(FactHandle handle,
+                                          Object object)
+        throws FactException
     {
-        log.debug( "modifyObject: " + object );
+        if ( ! containsObject( handle ) )
+        {
+            throw new NoSuchFactObjectException( handle );
+        }
 
-        getRuleBase().modifyObject( object,
+        getRuleBase().modifyObject( handle,
+                                    object,
                                     this );
+
+        this.objects.put( handle,
+                          object );
     }
 
     /** Retrieve the <code>JoinMemory</code> for a particular <code>JoinNode</code>.
@@ -252,6 +288,11 @@ public class WorkingMemory
         }
 
         return memory;
+    }
+
+    public synchronized Collection getRootFactObjects()
+    {
+        return new HashSet( this.objects.values() );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

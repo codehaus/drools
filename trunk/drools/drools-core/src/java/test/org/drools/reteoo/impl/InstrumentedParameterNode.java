@@ -2,6 +2,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
@@ -24,22 +25,24 @@ public class InstrumentedParameterNode extends ParameterNodeImpl
         this.retractedObjects = new ArrayList();
     }
 
-    protected void assertObject(Object object,
+    protected void assertObject(FactHandle handle,
+                                Object object,
                                 WorkingMemory workingMemory) throws AssertionException
     {
-        super.assertObject( object,
+        super.assertObject( handle,
+                            object,
                             workingMemory );
 
         this.assertedObjects.add( object );
     }
 
-    protected void retractObject(Object object,
+    protected void retractObject(FactHandle handle,
                                  WorkingMemory workingMemory) throws RetractionException
     {
-        super.retractObject( object,
+        super.retractObject( handle,
                              workingMemory );
 
-        this.retractedObjects.add( object );
+        this.retractedObjects.add( handle );
     }
 
     public List getAssertedObjects()

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.16 2003-10-14 22:57:57 bob Exp $
+ $Id: RuleBase.java,v 1.17 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -162,13 +162,6 @@ public class RuleBase
         return new WorkingMemory( this );
     }
 
-    /** @deprecated In favour of {@link #newWorkingMemory}.
-     */
-    public WorkingMemory createWorkingMemory()
-    {
-        return newWorkingMemory();
-    }
-
     /** Retrieve the Rete-OO network for this <code>RuleBase</code>.
      *
      *  @return The RETE-OO network. 
@@ -178,52 +171,33 @@ public class RuleBase
         return this.rete;
     }
 
-    /** Assert a new fact object into this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to assert.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws AssertionException if an error occurs during assertion.
-     */
-    void assertObject(Object object,
-                      WorkingMemory workingMemory) throws AssertionException
+    void assertObject(FactHandle handle,
+                      Object object,
+                      WorkingMemory workingMemory)
+        throws FactException
     {
-        getRete().assertObject( object,
+        getRete().assertObject( handle,
+                                object,
                                 workingMemory );
     }
-    
-    /** Retract a fact object from this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to retract.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws RetractionException if an error occurs during retraction.
-     */
-    void retractObject(Object object,
-                       WorkingMemory workingMemory) throws RetractionException
+
+    void retractObject(FactHandle handle,
+                       Object object,
+                       WorkingMemory workingMemory)
+        throws FactException
     {
-        getRete().retractObject( object,
+        getRete().retractObject( handle,
+                                 object,
                                  workingMemory );
     }
-    
-    /** Modify a fact object in this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  With the exception of time-based nodes, modification of
-     *  a fact object is semantically equivelent to retracting and
-     *  re-asserting it.
-     *
-     *  @param object The object to modify.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException if an error occurs during assertion.
-     */
-    void modifyObject(Object object,
-                      WorkingMemory workingMemory) throws FactException
+
+    void modifyObject(FactHandle handle,
+                      Object object,
+                      WorkingMemory workingMemory)
+        throws FactException
     {
-        getRete().modifyObject( object,
+        getRete().modifyObject( handle,
+                                object,
                                 workingMemory );
     }
 }

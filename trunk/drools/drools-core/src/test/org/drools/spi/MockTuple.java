@@ -1,5 +1,6 @@
 package org.drools.spi;
 
+import org.drools.FactHandle;
 import org.drools.rule.Declaration;
 
 import java.util.Set;
@@ -30,5 +31,10 @@ public class MockTuple implements Tuple
     public Set getDeclarations()
     {
         return this.tuple.keySet();
+    }
+
+    public FactHandle getFactHandleForObject(Object object)
+    {
+        return null;
     }
 }

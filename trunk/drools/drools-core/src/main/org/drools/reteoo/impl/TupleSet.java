@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSet.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: TupleSet.java,v 1.3 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,10 +46,13 @@ package org.drools.reteoo.impl;
  
  */
 
+import org.drools.FactHandle;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -204,11 +207,11 @@ class TupleSet
     /** Retrieve all tuples related to a specified
      *  root fact object.
      *
-     *  @param rootFactObject The root fact object.
+     *  @param handle The root fact object handle.
      *
      *  @return Matching tuples.
      */
-    public Set getTuples(Object rootFactObject)
+    public Set getTuples(FactHandle handle)
     {
         Set matchingTuples = new HashSet();
 
@@ -219,7 +222,7 @@ class TupleSet
         {
             eachKey = (TupleKey) keyIter.next();
 
-            if ( eachKey.containsRootFactObject( rootFactObject ) )
+            if ( eachKey.containsRootFactHandle( handle ) )
             {
                 matchingTuples.add( getTuple( eachKey ) );
             }

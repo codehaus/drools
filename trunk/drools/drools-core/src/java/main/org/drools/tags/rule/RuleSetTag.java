@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleSetTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: RuleSetTag.java,v 1.7 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,6 @@ import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
 import org.drools.io.RuleSetLoader;
 import org.drools.rule.RuleSet;
-import org.drools.tags.knowledge.RuleBaseTag;
 
 /** Construct a <code>RuleSet</code>.
  *
@@ -59,7 +58,7 @@ import org.drools.tags.knowledge.RuleBaseTag;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: RuleSetTag.java,v 1.7 2003-10-15 20:03:59 bob Exp $
  */
 public class RuleSetTag extends RuleTagSupport
 {
@@ -170,13 +169,6 @@ public class RuleSetTag extends RuleTagSupport
         if ( loader != null )
         {
             loader.addRuleSet( this.ruleSet );
-        }
-
-        RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
-
-        if ( tag != null )
-        {
-            tag.addRuleSet( this.ruleSet );
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinMemory.java,v 1.14 2002-07-28 15:49:50 bob Exp $
+ $Id: JoinMemory.java,v 1.15 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,8 @@ package org.drools.reteoo;
  
  */
 
+import java.util.Collection;
+
 /** Memory for left and right inputs of a <code>JoinNode</code>.
  *
  *  @see JoinNode
@@ -55,5 +57,4 @@ package org.drools.reteoo;
  */
 public interface JoinMemory
 {
-
 }

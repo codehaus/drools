@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaImpl.java,v 1.6 2003-10-14 22:57:58 bob Exp $
+ $Id: AgendaImpl.java,v 1.7 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
-
+import org.drools.FactHandle;
 import org.drools.reteoo.Agenda;
 import org.drools.rule.Rule;
 import org.drools.spi.ConsequenceException;
@@ -197,11 +197,11 @@ public class AgendaImpl implements Agenda
 
     /** Modify the agenda.
      *
-     *  @param trigger The triggering root object.
+     *  @param trigger The triggering root object handle.
      *  @param newTuples New tuples from the modification.
      *  @param rule The rule.
      */
-    void modifyAgenda(Object trigger,
+    void modifyAgenda(FactHandle trigger,
                       TupleSet newTuples,
                       Rule rule)
     {

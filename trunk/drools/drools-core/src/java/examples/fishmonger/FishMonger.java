@@ -49,7 +49,7 @@ public class FishMonger
             // Create a [org.drools.WorkingMemory] to be the
             // container for your facts
             
-            WorkingMemory workingMemory = ruleBase.createWorkingMemory();
+            WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
             try
             {

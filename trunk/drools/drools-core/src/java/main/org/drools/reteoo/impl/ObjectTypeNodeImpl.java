@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ObjectTypeNodeImpl.java,v 1.4 2002-08-25 21:15:06 bob Exp $
+ $Id: ObjectTypeNodeImpl.java,v 1.5 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -159,7 +160,8 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    void assertObject(Object object,
+    void assertObject(FactHandle handle,
+                      Object object,
                       WorkingMemory workingMemory) throws AssertionException
     {
         ObjectType objectType = getObjectType();
@@ -176,7 +178,8 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
         {
             eachNode = (ParameterNodeImpl) nodeIter.next();
 
-            eachNode.assertObject( object,
+            eachNode.assertObject( handle,
+                                   object,
                                    workingMemory );
         }
     }
@@ -189,7 +192,8 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
      *
      *  @throws RetractionException if an error occurs during assertion.
      */
-    void retractObject(Object object,
+    void retractObject(FactHandle handle,
+                       Object object,
                        WorkingMemory workingMemory) throws RetractionException
     {
         ObjectType objectType = getObjectType();
@@ -206,7 +210,7 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
         {
             eachNode = (ParameterNodeImpl) nodeIter.next();
 
-            eachNode.retractObject( object,
+            eachNode.retractObject( handle,
                                     workingMemory );
         }
     }
@@ -223,25 +227,35 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
      *
      *  @throws FactException if an error occurs during assertion.
      */
-    void modifyObject(Object object,
+    void modifyObject(FactHandle handle,
+                      Object object,
                       WorkingMemory workingMemory) throws FactException
     {
         ObjectType objectType = getObjectType();
 
-        if ( ! objectType.matches( object ) )
-        {
-            return;
-        }
-
         Iterator          nodeIter = getParameterNodeIterator();
         ParameterNodeImpl eachNode = null;
 
-        while ( nodeIter.hasNext() )
+        if ( ! objectType.matches( object ) )
         {
-            eachNode = (ParameterNodeImpl) nodeIter.next();
-
-            eachNode.modifyObject( object,
-                                   workingMemory );
+            while ( nodeIter.hasNext() )
+            {
+                eachNode = (ParameterNodeImpl) nodeIter.next();
+                
+                eachNode.retractObject( handle,
+                                        workingMemory );
+            }
+        }
+        else
+        {
+            while ( nodeIter.hasNext() )
+            {
+                eachNode = (ParameterNodeImpl) nodeIter.next();
+                
+                eachNode.modifyObject( handle,
+                                       object,
+                                       workingMemory );
+            }
         }
     }
 }

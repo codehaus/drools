@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinMemoryImpl.java,v 1.4 2002-08-27 23:31:08 bob Exp $
+ $Id: JoinMemoryImpl.java,v 1.5 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,12 +47,14 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.reteoo.JoinMemory;
 import org.drools.rule.Declaration;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Collections;
 
@@ -104,7 +106,7 @@ public class JoinMemoryImpl implements JoinMemory
      *
      *  @param object The object to retract.
      */
-    protected void retractObject(Object object)
+    protected void retractObject(FactHandle handle)
     {
         try
         {
@@ -116,7 +118,7 @@ public class JoinMemoryImpl implements JoinMemory
             {
                 eachTuple = (ReteTuple) tupleIter.next();
                 
-                if ( eachTuple.dependsOn( object ) )
+                if ( eachTuple.dependsOn( handle ) )
                 {
                     tupleIter.remove();
                 }
@@ -128,7 +130,7 @@ public class JoinMemoryImpl implements JoinMemory
             {
                 eachTuple = (ReteTuple) tupleIter.next();
                 
-                if ( eachTuple.dependsOn( object ) )
+                if ( eachTuple.dependsOn( handle ) )
                 {
                     tupleIter.remove();
                 }
@@ -193,14 +195,14 @@ public class JoinMemoryImpl implements JoinMemory
 
     /** Modify tuples on the left-side.
      *
-     *  @param trigger Triggering object.
+     *  @param trigger Triggering object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param joinNode This memory's join node.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException if an error occurs during modification.
      */
-    protected void modifyLeftTuples(Object trigger,
+    protected void modifyLeftTuples(FactHandle trigger,
                                     TupleSet newTuples,
                                     JoinNodeImpl joinNode,
                                     WorkingMemory workingMemory) throws FactException
@@ -215,14 +217,14 @@ public class JoinMemoryImpl implements JoinMemory
 
     /** Modify tuples on the right-side.
      *
-     *  @param trigger Triggering object.
+     *  @param trigger Triggering object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param joinNode This memory's join node.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException if an error occurs during modification.
      */
-    protected void modifyRightTuples(Object trigger,
+    protected void modifyRightTuples(FactHandle trigger,
                                      TupleSet newTuples,
                                      JoinNodeImpl joinNode,
                                      WorkingMemory workingMemory) throws FactException
@@ -237,7 +239,7 @@ public class JoinMemoryImpl implements JoinMemory
 
     /** Modify tuples 
      *
-     *  @param trigger Triggering object.
+     *  @param trigger Triggering object handle.
      *  @param newTuples Modification replacement tuples.
      *  @param thisSideTuples The tuples on the side that's receiving
      *         the modifications.
@@ -248,7 +250,7 @@ public class JoinMemoryImpl implements JoinMemory
      *
      *  @throws FactException if an error occurs during modification.
      */
-    protected void modifyTuples(Object trigger,
+    protected void modifyTuples(FactHandle trigger,
                                 TupleSet newTuples,
                                 TupleSet thisSideTuples,
                                 TupleSet thatSideTuples,

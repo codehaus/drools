@@ -1,7 +1,7 @@
 package bsh.commands;
 
 /*
- $Id: modifyObject.java,v 1.3 2002-07-26 19:41:05 bob Exp $
+ $Id: modifyObject.java,v 1.4 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,6 +52,7 @@ import bsh.EvalError;
 
 import org.drools.WorkingMemory;
 import org.drools.FactException;
+import org.drools.spi.Tuple;
 
 /** Modify an object in the working memory.
  *
@@ -75,7 +76,9 @@ public class modifyObject
                               Object object) throws EvalError, FactException
     {
         WorkingMemory workingMemory = (WorkingMemory) interp.get( "drools$working$memory" );
+        Tuple         tuple         = (Tuple) interp.get( "drools$tuple" );
 
-        workingMemory.modifyObject( object );
+        workingMemory.modifyObject( tuple.getFactHandleForObject( object ),
+                                    object );
     }
 }

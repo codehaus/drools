@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ParameterNodeImpl.java,v 1.5 2002-08-01 21:00:21 bob Exp $
+ $Id: ParameterNodeImpl.java,v 1.6 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
@@ -111,10 +112,12 @@ public class ParameterNodeImpl extends TupleSourceImpl implements ParameterNode
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    void assertObject(Object object,
+    void assertObject(FactHandle handle,
+                      Object object,
                       WorkingMemory workingMemory) throws AssertionException
     {
         ReteTuple tuple = new ReteTuple( getDeclaration(),
+                                         handle,
                                          object );
 
         propagateAssertTuple( tuple,
@@ -129,11 +132,10 @@ public class ParameterNodeImpl extends TupleSourceImpl implements ParameterNode
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    void retractObject(Object object,
+    void retractObject(FactHandle handle,
                        WorkingMemory workingMemory) throws RetractionException
     {
-        TupleKey key = new TupleKey( getDeclaration(),
-                                     object );
+        TupleKey key = new TupleKey( handle );
 
         propagateRetractTuples( key,
                                 workingMemory );
@@ -151,15 +153,17 @@ public class ParameterNodeImpl extends TupleSourceImpl implements ParameterNode
      *
      *  @throws FactException if an error occurs during modification.
      */
-    void modifyObject(Object object,
+    void modifyObject(FactHandle handle,
+                      Object object,
                       WorkingMemory workingMemory) throws FactException
     {
         ReteTuple tuple = new ReteTuple( getDeclaration(),
+                                         handle,
                                          object );
         
         TupleSet tupleSet = new TupleSet( tuple );
 
-        propagateModifyTuples( object,
+        propagateModifyTuples( handle,
                                tupleSet,
                                workingMemory );
     }

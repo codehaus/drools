@@ -2,6 +2,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
@@ -22,19 +23,23 @@ public class InstrumentedObjectTypeNode extends ObjectTypeNodeImpl
         this.retractedObjects = new ArrayList();
     }
 
-    public void assertObject(Object object,
+    public void assertObject(FactHandle handle,
+                             Object object,
                              WorkingMemory memory) throws AssertionException
     {
-        super.assertObject( object,
+        super.assertObject( handle,
+                            object,
                             memory );
 
         this.assertedObjects.add( object );
     }
 
-    public void retractObject(Object object,
+    public void retractObject(FactHandle handle,
+                              Object object,
                               WorkingMemory memory) throws RetractionException
     {
-        super.retractObject( object,
+        super.retractObject( handle,
+                             object,
                              memory );
 
         this.retractedObjects.add( object );

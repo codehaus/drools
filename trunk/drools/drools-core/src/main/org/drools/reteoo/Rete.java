@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.2 2002-08-01 21:00:21 bob Exp $
+ $Id: Rete.java,v 1.3 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.reteoo;
  
  */
 
+import org.drools.FactHandle;
 import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.RetractionException;
@@ -57,40 +58,18 @@ import org.drools.WorkingMemory;
  */
 public interface Rete
 {
-    /** Assert a new fact object into this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to assert.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws AssertionException if an error occurs during assertion.
-     */
-    void assertObject(Object object,
-                      WorkingMemory workingMemory) throws AssertionException;
+    void assertObject(FactHandle handle,
+                      Object object,
+                      WorkingMemory workingMemory)
+        throws FactException;
 
-    /** Retract a fact object from this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to retract.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws RetractionException if an error occurs during retraction.
-     */
-    void retractObject(Object object,
-                       WorkingMemory workingMemory) throws RetractionException;
+    void modifyObject(FactHandle handle,
+                      Object object,
+                      WorkingMemory workingMemory)
+        throws FactException;
 
-    /** Modify a fact object in this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  With the exception of time-based nodes, modification of
-     *  a fact object is semantically equivelent to retracting and
-     *  re-asserting it.
-     *
-     *  @param object The object to modify.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException if an error occurs during modification.
-     */
-    void modifyObject(Object object,
-                      WorkingMemory workingMemory) throws FactException;
+    void retractObject(FactHandle handle,
+                       Object object,
+                       WorkingMemory workingMemory)
+        throws FactException;
 }

@@ -1,7 +1,7 @@
 package bsh.commands;
 
 /*
- $Id: assertObject.java,v 1.2 2002-07-26 19:41:05 bob Exp $
+ $Id: assertObject.java,v 1.3 2003-10-15 20:03:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,7 @@ import bsh.NameSpace;
 import bsh.EvalError;
 
 import org.drools.WorkingMemory;
-import org.drools.AssertionException;
+import org.drools.FactException;
 
 /** Assert an object into the working memory.
  *
@@ -72,7 +72,7 @@ public class assertObject
      */
     public static void invoke(Interpreter interp,
                               NameSpace namespace,
-                              Object object) throws EvalError, AssertionException
+                              Object object) throws EvalError, FactException
     {
         WorkingMemory workingMemory = (WorkingMemory) interp.get( "drools$working$memory" );
 
