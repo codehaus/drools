@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                  Class interfaceToImplement,
                                  String[] parameterNames,
                                  Declaration[] declarations,
-                                 Map applicationData) throws Scanner.ScanException,
+                                 Map applicationData,
+                                 Set imports) throws Scanner.ScanException,
                                                      Parser.ParseException,
                                                      Java.CompileException,
                                                      IOException
@@ -89,7 +89,6 @@ public class DroolsScriptEvaluator extends EvaluatorBase
         Parser parser = new Parser( scanner );
 
         //block.addStatement(
-        Set imports = new HashSet( );
         addDeclarations( scanner, block, declarations, imports );
         addAppData( scanner, block, applicationData, imports );
 
@@ -98,22 +97,43 @@ public class DroolsScriptEvaluator extends EvaluatorBase
         String importString;
         String type;
         List list;
+        StringTokenizer st;
+        String token;
+        boolean importOnDemand = false;
         while ( it.hasNext( ) )
-        {
+        {    
+            importOnDemand = false;   
             list = new ArrayList( );
-            type = ( String ) it.next( );
-            StringTokenizer st = new StringTokenizer( type, "." );
+            type = (String) it.next( );
+            st = new StringTokenizer( type, "." );                  
             while ( st.hasMoreTokens( ) )
+            {                
+                token = st.nextToken( );
+                if (!token.equals("*"))
+                {
+                    list.add( token );
+                }
+                else
+                {
+                    importOnDemand = true;
+                }
+            }            
+            if (importOnDemand)
             {
-                list.add( st.nextToken( ) );
+                compilationUnit
+                .addTypeImportOnDemand(( String[] ) list
+                                                       .toArray( new String[list
+                                                                                .size( )] ) );                
             }
-
+            else 
+            {
             compilationUnit
                            .addSingleTypeImport(
                                                  loc,
                                                  ( String[] ) list
                                                                   .toArray( new String[list
                                                                                            .size( )] ) );
+            }
         }
 
         while ( !scanner.peek( ).isEOF( ) )
@@ -121,6 +141,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
             block.addStatement( parser.parseBlockStatement( block ) );
         }
 
+        //UnparseVisitor.unparse(compilationUnit, new BufferedWriter( new OutputStreamWriter(System.err))); 
+        
         // Compile and load it.
         Class c;
         try
@@ -299,7 +321,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                  Class interfaceToImplement,
                                  String[] parameterNames,
                                  Declaration[] declarations,
-                                 Map applicationData) throws Java.CompileException,
+                                 Map applicationData,
+                                 Set imports) throws Java.CompileException,
                                                      Parser.ParseException,
                                                      Scanner.ScanException,
                                                      IOException
@@ -309,7 +332,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                                            interfaceToImplement,
                                                                            parameterNames,
                                                                            declarations,
-                                                                           applicationData );
+                                                                           applicationData,
+                                                                           imports);
 
         try
         {
