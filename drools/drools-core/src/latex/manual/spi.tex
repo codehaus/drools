@@ -3,7 +3,7 @@
 \section{Overview}
 
 At its core, \drools{} is merely an algorithmic engine. The 
-\emph{Semantics Provide Interface}, also known as the SPI,
+\emph{Semantics Provider Interface}, also known as the SPI,
 provides for wrapping the \drools{} Rete-OO algorithm with
 arbitrary application semantics. The semantics of several concepts are
 left open for definition by an implementation.
@@ -43,7 +43,7 @@ through the network.
 
 The SPI provides for \drools{} customizations to be tightly linked to
 the core Rete-OO algorithm engine.  By using SPI implementations, no
-external translation or mapping process is required.  Rules can
+external translation or mapping process is required.  Rules can be
 expressed directly using the semantics provided by the semantics module
 and manipulated directly by the engine.
 
@@ -51,7 +51,7 @@ and manipulated directly by the engine.
 
 \subsection{org.drools.spi.ObjectType}
 
-While the type of any object presented to \drools{} though
+While the type of any object presented to \drools{} through
 the fact manipulation methods of a \verb|WorkingMemory| is determined
 by the Java class of that object, \drools{} provides the
 \verb|ObjectType| interface for determining the object's semantic type
@@ -62,7 +62,7 @@ class \verb|Document|.  The \verb|ObjectType| implementation
 for the module inspects the root-level XML element to determine the
 object's type for the context of \drools{}.
 
-Semantic modules provide implementation of the \verb|ObjectType|
+Semantic modules provide implementations of the \verb|ObjectType|
 interface that are able to determine an object's type within
 a semantic realm.
 
