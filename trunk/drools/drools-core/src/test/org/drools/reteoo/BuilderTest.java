@@ -120,6 +120,8 @@ public class BuilderTest extends TestCase
         found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
 
+        //sources contains objectsDecl, not stringDecl
+        //So extractor is not able to find a match for its stringDecl
         assertNull( found );
 
         // ----------------------------------------
@@ -138,7 +140,11 @@ public class BuilderTest extends TestCase
         found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
 
-        assertNull( found );
+        //sources contains stringDecl and objectDecl
+        //So extractor finds a match to its stringDecl
+        assertNotNull( found );
+
+        assertSame( source, found );
 
         // ----------------------------------------
         // ----------------------------------------
@@ -153,6 +159,9 @@ public class BuilderTest extends TestCase
 
         found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
+
+        //sources contains stringDecl
+        //So extractor finds a match to its stringDecl
 
         assertNotNull( found );
 
