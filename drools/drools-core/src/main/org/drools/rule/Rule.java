@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.26 2004-06-25 01:57:26 mproctor Exp $
+ $Id: Rule.java,v 1.27 2004-06-27 22:24:14 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -57,6 +57,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
+import java.io.Serializable;
+
 /** A set of <code>Condition</code>s and a <code>Consequence</code>.
  *
  *  The <code>Conditions</code> describe the circumstances
@@ -68,9 +70,9 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.26 2004-06-25 01:57:26 mproctor Exp $
+ *  @version $Id: Rule.java,v 1.27 2004-06-27 22:24:14 mproctor Exp $
  */
-public class Rule
+public class Rule implements Serializable
 {
     // ------------------------------------------------------------
     //     Constants
