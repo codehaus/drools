@@ -4,14 +4,18 @@ import org.drools.jsr94.rules.RuleEngineTestBase;
 import org.drools.RuleBase;
 import org.drools.io.RuleSetReader;
 import org.drools.RuleBaseBuilder;
-import org.drools.rule.RuleSet;
+import org.apache.xerces.parsers.DOMParser;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetProvider;
-import javax.rules.admin.RuleExecutionSetCreateException;
 import java.io.*;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import junit.framework.Test;
@@ -87,10 +91,46 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
      */
     public void testCreateFromElement() throws Exception
     {
-        // TODO: implement testCreateFromElement()
-        throw new UnsupportedOperationException("" +
-                "The createRuleExecutionSet(Element, Map) method has not yet " +
-                "been implemented.");
+        DOMParser parser = new DOMParser();
+        Document doc = null;
+        try
+        {
+            parser.parse(new InputSource(RuleEngineTestBase.class.getResourceAsStream(bindUri)));
+            doc = parser.getDocument();
+        }
+        catch (SAXException e)
+        {
+            fail("could not parse incoming data stream: " + e);
+        }
+        catch (IOException e)
+        {
+            fail("could not open incoming data stream: " + e);
+        }
+        Element element = null;
+        NodeList children = doc.getChildNodes();
+        if (children != null)
+        {
+            for (int i=0; i < children.getLength(); i++)
+            {
+                Node child = children.item(i);
+                if (Node.ELEMENT_NODE == child.getNodeType())
+                {
+                    element = (Element)child;
+                }
+            }
+        }
+
+        if (element != null)
+        {
+            String name = element.getNodeName();
+            RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(element, null);
+            assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
+            assertEquals("number of rules", 2, ruleSet.getRules().size());
+        }
+        else
+        {
+            fail("could not build an org.w3c.dom.Element");
+        }
     }
 
     /**
@@ -121,7 +161,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
             RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(
                     new ArrayList(), null);
             fail("Should have thrown an IllegalArgumentException. ArrayList " +
-                    "objects are not valid AST representations.");
+                    "objects are not valid AST representations. " + ruleSet);
         }
         catch (IllegalArgumentException e)
         {
