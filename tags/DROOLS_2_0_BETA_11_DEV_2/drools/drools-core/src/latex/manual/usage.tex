@@ -1,0 +1,135 @@
+\chapter{Usage}
+
+\section{\drools{} Client API}
+
+\subsection{Introduction}
+
+\drools{} is divided into several sets of APIs.  The core client API
+is by far the simplist and most commonly used by developers.  The
+core \drools{} client API consists of locating a rule-base, creating
+a working memory, and then managing fact assertion, modifcation and
+retraction.
+
+\subsection{Locating a Rule-base}
+
+\verb|RuleBase| objects are typically loaded from a
+\verb|RuleBaseRepository|.  Different repository implementations
+provide different mechanisms for the storage of each
+\verb|RuleBase|.  The method by which your project obtains
+a \verb|RuleBaseRepository| is implementation-specific but
+may involve a lookup and discovery mechanism such as JNDI.
+
+Once a \verb|RuleBaseRepository| has been obtained, the
+simple method\\ \verb|lookupRuleBase(..)| method is used
+to retrieve a \verb|RuleBase| by its URI.\footnote{URIs that
+identify rule bases are not necessarily deferenceable.  They
+serve only as unique identifiers for a collection of rules.}
+
+\bigskip
+\begin{codelisting}
+RuleBaseRepository repo = myUtilities.getRepository();
+
+String ruleBaseUri = "http://rules.werken.com/family-relationships";
+
+RuleBase ruleBase = repo.lookupRuleBase( ruleBaseUri );
+\end{codelisting}
+
+\newpage
+
+\subsection{Creating a Working Memory}
+
+\drools{} provides two different types of working memory
+implementations: a normal \verb|WorkingMemory| and a
+\verb|TransactionWorkingMemory|.
+
+\begin{itemize}
+
+	\item \textbf{\textsf{WorkingMemory}} \\
+		The normal \verb|WorkingMemory| implementation 
+		propagates fact assertions, modifications and
+		retractions through the Rete-OO network in
+		real-time.  Once the fact manipulation 
+		methods return control to the client program,
+		all facts have been assimilated and acted upon.
+
+	\item \textbf{\textsf{TransactionalWorkingMemory}} \\
+		The \verb|TransactionalWorkingMemory| does \emph{not}
+		propagate fact manipulation information through the
+		Rete-OO in real-time.  Instead, it calculates the net
+		fact changes and performs all manipulations immediately
+		upon usage of the \verb|commit()| method.  No actions
+		are performed until \verb|commit()| is called, and
+		all fact information is discarded if \verb|abort()|
+		is used.
+
+\end{itemize}
+
+The methods on \verb|RuleBase| to construct working memories are:
+
+\bigskip
+
+\begin{codelisting}    
+/** Create a WorkingMemory session for this RuleBase.
+ *
+ *  @see WorkingMemory
+ *
+ *  @return A newly initialized WorkingMemory.
+ */
+public WorkingMemory createWorkingMemory() 
+
+/** Create a TransactionalWorkingMemory session for this RuleBase.
+ *
+ *  @see TransactionalWorkingMemory
+ *
+ *  @return A newly initialized TransactionalWorkingMemory.
+ */
+public TransactionalWorkingMemory createTransactionalWorkingMemory()
+\end{codelisting}
+
+\subsection{Fact Manipulation}
+
+Once you have a \verb|WorkingMemory| in hand, you must assert fact
+objects to make them available to \drools{} for analysis.  Additionally, as facts
+change, the engine must be notified.  Likewise, when an object should
+no longer be considered for analysis, it must be retracted from
+the engine.  Methods for these three actions are defined upon the
+\verb|WorkingMemory| class.
+
+\bigskip
+
+\footnotesize
+\begin{alltt}
+/** Assert a new fact object into this working memory.
+*
+*  @param object The object to assert.
+*
+*  @throws AssertionException if an error occurs during assertion.
+*/
+public void assertObject(Object object) throws AssertionException
+\newpage
+/** Modify a fact object in this working memory.
+*
+*  With the exception of time-based nodes, modification of
+*  a fact object is semantically equivelent to retracting and
+*  re-asserting it.
+*
+*  @param object The object to modify.
+*
+*  @throws FactException if an error occurs during modification.
+*/
+public void modifyObject(Object object) throws FactException
+
+/** Retract a fact object from this working memory.
+*
+*  @param object The object to retract.
+*
+*  @throws RetractionException if an error occurs during retraction.
+*/
+public void retractObject(Object object) throws RetractionException
+\end{alltt}
+\normalsize
+
+\section{JSR-94 API}
+
+The \drools{} project is currently working on a JSR-94 API binding.
+

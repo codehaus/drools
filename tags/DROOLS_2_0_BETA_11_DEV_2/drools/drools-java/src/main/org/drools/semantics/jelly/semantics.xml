@@ -1,0 +1,7 @@
+<s:module xmlns:s="http://drools.org/semantic-module"
+          uri="http://drools.org/semantics/jelly">
+
+    <s:consequence name="consequence"
+                   classname="org.drools.semantics.jelly.JellyConsequence"/>
+
+</s:module>
