@@ -102,6 +102,11 @@ public class MockWorkingMemory implements WorkingMemory
         return null;
     }
 
+    public List getObjects(Class cls)
+    {
+        return null;
+    }
+
     public List getFactHandles()
     {
         return null;
