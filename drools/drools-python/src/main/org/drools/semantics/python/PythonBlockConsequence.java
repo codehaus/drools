@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonBlockConsequence.java,v 1.1 2004-12-08 23:07:50 simon Exp $
+ * $Id: PythonBlockConsequence.java,v 1.2 2004-12-29 15:55:09 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -93,7 +93,8 @@ public class PythonBlockConsequence extends PythonInterp implements Consequence
         try
         {
             Py.runCode( getCode( ),
-                        setUpDictionary( tuple ),
+                        setUpDictionary( tuple, 
+                                         getRule( ).getParameterDeclarations( ).iterator( ) ),
                         getGlobals( ) );
         }
         catch ( Exception e )

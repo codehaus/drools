@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.3 2004-12-15 16:00:06 dbarnett Exp $
+ * $Id: PythonInterp.java,v 1.4 2004-12-29 15:55:09 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -68,7 +68,7 @@ import org.python.parser.ast.modType;
 
 /**
  * Base class for Jython interpreter-based Python semantic components.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 public class PythonInterp
@@ -77,145 +77,161 @@ public class PythonInterp
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
     // ------------------------------------------------------------
-    //     Class Initialization
+    // Class Initialization
     // ------------------------------------------------------------
 
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The rule. */
-    private final Rule      rule;
+    private final Rule          rule;
 
     /** Text. */
-    private final String    text;
+    private final String        text;
 
     /** Original Text */
-    private final String    origininalText;
+    private final String        origininalText;
 
     /** The code. */
-    private final PyCode    code;
+    private final PyCode        code;
 
     /** The AST node. */
-    private final modType   node;
+    private final modType       node;
 
-    private PyDictionary    globals;
+    private PyDictionary        globals;
 
     /**
      * Initialise Jython's PySystemState
      */
-    static {
-        PySystemState.initialize();
+    static
+    {
+        PySystemState.initialize( );
 
-        PySystemState systemState = Py.getSystemState();
-        if (systemState == null)
+        PySystemState systemState = Py.getSystemState( );
+        if ( systemState == null )
         {
-            systemState = new PySystemState();
+            systemState = new PySystemState( );
         }
-        Py.setSystemState(systemState);
+        Py.setSystemState( systemState );
     }
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      */
     protected PythonInterp(String text,
-                     Rule rule,
-                     String type)
+                           Rule rule,
+                           String type)
     {
         this.rule = rule;
         this.origininalText = text;
-        StringBuffer globalText = new StringBuffer();
+        StringBuffer globalText = new StringBuffer( );
 
         Iterator it = rule.getImports( PythonImportEntry.class ).iterator( );
 
         while ( it.hasNext( ) )
         {
             globalText.append( it.next( ) );
-            globalText.append(";");
-            globalText.append(LINE_SEPARATOR);
+            globalText.append( ";" );
+            globalText.append( LINE_SEPARATOR );
         }
 
-        globalText.append("def q(cond,on_true,on_false):\n");
-        globalText.append("  if cond:\n");
-        globalText.append("    return on_true\n");
-        globalText.append("  else:\n");
-        globalText.append("    return on_false\n");
-        Functions functions = rule.getRuleSet( ).getFunctions("python");
-        if (functions != null)
+        globalText.append( "def q(cond,on_true,on_false):\n" );
+        globalText.append( "  if cond:\n" );
+        globalText.append( "    return on_true\n" );
+        globalText.append( "  else:\n" );
+        globalText.append( "    return on_false\n" );
+        Functions functions = rule.getRuleSet( ).getFunctions( "python" );
+        if ( functions != null )
         {
             globalText.append( stripOuterIndention( functions.getText( ) ) );
-        }            
+        }
 
-        if (this.globals == null)
+        if ( this.globals == null )
         {
-            this.globals = getGlobals(globalText.toString());
+            this.globals = getGlobals( globalText.toString( ) );
         }
 
         this.text = stripOuterIndention( text );
 
         try
         {
-            this.node = ( modType ) parser.parse( this.text, type );
-            this.code = Py.compile( this.node, "<jython>" );
-        } catch (Exception e)
+            this.node = (modType) parser.parse( this.text,
+                                                type );
+            this.code = Py.compile( this.node,
+                                    "<jython>" );
+        }
+        catch ( Exception e )
         {
-            e.printStackTrace();
+            e.printStackTrace( );
             throw new RuntimeException( e.getLocalizedMessage( ) );
         }
     }
 
     /**
-     * Parses a python script and returns the globals
-     * It is used to be able to inject imports and functions
-     * into code when being executed by Py.runCode(...)
+     * Parses a python script and returns the globals It is used to be able to
+     * inject imports and functions into code when being executed by
+     * Py.runCode(...)
+     * 
      * @param text
      * @return PyDictionary globals
      */
     public PyDictionary getGlobals(String text)
     {
-          PyModule module = new PyModule("main", new PyDictionary());
+        PyModule module = new PyModule( "main",
+                                        new PyDictionary( ) );
 
-          PyObject locals = module.__dict__;
+        PyObject locals = module.__dict__;
 
-          Py.exec(Py.compile_flags(text, "<string>", "exec", null), locals, locals);
+        Py.exec( Py.compile_flags( text,
+                                   "<string>",
+                                   "exec",
+                                   null ),
+                 locals,
+                 locals );
 
-          return (PyDictionary) locals;
+        return (PyDictionary) locals;
     }
 
     /**
      * Trims leading indention from the block of text. Since Python relies on
      * indention as part of its syntax, any XML indention introduced needs to be
      * stripped out. For example, this:
-     *
+     * 
      * <pre>
-     *
-     *  |   &lt;python:consequence&gt;
-     *  |       if hello == 'Hello':
-     *  |           print &quot;Hi&quot;
-     *  |       else:
-     *  |           print &quot;Bye&quot;
-     *  |   &lt;/python:consequence&gt;
-     *
+     * 
+     * 
+     *   |   &lt;python:consequence&gt;
+     *   |       if hello == 'Hello':
+     *   |           print &quot;Hi&quot;
+     *   |       else:
+     *   |           print &quot;Bye&quot;
+     *   |   &lt;/python:consequence&gt;
+     * 
+     *  
      * </pre>
-     *
+     * 
      * is transformed into:
-     *
+     * 
      * <pre>
-     *
-     *  |   &lt;python:consequence&gt;
-     *  |if hello == 'Hello':
-     *  |    print &quot;Hi&quot;
-     *  |else:
-     *  |    print &quot;Bye&quot;
-     *  |   &lt;/python:consequence&gt;
-     *
+     * 
+     * 
+     *   |   &lt;python:consequence&gt;
+     *   |if hello == 'Hello':
+     *   |    print &quot;Hi&quot;
+     *   |else:
+     *   |    print &quot;Bye&quot;
+     *   |   &lt;/python:consequence&gt;
+     * 
+     *  
      * </pre>
-     *
-     * @param text the block of text to be stripped
+     * 
+     * @param text
+     *            the block of text to be stripped
      * @return the block of text stripped of its leading indention
      */
     protected static String stripOuterIndention(String text)
@@ -227,11 +243,7 @@ public class PythonInterp
                 return null;
             }
 
-            BufferedReader br = new BufferedReader(
-                                                    new InputStreamReader(
-                                                                           new ByteArrayInputStream(
-                                                                                                     text
-                                                                                                         .getBytes( ) ) ) );
+            BufferedReader br = new BufferedReader( new InputStreamReader( new ByteArrayInputStream( text.getBytes( ) ) ) );
 
             StringBuffer unindentedText = new StringBuffer( text.length( ) );
 
@@ -239,8 +251,7 @@ public class PythonInterp
             try
             {
                 String indent = null;
-                for ( String line = br.readLine( ); null != line; line = br
-                                                                           .readLine( ) )
+                for ( String line = br.readLine( ); null != line; line = br.readLine( ) )
                 {
                     lineNo++;
                     if ( "".equals( line.trim( ) ) )
@@ -253,20 +264,15 @@ public class PythonInterp
                     if ( null == indent )
                     {
                         // The first non-bank line determines
-                        //   the outer indention level
-                        indent = line
-                                     .substring( 0, line.indexOf( line.trim( ) ) );
+                        // the outer indention level
+                        indent = line.substring( 0,
+                                                 line.indexOf( line.trim( ) ) );
                     }
 
-                    if ( line.length( ) < indent.length( )
-                         || !line.startsWith( indent ) )
+                    if ( line.length( ) < indent.length( ) || !line.startsWith( indent ) )
                     {
                         // This can catch some poorly indented Python syntax
-                        throw new RuntimeException( "Bad Text Indention: Line "
-                                                    + lineNo + ": |"
-                                                    + formatForException( line )
-                                                    + "|" + LINE_SEPARATOR
-                                                    + formatForException( text ) );
+                        throw new RuntimeException( "Bad Text Indention: Line " + lineNo + ": |" + formatForException( line ) + "|" + LINE_SEPARATOR + formatForException( text ) );
                     }
 
                     // Remove the outer most indention from the line
@@ -298,7 +304,7 @@ public class PythonInterp
             // swallowing everything except RuntimeExceptions.
             if ( e instanceof RuntimeException )
             {
-                throw ( RuntimeException ) e;
+                throw (RuntimeException) e;
             }
 
             throw new RuntimeException( e.getMessage( ) );
@@ -309,14 +315,15 @@ public class PythonInterp
      * Helper method to format the text block for display in error messages.
      * Since Python syntax errors can easily occur due to bad indention, this
      * method replaces all tabs with "{{tab}}" and all spaces with ".".
-     *
-     * @param text the text to be formatted
+     * 
+     * @param text
+     *            the text to be formatted
      * @return the text with all tabs and spaces replaced for easier viewing
      */
     private static String formatForException(String text)
     {
         StringBuffer sbuf = new StringBuffer( text.length( ) * 2 );
-        for ( int i = 0, max = text.length(); i < max; i++ )
+        for ( int i = 0, max = text.length( ); i < max; i++ )
         {
             final char nextChar = text.charAt( i );
             if ( '\t' == nextChar )
@@ -333,12 +340,12 @@ public class PythonInterp
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the text to evaluate.
-     *
+     * 
      * @return The text to evaluate.
      */
     public String getText()
@@ -353,7 +360,7 @@ public class PythonInterp
 
     /**
      * Retrieve the compiled code.
-     *
+     * 
      * @return The code.
      */
     protected PyCode getCode()
@@ -363,7 +370,7 @@ public class PythonInterp
 
     /**
      * Retrieve the AST node.
-     *
+     * 
      * @return The node.
      */
     protected modType getNode()
@@ -379,14 +386,14 @@ public class PythonInterp
     /**
      * Configure a <code>PyDictionary</code> using a <code>Tuple</code> for
      * variable bindings.
-     *
-     * @param tuple Tuple containing variable bindings.
-     *
+     * 
+     * @param tuple
+     *            Tuple containing variable bindings.
+     * 
      * @return The dictionary
      */
-    protected PyDictionary setUpDictionary(Tuple tuple) throws Exception
+    protected PyDictionary setUpDictionary(Tuple tuple, Iterator declIter) throws Exception
     {
-        Iterator declIter = this.rule.getParameterDeclarations( ).iterator( );
         Declaration eachDecl;
 
         ObjectType objectType;
@@ -397,7 +404,8 @@ public class PythonInterp
 
         PyDictionary dict = new PyDictionary( );
 
-        //dict.setdefault( new PyString( "q" ), qFunc ); //add tenerary function
+        // dict.setdefault( new PyString( "q" ), qFunc ); //add tenerary
+        // function
 
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
@@ -408,25 +416,24 @@ public class PythonInterp
 
         while ( declIter.hasNext( ) )
         {
-            eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = (Declaration) declIter.next( );
 
-            dict
-                .setdefault(
-                             new PyString( eachDecl.getIdentifier( ).intern( ) ),
+            dict.setdefault( new PyString( eachDecl.getIdentifier( ).intern( ) ),
                              Py.java2py( tuple.get( eachDecl ) ) );
 
             objectType = eachDecl.getObjectType( );
 
             if ( objectType instanceof ClassObjectType )
             {
-                clazz = ( ( ClassObjectType ) objectType ).getType( );
+                clazz = ((ClassObjectType) objectType).getType( );
                 type = clazz.getName( );
 
                 nestedClassPosition = type.indexOf( '$' );
 
                 if ( nestedClassPosition != -1 )
                 {
-                    type = type.substring( 0, nestedClassPosition );
+                    type = type.substring( 0,
+                                           nestedClassPosition );
                     clazz = cl.loadClass( type );
                 }
 
@@ -450,10 +457,9 @@ public class PythonInterp
 
             Map appDataMap = workingMemory.getApplicationDataMap( );
 
-            for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter
-                                                                              .hasNext( ); )
+            for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter.hasNext( ); )
             {
-                String key = ( String ) keyIter.next( );
+                String key = (String) keyIter.next( );
                 Object value = appDataMap.get( key );
 
                 dict.setdefault( new PyString( key.intern( ) ),
@@ -466,7 +472,8 @@ public class PythonInterp
 
                 if ( nestedClassPosition != -1 )
                 {
-                    type = type.substring( 0, nestedClassPosition );
+                    type = type.substring( 0,
+                                           nestedClassPosition );
                     clazz = cl.loadClass( type );
                 }
 
