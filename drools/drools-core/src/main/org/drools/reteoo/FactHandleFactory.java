@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import org.drools.FactHandle;
 
-public interface FactHandleFactory extends Serializable
+public interface FactHandleFactory
+    extends
+    Serializable
 {
     FactHandle newFactHandle();
+
+    FactHandle newFactHandle(long id);
 }

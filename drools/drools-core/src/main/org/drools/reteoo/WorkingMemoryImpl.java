@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.46 2004-11-16 12:12:57 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.47 2004-11-16 22:51:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,7 @@ import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.spi.AgendaFilter;
 import org.drools.util.IdentityMap;
 import org.drools.util.PrimitiveLongMap;
+import org.drools.util.PrimitiveLongStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,6 +83,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /** Object-to-handle mapping. */
     private final Map               handles                 = new IdentityMap( );
+    private final PrimitiveLongStack  handlePool            = new PrimitiveLongStack( );
 
     /** The eventSupport */
     private final WorkingMemoryEventSupport eventSupport    = new WorkingMemoryEventSupport( this );
@@ -138,7 +140,14 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     FactHandle newFactHandle()
     {
-        return this.ruleBase.getFactHandleFactory().newFactHandle( );
+        if (!this.handlePool.isEmpty())
+        {
+            return this.ruleBase.getFactHandleFactory().newFactHandle( this.handlePool.pop() );
+        }
+        else 
+        {
+            return this.ruleBase.getFactHandleFactory().newFactHandle( );
+        }
     }
 
     /**
@@ -371,6 +380,8 @@ class WorkingMemoryImpl implements WorkingMemory
         this.ruleBase.retractObject( handle, this );
 
         removeObject(handle);
+        
+        this.handlePool.push(((FactHandleImpl) handle).getId());
 
         this.eventSupport.fireObjectRetracted( handle );
     }
