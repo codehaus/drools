@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseRuleFactory.java,v 1.4 2004-09-17 00:24:37 mproctor Exp $
+ * $Id: BaseRuleFactory.java,v 1.5 2004-09-17 01:47:32 dbarnett Exp $
  * 
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,10 +48,6 @@ import org.drools.smf.RuleFactory;
 
 public class BaseRuleFactory implements RuleFactory
 {
-    public BaseRuleFactory()
-    {
-    }
-
     public Rule newRule(Configuration config) throws FactoryException
     {
         String name = config.getAttribute( "name" );
