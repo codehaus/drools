@@ -36,10 +36,6 @@ public class RuleTest extends DroolsTestCase
 
         assertLength( 0, rule.getParameterDeclarations( ) );
 
-        assertLength( 0, rule.getLocalDeclarations( ) );
-
-        assertLength( 0, rule.getAllDeclarations( ) );
-
         assertLength( 0, rule.getConditions( ) );
 
         assertNull( rule.getConsequence( ) );
@@ -60,18 +56,6 @@ public class RuleTest extends DroolsTestCase
         assertSame( paramDecl, rule.getParameterDeclaration( "paramVar" ) );
 
         assertNull( rule.getParameterDeclaration( "betty" ) );
-
-        List localDecls = rule.getLocalDeclarations( );
-
-        assertLength( 0, localDecls );
-
-        List allDecls = rule.getAllDeclarations( );
-
-        assertLength( 1, allDecls );
-
-        assertContains( paramDecl, allDecls );
-
-        assertNull( rule.getDeclaration( "betty" ) );
     }
 
     public void testLocalDeclarations() throws Exception
@@ -80,30 +64,12 @@ public class RuleTest extends DroolsTestCase
 
         Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        Declaration localDecl = rule.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
         List paramDecls = rule.getParameterDeclarations( );
         assertLength( 1, paramDecls );
 
         assertContains( paramDecl, paramDecls );
 
-        List localDecls = rule.getLocalDeclarations( );
-
-        assertLength( 1, localDecls );
-
-        assertContains( localDecl, localDecls );
-
-        assertSame( localDecl, rule.getDeclaration( "localVar" ) );
-
-        List allDecls = rule.getAllDeclarations( );
-
-        assertLength( 2, allDecls );
-
-        assertContains( paramDecl, allDecls );
-
-        assertContains( localDecl, allDecls );
-
-        assertNull( rule.getDeclaration( "betty" ) );
+        assertNull( rule.getParameterDeclaration( "betty" ) );
     }
 
     public void testDocumentation() throws Exception
@@ -144,8 +110,7 @@ public class RuleTest extends DroolsTestCase
         Rule rule = new Rule( "test-rule" );
 
         assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getOrder( ) );
-        assertEquals( 1, rule.addLocalDeclaration( "localVar1", new MockObjectType( true ) ).getOrder( ) );
-        assertEquals( 2, rule.addParameterDeclaration( "paramVar2", new MockObjectType( true ) ).getOrder( ) );
+        assertEquals( 1, rule.addParameterDeclaration( "paramVar1", new MockObjectType( true ) ).getOrder( ) );
     }
 
     public void testDuration_SimpleLong() throws Exception
@@ -200,8 +165,6 @@ public class RuleTest extends DroolsTestCase
 
         rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        rule.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
@@ -229,7 +192,6 @@ public class RuleTest extends DroolsTestCase
 
         assertEquals( 42, rule.getSalience( ) );
         assertEquals( 22, rule.getLoadOrder( ) );
-        assertLength( 1, rule.getLocalDeclarations( ) );
         assertLength( 1, rule.getParameterDeclarations( ) );
         assertLength( 2, rule.getConditions( ) );
     }

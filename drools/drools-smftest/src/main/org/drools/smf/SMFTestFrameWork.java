@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.22 2004-11-28 07:40:23 simon Exp $
+ * $Id: SMFTestFrameWork.java,v 1.23 2004-11-28 14:44:28 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -186,9 +186,9 @@ public abstract class SMFTestFrameWork extends TestCase
             testNumber++, tuple, rule ) ); //4
 
         Declaration camembertDecl =
-            rule.addLocalDeclaration( "camembert", cheeseType );
+            rule.addParameterDeclaration( "camembert", cheeseType );
         Declaration stiltonDecl =
-            rule.addLocalDeclaration( "stilton", cheeseType );
+            rule.addParameterDeclaration( "stilton", cheeseType );
 
         //condition check with a single declaration
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
@@ -243,7 +243,7 @@ public abstract class SMFTestFrameWork extends TestCase
         ObjectType stringType = objectTypeFactory.newObjectType(
             stringConfiguration, new HashSet() );
         Declaration favouriteCheeseDecl =
-            rule.addLocalDeclaration( "favouriteCheese", stringType );
+            rule.addParameterDeclaration( "favouriteCheese", stringType );
 
         tuple.put( favouriteCheeseDecl, "camembert" );
         tuple.put( camembertDecl, new Cheese( "camembert" ) );
@@ -324,9 +324,9 @@ public abstract class SMFTestFrameWork extends TestCase
         //need to declare so that the tests have SMFTestFrameWork.Cheese
         // imported
         Declaration camembertDecl =
-            rule.addLocalDeclaration( "camembert", cheeseType );
+            rule.addParameterDeclaration( "camembert", cheeseType );
         Declaration stiltonDecl =
-            rule.addLocalDeclaration( "stilton", cheeseType );
+            rule.addParameterDeclaration( "stilton", cheeseType );
 
         Cheese camembert = new Cheese( "camembert" );
         Cheese stilton = new Cheese( "stilton" );
@@ -373,29 +373,6 @@ public abstract class SMFTestFrameWork extends TestCase
         {
             assertEquals( rule, e.getRule( ) );
         }
-
-        //test code works no matter what the order of decl are
-        /*
-         * In java this doesn't actually do anything now as Declaration[] in the
-         * constructor is ignored, it uses the tuples.getDeclaration() of the
-         * invoke method to compiled and also invoke
-         */
-        /*
-         * tuple = new MockTuple(); workingMemory = new MockWorkingMemory();
-         * tuple.setWorkingMemory(workingMemory);
-         *
-         * MockConfiguration stringConfiguration = new
-         * MockConfiguration("test2");
-         * stringConfiguration.setText(String.class.getName()); ObjectType
-         * stringType = objectTypeFactory.newObjectType(stringConfiguration);
-         * Declaration favouriteCheeseDecl = new Declaration(stringType,
-         * "favouriteCheese");
-         *
-         * tuple.put(favouriteCheeseDecl, "camembert"); tuple.put(camembertDecl,
-         * new Cheese("camembert")); testConsequence(4, tuple, new Declaration[]
-         * {favouriteCheeseDecl, camembertDecl}); testConsequence(5, tuple, new
-         * Declaration[] {camembertDecl, favouriteCheeseDecl});
-         */
 
         // 7
         //test imports

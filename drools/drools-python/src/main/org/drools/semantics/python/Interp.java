@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.22 2004-11-28 07:40:23 simon Exp $
+ * $Id: Interp.java,v 1.23 2004-11-28 14:44:28 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Interp.java,v 1.22 2004-11-28 07:40:23 simon Exp $
+ * @version $Id: Interp.java,v 1.23 2004-11-28 14:44:28 simon Exp $
  */
 public class Interp
 {
@@ -385,7 +385,7 @@ public class Interp
      */
     protected PyDictionary setUpDictionary(Tuple tuple) throws Exception
     {
-        Iterator declIter = tuple.getRule( ).getAllDeclarations( ).iterator( );
+        Iterator declIter = tuple.getRule( ).getParameterDeclarations( ).iterator( );
         Declaration eachDecl;
 
         ObjectType objectType;

@@ -19,7 +19,8 @@ public class ExprConditionFactory implements ConditionFactory
     {
         try
         {
-            return new ExprCondition( config.getText( ), rule.getAllDeclarations() );
+            return new ExprCondition( config.getText( ),
+                                      rule.getParameterDeclarations( ) );
         }
         catch ( Exception e )
         {

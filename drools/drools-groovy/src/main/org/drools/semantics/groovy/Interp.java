@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.10 2004-11-28 07:40:23 simon Exp $
+ * $Id: Interp.java,v 1.11 2004-11-28 14:44:28 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,7 +66,7 @@ import java.util.Set;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Interp.java,v 1.10 2004-11-28 07:40:23 simon Exp $
+ * @version $Id: Interp.java,v 1.11 2004-11-28 14:44:28 simon Exp $
  */
 public class Interp implements Serializable
 {
@@ -160,7 +160,7 @@ public class Interp implements Serializable
     {
         Binding dict = new Binding( );
         Declaration eachDecl;
-        Iterator declIter = tuple.getRule( ).getAllDeclarations( ).iterator( );
+        Iterator declIter = tuple.getRule( ).getParameterDeclarations( ).iterator( );
         while ( declIter.hasNext( ) )
         {
             eachDecl = ( Declaration ) declIter.next( );

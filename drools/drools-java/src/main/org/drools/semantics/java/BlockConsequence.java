@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.37 2004-11-28 07:40:23 simon Exp $
+ * $Id: BlockConsequence.java,v 1.38 2004-11-28 14:44:28 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -167,8 +167,8 @@ public class BlockConsequence implements Consequence, Serializable
             }
         }
 
-        List declarations = rule.getAllDeclarations();
-        this.declarations = ( Declaration[] ) declarations.toArray( new Declaration[ declarations.size() ] );
+        List declarations = rule.getParameterDeclarations( );
+        this.declarations = ( Declaration[] ) declarations.toArray( new Declaration[ declarations.size( ) ] );
 
         try
         {
