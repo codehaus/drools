@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidObjectTypeException.java,v 1.4 2002-08-02 19:48:52 bob Exp $
+ $Id: InvalidObjectTypeException.java,v 1.5 2003-10-29 20:29:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -82,6 +82,6 @@ public class InvalidObjectTypeException extends SemanticComponentException
      */
     public String getMessage()
     {
-        return getClass().getName() + " is not a valid object type";
+        return getInvalidClass().getName() + " is not a valid object type";
     }
 }
