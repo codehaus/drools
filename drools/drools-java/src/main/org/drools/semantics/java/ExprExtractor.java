@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.4 2002-08-18 22:22:39 bob Exp $
+ $Id: ExprExtractor.java,v 1.5 2002-08-19 00:31:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,24 +47,55 @@ package org.drools.semantics.java;
  */
 
 import org.drools.smf.ConfigurableExtractor;
-import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.drools.spi.ExtractionException;
-
-import bsh.EvalError;
 
 /** Java expression semantics <code>Extractor</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.4 2002-08-18 22:22:39 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.5 2002-08-19 00:31:42 bob Exp $
  */
 public class ExprExtractor extends Expr implements ConfigurableExtractor
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct, partially.
+     *
+     *  @see Expr#setExpression
+     */
     public ExprExtractor()
     {
     }
 
+    /** Construct.
+     *
+     *  @param expr The expression.
+     */
+    public ExprExtractor(String expr)
+    {
+        setExpression( expr );
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.spi.Extractor
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Extract a new fact from the incoming <code>Tuple</code>
+     *
+     *  @param tuple The source data tuple.
+     *
+     *  @return The newly extract fact object.
+     *
+     *  @throws ExtractionException if an error occurs during
+     *          fact extraction activities.
+     */
     public Object extractFact(Tuple tuple) throws ExtractionException
     {
         try

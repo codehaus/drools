@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.9 2002-08-18 19:17:50 bob Exp $
+ $Id: Rule.java,v 1.10 2002-08-19 00:31:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,6 +64,8 @@ import java.util.Collections;
  *  @see Consequence
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: Rule.java,v 1.10 2002-08-19 00:31:42 bob Exp $
  */
 public class Rule
 {
@@ -218,6 +220,13 @@ public class Rule
         this.allDeclarations.add( declaration );
     }
 
+    /** Retrieve a <code>Declaration</code> by identifier.
+     *
+     *  @param identifier The identifier.
+     *
+     *  @return The declaration or <code>null</code> if no
+     *          declaration matches the <code>identifier</code>.
+     */
     public Declaration getDeclaration(String identifier)
     {
         Iterator    declIter = this.allDeclarations.iterator();

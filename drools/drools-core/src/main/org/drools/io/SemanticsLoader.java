@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsLoader.java,v 1.1 2002-08-18 16:42:58 bob Exp $
+ $Id: SemanticsLoader.java,v 1.2 2002-08-19 00:31:41 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,9 +54,7 @@ import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.parser.XMLParser;
 
-import java.io.File;
 import java.io.IOException;
-
 import java.net.URL;
 
 /** Loads <code>SemanticModule</code> definition from XML descriptor.
@@ -65,7 +63,12 @@ import java.net.URL;
  */
 public class SemanticsLoader
 {
-    public final static String DESCRIPTOR_NAME = "semantics.xml";
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    /** Name of smf descriptor. */
+    public static final String DESCRIPTOR_NAME = "semantics.xml";
 
     // ------------------------------------------------------------
     //     Constructors
@@ -85,6 +88,8 @@ public class SemanticsLoader
     /** Load a <code>SemanticModule</code> deifnition from a URL.
      *
      *  @param packageName The java package containing the module.
+     *
+     *  @return The loaded semantic module.
      *
      *  @throws IOException If an IO errors occurs.
      *  @throws Exception If an error occurs evaluating the definition.
