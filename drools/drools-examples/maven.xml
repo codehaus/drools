@@ -125,29 +125,6 @@
       </java>
     </goal>
 
-<!-- Family Tree Examples -->
-  <goal name="familytree-java" prereqs="jar:jar">
-    <java classname="org.drools.examples.familytree.FamilyTree"
-          fork="true">
-      <classpath refid="maven.dependency.classpath"/>
-      <classpath>
-        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
-      </classpath>
-        <arg value="familyTree.java.drl"/>
-    </java>
-  </goal>
-
-    <goal name="familytree-groovy" prereqs="jar:jar">
-      <java classname="org.drools.examples.familytree.FamilyTree"
-            fork="true">
-        <classpath refid="maven.dependency.classpath"/>
-        <classpath>
-          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
-        </classpath>
-          <arg value="familyTree.groovy.drl"/>
-      </java>
-    </goal>
-
 <!-- State Examples -->
     <goal name="state-java" prereqs="jar:jar">
       <java classname="org.drools.examples.state.StateExample"
