@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Extraction.java,v 1.1 2002-08-18 19:17:50 bob Exp $
+ $Id: Extraction.java,v 1.2 2003-10-28 19:16:52 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,6 +60,13 @@ import org.drools.spi.Extractor;
  */
 public class Extraction 
 {
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    /** Empty <code>Extraction</code> array. */
+    public static final Extraction[] EMPTY_ARRAY = new Extraction[ 0 ];
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------

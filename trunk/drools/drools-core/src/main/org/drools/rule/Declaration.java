@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.5 2003-10-28 05:00:39 bob Exp $
+ $Id: Declaration.java,v 1.6 2003-10-28 19:16:52 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -61,7 +61,7 @@ public class Declaration
     //     Constants
     // ------------------------------------------------------------
 
-    /** Empty array. */
+    /** Empty <code>Declaraton</code> array. */
     public static final Declaration[] EMPTY_ARRAY = new Declaration[0];
 
     // ------------------------------------------------------------

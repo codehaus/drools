@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Arrays;
 
 /** Builds the Rete-OO network for a <code>RuleSet</code>.
  *
@@ -80,8 +81,8 @@ public class Builder
      */
     public void addRule(Rule rule) throws RuleIntegrationException
     {
-        Set factExtracts  = new HashSet( rule.getExtractions() );
-        List conds        = new ArrayList( rule.getConditions() );
+        Set factExtracts  = new HashSet( Arrays.asList( rule.getExtractions() ) );
+        List conds        = new ArrayList( Arrays.asList( rule.getConditions() ) );
 
         Set leafNodes = null;
 
@@ -165,7 +166,7 @@ public class Builder
     {
         Set leafNodes = new HashSet();
 
-        Set      parameterDecls  = rule.getParameterDeclarations();
+        Set parameterDecls  = new HashSet( Arrays.asList( rule.getParameterDeclarations() ) );
 
         Iterator    declIter = parameterDecls.iterator();
         Declaration eachDecl = null;

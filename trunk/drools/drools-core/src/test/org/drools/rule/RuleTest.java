@@ -1,22 +1,13 @@
 package org.drools.rule;
 
+import org.drools.DroolsTestCase;
 import org.drools.spi.MockObjectType;
-
-import junit.framework.TestCase;
 
 import java.util.Set;
 
 public class RuleTest
-    extends TestCase
+    extends DroolsTestCase
 {
-    public void setUp()
-    {
-    }
-
-    public void tearDown()
-    {
-    }
-
     public void testConstruct()
     {
         Rule rule = new Rule( "test-rule" );
@@ -45,22 +36,23 @@ public class RuleTest
 
         rule.addParameterDeclaration( paramDecl );
 
-        Set paramDecls = rule.getParameterDeclarations();
+        Declaration[] paramDecls = rule.getParameterDeclarations();
 
-        assertEquals( 1,
-                      paramDecls.size() );
+        assertLength( 1,
+                      paramDecls );
 
-        assertTrue( paramDecls.contains( paramDecl ) );
+        assertContains( paramDecl,
+                        paramDecls );
 
         assertSame( paramDecl,
                     rule.getParameterDeclaration( "paramVar" ) );
 
         assertNull( rule.getParameterDeclaration( "betty" ) );
 
-        Set localDecls = rule.getLocalDeclarations();
+        Declaration[] localDecls = rule.getLocalDeclarations();
 
-        assertEquals( 0,
-                      localDecls.size() );
+        assertLength( 0,
+                      localDecls );
     }
 
     public void testLocalDeclarations()
@@ -80,19 +72,21 @@ public class RuleTest
         rule.addParameterDeclaration( paramDecl );
         rule.addExtraction( extraction );
 
-        Set paramDecls = rule.getParameterDeclarations();
+        Declaration[] paramDecls = rule.getParameterDeclarations();
 
-        assertEquals( 1,
-                      paramDecls.size() );
+        assertLength( 1,
+                      paramDecls );
 
-        assertTrue( paramDecls.contains( paramDecl ) );
+        assertContains( paramDecl,
+                        paramDecls );
 
-        Set localDecls = rule.getLocalDeclarations();
+        Declaration[] localDecls = rule.getLocalDeclarations();
 
-        assertEquals( 1,
-                      localDecls.size() );
+        assertLength( 1,
+                      localDecls );
 
-        assertTrue( localDecls.contains( localDecl ) );
+        assertContains( localDecl,
+                        localDecls );
 
         assertSame( localDecl,
                     rule.getDeclaration( "localVar" ) );

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Condition.java,v 1.7 2002-08-17 05:49:22 bob Exp $
+ $Id: Condition.java,v 1.8 2003-10-28 19:16:52 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,12 +52,16 @@ import org.drools.rule.Declaration;
  *
  *  @see Tuple
  *  
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Condition.java,v 1.7 2002-08-17 05:49:22 bob Exp $
+ *  @version $Id: Condition.java,v 1.8 2003-10-28 19:16:52 bob Exp $
  */
-public interface Condition extends SemanticComponent
+public interface Condition
+    extends SemanticComponent
 {
+    /** Empty <code>Condition</code> array. */
+    static final Condition[] EMPTY_ARRAY = new Condition[ 0 ];
+
     /** Retrieve the array of <code>Declaration</code>s required
      *  by this condition to perform its duties.
      *
