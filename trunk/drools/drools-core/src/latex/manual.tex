@@ -169,7 +169,8 @@
 }
 
 \newcommand{\noattrs}{
-        \multicolumn{3}{c}{\emph{No attributes}}\\
+        %\multicolumn{3}{c}{\emph{No attributes}}\\
+		\emph{No attributes} & & \\
         \hline
 }
 
@@ -177,6 +178,15 @@
         \\
         \hline
         \textbf{\textsf{Tag}} & \vline & \textbf{\textsf{Description}}\\ 
+        \hline 
+}
+
+\newcommand{\tagContent}[1]{
+        \\
+        \hline
+        \multicolumn{3}{l}{\textbf{\textsf{Content}}} \\
+        \hline
+  		\multicolumn{3}{l}{#1\hfill} \\
         \hline 
 }
 
