@@ -10,14 +10,20 @@
   <xs:import namespace="http://drools.org/semantics/java"/>
   <xs:import namespace="http://drools.org/semantics/groovy"/>
   <xs:import namespace="http://drools.org/semantics/python"/>             
-  
+
   <xs:element name="rule-set">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule"/>
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:string"/>
-    </xs:complexType>
+      <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType>   
+    <!-- All rules must have unique names -->
+    <xs:key name="ruleName">
+      <xs:selector xpath="rules:rule" />
+      <xs:field xpath="@name" />
+    </xs:key>       
   </xs:element>
   
   <xs:element name="rule">
@@ -73,7 +79,10 @@
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:string"/>
       <xs:attribute name="salience" type="xs:integer"/>     
+      <xs:attribute name="no-loop" type="xs:boolean"/>   
+      <xs:attribute name="description" type="xs:string"/>  
     </xs:complexType>  
+    
     <!-- make sure extractor targets are specified 
          after decleration identifiers -->
     <xs:key name="identifierKey">
@@ -86,4 +95,5 @@
       <xs:field xpath="@target" />
     </xs:keyref>              
   </xs:element>
+  
 </xs:schema>
