@@ -29,7 +29,7 @@
     <parameter identifier="theChild">
       <java:class>org.drools.examples.familytree.Person</java:class>
     </parameter>
-    <java:condition>theParent.hasChild(theChild);</java:condition>
+    <java:condition>theParent.hasChild(theChild)</java:condition>
     <java:consequence>
       import java.util.Map;
       import java.util.Hashtable;
@@ -45,7 +45,7 @@
       <java:class>java.lang.String</java:class>
     </parameter>
     <java:condition>
-      message.startsWith( "Relationship:" );
+      message.startsWith( "Relationship:" )
     </java:condition>
     <java:consequence>
       System.err.println( message );
