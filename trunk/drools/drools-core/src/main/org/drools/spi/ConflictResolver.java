@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ConflictResolver.java,v 1.3 2004-06-25 02:02:23 mproctor Exp $
+ $Id: ConflictResolver.java,v 1.4 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,8 @@ package org.drools.spi;
 
 import java.util.List;
 
+import java.io.Serializable;
+
 /** Strategy for resolving conflicts amongst multiple rules.
  *
  *  <p>
@@ -62,9 +64,9 @@ import java.util.List;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConflictResolver.java,v 1.3 2004-06-25 02:02:23 mproctor Exp $
+ *  @version $Id: ConflictResolver.java,v 1.4 2004-07-04 11:45:43 mproctor Exp $
  */
-public interface ConflictResolver
+public interface ConflictResolver extends Serializable
 {
     List insert(Activation activation,
                 List list);

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Extraction.java,v 1.5 2004-06-27 22:24:14 mproctor Exp $
+ $Id: Extraction.java,v 1.6 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -142,5 +142,20 @@ public class Extraction implements Serializable
     public Declaration[] getRequiredTupleMembers()
     {
         return getExtractor().getRequiredTupleMembers();
+    }
+
+    public String dump(String indent)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(indent + "Extraction\n");
+        buffer.append(indent + "----------\n");
+        buffer.append(targetDeclaration.dump(indent + " "));
+        Declaration[] declarations = extractor.getRequiredTupleMembers();
+        for (int i = 0; i < declarations.length; i++)
+        {
+            buffer.append(declarations[i].dump(indent + " "));
+        }
+
+        return buffer.toString();
     }
 }

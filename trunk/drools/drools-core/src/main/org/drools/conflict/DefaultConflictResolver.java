@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: DefaultConflictResolver.java,v 1.5 2004-06-27 12:31:16 mproctor Exp $
+ $Id: DefaultConflictResolver.java,v 1.6 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -50,31 +50,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import java.io.Serializable;
-
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.Tuple;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
- * 
+ *
  * <p>
  * Since a fact or set of facts may activate multiple rules, a
  * <code>ConflictResolutionStrategy</code> is used to provide priority
  * ordering of conflicting rules.
  * </p>
- * 
+ *
  * @see Activation
  * @see Tuple
  * @see org.drools.rule.Rule
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
+ *
  * @version $Id: DefaultConflictResolver.java,v 1.2 2004/06/25 11:46:58 mproctor
  *          Exp $
  */
-public class DefaultConflictResolver implements ConflictResolver, Serializable
+public class DefaultConflictResolver implements ConflictResolver
 {
 	// ----------------------------------------------------------------------
 	//     Class members
@@ -90,7 +88,7 @@ public class DefaultConflictResolver implements ConflictResolver, Serializable
 
 	/**
 	 * Retrieve the singleton instance.
-	 * 
+	 *
 	 * @return The singleton instance.
 	 */
 	public static ConflictResolver getInstance()

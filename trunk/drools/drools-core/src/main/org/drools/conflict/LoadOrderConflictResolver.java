@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: LoadOrderConflictResolver.java,v 1.3 2004-06-26 17:54:53 mproctor Exp $
+ $Id: LoadOrderConflictResolver.java,v 1.4 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -49,8 +49,6 @@ package org.drools.conflict;
 import java.util.List;
 import java.util.ListIterator;
 
-import java.io.Serializable;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -58,17 +56,17 @@ import org.drools.spi.ConflictResolver;
 /**
  * <code>ConflictResolver</code> that uses the loadOrder of rules to resolve
  * conflict.
- * 
+ *
  * @see #getInstance
  * @see Rule#setSalience
  * @see Rule#getSalience
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
+ *
  * @version $Id: LoadOrderConflictResolver.java,v 1.1 2004/06/25 01:55:16
  *          mproctor Exp $
  */
-public class LoadOrderConflictResolver implements ConflictResolver, Serializable
+public class LoadOrderConflictResolver implements ConflictResolver
 {
 	// ----------------------------------------------------------------------
 	//     Class members
@@ -83,7 +81,7 @@ public class LoadOrderConflictResolver implements ConflictResolver, Serializable
 
 	/**
 	 * Retrieve the singleton instance.
-	 * 
+	 *
 	 * @return The singleton instance.
 	 */
 	public static ConflictResolver getInstance()

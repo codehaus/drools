@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.14 2004-06-29 16:01:31 n_alex Exp $
+ $Id: RuleBaseImpl.java,v 1.15 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -52,11 +52,16 @@ import org.drools.RuleBase;
 import org.drools.FactException;
 import org.drools.spi.ConflictResolver;
 
+import java.util.Iterator;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.14 2004-06-29 16:01:31 n_alex Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.15 2004-07-04 11:45:43 mproctor Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -164,5 +169,10 @@ class RuleBaseImpl
         getRete().modifyObject( handle,
                                 object,
                                 workingMemory );
+    }
+
+    public String dumpRete()
+    {
+      return this.rete.dump();
     }
 }
