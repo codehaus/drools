@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.4 2004-11-07 18:38:53 mproctor Exp $
+ * $Id: MannersNativeTest.java,v 1.5 2004-11-08 14:18:26 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import java.util.List;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
+import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
 import org.drools.examples.model.Context;
 import org.drools.examples.model.Guest;

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.32 2004-11-08 11:08:29 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.33 2004-11-08 14:18:26 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -209,7 +209,5 @@ public interface WorkingMemory extends Serializable
      */
     void clearAgenda();
     
-    void addAgendaFilter(AgendaFilter agendaFilter);
-    
-    void removeAgendaFilter(AgendaFilter agendaFilter);
+    void setAgendaFilter(AgendaFilter agendaFilter);    
 }
