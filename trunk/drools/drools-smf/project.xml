@@ -11,6 +11,9 @@
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
         </dependency>
     </dependencies>
 

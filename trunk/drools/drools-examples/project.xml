@@ -13,26 +13,41 @@
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-smf</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-io</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-base</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-java</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
         </dependency>
         <dependency>
             <groupId>antlr</groupId>
