@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.44 2004-11-03 11:54:20 simon Exp $
+ * $Id: ReteTuple.java,v 1.45 2004-11-03 13:31:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,11 +48,10 @@ import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
@@ -61,7 +60,7 @@ import java.util.Collections;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.44 2004-11-03 11:54:20 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.45 2004-11-03 13:31:23 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -210,57 +209,19 @@ class ReteTuple implements Tuple, Serializable
 
     public long getMostRecentFactTimeStamp()
     {
-        FactHandleImpl mostRecentFact = getMostRecentFact( );
-        return mostRecentFact != null ? mostRecentFact.getRecency() : -1;
+        if ( this.mostRecentFact == null )
+        {
+            this.mostRecentFact = this.key.getMostRecentFact( );
+        }
+        return this.mostRecentFact != null ? this.mostRecentFact.getRecency( ) : -1;
     }
 
     public long getLeastRecentFactTimeStamp()
     {
-        FactHandleImpl leastRecentFact = getLeastRecentFact();
-        return leastRecentFact != null ? leastRecentFact.getRecency() : -1;
-    }
-
-    private FactHandleImpl getMostRecentFact()
-    {
-        if ( this.mostRecentFact != null )
+        if ( this.leastRecentFact == null )
         {
-            long currentRecency = Long.MIN_VALUE;
-            FactHandleImpl fact;
-            long recency;
-
-            for ( Iterator i = this.key.iterator(); i.hasNext(); )
-            {
-                fact = ( FactHandleImpl ) this.key.get( ( Declaration ) i.next() );
-                recency = fact.getRecency();
-                if ( recency > currentRecency )
-                {
-                    currentRecency = recency;
-                    this.mostRecentFact = fact;
-                }
-            }
+            this.leastRecentFact = this.key.getLeastRecentFact();
         }
-        return this.mostRecentFact;
-    }
-
-    private FactHandleImpl getLeastRecentFact()
-    {
-        if ( this.mostRecentFact != null )
-        {
-            long currentRecency = Long.MAX_VALUE;
-            FactHandleImpl fact;
-            long recency;
-
-            for ( Iterator i = this.key.iterator(); i.hasNext(); )
-            {
-                fact = ( FactHandleImpl ) this.key.get( ( Declaration ) i.next() );
-                recency = fact.getRecency();
-                if ( recency < currentRecency )
-                {
-                    currentRecency = recency;
-                    this.leastRecentFact = fact;
-                }
-            }
-        }
-        return this.leastRecentFact;
+        return this.leastRecentFact != null ? this.leastRecentFact.getRecency( ) : -1;
     }
 }
