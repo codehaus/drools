@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.12 2002-07-30 19:52:55 bob Exp $
+ $Id: Builder.java,v 1.13 2002-07-31 06:32:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -70,6 +70,11 @@ import java.util.Iterator;
  *  @see org.drools.spi.RuleSet
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @task Make joinForFilter actually be intelligent enough to
+ *        build optimal joins.  Currently using forgy's original
+ *        description of 2-input nodes, which I feel (but don't
+ *        know for sure, is sub-optimal.
  */
 public class Builder
 {
@@ -256,6 +261,15 @@ public class Builder
         }
     }
 
+    /** Join two arbitrary leaves in order to satisfy a filter
+     *  that currently cannot be applied.
+     *
+     *  @param filterConds The filter conditions remaining.
+     *  @param leafNodes Available leaf nodes.
+     *
+     *  @return <code>true</code> if a join was possible,
+     *          otherwise, <code>false</code>.
+     */
     protected boolean joinForFilter(Set filterConds,
                                     Set leafNodes)
     {
