@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.38 2004-11-07 12:10:17 mproctor Exp $
+ * $Id: Agenda.java,v 1.39 2004-11-08 11:08:31 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,9 +43,9 @@ package org.drools.reteoo;
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
+import org.drools.spi.AgendaFilter;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
 
@@ -95,6 +95,8 @@ class Agenda implements Serializable
 
     /** The current agenda item being fired; or null if none. */
     private AgendaItem          item;
+    
+    private final Set 			agendaFilters;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -111,6 +113,7 @@ class Agenda implements Serializable
         this.workingMemory = workingMemory;
         this.items = new PriorityQueue( conflictResolver );
         this.scheduledItems = new HashSet( );
+        this.agendaFilters = new HashSet( );
     }
 
     // ------------------------------------------------------------
@@ -144,6 +147,21 @@ class Agenda implements Serializable
         }
 
         AgendaItem item = new AgendaItem( tuple, rule );
+        
+        if (!this.agendaFilters.isEmpty())
+        {
+            Iterator it = this.agendaFilters.iterator();
+            AgendaFilter filter;
+            //If a filter returns false do not accept the activation
+            while (it.hasNext())
+            {
+                filter = (AgendaFilter) it.next();
+                if (!filter.accept(item))
+                {
+                    return;
+                }
+            }
+        }
 
         Duration dur = rule.getDuration( );
 
@@ -470,4 +488,14 @@ class Agenda implements Serializable
             item = null;
         }
     }
+
+    public void addAgendaFilter(AgendaFilter agendaFilter)
+    {
+        this.agendaFilters.add(agendaFilter);
+    }
+    
+    public void removeAgendaFilter(AgendaFilter agendaFilter)
+    {
+        this.agendaFilters.remove(agendaFilter);
+    }    
 }

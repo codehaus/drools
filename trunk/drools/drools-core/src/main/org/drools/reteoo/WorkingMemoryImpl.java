@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.34 2004-11-07 12:10:18 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.35 2004-11-08 11:08:31 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,6 +54,7 @@ import org.drools.event.ObjectAssertedEvent;
 import org.drools.event.ObjectModifiedEvent;
 import org.drools.event.ObjectRetractedEvent;
 
+import org.drools.spi.AgendaFilter;
 import org.drools.util.IdentityMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,7 +69,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.34 2004-11-07 12:10:18 mproctor Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.35 2004-11-08 11:08:31 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -456,5 +457,15 @@ class WorkingMemoryImpl implements WorkingMemory
     public long getConditionTimeStamp()
     {
         return this.conditionCounter++;
+    }
+    
+    public void addAgendaFilter(AgendaFilter agendaFilter)
+    {
+        
+    }
+    
+    public void removeAgendaFilter(AgendaFilter agendaFilter)
+    {
+        
     }
 }
