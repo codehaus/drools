@@ -98,7 +98,7 @@
 
 \newenvironment{implnote}
         {
-                \begin{basenote}{Implementor's Note}
+                \begin{basenote} {Implementor's Note}
         } {
                 \end{basenote}
         }
@@ -303,6 +303,15 @@
 
 \renewcommand{\part}{\secdef\partLayout\partLayout}
 
+
+
+
+
+
+
+\part{Drools---How and why}
+\chapter {50,000ft view}
+\chapter {Work Flow Engine}
 \part{Drools}
 
 %\include{introduction}
@@ -312,7 +321,10 @@
 \include{client}
 \include{admin}
 \include{conflict}
-\include{jsr94}
+
+
+
+
 
 \part{Semantic Modules}
 \include{java}
@@ -320,14 +332,28 @@
 \include{xml}
 \include{dispatcher}
 
+
+
+
+
 \part{Drools Internals}
 
 \include{architecture}
 \include{smf}
 \include{rule_assembly}
 
+
+
+
+
+
 \part{Examples}
 \include{examples}
+
+
+
+
+
 
 \part{Appendices}
 \appendix
@@ -336,12 +362,12 @@
 \include{faq}
 \include{project-info}
 \include{license}
-
-\backmatter
+\include{jsr94}
 
 \bibliography{manual}
 \bibliographystyle{acm}
 
+\backmatter
 {\footnotesize
 \pagestyle{plain}
 \printindex
