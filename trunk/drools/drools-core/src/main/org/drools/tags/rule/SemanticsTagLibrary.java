@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.2 2002-08-19 17:24:00 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,7 +67,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.2 2002-08-19 17:24:00 bob Exp $
  */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -156,9 +156,18 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                      new DynaBeanTagSupport()
                                      {
                                          private ObjectType objectType;
+
+                                         public void setAttribute(String name,
+                                                                  Object value) throws Exception
+                                         {
+                                             System.err.println( objectType + " -- setAttribute(" + name + ", " + value + ")" );
+                                             super.setAttribute( name,
+                                                                 value );
+                                         }
                                          
                                          public void beforeSetAttributes() throws Exception
                                          {
+                                             System.err.println( "beforeSetAttribute()" );
                                              try
                                              {
                                                  this.objectType = (ObjectType) beanClass.newInstance();

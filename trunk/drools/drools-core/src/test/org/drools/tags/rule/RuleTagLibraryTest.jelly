@@ -95,19 +95,72 @@
 
   <test:case name="testDeclaration_NoRule">
     <semantics module="org.drools.semantics.java"/>
+    <j:catch var="e">
+      <declaration identifier="foo" xmlns:java="http://drools.org/semantics/java">
+        <java:class type="java.lang.String"/> 
+      </declaration>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+  </test:case>
 
+  <test:case name="testDeclaration_NoIdentifier">
+    <semantics module="org.drools.semantics.java"/>
     <j:catch var="e">
       <rule name="test rule">
         <declaration xmlns:java="http://drools.org/semantics/java">
-          <java:class classname="java.lang.String"/> 
+          <java:class type="java.lang.String"/> 
         </declaration>
       </rule>
     </j:catch>
     <test:assert test="${e != null}">Should have thrown MissingArgumentException: identifier</test:assert> 
   </test:case>
 
+  <test:case name="testDeclaration_Valid">
+    <semantics module="org.drools.semantics.java"/>
+    <rule name="test rule" var="rule">
+      <declaration identifier="foo" xmlns:java="http://drools.org/semantics/java">
+        <java:class type="java.lang.String"/> 
+      </declaration>
+    </rule>
+    <test:assert test="${rule.getDeclaration('foo') != null}">Declaration not added  to Rule</test:assert>
+  </test:case>
 
- 
+  <!-- 
+    ||
+    ||    <parameter>
+    ||
+    -->
 
+  <test:case name="testParameter_NoRule">
+    <semantics module="org.drools.semantics.java"/>
+    <j:catch var="e">
+      <parameter identifier="foo" xmlns:java="http://drools.org/semantics/java">
+        <java:class type="java.lang.String"/> 
+      </parameter>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+  </test:case>
+
+  <test:case name="testParameter_NoIdentifier">
+    <semantics module="org.drools.semantics.java"/>
+    <j:catch var="e">
+      <rule name="test rule">
+        <parameter xmlns:java="http://drools.org/semantics/java">
+          <java:class type="java.lang.String"/> 
+        </parameter>
+      </rule>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown MissingArgumentException: identifier</test:assert> 
+  </test:case>
+
+  <test:case name="testParameter_Valid">
+    <semantics module="org.drools.semantics.java"/>
+    <rule name="test rule" var="rule">
+      <parameter identifier="foo" xmlns:java="http://drools.org/semantics/java">
+        <java:class type="java.lang.String"/> 
+      </parameter>
+    </rule>
+    <test:assert test="${rule.getParameter('foo') != null}">Parameter not added  to Rule</test:assert>
+  </test:case>
 
 </test:suite>
