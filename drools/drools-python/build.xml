@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.38 2003-05-27 09:34:10 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.39 2003-05-27 09:53:59 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
@@ -425,10 +425,10 @@
     <target name="deploy-jboss" description="o Deploy test webapp to JBoss"
         depends="check-environment, rar, war-jboss">
 
-        <copy file="${etcdir}/drools-jsr94-service.xml" todir="${defaulttargetdir}"/>
+        <copy file="${etcdir}/drools-jsr94-ds.xml" todir="${defaulttargetdir}"/>
 
         <copy file="${defaulttargetdir}/${rarname}.rar" todir="${env.JBOSS_HOME}/server/default/deploy"/>
-        <copy file="${defaulttargetdir}/drools-jsr94-service.xml" todir="${env.JBOSS_HOME}/server/default/deploy"/>
+        <copy file="${defaulttargetdir}/drools-jsr94-ds.xml" todir="${env.JBOSS_HOME}/server/default/deploy"/>
         <copy file="${defaulttargetdir}/${warname}-jboss.war" tofile="${env.JBOSS_HOME}/server/default/deploy/${warname}.war"/>
 
         <echo/>
