@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.3 2002-08-18 19:17:50 bob Exp $
+ $Id: ExprExtractor.java,v 1.4 2002-08-18 22:22:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import bsh.EvalError;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.3 2002-08-18 19:17:50 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.4 2002-08-18 22:22:39 bob Exp $
  */
 public class ExprExtractor extends Expr implements ConfigurableExtractor
 {
@@ -71,7 +71,7 @@ public class ExprExtractor extends Expr implements ConfigurableExtractor
         {
             return evaluate( tuple );
         }
-        catch (EvalError e)
+        catch (Exception e)
         {
             throw new ExtractionException( e );
         }
