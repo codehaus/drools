@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.8 2004-03-28 03:00:06 n_alex Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.9 2004-04-02 22:27:24 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,15 +47,14 @@ package org.drools.jsr94.rules.admin;
  */
 
 import org.drools.RuleBase;
-import org.drools.RuleIntegrationException;
+import org.drools.WorkingMemory;
+import org.drools.jsr94.rules.Constants;
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 
 import javax.rules.ObjectFilter;
 import javax.rules.admin.RuleExecutionSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A named set of executable <code>Rule</code> instances.
@@ -63,91 +62,35 @@ import java.util.Map;
  *
  * @see RuleExecutionSet
  *
- * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  * @author N. Alex Rupp (n_alex <at> codehaus.org)
+ * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 public class RuleExecutionSetImpl implements RuleExecutionSet
 {
-
     private String name;
     private String description;
-    private String filterName;
-    private Map props;
+    private String defaultObjectFilterClassName;
+    private Map properties;
 
     private RuleBase ruleBase;
-    private List ruleList;
-
+    private RuleSet[] ruleSets;
     private ObjectFilter objectFilter;
 
     /**
-     * Hide the constructor.
+     * <p>Instances of this class should be obtained from the
+     * <code>LocalRuleExecutionSetProviderImpl</code>. Each
+     * <code>RuleExecutionSetImpl</code> corresponds with an
+     * <code>org.drools.RuleSet</code> object.
      */
-    RuleExecutionSetImpl()
-    {
-        this.props = new HashMap();
-
-        /**
-         * Without the following ruleBase, the execution set will never contain
-         * any rules.  It'll skip over the rule elements altogether.  We need to
-         * figure out a way to get a rulebase into this object, either through the
-         * constructor or by some other method.
-         */
-
-        //this.ruleBase = new RuleBase();
-        this.ruleList = new ArrayList();
-    }
-
-    /**
-     * Get the drool <code>RuleBase</code> associated with this <code>RuleExecutionSet</code>.
-     */
-    public RuleBase getRuleBase()
-    {
-        return ruleBase;
-    }
-
-    /**
-     * Set the drool <code>RuleBase</code> for this <code>RuleExecutionSet</code>.
-     * @param ruleBase
-     */
-    public void setRuleBase(RuleBase ruleBase)
+    RuleExecutionSetImpl(
+            RuleBase ruleBase,
+            Map properties)
     {
         this.ruleBase = ruleBase;
-    }
-
-    /**
-     * Sets the name for this rule set.
-     */
-    void setName( String name )
-    {
-        this.name = name;
-    }
-
-    /**
-     * Sets the description for this rule set.
-     */
-    void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    /**
-     * Add an array of <code>Rule</code> objects to this <code>RuleExecutionSet</code>.
-     * @param rules
-     */
-    void addRules(Rule[] rules)
-    {
-        for(int i=0; i <= rules.length; i++) {
-            addRule(rules[i]);
-        }
-    }
-
-    /**
-     * Add a single <code>Rule</code> object to this <code>RuleExecutionSet</code>.
-     * @param rule
-     */
-    void addRule(Rule rule)
-    {
-        this.ruleList.add(rule);
+        this.properties = properties;
+        this.ruleSets = ruleBase.getRuleSets();
+        this.name = ((RuleSet)ruleSets[0]).getName();
+        this.description = (String)properties.get(Constants.RES_DESCRIPTION);
     }
 
     /**
@@ -157,7 +100,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     {
         if ( this.objectFilter == null )
         {
-            if ( this.filterName != null )
+            if ( this.defaultObjectFilterClassName != null )
             {
                 ClassLoader cl = Thread.currentThread().getContextClassLoader();
                 
@@ -168,7 +111,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
                 
                 try
                 {
-                    Class filterClass = cl.loadClass( filterName );
+                    Class filterClass = cl.loadClass( defaultObjectFilterClassName );
                     this.objectFilter = (ObjectFilter) filterClass.newInstance();
                 }
                 catch (Exception e)
@@ -181,7 +124,16 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         return this.objectFilter;
     }
 
-    // JSR94 interface methods start here ------------------------------------------------------------------------------
+    /**
+     * Returns a new WorkingMemory object
+     * @return
+     */
+    public WorkingMemory newWorkingMemory()
+    {
+        return this.ruleBase.newWorkingMemory();
+    }
+
+    // JSR94 interface methods start here -------------------------------------
     public String getName()
     {
         return name;
@@ -194,29 +146,43 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
 
     public Object getProperty( Object key )
     {
-        return props.get( key );
+        return properties.get( key );
     }
 
     public void setProperty( Object key, Object val )
     {
-        props.put( key, val );
+        properties.put( key, val );
     }
 
     public void setDefaultObjectFilter( String objectFilterClassname )
     {
-        this.filterName = objectFilterClassname;
+        this.defaultObjectFilterClassName = objectFilterClassname;
     }
 
     public String getDefaultObjectFilter()
     {
-        return filterName;
+        return defaultObjectFilterClassName;
     }
 
+    /**
+     * Returns a list of RuleImpl objects.
+     * @return
+     */
     public List getRules()
     {
-        return ruleList;
+        List jsr94Rules = new ArrayList();
+        List ruleSets = Arrays.asList(ruleBase.getRuleSets());
+        Iterator iter = ruleSets.iterator();
+        while(iter.hasNext())
+        {
+            RuleSet ruleSet = (RuleSet)iter.next();
+            List ruleList = Arrays.asList(ruleSet.getRules());
+            Iterator iter2 = ruleList.iterator();
+            while( iter2.hasNext() ) {
+                Rule rule = (Rule)iter2.next();
+                jsr94Rules.add(new RuleImpl(rule));
+            }
+        }
+        return jsr94Rules;
     }
-    // JSR94 interface methods end here --------------------------------------------------------------------------------
-
-
 }
