@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.38 2004-11-28 14:44:28 simon Exp $
+ * $Id: BlockConsequence.java,v 1.39 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.semantics.java;
  *
  */
 
-import net.janino.Scanner;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -51,7 +50,7 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
-import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,66 +60,82 @@ import java.util.Set;
 
 /**
  * Java block semantics <code>Consequence</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
-public class BlockConsequence implements Consequence, Serializable
+public class BlockConsequence
+    implements
+    Consequence,
+    Serializable
 {
-    private static final String[] SCRIPT_PARAM_NAMES = new String[]
-    {
-        "tuple", "decls", "drools", "applicationData"
-    };
+    private static final String[] SCRIPT_PARAM_NAMES = new String[]{"tuple", "decls", "drools", "applicationData"};
 
+    private final String block;
 
-    private final String            block;
+    private final Rule rule;
 
-    private transient Script        script;
+    private final Declaration[] declarations;
 
-    private transient Declaration[] declarations;
+    private transient Script script;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param block The statement block.
-     * @param block The available delcarations.
+     * 
+     * @param block
+     *            The statement block.
+     * @param block
+     *            The available delcarations.
      */
-    public BlockConsequence( String block ) throws Exception
+    public BlockConsequence(String block,
+                            Rule rule) throws Exception
     {
         this.block = block;
+
+        this.rule = rule;
+
+        List declarations = rule.getParameterDeclarations( );
+        this.declarations = (Declaration[]) declarations.toArray( new Declaration[declarations.size( )] );
+
+        this.script = compile( rule );
+    }
+
+    private void readObject(ObjectInputStream s) throws Exception
+    {
+        s.defaultReadObject( );
+
+        this.script = compile( rule );
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.spi.Consequence
+    // org.drools.spi.Consequence
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     *
-     * @param tuple The matching tuple.
-     * @param workingMemory The working memory session.
-     *
-     * @throws ConsequenceException If an error occurs while attempting to
-     *         invoke the consequence.
+     * 
+     * @param tuple
+     *            The matching tuple.
+     * @param workingMemory
+     *            The working memory session.
+     * 
+     * @throws ConsequenceException
+     *             If an error occurs while attempting to invoke the
+     *             consequence.
      */
-    public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+    public void invoke(Tuple tuple,
+                       WorkingMemory workingMemory) throws ConsequenceException
     {
         try
         {
             Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
-
-            if ( this.script == null )
-            {
-                compileScript( tuple.getRule( ),
-                               applicationData );
-            }
 
             script.invoke( tuple,
                            this.declarations,
@@ -136,7 +151,7 @@ public class BlockConsequence implements Consequence, Serializable
 
     /**
      * Retrieve the expression.
-     *
+     * 
      * @return The expression.
      */
     public String getBlock()
@@ -144,45 +159,39 @@ public class BlockConsequence implements Consequence, Serializable
         return this.block;
     }
 
-    public interface Script extends Serializable
-    {
-        public void invoke( Tuple tuple,
-                            Declaration[] decls,
-                            KnowledgeHelper drools,
-                            Map applicationData )
-                throws Exception;
-    }
-
-    private void compileScript( Rule rule, Map applicationData ) throws IOException, ConsequenceException
+    private Script compile(Rule rule) throws Exception
     {
         Set imports = new HashSet( );
-        Iterator it = rule.getImports( ).iterator( );
-        ImportEntry importEntry;
-        while ( it.hasNext( ) )
+        if ( rule.getImports( ) != null )
         {
-            importEntry = ( ImportEntry ) it.next();
-            if ( importEntry instanceof JavaImportEntry )
+            Iterator it = rule.getImports( ).iterator( );
+            ImportEntry importEntry;
+            while ( it.hasNext( ) )
             {
-                imports.add( importEntry.getImportEntry( ) );
+                importEntry = (ImportEntry) it.next( );
+                if ( importEntry instanceof JavaImportEntry )
+                {
+                    imports.add( importEntry.getImportEntry( ) );
+                }
             }
         }
 
-        List declarations = rule.getParameterDeclarations( );
-        this.declarations = ( Declaration[] ) declarations.toArray( new Declaration[ declarations.size( ) ] );
-
-        try
-        {
-            this.script = ( Script ) DroolsScriptEvaluator.compile( this.block,
-                                                                    Script.class,
-                                                                    SCRIPT_PARAM_NAMES,
-                                                                    this.declarations,
-                                                                    applicationData,
-                                                                    imports );
-        }
-        catch ( Scanner.LocatedException e )
-        {
-            throw new ConsequenceException( e.getMessage( ),
-                                            rule );
-        }
+        return (Script) Interp.compile( rule,
+                                        Script.class,
+                                        this.block,
+                                        this.block,
+                                        SCRIPT_PARAM_NAMES,
+                                        this.declarations,
+                                        imports,
+                                        rule.getApplicationData( ) );
     }
+
+    public interface Script
+    {
+        public void invoke(Tuple tuple,
+                           Declaration[] decls,
+                           KnowledgeHelper drools,
+                           Map applicationData) throws Exception;
+    }
+
 }

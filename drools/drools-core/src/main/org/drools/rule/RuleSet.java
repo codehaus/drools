@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.15 2004-11-19 02:14:17 mproctor Exp $
+ * $Id: RuleSet.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,8 +44,10 @@ import org.drools.spi.ImportEntry;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -55,7 +57,7 @@ import java.util.Set;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.15 2004-11-19 02:14:17 mproctor Exp $
+ * @version $Id: RuleSet.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
  */
 public class RuleSet
     implements
@@ -85,6 +87,8 @@ public class RuleSet
     private List rules;
 
     private Set imports;
+    
+    private Map applicationData;
 
     // ------------------------------------------------------------
     // Constructors
@@ -102,6 +106,7 @@ public class RuleSet
         this.ruleNames = new HashSet( );
         this.rules = new ArrayList( );
         this.imports = new HashSet( );
+        this.applicationData = new HashMap( );
     }
 
     // ------------------------------------------------------------
@@ -229,4 +234,14 @@ public class RuleSet
     {
         return this.imports;
     }
+
+    public void addApplicationData(ApplicationData applicationData)
+    {
+        this.applicationData.put( applicationData.getIdentifier(), applicationData.getType() );
+    }
+
+    public Map getApplicationData()
+    {
+        return this.applicationData;
+    }    
 }

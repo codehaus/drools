@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.24 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.25 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,10 @@ package org.drools.reteoo;
  *
  */
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
@@ -52,7 +56,7 @@ import org.drools.spi.ConflictResolver;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.24 2004-11-19 02:13:46 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.25 2004-11-28 20:01:12 mproctor Exp $
  */
 class RuleBaseImpl
     implements
@@ -63,13 +67,17 @@ class RuleBaseImpl
     // ------------------------------------------------------------
 
     /** The root Rete-OO for this <code>RuleBase</code>. */
-    private final Rete rete;
+    private final Rete rete;    
 
     /** Conflict resolution strategy. */
     private final ConflictResolver conflictResolver;
 
     /** The fact handle factory. */
     private final FactHandleFactory factHandleFactory;
+    
+    private List ruleSets;
+    
+    private Map applicationData;
 
     // ------------------------------------------------------------
     // Constructors
@@ -85,7 +93,9 @@ class RuleBaseImpl
     {
         this( rete,
               DefaultConflictResolver.getInstance( ),
-              new DefaultFactHandleFactory( ) );
+              new DefaultFactHandleFactory( ),
+              null,
+              new HashMap( ) );
     }
 
     /**
@@ -100,11 +110,15 @@ class RuleBaseImpl
      */
     RuleBaseImpl(Rete rete,
                  ConflictResolver conflictResolver,
-                 FactHandleFactory factHandleFactory)
+                 FactHandleFactory factHandleFactory,
+                 List ruleSets,
+                 Map applicationData)
     {
         this.rete = rete;
         this.factHandleFactory = factHandleFactory;
         this.conflictResolver = conflictResolver;
+        this.ruleSets = ruleSets;
+        this.applicationData = applicationData;
     }
 
     // ------------------------------------------------------------
@@ -206,4 +220,14 @@ class RuleBaseImpl
                                  object,
                                  workingMemory );
     }
+    
+    public List getRuleSets()
+    {
+        return this.ruleSets;
+    }
+
+    public Map getApplicationData()
+    {
+        return this.applicationData;
+    }    
 }

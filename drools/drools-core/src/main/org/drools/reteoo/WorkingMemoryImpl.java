@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.56 2004-11-28 08:04:35 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.57 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -166,25 +166,6 @@ class WorkingMemoryImpl
 
     /**
      * @see WorkingMemory
-     * @deprecated use form which takes String argument
-     */
-    public Object getApplicationData()
-    {
-        return this.applicationData.get( "appData" );
-    }
-
-    /**
-     * @see WorkingMemory
-     * @deprecated use form which takes String argument
-     */
-    public void setApplicationData(Object appData)
-    {
-        this.applicationData.put( "appData",
-                                  appData );
-    }
-
-    /**
-     * @see WorkingMemory
      */
     public Map getApplicationDataMap()
     {
@@ -197,6 +178,14 @@ class WorkingMemoryImpl
     public void setApplicationData(String name,
                                    Object value)
     {
+        //Make sure the application data has been declared in the RuleBase
+        Map applicationDataDefintions = this.ruleBase.getApplicationData();
+        Class type = (Class) applicationDataDefintions.get( name );
+        if ((type == null)||( !type.isInstance(value)))
+        {
+            throw new RuntimeException("Invalid Class for name [" + name + "]");
+        }
+        
         this.applicationData.put( name,
                                   value );
     }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.50 2004-11-28 14:44:28 simon Exp $
+ * $Id: Rule.java,v 1.51 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -72,6 +73,8 @@ public class Rule
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
+    
+    private RuleSet ruleSet;
 
     /** Name of the rule. */
     private final String name;
@@ -101,6 +104,8 @@ public class Rule
     private boolean noLoop;
 
     private Set imports;
+    
+    private Map applicationData;
 
     // ------------------------------------------------------------
     // Constructors
@@ -112,10 +117,22 @@ public class Rule
      * @param name
      *            The name of this rule.
      */
-    public Rule(String name)
+    public Rule(String name, RuleSet ruleSet)
     {
         this.name = name;
+        this.ruleSet = ruleSet;
         this.imports = Collections.EMPTY_SET;
+    }    
+    
+    /**
+     * Construct.
+     *
+     * @param name
+     *            The name of this rule.
+     */
+    public Rule(String name)
+    {
+        this(name, null);
     }
 
     /**
@@ -223,6 +240,11 @@ public class Rule
         }
     }
 
+    public RuleSet getRule()
+    {
+        return this.ruleSet;
+    }
+    
     /**
      * Retrieve the name of this rule.
      *
@@ -395,6 +417,16 @@ public class Rule
     {
         return this.imports;
     }
+
+    public void setApplicationData(Map applicationData)
+    {
+        this.applicationData = applicationData;
+    }
+
+    public Map getApplicationData()
+    {
+        return this.applicationData;
+    }    
 
     public String dump(String indent)
     {

@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Set;
 
 public class RuleTest extends DroolsTestCase
 {

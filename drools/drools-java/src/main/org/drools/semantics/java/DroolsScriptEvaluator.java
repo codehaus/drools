@@ -34,8 +34,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                  Class interfaceToImplement,
                                  String[] parameterNames,
                                  Declaration[] declarations,
-                                 Map applicationData,
-                                 Set imports) throws Scanner.ScanException,
+                                 Set imports,
+                                 Map applicationData ) throws Scanner.ScanException,
                                                      Parser.ParseException,
                                                      Java.CompileException,
                                                      IOException
@@ -90,7 +90,7 @@ public class DroolsScriptEvaluator extends EvaluatorBase
 
         //block.addStatement(
         addDeclarations( scanner, block, declarations, imports );
-        addAppData( scanner, block, applicationData, imports );
+        addAppData( scanner, block, imports, applicationData );
 
         Scanner.Location loc = scanner.peek( ).getLocation( );
         Iterator it = imports.iterator( );
@@ -170,22 +170,22 @@ public class DroolsScriptEvaluator extends EvaluatorBase
 
     private void addAppData(Scanner scanner,
                             Java.Block block,
-                            Map appData,
-                            Set imports) //Declaration[] declarations)
+                            Set imports,
+                            Map appData  )
     {
         Set keys = appData.keySet( );
         Iterator it = keys.iterator( );
         String key;
-        Object object;
+        Class clazz;
         String type;
         int nestedClassPosition;
 
         while ( it.hasNext( ) )
         {
             key = ( String ) it.next( );
-            object = appData.get( key );
+            clazz = (Class) appData.get( key );
 
-            type = object.getClass( ).getName( );
+            type = clazz.getName( );
             nestedClassPosition = type.indexOf( '$' );
 
             if ( nestedClassPosition != -1 )
@@ -205,11 +205,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                          new Java.Cast(
                                                         // optionalInitializer
                                                         loc, // location
-                                                        this
-                                                            .classToType(
-                                                                          loc,
-                                                                          object
-                                                                                .getClass( ) ), // targetType
+                                                        this.classToType( loc,
+                                                                          clazz ), // targetType
                                                         new Java.MethodInvocation(
                                                                                    // value
                                                                                    loc, // location
@@ -230,11 +227,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                                             loc, // location
                                                                             block, // declaringBock
                                                                             Mod.FINAL, // modifiers
-                                                                            this
-                                                                                .classToType(
-                                                                                              loc,
-                                                                                              object
-                                                                                                    .getClass( ) ), // type
+                                                                            this.classToType( loc,
+                                                                                              clazz ), // type
                                                                             variables ) );
         }
     }
@@ -321,8 +315,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                  Class interfaceToImplement,
                                  String[] parameterNames,
                                  Declaration[] declarations,
-                                 Map applicationData,
-                                 Set imports) throws Java.CompileException,
+                                 Set imports,
+                                 Map applicationData) throws Java.CompileException,
                                                      Parser.ParseException,
                                                      Scanner.ScanException,
                                                      IOException
@@ -331,8 +325,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                                            interfaceToImplement,
                                                                            parameterNames,
                                                                            declarations,
-                                                                           applicationData,
-                                                                           imports );
+                                                                           imports, 
+                                                                           applicationData );
 
         try
         {

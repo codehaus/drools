@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
+ * $Id: RuleBaseBuilder.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.ConflictResolver;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseBuilder.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
+ * @version $Id: RuleBaseBuilder.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
  */
 public class RuleBaseBuilder
 {
@@ -98,7 +98,7 @@ public class RuleBaseBuilder
      *             If an error occurs while attempting to integrate the rules
      *             into the Rete network..
      */
-    public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException
+    public void addRuleSet(RuleSet ruleSet) throws RuleSetIntegrationException, RuleIntegrationException
     {
         this.builder.addRuleSet( ruleSet );
     }

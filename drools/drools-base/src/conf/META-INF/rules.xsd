@@ -8,6 +8,8 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="rules:abstractImport" minOccurs="0" maxOccurs="unbounded"/>
+        
+        <xs:element ref="rules:application-data" minOccurs="0" maxOccurs="unbounded"/>
 
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule" />
       </xs:sequence>
@@ -25,7 +27,7 @@
           <xs:complexType>
             <xs:choice>
               <xs:element ref="rules:abstractClass" maxOccurs="unbounded"/>
-              <xs:element ref="rules:abstractClassField" maxOccurs="unbounded"/>
+              <xs:element ref="rules:class-field" maxOccurs="unbounded"/>
             </xs:choice>
             <xs:attribute name="identifier" use="required" type="xs:string"/>
           </xs:complexType>
@@ -60,7 +62,7 @@
 
   <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
 
-  <xs:element name="class-field"  substitutionGroup="rules:abstractClassField">
+  <xs:element name="class-field">
     <xs:complexType>
       <xs:simpleContent>
         <xs:extension base="xs:string">
@@ -70,6 +72,16 @@
       </xs:simpleContent>
     </xs:complexType>
   </xs:element>
+
+  <xs:element name="application-data" >
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="identifier" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>    
 
   <!-- Abstract Definitions for sementic to create concrete implementations -->
 

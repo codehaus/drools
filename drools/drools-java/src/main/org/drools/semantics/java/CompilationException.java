@@ -52,6 +52,6 @@ public class CompilationException
 
     public String getMessage()
     {
-        return getRule().getName() + ":" + getLineNumber() + ":" + getColumNumber() + ":\n    " + getErrorMessage();
+        return getRule().getName() + ":" + getLineNumber() + ":" + getColumNumber() + ":\n    " + getText( ) + "\n" + getErrorMessage();
     }
 }

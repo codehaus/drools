@@ -19,7 +19,7 @@ public class BlockConsequenceFactory implements ConsequenceFactory
     {
         try
         {
-            return new BlockConsequence( config.getText( ) );
+            return new BlockConsequence( config.getText( ), rule );
         }
         catch ( Exception e )
         {

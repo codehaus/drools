@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.6 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: ApplicationDataHandler.java,v 1.1 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,37 +39,40 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
+import java.util.HashSet;
+
+import org.drools.rule.ApplicationData;
+import org.drools.rule.RuleSet;
+import org.drools.smf.ApplicationDataFactory;
 import org.drools.smf.Configuration;
-import org.drools.smf.DurationFactory;
 import org.drools.smf.FactoryException;
 import org.drools.smf.SemanticModule;
-import org.drools.spi.Condition;
-import org.drools.spi.Duration;
+import org.drools.spi.ImportEntry;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import java.util.HashSet;
-
 /**
  * @author mproctor
+ * 
+ * TODO To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Style - Code Templates
  */
-class DurationHandler extends BaseAbstractHandler implements Handler
+class ApplicationDataHandler extends BaseAbstractHandler implements Handler
 {
-    DurationHandler( RuleSetReader ruleSetReader )
+    ApplicationDataHandler( RuleSetReader ruleSetReader )
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( this.validParents == null && validPeers == null )
+        if ( (this.validParents == null) && (validPeers == null) )
         {
             this.validParents = new HashSet( );
-            this.validParents.add( Rule.class );
+            this.validParents.add( RuleSet.class );
 
             this.validPeers = new HashSet( );
-            this.validPeers.add( Declaration.class );
-            this.validPeers.add( Condition.class );
+            this.validPeers.add( null );
+            this.validPeers.add( ApplicationData.class );
+            this.validPeers.add( ImportEntry.class );
 
             this.allowNesting = false;
         }
@@ -83,30 +86,28 @@ class DurationHandler extends BaseAbstractHandler implements Handler
 
     public Object end( String uri, String localName ) throws SAXException
     {
-        Configuration config = ruleSetReader.endConfiguration( );
         SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
                                                                     localName );
 
-        DurationFactory factory = module.getDurationFactory( localName );
-        Duration duration;
+        ApplicationDataFactory factory = module.getApplicationDataFactory( localName );        
+
+        Configuration config = ruleSetReader.endConfiguration( );
+        ApplicationData applicationData;
         try
         {
-            Rule rule = (Rule) ruleSetReader.getParent( Rule.class );
-
-            duration = factory.newDuration( config );
-
-            rule.setDuration( duration );
+            applicationData = factory.newApplicationData( config );
+            ruleSetReader.getRuleSet( ).addApplicationData( applicationData );
         }
         catch ( FactoryException e )
         {
-            throw new SAXParseException( "error constructing duration",
+            throw new SAXParseException( "error constructing import",
                     ruleSetReader.getLocator( ), e );
         }
-        return duration;
+        return applicationData;
     }
 
     public Class generateNodeFor()
     {
-        return Condition.class;
+        return ApplicationData.class;
     }
 }
