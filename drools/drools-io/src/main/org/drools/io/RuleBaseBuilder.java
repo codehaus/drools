@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.7 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: RuleBaseBuilder.java,v 1.8 2004-12-04 07:11:33 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,40 +40,39 @@ package org.drools.io;
  *
  */
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URL;
-
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+
 /**
- * Factory for constructing a <code>RuleBase</code>.
- * 
+ * Static factory methods for constructing a <code>RuleBase</code>.
+ *
  * <p>
  * The <code>RuleBaseBuilder</code> integrates the added <code>RuleSet</code>
- * s into the <b>Rete </b> network. A <code>RuleBaseBuilder</code> may be
- * re-used after building a <code>RuleBase</code> but it may not be used to
- * build multiple <code>RuleBase</code> s simultaneously by multiple threads.
+ * s into the <b>Rete</b> network. <code>RuleBaseBuilder</code> is thread-safe
+ * and as such may be may be used to build multiple <code>RuleBase</code> s
+ * simultaneously by multiple threads.
  * </p>
- * 
- * @see #build
+ *
  * @see RuleSet
  * @see RuleBase
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 public class RuleBaseBuilder
 {
     /**
      * Builds a RuleBase from a URL using the default ConflictResolver
-     * 
+     *
      * This is a convenience method and calls public static RuleBase
      * buildFromUrl(URL url, ConflictResolver resolver) passing the
      * DefaultConflictResolver
-     * 
+     *
      * @param url
      * @return RuleBase
      * @throws Exception
@@ -85,8 +84,8 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from a URL using the given ConflictResolver
-     * 
-     * @para url
+     *
+     * @param url
      * @param resolver
      * @return RuleBase
      * @throws Exception
@@ -98,11 +97,11 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase using several URLs, using the DefaultConflictResolver.
-     * 
+     *
      * This is a convenience method and calls public static RuleBase
      * buildFromUrl(URL[] url, ConflictResolver resolver) passing the
      * DefaultConflictResolver
-     * 
+     *
      * @param urls
      * @return RuleBase
      * @throws Exception
@@ -115,7 +114,7 @@ public class RuleBaseBuilder
     /**
      * Builds a RuleBase from several URLS, merging them and using the specified
      * ConflictResolver
-     * 
+     *
      * @param urls
      * @param resolver
      * @return RuleBase
@@ -138,11 +137,11 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from an InputStream using the default ConflictResolver
-     * 
+     *
      * This is a convenience method and calls public static RuleBase
      * buildFromInputStream(InputStream in, ConflictResolver resolver) passing
      * the DefaultConflictResolver
-     * 
+     *
      * @param in
      * @return ruleBase
      * @throws Exception
@@ -154,7 +153,7 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from an InputStream using the default ConflictResolver
-     * 
+     *
      * @param in
      * @param resolver
      * @return ruleBase
@@ -168,11 +167,11 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from an InputStream using the default ConflictResolver
-     * 
+     *
      * This is a convenience method and calls public static RuleBase
      * buildFromInputStream(InputStream[] ins, ConflictResolver resolver)
      * passing the DefaultConflictResolver
-     * 
+     *
      * @param ins
      * @return ruleBase
      * @throws Exception
@@ -184,7 +183,7 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from an InputStream using the default ConflictResolver
-     * 
+     *
      * @param ins
      * @param resolver
      * @return ruleBase
@@ -208,11 +207,11 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from a Reader using the default ConflictResolver
-     * 
+     *
      * This is a convenience method and calls public static RuleBase
      * buildFromReader(Reader in, ConflictResolver resolver) passing the
      * DefaultConflictResolver
-     * 
+     *
      * @param in
      * @return ruleBase
      * @throws Exception
@@ -224,7 +223,7 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from a Reader using the given ConflictResolver
-     * 
+     *
      * @param in
      * @param resolver
      * @return ruleBase
@@ -237,11 +236,11 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from a Reader using the default ConflictResolver
-     * 
+     *
      * This is a convenience method and calls public static RuleBase
      * buildFromReader(Reader[] ins, ConflictResolver resolver) passing the
      * DefaultConflictResolver
-     * 
+     *
      * @param ins
      * @return ruleBase
      * @throws Exception
@@ -253,7 +252,7 @@ public class RuleBaseBuilder
 
     /**
      * Builds a RuleBase from a Reader using the given ConflictResolver
-     * 
+     *
      * @param ins
      * @param resolver
      * @return ruleBase
