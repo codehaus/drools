@@ -28,20 +28,22 @@
 
   <property name="src.dir"      value="./src/java/main"/>
   <property name="doc.dir"      value="./src/doc"/>
-  <property name="samples.dir"  value="./src/java/samples"/>
+  <property name="examples.dir" value="./src/java/examples"/>
   <property name="test.dir"     value="./src/java/test"/>
   <property name="lib.dir"      value="./lib"/>
 
   <property name="packages.all"  value="org.drools.*"/>
 
-  <property name="build.dir"      value="./build"/>
-  <property name="build.src"      value="./build/src"/>
-  <property name="build.src.main" value="./build/src/main"/>
-  <property name="build.src.test" value="./build/src/test"/>
+  <property name="build.dir"           value="./build"/>
+  <property name="build.src"           value="./build/src"/>
+  <property name="build.src.main"      value="./build/src/main"/>
+  <property name="build.src.test"      value="./build/src/test"/>
+  <property name="build.src.examples"  value="./build/src/examples"/>
 
-  <property name="build.dest"      value="./build/classes"/>
-  <property name="build.dest.main" value="./build/classes/main"/>
-  <property name="build.dest.test" value="./build/classes/test"/>
+  <property name="build.dest"          value="./build/classes"/>
+  <property name="build.dest.main"     value="./build/classes/main"/>
+  <property name="build.dest.test"     value="./build/classes/test"/>
+  <property name="build.dest.examples" value="./build/classes/examples"/>
 
   <property name="build.doc"  value="./build/doc"/>
 
@@ -98,6 +100,7 @@
     <mkdir dir="${build.dest}"/>
     <mkdir dir="${build.dest.main}"/>
     <mkdir dir="${build.dest.test}"/>
+    <mkdir dir="${build.dest.examples}"/>
     <mkdir dir="${build.src}"/>
     <mkdir dir="${build.src.main}"/>
     <mkdir dir="${build.src.test}"/>
@@ -128,6 +131,20 @@
         <patternset refid="${compile.target}"/>
     </javac>
   </target>
+
+  <target name="rule.compile.examples">
+    <javac destdir="${build.dest.examples}"
+           debug="${debug}"
+           optimize="${optimize}"
+           deprecation="${deprecation}">
+      <src path="${build.src.examples}"/>
+      <classpath path="${build.dest.examples}"/>
+      <classpath path="${build.dest.main}"/>
+      <patternset refid="${compile.target}"/>
+    </javac>
+  </target>
+
+
 
   <target name="rule.jar">
     <jar jarfile="${build.dir}/${name}.jar"
@@ -253,9 +270,9 @@
     </antcall>
   </target>
 
-  <!-- ************************************************************************ -->
+  <!-- ======================================================================== -->
   <!-- Documentation                                                            -->
-  <!-- ************************************************************************ -->
+  <!-- ======================================================================== -->
 
   <target name="javadoc.all" depends="prepare.all">
     <mkdir dir="${build.javadocs}"/>
@@ -352,7 +369,7 @@
   <!-- Creates the distribution                                            -->
   <!-- =================================================================== -->
 
-  <target name="dist" depends="clean,,jar.all,doc">
+  <target name="dist" depends="clean,jar.all,doc">
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${dist.dir}/lib"/>
     <mkdir dir="${dist.dir}/src"/>
@@ -369,7 +386,7 @@
     </copy>
 
     <copy todir="${dist.dir}/src">
-      <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g"/>
+      <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g,**/*.txt"/>
     </copy>
 
     <copy todir="${dist.dir}/lib">
@@ -385,12 +402,12 @@
     </copy>
 
     <copy todir="${dist.dir}">
-      <fileset dir="." includes="build.pl, *.xml, *.html, INSTALL, LICENSE" />
+      <fileset dir="." includes="build.pl, *.xml, *.html, *.txt, INSTALL, LICENSE" />
     </copy>
 
     <chmod perm="+x" file="${dist.dir}/build.pl"/>
 
-    <fixcrlf srcdir="${dist.dir}" includes="build.pl"     cr="remove"/>
+    <fixcrlf srcdir="${dist.dir}" includes="build.pl" eol="lf"/>
   </target>
 
   <!-- =================================================================== -->
@@ -440,6 +457,39 @@
   </target>
   -->
 
+
+  <!-- =================================================================== -->
+  <!-- Samples targets                                                      -->
+  <!-- =================================================================== -->
+
+  <target name="prepare.examples" 
+            depends="prepare">
+    <copy todir="${build.src.examples}">
+      <fileset dir="${examples.dir}">
+        <patternset refid="werken.drools"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile.examples" 
+          depends="compile.all,prepare.examples">
+    <antcall target="rule.compile.examples">
+      <param name="compile.target" value="werken.drools"/> 
+    </antcall>
+  </target>
+
+  <target name="examples.supply" depends="examples">
+    <java classname="SupplyAndDemand" fork="true">
+      <arg value="example_data/supply_and_demand.xml"/>
+      <classpath>
+        <pathelement location="${build.dest.main}"/>
+        <pathelement location="${build.dest.examples}"/>
+        <pathelement location="${lib.dir}/drools.jar"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+    </java>
+  </target>
+
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
@@ -482,6 +532,9 @@
 
   <target name="test" 
           depends="test.all"/>
+
+  <target name="examples"
+          depends="compile.examples"/>
 
 </project>
 
