@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.49 2004-11-03 14:27:00 simon Exp $
+ * $Id: Builder.java,v 1.50 2004-11-05 00:39:23 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -554,11 +554,6 @@ public class Builder
             eachSource = ( TupleSource ) sourceIter.next( );
 
             decls = eachSource.getTupleDeclarations( );
-
-            if ( decls.contains( targetDecl ) )
-            {
-                continue;
-            }
 
             if ( matches( extract, decls ) )
             {
