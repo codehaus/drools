@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.22 2004-11-13 01:43:07 simon Exp $
+ * $Id: Declaration.java,v 1.23 2004-11-13 13:19:33 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -130,25 +130,6 @@ public class Declaration implements Serializable, Comparable
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // TODO: Remove this. Requires fixing MissMannersNative/Test
-    public int hashCode()
-    {
-        return this.order;
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-        else if ( object == null || object.getClass() != getClass() )
-        {
-            return false;
-        }
-
-        return this.order == ( ( Declaration ) object ).order;
-    }
 
     public String toString()
     {
