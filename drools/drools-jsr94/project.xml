@@ -3,7 +3,8 @@
 
     <pomVersion>3</pomVersion>
     <name>drools</name>
-    <id>drools</id>
+    <id>drools-jsr94</id>
+    <groupId>drools</groupId>
     <currentVersion>2.0-beta-13-dev</currentVersion>
 
     <organization>
@@ -57,6 +58,15 @@
                 <role>JSR-94 and JCA Lead</role>
             </roles>
         </developer>
+        
+	<developer>
+	    <name>N. Alex Rupp</name>
+	    <id>n_alex</id>
+	    <email>n_alex at codehaus.org</email>
+	    <roles>
+		<role>JSR-94 Maintenence Bot</role>
+	    </roles>
+        </developer>
 
     </developers>
 
@@ -66,12 +76,19 @@
     <!-- Need to mark these as compile-time/run-time -->
 
     <dependencies>
-
+    
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-base</artifactId>
+            <version>2.0-beta-13-dev</version>
+        </dependency>
+        
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
             <version>2.0-beta-13-dev</version>
         </dependency>
+        
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-smf</artifactId>
@@ -82,25 +99,40 @@
             <artifactId>drools-io</artifactId>
             <version>2.0-beta-13-dev</version>
         </dependency>
-
         <dependency>
-            <id>jaas</id>
+            <groupId>drools</groupId>
+            <artifactId>drools-java</artifactId>
+            <version>2.0-beta-13-dev</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>jaas</groupId>
+            <artifactId>jaas</artifactId>
             <version>1.0</version>
         </dependency>
 
         <dependency>
-            <id>jca</id>
+            <groupId>jca</groupId>
+            <artifactId>jca</artifactId>
             <version>1.0</version>
         </dependency>
 
         <dependency>
-            <id>jsr94</id>
-            <version>1.0-pr</version>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
+            <groupId>bsh</groupId>
+            <artifactId>bsh</artifactId>
+            <version>2.0b1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jsr94</groupId>
+            <artifactId>jsr94</artifactId>
+            <version>1.0</version>
         </dependency>
 
     </dependencies>
@@ -116,12 +148,10 @@
 
         <unitTest>
             <includes>
-                <include>**/*Test.java</include>
                 <include>**/*TestCase.java</include>
             </includes>
             <excludes>
-                <exclude>**/DroolsBenchmarkTestCase.java</exclude>
-                <exclude>**/jsr94/**</exclude>
+                <exclude>**/benchmark/**</exclude>
             </excludes>
             <resources>
                 <resource>
