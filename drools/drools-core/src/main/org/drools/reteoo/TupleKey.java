@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.20 2004-11-03 11:54:20 simon Exp $
+ * $Id: TupleKey.java,v 1.21 2004-11-03 13:31:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -154,6 +154,52 @@ class TupleKey implements Serializable
         return true;
     }
 
+    public FactHandleImpl getMostRecentFact()
+    {
+        FactHandleImpl mostRecent = null;
+        long currentRecency = Long.MIN_VALUE;
+        FactHandleImpl eachHandle;
+        long recency;
+
+        Iterator i = this.handles.values( ).iterator( );
+
+        while ( i.hasNext( ) )
+        {
+            eachHandle = ( FactHandleImpl ) i.next( );
+            recency = eachHandle.getRecency( );
+            if ( recency > currentRecency )
+            {
+                currentRecency = recency;
+                mostRecent = eachHandle;
+            }
+        }
+
+        return mostRecent;
+    }
+
+    public FactHandleImpl getLeastRecentFact()
+    {
+        FactHandleImpl leastRecent = null;
+        long currentRecency = Long.MAX_VALUE;
+        FactHandleImpl eachHandle;
+        long recency;
+
+        Iterator i = this.handles.values( ).iterator( );
+
+        while ( i.hasNext() )
+        {
+            eachHandle = ( FactHandleImpl ) i.next( );
+            recency = eachHandle.getRecency( );
+            if ( recency < currentRecency )
+            {
+                currentRecency = recency;
+                leastRecent = eachHandle;
+            }
+        }
+
+        return leastRecent;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
@@ -172,11 +218,6 @@ class TupleKey implements Serializable
         }
 
         return false;
-    }
-
-    public Iterator iterator()
-    {
-        return this.handles.keySet( ).iterator( );
     }
 
     /**
