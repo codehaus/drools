@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetProviderImpl.java,v 1.16 2004-11-28 03:34:05 simon Exp $
+ * $Id: RuleExecutionSetProviderImpl.java,v 1.17 2004-12-04 04:33:58 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -124,7 +124,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
 
             // Traverse the DOM tree
             xformer.transform( source, result );
-            System.out.println( result.toString( ) );
+//            System.out.println( result.toString( ) );
 
         }
         catch ( TransformerException e )
@@ -133,19 +133,11 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
                 "could not create RuleExecutionSet: " + e );
         }
 
-        try
-        {
-            RuleSet ruleSet = reader.getRuleSet( );
-            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider =
-                new LocalRuleExecutionSetProviderImpl( );
-            return localRuleExecutionSetProvider.createRuleExecutionSet(
-                ruleSet, properties );
-        }
-        catch ( Exception e )
-        {
-            throw new RuleExecutionSetCreateException(
-                "could not create RuleExecutionSet: " + e );
-        }
+        RuleSet ruleSet = reader.getRuleSet( );
+        LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider =
+            new LocalRuleExecutionSetProviderImpl( );
+        return localRuleExecutionSetProvider.createRuleExecutionSet(
+            ruleSet, properties );
     }
 
     /**
@@ -220,11 +212,6 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         {
             throw ex;
         }
-        catch ( Exception ex )
-        {
-            throw new RuleExecutionSetCreateException(
-                "cannot create rule set", ex );
-        }
         finally
         {
             if ( in != null )
@@ -235,7 +222,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
                 }
                 catch ( IOException e )
                 {
-                    e.printStackTrace( );
+                    // ignore
                 }
             }
         }

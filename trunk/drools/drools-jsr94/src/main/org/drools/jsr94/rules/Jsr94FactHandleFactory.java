@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandleFactory.java,v 1.14 2004-11-28 05:02:38 simon Exp $
+ * $Id: Jsr94FactHandleFactory.java,v 1.15 2004-12-04 04:33:58 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,14 +74,26 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
         return INSTANCE;
     }
 
+    /**
+     * Returns a new <code>Handle</code>.
+     *
+     * @return a new <code>Handle</code>.
+     */
     public synchronized FactHandle newFactHandle()
     {
         return newFactHandle( ++id );
     }
 
-    public synchronized FactHandle newFactHandle( long id )
+    /**
+     * Returns a new <code>Handle</code>.
+     *
+     * @param anId A unique <code>Handle</code> id.
+     *
+     * @return a new <code>Handle</code> with the given id.
+     */
+    public synchronized FactHandle newFactHandle( long anId )
     {
-        return new Jsr94FactHandle( id,
+        return new Jsr94FactHandle( anId,
                                     ++counter );
     }
 }

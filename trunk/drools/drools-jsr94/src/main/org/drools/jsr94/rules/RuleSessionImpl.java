@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.16 2004-11-27 00:59:54 dbarnett Exp $
+ * $Id: RuleSessionImpl.java,v 1.17 2004-12-04 04:33:58 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -88,7 +88,7 @@ abstract class RuleSessionImpl implements RuleSession
      * The Drools <code>RuleExecutionSet</code> associated
      * with this <code>RuleSession</code>.
      */
-    private RuleExecutionSetImpl ruleSet;
+    private RuleExecutionSetImpl ruleExecutionSet;
 
     /**
      * A <code>Map</code> of <code>String</code>/<code>Object</code> pairs
@@ -191,12 +191,12 @@ abstract class RuleSessionImpl implements RuleSession
      * Sets the Drools <code>RuleExecutionSet</code> associated
      * with this <code>RuleSession</code>.
      *
-     * @param ruleSet the Drools <code>RuleExecutionSet</code> to associate
+     * @param ruleExecutionSet the Drools <code>RuleExecutionSet</code> to associate
      *        with this <code>RuleSession</code>.
      */
-    protected void setRuleExecutionSet( RuleExecutionSetImpl ruleSet )
+    protected void setRuleExecutionSet( RuleExecutionSetImpl ruleExecutionSet )
     {
-        this.ruleSet = ruleSet;
+        this.ruleExecutionSet = ruleExecutionSet;
     }
 
     /**
@@ -208,7 +208,7 @@ abstract class RuleSessionImpl implements RuleSession
      */
     protected RuleExecutionSetImpl getRuleExecutionSet( )
     {
-        return this.ruleSet;
+        return this.ruleExecutionSet;
     }
 
     /**
@@ -269,7 +269,7 @@ abstract class RuleSessionImpl implements RuleSession
             String aBindUri = ( String ) i.next( );
             RuleExecutionSet aRuleSet =
                 repository.getRuleExecutionSet( aBindUri );
-            if ( aRuleSet == this.ruleSet )
+            if ( aRuleSet == this.ruleExecutionSet )
             {
                 theBindUri = aBindUri;
                 break;
@@ -278,8 +278,8 @@ abstract class RuleSessionImpl implements RuleSession
 
         return new RuleExecutionSetMetadataImpl(
             theBindUri,
-            this.ruleSet.getName( ),
-            this.ruleSet.getDescription( ) );
+            this.ruleExecutionSet.getName( ),
+            this.ruleExecutionSet.getDescription( ) );
     }
 
     /**
