@@ -1,9 +1,11 @@
 package org.drools.semantics.annotation.testrules;
 
 import org.drools.FactException;
+import org.drools.semantics.annotation.DroolsRule;
+import org.drools.semantics.annotation.DroolsCondition;
 import org.drools.semantics.annotation.*;
 
-@Drools.Rule
+@DroolsRule
 public class InjectedRule 
 {   
     private int conditionMinValue;
@@ -27,14 +29,14 @@ public class InjectedRule
         this.consequenceValue = value;
     }
     
-    @Drools.Condition
-    public boolean condition(@Drools.Parameter("fooBar1") FooBar fooBar) {
+    @DroolsCondition
+    public boolean condition(@DroolsParameter("fooBar1") FooBar fooBar) {
         return fooBar.getMin() > conditionMinValue && fooBar.getMax() < conditionMaxValue; 
     }
     
-    @Drools.Consequence
+    @DroolsConsequence
     public void consequence(DroolsContext drools, 
-                            @Drools.Parameter("fooBar1") FooBar fooBar) throws FactException {
+                            @DroolsParameter("fooBar1") FooBar fooBar) throws FactException {
         
         fooBar.setValue(consequenceValue); 
         drools.retractObject(fooBar);

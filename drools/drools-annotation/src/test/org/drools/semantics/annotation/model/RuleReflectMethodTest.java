@@ -8,16 +8,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.WorkingMemory;
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.Drools;
 import org.drools.semantics.annotation.DroolsContext;
 import org.drools.spi.Tuple;
 import org.easymock.container.EasymockContainer;

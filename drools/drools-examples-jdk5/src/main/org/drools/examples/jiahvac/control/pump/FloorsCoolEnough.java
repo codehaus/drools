@@ -5,20 +5,23 @@ import org.drools.examples.jiahvac.model.HeatPump;
 import org.drools.examples.jiahvac.model.TempuratureControl;
 import org.drools.examples.jiahvac.model.Thermometer;
 import static org.drools.examples.jiahvac.model.HeatPump.State.*;
-import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsRule;
+import org.drools.semantics.annotation.DroolsParameter;
+import org.drools.semantics.annotation.DroolsCondition;
+import org.drools.semantics.annotation.DroolsConsequence;
 
-@Drools.Rule
+@DroolsRule
 public class FloorsCoolEnough
 {
-    @Drools.Condition
-    public boolean isPumpCooling(@Drools.Parameter("pump") HeatPump pump) {
+    @DroolsCondition
+    public boolean isPumpCooling(@DroolsParameter("pump") HeatPump pump) {
         return pump.getState() == COOLING;
      }
     
-    @Drools.Condition
-    public boolean isAllFloorsCoolEnough(@Drools.Parameter("pump") HeatPump pump,
-                                         @Drools.Parameter("thermometer") Thermometer thermometer,
-                                         @Drools.Parameter("control") TempuratureControl control) {
+    @DroolsCondition
+    public boolean isAllFloorsCoolEnough(@DroolsParameter("pump") HeatPump pump,
+                                         @DroolsParameter("thermometer") Thermometer thermometer,
+                                         @DroolsParameter("control") TempuratureControl control) {
         if (thermometer.getFloor().getHeatPump() != pump) {
             return false;
         }
@@ -30,8 +33,8 @@ public class FloorsCoolEnough
         return result;
      }
     
-    @Drools.Consequence
-    public void consequence(@Drools.Parameter("pump") HeatPump pump) {
+    @DroolsConsequence
+    public void consequence(@DroolsParameter("pump") HeatPump pump) {
         pump.setState(OFF);
         System.out.println("FloorsCoolEnough: " + pump);
     }

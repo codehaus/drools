@@ -48,4 +48,8 @@ class PojoCondition implements Condition
             throw new ConditionException( e );
         }
     }
+    
+    public String toString() {
+        return ruleMethod.toString();
+    }
 }

@@ -25,4 +25,8 @@ class PojoConsequence implements Consequence
             throw new ConsequenceException( e );
         }
     }
+    
+    public String toString() {
+        return ruleMethod.toString();
+    }
 }

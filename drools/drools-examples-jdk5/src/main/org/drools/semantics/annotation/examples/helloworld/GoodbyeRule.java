@@ -1,8 +1,9 @@
 package org.drools.semantics.annotation.examples.helloworld;
 
+import org.drools.semantics.annotation.DroolsParameter;
 import org.drools.semantics.annotation.*;
 
-@Drools.Rule
+@DroolsRule
 class GoodbyeRule {
     private MessagePrinter messagePrinter;
     
@@ -10,13 +11,13 @@ class GoodbyeRule {
         this.messagePrinter = messagePrinter;
     }
     
-    @Drools.Condition
-    public boolean condition(@Drools.Parameter("goodbye") String goodbye) {
+    @DroolsCondition
+    public boolean condition(@DroolsParameter("goodbye") String goodbye) {
         return goodbye.equals("Goodbye");
     }
     
-    @Drools.Consequence
-    public void consequence(@Drools.Parameter("goodbye") String goodbye) {
+    @DroolsConsequence
+    public void consequence(@DroolsParameter("goodbye") String goodbye) {
         messagePrinter.goodbyeWorld(goodbye);
     }
 }
