@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-    default="multiproject:install"
+    default="default"
     xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
+    <goal name="default">
+      <attainGoal name="multiproject:install"/>
+    </goal>
+
     <goal name="clean">
       <attainGoal name="multiproject:clean"/>
+    </goal>
+
+    <goal name="damagecontrol">
+      <j:set var="maven.multiproject.excludes" value="drools-examples/*"/>
+      <j:set var="goal" value="clean,clover:report,reports:publish"/>
+      <attainGoal name="multiproject:goal"/>
     </goal>
 
 </project>
