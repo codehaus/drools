@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooDotDumpVisitor.java,v 1.8 2004-12-05 23:15:25 dbarnett Exp $
+ * $Id: ReteooDotDumpVisitor.java,v 1.9 2004-12-06 04:55:08 dbarnett Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -402,7 +402,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
         }
         else if ( node instanceof JoinNode )
         {
-            style = "style=\"filled\", fillcolor=\"green\", shape=\"invtrapezium\"";
+            style = "style=\"filled\", fillcolor=\"green\", shape=\"house\"";
         }
         else if ( node instanceof TerminalNode )
         {
