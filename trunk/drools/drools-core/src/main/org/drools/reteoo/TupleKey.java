@@ -43,7 +43,7 @@ class TupleKey
     public TupleKey(FactHandle handle)
     {
         this();
-        this.rootFactHandles.put( null,
+        this.rootFactHandles.put( new Object(),
                                   handle );
     }
 
@@ -60,6 +60,12 @@ class TupleKey
     // ------------------------------------------------------------
     //
     // ------------------------------------------------------------
+
+    void addRootFactHandle(FactHandle handle)
+    {
+        this.rootFactHandles.put( new Object(),
+                                  handle );
+    }
 
     /** Put all values from another key into this key.
      *

@@ -59,7 +59,7 @@ class Rete
                       WorkingMemoryImpl workingMemory)
         throws FactException
     {
-        Iterator           nodeIter = getObjectTypeNodeIterator();
+        Iterator       nodeIter = getObjectTypeNodeIterator();
         ObjectTypeNode eachNode = null;
 
         while ( nodeIter.hasNext() )
@@ -84,7 +84,7 @@ class Rete
                        WorkingMemoryImpl workingMemory)
         throws FactException
     {
-        Iterator           nodeIter = getObjectTypeNodeIterator();
+        Iterator       nodeIter = getObjectTypeNodeIterator();
         ObjectTypeNode eachNode = null;
 
         while ( nodeIter.hasNext() )
@@ -113,7 +113,7 @@ class Rete
                       WorkingMemoryImpl workingMemory)
         throws FactException
     {
-        Iterator           nodeIter = getObjectTypeNodeIterator();
+        Iterator       nodeIter = getObjectTypeNodeIterator();
         ObjectTypeNode eachNode = null;
 
         while ( nodeIter.hasNext() )

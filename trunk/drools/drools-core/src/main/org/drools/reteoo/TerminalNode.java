@@ -38,10 +38,7 @@ class TerminalNode
     {
         this.rule = rule;
 
-        if ( inputSource != null )
-        {
-            inputSource.setTupleSink( this );
-        }
+        inputSource.setTupleSink( this );
     }
 
     // ------------------------------------------------------------

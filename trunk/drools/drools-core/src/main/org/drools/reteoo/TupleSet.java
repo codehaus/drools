@@ -224,19 +224,6 @@ class TupleSet
         return this.tuples.containsKey( key );
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[TupleSet tuple=" + this.tuples + "]";
-    }
-    
     /** Iterator over tuples.
      *
      *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>

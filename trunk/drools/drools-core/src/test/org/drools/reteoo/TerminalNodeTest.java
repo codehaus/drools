@@ -33,7 +33,7 @@ public class TerminalNodeTest
 
         rule.setConsequence( consequence );
 
-        TerminalNode node = new TerminalNode( null,
+        TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
         ReteTuple tuple = new ReteTuple();
@@ -70,7 +70,7 @@ public class TerminalNodeTest
 
         rule.setConsequence( consequence );
 
-        TerminalNode node = new TerminalNode( null,
+        TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
         TupleKey key = new TupleKey();
@@ -107,7 +107,7 @@ public class TerminalNodeTest
 
         rule.setConsequence( consequence );
 
-        TerminalNode node = new TerminalNode( null,
+        TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
         MockFactHandle handle = new MockFactHandle( 42 );
