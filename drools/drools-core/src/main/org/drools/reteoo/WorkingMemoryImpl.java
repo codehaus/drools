@@ -1,10 +1,10 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.14 2004-06-11 23:31:27 mproctor Exp $
+ $Id: WorkingMemoryImpl.java,v 1.15 2004-06-25 02:10:36 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.reteoo;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.reteoo;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import org.drools.FactHandle;
@@ -52,7 +52,7 @@ import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.NoSuchFactObjectException;
 import org.drools.spi.ConflictResolver;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.event.WorkingMemoryEventListener;
 
 import java.util.HashMap;
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.14 2004-06-11 23:31:27 mproctor Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.15 2004-06-25 02:10:36 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -95,7 +95,7 @@ class WorkingMemoryImpl
     private Map objects;
 
     private FactHandleFactory factHandleFactory;
-    
+
     /** Array of listeners */
     private ArrayList listeners = new ArrayList();
 
@@ -110,9 +110,9 @@ class WorkingMemoryImpl
     public WorkingMemoryImpl(RuleBaseImpl ruleBase)
     {
         this( ruleBase,
-              SalienceConflictResolver.getInstance() );
+              DefaultConflictResolver.getInstance() );
     }
-    
+
     /** Construct.
      *
      *  @param ruleBase The backing rule-base.
@@ -141,7 +141,7 @@ class WorkingMemoryImpl
      */
     public void addEventListener(WorkingMemoryEventListener listener) {
         listeners.add(listener);
-    }    
+    }
 
     /**
      * remove event listener from listeners ArrayList
@@ -159,9 +159,9 @@ class WorkingMemoryImpl
      * @return listeners
      */
     public List getListeners() {
-      return Collections.unmodifiableList(listeners);   
+      return Collections.unmodifiableList(listeners);
     }
-    
+
     protected void initializeFactHandleFactory()
     {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
