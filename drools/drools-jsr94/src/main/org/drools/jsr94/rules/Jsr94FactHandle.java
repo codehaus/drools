@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandle.java,v 1.8 2004-11-05 20:49:33 dbarnett Exp $
+ * $Id: Jsr94FactHandle.java,v 1.9 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,15 +41,32 @@ package org.drools.jsr94.rules;
  *
  */
 
-import org.drools.reteoo.FactHandleImpl;
-
 import javax.rules.Handle;
 
+import org.drools.reteoo.FactHandleImpl;
+
+/**
+ * The Drools implementation of the <code>Handle</code> interface which provides
+ * a marker interface for Drools-specific object identity mechanism. When using
+ * the <code>StatefulRuleSession</code> objects that are added to rule session
+ * state are identified using a Drools-supplied <code>Handle</code>
+ * implementation.
+ * <p/>
+ * <code>Handle</code>s are used to unambigiously identify objects within the
+ * rule session state and should not suffer many of the object identity issues
+ * that arise when using muliple class loaders, serializing
+ * <code>StatefulRuleSessions</code>, or using <code>Object.equals</code> or
+ * <code>object1 == object2</code> reference equality.
+ */
 public class Jsr94FactHandle extends FactHandleImpl implements Handle
 {
+    /**
+     * Constructs a new <code>Handle</code>.
+     *
+     * @param id A unique <code>Handle</code> id.
+     */
     Jsr94FactHandle( long id )
     {
         super( id );
     }
 }
-

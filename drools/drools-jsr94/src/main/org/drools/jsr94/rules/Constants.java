@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Constants.java,v 1.5 2004-11-05 20:49:33 dbarnett Exp $
+ * $Id: Constants.java,v 1.6 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,17 +45,25 @@ package org.drools.jsr94.rules;
  * This class provides a list of constant values which can be used as keys in
  * the various property maps that are passed around between the javax.rules and
  * javax.rules.admin objects.
- *
+ * <p/>
  * This helps us enforce proper key values at compile time and eliminate the
  * risk of spelling errors.
  *
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  */
-public class Constants
+public final class Constants
 {
+    /** Private constructor because all public access is static. */
+    private Constants( )
+    {
+        // hidden constructor
+    }
+
+    /** <code>RuleExecutionSet</code> name constant. */
     public static final String RES_NAME =
         "javax.rules.admin.RuleExecutionSet.name";
 
+    /** <code>RuleExecutionSet</code> description constant. */
     public static final String RES_DESCRIPTION =
         "javax.rules.admin.RuleExecutionSet.description";
 }

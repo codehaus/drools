@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandleFactory.java,v 1.8 2004-11-05 20:49:33 dbarnett Exp $
+ * $Id: Jsr94FactHandleFactory.java,v 1.9 2004-11-15 01:12:22 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,24 +44,44 @@ package org.drools.jsr94.rules;
 import org.drools.FactHandle;
 import org.drools.reteoo.FactHandleFactory;
 
+/**
+ * A factory for creating <code>Handle</code>s.
+ */
 public final class Jsr94FactHandleFactory implements FactHandleFactory
 {
-    private static final Jsr94FactHandleFactory INSTANCE = new Jsr94FactHandleFactory( );
+    /** The Singleton instance of the <code>Jsr94FactHandleFactory</code>. */
+    private static Jsr94FactHandleFactory INSTANCE;
 
+    /** Counter for generating unique <code>Handle</code> ids. */
     private long counter;
 
+    /** Private constructor; use <code>getInstance</code> instead. */
     private Jsr94FactHandleFactory( )
     {
-        // Hide constructor.
+        // Hide the constructor.
     }
 
-    public static Jsr94FactHandleFactory getInstance( )
+    /**
+     * Gets the Singleton instance of a <code>Jsr94FactHandleFactory</code>.
+     *
+     * @return The Singleton instance of the repository.
+     */
+    public static synchronized Jsr94FactHandleFactory getInstance( )
     {
-        return INSTANCE;
+        if ( INSTANCE != null )
+        {
+            return INSTANCE;
+        }
+        return INSTANCE = new Jsr94FactHandleFactory( );
     }
 
+    /**
+     * Returns a new <code>Handle</code>.
+     *
+     * @return a new <code>Handle</code>.
+     */
     public synchronized FactHandle newFactHandle( )
     {
-        return new Jsr94FactHandle( ++this.counter );
+        return new Jsr94FactHandle( ++counter );
     }
 }
