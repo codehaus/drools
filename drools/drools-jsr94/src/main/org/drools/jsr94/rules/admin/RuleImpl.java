@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleImpl.java,v 1.8 2004-11-05 20:49:34 dbarnett Exp $
+ * $Id: RuleImpl.java,v 1.9 2004-11-14 20:12:37 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,8 +47,9 @@ import java.util.Map;
 import javax.rules.admin.Rule;
 
 /**
- * This interface defines a production rule. Related <code>Rule</code>
- * instances are assembled into <code>RuleExecutionSets</code>, which in
+ * The Drools implementation of the <code>Rule</code> interface which provides
+ * access to simple metadata for a rule. Related <code>Rule</code>
+ * instances are assembled into <code>RuleExecutionSet</code>s, which in
  * turn, can be executed by a rules engine via the <code>RuleSession</code>
  * interface.
  *
@@ -59,19 +60,26 @@ import javax.rules.admin.Rule;
  */
 public class RuleImpl implements Rule
 {
-    private String               name;
+    /** The name of this rule. */
+    private String name;
 
-    private String               description;
+    /** A description of the rule or null if no description is specified. */
+    private String description;
 
-    private Map                  properties = new HashMap( );
+    /** A <code>Map</code> of user-defined and Drools-defined properties. */
+    private Map properties = new HashMap( );
 
+    /**
+     * The <code>org.drools.rule.Rule</code> that lies at the core of
+     * this <code>javax.rules.admin.Rule</code> object.
+     */
     private org.drools.rule.Rule rule;
 
     /**
      * Creates a <code>RuleImpl</code> object by wrapping an
      * <code>org.drools.rule.Rule</code> object.
      *
-     * @param rule
+     * @param rule the <code>org.drools.rule.Rule</code> object to be wrapped.
      */
     RuleImpl( org.drools.rule.Rule rule )
     {
@@ -85,7 +93,7 @@ public class RuleImpl implements Rule
      * this <code>javax.rules.admin.Rule</code> object. This method is package
      * private.
      *
-     * @return org.drools.rule.Rule at the core of this object
+     * @return <code>org.drools.rule.Rule</code> at the core of this object.
      */
     org.drools.rule.Rule getRule( )
     {
@@ -94,25 +102,48 @@ public class RuleImpl implements Rule
 
     /* Rule interface methods */
 
+    /**
+     * Get the name of this rule.
+     *
+     * @return The name of this rule.
+     */
     public String getName( )
     {
         return name;
     }
 
+    /**
+     * Get a description of the rule.
+     *
+     * @return A description of the rule or null of no description is specified.
+     */
     public String getDescription( )
     {
         return description;
     }
 
+    /**
+     * Get a user-defined or Drools-defined property.
+     *
+     * @param key the key to use to retrieve the property
+     *
+     * @return the value bound to the key or <code>null</code>
+     */
     public Object getProperty( Object key )
     {
         // TODO: certain keys should reference internal rule accessor methods
         return properties.get( key );
     }
 
-    public void setProperty( Object key, Object val )
+    /**
+     * Set a user-defined or Drools-defined property.
+     *
+     * @param key the key for the property value
+     * @param value the value to associate with the key
+     */
+    public void setProperty( Object key, Object value )
     {
         // TODO: certain keys should alter internal rule accessor methods
-        properties.put( key, val );
+        properties.put( key, value );
     }
 }

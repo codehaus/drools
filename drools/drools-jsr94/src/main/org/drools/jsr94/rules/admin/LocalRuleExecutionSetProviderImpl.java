@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.14 2004-11-05 20:49:34 dbarnett Exp $
+ * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.15 2004-11-14 20:12:37 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
@@ -55,9 +54,10 @@ import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
 
 /**
- * The <code>LocalRuleExecutionSetProvider</code>  interface defines
- * <code>RuleExecutionSet</code>  creation methods for defining
- * <code>RuleExecutionSets</code>  from local (non-serializable) resources.
+ * The Drools implementation of the <code>LocalRuleExecutionSetProvider</code>
+ * interface which defines <code>RuleExecutionSet</code> creation methods for
+ * defining <code>RuleExecutionSet</code>s from local (non-serializable)
+ * resources.
  *
  * @see LocalRuleExecutionSetProvider
  *
@@ -67,43 +67,39 @@ import org.drools.rule.RuleSet;
 public class LocalRuleExecutionSetProviderImpl
     implements LocalRuleExecutionSetProvider
 {
-    /**
-     * Creates a <code>RuleExecutionSet</code>  implementation using a
-     * supplied input stream and additional vendor-specific properties.
-     *
-     * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(InputStream,
-     *      Map)
-     */
-    public RuleExecutionSet createRuleExecutionSet(
-            InputStream in, Map properties )
-        throws IOException, RuleExecutionSetCreateException
+    /** Default constructor. */
+    public LocalRuleExecutionSetProviderImpl( )
     {
-        try
-        {
-            RuleSetReader setReader = new RuleSetReader( );
-            RuleSet ruleSet = setReader.read( in );
-            return createRuleExecutionSet( ruleSet, properties );
-        }
-        catch ( Exception ex )
-        {
-            throw new RuleExecutionSetCreateException(
-                "cannot create rule set", ex );
-        }
+        super( );
     }
 
     /**
-     * Creates a <code>RuleExecutionSet</code>  implementation using a
-     * supplied character stream Reader and vendor-specific properties.
+     * Creates a <code>RuleExecutionSet</code> implementation using a
+     * supplied input stream and additional Drools-specific properties.
+     * A Drools-specific rule execution set is read from the supplied
+     * InputStream. The method <code>createRuleExecutionSet</code> taking
+     * a Reader instance should be used if the source is a character
+     * stream and encoding conversion should be performed.
      *
-     * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Reader, Map)
+     * @param ruleExecutionSetStream
+     *        an input stream used to read the rule execution set.
+     * @param properties additional properties used to create the
+     *        <code>RuleExecutionSet</code> implementation.
+     *        May be <code>null</code>.
+     *
+     * @throws RuleExecutionSetCreateException
+     *         on rule execution set creation error.
+     * 
+     * @return The created <code>RuleExecutionSet</code>.
      */
-    public RuleExecutionSet createRuleExecutionSet( Reader in, Map properties )
+    public RuleExecutionSet createRuleExecutionSet(
+            InputStream ruleExecutionSetStream, Map properties )
         throws RuleExecutionSetCreateException
     {
         try
         {
             RuleSetReader setReader = new RuleSetReader( );
-            RuleSet ruleSet = setReader.read( in );
+            RuleSet ruleSet = setReader.read( ruleExecutionSetStream );
             return createRuleExecutionSet( ruleSet, properties );
         }
         catch ( Exception ex )
@@ -114,31 +110,66 @@ public class LocalRuleExecutionSetProviderImpl
     }
 
     /**
-     * <p>
-     * Creates a <code>RuleExecutionSet</code>  implementation from a vendor
-     * specific AST representation and vendor-specific properties.
-     * </p>
+     * Creates a <code>RuleExecutionSet</code> implementation using a supplied
+     * character stream Reader and additional Drools-specific properties. A
+     * Drools-specific rule execution set is read from the supplied Reader.
      *
-     * <p>
-     * This method accepts <code>org.drools.rule.RuleSet</code> as the
-     * incoming AST object parameter.
-     * </p>
+     * @param ruleExecutionSetReader
+     *        a Reader used to read the rule execution set.
+     * @param properties additional properties used to create the
+     *        <code>RuleExecutionSet</code> implementation.
+     *        May be <code>null</code>.
      *
-     * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Object, Map)
+     * @throws RuleExecutionSetCreateException
+     *         on rule execution set creation error.
+     * 
+     * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(
-            Object astObject, Map properties )
+            Reader ruleExecutionSetReader, Map properties )
+        throws RuleExecutionSetCreateException
+    {
+        try
+        {
+            RuleSetReader setReader = new RuleSetReader( );
+            RuleSet ruleSet = setReader.read( ruleExecutionSetReader );
+            return createRuleExecutionSet( ruleSet, properties );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuleExecutionSetCreateException(
+                "cannot create rule set", ex );
+        }
+    }
+
+    /**
+     * Creates a <code>RuleExecutionSet</code> implementation from a
+     * Drools-specific AST representation and Drools-specific properties.
+     *
+     * @param ruleExecutionSetAst
+     *        the vendor representation of a rule execution set
+     * @param properties additional properties used to create the
+     *        <code>RuleExecutionSet</code> implementation.
+     *        May be <code>null</code>.
+     *
+     * @throws RuleExecutionSetCreateException
+     *         on rule execution set creation error.
+     * 
+     * @return The created <code>RuleExecutionSet</code>.
+     */
+    public RuleExecutionSet createRuleExecutionSet(
+            Object ruleExecutionSetAst, Map properties )
         throws RuleExecutionSetCreateException
     {
         if ( properties == null )
         {
             properties = new HashMap( );
         }
-        if ( astObject instanceof RuleSet )
+        if ( ruleExecutionSetAst instanceof RuleSet )
         {
             try
             {
-                RuleSet ruleSet = ( RuleSet ) astObject;
+                RuleSet ruleSet = ( RuleSet ) ruleExecutionSetAst;
                 return createRuleExecutionSet( ruleSet, properties );
             }
             catch ( Exception ex )
@@ -149,9 +180,20 @@ public class LocalRuleExecutionSetProviderImpl
         }
         throw new IllegalArgumentException(
             " Incoming AST object must be an org.drools.rule.RuleSet.  Was "
-            + astObject.getClass( ) );
+            + ruleExecutionSetAst.getClass( ) );
     }
 
+    /**
+     * Creates a <code>RuleExecutionSet</code> implementation from a
+     * <code>RuleSet</code> and Drools-specific properties.
+     *
+     * @param ruleSet a Drools <code>org.drools.rule.RuleSet</code>
+     *        representation of a rule execution set.
+     * @param properties additional properties used to create the
+     *        RuleExecutionSet implementation. May be null.
+     *
+     * @return The created <code>RuleExecutionSet</code>.
+     */
     private RuleExecutionSet createRuleExecutionSet(
         RuleSet ruleSet, Map properties )
     {
