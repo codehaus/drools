@@ -1,0 +1,37 @@
+int i = 0;
+i++;
+<!--drools-test--!>
+SMFTestFrameWork.Cheese brie = new SMFTestFrameWork.Cheese("brie");
+drools.assertObject(brie);
+<!--drools-test--!>
+camembert.eatCheese();
+SMFTestFrameWork.Cheese brie = new SMFTestFrameWork.Cheese("brie");
+drools.assertObject(brie);
+brie.eatCheese();
+drools.modifyObject(brie);
+stilton.eatCheese();
+stilton.eatCheese();
+<!--drools-test--!>
+import java.util.HashMap;
+import java.util.Map;
+
+camembert.eatCheese();
+stilton.eatCheese();
+drools.retractObject(camembert);
+
+Map map = new HashMap();
+map.put("key", "value");
+
+cheeses.put("favourite cheese", camembert);
+cheeses.put("bites", bites);
+<!--drools-test--!>
+camembert.eatCheese();
+String trimmed = favouriteCheese.trim();
+<!--drools-test--!>
+camembert.eatCheese();
+String trimmed = favouriteCheese.trim();
+
+
+
+
+

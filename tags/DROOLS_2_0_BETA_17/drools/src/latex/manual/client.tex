@@ -1,0 +1,201 @@
+\chapter{Client API}
+\label{client.api}
+
+\section{Introduction}
+
+The Drools client API is simply a fairly lightweight interface for
+starting a session, manipulating knowledge and executing rules.
+
+\section{Retrieving a \indexClass{RuleBase}}
+
+Before any activities may be performed, the client application must
+obtain a \indexClass{RuleBase} through either building one using
+the administrative API or by performing a lookup within a JNDI
+directory or other managed object data source.  Building
+a \class{RuleBase} is discussed in the next chapter.
+
+\subsection{Looking up a \indexClass{RuleBase} from JNDI\index{JNDI}}
+
+A \indexClass{RuleBase} may be a managed object which is deployed
+by an administrator within a JNDI directory. This method of deployment
+allows an application to be isolated from changes in the rules.  The
+rules can be easily altered and redeployed, enabling an on-the-fly
+modification of the behaviour of an application.  See
+Figure~\vref{rulebase.jndi} for an example of accessing a
+\class{RuleBase} deployed within a JNDI data source.
+
+\begin{figure}
+\begin{javaCodelisting}
+DirContext ctx = new InitialDirContext( props );
+
+RuleBase ruleBase = ctx.lookup( "cn='MyRuleBase'" );
+\end{javaCodelisting}
+\caption{Loading a \indexClass{RuleBase} from a JNDI data source}
+\label{rulebase.jndi}
+\end{figure}
+
+\subsection{Deserializing a \indexClass{RuleBase} from a file}
+
+Fully assembled \class{RuleBase} objects may be serialized to a
+file or other bytestream.  This allows for the rules to be assembled
+before deployment and enables easy loading.  See
+Figure~\vref{rulebase.deserialize} for an example of loading a
+serialized \class{RuleBase} from a file.
+
+\begin{figure}
+\begin{javaCodelisting}
+File ser = new File(...);
+\end{javaCodelisting}
+\caption{Deserializing a \indexClass{RuleBase} from a file}
+\label{rulebase.deserialize}
+\end{figure}
+
+\section{Creating a \indexClass{WorkingMemory}}
+
+A \class{WorkingMemory} object represents an isolated rule
+session where knowledge is manipulated and evaluated to determine
+which rules should fire.  Each \class{WorkingMemory} is independent
+from all other instances. Each \class{WorkingMemory} is backed by the
+\indexClass{RuleBase} that created it
+(Figure~\vref{workingmemory.creation}) using
+\indexMethod{RuleBase}{newWorkingMemory()}.
+
+\begin{figure}
+\begin{javaCodelisting}
+RuleBase ruleBase = obtainRuleBase();
+
+WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+\end{javaCodelisting}
+\caption{Creation of a \indexClass{WorkingMemory} from a
+\indexClass{RuleBase}}
+\label{workingmemory.creation}
+\end{figure}
+
+\section{Working with knowledge}
+
+The three knowledge manipulation operations that can be performed
+are \emph{assertion}\index{assertion},
+\emph{retraction\index{retraction}}, and
+\emph{modification}\index{modification}.  The
+\indexClass{WorkingMemory} class models these three operations
+through three methods:
+
+\begin{itemize}
+  \item \indexMethod{WorkingMemory}{assertObject(...)} Adds a fact to 
+    the working knowledge.
+  \item \indexMethod{WorkingMemory}{retractObject(...)} Removes a fact
+    from the working knowledge.
+  \item \indexMethod{WorkingMemory}{modifyObject(...)} Modifies a
+    fact within the working knowledge.
+\end{itemize}
+
+\subsection{Adding knowledge}
+
+To add knowledge to a \class{WorkingMemory}, a fact, in the form of
+any Java object is asserted into it
+(Figure~\vref{workingmemory.assert}).  A \indexClass{FactHandle} is
+returned from each assertion and is used when performing further
+manipulation of the asserted fact.  Once asserted, the fact may be
+used to satisfy some portion of any rule's activation condition.
+
+\begin{figure}
+\begin{javaCodelisting}
+WorkingMemory memory = ruleBase.newWorkingMemory();
+
+FactHandle handle1 = memory.assertObject( factOne );
+FactHandle handle2 = memory.assertObject( factTwo );
+FactHandle handle3 = memory.assertObject( factThree );
+\end{javaCodelisting}
+\caption{Asserting knowledge into a \indexClass{WorkingMemory}}
+\label{workingmemory.assert}
+\end{figure}
+
+\subsection{Removing knowledge}
+
+To remove knowledge from a \indexClass{WorkingMemory}, a
+\indexClass{FactHandle} obtained from a previous invocation of
+\indexMethod{WorkingMemory}{assertObject(...)} is used to reference
+the fact to be removed (Figure~\vref{workingmemory.retract}).
+Once retracted, the fact can not be used to satisfy any portion
+of any rule's activation condition.
+
+\begin{figure}
+\begin{javaCodelisting}
+WorkingMemory memory = ruleBase.newWorkingMemory();
+
+FactHandle handle = memory.assertObject( factOne );
+
+memory.retractObject( handle );
+\end{javaCodelisting}
+\caption{Retracting knowledge from a \indexClass{WorkingMemory}}
+\label{workingmemory.retract}
+\end{figure}
+
+\subsection{Modifying knowledge}
+
+Over time, knowledge may change.  Instead of always retracting old
+facts and asserting new ones, it is sometimes advisable to view a
+change in knowledge as the \emph{modification of a single fact}.
+For example, the fact about the current state of the weather may
+change as the weather changes.  Instead of retracting a ``rainy'' fact
+and asserting a ``sunny'' fact, it is possible to simply change the
+value of the general ``weather'' fact
+(Figure~\vref{workingmemory.modify}).  As with retraction,
+modification of knowledge depends on a \indexClass{FactHandle}
+obtained from a previous
+\indexMethod{WorkingMemory}{assertObject(...)} call
+(Figure~\vref{workingmemory.modify}).
+
+The most important reason to perform fact modification instead of an
+assertion and a retraction is that rules with truth durations will
+automatically deactivate if a matching fact is retracted.  If a fact
+is modified but still matches a rule with a truth duration, the clock
+on the duration timer is \emph{not} reset.
+
+\begin{figure}
+\begin{javaCodelisting}
+WorkingMemory memory = ruleBase.newWorkingMemory();
+
+FactHandle weatherHandle = memory.assertObject( new Weather( "rainy" ) );
+
+memory.modifyObject( weatherHandle,
+                     new Weather( "sunny" ) );
+\end{javaCodelisting}
+\caption{Modifying knowledge within a \indexClass{WorkingMemory}}
+\label{workingmemory.modify}
+\end{figure}
+
+\section{Firing rules\index{rule!firing}}
+
+As knowledge is manipulated within a \indexClass{WorkingMemory}, 
+no rules are actually triggered to be fired.  Instead, rules are
+\emph{activated}\index{rule!activation}, which makes them
+candidates for being fired.  Rule activations are placed upon
+the \emph{agenda}\index{agenda}.
+
+When an application determines that the current state of knowledge
+is consistent and should be acted upon, the application may cause
+the activations on the agenda to begin firing
+(Figure~\vref{workingmemory.fire}).  The
+\indexMethod{WorkingMemory}{fireAllRules(...)}
+method blocks until the agenda has been completely cleared of
+activations.  
+
+Note that as an activation fires, its consequence
+may perform knowledge manipulation by assertion new facts, retracting
+existing facts, or modifying existing facts.  All of these activities
+may cause activations to be added to or removed from the agenda.
+
+\begin{figure}
+\begin{javaCodelisting}
+WorkingMemory memory = ruleBase.newWorkingMemory();
+
+FactHandle weatherHandle = memory.assertObject( new Weather( "rainy" ) );
+
+memory.fireAllRules();
+\end{javaCodelisting}
+\caption{Firing rules}
+\label{workingmemory.fire}
+\end{figure}
+
+

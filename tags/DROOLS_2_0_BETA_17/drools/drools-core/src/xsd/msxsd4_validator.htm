@@ -1,0 +1,127 @@
+<html>
+<head>
+
+<script language="javascript">
+// call msxsd_validate()
+//
+// This function checks validity of an XML file against XML Schemata using MSXML. 
+// 
+function validate (xmlfile, xsdfiles) {
+
+ var ret_msg=false;  // Success unless otherwise stated (overwriting ret_msg).
+
+ for(i=0; i<xsdfiles.length; i++) {
+
+   var schemaCache = new ActiveXObject("MSXML2.XMLSchemaCache.4.0");
+
+   var xsdDoc = new ActiveXObject("MSXML2.DOMDocument.4.0");
+   xsdDoc.async=false;
+   xsdDoc.validateOnParse=false;
+   xsdDoc.load(xsdfiles[i]);
+    if (xsdDoc.parseError.errorCode) {
+      ret_msg="<br/>Schema file load failed, file: " + xsdfiles[i] + "<br/>";
+      ret_msg+="<br/>Error Code:   " + xsdDoc.parseError.errorCode;
+      ret_msg+="<br/>Error Reason: " + xsdDoc.parseError.reason;
+      ret_msg+="<br/>Error Line:   " + xsdDoc.parseError.line;
+      ret_msg+="<br/>";
+      return(ret_msg);
+    } else {
+      try {
+        // Set up XPath
+        xsdDoc.setProperty("SelectionLanguage","XPath");
+        xsdDoc.setProperty("SelectionNamespaces","xmlns:a='http://www.w3.org/2001/XMLSchema'");
+
+        // extract the targetNamespace attribute from the schema using XPath
+        var tnsattr=xsdDoc.selectSingleNode("/a:schema/@targetNamespace");
+        var nsuri=tnsattr.nodeValue;
+
+        // add the schema to the cache
+        schemaCache.add(nsuri,xsdDoc);
+
+      } catch (e) {
+        ret_msg="Exception adding schema " + xsdfiles[i] + " to cache<br/>   " + e.description;
+        return(ret_msg);
+      }
+    }
+  }
+  try {
+    // attach the schema cache to a DOM
+    var xmlDoc= new ActiveXObject("MSXML2.DOMDocument.4.0");
+    xmlDoc.schemas=schemaCache;
+
+    // load XML document
+    xmlDoc.load(xmlfile);
+    xmlDoc.async=false;
+    xmlDoc.validateOnParse=true;
+
+    if (xmlDoc.parseError.errorCode) {
+      ret_msg="<br/>XML file load failed, file: " + xmlfile + "<br/>";
+      ret_msg+="<br/>Error Code:   " + xmlDoc.parseError.errorCode;
+      ret_msg+="<br/>Error Reason: " + xmlDoc.parseError.reason;
+      ret_msg+="<br/>Error Line:   " + xmlDoc.parseError.line;
+      ret_msg+="<br/>Error Source: " + xmlDoc.parseError.srcText;
+      ret_msg+="<br/>";
+      return(ret_msg);
+    } else {
+      return(ret_msg);
+    }
+    
+  } catch (e) {
+    ret_msg="Exception loading instance document " + xmlfile + e.description;
+    return(ret_msg);
+  }
+
+} // end validate()
+
+function msxsd_validate (xml_file) {
+
+ var xsd_files = new Array("drl.xsd");
+ var retval=validate(xml_file,xsd_files);
+
+ var displayText="<blockquote>";
+ if (retval) {
+  displayText+="<br/>Result: <br/><br/>" + retval;
+ } else {
+  displayText+="<br/>using msxml.4.0";
+  displayText+="<br/>" + xml_file;
+  displayText+="<br/> has been successfully validated against schema file";
+  if(xsd_files.length>1) displayText+="s";
+  displayText+=": " + xsd_files + " (python.xsd,jelly.xsd,jellyTags.xsd)";
+  displayText+="<br/>java.xsd, python.xsd, and jelly.xsd are imported in drl.xsd";
+  displayText+="<br/>jellyTags.xsd is imported in jelly.xsd";
+ }
+ displayText+="</blockquote>";
+ self.display.innerHTML=displayText;
+} // end msxsd_validate()
+
+</script>
+<style type="text/css">
+<!--
+.smalltext {font-size:11pt; font-weight:bold}
+body {color:#000000; background-color:darkGray; font-family:"Comic Sans MS"}
+-->
+</style>
+</head>
+<body>
+<div id="display" class="smalltext">
+<center>
+<h3>Drools Development Took-Kit (under development)</h3>
+This version uses MSXML 4.0 Service Pack 2 (Microsoft XML Core Services) <br/>
+for validation of drl files. MSXML4 is very simple to 
+<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=3144b72b-b4f2-46da-b4b6-c5d7485f2b42&DisplayLang=en">download</a> 
+and install <br/>
+on Windows systems, and is then available without concern for configuration.<br/>
+<br/>
+You can use other validators (xerces2, etc.) from alt_validator.bat.<br/>
+You need to set paths to your jar files to use alt_validator.bat.<r/>
+<br/>
+<form name="file1" method="post"
+ action="javascript:void(msxsd_validate(self.file1.readdrl.value))">
+<h3>Enter the path (+name) of the DRL file : </h3>
+<input type="file" name="readdrl" maxlength="1000" size="65"/><br/><br/>
+<input type="submit" value="Validate"/>
+</form>
+</center>
+</div>
+</body>
+</html>

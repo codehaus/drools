@@ -1,0 +1,23 @@
+<rule-set name="Sisters Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="Find Sisters">
+
+        <parameter identifier="person">
+          <java:class> org.drools.jsr94.rules.Person </java:class>
+        </parameter>
+
+        <parameter identifier="sister">
+          <java:class> org.drools.jsr94.rules.Person </java:class>
+        </parameter>
+
+        <!--<java:condition> person.getName().compareTo( sister.getName() ) &gt; 0</java:condition>-->
+        <java:condition> person.hasSister( sister ) </java:condition>
+
+        <java:consequence>
+            drools.assertObject( person + " and " + sister + " are sisters" );
+        </java:consequence>
+    </rule>
+
+</rule-set>

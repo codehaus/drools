@@ -1,0 +1,37 @@
+true
+<!--drools-test--!> // 1
+false
+<!--drools-test--!> // 2
+1==1
+<!--drools-test--!> // 3
+"String".equals("String")
+<!--drools-test--!> // 4
+new String("String").equals("String")
+<!--drools-test--!> // 5
+camembert.getName().equals("camembert")
+<!--drools-test--!> // 6
+camembert.getName().equals("stilton")
+<!--drools-test--!> // 7
+stilton.getBitesLeft() == 3
+<!--drools-test--!> // 8
+stilton.getBitesLeft() == 2
+<!--drools-test--!> // 9
+stilton.equals(camembert)
+<!--drools-test--!> // 10
+!stilton.equals(camembert)
+<!--drools-test--!> // 11
+stilton.getBitesLeft() == camembert.getBitesLeft()
+<!--drools-test--!> // 12
+stilton.getBitesLeft() != camembert.getBitesLeft()
+<!--drools-test--!> // 13
+stilton.getBitesLeft() == bites.intValue()
+<!--drools-test--!> // 14
+stilton.equals(favouriteCheese)
+<!--drools-test--!> // 15
+camembert.equals(favouriteCheese)
+<!--drools-test--!> // 16
+camembert.getName().equals(favouriteCheese)
+<!--drools-test--!> // 17
+camembert.getName().equals(favouriteCheese)
+<!--drools-test--!> // 18
+"http://www.w3.org/2001/XMLSchema,string".equals("http://www.w3.org/2001/XMLSchema,string")

@@ -1,0 +1,31 @@
+<div class="section">
+
+  <div class="sectionTitle">Base Semantic Module Component Reference</div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a name="Rule"></a><a href="TOP/api/org/drools/rule/Rule.html">Rule</a></div> 
+      <p>
+      The <a href="TOP/api/org/drools/rule/Rule.html">Rule</a> primitive is actually a port of the
+      core.  This semantic module simply adds a default factory for <code>Rule</code> objects.
+      <p>
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a name="FixedDuration"></a><a href="TOP/api/org/drools/rule/FixedDuration.html">FixedDuration</a></div>
+      <p>
+      Additionally, the core <a href="TOP/api/org/drools/rule/FixedDuration.html">FixedDuration</a> 
+      primitive is exposed through the base semantic module.  The <code>FixedDuration</code> allows 
+      the static definition of the truth duration of a rule.
+      </p>
+      <div class="code">
+<pre>
+<a href="TOP/api/org/drools/rule/FixedDuration.html">FixedDuration</a> duration = new <a href="TOP/api/org/drools/rule/FixedDuration.html#FixedDuration()">FixedDuration()</a>;
+
+duration.<a href="TOP/api/org/drools/rule/FixedDuration.html#addDays(long)">addDays( 42 )</a>;
+duration.<a href="TOP/api/org/drools/rule/FixedDuration.html#addHours(long)">addHours( 12 )</a>;
+
+rule.<a href="TOP/api/org/drools/rule/Rule.html#setDuration(org.drools.spi.Duration)">setDuration( duration )</a>;
+</pre>
+      </div>
+    </div>
+  </div>
+</div>
+

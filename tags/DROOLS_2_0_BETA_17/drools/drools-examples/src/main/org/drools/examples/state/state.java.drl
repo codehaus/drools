@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<rule-set name="State Example"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="Bootstrap">
+        <parameter identifier="a">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+
+        <java:condition>a.getName().equals("A")</java:condition>
+        <java:condition>a.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.out.println(a.getName() + " finished" );
+            a.setState("FINISHED");
+            drools.modifyObject(a);
+        </java:consequence>
+    </rule>
+
+    <rule name="AtoB" salience="30">
+        <parameter identifier="a">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+        <parameter identifier="b">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+
+        <java:condition>a.getName().equals("A")</java:condition>
+        <java:condition>a.getState().equals("FINISHED")</java:condition>
+        <java:condition>b.getName().equals("B")</java:condition>
+        <java:condition>b.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.out.println(b.getName() + " finished" );
+            b.setState("FINISHED");
+            drools.modifyObject(b);
+        </java:consequence>
+    </rule>
+
+    <rule name="BtoC" salience="20">
+        <parameter identifier="b">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+        <parameter identifier="c">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+
+        <java:condition>b.getName().equals("B")</java:condition>
+        <java:condition>b.getState().equals("FINISHED")</java:condition>
+        <java:condition>c.getName().equals("C")</java:condition>
+        <java:condition>c.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.out.println(c.getName() + " finished" );
+            c.setState("FINISHED");
+            drools.modifyObject(c);
+        </java:consequence>
+    </rule>
+
+
+
+    <rule name="BtoD" salience="10">
+        <parameter identifier="b">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+        <parameter identifier="d">
+            <java:class>org.drools.examples.state.State</java:class>
+        </parameter>
+
+        <java:condition>b.getName().equals("B")</java:condition>
+        <java:condition>b.getState().equals("FINISHED")</java:condition>
+        <java:condition>d.getName().equals("D")</java:condition>
+        <java:condition>d.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.out.println(d.getName() + " finished" );
+            d.setState("FINISHED");
+            drools.modifyObject(d);
+        </java:consequence>
+    </rule>
+
+
+  </rule-set>

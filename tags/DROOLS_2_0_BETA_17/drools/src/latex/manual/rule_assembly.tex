@@ -1,0 +1,23 @@
+\chapter{Rule Assembly API}
+\label{rule.assembly}
+
+\section{Introduction}
+
+The DRL (Chapter~\vref{drl}) constructs rules using the
+\emph{Rule Assembly API}.  This API may also be used
+directly by applications that wish to programmatically construct
+\indexClass{Rule} instances without using the DRL.
+
+The \texttt{org.drools.rule} package contains the classes
+and interfaces that form the Rule Assembly API.  The two concrete
+classes of note are \indexClass{Rule} and \indexClass{RuleSet}.
+Other concrete classes used in the assembly of rules are
+pulled from various semantic module implementations.
+
+\section{Requirements}
+
+Each \indexClass{Rule} is required to have at least one
+\indexClass{Parameter} and a \indexClass{Consequence}.
+Zero or more \indexClass{Condition} objects may be attached
+to each \class{Rule}\footnote{Though, a \class{Rule} without a
+\class{Condition} is not much of a rule.}.

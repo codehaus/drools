@@ -1,0 +1,13 @@
+"camembert"
+<!--drools-test--!> // 1
+"I have " + camembert.getBitesLeft() + " bites of " + camembert.getName() + " left"
+<!--drools-test--!> // 2
+"I have " + stilton.getBitesLeft() + " bites of " + stilton.getName() + " left"
+<!--drools-test--!> // 3
+new Integer(camembert.getBitesLeft())
+<!--drools-test--!> // 4
+new Integer(camembert.getBitesLeft() + stilton.getBitesLeft())
+<!--drools-test--!> // 5
+(camembert.getBitesLeft() + stilton.getBitesLeft() == 6) ? new SMFTestFrameWork.Cheese("cheddar") : new SMFTestFrameWork.Cheese("mozzerella")
+<!--drools-test--!> // 6
+(camembert.getBitesLeft() + stilton.getBitesLeft() == 6) ? new SMFTestFrameWork.Cheese("cheddar") : new SMFTestFrameWork.Cheese("mozzerella")

@@ -1,0 +1,42 @@
+<div class="section">
+
+  <div class="sectionTitle">Loading Rules</div>
+    <div class="subsection">
+      <div class="subsectionTitle">Reading a <a href="TOP/api/org/drools/rule/RuleSet.html">RuleSet</a></div> 
+      <p>
+      The <a href="TOP/api/org/drools/io/RuleSetReader.html">org.drools.io.RuleSetReader</a>
+      is used to read rule definitions using the <a href="defining.html">rule language</a>
+      provided by the I/O subsystem.  The most straight-forward usage is also the simplest.
+      By default, all conformant semantic modules are used when reading a set of rule definitions.
+      <p>
+      <div class="code">
+<pre>
+<a href="TOP/api/org/drools/io/RuleSetReader.html">RuleSetReader</a> reader = new <a href="TOP/api/org/drools/io/RuleSetReader.html">RuleSetReader</a>();
+
+<a href="TOP/api/org/drools/rule/RuleSet.html">RuleSet</a> ruleSet = reader.<a href="TOP/api/org/drools/io/RuleSetReader.html#readhtmljava.net.URL)">read( in )</a>;
+</pre>
+      </div>
+
+      <p>
+      The <code>read(...)</code> method is overloaded to provide forms that
+      can take a <code>InputStream</code>, <code>InputSource</code>, <code>Reader</code>,
+      <code>URL</code>, or a <code>String</code> containing a URL.
+      </p>
+
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle">Building a <a href="TOP/api/org/drools/RuleBase.html">RuleBase</a></div>
+      <p>
+      The <a href="TOP/api/org/drools/io/RuleBaseBuilder.html">org.drools.io.RuleBaseBuilder</a>
+      provides convenience methods for reading a <a href="TOP/api/org/drools/rule/RuleSet.html">RuleSet</a>
+      and converting it to an active <a href="TOP/api/org/drools/RuleBase.html">RuleBase</a> in a single method call.
+      </p>
+
+      <p>
+      For more complex construction of a <code>RuleBase</code>, a combination of
+      <code>RuleSetReader</code> and the <b>core</b> <a href="TOP/api/org/drools/RuleBaseBuilder.html">RuleBaseBuilder</a>.
+      </p>
+    </div>
+  </div>
+</div>
+

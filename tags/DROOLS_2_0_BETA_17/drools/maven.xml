@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+    default="default"
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven">
+
+    <goal name="default">
+      <attainGoal name="multiproject:install"/>
+    </goal>
+
+    <goal name="clean-all">
+      <attainGoal name="clean"/>
+      <attainGoal name="multiproject:clean"/>
+    </goal>
+
+    <goal name="damagecontrol">
+      <j:set var="maven.multiproject.excludes" value="drools-examples/*"/>
+      <j:set var="goal" value="clean,clover:report,javadoc:generate,checkstyle:report,maven-jxr-plugin:report,xdoc,reports:publish"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="tweak-compile.src.set">
+      <ant:path id="uber.compile.src.set">
+        <ant:pathelement path="drools-base/src/main"/>
+        <ant:pathelement path="drools-core/src/main"/>
+        <ant:pathelement path="drools-io/src/main"/>
+        <ant:pathelement path="drools-smf/src/main"/>
+        <ant:pathelement path="drools-java/src/main"/>
+        <ant:pathelement path="drools-jsr94/src/main"/>
+        <ant:pathelement path="drools-groovy/src/main"/>
+        <ant:pathelement path="drools-python/src/main"/>
+        <ant:pathelement path="drools-smftest/src/main"/>
+        <ant:pathelement path="drools-examples/src/main"/>
+      </ant:path>
+
+      <maven:addPath id="maven.compile.src.set"
+                  refid="uber.compile.src.set"/>
+    </goal>
+
+    <goal name="javadoc-all">
+      <attainGoal name="tweak-compile.src.set"/>
+      <attainGoal name="javadoc"/>
+      <ant:echo level="info" message="Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
+    </goal>
+
+    <goal name="checkstyle-all">
+      <j:set var="goal" value="checkstyle:report,maven-jxr-plugin:report,xdoc"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="deploy-snapshot-all">
+      <j:set var="goal" value="jar:deploy-snapshot"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="idea-all">
+      <attainGoal name="idea:multiproject"/>
+    </goal>
+
+    <goal name="eclipse-all">
+      <j:set var="goal" value="eclipse"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="crlf-all">
+      <j:set var="goal" value="crlf"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="crlf">
+      <ant:fixcrlf
+        srcdir="${basedir}"
+        eol="lf"
+        tab="remove"
+        tablength="4"
+        includes="**/*.*"
+        eof="remove"/>
+    </goal>
+
+    <!--
+      Extracts all the drools-*.jar files to temp/drools-all except the drools-smftest module
+      and the drools.conf files. Each drools.conf is then extracted out to
+      its own directory temp/drools-conf/<semantic name> where they are all concatenated
+      into a single drools-conf file under the temp/drools-all/META-INF.
+      The entire contents of temp/drools-all is then jarred up and the
+      temp directory deleted.
+    -->
+
+    <goal name="drools-all">
+      <ant:unjar dest="temp/drools-all">
+        <patternset>
+            <exclude name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-*.jar"/>
+            <exclude name="**/drools-smftest.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/groovy">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-groovy-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/java">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-java-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/python">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-python-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/base">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-base-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:concat destfile="temp/drools-all/META-INF/drools.conf" force="yes">
+        <fileset dir="temp/drools-conf" includes="**/drools.conf" />
+      </ant:concat>
+
+      <ant:mkdir dir="target"/>
+
+      <ant:jar destfile="target/drools-all-${pom.currentVersion}.jar" basedir="temp/drools-all"/>
+
+      <ant:delete includeEmptyDirs="true">
+        <fileset dir="temp"/>
+      </ant:delete>
+    </goal>
+</project>
+

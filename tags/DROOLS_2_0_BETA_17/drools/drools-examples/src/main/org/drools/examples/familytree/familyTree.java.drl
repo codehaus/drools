@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<rule-set name="Family Tree Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
+
+  <!-- ================================================================== -->
+  <rule name="Explode Tree">
+    <parameter identifier="familyHead">
+      <java:class>org.drools.examples.familytree.Person</java:class>
+    </parameter>
+    <java:condition>true</java:condition>
+    <java:consequence>
+      import java.util.Iterator;
+      Iterator itemIter = familyHead.getChildren().iterator();
+      while ( itemIter.hasNext() )
+      {
+          final Object o = itemIter.next();
+          drools.assertObject( o );
+      }
+    </java:consequence>
+  </rule>
+
+  <!-- ================================================================== -->
+  <rule name="child of">
+    <parameter identifier="theParent">
+      <java:class>org.drools.examples.familytree.Person</java:class>
+    </parameter>
+    <parameter identifier="theChild">
+      <java:class>org.drools.examples.familytree.Person</java:class>
+    </parameter>
+    <java:condition>theParent.hasChild(theChild)</java:condition>
+    <java:consequence>
+      import java.util.Map;
+      import java.util.Hashtable;
+      Map theTree = new Hashtable();
+      theTree.put( theChild, theParent );
+      drools.assertObject( theTree );
+    </java:consequence>
+  </rule>
+
+  <!-- ================================================================== -->
+  <rule name="Message Blab" salience="20">
+    <parameter identifier="message">
+      <java:class>java.lang.String</java:class>
+    </parameter>
+    <java:condition>
+      message.startsWith( "Relationship:" )
+    </java:condition>
+    <java:consequence>
+      System.err.println( message );
+    </java:consequence>
+  </rule>
+
+  <!-- ================================================================== -->
+  <rule name="Build the family tree" salience="20">
+    <parameter identifier="value">
+      <java:class>java.util.Map</java:class>
+    </parameter>
+    <java:condition>true</java:condition>
+    <java:consequence>
+      import java.util.HashSet;
+      import java.util.Map;
+      import java.util.Set;
+      Map m = org.drools.examples.familytree.FamilyTree.tree;
+      final Object descendent = value.keySet().toArray()[0];
+      final Object parent = value.values().toArray()[0];
+
+      Set s = (Set)m.get( descendent );
+      if ( s == null )
+      {
+          s = new HashSet();
+          m.put( descendent, s );
+      }
+      s.add( parent );
+      if ( m.get( parent ) != null )
+      {
+          s.addAll ( (Set)m.get( parent ) );
+      }
+      System.out.println();
+      System.out.println( m );
+      System.out.println();
+    </java:consequence>
+  </rule>
+
+</rule-set>
+

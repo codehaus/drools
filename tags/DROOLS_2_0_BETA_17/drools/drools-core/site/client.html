@@ -1,0 +1,65 @@
+<div class="section">
+
+  <div class="sectionTitle">Client API</div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a href="TOP/api/org/drools/RuleBase.html">RuleBase</a></div> 
+      <p>
+      A <a href="TOP/api/org/drools/RuleBase.html">RuleBase</a> may be obtained a variety
+      of ways.  The <a href="TOP/io/loading.html">I/O subsystem</a> is a popular method for
+      loading a <code>RuleBase</code>.  Other methods might include looking up a <code>RuleBase</code>
+      in a JNDI store or simply deserializing a structure from disk.
+      <p>
+
+      <p>
+      The most useful method on <code>RuleBase</code> is a factory for constructing
+      <code>WorkingMemory</code> sessions.
+      </p>
+
+      <div class="code">
+<pre>
+<a href="TOP/api/org/drools/RuleBase.html">RuleBase</a> ruleBase = obtainRuleBase();
+
+<a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a> workingMemory = ruleBase.<a href="TOP/api/org/drools/RuleBase.html#newWorkingMemory()">newWorkingMemory()</a>;
+</pre>
+      </div>
+
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle"><a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a></div>
+      <p>
+      The <a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a> represents an isolated
+      knowledge session against the <a href="TOP/api/org/drools/RuleBase.html">RuleBase</a> that
+      created it.  Changes may accumulate over time within a <code>WorkingMemory</code> through
+      the use of the 
+        <a href="TOP/api/org/drools/WorkingMemory.html#assertObject(java.lang.Object)">assertObject(...)</a>
+        <a href="TOP/api/org/drools/WorkingMemory.html#modifyObject(org.drools.FactHandle,java.lang.Object)">modifyObject(...)</a>
+        <a href="TOP/api/org/drools/WorkingMemory.html#retractObject(org.drools.FactHandle)">retractObject(...)</a>
+      methods.  Rules can be evaluated against the accumulated changes through the use of
+      the 
+         <a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules()</a> 
+      method.
+      </p>
+      <div class="code">
+<pre>
+<a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a> workingMemory = ruleBase.<a href="TOP/api/org/drools/RuleBase.html#newWorkingMemory()">newWorkingMemory</a>();  
+
+Person person = new Person();
+
+<a href="TOP/api/org/drools/FactHandle.html">FactHandle</a> handle = workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#assertObject(java.lang.Object)">assertObject</a>( person );
+
+person.setAge( 52 );
+
+workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#modifyObject(org.drools.FactHandle,java.lang.Object)">modifyObject</a>( handle, 
+                            person );
+
+workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules</a>();
+
+workingMemory.<A href="TOP/api/org/drools/WorkingMemory.html#retractObject(org.drools.FactHandle)">retractObject</a>( handle );
+
+workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules</a>();
+</pre>
+      </div>
+    </div>
+  </div>
+</div>
+

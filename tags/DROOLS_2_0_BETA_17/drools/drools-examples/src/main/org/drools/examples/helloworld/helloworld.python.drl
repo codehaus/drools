@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<rule-set name="HelloWorld"
+          xmlns="http://drools.org/rules"
+          xmlns:python="http://drools.org/semantics/python">
+
+  <rule name="Hello World">
+    <parameter identifier="hello">
+      <python:class>java.lang.String</python:class>
+    </parameter>
+
+    <python:condition>hello == 'Hello'</python:condition>
+
+    <python:consequence>
+      print "%s World" % hello
+    </python:consequence>
+  </rule>
+
+  <rule name="Goodbye Cruel World">
+    <parameter identifier="goodbye">
+      <python:class>java.lang.String</python:class>
+    </parameter>
+
+    <python:condition>goodbye == 'Goodbye'</python:condition>
+
+    <python:consequence>
+      print "%s Cruel World" % goodbye
+    </python:consequence>
+  </rule>
+
+</rule-set>

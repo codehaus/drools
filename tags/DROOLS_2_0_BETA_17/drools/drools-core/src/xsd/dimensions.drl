@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rules xmlns="http://drools.org/rules"
+       xmlns:know="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://drools.org/rules drl.xsd">
+
+  <semantics module="org.drools.semantics.java"/>
+  <semantics module="org.drools.semantics.python"/>
+
+  <rule-set name="Python Test"
+           xmlns:java="http://drools.org/semantics/java"
+           xmlns:python="http://drools.org/semantics/python">
+    
+    <rule name="calculate length1">
+		<parameter identifier="height">
+        	<java:class type="dimensions.Height"/>
+		</parameter>
+	  	<parameter identifier="width">
+        	<java:class type="dimensions.Width"/>
+		</parameter>
+		<parameter identifier="length">
+        	<java:class type="dimensions.Length"/>
+		</parameter>
+		
+     	<condition>
+				<python:condition>width &gt; 100</python:condition>
+		</condition>
+		
+		<consequence>
+        	<python:consequence>
+        		length = width * height / 12.52; print "length1 :", length
+        	</python:consequence>
+	 	</consequence>
+      
+    </rule>
+    
+     <rule name="calculate length2">
+		<parameter identifier="height">
+        	<java:class type="dimensions.Height"/>
+		</parameter>
+	  	<parameter identifier="width">
+        	<java:class type="dimensions.Width"/>
+		</parameter>
+		<parameter identifier="length">
+        	<java:class type="dimensions.Length"/>
+		</parameter>
+		
+     	<condition>
+				<python:condition>width == 100</python:condition>
+		</condition>
+		
+		<consequence>
+        	<python:consequence>
+        		length = width * height / 1550.2; print "length2 :", length
+        	</python:consequence>
+	 	</consequence>
+      
+    </rule>
+    
+    
+  </rule-set>
+
+</rules>

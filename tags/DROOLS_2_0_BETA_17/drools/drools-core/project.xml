@@ -1,0 +1,23 @@
+<project>
+    <extend>../project.xml</extend>
+    <pomVersion>3</pomVersion>
+    <name>Drools :: Rete-OO Core</name>
+    <artifactId>drools-core</artifactId>
+    <groupId>drools</groupId>
+
+    <dependencies>
+        <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.2</version>
+            <type>jar</type>
+            <properties/>
+        </dependency>
+    </dependencies>
+
+    <build>
+      <aspectSourceDirectory>src/aspects</aspectSourceDirectory>
+
+    </build>
+
+</project>

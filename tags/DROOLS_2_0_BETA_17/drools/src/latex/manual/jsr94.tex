@@ -1,0 +1,31 @@
+\chapter[JSR-94 : Java$^{TM}$ Rule-Engine API]{JSR-94\\\huge Java$^{TM}$ Rule Engine API}
+\index{JSR-94}
+
+\section{Introduction}
+
+The Java$^{TM}$ Rule-Engine API, known as \emph{JSR-94} is a
+specification developed by the Java Community Process\index{Java
+Community Process} (JCP\index{JCP|see Java Community Process})
+which attempts to standardize the way that applications interact
+with rule-engines.
+
+\section{Scope}
+
+JSR-94 only attempts to standardize the actual Java API for working
+with rule-engines and does not address the authoring of rules at all.
+Each rule-engine still has its own syntax for writing rules.  JSR-94
+\emph{does} proscribe a method of loading a rule definition document
+using a DOM \indexClass{Document} but does not speak as to the
+content of the document being loaded.
+
+The specification also does not address any details regarding the
+underlying implementation or algorithms.  It simply provides a
+consistent manner in which to obtain a rule session, manipulate
+knowledge within it, and to fire rules.
+
+\section{JSR-94 and Drools}
+
+The JSR-94 binding for Drools is an optional module that provides a
+thin wrapper around the client (Chapter~\vref{client.api}) and
+administrative (Chapter~\vref{admin.api}) APIs.
+

@@ -1,0 +1,255 @@
+\chapter{Sisters and Pets}
+
+\lstset{emph={RuleBase,RuleBaseBuilder,WorkingMemory},emphstyle=\color{green}}
+\lstset{basicstyle=\tiny,numbers=left,frame=single,fancyvrb=true,keywordstyle=\color{blue}}
+\chapter{Fibonacci Calculation}
+\section {Background}
+See \href{http://www.mcs.surrey.ac.uk/Personal/R.Knott/Fibonacci/fibnat.html}{Fibonacci Numbers and Golden section in Nature} for more information.  
+\\
+\begin {tabular}{|c|}
+\hline
+The Fibonacci series is formed by adding the latest two numbers\\
+to get the next one, starting from 0 and 1:\\
+\\
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, ...\\ 
+\hline
+\end {tabular}
+
+\section {Making Drools work}
+\subsection {Loading Drools rule(s)}
+Notice when specifying a rules location, it doesn't have to be local.  
+\\ \lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=14,lastline=15}
+
+\subsection {How does Drools find my objects}
+Drools isn't magic.
+It needs to know where to find the objects to inspect. 
+This also gives the programmer more flexibility, you can pick and choose what the rules engine should look at. 
+\\ \lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=16,lastline=23}
+
+\subsection {Telling Drools to start}
+Drools is now running. 
+Notice, that the next lines which are run are not lines 26 or 27. 
+Drools will start calling your event handlers, i.e. rules.
+All of your rules will run, then the program will continue on to the next lines.
+\\ \lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=24,lastline=27}
+
+
+
+\clearpage
+\section {Sample Code}
+\subsection {Fibonacci}
+\lst {../../../drools-examples/src/main/org/drools/examples/fibonacci/Fibonacci.java} {Fibonacci.java}
+
+\clearpage
+\subsection {Fibonacci Example}
+\lst {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java}
+
+\clearpage
+\subsection {Fibonacci DRL}
+\lst {../../../drools-examples/src/main/org/drools/examples/fibonacci/fibonacci.drl} {Fibonacci.drl}
+
+
+
+
+
+\cleardoublepage
+\chapter{Trouble-Ticket Escalation}
+
+\cleardoublepage
+\chapter{Manners Benchmark}
+
+
+
+\cleardoublepage
+\chapter{Fish Monger}
+%\lstset{basicstyle=\tiny,numbers=left,frame=single,fancyvrb=true,keywordstyle=\color{blue}}
+\section{Java Code}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=18,lastline=24}
+\subsection{Creating a Rule Base}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=25,lastline=30}
+
+\subsection{Loading the Rules---XML file}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=31,lastline=41}
+
+\subsection{Adding the Rules to the Rules base}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=42,lastline=48}
+
+\subsection{Feature Request---Two step Rules base}
+I hope all the above can become something like\\
+final URL url = FishMonger.class.getResource("fishmonger.drl");\\
+final RuleSet rules = RulesSetLoader.getRuleSet(url);
+
+
+\clearpage
+\section{Working Memory 101}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=49,lastline=53}
+
+\subsection{Telling the Engine about your Objects}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=54,lastline=91}
+
+\subsection{Telling the Engine to Run!}
+%%\lstLine {../java/examples/fishmonger/FishMonger.java} {FishMonger code} {firstline=99,lastline=105}
+
+
+
+
+\clearpage
+%\lstset{emph={parameter,consequence,condition,rule,rules},emphstyle=\color{green}}
+\section{Drools Rule Logic (.drl) File}
+\subsection{Explode Cart}
+%%\lstLine {../java/examples/fishmonger/fishmonger.drl} {FishMonger DRL} {firstline=9,lastline=33}
+\subsection{Free Fish Food Special}
+%%\lstLine {../java/examples/fishmonger/fishmonger.drl} {FishMonger DRL} {firstline=34,lastline=61}
+
+\clearpage
+\subsection{Suggest a Tank}
+%%\lstLine {../java/examples/fishmonger/fishmonger.drl} {FishMonger DRL} {firstline=62,lastline=83}
+\subsection{Apply a Discount}
+%%\lstLine {../java/examples/fishmonger/fishmonger.drl} {FishMonger DRL} {firstline=84,lastline=101}
+\clearpage
+\subsection{Source code of Fish Monger.drl}
+%\lst {../java/examples/fishmonger/fishmonger.drl} {FishMonger DRL}
+
+
+
+
+
+
+\cleardoublepage
+\section {Output}
+\begin{lstlisting}{fishmonger}
+
+--------------------------------------------------
+ R U N N I N G  fishmonger.FishMonger
+--------------------------------------------------
+
+loading: jar:file[this is specific to your computer!!!]
+----------------------------------------
+    PRE
+----------------------------------------
+[ShoppingCart:
+	      gross total=90.92999999999999
+	 discounted total=90.92999999999999
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+]
+----------------------------------------
+Examining each item in the shopping cart.
+Adding free tropical fish food sample to cart
+Adding free tropical fish food sample to cart
+Adding free tropical fish food sample to cart
+Adding free tropical fish food sample to cart
+Adding free tropical fish food sample to cart
+Adding free tropical fish food sample to cart
+Adding free tropical fish food sample to cart
+*** SUGGESTION: Would you like to buy a tank for your7 fish?
+Applying 15% discount to cart
+----------------------------------------
+    POST
+----------------------------------------
+[ShoppingCart:
+	      gross total=90.92999999999999
+	 discounted total=77.2905
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish'; cost=12.99]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+	[CartItem: name='tropical fish food sample'; cost=0.0]
+]
+----------------------------------------
+\end{lstlisting}
+
+\cleardoublepage
+\section {Sample Code}
+\subsection {Cart Item}
+%\lst {../java/examples/fishmonger/CartItem.java} {Cart Item code}
+
+\cleardoublepage
+\subsection {FishMonger}
+%\lst {../java/examples/fishmonger/FishMonger.java} {FishMonger code}
+
+\cleardoublepage
+\subsection {Shopping Cart}
+%\lst {../java/examples/fishmonger/ShoppingCart.java} {Shopping Cart code}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Family Tree of Baggins}
+\definecolor {CarnationPink} {cmyk}{0,0.63,0,0}
+\begin{figure}[!hbp]
+\center
+	\begin {displaymath}
+	\xymatrix {
+	&& Balbo\ar[dll] \ar[dr]\\
+Mungo \ar [d] &	\textcolor{CarnationPink} {Laura}	&& Lar \ar[d] & \textcolor{CarnationPink} {Tanta}\\
+Bungo \ar[d] &  \textcolor{CarnationPink} {Belladonna}	&& Fosco \ar[d]& \textcolor{CarnationPink} {Ruby}\\
+Bilbo					&&& Drogo\ar[d] & \textcolor{CarnationPink} {Primula} \\
+							&&& Frodo
+}	\end {displaymath}
+\caption{Baggins Family Tree}
+\end{figure}
+\par
+See \href {http://www.tolkienonline.de/etep/Tolkien/FamilyTrees/Bilbo.html} {http://www.tolkienonline.de/etep/Tolkien/FamilyTrees/Bilbo.html}
+
+and \href {http://www.tuckborough.net/baggins.html}
+{http://www.tuckborough.net/baggins.html} for more info
+
+Please note that \textcolor{CarnationPink} {Belladonna} is female.  This will be important later!
+
+
+
+\lstset{basicstyle=\tiny,numbers=left,frame=single,fancyvrb=true,keywordstyle=\color{blue}}
+\section{Java Code}
+
+
+
+\cleardoublepage
+\section {Sample Code}
+\subsection {Person}
+\lst {../../../drools-examples/src/main/org/drools/examples/familyTree/Person.java} {Person code}
+\cleardoublepage
+\subsection {Main}
+\lst {../../../drools-examples/src/main/org/drools/examples/familyTree/Main.java} {Main code}
+
+
+
+
+\cleardoublepage
+\subsection{Source code of Family Tree.drl}
+\lst {../../../drools-examples/src/main/org/drools/examples/familyTree/familyTree.drl} {FamilyTree DRL}
+
+
