@@ -70,7 +70,7 @@ public class WorkingMemoryImpl
 
     protected FactHandle newFactHandle()
     {
-        return new FactHandle( ++this.handleCounter );
+        return new FactHandleImpl( ++this.handleCounter );
     }
 
     /** Retrieve the application data that is associated with
