@@ -2,9 +2,9 @@
           uri="http://drools.org/semantics/python">
 
     <s:condition name="condition"
-                 classname="org.drools.semantics.python.ExprCondition"/>
+                 classname="org.drools.semantics.python.PythonCondition"/>
 
     <s:consequence name="consequence"
-                   classname="org.drools.semantics.python.BlockConsequence"/>
+                   classname="org.drools.semantics.python.PythonBlockConsequence"/>
 
 </s:module>

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
-* $Id: PythonConditionFactory.java,v 1.1 2004-12-07 15:17:10 simon Exp $
+* $Id: PythonConditionFactory.java,v 1.2 2004-12-08 23:07:50 simon Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -63,7 +63,7 @@ public class PythonConditionFactory
     {
         try
         {
-            return new ExprCondition( config.getText( ),
+            return new PythonCondition( config.getText( ),
                                       rule );
         }
         catch ( Exception e )

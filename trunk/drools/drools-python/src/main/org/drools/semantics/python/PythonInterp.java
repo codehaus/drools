@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.26 2004-12-07 15:44:36 simon Exp $
+ * $Id: PythonInterp.java,v 1.1 2004-12-08 23:07:50 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -68,12 +68,9 @@ import java.util.Map;
 /**
  * Base class for Jython interpreter-based Python semantic components.
  *
- * @see Eval
- * @see Exec
- *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class Interp
+public class PythonInterp
 {
     /** The line separator system property ("\n" on UNIX). */
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
@@ -124,7 +121,7 @@ public class Interp
     /**
      * Construct.
      */
-    protected Interp(String text,
+    protected PythonInterp(String text,
                      Rule rule,
                      String type)
     {
@@ -400,7 +397,7 @@ public class Interp
 
         if ( cl == null )
         {
-            cl = Interp.class.getClassLoader( );
+            cl = PythonInterp.class.getClassLoader( );
         }
 
         while ( declIter.hasNext( ) )

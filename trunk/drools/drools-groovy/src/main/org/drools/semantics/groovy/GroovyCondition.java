@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyCondition.java,v 1.1 2004-12-08 22:46:06 simon Exp $
+ * $Id: GroovyCondition.java,v 1.2 2004-12-08 23:07:50 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,12 +67,11 @@ public class GroovyCondition extends GroovyInterp implements Condition
     //     Constructors
     // ------------------------------------------------------------
 
-
     /**
      * Construct.
      */
-    protected GroovyCondition( String text,
-                               Rule rule ) throws Exception
+    public GroovyCondition( String text,
+                            Rule rule ) throws Exception
     {
         super( text,
                rule );

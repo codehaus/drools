@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: BlockConsequence.java,v 1.14 2004-11-29 12:35:52 simon Exp $
+ * $Id: PythonBlockConsequence.java,v 1.1 2004-12-08 23:07:50 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,14 +46,14 @@ import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
-import org.python.core.PyDictionary;
+import org.python.core.Py;
 
 /**
  * Python block semantics <code>Consequence</code>.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class BlockConsequence extends Exec implements Consequence
+public class PythonBlockConsequence extends PythonInterp implements Consequence
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -61,12 +61,13 @@ public class BlockConsequence extends Exec implements Consequence
 
     /**
      * Construct.
-     *
-     * @param text The block text.
      */
-    public BlockConsequence(String text, Rule rule)
+    protected PythonBlockConsequence( String text,
+                                      Rule rule )
     {
-        super( text, rule );
+        super( text,
+               rule,
+               "exec" );
     }
 
     // ------------------------------------------------------------
@@ -86,12 +87,14 @@ public class BlockConsequence extends Exec implements Consequence
      * @throws ConsequenceException If an error occurs while attempting to
      *         invoke the consequence.
      */
-    public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+    public void invoke( Tuple tuple,
+                        WorkingMemory workingMemory ) throws ConsequenceException
     {
         try
         {
-            PyDictionary dict = setUpDictionary( tuple );
-            execute( dict );
+            Py.runCode( getCode( ),
+                        setUpDictionary( tuple ),
+                        getGlobals( ) );
         }
         catch ( Exception e )
         {
