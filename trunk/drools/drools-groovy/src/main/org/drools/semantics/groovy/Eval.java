@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: Eval.java,v 1.3 2004-06-30 21:46:32 bob Exp $
+ $Id: Eval.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.drools.spi.Tuple;
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>  
  *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Eval.java,v 1.3 2004-06-30 21:46:32 bob Exp $
+ *  @version $Id: Eval.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
  */
 public class Eval extends Interp {
     // ------------------------------------------------------------
@@ -81,6 +81,13 @@ public class Eval extends Interp {
               "eval");
 
         this.decls = analyze(availDecls);
+    }
+
+    /**
+     * Default constructor - required for serialization
+     */
+    public Eval() {
+        super();
     }
 
     // ------------------------------------------------------------

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprCondition.java,v 1.2 2004-06-11 09:53:22 ckl Exp $
+ $Id: ExprCondition.java,v 1.3 2004-07-16 19:03:34 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.spi.Tuple;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  *
- *  @version $Id: ExprCondition.java,v 1.2 2004-06-11 09:53:22 ckl Exp $
+ *  @version $Id: ExprCondition.java,v 1.3 2004-07-16 19:03:34 dbarnett Exp $
  */
 public class ExprCondition extends Eval implements Condition {
     // ------------------------------------------------------------
@@ -69,6 +69,13 @@ public class ExprCondition extends Eval implements Condition {
      */
     public ExprCondition(String expr, Declaration[] availDecls) throws Exception {
         super(expr, availDecls);
+    }
+
+    /**
+     * Default constructor - required for serialization
+     */
+    public ExprCondition() {
+        super();
     }
 
     // ------------------------------------------------------------

@@ -39,6 +39,7 @@
       <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
             fork="true">
         <arg value="org.osjava.jndi.PropertiesFactory"/>
+        <arg value="fibonacci.java.drl"/>
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
@@ -53,6 +54,30 @@
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
+          <arg value="fibonacci.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacciJNDI-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
+            fork="true">
+          <arg value="org.osjava.jndi.PropertiesFactory"/>
+          <arg value="fibonacci.groovy.drl"/>
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="fibonacciSerialized-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.groovy.drl"/>
       </java>
     </goal>
 

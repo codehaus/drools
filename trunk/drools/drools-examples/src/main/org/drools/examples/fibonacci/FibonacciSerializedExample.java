@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciSerializedExample.java,v 1.1 2004-07-07 04:45:21 dbarnett Exp $
+$Id: FibonacciSerializedExample.java,v 1.2 2004-07-16 19:03:34 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -63,7 +63,7 @@ public class FibonacciSerializedExample
     private static RuleBase getSerializedRuleBase(String drl)
         throws Exception
     {
-        RuleBase ruleBaseIn = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( drl ) );
+        RuleBase ruleBaseIn = RuleBaseBuilder.buildFromUrl( FibonacciSerializedExample.class.getResource( drl ) );
 
         // Serialize to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
@@ -84,7 +84,13 @@ public class FibonacciSerializedExample
     public static void main(String[] args)
         throws Exception
     {
-        RuleBase ruleBase = getSerializedRuleBase("fibonacci.java.drl");
+        if (args.length != 1) {
+            System.out.println("Usage: " + FibonacciSerializedExample.class.getName() + " [drl file]");
+            return;
+        }
+        System.out.println("Using drl: " + args[0]);
+
+        RuleBase ruleBase = getSerializedRuleBase(args[0]);
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 

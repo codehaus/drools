@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.3 2004-06-30 21:46:32 bob Exp $
+ * $Id: Interp.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -49,6 +49,8 @@ import groovy.lang.Script;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Map;
+import java.io.IOException;
+import java.io.Serializable;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
@@ -64,9 +66,9 @@ import org.drools.spi.KnowledgeHelper;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Interp.java,v 1.3 2004-06-30 21:46:32 bob Exp $
+ * @version $Id: Interp.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
  */
-public class Interp {
+public class Interp implements Serializable {
 
     // ------------------------------------------------------------
     //     Instance members
@@ -84,24 +86,21 @@ public class Interp {
     /**
      * Construct.
      */
-    protected Interp(String text,
-                     String type) {
-        this.text = text;
-        
-        try {
-            GroovyCodeSource codeSource = new GroovyCodeSource( text,
-                                                                "groovy.script",
-                                                                "groovy.script" );
-            
-            GroovyClassLoader loader = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
-
-            Class class1 = loader.parseClass(codeSource);
-            
-            this.code = (Script) class1.newInstance();
-
+    protected Interp(String text, String type) {
+       this.text = text;
+       try {
+           this.code = buildScript(text);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Default constructor - required for serialization
+     */
+    protected Interp() {
+        text = null;
+        code = null;
     }
 
     // ------------------------------------------------------------
@@ -160,5 +159,36 @@ public class Interp {
         }
 
         return dict;
+    }
+
+    protected Script buildScript(String text) throws Exception {
+        GroovyCodeSource codeSource = new GroovyCodeSource( text,"groovy.script","groovy.script" );
+        GroovyClassLoader loader = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
+        Class clazz = loader.parseClass(codeSource);
+
+        return ((Script) clazz.newInstance());
+    }
+
+    /**
+     * Extra work for serialization...
+     */
+    private void writeObject(java.io.ObjectOutputStream out)
+            throws IOException {
+        this.code = null;
+        out.defaultWriteObject();
+    }
+
+    /**
+     * Extra work for serialization.
+     * re-creates the script object that is not serialized
+     */
+    private void readObject(java.io.ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        try {
+            this.code = buildScript(this.getText());
+        } catch (Exception e) {
+            throw new IOException("Error re-serializing Code Object. Error:" + e.getMessage());
+        }
     }
 }

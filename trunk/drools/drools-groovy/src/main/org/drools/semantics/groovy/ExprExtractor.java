@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprExtractor.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: ExprExtractor.java,v 1.2 2004-07-16 19:03:34 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.spi.Tuple;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ *  @version $Id: ExprExtractor.java,v 1.2 2004-07-16 19:03:34 dbarnett Exp $
  */
 public class ExprExtractor extends Eval implements Extractor {
     // ------------------------------------------------------------
@@ -69,6 +69,10 @@ public class ExprExtractor extends Eval implements Extractor {
      */
     public ExprExtractor(String expr, Declaration[] availDecls) throws Exception {
         super(expr, availDecls);
+    }
+
+    public ExprExtractor() {
+        super();
     }
 
     // ------------------------------------------------------------

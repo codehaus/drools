@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: Exec.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
+ $Id: Exec.java,v 1.3 2004-07-16 19:03:34 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.drools.spi.Tuple;
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Exec.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
+ *  @version $Id: Exec.java,v 1.3 2004-07-16 19:03:34 dbarnett Exp $
  */
 public class Exec extends Interp {
     // ------------------------------------------------------------
@@ -69,6 +69,13 @@ public class Exec extends Interp {
      */
     protected Exec(String text) {
         super(text, "exec");
+    }
+
+    /**
+     * Default constructor - required for serialization
+     */
+    protected Exec() {
+        super();
     }
 
     // ------------------------------------------------------------
