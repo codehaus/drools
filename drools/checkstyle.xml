@@ -79,7 +79,7 @@
             <!-- the ${basedir} property to allow Checkstyle to be run  -->
             <!-- from any directory within a project.                   -->
             <property name="headerFile" value="${checkstyle.header.file}"/>
-            <property name="ignoreLines" value="1,2,3,4,5,6"/>
+            <property name="ignoreLines" value="1,4,6"/>
         </module>
 
         <!-- Following interprets the header file as regular expressions. -->
