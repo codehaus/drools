@@ -38,7 +38,7 @@ public class ReteTuple implements Tuple
     }
 
     public void putKeyColumn(Declaration declaration,
-                      Object value)
+                             Object value)
     {
         this.keyColumns.put( declaration,
                              value );
@@ -50,7 +50,7 @@ public class ReteTuple implements Tuple
     }
 
     public void putOtherColumn(Declaration declaration,
-                        Object value)
+                               Object value)
     {
         this.otherColumns.put( declaration,
                                value );
@@ -74,6 +74,16 @@ public class ReteTuple implements Tuple
     public boolean containsRootFactObject(Object object)
     {
         return this.keyColumns.containsValue( object );
+    }
+
+    public boolean dependsOn(Object object)
+    {
+        return this.keyColumns.containsValue( object );
+    }
+
+    public boolean hasSameIdentity(ReteTuple that)
+    {
+        return this.keyColumns.equals( that.keyColumns );
     }
 
     public Object get(Declaration declaration)

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Collections;
 
@@ -81,6 +82,84 @@ public class JoinMemory
                 tupleIter.remove();
             }
         }
+    }
+
+    protected void modifyLeft(Object trigger,
+                              TupleSet tuples)
+    {
+        Set origModified = new HashSet();
+        Set newModified  = new HashSet();
+        Set retracted    = new HashSet();
+
+        Iterator  tupleIter = getLeftTupleIterator();
+        ReteTuple eachTuple = null;
+        ReteTuple newTuple  = null;
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            if ( eachTuple.dependsOn( trigger ) )
+            {
+                newTuple = tuples.getTuple( eachTuple.getKeyColumns() );
+
+                if ( newTuple == null )
+                {
+                    tupleIter.remove();
+                    retracted.add( eachTuple );
+                }
+                else
+                {
+                    origModified.add( eachTuple );
+                    newModified.add( newTuple );
+                }
+            }
+        }
+
+        List joinedRetracted = new ArrayList();
+
+        tupleIter = retracted.iterator();
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            joinedRetracted.addAll( attemptJoin( eachTuple,
+                                                 getRightTupleIterator() ) );
+        }
+
+        List origJoined = new ArrayList();
+
+        tupleIter = origModified.iterator();
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            origJoined.addAll( attemptJoin( eachTuple,
+                                            getRightTupleIterator() ) );
+        }
+
+        List newJoined = new ArrayList();
+
+        tupleIter = newModified.iterator();
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            newJoined.addAll( attemptJoin( eachTuple,
+                                           getRightTupleIterator() ) );
+        }
+
+        /*
+        tupleIter = origJoined.iterator();
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+        }
+        */
     }
 
     /** Add a {@link ReteTuple} received from the <code>JoinNode's</code>
