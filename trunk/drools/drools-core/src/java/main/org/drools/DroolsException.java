@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: DroolsException.java,v 1.8 2002-08-20 21:19:55 bob Exp $
+ $Id: DroolsException.java,v 1.9 2002-08-23 17:52:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Locale;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DroolsException.java,v 1.8 2002-08-20 21:19:55 bob Exp $
+ *  @version $Id: DroolsException.java,v 1.9 2002-08-23 17:52:32 bob Exp $
  */
 public class DroolsException extends Exception
 {
@@ -108,85 +108,6 @@ public class DroolsException extends Exception
         return this.rootCause;
     }
 
-    /** Retrieve the message for this exception, 
-     *  ignoring any root cause.
-     *
-     *  @return The message.
-     */
-    public String getMyMessage()
-    {
-        String msg = super.getMessage();
-
-        if ( msg == null
-             ||
-             msg.equals( "" ) )
-        {
-            msg = getClass().getName();
-        }
-
-        return msg;
-    }
-
-    /** Retrieve the message for this exception, localized
-     *  to the default locale, ignoring any root cause.
-     *
-     *  @return The localized message.
-     */
-    public String getMyLocalizedMessage()
-    {
-        String msg = super.getLocalizedMessage();
-
-        if ( msg == null
-             ||
-             msg.equals( "" ) )
-        {
-            msg = getClass().getName();
-        }
-
-        return msg;
-    }
-
-    /** Retrieve the message for this exception, localized
-     *  to a specific locale, ignoring any root cause.
-     *
-     *  @param locale The locale
-     *
-     *  @return The localized message.
-     */
-    public String getMyLocalizedMessage(Locale locale)
-    {
-        return getMyLocalizedMessage();
-    }
-
-
-    /** Print this exception's stack trace, ignoring
-     *  any root cause.
-     */
-    public void printMyStackTrace()
-    {
-        super.printStackTrace();
-    }
-
-    /** Print this exception's stack trace, ignoring
-     *  any root cause.
-     *
-     *  @param s The output sink.
-     */
-    public void printMyStackTrace(PrintStream s)
-    {
-        super.printStackTrace( s );
-    }
-
-    /** Print this exception's stack trace, ignoring
-     *  any root cause.
-     *
-     *  @param s The output sink.
-     */
-    public void printMyStackTrace(PrintWriter s)
-    {
-        super.printStackTrace( s );
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     java.lang.Exception
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -201,12 +122,12 @@ public class DroolsException extends Exception
 
         if ( rootCause == null )
         {
-            return getMyMessage();
+            return super.getMessage();
         }
 
         StringBuffer msg = new StringBuffer();
 
-        msg.append( getMyMessage() );
+        msg.append( super.getMessage() );
 
         msg.append( " : " );
 
@@ -226,12 +147,12 @@ public class DroolsException extends Exception
 
         if ( rootCause == null )
         {
-            return getMyLocalizedMessage();
+            return super.getMessage();
         }
 
         StringBuffer msg = new StringBuffer();
 
-        msg.append( getMyMessage() );
+        msg.append( super.getLocalizedMessage() );
 
         msg.append( " : " );
 
@@ -240,69 +161,19 @@ public class DroolsException extends Exception
         return msg.toString();
     }
 
-    /** Retrieve the error message localized 
-     *  to a specific locale.
-     *
-     *  @param locale The locale
-     *
-     *  @return The error message.
-     */
-    public String getLocalizedMessage(Locale locale)
-    {
-        Throwable rootCause = getRootCause();
-
-        if ( rootCause == null )
-        {
-            return getMyLocalizedMessage( locale );
-        }
-
-        StringBuffer msg = new StringBuffer();
-
-        msg.append( getMyMessage() );
-
-        msg.append( " : " );
-
-        if ( rootCause instanceof DroolsException )
-        {
-            msg.append( ((DroolsException)rootCause).getLocalizedMessage( locale ) );
-        }
-        else
-        {
-            msg.append( rootCause.getLocalizedMessage() );
-        }
-
-        return msg.toString();
-    }
-
-    /** Print the stack trace.
-     */
-    public void printStackTrace()
-    {
-        printMyStackTrace();
-
-        Throwable rootCause = getRootCause();
-
-        if ( rootCause != null )
-        {
-            System.err.println( "\nnested exception was: " );
-
-            rootCause.printStackTrace();
-        }
-    }
-
     /** Print the stack trace.
      *
      *  @param s The output sink.
      */
     public void printStackTrace(PrintStream s)
     {
-        printMyStackTrace();
+        super.printStackTrace( s );
 
         Throwable rootCause = getRootCause();
 
         if ( rootCause != null )
         {
-            System.err.println( "\nnested exception was: " );
+            System.err.println( "Nested exception was: " );
             rootCause.printStackTrace( s );
         }
     }
@@ -313,13 +184,13 @@ public class DroolsException extends Exception
      */
     public void printStackTrace(PrintWriter s)
     {
-        printMyStackTrace();
+        super.printStackTrace( s );
 
         Throwable rootCause = getRootCause();
 
         if ( rootCause != null )
         {
-            System.err.println( "\nnested exception was: " );
+            System.err.println( "Nested exception was: " );
             rootCause.printStackTrace( s );
         }
     }
