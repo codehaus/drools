@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooDotDumpVisitor.java,v 1.9 2004-12-06 04:55:08 dbarnett Exp $
+ * $Id: ReteooDotDumpVisitor.java,v 1.10 2004-12-14 20:08:18 dbarnett Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -326,8 +326,9 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
     }
 
     /**
-     * Formats text for display by converting line-breaks into \n for
-     * compatibility with GraphViz DOT.
+     * Formats text for compatibility with GraphViz DOT.
+     * Converting line-breaks into '\' + 'n'.
+     * Escapes double-quotes.
      */
     private static String format(String label)
     {
@@ -356,7 +357,26 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
                 {
                     buffer.append( "\\n" );
                 }
-                buffer.append( line );
+                
+                if ( -1 == line.indexOf( '"' ) )
+                {
+                    buffer.append( line );
+                }
+                else
+                {
+                    for ( int i = 0, max = line.length( ); i < max; ++i )
+                    {
+                        char c = line.charAt( i );
+                        if ( '"' == c )
+                        {
+                            buffer.append( '\\' + c );
+                        }
+                        else
+                        {
+                            buffer.append( c );
+                        }
+                    }
+                }
             }
         }
         catch ( IOException e )
