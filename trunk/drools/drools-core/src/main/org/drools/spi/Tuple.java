@@ -1,9 +1,9 @@
 package org.drools.spi;
 
 /*
- $Id: Tuple.java,v 1.7 2003-10-15 20:03:59 bob Exp $
+ $Id: Tuple.java,v 1.8 2003-11-19 21:31:12 bob Exp $
 
- Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -25,11 +25,11 @@ package org.drools.spi;
  
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a registered
-    trademark of The Werken Company.
+    permission of The Werken Company. "drools" is a trademark of 
+    The Werken Company.
  
  5. Due credit should be given to The Werken Company.
-    (http://drools.werken.com/).
+    (http://werken.com/)
  
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
@@ -55,9 +55,9 @@ import org.drools.rule.Declaration;
  *
  *  @see Declaration
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Tuple.java,v 1.7 2003-10-15 20:03:59 bob Exp $
+ *  @version $Id: Tuple.java,v 1.8 2003-11-19 21:31:12 bob Exp $
  */
 public interface Tuple
 {
@@ -77,5 +77,20 @@ public interface Tuple
      */
     Set getDeclarations();
 
+    /** Retrieve the <code>FactHandle</code> for a given object.
+     *
+     *  <p>
+     *  Within a consequence of a rule, if the desire is to
+     *  retract or modify a root fact this method provides a
+     *  way to retrieve the <code>FactHandle</code>.
+     *  Facts that are <b>not</b> root fact objects have no
+     *  handle.
+     *  </p>
+     *
+     *  @param object The object.
+     *
+     *  @return The fact-handle or <code>null</code> if the
+     *          supplied object is not a root fact object.
+     */
     FactHandle getFactHandleForObject(Object object);
 }

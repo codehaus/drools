@@ -1,9 +1,9 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticComponentException.java,v 1.1 2002-08-02 19:48:52 bob Exp $
+ $Id: SemanticComponentException.java,v 1.2 2003-11-19 21:31:11 bob Exp $
 
- Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -25,11 +25,11 @@ package org.drools.smf;
  
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a registered
-    trademark of The Werken Company.
+    permission of The Werken Company. "drools" is a trademark of 
+    The Werken Company.
  
  5. Due credit should be given to The Werken Company.
-    (http://drools.werken.com/).
+    (http://werken.com/)
  
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
@@ -49,9 +49,10 @@ package org.drools.smf;
 /** Indicates an attempt to add an invalid semantic component to
  *  a semantic module.
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */
-public abstract class SemanticComponentException extends SemanticModuleException
+public abstract class SemanticComponentException
+    extends SemanticModuleException
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -87,12 +88,8 @@ public abstract class SemanticComponentException extends SemanticModuleException
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the error message.
-     *
-     *  @return The error message.
+    /** @see Throwable
      */
     public abstract String getMessage();
 }

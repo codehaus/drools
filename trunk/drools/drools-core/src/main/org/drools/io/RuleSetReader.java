@@ -1,5 +1,51 @@
 package org.drools.io;
 
+/*
+ $Id: RuleSetReader.java,v 1.6 2003-11-19 21:31:10 bob Exp $
+
+ Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ 
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+    statements and notices.  Redistributions must also contain a
+    copy of this document.
+ 
+ 2. Redistributions in binary form must reproduce the
+    above copyright notice, this list of conditions and the
+    following disclaimer in the documentation and/or other
+    materials provided with the distribution.
+ 
+ 3. The name "drools" must not be used to endorse or promote
+    products derived from this Software without prior written
+    permission of The Werken Company.  For written permission,
+    please contact bob@werken.com.
+ 
+ 4. Products derived from this Software may not be called "drools"
+    nor may "drools" appear in their names without prior written
+    permission of The Werken Company. "drools" is a trademark of 
+    The Werken Company.
+ 
+ 5. Due credit should be given to The Werken Company.
+    (http://werken.com/)
+ 
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ */
+
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.rule.Declaration;
@@ -14,8 +60,10 @@ import org.drools.smf.SemanticModule;
 import org.drools.smf.SemanticsRepository;
 import org.drools.smf.ConfigurableObjectType;
 import org.drools.smf.ConfigurableCondition;
+import org.drools.smf.ConfigurableExtractor;
 import org.drools.smf.ConfigurableConsequence;
 import org.drools.smf.ConfigurationException;
+import org.drools.smf.DefaultSemanticsRepository;
 import org.drools.smf.NoSuchSemanticModuleException;
 
 import org.xml.sax.Attributes;
@@ -59,17 +107,8 @@ public class RuleSetReader
 
     private SemanticsRepository repo;
 
-    public RuleSetReader(SemanticsRepository repo,
-                         SAXParser parser)
+    public RuleSetReader()
     {
-        this( repo );
-
-        this.parser = parser;
-    }
-
-    public RuleSetReader(SemanticsRepository repo)
-    {
-        this.repo               = repo;
         this.starters           = new HashMap();
         this.enders             = new HashMap();
         this.configurationStack = new LinkedList();
@@ -166,6 +205,26 @@ public class RuleSetReader
                    } );
     }
 
+    public RuleSetReader(SAXParser parser)
+    {
+        this();
+        this.parser = parser;
+    }
+
+    public RuleSetReader(SemanticsRepository repo,
+                         SAXParser parser)
+    {
+        this( parser );
+        this.repo = repo;
+    }
+
+    public RuleSetReader(SemanticsRepository repo)
+    {
+        this();
+        this.repo = repo;
+    }
+
+
     public RuleSet read(URL url)
         throws Exception
     {
@@ -206,6 +265,11 @@ public class RuleSetReader
         else
         {
             parser = this.parser;
+        }
+
+        if ( this.repo == null )
+        {
+            this.repo = DefaultSemanticsRepository.getInstance();
         }
 
         parser.parse( in,
@@ -261,6 +325,12 @@ public class RuleSetReader
                                         localName,
                                         attrs );
                     }
+                    else if ( module.getExtractorNames().contains( localName ) )
+                    {
+                        startExtraction( module,
+                                         localName,
+                                         attrs );
+                    }
                     else if ( module.getConsequenceNames().contains( localName ) )
                     {
                         startConsequence( module,
@@ -301,6 +371,10 @@ public class RuleSetReader
                 else if ( this.condition != null )
                 {
                     endCondition();
+                }
+                else if ( this.extraction != null )
+                {
+                    endExtraction();
                 }
                 else if ( this.consequence != null )
                 {
@@ -545,18 +619,85 @@ public class RuleSetReader
         this.objectType = null;
     }
 
-    protected void startExtraction(String uri,
+    protected void startExtraction(SemanticModule module,
                                    String localName,
                                    Attributes attrs)
         throws SAXException
     {
+        Class extractorClass = module.getExtractor( localName );
 
+        if ( ! Extractor.class.isAssignableFrom( extractorClass ) )
+        {
+            throw new SAXParseException( extractorClass.getName() + " is not a valid extractor",
+                                         getLocator() );
+        }
+        
+        String targetDeclName = attrs.getValue( "target" );
+
+        if ( targetDeclName == null
+             ||
+             targetDeclName.trim().equals( "" ) )
+        {
+            throw new SAXParseException( "extraction requires a 'target' attribute",
+                                         getLocator() );
+        }
+        
+        Declaration targetDecl = this.rule.getDeclaration( targetDeclName.trim() );
+
+        if ( targetDecl == null )
+        {
+            throw new SAXParseException( "'" + targetDeclName + "' is not a valid declaration",
+                                         getLocator() );
+        }
+
+        try
+        {
+            Extractor extractor = (Extractor) extractorClass.newInstance();
+
+            this.extraction = new Extraction( targetDecl,
+                                              extractor );
+
+            startConfiguration( localName,
+                                attrs );
+        }
+        catch (InstantiationException e)
+        {
+            throw new SAXParseException( "instantiation exception '" + extractorClass.getName() + "'",
+                                         getLocator(),
+                                         e );
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new SAXParseException( "illegal access exception '" + extractorClass.getName() + "'",
+                                         getLocator(),
+                                         e );
+        }
     }
 
     protected void endExtraction()
         throws SAXException
     {
+        this.rule.addExtraction( this.extraction );
 
+        Configuration config = endConfiguration();
+
+        if ( this.extraction.getExtractor() instanceof ConfigurableExtractor )
+        {
+            try
+            {
+                ((ConfigurableExtractor)this.extraction.getExtractor()).configure( config,
+                                                                                  this.rule.getAllDeclarations() );
+            }
+            catch (ConfigurationException e)
+            {
+                e.printStackTrace();
+                throw new SAXParseException( "configuration exception",
+                                             getLocator(),
+                                             e );
+            }
+        }
+
+        this.extraction = null;
     }
 
     protected void startCondition(SemanticModule module,
@@ -761,13 +902,13 @@ public class RuleSetReader
                          ender );
     }
 
-    static abstract class Starter
+    abstract static class Starter
     {
         abstract void start(Attributes attrs)
             throws SAXException;
     }
 
-    static abstract class Ender
+    abstract static class Ender
     {
         abstract void end()
             throws SAXException;

@@ -1,9 +1,9 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.7 2003-10-30 05:05:48 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.8 2003-11-19 21:31:11 bob Exp $
 
- Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -25,11 +25,11 @@ package org.drools.smf;
  
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a registered
-    trademark of The Werken Company.
+    permission of The Werken Company. "drools" is a trademark of 
+    The Werken Company.
  
  5. Due credit should be given to The Werken Company.
-    (http://drools.werken.com/).
+    (http://werken.com/)
  
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
@@ -59,9 +59,10 @@ import java.util.Set;
  *
  *  @see org.drools.spi
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */
-public class SimpleSemanticModule implements SemanticModule
+public class SimpleSemanticModule
+    implements SemanticModule
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -104,9 +105,7 @@ public class SimpleSemanticModule implements SemanticModule
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the URI that identifies this semantic module.
-     *
-     *  @return The URI.
+    /** @see SemanticModule
      */
     public String getUri()
     {
@@ -133,21 +132,14 @@ public class SimpleSemanticModule implements SemanticModule
                               objectType );
     }
 
-    /** Retrieve a semantic object type by name.
-     *
-     *  @param name the name.
-     *
-     *  @return The object type implementation or <code>null</code>
-     *          if none is bound to the name.
-     */   
+    /** @see SemanticModule
+     */
     public Class getObjectType(String name)
     {
         return (Class) this.objectTypes.get( name );
     }
 
-    /** Retrieve the set of all object type names.
-     *
-     *  @return The set of names.
+    /** @see SemanticModule
      */
     public Set getObjectTypeNames()
     {
@@ -174,21 +166,14 @@ public class SimpleSemanticModule implements SemanticModule
                              condition );
     }
 
-    /** Retrieve a semantic condition by name.
-     *
-     *  @param name the name.
-     *
-     *  @return The condition implementation or <code>null</code>
-     *          if none is bound to the name.
-     */   
+    /** @see SemanticModule
+     */
     public Class getCondition(String name)
     {
         return (Class) this.conditions.get( name );
     }
 
-    /** Retrieve the set of all condition names.
-     *
-     *  @return The set of names.
+    /** @see SemanticModule
      */
     public Set getConditionNames()
     {
@@ -215,21 +200,14 @@ public class SimpleSemanticModule implements SemanticModule
                              extractor );
     }
 
-    /** Retrieve a semantic extractor by name.
-     *
-     *  @param name the name.
-     *
-     *  @return The extractor implementation or <code>null</code>
-     *          if none is bound to the name.
+    /** @see SemanticModule
      */
     public Class getExtractor(String name)
     {
         return (Class) this.extractors.get( name );
     }
 
-    /** Retrieve the set of all object type names.
-     *
-     *  @return The set of names.
+    /** @see SemanticModule
      */
     public Set getExtractorNames()
     {
@@ -256,21 +234,14 @@ public class SimpleSemanticModule implements SemanticModule
                           consequence );
     }
 
-    /** Retrieve a semantic consequence by name.
-     *
-     *  @param name the name.
-     *
-     *  @return The consequence implementation or <code>null</code>
-     *          if none is bound to the name.
+    /** @see SemanticModule
      */
     public Class getConsequence(String name)
     {
         return (Class) this.consequences.get( name );
     }
 
-    /** Retrieve the set of all object type names.
-     *
-     *  @return The set of names.
+    /** @see SemanticModule
      */
     public Set getConsequenceNames()
     {
