@@ -1,32 +1,32 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.7 2004-11-03 22:54:36 mproctor Exp $
- * 
+ * $Id: Interp.java,v 1.8 2004-11-13 13:27:16 simon Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,38 +38,35 @@ package org.drools.semantics.groovy;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.Script;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
-import org.drools.rule.Imports;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Base class for Groovy based semantic components.
- * 
+ *
  * @see Eval
  * @see Exec
- * 
+ *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
- * 
- * @version $Id: Interp.java,v 1.7 2004-11-03 22:54:36 mproctor Exp $
+ *
+ * @version $Id: Interp.java,v 1.8 2004-11-13 13:27:16 simon Exp $
  */
 public class Interp implements Serializable
 {
@@ -82,7 +79,7 @@ public class Interp implements Serializable
     private String text;
 
     private Script code;
-    
+
     private String newline = System.getProperty( "line.separator" );
 
     // ------------------------------------------------------------
@@ -101,7 +98,7 @@ public class Interp implements Serializable
             if (imports != null)
             {
                 Iterator it =imports.iterator();
-                
+
                 while (it.hasNext())
                 {
                     ImportEntry importEntry = (ImportEntry) it.next();
@@ -112,7 +109,7 @@ public class Interp implements Serializable
                         newText.append(";");
                         newText.append(newline);
                     }
-                }                   
+                }
             }
             newText.append(text);
             this.code = buildScript( newText.toString() );
@@ -138,7 +135,7 @@ public class Interp implements Serializable
 
     /**
      * Retrieve the text to evaluate.
-     * 
+     *
      * @return The text to evaluate.
      */
     public String getText()
@@ -154,9 +151,9 @@ public class Interp implements Serializable
     /**
      * Configure a <code>ScriptContext</code> using a <code>Tuple</code> for
      * variable bindings.
-     * 
+     *
      * @param tuple Tuple containing variable bindings.
-     * 
+     *
      * @return The dictionary
      */
     protected Binding setUpDictionary(Tuple tuple)
@@ -168,8 +165,7 @@ public class Interp implements Serializable
         {
             Declaration eachDecl = ( Declaration ) declIter.next( );
 
-            dict.setVariable( eachDecl.getIdentifier( ).intern( ),
-                              tuple.get( eachDecl ) );
+            dict.setVariable( eachDecl.getIdentifier( ).intern( ), tuple.get( eachDecl ) );
         }
 
         WorkingMemory workingMemory = tuple.getWorkingMemory( );
@@ -178,8 +174,7 @@ public class Interp implements Serializable
 
         Map appDataMap = workingMemory.getApplicationDataMap( );
 
-        for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter
-                                                                          .hasNext( ); )
+        for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter.hasNext(); )
         {
             String key = ( String ) keyIter.next( );
             Object value = appDataMap.get( key );

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.33 2004-11-13 13:19:33 simon Exp $
+ * $Id: BlockConsequence.java,v 1.34 2004-11-13 13:27:16 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,16 +62,17 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: BlockConsequence.java,v 1.33 2004-11-13 13:19:33 simon Exp $
+ * @version $Id: BlockConsequence.java,v 1.34 2004-11-13 13:27:16 simon Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
-    private transient Script      script;
+    private transient Script        script;
 
-    private String                block;
+    private transient Declaration[] params;
 
-    private static final String[] scriptParamNames = new String[]{"tuple",
-                                                                  "decls", "drools", "applicationData"           };
+    private String                  block;
+
+    private static final String[]   scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
 
     // ------------------------------------------------------------
     //     Constructors
@@ -109,13 +110,14 @@ public class BlockConsequence implements Consequence, Serializable
     {
         try
         {
-            Set decls = tuple.getDeclarations( );
-            Declaration[] params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
-            Arrays.sort( params );
             Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
 
             if ( script == null )
             {
+                Set decls = tuple.getDeclarations();
+                this.params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size() ] );
+                Arrays.sort( this.params );
+
                 Set imports = new HashSet();
                 if (tuple.getRule().getImports() != null)
                 {
@@ -148,7 +150,7 @@ public class BlockConsequence implements Consequence, Serializable
                 }
             }
 
-            script.invoke( tuple, params, new KnowledgeHelper( tuple ), applicationData );
+            script.invoke( tuple, this.params, new KnowledgeHelper( tuple ), applicationData );
         }
         catch ( Exception e )
         {
