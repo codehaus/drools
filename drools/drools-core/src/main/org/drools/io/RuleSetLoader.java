@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetLoader.java,v 1.3 2003-06-18 17:04:36 tdiesler Exp $
+ $Id: RuleSetLoader.java,v 1.4 2003-06-19 09:27:10 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,6 +56,9 @@ import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.parser.XMLParser;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +69,7 @@ import java.util.HashMap;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetLoader.java,v 1.3 2003-06-18 17:04:36 tdiesler Exp $
+ *  @version $Id: RuleSetLoader.java,v 1.4 2003-06-19 09:27:10 tdiesler Exp $
  */
 public class RuleSetLoader
 {
@@ -107,24 +110,17 @@ public class RuleSetLoader
         this.ruleSets.add(ruleSet);
     }
 
-    /** Load <code>RuleSet</code> deifnitions from a URL.
+    /** Load <code>RuleSet</code> definitions from a Reader.
      *
-     *  @param url The URL of the rule-set definitions.
+     *  @param reader The Reader of the rule-set definitions.
      *
      *  @return The list of loaded rule-sets.
      *
      *  @throws IOException If an IO errors occurs.
      *  @throws Exception If an error occurs evaluating the definition.
      */
-    public List load(URL url) throws IOException, Exception
+    public List load(Reader reader) throws IOException, Exception
     {
-        // this is a workaround for an OutOfMemoryError in OutOfMemory when a script is parsed repeatedly
-        // note, the rules for a given url cannot change any more
-        List cachedRuleSets = (List) ruleSetCache.get(url);
-        if (cachedRuleSets != null)
-        {
-            return cachedRuleSets;
-        }
 
         this.ruleSets = new ArrayList();
 
@@ -140,7 +136,7 @@ public class RuleSetLoader
 
         parser.setContext(context);
 
-        Script script = parser.parse(url.toExternalForm());
+        Script script = parser.parse(reader);
 
         XMLOutput output = XMLOutput.createXMLOutput(System.err,
                 false);
@@ -150,11 +146,44 @@ public class RuleSetLoader
 
         List answer = this.ruleSets;
 
-        //ruleSetCache.put(url, answer);
-
         this.ruleSets = null;
 
         return answer;
+    }
+
+    /** Load <code>RuleSet</code> definitions from a URL.
+     *
+     *  @param url The URL of the rule-set definitions.
+     *
+     *  @return The list of loaded rule-sets.
+     *
+     *  @throws IOException If an IO errors occurs.
+     *  @throws Exception If an error occurs evaluating the definition.
+     */
+    public List load(URL url) throws IOException, Exception
+    {
+        // This is a workaround for an OutOfMemoryError in Jelly when a script is parsed repeatedly
+        // Note, the rules for a given url cannot be changed after they are chached
+        List cachedRuleSets = (List) ruleSetCache.get(url);
+        if (cachedRuleSets != null)
+        {
+            return cachedRuleSets;
+        }
+
+        InputStream urlStream = url.openStream();
+
+        try
+        {
+            List answer = load (new InputStreamReader(urlStream));
+
+            ruleSetCache.put(url, answer);
+
+            return answer;
+        }
+        finally
+        {
+            urlStream.close();
+        }
     }
 
     /** Load <code>RuleSet</code> deifnitions from a URL
