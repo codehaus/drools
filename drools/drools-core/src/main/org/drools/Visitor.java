@@ -1,9 +1,9 @@
 package org.drools;
 
 /*
- $Id: Visitor.java,v 1.1 2004-08-07 16:23:31 mproctor Exp $
+ $Id: Visitor.java,v 1.2 2004-08-08 05:48:37 dbarnett Exp $
 
- Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -46,6 +46,7 @@ package org.drools;
 
  */
 
-public interface Visitor {
+public interface Visitor
+{
    public void visit(Object o);
 }

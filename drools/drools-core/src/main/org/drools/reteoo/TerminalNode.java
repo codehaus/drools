@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.28 2004-08-07 16:23:31 mproctor Exp $
+ $Id: TerminalNode.java,v 1.29 2004-08-08 05:48:37 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -154,15 +154,5 @@ final class TerminalNode
     public String toString()
     {
         return "[TerminalNode: rule=" + rule.getName() + "]";
-    }
-
-    /**
-     * Compatible with the GraphViz DOT format.
-     */
-    public long dumpToDot(StringBuffer buffer, long thisNode)
-    {
-        buffer.append(thisNode + " [label=\"TerminalNode\\n(TupleSink)\\n" +
-            "rule: " + rule.getName() + "\"];\n");
-        return thisNode + 1;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.18 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: JoinNode.java,v 1.19 2004-08-08 05:48:37 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -335,33 +335,5 @@ class JoinNode
         decls.addAll( getRightInput().getTupleDeclarations() );
 
         return decls;
-    }
-    
-    /**
-     * Compatible with the GraphViz DOT format.
-     */
-    public long dumpToDot(StringBuffer buffer, long thisNode)
-    {
-        buffer.append(thisNode + " [label=\"JoinNode\\n(TupleSource)");
-        if (commonDeclarations.isEmpty())
-        {
-            buffer.append("\\nNo Common Declarations");
-        }
-        else
-        {
-            for (Iterator i = commonDeclarations.iterator(); i.hasNext(); )
-            {
-                Declaration declaration = (Declaration) i.next();
-                buffer.append("\\ndeclaration: " +
-                    declaration.getIdentifier() +
-                    " (" + declaration.getObjectType() + ")");
-            }
-        }
-        buffer.append("\"];\n");
-        
-        long nextNode = thisNode + 1;
-        
-        buffer.append(thisNode + " -> " + nextNode + ";\n");
-        return getTupleSink().dumpToDot(buffer, nextNode);
     }
 }

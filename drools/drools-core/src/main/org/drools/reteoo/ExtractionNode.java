@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ExtractionNode.java,v 1.10 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: ExtractionNode.java,v 1.11 2004-08-08 05:48:37 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -256,23 +256,5 @@ class ExtractionNode
         buffer.append(indent + "ExtractionNode\n");
         buffer.append(indent + "-------------\n");
         return buffer.toString();
-    }
-
-    /**
-     * Compatible with the GraphViz DOT format.
-     */
-    public long dumpToDot(StringBuffer buffer, long thisNode)
-    {
-        buffer.append(thisNode + " [label=\"ExtractionNode\\n(TupleSource/TupleSink)\\n" +
-            "extractor: " + Dumper.formatForDot(getExtractor()) + "\\n" +
-            "declaration: " +
-            targetDeclaration.getIdentifier() +
-            " (" + targetDeclaration.getObjectType() + ")" +
-            "\"];\n");
-        
-        long nextNode = thisNode + 1;
-
-        buffer.append(thisNode + " -> " + nextNode + ";\n");
-        return getTupleSink().dumpToDot(buffer, nextNode);
     }
 }
