@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldNative.java,v 1.5 2004-11-23 22:01:04 dbarnett Exp $
+ * $Id: HelloWorldNative.java,v 1.6 2004-11-23 22:12:33 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,12 +67,14 @@ public class HelloWorldNative
     {
         Rule helloRule = new Rule( "Hello World" );
         Rule goodbyeRule = new Rule( "Goodbye Cruel World" );
+        Rule debugRule = new Rule( "Debug" );
 
         /*
          * Reuse the Java semantics ObjectType
-         * so Drools can identify String
+         * so Drools can identify String and Object
          */
         ClassObjectType StringType = new ClassObjectType( String.class );
+        ClassObjectType ObjectType = new ClassObjectType( Object.class );
 
         /*
          * Build the declaration and specify it
@@ -87,6 +89,13 @@ public class HelloWorldNative
          */
         final Declaration goodbyeDeclaration =
             goodbyeRule.addParameterDeclaration( "goodbye",  StringType );
+
+        /*
+         * Build the declaration and specify it
+         * as a parameter of the debug Rule
+         */
+        final Declaration debugDeclaration =
+            debugRule.addParameterDeclaration( "object",  ObjectType );
 
         /*
          * Build and Add the Condition to the hello Rule
@@ -128,6 +137,8 @@ public class HelloWorldNative
         };
         goodbyeRule.addCondition( conditionGoodbye );
 
+        // No condition to build and add to the debug Rule
+
         /*
          * Build and Add the Consequence to the hello Rule
          */
@@ -154,9 +165,23 @@ public class HelloWorldNative
         };
         goodbyeRule.setConsequence( goodbyeConsequence );
 
+        /*
+         * Build and Add the Consequence to the debug Rule
+         */
+        Consequence debugConsequence = new Consequence( )
+        {
+            public void invoke( Tuple tuple, WorkingMemory workingMemory )
+            {
+                Object object = tuple.get( debugDeclaration );
+                System.out.println( "Asserted object: " + object );
+            }
+        };
+        debugRule.setConsequence( debugConsequence );
+
         RuleSet ruleSet = new RuleSet( "Hello World Example" );
         ruleSet.addRule( helloRule );
         ruleSet.addRule( goodbyeRule );
+        ruleSet.addRule( debugRule );
         HelloWorldBuilder builder = new HelloWorldBuilder( ruleSet );
         RuleBase ruleBase = builder.buildRuleBase( );
 
