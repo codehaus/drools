@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.5 2002-08-20 05:06:24 bob Exp $
+ $Id: RulesTag.java,v 1.1 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,21 +46,15 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
+import org.apache.commons.jelly.XMLOutput;
 
-import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
-
-/** Support for rule tags.
+/** General rules container tag.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.5 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: RulesTag.java,v 1.1 2002-08-20 05:06:24 bob Exp $
  */
-public abstract class RuleTagSupport extends TagSupport
+public class RulesTag extends RuleTagSupport
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -68,83 +62,27 @@ public abstract class RuleTagSupport extends TagSupport
 
     /** Construct.
      */
-    protected RuleTagSupport()
+    public RulesTag()
     {
-        super( true );
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Retrieve the current <code>RuleSet</code>.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Perform this tag.
      *
-     *  @return The current rule-set or <code>null</code> if
-     *          no rule-set is in scope.
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
      */
-    protected RuleSet getRuleSet() 
+    public void doTag(XMLOutput output) throws Exception
     {
-        RuleSetTag ruleSetTag = (RuleSetTag) findAncestorWithClass( RuleSetTag.class );
-
-        if ( ruleSetTag == null )
-        {
-            return null;
-        }
-
-        return ruleSetTag.getRuleSet();
-    }
-
-    /** Retrieve the current <code>Rule<code>.
-     *
-     *  @return The current rule.
-     */
-    protected Rule getRule() 
-    {
-        RuleTag ruleTag = (RuleTag) findAncestorWithClass( RuleTag.class );
-
-        if ( ruleTag == null )
-        {
-            return null;
-        }
-
-        return ruleTag.getRule();
-    }
-
-    /** Retrieve the array of available <code>Declaration</code>s.
-     *
-     *  @return The array of declarations.
-     * 
-     *  @throws JellyException If no declarations are currently
-     *          available in scope.
-     */
-    protected Declaration[] getAvailableDeclarations() throws JellyException
-    {
-        Rule rule = getRule();
-
-        if ( rule == null )
-        {
-            throw new JellyException( "No rule available" );
-        }
-
-        return rule.getDeclarationsArray();
-    }
-
-    /** Check required attribute.
-     *
-     *  @param name Attribute name.
-     *  @param value Attribute value.
-     *
-     *  @throws MissingAttributeException If the value is either <code>null</code>
-     *          or contains only whitespace.
-     */
-    protected void requiredAttribute(String name,
-                                     String value) throws MissingAttributeException
-    {
-        if ( value == null
-             ||
-             value.trim().equals( "" ) )
-        {
-            throw new MissingAttributeException( name );
-        }
+        invokeBody( output );
     }
 }

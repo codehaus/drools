@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.11 2002-08-19 21:00:13 bob Exp $
+ $Id: Rule.java,v 1.12 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.11 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: Rule.java,v 1.12 2002-08-20 05:06:24 bob Exp $
  */
 public class Rule
 {
@@ -146,7 +146,6 @@ public class Rule
                    getExtractions().isEmpty() );
     }
 
-
     /** Check the validity of this rule, and throw exceptions if
      *  it failed validity tests.
      *
@@ -218,6 +217,31 @@ public class Rule
         }
 
         this.allDeclarations.add( declaration );
+    }
+
+    /** Retrieve a parameter <code>Declaration</code> by identifier.
+     *
+     *  @param identifier The identifier.
+     *
+     *  @return The declaration or <code>null</code> if no
+     *          declaration matches the <code>identifier</code>.
+     */
+    public Declaration getParameterDeclaration(String identifier)
+    {
+        Iterator    declIter = this.parameterDeclarations.iterator();
+        Declaration eachDecl = null;
+
+        while ( declIter.hasNext() )
+        {
+            eachDecl = (Declaration) declIter.next();
+
+            if ( eachDecl.getIdentifier().equals( identifier ) )
+            {
+                return eachDecl;
+            }
+        }
+
+        return null;
     }
 
     /** Retrieve a <code>Declaration</code> by identifier.

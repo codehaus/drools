@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.4 2002-08-19 21:00:13 bob Exp $
+ $Id: RuleTagSupport.java,v 1.5 2002-08-20 05:06:24 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.4 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: RuleTagSupport.java,v 1.5 2002-08-20 05:06:24 bob Exp $
  */
 public abstract class RuleTagSupport extends TagSupport
 {
@@ -126,16 +126,7 @@ public abstract class RuleTagSupport extends TagSupport
             throw new JellyException( "No rule available" );
         }
 
-        System.err.println( "decl-array start for " + rule );
-        Declaration[] decls = rule.getDeclarationsArray();
-        
-        for ( int i = 0 ; i < decls.length ; ++i )
-        {
-            System.err.println( "decl: " + decls[i] );
-        }
-        System.err.println( "decl-array stop" );
-
-        return decls;
+        return rule.getDeclarationsArray();
     }
 
     /** Check required attribute.
