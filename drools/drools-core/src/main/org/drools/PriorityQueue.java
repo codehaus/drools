@@ -1,12 +1,12 @@
 /*
  * Copyright 2001-2004 The Apache Software Foundation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -15,6 +15,7 @@
  */
 package org.drools;
 
+import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -34,16 +35,16 @@ import java.util.NoSuchElementException;
  * logarithmic time. The {@link #get()}operation performs in constant time. All
  * other operations perform in linear time or worse. <p/>Note that this
  * implementation is not synchronized.
- * 
+ *
  * @author Peter Donald
  * @author Ram Chidambaram
  * @author Michael A. Smith
  * @author Paul Jack
  * @author Stephen Colebourne
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- * @version $Revision: 1.1 $ $Date: 2004-10-06 13:32:30 $
+ * @version $Revision: 1.2 $ $Date: 2004-10-25 13:22:34 $
  */
-public class PriorityQueue extends AbstractCollection
+public class PriorityQueue extends AbstractCollection implements Serializable
 {
 
     /**
@@ -86,7 +87,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Constructs a new empty buffer that sorts in ascending order using the
      * specified comparator.
-     * 
+     *
      * @param comparator the comparator used to order the elements, null means
      *        use natural order
      */
@@ -98,7 +99,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Constructs a new empty buffer specifying the sort order and using the
      * natural order of the objects added.
-     * 
+     *
      * @param ascendingOrder if <code>true</code> the heap is created as a
      *        minimum heap; otherwise, the heap is created as a maximum heap
      */
@@ -109,7 +110,7 @@ public class PriorityQueue extends AbstractCollection
 
     /**
      * Constructs a new empty buffer specifying the sort order and comparator.
-     * 
+     *
      * @param ascendingOrder true to use the order imposed by the given
      *        comparator; false to reverse that order
      * @param comparator the comparator used to order the elements, null means
@@ -123,7 +124,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Constructs a new empty buffer that sorts in ascending order by the
      * natural order of the objects added, specifying an initial capacity.
-     * 
+     *
      * @param capacity the initial capacity for the buffer, greater than zero
      * @throws IllegalArgumentException if <code>capacity</code> is &lt;=
      *         <code>0</code>
@@ -136,7 +137,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Constructs a new empty buffer that sorts in ascending order using the
      * specified comparator and initial capacity.
-     * 
+     *
      * @param capacity the initial capacity for the buffer, greater than zero
      * @param comparator the comparator used to order the elements, null means
      *        use natural order
@@ -151,7 +152,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Constructs a new empty buffer that specifying initial capacity and sort
      * order, using the natural order of the objects added.
-     * 
+     *
      * @param capacity the initial capacity for the buffer, greater than zero
      * @param ascendingOrder if <code>true</code> the heap is created as a
      *        minimum heap; otherwise, the heap is created as a maximum heap.
@@ -166,7 +167,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Constructs a new empty buffer that specifying initial capacity, sort
      * order and comparator.
-     * 
+     *
      * @param capacity the initial capacity for the buffer, greater than zero
      * @param ascendingOrder true to use the order imposed by the given
      *        comparator; false to reverse that order
@@ -194,7 +195,7 @@ public class PriorityQueue extends AbstractCollection
     //-----------------------------------------------------------------------
     /**
      * Checks whether the heap is ascending or descending order.
-     * 
+     *
      * @return true if ascending order (a min heap)
      */
     public boolean isAscendingOrder()
@@ -204,7 +205,7 @@ public class PriorityQueue extends AbstractCollection
 
     /**
      * Gets the comparator being used for this buffer, null is natural order.
-     * 
+     *
      * @return the comparator in use, null is natural order
      */
     public Comparator comparator()
@@ -215,7 +216,7 @@ public class PriorityQueue extends AbstractCollection
     //-----------------------------------------------------------------------
     /**
      * Returns the number of elements in this buffer.
-     * 
+     *
      * @return the number of elements in this buffer
      */
     public int size()
@@ -235,7 +236,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Adds an element to the buffer. <p/>The element added will be sorted
      * according to the comparator in use.
-     * 
+     *
      * @param element the element to be added
      * @return true always
      */
@@ -259,7 +260,7 @@ public class PriorityQueue extends AbstractCollection
 
     /**
      * Gets the next element to be removed without actually removing it (peek).
-     * 
+     *
      * @return the next element
      * @throws NoSuchElementException if the buffer is empty
      */
@@ -277,7 +278,7 @@ public class PriorityQueue extends AbstractCollection
 
     /**
      * Gets and removes the next element (pop).
-     * 
+     *
      * @return the next element
      * @throws NoSuchElementException if the buffer is empty
      */
@@ -309,7 +310,7 @@ public class PriorityQueue extends AbstractCollection
     //-----------------------------------------------------------------------
     /**
      * Tests if the buffer is at capacity.
-     * 
+     *
      * @return <code>true</code> if buffer is full; <code>false</code>
      *         otherwise.
      */
@@ -322,7 +323,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Percolates element down heap from the position given by the index. <p/>
      * Assumes it is a minimum heap.
-     * 
+     *
      * @param index the index for the element
      */
     protected void percolateDownMinHeap(final int index)
@@ -358,7 +359,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Percolates element down heap from the position given by the index. <p/>
      * Assumes it is a maximum heap.
-     * 
+     *
      * @param index the index of the element
      */
     protected void percolateDownMaxHeap(final int index)
@@ -394,7 +395,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Percolates element up heap from the position given by the index. <p/>
      * Assumes it is a minimum heap.
-     * 
+     *
      * @param index the index of the element to be percolated up
      */
     protected void percolateUpMinHeap(final int index)
@@ -415,7 +416,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Percolates a new element up heap from the bottom. <p/>Assumes it is a
      * minimum heap.
-     * 
+     *
      * @param element the element
      */
     protected void percolateUpMinHeap(final Object element)
@@ -427,7 +428,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Percolates element up heap from from the position given by the index.
      * <p/>Assume it is a maximum heap.
-     * 
+     *
      * @param index the index of the element to be percolated up
      */
     protected void percolateUpMaxHeap(final int index)
@@ -450,7 +451,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Percolates a new element up heap from the bottom. <p/>Assume it is a
      * maximum heap.
-     * 
+     *
      * @param element the element
      */
     protected void percolateUpMaxHeap(final Object element)
@@ -462,7 +463,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Compares two objects using the comparator if specified, or the natural
      * order otherwise.
-     * 
+     *
      * @param a the first object
      * @param b the second object
      * @return -ve if a less than b, 0 if they are equal, +ve if a greater than
@@ -493,7 +494,7 @@ public class PriorityQueue extends AbstractCollection
     //-----------------------------------------------------------------------
     /**
      * Returns an iterator over this heap's elements.
-     * 
+     *
      * @return an iterator over this heap's elements
      */
     public Iterator iterator()
@@ -572,7 +573,7 @@ public class PriorityQueue extends AbstractCollection
     /**
      * Returns a string representation of this heap. The returned string is
      * similar to those produced by standard JDK collections.
-     * 
+     *
      * @return a string representation of this heap
      */
     public String toString()
