@@ -118,11 +118,11 @@
         <module name="OperatorWrap"/>
         <module name="ParenPad">
             <property name="option" value="space"/>
-            <property name="severity" value="ignore"/>
+	    <!-- <property name="severity" value="ignore"/> -->
         </module>
         <module name="TabCharacter"/>
         <module name="WhitespaceAfter">
-            <property name="tokens" value="COMMA, SEMI"/>
+            <!-- <property name="tokens" value="COMMA, SEMI"/> -->
         </module>
         <module name="WhitespaceAround"/>
 
@@ -153,12 +153,15 @@
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="HiddenField">
+	    <!-- TODO We probably shouldn't be ignoring hidden fields -->
             <property name="severity" value="ignore"/>
+	    <property name="ignoreConstructorParameter" value="true"/>
+	    <property name="ignoreSetter" value="true"/>
         </module>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber">
-            <property name="ignoreNumbers" value="-1, 0, 1, 2, 7, 24, 10, 60, 100, 1000"/>
+            <!-- <property name="ignoreNumbers" value="-1, 0, 1, 2, 7, 24, 10, 60, 100, 1000"/> -->
         </module>
         <module name="MissingSwitchDefault"/>
         <module name="RedundantThrows"/>
