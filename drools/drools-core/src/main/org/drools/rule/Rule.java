@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.3 2002-08-01 20:38:46 bob Exp $
+ $Id: Rule.java,v 1.4 2002-08-02 02:26:03 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,30 +67,17 @@ import java.util.Collections;
 public class Rule
 {
     // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** State indicating declaration configuration. */
-    private static final int STATE_DECL  = 1;
-
-    /** State indicating other configuration. */
-    private static final int STATE_OTHER = 2;
-    
-    // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
-
-    /** Current config stated. */
-    private int state;
 
     /** Name of the rule. */
     private String name;
 
+    /** All declarations. */
+    private Set allDeclarations;
+
     /** Formal parameter decls of the rule. */
     private Set parameterDeclarations;
-
-    /** Other local decls of the rule. */
-    private Set localDeclarations;
 
     /** Conditions. */
     private Set conditions;
@@ -114,12 +101,10 @@ public class Rule
      */
     public Rule(String name)
     {
-        setState( STATE_DECL );
-
         this.name  = name;
 
         this.parameterDeclarations = Collections.EMPTY_SET;
-        this.localDeclarations     = Collections.EMPTY_SET;
+        this.allDeclarations       = Collections.EMPTY_SET;
 
         this.conditions            = Collections.EMPTY_SET;
         this.factExtractions       = Collections.EMPTY_SET;
@@ -143,24 +128,6 @@ public class Rule
     public long getDuration()
     {
         return this.duration;
-    }
-
-    /** Get current state for validity checking.
-     *
-     *  @return The current state.
-     */
-    private int getState()
-    {
-        return this.state;
-    }
-
-    /** Set current state for validity checking.
-     *
-     *  @param state The state to set.
-     */
-    private void setState(int state)
-    {
-        this.state = state;
     }
 
     /** Determine if this rule is internally consistent and valid.
@@ -222,50 +189,31 @@ public class Rule
     /** Add a <i>root fact object</i> parameter <code>Declaration</code>
      *  for this <code>Rule</code>.
      *
-     *  <p>
-     *  When constructing a rule, all parameter declarations must be
-     *  specified before specifying any conditions.  Failure to do so
-     *  may result in an invalid rule.  Attempting to add parameter
-     *  declarations after a condition has been added will result in
-     *  a <code>DeclarationAlreadyCompleteException</code>.
-     *
      *  @param declaration The <i>root fact object</i> <code>Declaration</code> to add.
-     *
-     *  @throws DeclarationAlreadyCompleteException if any <code>Conditions</code> have
-     *          already been added to this <code>Rule</code>.
      */
-    public void addParameterDeclaration(Declaration declaration) throws DeclarationAlreadyCompleteException
+    public void addParameterDeclaration(Declaration declaration) 
     {
-        if ( getState() == STATE_DECL )
+        if ( this.parameterDeclarations == Collections.EMPTY_SET )
         {
-            if ( this.parameterDeclarations == Collections.EMPTY_SET )
-            {
-                this.parameterDeclarations = new HashSet();
-            }
+            this.parameterDeclarations = new HashSet();
+        }
             
-            this.parameterDeclarations.add( declaration );
-        }
-        else
-        {
-            throw new DeclarationAlreadyCompleteException( this );
-        }
+        this.parameterDeclarations.add( declaration );
+        addDeclaration( declaration );
     }
 
-    /** Add a local declaration no accounted for in the
-     *  formal parameter list.
+    /** Add a declaration.
      *
-     *  @param declaration The local declaration.
+     *  @param declaration The declaration.
      */
-    private void addLocalDeclaration(Declaration declaration)
+    private void addDeclaration(Declaration declaration)
     {
-        setState( STATE_OTHER );
-
-        if ( this.localDeclarations == Collections.EMPTY_SET )
+        if ( this.allDeclarations == Collections.EMPTY_SET )
         {
-            this.localDeclarations = new HashSet();
+            this.allDeclarations  = new HashSet();
         }
 
-        this.localDeclarations.add( declaration );
+        this.allDeclarations.add( declaration );
     }
 
     /** Retrieve the set of all <i>root fact object</i> parameter
@@ -286,7 +234,11 @@ public class Rule
      */
     public Set getLocalDeclarations()
     {
-        return this.localDeclarations;
+        Set localDecls = new HashSet( this.allDeclarations );
+
+        localDecls.removeAll( this.parameterDeclarations );
+
+        return localDecls;
     }
 
     /** Add a <code>Condition</code> to this rule.
@@ -295,8 +247,6 @@ public class Rule
      */
     public void addCondition(Condition condition)
     {
-        setState( STATE_OTHER );
-
         if ( this.conditions == Collections.EMPTY_SET )
         {
             this.conditions = new HashSet();
@@ -311,8 +261,6 @@ public class Rule
      */
     public void addFactExtraction(FactExtraction factExtraction)
     {
-        setState( STATE_OTHER );
-
         if ( this.factExtractions == Collections.EMPTY_SET )
         {
             this.factExtractions = new HashSet();
@@ -322,10 +270,7 @@ public class Rule
 
         Declaration decl = factExtraction.getTargetDeclaration();
 
-        if ( ! this.parameterDeclarations.contains( decl ) )
-        {
-            addLocalDeclaration( decl );
-        }
+        addDeclaration( decl );
     }
 
     /** Retrieve the <code>Set</code> of <code>Conditions</code> for
@@ -379,7 +324,7 @@ public class Rule
     {
         return "[Rule: name='" + this.name
             + "'; paramDecls=" + this.parameterDeclarations
-            + "; localDecls=" + this.localDeclarations
+            + "; localDecls=" + getLocalDeclarations()
             + "; conds=" + this.conditions
             + "; factExtracts=" + this.factExtractions
             + "]";
