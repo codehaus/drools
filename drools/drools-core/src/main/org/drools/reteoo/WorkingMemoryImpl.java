@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.7 2003-11-21 04:18:13 bob Exp $
+ $Id: WorkingMemoryImpl.java,v 1.8 2003-12-02 23:12:41 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -51,8 +51,8 @@ import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.NoSuchFactObjectException;
-import org.drools.spi.ConflictResolutionStrategy;
-import org.drools.conflict.SalienceConflictResolutionStrategy;
+import org.drools.spi.ConflictResolver;
+import org.drools.conflict.SalienceConflictResolver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +63,7 @@ import java.util.ArrayList;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.7 2003-11-21 04:18:13 bob Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.8 2003-12-02 23:12:41 bob Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -104,16 +104,16 @@ class WorkingMemoryImpl
     public WorkingMemoryImpl(RuleBaseImpl ruleBase)
     {
         this( ruleBase,
-              SalienceConflictResolutionStrategy.getInstance() );
+              SalienceConflictResolver.getInstance() );
     }
     
     /** Construct.
      *
      *  @param ruleBase The backing rule-base.
-     *  @param conflictResolution The conflict-resolution strategy.
+     *  @param conflictResolver The conflict resolver.
      */
     public WorkingMemoryImpl(RuleBaseImpl ruleBase,
-                             ConflictResolutionStrategy conflictResolution)
+                             ConflictResolver conflictResolver)
     {
         this.ruleBase      = ruleBase;
         this.joinMemories  = new HashMap();
@@ -121,7 +121,7 @@ class WorkingMemoryImpl
         this.handleCounter = 0;
 
         this.agenda = new Agenda( this,
-                                  conflictResolution );
+                                  conflictResolver );
     }
 
     // ------------------------------------------------------------

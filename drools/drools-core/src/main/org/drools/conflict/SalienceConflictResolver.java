@@ -1,7 +1,7 @@
-package org.drools.reteoo;
+package org.drools.conflict;
 
 /*
- $Id: ConflictResolutionComparator.java,v 1.4 2003-11-21 04:18:13 bob Exp $
+ $Id: SalienceConflictResolver.java,v 1.1 2003-12-02 23:12:41 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,51 +46,87 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.spi.ConflictResolver;
 import org.drools.spi.Activation;
 
-import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
 
-/** Adaptor to wrap a <code>ConflictResolutionStrategy</code> as a
- *  <code>Comparator</code>.
+/** <code>ConflictResolver</code> that uses the salience of rules to
+ *  resolve conflict.
+ *
+ *  @see #getInstance
+ *  @see Rule#setSalience
+ *  @see Rule#getSalience
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConflictResolutionComparator.java,v 1.4 2003-11-21 04:18:13 bob Exp $
+ *  @version $Id: SalienceConflictResolver.java,v 1.1 2003-12-02 23:12:41 bob Exp $
  */
-class ConflictResolutionComparator
-    implements Comparator
+public class SalienceConflictResolver
+    implements ConflictResolver
 {
     // ----------------------------------------------------------------------
-    //     Instance members
+    //     Class members
     // ----------------------------------------------------------------------
 
-    /** Wrapped strategy. */
-    private ConflictResolutionStrategy strategy;
+    /** Singleton instance. */
+    private static final SalienceConflictResolver INSTANCE = new SalienceConflictResolver();
+
+    // ----------------------------------------------------------------------
+    //     Class methods
+    // ----------------------------------------------------------------------
+
+    /** Retrieve the singleton instance.
+     *
+     *  @return The singleton instance.
+     */
+    public static ConflictResolver getInstance()
+    {
+        return INSTANCE;
+    }
 
     // ----------------------------------------------------------------------
     //     Constructors
     // ----------------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param strategy Strategy to wrap.
      */
-    public ConflictResolutionComparator(ConflictResolutionStrategy strategy)
+    public SalienceConflictResolver()
     {
-        this.strategy = strategy;
+        // intentionally left blank
     }
 
-    // ----------------------------------------------------------------------
-    //     Instance methods
-    // ----------------------------------------------------------------------
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** @see Comparable
+    /** @see ConflictResolver
      */
-    public int compare(Object lhs,
-                       Object rhs)
+    public void insert(Activation activation,
+                       List list)
     {
-        return this.strategy.compare( (Activation) lhs,
-                                      (Activation) rhs );
+        int salience = activation.getRule().getSalience();
+
+        // Traverse the list.  If an activation is found
+        // that has a lower salience than the item to be inserted,
+        // insert the item *before* it by backing up and adding
+        // to the list.
+
+        for ( ListIterator listIter = list.listIterator();
+              listIter.hasNext(); )
+        {
+            Activation eachActivation = (Activation) listIter.next();
+            
+            if ( eachActivation.getRule().getSalience() < salience )
+            {
+                listIter.previous();
+                listIter.add( activation );
+                return;
+            }
+        }
+
+        // If not inserted by now, simply tack it onto the end.
+
+        list.add( activation );
     }
 }
+

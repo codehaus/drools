@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.9 2003-11-23 02:28:46 bob Exp $
+ $Id: RuleBaseImpl.java,v 1.10 2003-12-02 23:12:41 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -50,14 +50,14 @@ import org.drools.WorkingMemory;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.FactException;
-import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.spi.ConflictResolver;
 import org.drools.rule.RuleSet;
 
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.9 2003-11-23 02:28:46 bob Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.10 2003-12-02 23:12:41 bob Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -73,7 +73,7 @@ class RuleBaseImpl
     private RuleSet[] ruleSets;
 
     /** Conflict resolution strategy. */
-    private ConflictResolutionStrategy conflictResolutionStrategy;
+    private ConflictResolver conflictResolver;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -83,15 +83,15 @@ class RuleBaseImpl
      *
      *  @param rete The rete network.
      *  @param ruleSets The rule-sets integrated into the rete.
-     *  @param conflictResolutionStrategy The conflict-resolution strategy.
+     *  @param conflictResolver The conflict resolver.
      */
     RuleBaseImpl(Rete rete,
                  RuleSet[] ruleSets,
-                 ConflictResolutionStrategy conflictResolutionStrategy)
+                 ConflictResolver conflictResolver)
     {
-        this.rete     = rete;
-        this.ruleSets = ruleSets;
-        this.conflictResolutionStrategy = conflictResolutionStrategy;
+        this.rete             = rete;
+        this.ruleSets         = ruleSets;
+        this.conflictResolver = conflictResolver;
     }
 
     // ------------------------------------------------------------
@@ -103,14 +103,14 @@ class RuleBaseImpl
     public WorkingMemory newWorkingMemory()
     {
         return new WorkingMemoryImpl( this,
-                                      getConflictResolutionStrategy() );
+                                      getConflictResolver() );
     }
 
     /** @see RuleBase
      */
-    public ConflictResolutionStrategy getConflictResolutionStrategy()
+    public ConflictResolver getConflictResolver()
     {
-        return this.conflictResolutionStrategy;
+        return this.conflictResolver;
     }
 
     /** @see RuleBase

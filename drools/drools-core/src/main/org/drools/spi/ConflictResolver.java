@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ConflictResolutionStrategy.java,v 1.3 2003-11-19 21:31:12 bob Exp $
+ $Id: ConflictResolver.java,v 1.1 2003-12-02 23:12:41 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,8 @@ package org.drools.spi;
  
  */
 
+import java.util.List;
+
 /** Strategy for resolving conflicts amongst multiple rules.
  *
  *  <p>
@@ -60,25 +62,10 @@ package org.drools.spi;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConflictResolutionStrategy.java,v 1.3 2003-11-19 21:31:12 bob Exp $
+ *  @version $Id: ConflictResolver.java,v 1.1 2003-12-02 23:12:41 bob Exp $
  */
-public interface ConflictResolutionStrategy
+public interface ConflictResolver
 {
-    /** Compare two <code>Activation</code>s.
-     *
-     *  <p>
-     *  The implementation must ensure that if the first activation
-     *  has higher priority than the second that a positive integer
-     *  is returned; if the second has higher priority than the first,
-     *  then a negative integer; if no difference, then zero.
-     *  <p>
-     *
-     *  @param activationOne The first activation.
-     *  @param activationTwo The second activation.
-     *
-     *  @return A negative integer, positive integer or zero in
-     *          accordance with the relative priority of the activations.
-     */
-    int compare(Activation activationOne,
-                Activation activationTwo);
+    void insert(Activation activation,
+                List list);
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.36 2003-11-23 02:28:46 bob Exp $
+ $Id: Builder.java,v 1.37 2003-12-02 23:12:41 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,14 +48,14 @@ package org.drools.reteoo;
 
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
-import org.drools.conflict.SalienceConflictResolutionStrategy;
+import org.drools.conflict.SalienceConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ObjectType;
-import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.spi.ConflictResolver;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -87,7 +87,7 @@ public class Builder
     /** Rule-sets added. */
     private List ruleSets;
 
-    private ConflictResolutionStrategy conflictResolutionStrategy;
+    private ConflictResolver conflictResolver;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -98,9 +98,9 @@ public class Builder
      */
     public Builder()
     {
-        this.rete     = new Rete();
-        this.ruleSets = new ArrayList();
-        this.conflictResolutionStrategy = SalienceConflictResolutionStrategy.getInstance();
+        this.rete             = new Rete();
+        this.ruleSets         = new ArrayList();
+        this.conflictResolver = SalienceConflictResolver.getInstance();
     }
 
     // ------------------------------------------------------------
@@ -125,22 +125,22 @@ public class Builder
     {
         RuleBase ruleBase = new RuleBaseImpl( getRete(),
                                               (RuleSet[]) this.ruleSets.toArray( RuleSet.EMPTY_ARRAY ),
-                                              this.conflictResolutionStrategy );
+                                              this.conflictResolver );
 
         this.rete = null;
         this.ruleSets.clear();
-        this.conflictResolutionStrategy = SalienceConflictResolutionStrategy.getInstance();
+        this.conflictResolver = SalienceConflictResolver.getInstance();
 
         return ruleBase;
     }
 
-    /** Set the <code>ConflictResolutionStrategy</code>.
+    /** Set the <code>ConflictResolver</code>.
      *
-     *  @param conflictResolutionStrategy The conflict-resolution strategy.
+     *  @param conflictResolver The conflict resolver.
      */
-    public void setConflictResolutionStrategy(ConflictResolutionStrategy conflictResolutionStrategy)
+    public void setConflictResolver(ConflictResolver conflictResolver)
     {
-        this.conflictResolutionStrategy = conflictResolutionStrategy;
+        this.conflictResolver = conflictResolver;
     }
 
     /** Add a <code>RuleSet</code> to the network.

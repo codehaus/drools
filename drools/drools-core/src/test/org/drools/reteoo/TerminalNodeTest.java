@@ -2,6 +2,7 @@ package org.drools.reteoo;
 
 import org.drools.MockFactHandle;
 import org.drools.AssertionException;
+import org.drools.conflict.SalienceConflictResolver;
 import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.DroolsTestCase;
@@ -15,7 +16,7 @@ public class TerminalNodeTest
         throws Exception
     {
         final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  null );
+                                                                  SalienceConflictResolver.getInstance() );
         
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
             {
@@ -52,7 +53,7 @@ public class TerminalNodeTest
         throws Exception
     {
         final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  null );
+                                                                  SalienceConflictResolver.getInstance() );
         
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
             {
@@ -89,7 +90,7 @@ public class TerminalNodeTest
         throws Exception
     {
         final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  null );
+                                                                  SalienceConflictResolver.getInstance() );
         
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
             {

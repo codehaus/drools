@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.25 2003-11-23 02:28:46 bob Exp $
+ $Id: RuleBase.java,v 1.26 2003-12-02 23:12:40 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools;
  
  */
 
-import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.spi.ConflictResolver;
 import org.drools.rule.RuleSet;
 
 import java.io.Serializable;
@@ -63,7 +63,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBase.java,v 1.25 2003-11-23 02:28:46 bob Exp $
+ *  @version $Id: RuleBase.java,v 1.26 2003-12-02 23:12:40 bob Exp $
  */
 public interface RuleBase
     extends Serializable
@@ -76,7 +76,7 @@ public interface RuleBase
      *  </p>
      *
      *  @see WorkingMemory
-     *  @see org.drools.conflict.SalienceConflictResolutionStrategy
+     *  @see org.drools.conflict.SalienceConflictResolver
      *
      *  @return A newly initialized <code>WorkingMemory</code>.
      */
@@ -88,9 +88,9 @@ public interface RuleBase
      */
     RuleSet[] getRuleSets();
 
-    /** Retrieve the <code>ConflictResolutionStrategy</code>.
+    /** Retrieve the <code>ConflictResolver</code>.
      *
      *  @return The conflict resolution strategy.
      */
-    ConflictResolutionStrategy getConflictResolutionStrategy();
+    ConflictResolver getConflictResolver();
 }

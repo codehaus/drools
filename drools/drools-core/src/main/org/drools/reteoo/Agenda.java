@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.23 2003-11-21 04:18:13 bob Exp $
+ $Id: Agenda.java,v 1.24 2003-12-02 23:12:41 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.Duration;
-import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
 
 import java.util.Set;
@@ -84,20 +84,14 @@ class Agenda
     /** Working memory of this Agenda. */
     private WorkingMemory workingMemory;
 
-    /** Conflict resolution strategy. */
-    private ConflictResolutionStrategy conflictResolutionStrategy;
-
-    /** Conflict resolution strategy comparator. */
-    private ConflictResolutionComparator conflictResolutionComparator;
+    /** Conflict resolver. */
+    private ConflictResolver conflictResolver;
 
     /** Items in the agenda. */
     private LinkedList items;
 
     /** Items time-delayed. */
     private Set scheduledItems;
-
-    /** Flag to determine if a conflict-resoluting sort is required. */
-    private boolean needsSort;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -106,14 +100,13 @@ class Agenda
     /** Construct.
      *
      *  @param workingMemory The <code>WorkingMemory</code> of this agenda.
-     *  @param conflictResolutionStrategy Conflict-resolution strategy.
+     *  @param conflictResolver The conflict resolver.
      */
     public Agenda(WorkingMemory workingMemory,
-                  ConflictResolutionStrategy conflictResolutionStrategy)
+                  ConflictResolver conflictResolver)
     {
-        this.workingMemory                = workingMemory;
-        this.conflictResolutionStrategy   = conflictResolutionStrategy;
-        this.conflictResolutionComparator = new ConflictResolutionComparator( conflictResolutionStrategy );
+        this.workingMemory      = workingMemory;
+        this.conflictResolver   = conflictResolver;
 
         this.items          = new LinkedList();
         this.scheduledItems = new HashSet();
@@ -150,8 +143,9 @@ class Agenda
         }
         else
         {
-            this.items.add( item );
-            this.needsSort = true;
+            this.conflictResolver.insert( item,
+                                          this.items );
+            //this.items.add( item );
         }
     }
 
@@ -316,15 +310,7 @@ class Agenda
         {
             return;
         }
-
-        if ( this.needsSort )
-        {
-            Collections.sort( this.items,
-                              this.conflictResolutionComparator );
-
-            this.needsSort = false;
-        }
-
+        
         AgendaItem item = (AgendaItem) this.items.removeFirst();
 
         item.fire( this.workingMemory );
