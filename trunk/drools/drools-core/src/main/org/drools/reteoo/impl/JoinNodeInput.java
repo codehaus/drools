@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeInput.java,v 1.4 2002-08-27 23:31:08 bob Exp $
+ $Id: JoinNodeInput.java,v 1.5 2002-08-27 23:57:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -131,16 +131,13 @@ class JoinNodeInput implements TupleSinkImpl
     public void assertTuple(ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
-        System.err.println( this + " assertTuple(" + tuple + ")" );
         if ( this.side == LEFT )
         {
-            System.err.println( "    -> LEFT" );
             getJoinNode().assertLeftTuple( tuple,
                                            workingMemory  );
         }
         else
         {
-            System.err.println( "    -> RIGHT" );
             getJoinNode().assertRightTuple( tuple,
                                             workingMemory );
         }
@@ -172,18 +169,14 @@ class JoinNodeInput implements TupleSinkImpl
                              TupleSet newTuples,
                              WorkingMemory workingMemory) throws FactException
     {
-        System.err.println( this + " modifyTuples(" + trigger + ", " + newTuples + ")" );
-
         if ( this.side == LEFT )
         {
-            System.err.println( "    -> LEFT" );
             getJoinNode().modifyLeftTuples( trigger,
                                             newTuples,
                                             workingMemory );
         }
         else
         {
-            System.err.println( "    -> RIGHT" );
             getJoinNode().modifyRightTuples( trigger,
                                              newTuples,
                                              workingMemory );

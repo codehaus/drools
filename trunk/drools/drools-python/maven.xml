@@ -9,6 +9,12 @@
       </copy>
     </preGoal>
 
+    <goal name="drools:examples">
+      <attainGoal name="drools:example-escalation"/>
+      <attainGoal name="drools:example-fishmonger"/>
+      <attainGoal name="drools:example-sisters"/>
+    </goal>
+
     <goal name="drools:compile-examples">
       <echo>compiling examples</echo>
       <mkdir dir="${drools.examples.dest.dir}"/>
