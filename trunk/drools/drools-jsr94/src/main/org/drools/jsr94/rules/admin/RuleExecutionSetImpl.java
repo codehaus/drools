@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.5 2003-10-16 03:48:32 bob Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.6 2003-11-30 03:28:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -84,7 +84,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     RuleExecutionSetImpl()
     {
         this.props = new HashMap();
-        this.ruleBase = new RuleBase();
+        //this.ruleBase = new RuleBase();
         this.ruleList = new ArrayList();
     }
 
@@ -94,18 +94,6 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     public RuleBase getRuleBase()
     {
         return ruleBase;
-    }
-
-    /**
-     * Adds a rule the the drool <code>RuleBase</code>.
-     */
-    void addRule( Rule droolRule ) throws RuleIntegrationException
-    {
-
-        ruleBase.addRule( droolRule );
-
-        String name = droolRule.getName();
-        ruleList.add( new RuleImpl( name, null ) );
     }
 
     /**
@@ -122,6 +110,11 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     void setDescription( String description )
     {
         this.description = description;
+    }
+
+    void addRules(Rule[] rules)
+    {
+        // FIXME
     }
 
     /**

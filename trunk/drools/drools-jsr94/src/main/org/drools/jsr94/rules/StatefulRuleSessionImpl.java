@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionImpl.java,v 1.6 2003-10-16 03:48:32 bob Exp $
+ $Id: StatefulRuleSessionImpl.java,v 1.7 2003-11-30 03:28:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -129,7 +129,7 @@ public class StatefulRuleSessionImpl
 
         try
         {
-            return getWorkingMemory().assertObject( object );
+            return new HandleImpl( getWorkingMemory().assertObject( object ) );
         }
         catch (FactException e)
         {
@@ -163,11 +163,11 @@ public class StatefulRuleSessionImpl
     {
         checkRuleSessionValidity();
 
-        if ( handle instanceof FactHandle )
+        if ( handle instanceof HandleImpl )
         {
             try
             {
-                getWorkingMemory().modifyObject( (FactHandle) handle,
+                getWorkingMemory().modifyObject( ((HandleImpl)handle).getFactHandle(),
                                                  object );
             }
             catch (FactException e)

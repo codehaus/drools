@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.5 2003-10-26 22:06:49 bob Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.6 2003-11-30 03:28:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -115,36 +115,37 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
             }
             else if ( astObject instanceof RuleSet )
             {
-                RuleSet droolRuleSet = (RuleSet) astObject;
+                RuleSet ruleSet = (RuleSet) astObject;
 
                 // the first drool rule set inits the ruleExecutionSet
                 if ( ruleExecutionSet.getName() == null )
                 {
-                    ruleExecutionSet.setName( droolRuleSet.getName() );
+                    ruleExecutionSet.setName( ruleSet.getName() );
                     ruleExecutionSet.setDescription( null );
                 }
 
                 // recursivly add the rules
-                Iterator itDroolRules = droolRuleSet.getRules().iterator();
-                while ( itDroolRules.hasNext() )
+                Rule[] rules = ruleSet.getRules();
+
+                for ( int i = 0 ; i < rules.length ; ++i )
                 {
-                    Object object = itDroolRules.next();
-                    createRuleExecutionSet( object, properties );
+                    createRuleExecutionSet( rules[ i ],
+                                            properties );
                 }
             }
             else if ( astObject instanceof Rule )
             {
-                Rule droolRule = (Rule) astObject;
+                Rule rule = (Rule) astObject;
 
                 // the first drool rule inits the ruleExecutionSet
                 if ( ruleExecutionSet.getName() == null )
                 {
-                    ruleExecutionSet.setName( droolRule.getName() );
+                    ruleExecutionSet.setName( rule.getName() );
                     ruleExecutionSet.setDescription( null );
                 }
 
 
-                ruleExecutionSet.addRule( droolRule );
+                ruleExecutionSet.addRules( new Rule[] { rule } );
             }
             else
             {
