@@ -1,7 +1,7 @@
-package org.drools.examples.model;
+package org.drools.examples.manners.model;
 
 /*
- * $Id: Seat.java,v 1.3 2004-11-07 18:41:45 mproctor Exp $
+ * $Id: Seat.java,v 1.4 2004-11-07 18:58:48 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,10 +40,7 @@ package org.drools.examples.model;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-import java.io.Serializable;
-
-public class Seat  implements Serializable
+public class Seat
 {
     private int    seat;
 
