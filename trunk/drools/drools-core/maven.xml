@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project
     default="default"
     xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
-    xmlns:u="jelly:util"
+    xmlns:util="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <goal name="default">
+    <goal name="default" >
         <attainGoal name="jar:install"/>
     </goal>
 
@@ -15,11 +15,31 @@
             file="${basedir}/target/docs/clover/pkgs-summary.html"/>
     </postGoal>
 
-    <preGoal name="java:compile">
-        <j:set var="aspects" value="${drools.aspects}"/>
 
-        <j:if test="${aspects == 'true'}">
-            <attainGoal name="aspectj:compile"/>
+    <preGoal name="build:start" >
+        <j:set var="droolsAspects" value="${drools.aspects}"/>
+        <j:if test="${droolsAspects != null}">
+	        <j:set var="groupId" value="maven" />
+	        <j:set var="artifactId" value="maven-aspectj-plugin" />
+	        <j:set var="version" value="3.2" />
+	        <attainGoal name="plugin:download-artifact" />
+					<maven:installPlugin file="${maven.repo.local}/${groupId}/plugins/${artifactId}-${version}.jar" cache="false" />
+        </j:if>
+    </preGoal>
+
+    <preGoal name="java:compile">
+        <j:if test="${droolsAspects != null}">
+            <util:tokenize var="tokens" delim="," trim="true">${droolsAspects}</util:tokenize>
+
+            <j:forEach var="token" items="${tokens}">
+              <j:set var="mavenAspects" value="${mavenAspects},src/aspects/conf/${token.trim()}.lst"/>
+            </j:forEach>
+
+            <j:if test="${mavenAspects != ''}">
+            	 <attainGoal name="clean"/>
+               <j:set var="maven.aspectj.argfiles" value="${mavenAspects}" />
+               <attainGoal name="aspectj:compile"/>
+            </j:if>
         </j:if>
     </preGoal>
 
