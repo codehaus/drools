@@ -23,8 +23,8 @@ public class ExprAnalyzer
 
     }
 
-    public Declaration[] analyze(Declaration[] availDecls,
-                                 String expr) throws TokenStreamException, RecognitionException
+    public Declaration[] analyze(String expr,
+                                 Declaration[] availDecls) throws TokenStreamException, RecognitionException, MissingDeclarationException
     {
         JavaLexer lexer = new JavaLexer( new StringReader( expr ) );
         JavaRecognizer parser = new JavaRecognizer( lexer );
@@ -33,14 +33,14 @@ public class ExprAnalyzer
 
         AST ast = parser.getAST();
 
-        return analyze( availDecls,
-                        expr,
+        return analyze( expr,
+                        availDecls,
                         ast );
     }
 
-    private Declaration[] analyze(Declaration[] availDecls,
-                                  String expr,
-                                  AST ast) throws RecognitionException
+    private Declaration[] analyze(String expr,
+                                  Declaration[] availDecls,
+                                  AST ast) throws RecognitionException, MissingDeclarationException
     {
         JavaTreeParser treeParser = new JavaTreeParser();
 
@@ -55,21 +55,42 @@ public class ExprAnalyzer
             treeParser.exprCondition( ast );
         }
 
-        Set refs = new HashSet( treeParser.getVariableReferences() );
-        Set declSet = new HashSet();
+        Set availDeclSet = new HashSet();
 
         for ( int i = 0 ; i < availDecls.length ; ++i )
         {
-            if ( refs.contains( availDecls[i].getIdentifier() ) )
+            availDeclSet.add( availDecls[i] );
+        }
+
+        Set refs = new HashSet( treeParser.getVariableReferences() );
+
+        Set declSet = new HashSet();
+
+        Iterator    declIter = availDeclSet.iterator();
+        Declaration eachDecl = null;
+
+        while ( declIter.hasNext() )
+        {
+            eachDecl = (Declaration) declIter.next();
+
+            if ( refs.contains( eachDecl.getIdentifier() ) )
             {
-                declSet.add( availDecls[i] );
+                declSet.add( eachDecl );
+                declIter.remove();
+                refs.remove( eachDecl.getIdentifier() );
             }
+        }
+
+        if ( ! refs.isEmpty() )
+        {
+            throw new MissingDeclarationException( expr,
+                                                   (String) refs.iterator().next() );
         }
 
         Declaration[] decls = new Declaration[ declSet.size() ];
 
-        Iterator    declIter = declSet.iterator();
-        Declaration eachDecl = null;
+        declIter = declSet.iterator();
+        eachDecl = null;
 
         int i = 0;
 

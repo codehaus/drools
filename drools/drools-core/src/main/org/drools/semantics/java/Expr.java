@@ -12,11 +12,13 @@ import java.util.Iterator;
 
 public class Expr extends Interp
 {
+    private static final Declaration[] EMPTY_DECLS = new Declaration[0];
+
     private Declaration[] requiredDecls;
 
     protected Expr()
     {
-        this.requiredDecls = null;
+        this.requiredDecls = EMPTY_DECLS;
     }
 
     public String getExpression()
@@ -36,8 +38,8 @@ public class Expr extends Interp
         
         try
         {
-            this.requiredDecls = analyzer.analyze( decls,
-                                                   expr );
+            this.requiredDecls = analyzer.analyze( expr,
+                                                   decls );
         }
         catch (Exception e)
         {
