@@ -30,5 +30,10 @@
       <j:set var="goal" value="checkstyle:report,maven-jxr-plugin:report,xdoc"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
+
+    <goal name="jar:deploy-snapshot">
+      <j:set var="goal" value="jar:deploy-snapshot"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
 </project>
 
