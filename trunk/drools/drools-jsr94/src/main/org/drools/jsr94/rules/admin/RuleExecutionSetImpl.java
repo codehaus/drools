@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.16 2004-11-14 20:12:37 dbarnett Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.17 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -116,14 +116,14 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     {
         this.properties = properties;
         this.ruleSet = ruleSet;
-        description = ruleSet.getDocumentation( );
+        this.description = ruleSet.getDocumentation( );
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder( );
         builder.setFactHandleFactory( Jsr94FactHandleFactory.getInstance( ) );
         try
         {
             builder.addRuleSet( ruleSet );
-            ruleBase = builder.build( );
+            this.ruleBase = builder.build( );
         }
         catch ( RuleIntegrationException e )
         {
@@ -138,9 +138,9 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public synchronized ObjectFilter getObjectFilter( )
     {
-        if ( objectFilter == null )
+        if ( this.objectFilter == null )
         {
-            if ( defaultObjectFilterClassName != null )
+            if ( this.defaultObjectFilterClassName != null )
             {
                 ClassLoader cl =
                     Thread.currentThread( ).getContextClassLoader( );
@@ -153,8 +153,9 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
                 try
                 {
                     Class filterClass =
-                        cl.loadClass( defaultObjectFilterClassName );
-                    objectFilter = ( ObjectFilter ) filterClass.newInstance( );
+                        cl.loadClass( this.defaultObjectFilterClassName );
+                    this.objectFilter =
+                        ( ObjectFilter ) filterClass.newInstance( );
                 }
                 catch ( Exception e )
                 {
@@ -163,7 +164,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
             }
         }
 
-        return objectFilter;
+        return this.objectFilter;
     }
 
     /**
@@ -173,7 +174,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public WorkingMemory newWorkingMemory( )
     {
-        return ruleBase.newWorkingMemory( );
+        return this.ruleBase.newWorkingMemory( );
     }
 
     // JSR94 interface methods start here -------------------------------------
@@ -185,7 +186,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public String getName( )
     {
-        return ruleSet.getName( );
+        return this.ruleSet.getName( );
     }
 
     /**
@@ -196,7 +197,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public String getDescription( )
     {
-        return description;
+        return this.description;
     }
 
     /**
@@ -208,7 +209,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public Object getProperty( Object key )
     {
-        return properties.get( key );
+        return this.properties.get( key );
     }
 
     /**
@@ -219,7 +220,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public void setProperty( Object key, Object value )
     {
-        properties.put( key, value );
+        this.properties.put( key, value );
     }
 
     /**
@@ -246,7 +247,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public String getDefaultObjectFilter( )
     {
-        return defaultObjectFilterClassName;
+        return this.defaultObjectFilterClassName;
     }
 
     /**
@@ -260,7 +261,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     {
         List jsr94Rules = new ArrayList( );
 
-        Rule[] rules = ( ruleSet.getRules( ) );
+        Rule[] rules = ( this.ruleSet.getRules( ) );
         for ( int i = 0; i < rules.length; i++ )
         {
             jsr94Rules.add( new RuleImpl( rules[i] ) );

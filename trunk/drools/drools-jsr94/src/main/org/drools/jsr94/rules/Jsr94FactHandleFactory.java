@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandleFactory.java,v 1.12 2004-11-17 01:29:39 dbarnett Exp $
+ * $Id: Jsr94FactHandleFactory.java,v 1.13 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -71,11 +71,11 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
      */
     public static synchronized Jsr94FactHandleFactory getInstance( )
     {
-        if ( INSTANCE != null )
+        if ( Jsr94FactHandleFactory.INSTANCE != null )
         {
-            return INSTANCE;
+            return Jsr94FactHandleFactory.INSTANCE;
         }
-        return INSTANCE = new Jsr94FactHandleFactory( );
+        return Jsr94FactHandleFactory.INSTANCE = new Jsr94FactHandleFactory( );
     }
 
     /**
@@ -85,7 +85,7 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
      */
     public synchronized FactHandle newFactHandle( )
     {
-        return new Jsr94FactHandle( ++idCounter,  ++recencyCounter );
+        return new Jsr94FactHandle( ++this.idCounter,  ++this.recencyCounter );
     }
 
     /**
@@ -97,7 +97,6 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
      */
     public synchronized FactHandle newFactHandle( long id )
     {
-        return new Jsr94FactHandle( id, ++recencyCounter );
+        return new Jsr94FactHandle( id, ++this.recencyCounter );
     }
 }
-

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleExecutionSetMetadataImpl.java,v 1.5 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: RuleExecutionSetMetadataImpl.java,v 1.6 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -83,7 +83,7 @@ public class RuleExecutionSetMetadataImpl implements RuleExecutionSetMetadata
      */
     public String getUri( )
     {
-        return uri;
+        return this.uri;
     }
 
     /**
@@ -93,7 +93,7 @@ public class RuleExecutionSetMetadataImpl implements RuleExecutionSetMetadata
      */
     public String getName( )
     {
-        return name;
+        return this.name;
     }
 
     /**
@@ -104,6 +104,6 @@ public class RuleExecutionSetMetadataImpl implements RuleExecutionSetMetadata
      */
     public String getDescription( )
     {
-        return description;
+        return this.description;
     }
 }

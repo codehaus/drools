@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetRepository.java,v 1.9 2004-11-14 20:12:37 dbarnett Exp $
+ * $Id: RuleExecutionSetRepository.java,v 1.10 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,11 +74,12 @@ public final class RuleExecutionSetRepository
      */
     public static synchronized RuleExecutionSetRepository getInstance( )
     {
-        if ( REPOSITORY != null )
+        if ( RuleExecutionSetRepository.REPOSITORY != null )
         {
-            return REPOSITORY;
+            return RuleExecutionSetRepository.REPOSITORY;
         }
-        return REPOSITORY = new RuleExecutionSetRepository( );
+        return RuleExecutionSetRepository.REPOSITORY =
+            new RuleExecutionSetRepository( );
     }
 
     /**
@@ -93,7 +94,7 @@ public final class RuleExecutionSetRepository
     public List getRegistrations( )
     {
         List list = new ArrayList( );
-        list.addAll( map.keySet( ) );
+        list.addAll( this.map.keySet( ) );
         return list;
     }
 
@@ -108,7 +109,7 @@ public final class RuleExecutionSetRepository
      */
     public RuleExecutionSet getRuleExecutionSet( String bindUri )
     {
-        return ( RuleExecutionSet ) map.get( bindUri );
+        return ( RuleExecutionSet ) this.map.get( bindUri );
     }
 
     /**
@@ -130,7 +131,7 @@ public final class RuleExecutionSetRepository
         {
             throw new NullPointerException( "ruleSet cannot be null" );
         }
-        map.put( bindUri, ruleSet );
+        this.map.put( bindUri, ruleSet );
     }
 
     /**
@@ -145,6 +146,6 @@ public final class RuleExecutionSetRepository
         {
             throw new NullPointerException( "bindUri cannot be null" );
         }
-        map.remove( bindUri );
+        this.map.remove( bindUri );
     }
 }

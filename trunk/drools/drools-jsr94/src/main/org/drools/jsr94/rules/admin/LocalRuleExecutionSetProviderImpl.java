@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.16 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.17 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -100,7 +100,7 @@ public class LocalRuleExecutionSetProviderImpl
         {
             RuleSetReader setReader = new RuleSetReader( );
             RuleSet ruleSet = setReader.read( ruleExecutionSetStream );
-            return createRuleExecutionSet( ruleSet, properties );
+            return this.createRuleExecutionSet( ruleSet, properties );
         }
         catch ( Exception ex )
         {
@@ -133,7 +133,7 @@ public class LocalRuleExecutionSetProviderImpl
         {
             RuleSetReader setReader = new RuleSetReader( );
             RuleSet ruleSet = setReader.read( ruleExecutionSetReader );
-            return createRuleExecutionSet( ruleSet, properties );
+            return this.createRuleExecutionSet( ruleSet, properties );
         }
         catch ( Exception ex )
         {
@@ -170,7 +170,7 @@ public class LocalRuleExecutionSetProviderImpl
             try
             {
                 RuleSet ruleSet = ( RuleSet ) ruleExecutionSetAst;
-                return createRuleExecutionSet( ruleSet, properties );
+                return this.createRuleExecutionSet( ruleSet, properties );
             }
             catch ( Exception ex )
             {

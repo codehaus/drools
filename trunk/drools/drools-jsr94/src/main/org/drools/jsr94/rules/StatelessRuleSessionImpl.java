@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatelessRuleSessionImpl.java,v 1.10 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: StatelessRuleSessionImpl.java,v 1.11 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -83,7 +83,7 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl
     StatelessRuleSessionImpl( String bindUri, Map properties )
         throws RuleExecutionSetNotFoundException
     {
-        setProperties( properties );
+        this.setProperties( properties );
 
         RuleExecutionSetRepository repository =
             RuleExecutionSetRepository.getInstance( );
@@ -97,7 +97,7 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl
                 "RuleExecutionSet unbound: " + bindUri );
         }
 
-        setRuleExecutionSet( ruleSet );
+        this.setRuleExecutionSet( ruleSet );
     }
 
     /**
@@ -123,8 +123,8 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl
      */
     public List executeRules( List objects ) throws InvalidRuleSessionException
     {
-        return executeRules(
-            objects, getRuleExecutionSet( ).getObjectFilter( ) );
+        return this.executeRules(
+            objects, this.getRuleExecutionSet( ).getObjectFilter( ) );
     }
 
     /**
@@ -152,7 +152,7 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl
     public List executeRules( List objects, ObjectFilter filter )
         throws InvalidRuleSessionException
     {
-        WorkingMemory workingMemory = newWorkingMemory( );
+        WorkingMemory workingMemory = this.newWorkingMemory( );
 
         try
         {
@@ -171,7 +171,7 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl
 
         List results = workingMemory.getObjects( );
 
-        applyFilter( results, filter );
+        this.applyFilter( results, filter );
 
         return results;
     }

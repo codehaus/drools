@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.15 2004-11-17 01:29:39 dbarnett Exp $
+ * $Id: RuleSessionImpl.java,v 1.16 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -104,7 +104,7 @@ abstract class RuleSessionImpl implements RuleSession
      */
     protected void initWorkingMemory( )
     {
-        setWorkingMemory( newWorkingMemory( ) );
+        this.setWorkingMemory( this.newWorkingMemory( ) );
     }
 
     /**
@@ -123,9 +123,9 @@ abstract class RuleSessionImpl implements RuleSession
     protected WorkingMemory newWorkingMemory( )
     {
         WorkingMemory newWorkingMemory =
-            getRuleExecutionSet( ).newWorkingMemory( );
+            this.getRuleExecutionSet( ).newWorkingMemory( );
 
-        Map props = getProperties( );
+        Map props = this.getProperties( );
         if ( props != null )
         {
             for ( Iterator iterator = props.entrySet( ).iterator( );
@@ -160,7 +160,7 @@ abstract class RuleSessionImpl implements RuleSession
      */
     protected Map getProperties( )
     {
-        return properties;
+        return this.properties;
     }
 
     /**
@@ -184,7 +184,7 @@ abstract class RuleSessionImpl implements RuleSession
      */
     protected WorkingMemory getWorkingMemory( )
     {
-        return workingMemory;
+        return this.workingMemory;
     }
 
     /**
@@ -208,7 +208,7 @@ abstract class RuleSessionImpl implements RuleSession
      */
     protected RuleExecutionSetImpl getRuleExecutionSet( )
     {
-        return ruleSet;
+        return this.ruleSet;
     }
 
     /**
@@ -220,7 +220,7 @@ abstract class RuleSessionImpl implements RuleSession
     protected void checkRuleSessionValidity( )
         throws InvalidRuleSessionException
     {
-        if ( workingMemory == null )
+        if ( this.workingMemory == null )
         {
             throw new InvalidRuleSessionException( "invalid rule session" );
         }
@@ -269,7 +269,7 @@ abstract class RuleSessionImpl implements RuleSession
             String aBindUri = ( String ) i.next( );
             RuleExecutionSet aRuleSet =
                 repository.getRuleExecutionSet( aBindUri );
-            if ( aRuleSet == ruleSet )
+            if ( aRuleSet == this.ruleSet )
             {
                 theBindUri = aBindUri;
                 break;
@@ -277,7 +277,9 @@ abstract class RuleSessionImpl implements RuleSession
         }
 
         return new RuleExecutionSetMetadataImpl(
-            theBindUri, ruleSet.getName( ), ruleSet.getDescription( ) );
+            theBindUri,
+            this.ruleSet.getName( ),
+            this.ruleSet.getDescription( ) );
     }
 
     /**
@@ -313,9 +315,9 @@ abstract class RuleSessionImpl implements RuleSession
      */
     public void release( )
     {
-        setProperties( null );
-        setWorkingMemory( null );
-        setRuleExecutionSet( null );
+        this.setProperties( null );
+        this.setWorkingMemory( null );
+        this.setRuleExecutionSet( null );
     }
 
     /**
@@ -328,6 +330,6 @@ abstract class RuleSessionImpl implements RuleSession
      */
     public void reset( )
     {
-        initWorkingMemory( );
+        this.initWorkingMemory( );
     }
 }
