@@ -3,6 +3,11 @@ package org.drools.semantic.java;
 
 import org.drools.spi.ObjectType;
 
+/** <code>ObjectType</code> implementing Java <code>Class</code> semantics
+ *  for object type delineation.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class JavaObjectType implements ObjectType
 {
     private Class objectClass;
