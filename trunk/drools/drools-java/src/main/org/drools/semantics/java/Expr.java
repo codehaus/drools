@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.5 2002-08-19 00:31:42 bob Exp $
+ $Id: Expr.java,v 1.6 2002-08-19 04:30:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.smf.ConfigurationException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.5 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: Expr.java,v 1.6 2002-08-19 04:30:49 bob Exp $
  */
 public class Expr extends Interp
 {
@@ -83,6 +83,21 @@ public class Expr extends Interp
     protected Expr()
     {
         this.requiredDecls = EMPTY_DECLS;
+    }
+
+    /** Construct.
+     *
+     *  @param expr The expression.
+     *  @param availDecls The available declarations.
+     *
+     *  @throws ConfigurationException If an error occurs while
+     *          attempting to perform configuration.
+     */
+    protected Expr(String expr,
+                   Declaration[] availDecls) throws ConfigurationException
+    {
+        configure( expr,
+                   availDecls );
     }
 
     // ------------------------------------------------------------

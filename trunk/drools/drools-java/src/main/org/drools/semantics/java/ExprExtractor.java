@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.5 2002-08-19 00:31:42 bob Exp $
+ $Id: ExprExtractor.java,v 1.6 2002-08-19 04:30:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,9 @@ package org.drools.semantics.java;
  
  */
 
+import org.drools.rule.Declaration;
 import org.drools.smf.ConfigurableExtractor;
+import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.drools.spi.ExtractionException;
 
@@ -54,7 +56,7 @@ import org.drools.spi.ExtractionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.5 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.6 2002-08-19 04:30:49 bob Exp $
  */
 public class ExprExtractor extends Expr implements ConfigurableExtractor
 {
@@ -64,19 +66,26 @@ public class ExprExtractor extends Expr implements ConfigurableExtractor
 
     /** Construct, partially.
      *
-     *  @see Expr#setExpression
+     *  @see Expr#configure
      */
     public ExprExtractor()
     {
+        // intentionally left blank
     }
 
     /** Construct.
      *
      *  @param expr The expression.
+     *  @param availDecls The available declarations.
+     *
+     *  @throws ConfigurationException If an error occurs while
+     *          attempting to perform configuration.
      */
-    public ExprExtractor(String expr)
+    public ExprExtractor(String expr,
+                         Declaration[] availDecls) throws ConfigurationException
     {
-        setExpression( expr );
+        super( expr,
+               availDecls );
     }
 
     // ------------------------------------------------------------

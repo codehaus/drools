@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.4 2002-08-19 00:31:42 bob Exp $
+ $Id: BlockConsequence.java,v 1.5 2002-08-19 04:30:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import bsh.EvalError;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.4 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.5 2002-08-19 04:30:49 bob Exp $
  */
 public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
@@ -132,7 +132,7 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
 
             unsetVariable( "drools$working$memory" );
         }
-        catch (EvalError e)
+        catch (Exception e)
         {
             throw new ConsequenceException( e );
         }
