@@ -1,14 +1,14 @@
-\chapter{Semantics Provider Interface}
+\chapter[Semantics Provider Interface]{SPI\\\normalsize{Semantics Provider Interface}}
 
 \section{Overview}
 
-\drools{} at its core is merely an algorithmic engine. The 
-\emph{Semantics Provide Interface} also known as the SPI
+At its core, \drools{} is merely an algorithmic engine. The 
+\emph{Semantics Provide Interface}, also known as the SPI,
 provides for wrapping the \drools{} Rete-OO algorithm with
-the desired semantics. The semantics of several concepts are
+arbitrary application semantics. The semantics of several concepts are
 left open for definition by an implementation.
 
-\bigskip
+\medskip
 
 \begin{center}
   \begin{tabular}{|l|l|p{120pt}|}
@@ -21,7 +21,7 @@ left open for definition by an implementation.
         & \footnotesize{Differentiates objects by type} \\
     \hline
       \footnotesize{condition} %
-        & \texttt{\footnotesize{org.drools.spi.FilterCondition}} %
+        & \texttt{\footnotesize{org.drools.spi.Condition}} %
         & \footnotesize{Tests tuples}\\
     \hline
       \footnotesize{fact extraction} %
@@ -29,27 +29,23 @@ left open for definition by an implementation.
         & \footnotesize{Extracts attributes from objects} \\
     \hline
       \footnotesize{action} %
-        & \texttt{\footnotesize{org.drools.spi.Action}} %
-        & \footnotesize{Performs activities}\\
+        & \texttt{\footnotesize{org.drools.spi.Consequence}} %
+        & \footnotesize{The result of a rule match}\\
     \hline
   \end{tabular}
 \end{center}
 
-\bigskip
+\medskip
 
 Additionally, implementations of some of these interfaces must work
 with the \verb|Tuple| and \verb|Declaration| objects that flow 
 through the network.  
 
-The SPI provides for \drools{} customizations to be linked interal to
+The SPI provides for \drools{} customizations to be tightly linked to
 the core Rete-OO algorithm engine.  By using SPI implementations, no
 external translation or mapping process is required.  Rules can
-expressed directly using the semantics provided by the semantics module.
-
-In addition to providing interfaces and classes for specifying
-semantic objects, classes for assembling complete rules also exist.
-The assembly classes allow whatever UI is required for building rule
-sets in a particular application.  
+expressed directly using the semantics provided by the semantics module
+and manipulated directly by the engine.
 
 \section{Semantic Objects}
 
@@ -58,8 +54,8 @@ sets in a particular application.
 While the type of any object presented to \drools{} though
 the fact manipulation methods of a \verb|WorkingMemory| is determined
 by the Java class of that object, \drools{} provides the
-\verb|ObjectType| interface for determining the object's type within
-the engine.
+\verb|ObjectType| interface for determining the object's semantic type
+within the algorithm.
 
 In the \emph{XML Semantics Module}, all presented objects are of the
 class \verb|Document|.  The \verb|ObjectType| implementation
@@ -67,8 +63,8 @@ for the module inspects the root-level XML element to determine the
 object's type for the context of \drools{}.
 
 Semantic modules provide implementation of the \verb|ObjectType|
-interface that are capable of determining an object's type within
-its semantic realm.
+interface that are able to determine an object's type within
+a semantic realm.
 
 \begin{figure}
 \begin{codelisting}
@@ -89,22 +85,23 @@ public interface ObjectType
 \label{code.ObjectType}
 \end{figure}
 
-The \verb|matches(...)| method can perform whatever logic that is
-neccessary to determine if semantic type of the object matches.  If
-the type does match, then \verb|true| should be returned.  Otherwise, 
-\verb|false| will indicate a non-match. A single asserted object may 
+The \verb|matches(..)| method can perform any necessary logic 
+to determine if semantic type of the object matches the type described
+by the \verb|ObjectType| implementation. If
+the type does match, then \verb|true| is returned.  Otherwise, 
+\verb|false| indicates a non-match. A single asserted object may 
 match several \verb|ObjectTypes| as the core engine presents each 
 object to every \verb|ObjectType| for type determination.  This
-allows for a rule-base to contain a multitude of rules with different
-semantics.  
+allows for a single rule-base to contain a multitude of rules 
+written against many semantic realms.
 
 \subsection{org.drools.spi.Declaration}
 
-A \verb|Declaration| represents a named and type object.  Internally,
+A \verb|Declaration| represents a named and typed object.  Internally,
 the \drools{} engine uses strongly-typed semantic objects.  Named objects
 involved in a rule have a \verb|Declaration| that binds an object
 identifier to an \verb|ObjectType|.  If an object is bound to a
-\verb|Declaration|, then the \verb|ObjectType| of the \verb|Declaration|
+\verb|Declaration| then the \verb|ObjectType| of the \verb|Declaration|
 must return \verb|true| from its \verb|matches(..)| method when
 evaluated against the bound object.
 
@@ -112,26 +109,18 @@ evaluated against the bound object.
 \begin{codelisting}
 public class Declaration
 \{
-    ....
-    ....
 
     /** Retrieve the ObjectType of this Declaration.
      *
      *  @return The ObjectType of this Declaration.
      */
-    public ObjectType getObjectType()
-    \{
-        return this.objectType;
-    \}
+    public ObjectType getObjectType() \{ ... \}
 
     /** Retrieve the variable's identifier.
      *
      *  @return The variable's identifier.
      */
-    public String getIdentifier()
-    \{
-        return this.identifier;
-    \}
+    public String getIdentifier() \{ ... \}
 \}
 \end{codelisting}
 \label{code.Declaration}
@@ -142,16 +131,16 @@ public class Declaration
 
 While the external \drools{} API is object-oriented, the core is still
 constructed of nodes through which \emph{tuples} flow.  A tuple is
-simply a dictionary of \emph{key-to-value} entries.  Many times, a
+simply a dictionary of \emph{key-to-value} mappings.  A
 tuple may be considered to be similar to a \emph{row} in a relational
-database, where the \emph{key} matches the column type and name, and
+database table, where the \emph{key} matches the column type and name, and
 the \emph{value} matches the column data cell for that row.  
 
-The \emph{key} used to index the associated value is always a
+The key used to index the associated value is always a
 \verb|Declaration| object. When an object is initially asserted into a
-\verb|WorkingMemory|, it gets wrapped by all \verb|ParameterNodes|
-into a single-column tuple with the object bound to the
-\verb|Declaration| of the \verb|ParameterNode|.
+\verb|WorkingMemory| it gets wrapped by all matching \verb|ParameterNodes|
+into single-column tuples with the object bound to the
+\verb|Declaration| of each \verb|ParameterNode|.
 
 An example set of tuples was presented in table
 \fullref{table.tuplesets}. With the exception of the \verb|ObjectType|
@@ -185,13 +174,14 @@ public interface Tuple
 Fact extration is the process of performing an operation upon a
 \verb|Tuple| to create additional columns or attribute on the
 \verb|Tuple|.  All \verb|Tuples| initially have a single column
-matching the a \verb|Declaration| of the rule.  Through fact
-extraction, additional columns can be added based upon knowledge
-gained from the existing column or columns.
+matching a \verb|Declaration| of the rule.  Through fact
+extraction additional columns can be added based upon knowledge
+gained from the existing columns.
 
 The \emph{Java Semantic Module} uses normal Java expressions to
 extract other objects and values reachable from those already in the
-\verb|Tuple|.  The \emph{XML Semantic Module} uses XPath expressions
+\verb|Tuple|.  The \emph{XML Semantic Module} uses
+XPath\cite{clark99xpath} expressions
 to evaluate expressions against documents.  The extracted values are
 associated with a \verb|Declaration| and inserted into the
 \verb|Tuple|.
@@ -231,9 +221,9 @@ public interface FactExtractor
 \caption{\texttt{org.drools.spi.FactExtractor} interface}
 \end{figure}
 
-\subsection{org.drools.spi.FilterCondition}
+\subsection{org.drools.spi.Condition}
 
-A \verb|FilterCondition| is a predicate which evaluates against
+A \verb|Condition| is a predicate which evaluates against
 a \verb|Tuple| to determine if the \verb|Tuple| should pass or
 fail the condition. The \verb|isAllowed(Tuple tuple)| method
 allows the condition to be evaluated against a \verb|Tuple|.
@@ -242,14 +232,14 @@ return \verb|true| otherwise \verb|false| indicates that
 the \verb|Tuple| does not pass.
 
 Like the \verb|FactExtractor|, a
-\verb|FilterCondition| may only be applicable to \verb|Tuple|
+\verb|Condition| may only be applicable to \verb|Tuple|
 objects that contain some minimal set of columns.  
-\verb|FilterCondition| implementations must also supply
+\verb|Condition| implementations must also supply
 the \verb|getRequiredTupleMembers()| method.
 
 \begin{figure}
 \begin{codelisting}
-public interface FilterCondition extends Condition
+public interface Condition extends Condition
 \{
     /** Retrieve the array of Declarations required
      *  by this condition to perform its duties.
@@ -267,42 +257,46 @@ public interface FilterCondition extends Condition
      *  @return <code>true</code> if the <code>Tuple</code>
      *          passes this filter, else <code>false</code>.
      *
-     *  @throws FilterException if an error occurs during filtering.
+     *  @throws ConditionException if an error occurs during testing.
      */
-    boolean isAllowed(Tuple tuple) throws FilterException;
+    boolean isAllowed(Tuple tuple) throws ConditionException;
 \}
 \end{codelisting}
-\label{code.FilterCondition}
-\caption{\texttt{org.drools.spi.FilterCondition} interface}
+\label{code.Condition}
+\caption{\texttt{org.drools.spi.Condition} interface}
 \end{figure}
 
-\subsection{org.drools.spi.Action}
+\subsection{org.drools.spi.Consequence}
 
 When a collection of facts, represented by a \verb|Tuple| satisifies
-all conditions of a rule then an \verb|Action| is given an opportunity
-to fire and perform some activity.  Since \verb|Actions| may require
+all conditions of a rule then an \verb|Consequence| is given an opportunity
+to fire and perform some activity.  Since \verb|Consequence|s may require
 the ability to manipulate more facts, instaces are provided not only
 the matching \verb|Tuple|, but also the current \verb|WorkingMemory|
-instance.
+instance. \verb|Consequence| also has a subclass named \verb|Action| which allows
+directly modelling of trigger rules.  \verb|Action|  is purely a
+marker interface.
+
 
 \begin{figure}
 \begin{codelisting}
-public interface Action
-\{
-    /** Execute the action for the supplied matching Tuple.
+public interface Consequence
+\{    
+    /** Execute the consequence for the supplied
+     *  matching <code>Tuple</code>.
      *
      *  @param tuple The matching tuple.
      *  @param workingMemory The working memory session.
      *
-     *  @throws ActionInvokationException If an error occurs while
-     *          attempting to invoke the action.
+     *  @throws ConsequenceException If an error occurs while
+     *          attempting to invoke the consequence.
      */
     void invoke(Tuple tuple,
                 WorkingMemory workingMemory) throws ActionInvokationException;
 \}
 \end{codelisting}
-\label{code.Action}
-\caption{\texttt{org.drools.spi.Action} interface}
+\label{code.Conseqeunce}
+\caption{\texttt{org.drools.spi.Conseqeunce} interface}
 \end{figure}
 
 \newpage
