@@ -43,16 +43,48 @@ target_site()
 
   echo "building site"
 
+  local path
+
+  build_unified_drl_reference;
+
   for path in $(cd $BASE/site; find . -name '*.html') ; do
     generate_root_page $path 
   done
+ 
+  local module
 
   for module in $MODULES ; do
     module_site $module
   done
 
   copy_tree $BASE/build/docs/api $BASE/build/site/api 
-  cp $BASE/build/docs/*.pdf $BASE/build/site/
+  cp -f $BASE/build/docs/*.pdf $BASE/build/site/
+}
+
+build_unified_drl_reference()
+{
+  local module
+
+  local page=unified-drl.html
+  local out=$BASE/build/site/unified-drl.html
+
+  mkdir -p $BASE/build/site
+  touch $out
+  echo "" > $out
+
+  local TOP=.
+
+  cat $BASE/lib/site/first.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
+  generate_root_nav $page $out
+  cat $BASE/lib/site/middle.html >> $out
+  cat ./drools-io/site/drl.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
+  for module in $MODULES ; do 
+    if [ -f ./drools-$module/site/drl.html ] ; then 
+      cat ./drools-$module/site/drl.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
+    fi
+  done
+  cat $BASE/lib/site/last.html >> $out
+  
 }
 
 module_site()
