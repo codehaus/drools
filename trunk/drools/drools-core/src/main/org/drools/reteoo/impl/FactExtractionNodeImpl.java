@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: FactExtractionNodeImpl.java,v 1.2 2002-08-10 19:16:17 bob Exp $
+ $Id: FactExtractionNodeImpl.java,v 1.3 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.drools.spi.FactExtractor;
 import java.util.Set;
 import java.util.HashSet;
 
-/** <i>Consistent-Assignment</i> node in the Rete-OO network.
+/** <i>Fact extraction</i> node in the Rete-OO network.
  *
  *  @see FactExtractionNode
  *
@@ -85,7 +85,7 @@ public class FactExtractionNodeImpl extends TupleSourceImpl implements FactExtra
     /** Construct.
      *
      *  @param tupleSource Parent tuple source.
-     *  @param targetDeclaration Target of assignment/extraction.
+     *  @param targetDeclaration Target of extraction.
      *  @param factExtractor The fact extractor to use.
      */
     public FactExtractionNodeImpl(TupleSourceImpl tupleSource,
@@ -110,7 +110,7 @@ public class FactExtractionNodeImpl extends TupleSourceImpl implements FactExtra
     // ------------------------------------------------------------
 
     /** Retrieve the <code>Declaration</code> which is the target of
-     *  the assignment.
+     *  the extraction.
      *
      *  @see Declaration
      *
@@ -122,7 +122,7 @@ public class FactExtractionNodeImpl extends TupleSourceImpl implements FactExtra
     }
 
     /** Retrieve the <code>FactExtractor</code> used to generate the
-     *  right-hand-side value for the assignment.
+     *  right-hand-side value for the extraction.
      *
      *  @see FactExtractor
      *

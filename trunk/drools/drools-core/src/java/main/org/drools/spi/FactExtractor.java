@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FactExtractor.java,v 1.4 2002-08-01 18:47:33 bob Exp $
+ $Id: FactExtractor.java,v 1.5 2002-08-13 04:12:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,9 +50,9 @@ import org.drools.rule.Declaration;
 
 /** Extracts new facts from existing facts.
  *
- *  @see AssignmentCondition
  *  @see Tuple
- *  @see Declaration
+ *  @see org.drools.rule.Declaration
+ *  @see org.drools.rule.FactExtraction
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

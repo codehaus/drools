@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.1 2002-08-01 18:47:33 bob Exp $
+ $Id: Declaration.java,v 1.2 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,7 @@ import org.drools.spi.ObjectType;
 /** A typed, named variable for <code>Condition</code> evaluation.
  *
  *  @see ObjectType
- *  @see Condition
+ *  @see org.drools.spi.Condition
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

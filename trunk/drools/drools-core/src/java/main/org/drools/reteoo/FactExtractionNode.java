@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FactExtractionNode.java,v 1.1 2002-08-01 19:27:10 bob Exp $
+ $Id: FactExtractionNode.java,v 1.2 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,14 +49,14 @@ package org.drools.reteoo;
 import org.drools.rule.Declaration;
 import org.drools.spi.FactExtractor;
 
-/** <i>Consistent-Assignment</i> node in the Rete-OO network.
+/** <i>Fact extraction</i> node in the Rete-OO network.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public interface FactExtractionNode extends TupleSource, TupleSink
 {
     /** Retrieve the <code>Declaration</code> which is the target of
-     *  the assignment.
+     *  the extraction.
      *
      *  @see Declaration
      *
@@ -65,7 +65,7 @@ public interface FactExtractionNode extends TupleSource, TupleSink
     Declaration getTargetDeclaration();
 
     /** Retrieve the <code>FactExtractor</code> used to generate the
-     *  right-hand-side value for the assignment.
+     *  right-hand-side value for the extraction.
      *
      *  @see FactExtractor
      *

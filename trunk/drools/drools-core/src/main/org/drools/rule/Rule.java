@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.6 2002-08-10 19:34:32 bob Exp $
+ $Id: Rule.java,v 1.7 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,14 +53,14 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
 
-/** A set of <code>Condition</code>s and an <code>Action</code>.
+/** A set of <code>Condition</code>s and a <code>Consequence</code>.
  *
  *  The <code>Conditions</code> describe the circumstances
- *  that represent a match for this rule.  The <code>Action</code>
+ *  that represent a match for this rule.  The <code>Consequence</code>
  *  gets fired when the <code>Conditions</code> match.
  *
  *  @see Condition
- *  @see Action
+ *  @see Consequence
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

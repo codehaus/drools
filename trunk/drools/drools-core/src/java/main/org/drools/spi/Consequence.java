@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Consequence.java,v 1.1 2002-08-10 19:34:32 bob Exp $
+ $Id: Consequence.java,v 1.2 2002-08-13 04:12:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 
 /** Consequence to be fired upon successful  match of a <code>Rule</code>.
  *
- *  @see Rule
+ *  @see org.drools.rule.Rule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

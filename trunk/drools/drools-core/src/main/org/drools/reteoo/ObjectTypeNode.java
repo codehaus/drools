@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.7 2002-07-28 15:49:50 bob Exp $
+ $Id: ObjectTypeNode.java,v 1.8 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,11 +48,11 @@ package org.drools.reteoo;
 
 import org.drools.spi.ObjectType;
 
-/** Filters <code>Objects</code> coming from the <code>RootNode</code>
+/** Filters <code>Objects</code> coming entering the <code>Rete</code>
  *  using a <code>ObjectType</code> semantic module.
  *
  *  <p>
- *  It receives <code>Objects</code> from the <code>RootNode</code>,
+ *  It receives <code>Objects</code> from the <code>Rete</code>,
  *  uses a <code>ObjectType</code> instance to determine membership,
  *  and propagates matching <code>Objects</code> further to all
  *  matching <code>ParameterNode</code>s.
@@ -60,7 +60,7 @@ import org.drools.spi.ObjectType;
  *
  *  @see ObjectType
  *  @see ParameterNode
- *  @see RootNode
+ *  @see Rete
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com</a>
  */

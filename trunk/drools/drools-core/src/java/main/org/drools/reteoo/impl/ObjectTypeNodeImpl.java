@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ObjectTypeNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: ObjectTypeNodeImpl.java,v 1.3 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,11 +58,11 @@ import java.util.HashSet;
 import java.util.Collections;
 import java.util.Iterator;
 
-/** Filters <code>Objects</code> coming from the <code>RootNode</code>
+/** Filters <code>Objects</code> coming from the <code>Rete</code>
  *  using a <code>ObjectType</code> semantic module.
  *
  *  <p>
- *  It receives <code>Objects</code> from the <code>RootNode</code>,
+ *  It receives <code>Objects</code> from the <code>Rete</code>,
  *  uses a <code>ObjectType</code> instance to determine membership,
  *  and propagates matching <code>Objects</code> further to all
  *  matching <code>ParameterNode</code>s.
@@ -71,7 +71,7 @@ import java.util.Iterator;
  *  @see ObjectTypeNode
  *  @see ObjectType
  *  @see ParameterNodeImpl
- *  @see RootNodeImpl
+ *  @see ReteImpl
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com</a>
  */
