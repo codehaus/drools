@@ -13,6 +13,8 @@ import fr.dyade.jdring.AlarmEntry;
 import fr.dyade.jdring.PastDateException;
 
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Date;
 
@@ -41,9 +43,7 @@ public class Agenda
     private LinkedList items;
 
     /** Items time-delayed. */
-    private LinkedList scheduledItems;
-
-    private AlarmManager scheduler;
+    private Set scheduledItems;
 
     /** Construct.
      *
@@ -54,10 +54,7 @@ public class Agenda
         this.workingMemory = workingMemory;
 
         this.items          = new LinkedList();
-        this.scheduledItems = new LinkedList();
-
-        this.scheduler = new AlarmManager( true,
-                                           this + " scheduler" );
+        this.scheduledItems = new HashSet();
     }
 
     /** Schedule a rule action invokation on this <code>Agenda</code>.
@@ -130,7 +127,8 @@ public class Agenda
         }
     }
 
-    void modifyAgenda(TupleSet newTuples,
+    void modifyAgenda(Object trigger,
+                      TupleSet newTuples,
                       Action action,
                       long duration)
     {
@@ -146,14 +144,17 @@ public class Agenda
             {
                 eachTuple = eachItem.getTuple();
 
-                if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                if ( eachTuple.dependsOn( trigger ) )
                 {
-                    itemIter.remove();
-                }
-                else
-                {
-                    eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
-                    newTuples.removeTuple( eachTuple.getKey() );
+                    if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                    {
+                        itemIter.remove();
+                    }
+                    else
+                    {
+                        eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
+                        newTuples.removeTuple( eachTuple.getKey() );
+                    }
                 }
             }
         }
@@ -169,15 +170,18 @@ public class Agenda
             {
                 eachTuple = eachItem.getTuple();
 
-                if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                if ( eachTuple.dependsOn( trigger ) )
                 {
-                    cancelItem( eachItem );
-                    itemIter.remove();
-                }
-                else
-                {
-                    eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
-                    newTuples.removeTuple( eachTuple.getKey() );
+                    if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                    {
+                        cancelItem( eachItem );
+                        itemIter.remove();
+                    }
+                    else
+                    {
+                        eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
+                        newTuples.removeTuple( eachTuple.getKey() );
+                    }
                 }
             }
         }
@@ -196,25 +200,13 @@ public class Agenda
 
     void scheduleItem(AgendaItem item)
     {
-        Date now = new Date();
-
-        Date then = new Date( now.getTime() + ( item.getDuration() * 1000 ) );
-
-        try
-        {
-            this.scheduler.addAlarm( then,
-                                     new FireListener( item,
-                                                       this.workingMemory ) );
-        }
-        catch (PastDateException e)
-        {
-            e.printStackTrace();
-        }
+        Scheduler.getInstance().scheduleAgendaItem( item,
+                                                    this.workingMemory );
     }
 
     void cancelItem(AgendaItem item)
     {
-
+        Scheduler.getInstance().cancelAgendaItem( item );
     }
     
     /** Determine if this <code>Agenda</code> has any
@@ -237,84 +229,5 @@ public class Agenda
         AgendaItem item = (AgendaItem) this.items.removeFirst();
 
         item.fire( this.workingMemory );
-    }
-}
-
-/** Item entry in the <code>Agenda</code>.
- */
-class AgendaItem
-{
-    private ReteTuple tuple;
-    private Action    action;
-    private long      duration;
-    
-    AgendaItem(ReteTuple tuple,
-               Action action,
-               long duration)
-    {
-        this.tuple    = tuple;
-        this.action   = action;
-        this.duration = duration;
-    }
-
-    boolean dependsOn(Object object)
-    {
-        return getTuple().dependsOn( object );
-    }
-
-    void setTuple(ReteTuple tuple)
-    {
-        this.tuple = tuple;
-    }
-
-    ReteTuple getTuple()
-    {
-        return this.tuple;
-    }
-    
-    Action getAction()
-    {
-        return this.action;
-    }
-
-    long getDuration()
-    {
-        return this.duration;
-    }
-
-    void fire(WorkingMemory workingMemory) throws ActionInvokationException
-    {
-        getAction().invoke( getTuple(),
-                            workingMemory );
-    }
-
-    public String toString()
-    {
-        return "[" + getTuple() + getAction() + "]";
-    }
-}
-
-class FireListener implements AlarmListener
-{
-    private AgendaItem    item;
-    private WorkingMemory workingMemory;
-
-    FireListener(AgendaItem item,
-                 WorkingMemory workingMemory)
-    {
-        this.item          = item;
-        this.workingMemory = workingMemory;
-    }
-
-    public void handleAlarm(AlarmEntry alarmEntry)
-    {
-        try
-        {
-            this.item.fire( this.workingMemory );
-        }
-        catch (ActionInvokationException e)
-        {
-            e.printStackTrace();
-        }
     }
 }

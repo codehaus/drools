@@ -17,7 +17,7 @@
 		<then>
 			import java.util.Iterator;
 
-			System.err.println( "Examining shopping cart" );
+			System.err.println( "Examining each item in shopping cart" );
 			
 			Iterator iter = cart.getItems().iterator();
 

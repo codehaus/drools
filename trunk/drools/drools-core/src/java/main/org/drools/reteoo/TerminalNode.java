@@ -96,7 +96,8 @@ public class TerminalNode implements TupleSink
     {
         Agenda agenda = workingMemory.getAgenda();
         
-        agenda.modifyAgenda( newTuples,
+        agenda.modifyAgenda( trigger,
+                             newTuples,
                              getAction(),
                              getDuration() );
     }
