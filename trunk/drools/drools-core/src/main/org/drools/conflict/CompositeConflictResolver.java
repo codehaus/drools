@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: CompositeConflictResolver.java,v 1.2 2004-10-30 01:11:48 simon Exp $
+ * $Id: CompositeConflictResolver.java,v 1.3 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,9 +41,8 @@ package org.drools.conflict;
  */
 
 import org.drools.spi.Activation;
+import org.drools.spi.ConflictResolver;
 import org.drools.spi.Tuple;
-
-import java.util.Comparator;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
@@ -59,17 +58,14 @@ import java.util.Comparator;
  * @see org.drools.rule.Rule
  *
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- *
- * @version $Id: DefaultConflictResolver.java,v 1.2 2004/06/25 11:46:58 mproctor
- *          Exp $
  */
 public class CompositeConflictResolver extends AbstractConflictResolver
 {
-    private final Comparator[] comparators;
+    private final ConflictResolver[] components;
 
-    public CompositeConflictResolver(Comparator[] comparators)
+    public CompositeConflictResolver( ConflictResolver[] components)
     {
-        this.comparators = comparators;
+        this.components = components;
     }
 
     /**
@@ -79,9 +75,9 @@ public class CompositeConflictResolver extends AbstractConflictResolver
     {
         int result = 0;
 
-        for ( int i = 0; result == 0 && i < this.comparators.length; ++i )
+        for ( int i = 0; result == 0 && i < this.components.length; ++i )
         {
-            result = this.comparators[i].compare( lhs, rhs );
+            result = this.components[i].compare( lhs, rhs );
         }
 
         return result;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.24 2004-11-09 09:03:35 simon Exp $
+ * $Id: ExtractionNode.java,v 1.25 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,14 +41,11 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.spi.Extractor;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -197,16 +194,8 @@ class ExtractionNode extends TupleSource implements TupleSink
      */
     private boolean checkExtractorOk(Object value, ReteTuple tuple)
     {
-        Declaration decl = this.targetDeclaration;
-
-        if ( tuple.getDeclarations( ).contains( decl ) )
-        {
-            if ( !value.equals( tuple.get( decl ) ) )
-            {
-                return false;
-            }
-        }
-        return true;
+        Object otherValue = tuple.get( this.targetDeclaration );
+        return otherValue == null || value.equals( otherValue );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

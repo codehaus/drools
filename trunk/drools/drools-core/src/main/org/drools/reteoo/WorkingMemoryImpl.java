@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.40 2004-11-09 13:52:38 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.41 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -63,7 +63,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.40 2004-11-09 13:52:38 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.41 2004-11-15 07:11:54 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -394,13 +394,13 @@ class WorkingMemoryImpl implements WorkingMemory
      *
      * @return The node's memory.
      */
-    public JoinMemory getJoinMemory(JoinNode node, JoinMemoryFactory factory)
+    public JoinMemory getJoinMemory(JoinNode node)
     {
         JoinMemory memory = ( JoinMemory ) this.joinMemories.get( node );
 
         if ( memory == null )
         {
-            memory = factory.createJoinMemory( node );
+            memory = new JoinMemory( node.getCommonDeclarations( ) );
 
             this.joinMemories.put( node, memory );
         }

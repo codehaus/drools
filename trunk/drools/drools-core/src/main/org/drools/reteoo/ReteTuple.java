@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.45 2004-11-03 13:31:23 simon Exp $
+ * $Id: ReteTuple.java,v 1.46 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,8 +59,6 @@ import java.util.Set;
  * @see Tuple
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: ReteTuple.java,v 1.45 2004-11-03 13:31:23 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
