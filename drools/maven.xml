@@ -21,9 +21,28 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
+    <goal name="tweak-compile.src.set">
+      <ant:path id="uber.compile.src.set">
+        <ant:pathelement path="drools-base/src/main"/>
+        <ant:pathelement path="drools-core/src/main"/>
+        <ant:pathelement path="drools-io/src/main"/>
+        <ant:pathelement path="drools-smf/src/main"/>
+        <ant:pathelement path="drools-java/src/main"/>
+        <ant:pathelement path="drools-jsr94/src/main"/>
+        <ant:pathelement path="drools-groovy/src/main"/>
+        <ant:pathelement path="drools-python/src/main"/>
+        <ant:pathelement path="drools-smftest/src/main"/>
+        <ant:pathelement path="drools-examples/src/main"/>
+      </ant:path>
+
+      <maven:addPath id="maven.compile.src.set"
+                  refid="uber.compile.src.set"/>
+    </goal>
+
     <goal name="javadoc-all">
-      <j:set var="goal" value="javadoc:generate"/>
-      <attainGoal name="multiproject:goal"/>
+      <attainGoal name="tweak-compile.src.set"/>
+      <attainGoal name="javadoc"/>
+      <ant:echo level="info" message="Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
     </goal>
 
     <goal name="checkstyle-all">
