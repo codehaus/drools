@@ -11,7 +11,7 @@ import org.drools.semantic.java.parser.JavaTreeParser;
 import org.drools.semantic.java.parser.JavaTokenTypes;
 
 import org.drools.rule.Declaration;
-import org.drools.rule.AssignmentCondition;
+import org.drools.rule.FactExtraction;
 
 import org.dom4j.Element;
 import org.dom4j.ElementPath;
@@ -144,10 +144,10 @@ class CondHandler extends BaseRuleSetHandler
         BeanShellFactExtractor extractor = new BeanShellFactExtractor( expr,
                                                                        rhsRefs );
 
-        AssignmentCondition assignCond = new AssignmentCondition( targetDecl,
-                                                                  extractor );
+        FactExtraction factExtract = new FactExtraction( targetDecl,
+                                                         extractor );
 
-        getReader().getCurrentRule().addAssignmentCondition( assignCond );
+        getReader().getCurrentRule().addFactExtraction( factExtract );
     }
 }
 

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: AssignmentNode.java,v 1.14 2002-08-01 18:47:33 bob Exp $
+ $Id: FactExtractionNode.java,v 1.1 2002-08-01 19:27:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ import org.drools.spi.FactExtractor;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface AssignmentNode extends TupleSource, TupleSink
+public interface FactExtractionNode extends TupleSource, TupleSink
 {
     /** Retrieve the <code>Declaration</code> which is the target of
      *  the assignment.

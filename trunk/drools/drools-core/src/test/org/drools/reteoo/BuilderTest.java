@@ -4,7 +4,7 @@ package org.drools.reteoo;
 import org.drools.reteoo.impl.ReteImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-import org.drools.rule.AssignmentCondition;
+import org.drools.rule.FactExtraction;
 import org.drools.rule.DeclarationAlreadyCompleteException;
 import org.drools.spi.ObjectType;
 import org.drools.spi.InstrumentedFilterCondition;
@@ -123,7 +123,7 @@ public class BuilderTest extends TestCase
                                           decls ) );
     }
 
-    public void testFindMatchingTupleSourceForAssignment()
+    public void testFindMatchingTupleSourceForExtraction()
     {
         Set sources = new HashSet();
 
@@ -131,8 +131,8 @@ public class BuilderTest extends TestCase
 
         InstrumentedFactExtractor extractor = null;
 
-        AssignmentCondition assignCond = null;
-
+        FactExtraction factExtract = null;
+        
         TupleSource found = null;
 
         // ----------------------------------------
@@ -148,10 +148,10 @@ public class BuilderTest extends TestCase
 
         extractor.addDeclaration( this.stringDecl );
 
-        assignCond = new AssignmentCondition( this.objectDecl,
-                                              extractor );
+        factExtract = new FactExtraction( this.objectDecl,
+                                          extractor );
 
-        found = this.builder.findMatchingTupleSourceForAssignment( assignCond,
+        found = this.builder.findMatchingTupleSourceForExtraction( factExtract,
                                                                    sources );
 
         assertNull( found );
@@ -169,7 +169,7 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        found = this.builder.findMatchingTupleSourceForAssignment( assignCond,
+        found = this.builder.findMatchingTupleSourceForExtraction( factExtract,
                                                                    sources );
 
         assertNull( found );
@@ -185,7 +185,7 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        found = this.builder.findMatchingTupleSourceForAssignment( assignCond,
+        found = this.builder.findMatchingTupleSourceForExtraction( factExtract,
                                                                    sources );
 
         assertNotNull( found );

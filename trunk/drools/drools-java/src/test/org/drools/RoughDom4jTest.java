@@ -5,7 +5,7 @@ import org.drools.AssertionException;
 import org.drools.reteoo.ReteConstructionException;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-import org.drools.rule.AssignmentCondition;
+import org.drools.rule.FactExtraction;
 import org.drools.rule.DeclarationAlreadyCompleteException;
 import org.drools.spi.Tuple;
 import org.drools.spi.Action;
@@ -103,11 +103,11 @@ public class RoughDom4jTest extends TestCase
             FactExtractor bExtract = new Dom4jXPathFactExtractor( doc2,
                                                                   new Dom4jXPath( "string(/b/@id)" ) );
             
-            rule.addAssignmentCondition( new AssignmentCondition( id,
-                                                                  aExtract ) );
+            rule.addFactExtraction( new FactExtraction( id,
+                                                        aExtract ) );
             
-            rule.addAssignmentCondition( new AssignmentCondition( id,
-                                                                  bExtract ) );
+            rule.addFactExtraction( new FactExtraction( id,
+                                                        bExtract ) );
             
             rule.setAction( new MyAction( doc1, doc2, id ) );
 
