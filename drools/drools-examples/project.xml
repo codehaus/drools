@@ -58,6 +58,19 @@
             </properties>
         </dependency>
         <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-python</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>jython</groupId>
+            <artifactId>jython</artifactId>
+            <version>20020827-no-oro</version>
+        </dependency>
+        <dependency>
             <groupId>groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>1.0-beta-5</version>
