@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.48 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.49 2004-11-19 13:01:11 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -284,7 +284,7 @@ class WorkingMemoryImpl
     {
         FactHandle factHandle = (FactHandle) this.handles.get( object );
 
-        if ( object == null )
+        if ( factHandle == null )
         {
             throw new NoSuchFactHandleException( object );
         }
