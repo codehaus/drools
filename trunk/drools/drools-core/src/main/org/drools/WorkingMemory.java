@@ -23,6 +23,7 @@ public class WorkingMemory
     /** Rule-firing agenda. */
     private Agenda   agenda;
 
+    /** Flag to determine if a rule is currently being fired. */
     private boolean firing;
 
     /** Construct a new working memory for a ruleBase.
@@ -74,6 +75,11 @@ public class WorkingMemory
                                     this );
 
         Agenda agenda = getAgenda();
+
+        // If we're already firing a rule, then it'll pick up
+        // the firing for any other assertObject(..) that get
+        // nested inside, avoiding concurrent-modification
+        // exceptions, depending on code paths of the actions.
 
         if ( ! this.firing )
         {
