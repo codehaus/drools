@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: BlockConsequence.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: BlockConsequence.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.semantics.groovy;
  
  */
 
-import groovy.lang.ScriptContext;
+import groovy.lang.Binding;
 
 import org.drools.WorkingMemory;
 import org.drools.spi.Consequence;
@@ -57,8 +57,9 @@ import org.drools.spi.Tuple;
  *
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ *  @version $Id: BlockConsequence.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
  */
 public class BlockConsequence extends Exec implements Consequence {
     // ------------------------------------------------------------
@@ -91,7 +92,7 @@ public class BlockConsequence extends Exec implements Consequence {
      *          attempting to invoke the consequence.
      */
     public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException {
-        ScriptContext dict = setUpDictionary(tuple);
+        Binding dict = setUpDictionary(tuple);
 
         dict.setVariable("__drools_working_memory", workingMemory);
         dict.setVariable("appData", workingMemory.getApplicationData());

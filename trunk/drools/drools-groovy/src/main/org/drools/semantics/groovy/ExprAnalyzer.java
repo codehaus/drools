@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprAnalyzer.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: ExprAnalyzer.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,16 +48,23 @@ package org.drools.semantics.groovy;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.codehaus.groovy.ast.ASTNode;
+import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.MethodNode;
+import org.codehaus.groovy.ast.ModuleNode;
+import org.codehaus.groovy.ast.stmt.BlockStatement;
+import org.codehaus.groovy.control.SourceUnit;
 import org.drools.rule.Declaration;
 
 /** Analyzes python expressions for all mentioned variables.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>  
  *
- *  @version $Id: ExprAnalyzer.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ *  @version $Id: ExprAnalyzer.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
  */
 public class ExprAnalyzer {
     
@@ -78,11 +85,21 @@ public class ExprAnalyzer {
      *  @throws Exception If an error occurs while attempting
      *          to analyze the expression.
      */
-    public Declaration[] analyze(ASTNode expr, Declaration[] availDecls) throws Exception {
+    public Declaration[] analyze(String text, Declaration[] availDecls) throws Exception {
         Set availDeclSet = new HashSet();
         for (int i = 0; i < availDecls.length; ++i) {
             availDeclSet.add(availDecls[i]);
         }
+
+        SourceUnit unit = SourceUnit.create("groovy.script", text);
+        unit.parse();
+        unit.convert();
+        ModuleNode module = unit.getAST();
+
+        ClassNode classNode = (ClassNode) module.getClasses().get(0);
+        List methods = classNode.getDeclaredMethods("run");
+        MethodNode method = (MethodNode) methods.get(0);
+        ASTNode expr = (BlockStatement) method.getCode();
 
         ExprVisitor visitor = new ExprVisitor();
         expr.visit(visitor);

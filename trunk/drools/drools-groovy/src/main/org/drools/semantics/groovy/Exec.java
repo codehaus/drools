@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: Exec.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: Exec.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.semantics.groovy;
  
  */
 
-import groovy.lang.ScriptContext;
+import groovy.lang.Binding;
 
 import org.drools.spi.Tuple;
 
@@ -56,8 +56,9 @@ import org.drools.spi.Tuple;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
+ *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Exec.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ *  @version $Id: Exec.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
  */
 public class Exec extends Interp {
     // ------------------------------------------------------------
@@ -79,7 +80,7 @@ public class Exec extends Interp {
      *  @param tuple Tuple containing variable bindings.
      */
     public void execute(Tuple tuple) {
-        ScriptContext dict = setUpDictionary(tuple);
+        Binding dict = setUpDictionary(tuple);
 
         execute(dict);
     }
@@ -88,9 +89,9 @@ public class Exec extends Interp {
      *
      *  @param locals The evaluation dictionary.
      */
-    protected void execute(ScriptContext locals) {
+    protected void execute(Binding locals) {
         //ScriptContext globals = new ScriptContext();
-        getCode().setBindings(locals);
+        getCode().setBinding(locals);
         getCode().run();
     }
 }
