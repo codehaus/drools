@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: BlockConsequence.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
+ $Id: BlockConsequence.java,v 1.3 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,13 +53,16 @@ import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
+import java.util.Map;
+import java.util.Iterator;
+
 /** Groovy block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
+ *  @version $Id: BlockConsequence.java,v 1.3 2004-06-11 23:31:27 mproctor Exp $
  */
 public class BlockConsequence extends Exec implements Consequence {
     // ------------------------------------------------------------
@@ -95,7 +98,12 @@ public class BlockConsequence extends Exec implements Consequence {
         Binding dict = setUpDictionary(tuple);
 
         dict.setVariable("__drools_working_memory", workingMemory);
-        dict.setVariable("appData", workingMemory.getApplicationData());
+        Map appData = workingMemory.getApplicationDataMap();
+        for (Iterator iterator = appData.entrySet().iterator(); iterator.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            dict.setVariable((String)entry.getKey(), entry.getValue());
+        }
 
         try {
             execute(dict);

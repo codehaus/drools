@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.13 2004-06-05 10:55:45 mproctor Exp $
+ $Id: WorkingMemoryImpl.java,v 1.14 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.13 2004-06-05 10:55:45 mproctor Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.14 2004-06-11 23:31:27 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -89,7 +89,7 @@ class WorkingMemoryImpl
     private boolean firing;
 
     /** Application data which is associated with this memory. */
-    private Object applicationData;
+    private Map applicationData;
 
     /** Handle-to-object mapping. */
     private Map objects;
@@ -124,10 +124,10 @@ class WorkingMemoryImpl
         this.ruleBase      = ruleBase;
         this.joinMemories  = new HashMap();
         this.objects       = new HashMap();
+        this.applicationData = new HashMap();
 
         this.agenda = new Agenda( this,
                                   conflictResolver );
-
         initializeFactHandleFactory();
     }
 
@@ -212,17 +212,40 @@ class WorkingMemoryImpl
     }
 
     /** @see WorkingMemory
+     *  @deprecated use form which takes String argument
      */
     public Object getApplicationData()
+    {
+        return this.applicationData.get("appData");
+    }
+
+    /** @see WorkingMemory
+     *  @deprecated use form which takes String argument
+     */
+    public void setApplicationData(Object appData)
+    {
+        this.applicationData.put("appData", appData);
+    }
+
+    /** @see WorkingMemory
+     */
+    public Map getApplicationDataMap()
     {
         return this.applicationData;
     }
 
     /** @see WorkingMemory
      */
-    public void setApplicationData(Object appData)
+    public void setApplicationData(String name, Object value)
     {
-        this.applicationData = appData;
+        this.applicationData.put(name, value);
+    }
+
+    /** @see WorkingMemory
+     */
+    public Object getApplicationData(String name)
+    {
+        return this.applicationData.get(name);
     }
 
     /** Retrieve the rule-firing <code>Agenda</code> for

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: Constants.java,v 1.1 2004-04-02 22:35:40 n_alex Exp $
+ $Id: Constants.java,v 1.2 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
