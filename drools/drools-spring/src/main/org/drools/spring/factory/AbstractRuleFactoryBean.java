@@ -25,24 +25,19 @@ public abstract class AbstractRuleFactoryBean implements FactoryBean, Initializi
     }
 
     public void afterPropertiesSet() throws Exception {
-        validateProperties();
-        createObject();
-    }
-
-    private void validateProperties() {
         if (pojo == null) {
             throw new IllegalArgumentException("pojo property not set");
         }
     }
 
-    private void createObject() throws DroolsException {
+    private Rule createObject() throws DroolsException {
         RuleMetadata ruleMetadata = getRuleMetadataSource().getRuleMetadata(pojo.getClass());
         rule = new Rule(ruleMetadata.getName());
         setRuleProperties(rule, ruleMetadata);
         // TODO Change builder so it takes these in populateRule method.
         builder.setMethodMetadataSource(getMethodMetadataSource());
         builder.setArgumentMetadataSource(getArgumentMetadataSource());
-        rule = builder.buildRule(rule, pojo);
+        return builder.buildRule(rule, pojo);
     }
 
     private void setRuleProperties(Rule rule, RuleMetadata ruleMetadata) {
@@ -69,7 +64,9 @@ public abstract class AbstractRuleFactoryBean implements FactoryBean, Initializi
     }
 
     public final Object getObject() throws Exception {
+        if (rule == null) {
+            rule = createObject();
+        }
         return rule;
     }
-
 }

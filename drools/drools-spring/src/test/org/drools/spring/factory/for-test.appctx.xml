@@ -68,15 +68,25 @@
 	</bean>
 
 
-	<bean id="ruleSet.IOCRules" lazy-init="true"
-		class="org.drools.spring.factory.RuleSetFactoryBean">
-		<property name="rules">
-			<set>
-				<ref local="childRule"/>
-				<ref local="adultRule"/>
-			</set>
-		</property>
-	</bean>
+    <bean id="ruleSet.IOCRules" lazy-init="true"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="rules">
+            <set>
+                <ref local="childRule"/>
+                <ref local="adultRule"/>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="ruleSet.IOCRules.byName" lazy-init="true"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="rules">
+            <set>
+                <value>childRule</value>
+                <value>adultRule</value>
+            </set>
+        </property>
+    </bean>
 
 	<!--  -->
 

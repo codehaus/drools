@@ -18,11 +18,6 @@ public class ConflictResolverFactoryBean implements FactoryBean, InitializingBea
     }
 
     public void afterPropertiesSet() throws Exception {
-        validateProperties();
-        createObject();
-    }
-
-    private void validateProperties() {
         if (resolverStrategies == null || resolverStrategies.isEmpty()) {
             throw new IllegalArgumentException("resolverStrategies property not specified or is empty");
         }
@@ -34,9 +29,9 @@ public class ConflictResolverFactoryBean implements FactoryBean, InitializingBea
         }
     }
 
-    private void createObject() {
+    private CompositeConflictResolver createObject() {
         ConflictResolver[] resolvers = (ConflictResolver[]) resolverStrategies.toArray(new ConflictResolver[resolverStrategies.size()]);
-        resolver = new CompositeConflictResolver(resolvers);
+        return new CompositeConflictResolver(resolvers);
     }
 
     public Class getObjectType() {
@@ -48,6 +43,9 @@ public class ConflictResolverFactoryBean implements FactoryBean, InitializingBea
     }
 
     public Object getObject() throws Exception {
+        if (resolver == null) {
+            resolver = createObject();
+        }
         return resolver;
     }
 

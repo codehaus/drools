@@ -47,6 +47,21 @@ public class RuleSetFactoryBeanTest extends TestCase {
         assertNotNull(adultRule);
     }
 
+    public void testIOCRules_byName() throws Exception {
+        RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.IOCRules.byName");
+        assertNotNull(ruleSet);
+        assertEquals(2, ruleSet.getRules().length);
+
+        Rule childRule = ruleSet.getRule("childRule");
+        assertNotNull(childRule);
+        assertEquals(10, childRule.getSalience());
+        assertTrue(childRule.getNoLoop());
+        assertEquals("childRule documentation", childRule.getDocumentation());
+
+        Rule adultRule = ruleSet.getRule("adultRule-overrideBeanName");
+        assertNotNull(adultRule);
+    }
+
     public void testHardCodedRules() throws Exception {
         RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.HardCodedRules");
         assertNotNull(ruleSet);
