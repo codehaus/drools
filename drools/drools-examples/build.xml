@@ -585,6 +585,20 @@
     </java>
   </target>
 
+  <target name="examples.email_engine" depends="compile.examples">
+    <java classname="emailEngine.EventEngine" fork="true">
+      <!-- uncomment the following to have the event 
+           engine dump the rules to the screen 
+      <arg value="-rules"/>
+      -->
+      <classpath>
+        <pathelement location="${build.dest.main}"/>
+        <pathelement location="${build.dest.examples}"/>
+        <pathelement location="${lib.dir}/drools.jar"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+    </java>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
