@@ -2,7 +2,7 @@ package org.drools.semantics.python;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -22,7 +22,7 @@ public class ExecTest extends TestCase
     public void setUp()
     {
         this.exec = new Exec();
-        this.testDecl = new Declaration( new ClassObjectType( ExecTest.class ),
+        this.testDecl = new Declaration( new MockObjectType( ExecTest.class ),
                                       "test" );
 
         this.poked = false;

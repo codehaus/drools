@@ -1,6 +1,6 @@
 package org.drools.semantics.python;
 
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
@@ -69,7 +69,7 @@ public class ExprConditionTest extends TestCase
 
         MockTuple tuple = new MockTuple();
 
-        tuple.put( new Declaration( new ClassObjectType( java.lang.Integer.class ),
+        tuple.put( new Declaration( new MockObjectType( java.lang.Integer.class ),
                                     "a" ),
                    new Integer( 42 ) );
 
@@ -84,7 +84,7 @@ public class ExprConditionTest extends TestCase
 
         MockTuple tuple = new MockTuple();
 
-        tuple.put( new Declaration( new ClassObjectType( java.lang.Integer.class ),
+        tuple.put( new Declaration( new MockObjectType( java.lang.Integer.class ),
                                     "a" ),
                    new Integer( 44 ) );
 
