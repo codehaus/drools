@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticsRepository.java,v 1.2 2002-08-10 04:26:13 bob Exp $
+ $Id: SimpleSemanticsRepository.java,v 1.3 2003-10-18 17:39:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -100,7 +100,8 @@ public class SimpleSemanticsRepository implements SemanticsRepository
      *  @throws NoSuchSemanticModuleException If no module is
      *          bound to the URI.
      */
-    public SemanticModule lookupSemanticModule(String uri) throws NoSuchSemanticModuleException
+    public SemanticModule lookupSemanticModule(String uri)
+        throws NoSuchSemanticModuleException
     {
         if ( ! this.modules.containsKey( uri ) )
         {

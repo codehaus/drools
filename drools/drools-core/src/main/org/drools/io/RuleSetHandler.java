@@ -18,11 +18,13 @@ class RuleSetHandler
     private RuleSet ruleSet;
     private List errors;
 
-    RuleSetHandler(SemanticsRepository semanticsRepo)
+    RuleSetHandler(RuleSet ruleSet,
+                   SemanticsRepository semanticsRepo,
+                   List errors)
     {
-        this.semanticsRepo   = semanticsRepo;
-        this.errors          = new ArrayList();
-        this.ruleSet         = null;
+        this.ruleSet       = ruleSet;
+        this.semanticsRepo = semanticsRepo;
+        this.errors        = errors;
     }
 
     SemanticsRepository getSemanticsRepository()
@@ -39,9 +41,16 @@ class RuleSetHandler
     {
         Element elem = path.getCurrent();
 
-        String ruleSetName = elem.attributeValue( "name" );
-        
-        this.ruleSet = new RuleSet( ruleSetName );
+        if ( ! elem.getNamespace().getURI().equals( RuleSetReader.RULES_NAMESPACE ) )
+        {
+            addError( new SyntaxException( "<rule-set> must be in namespace '" + RuleSetReader.RULES_NAMESPACE + "'" ) );
+        }
+        else
+        {
+            String ruleSetName = elem.attributeValue( "name" );
+            
+            this.ruleSet.setName( ruleSetName );
+        }
     }
 
     SemanticModule lookupSemanticModule(String nsUri)
@@ -53,5 +62,10 @@ class RuleSetHandler
     void addError(Throwable error)
     {
         this.errors.add( error );
+    }
+
+    List getErrors()
+    {
+        return this.errors;
     }
 }
