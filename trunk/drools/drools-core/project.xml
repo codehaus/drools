@@ -70,6 +70,12 @@
       <organization></organization>
     </developer>
 
+    <developer>
+      <name>Martin Hald</name>
+      <id>mhald</id>
+      <email>martin.hald@bigfoot.com</email>
+    </developer>
+
   </developers>
 
 
@@ -79,6 +85,11 @@
 
     <dependency>
       <id>antlrall</id>
+      <version>2.7.1</version>
+    </dependency>
+
+    <dependency>
+      <id>antlr</id>
       <version>2.7.1</version>
     </dependency>
 
