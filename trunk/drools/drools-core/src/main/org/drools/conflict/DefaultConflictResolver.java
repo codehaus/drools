@@ -1,9 +1,9 @@
 package org.drools.conflict;
 
 /*
- * $Id: DefaultConflictResolver.java,v 1.12 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: DefaultConflictResolver.java,v 1.13 2004-12-06 23:07:37 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -22,9 +22,10 @@ package org.drools.conflict;
  *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a trademark of The Werken Company.
+ * Company. "drools" is a registered trademark of The Werken Company.
  *
- * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 5. Due credit should be given to The Werken Company.
+ * (http://drools.werken.com/).
  *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -40,23 +41,21 @@ package org.drools.conflict;
  *
  */
 
-import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
-import org.drools.spi.Tuple;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
- * 
+ *
  * <p>
  * Since a fact or set of facts may activate multiple rules, a
  * <code>ConflictResolutionStrategy</code> is used to provide priority
  * ordering of conflicting rules.
  * </p>
- * 
- * @see Activation
- * @see Tuple
+ *
+ * @see org.drools.spi.Activation
+ * @see org.drools.spi.Tuple
  * @see org.drools.rule.Rule
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -66,8 +65,13 @@ public class DefaultConflictResolver extends CompositeConflictResolver
     // Class members
     // ----------------------------------------------------------------------
 
-    private static final ConflictResolver[] CONFLICT_RESOLVERS = new ConflictResolver[]{SalienceConflictResolver.getInstance( ), RecencyConflictResolver.getInstance( ), ComplexityConflictResolver.getInstance( ),
-                                                                                        LoadOrderConflictResolver.getInstance( )};
+    private static final ConflictResolver[] CONFLICT_RESOLVERS = new ConflictResolver[]
+        {
+            SalienceConflictResolver.getInstance( ),
+            RecencyConflictResolver.getInstance( ),
+            ComplexityConflictResolver.getInstance( ),
+            LoadOrderConflictResolver.getInstance( )
+        };
 
     /** Singleton instance. */
     private static final DefaultConflictResolver INSTANCE = new DefaultConflictResolver( );
@@ -78,10 +82,10 @@ public class DefaultConflictResolver extends CompositeConflictResolver
 
     /**
      * Retrieve the singleton instance.
-     * 
+     *
      * @return The singleton instance.
      */
-    public static ConflictResolver getInstance()
+    public static ConflictResolver getInstance( )
     {
         return INSTANCE;
     }
@@ -89,7 +93,7 @@ public class DefaultConflictResolver extends CompositeConflictResolver
     /**
      * Setup a default ConflictResolver configuration
      */
-    public DefaultConflictResolver()
+    public DefaultConflictResolver( )
     {
         super( CONFLICT_RESOLVERS );
     }
