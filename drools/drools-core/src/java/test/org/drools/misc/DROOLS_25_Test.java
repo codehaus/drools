@@ -50,7 +50,7 @@ public class DROOLS_25_Test extends TestCase {
 
             // Create a [org.drools.WorkingMemory] to be the
             // container for your facts
-            workingMemory = ruleBase.createWorkingMemory();
+            workingMemory = ruleBase.newWorkingMemory();
         }
         catch( Exception e ) {
             fail( "Failed to setup test [" + e.getMessage() + "]" );
@@ -69,6 +69,8 @@ public class DROOLS_25_Test extends TestCase {
             workingMemory.assertObject( string );
             workingMemory.assertObject( props );
 
+            workingMemory.fireAllRules();
+
             //change the props the notify the system
 
             props.setProperty( "test", "test" );
@@ -78,13 +80,14 @@ public class DROOLS_25_Test extends TestCase {
             workingMemory.retractObject( props );
             workingMemory.assertObject( props );
 
+            workingMemory.fireAllRules();
+
             //the test property should be set to success
 
             String testResult = props.getProperty( "test" );
 
-            if( !"success".equals( testResult) ) {
-                fail( "the property[test] in rule[test:1] wasn't set to 'success'" );
-            }
+            assertEquals( "success",
+                          testResult );
         }
         catch( Exception e ) {
             fail( e.getMessage() );
@@ -105,6 +108,8 @@ public class DROOLS_25_Test extends TestCase {
             System.err.println( "\n\n\n####### 2 #######\n\n\n" );
             workingMemory.assertObject( props );
 
+            workingMemory.fireAllRules();
+
             //change the props the notify the system
 
             props.setProperty( "test", "test" );
@@ -114,11 +119,15 @@ public class DROOLS_25_Test extends TestCase {
             workingMemory.modifyObject( props );
             System.err.println( "\n\n\n####### 4 #######\n\n\n" );
 
+            workingMemory.fireAllRules();
+
             //the test property should be set to success
+
             String testResult = props.getProperty( "test" );
-            if( !"success".equals( testResult) ) {
-                fail( "the property[test] in rule[test:1] wasn't set to 'success'" );
-            }
+
+
+            assertEquals( "success",
+                          testResult );
         }
         catch( Exception e ) {
             fail( e.getMessage() );

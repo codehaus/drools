@@ -26,12 +26,12 @@ public class SalienceConflictResolutionStrategy
 
         if ( salienceOne > salienceTwo )
         {
-            return 1;
+            return -1;
         }
 
         if ( salienceOne < salienceTwo )
         {
-            return -1;
+            return 1;
         }
 
         return 0;

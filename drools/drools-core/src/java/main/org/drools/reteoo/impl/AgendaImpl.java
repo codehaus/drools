@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaImpl.java,v 1.5 2003-10-14 19:16:16 bob Exp $
+ $Id: AgendaImpl.java,v 1.6 2003-10-14 22:57:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -304,6 +304,7 @@ public class AgendaImpl implements Agenda
      */
     public void fireNextItem() throws ConsequenceException
     {
+
         if ( isEmpty() )
         {
             return;

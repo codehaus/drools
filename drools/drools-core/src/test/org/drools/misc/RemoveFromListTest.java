@@ -15,7 +15,7 @@ import java.io.FileReader;
  *
  * Autor: thomas.diesler@iotronics.com
  *
- * $Id: RemoveFromListTest.java,v 1.3 2003-08-21 01:10:04 tdiesler Exp $
+ * $Id: RemoveFromListTest.java,v 1.4 2003-10-14 22:57:59 bob Exp $
  */
 public class RemoveFromListTest extends TestCase
 {
@@ -37,7 +37,7 @@ public class RemoveFromListTest extends TestCase
         assertNotNull( "cannot find drl file", url );
         loader.load(url, ruleBase);
 
-        workingMemory = ruleBase.createWorkingMemory();
+        workingMemory = ruleBase.newWorkingMemory();
     }
 
     public void testRemoveFromList() throws Exception
@@ -53,6 +53,8 @@ public class RemoveFromListTest extends TestCase
         workingMemory.assertObject( list );
         workingMemory.assertObject( pt1 );
         workingMemory.assertObject( pt2 );
+
+        workingMemory.fireAllRules();
 
         assertEquals( "invalid number of participants", 1, list.size() );
         assertEquals( "particpant should be inactive", false, ( (Participant) list.get( 0 ) ).isActive() );

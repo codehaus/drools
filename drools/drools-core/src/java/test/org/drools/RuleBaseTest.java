@@ -24,17 +24,7 @@ public class RuleBaseTest extends TestCase
 
     public void testCreateWorkingMemory()
     {
-        WorkingMemory memory = this.ruleBase.createWorkingMemory();
-
-        assertNotNull( memory );
-
-        assertSame( this.ruleBase,
-                    memory.getRuleBase() );
-    }
-
-    public void testCreateTransactionalWorkingMemory()
-    {
-        TransactionalWorkingMemory memory = this.ruleBase.createTransactionalWorkingMemory();
+        WorkingMemory memory = this.ruleBase.newWorkingMemory();
 
         assertNotNull( memory );
 

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.15 2003-08-21 00:57:46 tdiesler Exp $
+ $Id: RuleBase.java,v 1.16 2003-10-14 22:57:57 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -150,28 +150,23 @@ public class RuleBase
         getBuilder().addRule( rule );
     }
 
-    /** Create a <code>WorkingMemory</code> session for
+    /** Create a new <code>WorkingMemory</code> session for
      *  this <code>RuleBase</code>.
      *
      *  @see WorkingMemory
      *
      *  @return A newly initialized <code>WorkingMemory</code>.
      */
-    public WorkingMemory createWorkingMemory()
+    public WorkingMemory newWorkingMemory()
     {
         return new WorkingMemory( this );
     }
 
-    /** Create a <code>TransactionalWorkingMemory</code> session for
-     *  this <code>RuleBase</code>.
-     *
-     *  @see TransactionalWorkingMemory
-     *
-     *  @return A newly initialized <code>TransactionalWorkingMemory</code>.
+    /** @deprecated In favour of {@link #newWorkingMemory}.
      */
-    public TransactionalWorkingMemory createTransactionalWorkingMemory()
+    public WorkingMemory createWorkingMemory()
     {
-        return new TransactionalWorkingMemory( this );
+        return newWorkingMemory();
     }
 
     /** Retrieve the Rete-OO network for this <code>RuleBase</code>.
