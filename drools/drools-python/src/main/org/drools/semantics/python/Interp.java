@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.11 2004-08-26 14:28:12 dbarnett Exp $
+ $Id: Interp.java,v 1.12 2004-08-31 09:57:40 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -76,7 +76,7 @@ import org.python.util.PythonInterpreter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.11 2004-08-26 14:28:12 dbarnett Exp $
+ *  @version $Id: Interp.java,v 1.12 2004-08-31 09:57:40 ckl Exp $
  */
 public class Interp
 {
@@ -236,7 +236,9 @@ public class Interp
             }
 
             // Remove extraneous trailing LINE_SEPARATOR
-            unindentedText.deleteCharAt(unindentedText.length() - 1);
+            if (unindentedText.length() > 0) {
+                unindentedText.deleteCharAt(unindentedText.length() - 1);
+            }
 
             return unindentedText.toString();
         }
