@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Eval.java,v 1.16 2004-11-28 06:45:24 simon Exp $
+ * $Id: Eval.java,v 1.17 2004-11-29 12:35:52 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,13 +42,11 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
 import org.python.core.__builtin__;
-
-import java.util.Set;
-import java.util.List;
 
 /**
  * Base class for Jython expression-based Python semantic components.
@@ -57,8 +55,6 @@ import java.util.List;
  *s
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster </a>
- *
- * @version $Id: Eval.java,v 1.16 2004-11-28 06:45:24 simon Exp $
  */
 public class Eval extends Interp
 {
@@ -77,13 +73,14 @@ public class Eval extends Interp
     /**
      * Construct.
      */
-    protected Eval(String text, Set imports, List availDecls) throws Exception
+    protected Eval(String text, Rule rule ) throws Exception
     {
-        super( text, imports, "eval" );
+        super( text, rule, "eval" );
 
         ExprAnalyzer analyzer = new ExprAnalyzer( );
 
-        this.decls = analyzer.analyze( getNode( ), availDecls );
+        this.decls = analyzer.analyze( getNode( ),
+                                       rule.getParameterDeclarations( ) );
     }
 
     // ------------------------------------------------------------
@@ -114,7 +111,9 @@ public class Eval extends Interp
     protected Object evaluate(PyDictionary locals) throws Exception
     {
 
-        PyObject result = __builtin__.eval( getCode( ), locals,  getGlobals());
+        PyObject result = __builtin__.eval( getCode( ),
+                                            locals,
+                                            getGlobals( ) );
 
         return result.__tojava__( Object.class );
     }

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.23 2004-11-28 14:44:28 simon Exp $
+ * $Id: Interp.java,v 1.24 2004-11-29 12:35:52 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools.semantics.python;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
@@ -64,7 +65,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Base class for Jython interpreter-based Python semantic components.
@@ -73,8 +73,6 @@ import java.util.Set;
  * @see Exec
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- *
- * @version $Id: Interp.java,v 1.23 2004-11-28 14:44:28 simon Exp $
  */
 public class Interp
 {
@@ -89,21 +87,22 @@ public class Interp
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The rule. */
+    private final Rule      rule;
+
     /** Text. */
-    private String              text;
+    private final String    text;
 
     /** Original Text */
-    private String              origininalText;
+    private final String    origininalText;
 
     /** The code. */
-    private PyCode              code;
+    private final PyCode    code;
 
     /** The AST node. */
-    private modType             node;
+    private final modType   node;
 
-    private PyDictionary        globals;
-
-    private String newline = System.getProperty( "line.separator" );
+    private PyDictionary    globals;
 
     /**
      * Initialise Jython's PySystemState
@@ -126,24 +125,24 @@ public class Interp
     /**
      * Construct.
      */
-    protected Interp(String text, Set imports, String type)
+    protected Interp(String text,
+                     Rule rule,
+                     String type)
     {
+        this.rule = rule;
         this.origininalText = text;
         StringBuffer globalText = new StringBuffer();
 
-        if (imports != null)
-        {
-            Iterator it =imports.iterator();
+        Iterator it = rule.getImports( ).iterator();
 
-            while (it.hasNext())
+        while ( it.hasNext( ) )
+        {
+            ImportEntry importEntry = (ImportEntry) it.next();
+            if (importEntry instanceof PythonImportEntry)
             {
-                ImportEntry importEntry = (ImportEntry) it.next();
-                if (importEntry instanceof PythonImportEntry)
-                {
-                    globalText.append(importEntry.getImportEntry());
-                    globalText.append(";");
-                    globalText.append(newline);
-                }
+                globalText.append(importEntry.getImportEntry());
+                globalText.append(";");
+                globalText.append(LINE_SEPARATOR);
             }
         }
 
@@ -349,6 +348,10 @@ public class Interp
         return this.origininalText;
     }
 
+    protected Rule getRule()
+    {
+        return this.rule;
+    }
 
     /**
      * Retrieve the compiled code.
@@ -385,7 +388,7 @@ public class Interp
      */
     protected PyDictionary setUpDictionary(Tuple tuple) throws Exception
     {
-        Iterator declIter = tuple.getRule( ).getParameterDeclarations( ).iterator( );
+        Iterator declIter = this.rule.getParameterDeclarations( ).iterator( );
         Declaration eachDecl;
 
         ObjectType objectType;
@@ -444,7 +447,8 @@ public class Interp
             WorkingMemory workingMemory = tuple.getWorkingMemory( );
 
             dict.setdefault( new PyString( "drools".intern( ) ),
-                             Py.java2py( new KnowledgeHelper( tuple ) ) );
+                             Py.java2py( new KnowledgeHelper( this.rule,
+                                                              tuple ) ) );
 
             Map appDataMap = workingMemory.getApplicationDataMap( );
 

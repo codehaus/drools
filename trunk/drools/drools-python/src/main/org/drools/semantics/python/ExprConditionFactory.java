@@ -20,8 +20,7 @@ public class ExprConditionFactory implements ConditionFactory
         try
         {
             return new ExprCondition( config.getText( ),
-                                      rule.getImports(),
-                                      rule.getParameterDeclarations( ) );
+                                      rule );
         }
         catch ( Exception e )
         {
