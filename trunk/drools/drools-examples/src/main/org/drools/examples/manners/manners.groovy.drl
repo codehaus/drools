@@ -15,7 +15,10 @@ employs a depth-first search approach to the problem.
 
 <rule-set name="Miss Manners"
           xmlns="http://drools.org/rules"
-          xmlns:groovy="http://drools.org/semantics/groovy">
+          xmlns:groovy="http://drools.org/semantics/groovy"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/groovy groovy.xsd">
 
        <!--
        Initialize the root seating element.
