@@ -11,15 +11,7 @@ public class FibonacciExample
     public static void main(String[] args)
         throws Exception
     {
-        RuleSetReader reader = new RuleSetReader();
-        
-        RuleSet ruleSet = reader.read( FibonacciExample.class.getResource( "fibonacci.drl" ) );
-        
-        RuleBaseBuilder builder = new RuleBaseBuilder();
-        
-        builder.addRuleSet( ruleSet );
-        
-        RuleBase ruleBase = builder.build();
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( "fibonacci.drl" ) );
         
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
         
