@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequence.java,v 1.2 2002-08-25 21:59:08 bob Exp $
+ $Id: ConsequenceTag.java,v 1.1 2002-08-25 21:59:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,79 +46,53 @@ package org.drools.semantics.jelly;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.spi.Consequence;
-import org.drools.spi.ConsequenceException;
-import org.drools.spi.Tuple;
-import org.drools.rule.Declaration;
+import org.drools.tags.rule.RuleTag;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.TagSupport;
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
 
-import java.util.Set;
-import java.util.Iterator;
-
-/** Jelly-script semantics <code>Consequence</code>.
+/** Jelly semantics <code>Consequence</code>.
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirteR</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyConsequence.java,v 1.2 2002-08-25 21:59:08 bob Exp $
+ *  @version $Id: ConsequenceTag.java,v 1.1 2002-08-25 21:59:08 bob Exp $
  */
-public class JellyConsequence implements Consequence
+public class ConsequenceTag extends TagSupport
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The script. */
-    private Script script;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-    */
-    public JellyConsequence(Script script)
+     */
+    public ConsequenceTag()
     {
-        this.script = script;
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.spi.Consequence
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Execute the consequence for the supplied
-     *  matching <code>Tuple</code>.
+    /** Perform this tag.
      *
-     *  @param tuple The matching tuple.
-     *  @param workingMemory The working memory session.
+     *  @param output The output sink.
      *
-     *  @throws ConsequenceException If an error occurs while
-     *          attempting to invoke the consequence.
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
      */
-    public void invoke(Tuple tuple,
-                       WorkingMemory workingMemory) throws ConsequenceException
+    public void doTag(XMLOutput output) throws Exception
     {
-        JellyContext context = new JellyContext();
+        RuleTag tag = (RuleTag) findAncestorWithClass( RuleTag.class );
 
-        Set decls = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-        Object      eachObj  = null;
-
-        while ( declIter.hasNext() )
+        if ( tag == null )
         {
-            eachDecl = (Declaration) declIter.next();
-
-            context.setVariable( eachDecl.getIdentifier(),
-                                 tuple.get( eachDecl ) );
+            throw new JellyException( "No rule available" );
         }
 
+        JellyConsequence consequence = new JellyConsequence( getBody() );
+
+        tag.getRule().setConsequence( consequence );
     }
 }

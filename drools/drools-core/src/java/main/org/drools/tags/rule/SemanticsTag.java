@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
+ $Id: SemanticsTag.java,v 1.4 2002-08-25 21:59:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,6 +49,7 @@ package org.drools.tags.rule;
 import org.drools.smf.SemanticModule;
 import org.drools.io.SemanticsLoader;
 
+import org.apache.commons.jelly.TagLibrary;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.MissingAttributeException;
@@ -60,7 +61,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: SemanticsTag.java,v 1.4 2002-08-25 21:59:08 bob Exp $
  */
 public class SemanticsTag extends TagSupport
 {
@@ -173,7 +174,22 @@ public class SemanticsTag extends TagSupport
                                       semanticModule );
         }
 
+        String tagLibName = this.module + ".SemanticsTagLibrary";
+
+        TagLibrary tagLib = null;
+
+        try
+        {
+            Class tagLibClass = Class.forName( tagLibName );
+
+            tagLib = (TagLibrary) tagLibClass.newInstance();
+        }
+        catch (Exception e)
+        {
+            tagLib = new SemanticsTagLibrary( semanticModule );
+        }
+
         getContext().registerTagLibrary( semanticModule.getUri(),
-                                         new SemanticsTagLibrary( semanticModule ) );
+                                         tagLib );
     }
 }
