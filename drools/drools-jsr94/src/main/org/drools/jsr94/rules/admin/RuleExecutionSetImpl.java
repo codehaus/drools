@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.9 2004-04-02 22:27:24 n_alex Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.10 2004-06-29 15:44:22 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,7 @@ package org.drools.jsr94.rules.admin;
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.RuleIntegrationException;
 import org.drools.jsr94.rules.Constants;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -67,13 +68,11 @@ import java.util.*;
  */
 public class RuleExecutionSetImpl implements RuleExecutionSet
 {
-    private String name;
     private String description;
     private String defaultObjectFilterClassName;
     private Map properties;
-
     private RuleBase ruleBase;
-    private RuleSet[] ruleSets;
+    private RuleSet ruleSet;
     private ObjectFilter objectFilter;
 
     /**
@@ -83,14 +82,23 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      * <code>org.drools.RuleSet</code> object.
      */
     RuleExecutionSetImpl(
-            RuleBase ruleBase,
+            RuleSet ruleSet,
             Map properties)
     {
-        this.ruleBase = ruleBase;
         this.properties = properties;
-        this.ruleSets = ruleBase.getRuleSets();
-        this.name = ((RuleSet)ruleSets[0]).getName();
-        this.description = (String)properties.get(Constants.RES_DESCRIPTION);
+        this.ruleSet = ruleSet;
+
+        if(properties != null && properties.containsKey(Constants.RES_DESCRIPTION)) {
+            this.description = (String)properties.get(Constants.RES_DESCRIPTION);
+        }
+
+        org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
+        try {
+            builder.addRuleSet( ruleSet );
+            this.ruleBase = builder.build();
+        } catch (RuleIntegrationException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -136,7 +144,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     // JSR94 interface methods start here -------------------------------------
     public String getName()
     {
-        return name;
+        return this.ruleSet.getName();
     }
 
     public String getDescription()
@@ -171,16 +179,11 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     public List getRules()
     {
         List jsr94Rules = new ArrayList();
-        List ruleSets = Arrays.asList(ruleBase.getRuleSets());
-        Iterator iter = ruleSets.iterator();
-        while(iter.hasNext())
         {
-            RuleSet ruleSet = (RuleSet)iter.next();
-            List ruleList = Arrays.asList(ruleSet.getRules());
-            Iterator iter2 = ruleList.iterator();
-            while( iter2.hasNext() ) {
-                Rule rule = (Rule)iter2.next();
-                jsr94Rules.add(new RuleImpl(rule));
+            int i;
+            Rule[] rules= (ruleSet.getRules());
+            for( i=0; i < rules.length; i++ ) {
+                jsr94Rules.add(new RuleImpl(rules[i]));
             }
         }
         return jsr94Rules;

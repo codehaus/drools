@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.12 2004-06-28 01:15:48 mproctor Exp $
+ $Id: RuleBaseImpl.java,v 1.13 2004-06-29 15:44:22 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -60,7 +60,7 @@ import java.io.ObjectInputStream;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.12 2004-06-28 01:15:48 mproctor Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.13 2004-06-29 15:44:22 n_alex Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -114,13 +114,6 @@ class RuleBaseImpl
     public ConflictResolver getConflictResolver()
     {
         return this.conflictResolver;
-    }
-
-    /** @see RuleBase
-     */
-    public RuleSet[] getRuleSets()
-    {
-        return this.ruleSets;
     }
 
     /** Retrieve the Rete-OO network for this <code>RuleBase</code>.

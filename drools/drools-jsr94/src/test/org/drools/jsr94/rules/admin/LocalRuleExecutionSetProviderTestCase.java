@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.6 2004-04-04 02:54:56 n_alex Exp $
+ $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.7 2004-06-29 15:44:22 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,7 @@ package org.drools.jsr94.rules.admin;
 
 import org.drools.io.RuleSetReader;
 import org.drools.RuleBase;
+import org.drools.rule.RuleSet;
 import org.drools.jsr94.rules.RuleEngineTestBase;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
@@ -94,12 +95,10 @@ public class LocalRuleExecutionSetProviderTestCase extends RuleEngineTestBase {
         {
             inputStream = org.drools.jsr94.rules.RuleEngineTestBase.class.getResourceAsStream(bindUri);
             Reader in = new InputStreamReader( inputStream );
-            org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
-            builder.addRuleSet( new RuleSetReader().read( in ) );
-            RuleBase ruleBase = builder.build();
-            RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleBase, null);
-            assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-            assertEquals("number of rules", 2, ruleSet.getRules().size());
+            RuleSet ruleSet = new RuleSetReader().read( in );
+            RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(ruleSet, null);
+            assertEquals("rule set name", "Sisters Rules", ruleExecutionSet.getName());
+            assertEquals("number of rules", 2, ruleExecutionSet.getRules().size());
         }
         catch (IOException e) {
             fail("Couldn't create the RuleExecutionSet. Test threw an IOException.");

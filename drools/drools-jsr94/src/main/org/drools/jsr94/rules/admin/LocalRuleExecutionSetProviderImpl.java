@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.10 2004-04-07 19:40:03 n_alex Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.11 2004-06-29 15:44:22 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,15 +47,13 @@ package org.drools.jsr94.rules.admin;
  */
 
 import org.drools.io.RuleSetReader;
-import org.drools.RuleBase;
-import org.xml.sax.InputSource;
+import org.drools.rule.RuleSet;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Map;
 import java.util.HashMap;
@@ -78,25 +76,21 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(InputStream, Map)
      */
     public RuleExecutionSet createRuleExecutionSet(
-            InputStream inputStream,
+            InputStream in,
             Map properties)
             throws IOException,
             RuleExecutionSetCreateException
     {
-        RuleBase ruleBase = null;
         try
         {
-            RuleSetReader ruleSetReader = new RuleSetReader();
-            org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
-            builder.addRuleSet( ruleSetReader.read(inputStream ) );
-            ruleBase = builder.build();
+            RuleSetReader setReader = new RuleSetReader();
+            RuleSet ruleSet = setReader.read(in );
+            return createRuleExecutionSet( ruleSet, properties );
         }
         catch (Exception ex)
         {
             throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
         }
-
-        return createRuleExecutionSet( ruleBase, properties );
     }
 
     /**
@@ -112,12 +106,9 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
     {
         try
         {
-            RuleSetReader ruleSetReader = new RuleSetReader();
-            org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
-            builder.addRuleSet( ruleSetReader.read( in ) );
-            RuleBase ruleBase = builder.build();
-
-            return createRuleExecutionSet( ruleBase, properties );
+            RuleSetReader setReader = new RuleSetReader();
+            RuleSet ruleSet = setReader.read( in );
+            return createRuleExecutionSet( ruleSet, properties );
         }
         catch ( Exception ex )
         {
@@ -129,7 +120,7 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      * <p> Creates a <code>RuleExecutionSet</code> implementation from a vendor
      * specific AST representation and vendor-specific properties. </p>
      *
-     * <p> This method accepts <code>org.drools.rule.RuleBase</code> as the incoming
+     * <p> This method accepts <code>org.drools.rule.RuleSet</code> as the incoming
      * AST object parameter. </p>
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Object, Map)
@@ -143,11 +134,11 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
         {
             properties = new HashMap();
         }
-        if (astObject instanceof RuleBase) {
+        if (astObject instanceof RuleSet) {
             try
             {
-                RuleBase ruleBase = (RuleBase) astObject;
-                return new RuleExecutionSetImpl(ruleBase, properties);
+                RuleSet ruleSet = (RuleSet) astObject;
+                return createRuleExecutionSet(ruleSet, properties);
             }
             catch ( Exception ex )
             {
@@ -156,7 +147,14 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
         }
         throw new IllegalArgumentException(" " +
                 "Incoming AST object must be an " +
-                "org.drools.rule.RuleBase.  Was " +
+                "org.drools.rule.RuleSet.  Was " +
                 astObject.getClass().toString());
+    }
+    
+    private RuleExecutionSet createRuleExecutionSet(
+            RuleSet ruleSet,
+            Map properties)
+    {
+        return new RuleExecutionSetImpl(ruleSet, properties);
     }
 }
