@@ -19,11 +19,10 @@
         <groovy:consequence>
             println "${a.name} finished"
             a.state = "FINISHED"
-            drools.modifyObject(a)
         </groovy:consequence>
     </rule>
 
-    <rule name="AtoB" salience="30">
+    <rule name="AtoB">
         <parameter identifier="a">
             <class-field field="name" value="A">State</class-field>
        </parameter>
@@ -37,11 +36,10 @@
         <groovy:consequence>
             println "${b.name} finished"
             b.state = "FINISHED"
-            drools.modifyObject(b)
         </groovy:consequence>
     </rule>
 
-    <rule name="BtoC" salience="20">
+    <rule name="BtoC">
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
@@ -55,13 +53,10 @@
         <groovy:consequence>
             println "${c.name} finished"
             c.state = "FINISHED"
-            drools.modifyObject(c)
         </groovy:consequence>
     </rule>
 
-
-
-    <rule name="BtoD" salience="10">
+    <rule name="BtoD">
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
@@ -75,8 +70,8 @@
         <groovy:consequence>
             println "${d.name} finished"
             d.state = "FINISHED"
-            drools.modifyObject(d)
         </groovy:consequence>
     </rule>
 
   </rule-set>
+
