@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.23 2004-10-16 23:59:53 mproctor Exp $
+ * $Id: JoinMemory.java,v 1.24 2004-10-17 02:22:06 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -479,17 +479,19 @@ class JoinMemory implements Serializable
         Declaration eachDecl = null;
 
         FactHandle leftHandle = null;
-        FactHandle rightHandle = null;
+        FactHandle rightHandle = null;  
 
         while ( declIter.hasNext( ) )
         {
             eachDecl = ( Declaration ) declIter.next( );
 
+            if (!checkExtractorJoinsOk(eachDecl, left, right)) return null;
+
             leftHandle = left.getKey( ).get( eachDecl );
-            rightHandle = right.getKey( ).get( eachDecl );
+            rightHandle = right.getKey( ).get( eachDecl );                                                    
 
             if ( leftHandle == null && rightHandle == null )
-            {
+            {                
                 continue;
             }
 
@@ -508,66 +510,44 @@ class JoinMemory implements Serializable
             }
         }
         
-        /* now check extractors
-         * Only looking for shared target declarations
-         * that have  different values, ie not allowed
-         * So will defualt to left side, but could check
-         * any side.
-         */
-        Set leftDecls = left.getTargetDeclarations();
-        Set rightDecls = right.getTargetDeclarations();
-        if ((leftDecls != null)&&(rightDecls != null))
-        {
-        	Object leftValue;
-        	Object rightValue;
-        	declIter = leftDecls.iterator();
-        	while (declIter.hasNext())
-        	{
-        		eachDecl = ( Declaration ) declIter.next( );
-        		//System.out.println("left:" + eachDecl.getIdentifier());
-        		
-        		leftValue = left.get(eachDecl);
-        		rightValue = right.get(eachDecl);
-        		if (
-        				(leftValue != null)
-						&&
-						(rightValue != null)
-        				&&
-						(!leftValue.equals(rightValue))
-					)
-        		{
-        			return null;
-        		}
-        		
-        	}
-
-        	declIter = rightDecls.iterator();
-        	while (declIter.hasNext())
-        	{
-        		eachDecl = ( Declaration ) declIter.next( );
-        		
-        		//System.out.println("right:" + eachDecl.getIdentifier());
-        		
-        		leftValue = left.get(eachDecl);
-        		rightValue = right.get(eachDecl);
-        		if (
-        				(leftValue != null)
-						&&
-						(rightValue != null)
-        				&&
-						(!leftValue.equals(rightValue))						
-					)
-        		{
-        			return null;
-        		}
-        		
-        	}        	
-        }       
-
         ReteTuple joinedTuple = new JoinTuple( left, right );
 
         return joinedTuple;
 
+    }
+
+    /**
+     * For targets shared by extractors the
+     * extracted fact should be the same.
+     * If the given declaration is a targetDeclaration
+     * for one it must be for the other, as its a common
+     * declaration. 
+     * 
+     * @param decl
+     * @param left
+     * @param right
+     * @return
+     */
+    boolean checkExtractorJoinsOk(Declaration decl, ReteTuple left, ReteTuple right)
+    {
+        Set leftTargetDecls = left.getTargetDeclarations();
+        Set rightTargetDecls = right.getTargetDeclarations();                    
+                      
+        if ((leftTargetDecls != null)&&leftTargetDecls.contains(decl))
+        {
+            if (!rightTargetDecls.contains(decl) || !left.get(decl).equals(right.get(decl))) 
+            {
+                return false;
+            }
+        }
+        else if ((rightTargetDecls != null)&&rightTargetDecls.contains(decl))
+        {
+            if (!leftTargetDecls.contains(decl) || !right.get(decl).equals(left.get(decl))) 
+            {
+                return false;
+            }
+        }
+        return true;        
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
