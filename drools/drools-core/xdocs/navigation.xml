@@ -3,8 +3,6 @@
 <project name="drools" repository="drools" href="http://drools.org">
 
   <title>drools: dynamic rules for java</title>
-  <organizationLogo href="/images/werken.gif">The Werken Company</organizationLogo>
-  <logo href="/images/logo.gif">drools: dynamic rules for java</logo>
 
   <body>
     <links>

@@ -9,6 +9,7 @@
   <organization>
     <name>The Werken Company</name>
     <url>http://www.werken.com/</url>
+    <logo>/images/werken.gif</logo>
   </organization>
   <inceptionYear>2001</inceptionYear>
   <package>org.drools</package>
@@ -21,6 +22,7 @@
     allow natural expression of rules within an object-oriented language.
   </description>
 
+  <logo>/images/logo.gif</logo>
   <url>http://drools.org/</url>
 
   <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;amp;atid=418734</issueTrackingUrl>
