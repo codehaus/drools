@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsLoader.java,v 1.3 2002-08-19 16:43:46 bob Exp $
+ $Id: SemanticsLoader.java,v 1.4 2002-08-19 17:24:00 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -106,8 +106,6 @@ public class SemanticsLoader
         String moduleDescriptor = packageName.replace( '.',
                                                        '/' );
         moduleDescriptor += "/" + DESCRIPTOR_NAME;
-
-        System.err.println( "descriptor: " + moduleDescriptor );
 
         URL url = cl.getResource( moduleDescriptor );
 

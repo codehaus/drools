@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: RuleTagSupport.java,v 1.2 2002-08-19 17:24:00 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: RuleTagSupport.java,v 1.2 2002-08-19 17:24:00 bob Exp $
  */
 public abstract class RuleTagSupport extends TagSupport
 {
@@ -101,7 +101,7 @@ public abstract class RuleTagSupport extends TagSupport
      */
     protected Rule getRule() throws JellyException
     {
-        RuleTag ruleTag = (RuleTag) findAncestorWithClass( RuleSetTag.class );
+        RuleTag ruleTag = (RuleTag) findAncestorWithClass( RuleTag.class );
 
         if ( ruleTag == null )
         {

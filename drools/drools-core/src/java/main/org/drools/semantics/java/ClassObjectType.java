@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.3 2002-08-19 00:31:42 bob Exp $
+ $Id: ClassObjectType.java,v 1.4 2002-08-19 17:24:00 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,14 +48,60 @@ package org.drools.semantics.java;
 
 import org.drools.spi.ObjectType;
 
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.ConversionException;
+
 /** Java class semantics <code>ObjectType</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.3 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.4 2002-08-19 17:24:00 bob Exp $
  */
 public class ClassObjectType implements ObjectType
 {
+
+    // ------------------------------------------------------------
+    //     Class initialization
+    // ------------------------------------------------------------
+    
+    /** Register conversions for jakarta-beanutils.
+     */
+    static {
+        ConvertUtils.register(
+            new Converter()
+            {
+                public Object convert(Class type, Object value)
+                {
+                    if ( value instanceof Class )
+                    {
+                        return (Class) value;
+                    }
+                    else if ( value instanceof String )
+                    {
+                        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+                        if ( cl == null )
+                        {
+                            cl = getClass().getClassLoader();
+                        }
+                        try
+                        {
+                            return cl.loadClass( (String) value );
+                        }
+                        catch (Exception e)
+                        {
+                            throw new ConversionException( "Cannot convert " + value + " to a java.lang.Class",
+                                                           e );
+                        }
+                    }
+                    throw new ConversionException( "Cannot convert " + value + " to a java.lang.Class" );
+                }
+            },
+            Class.class
+            );
+    }
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
