@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.8 2003-11-19 21:31:11 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.9 2003-11-27 04:32:22 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -71,17 +71,20 @@ public class SimpleSemanticModule
     /** URI of this module. */
     private String uri;
 
-    /** Object type implementations. */
-    private Map objectTypes;
+    /** Rule factories. */
+    private Map ruleFactories;
 
-    /** Condition implementations. */
-    private Map conditions;
+    /** Object type factories. */
+    private Map objectTypeFactories;
 
-    /** Extractor implementations. */
-    private Map extractors;
+    /** Condition factories. */
+    private Map conditionFactories;
 
-    /** Consequence implementations. */
-    private Map consequences;
+    /** Extractor factories. */
+    private Map extractorFactories;
+
+    /** Consequence factories. */
+    private Map consequenceFactories;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -95,10 +98,11 @@ public class SimpleSemanticModule
     {
         this.uri = uri;
 
-        this.objectTypes  = new HashMap();
-        this.conditions   = new HashMap();
-        this.extractors   = new HashMap();
-        this.consequences = new HashMap();
+        this.ruleFactories        = new HashMap();
+        this.objectTypeFactories  = new HashMap();
+        this.conditionFactories   = new HashMap();
+        this.extractorFactories   = new HashMap();
+        this.consequenceFactories = new HashMap();
     }
 
     // ------------------------------------------------------------
@@ -112,139 +116,127 @@ public class SimpleSemanticModule
         return this.uri;
     }
 
-    /** Add a semantic object type.
+    public void addRuleFactory(String name,
+                               RuleFactory factory)
+    {
+        this.ruleFactories.put( name,
+                                factory );
+    }
+
+    /** @see SemanticModule
+     */
+    public RuleFactory getRuleFactory(String name)
+    {
+        return (RuleFactory) this.ruleFactories.get( name );
+    }
+
+    public Set getRuleFactoryNames()
+    {
+        return this.ruleFactories.keySet();
+    }
+
+    /** Add a semantic <code>ObjectTypeFactory</code>.
      *
      *  @param name The object type name.
-     *  @param objectType The object type implementation.
+     *  @param factory The object type factory.
      *
-     *  @throws InvalidObjectTypeException If a class that is not a
-     *          object type is added.
      */
-    public void addObjectType(String name,
-                              Class objectType) throws InvalidObjectTypeException
+    public void addObjectTypeFactory(String name,
+                                     ObjectTypeFactory factory) 
     {
-        if ( ! ObjectType.class.isAssignableFrom( objectType ) )
-        {
-            throw new InvalidObjectTypeException( objectType );
-        }
-
-        this.objectTypes.put( name,
-                              objectType );
+        this.objectTypeFactories.put( name,
+                                      factory );
     }
 
     /** @see SemanticModule
      */
-    public Class getObjectType(String name)
+    public ObjectTypeFactory getObjectTypeFactory(String name)
     {
-        return (Class) this.objectTypes.get( name );
+        return (ObjectTypeFactory) this.objectTypeFactories.get( name );
     }
 
     /** @see SemanticModule
      */
-    public Set getObjectTypeNames()
+    public Set getObjectTypeFactoryNames()
     {
-        return this.objectTypes.keySet();
+        return this.objectTypeFactories.keySet();
     }
 
-    /** Add a semantic condition.
+    /** Add a semantic <code>ConditionFactory</code>.
      *
      *  @param name The condition name.
-     *  @param condition The condition implementation.
-     *
-     *  @throws InvalidConditionException If a class that is not a
-     *          condition is added.
+     *  @param condition The condition factory.
      */
-    public void addCondition(String name,
-                             Class condition) throws InvalidConditionException
+    public void addConditionFactory(String name,
+                                    ConditionFactory factory) 
     {
-        if ( ! Condition.class.isAssignableFrom( condition ) )
-        {
-            throw new InvalidConditionException( condition );
-        }
-
-        this.conditions.put( name,
-                             condition );
+        this.conditionFactories.put( name,
+                                     factory );
     }
 
     /** @see SemanticModule
      */
-    public Class getCondition(String name)
+    public ConditionFactory getConditionFactory(String name)
     {
-        return (Class) this.conditions.get( name );
+        return (ConditionFactory) this.conditionFactories.get( name );
     }
 
     /** @see SemanticModule
      */
-    public Set getConditionNames()
+    public Set getConditionFactoryNames()
     {
-        return this.conditions.keySet();
+        return this.conditionFactories.keySet();
     }
 
-    /** Add a semantic extractor.
+    /** Add a semantic <code>ExtractorFactory</code>.
      *
      *  @param name The extractor name.
-     *  @param extractor The extractor implementation.
-     *
-     *  @throws InvalidExtractorException If a class that is not a
-     *          extractor is added.
+     *  @param factory The extractor factory.
      */
-    public void addExtractor(String name,
-                             Class extractor) throws InvalidExtractorException
+    public void addExtractorFactory(String name,
+                                    ExtractorFactory factory) 
     {
-        if ( ! Extractor.class.isAssignableFrom( extractor ) )
-        {
-            throw new InvalidExtractorException( extractor );
-        }
-
-        this.extractors.put( name,
-                             extractor );
+        this.extractorFactories.put( name,
+                                     factory );
     }
 
     /** @see SemanticModule
      */
-    public Class getExtractor(String name)
+    public ExtractorFactory getExtractorFactory(String name)
     {
-        return (Class) this.extractors.get( name );
+        return (ExtractorFactory) this.extractorFactories.get( name );
     }
 
     /** @see SemanticModule
      */
-    public Set getExtractorNames()
+    public Set getExtractorFactoryNames()
     {
-        return this.extractors.keySet();
+        return this.extractorFactories.keySet();
     }
 
-    /** Add a semantic consequence.
+    /** Add a semantic <code>ConsequenceFactory</code>.
      *
      *  @param name The consequence name.
-     *  @param consequence The consequence implementation.
-     *
-     *  @throws InvalidConsequenceException If a class that is not a
-     *          consequence is added.
+     *  @param consequence The consequence factory.
      */
-    public void addConsequence(String name,
-                          Class consequence) throws InvalidConsequenceException
+    public void addConsequenceFactory(String name,
+                                      ConsequenceFactory factory) 
     {
-        if ( ! Consequence.class.isAssignableFrom( consequence ) )
-        {
-            throw new InvalidConsequenceException( consequence );
-        }
-
-        this.consequences.put( name,
-                          consequence );
+        this.consequenceFactories.put( name,
+                                       factory );
     }
 
     /** @see SemanticModule
      */
-    public Class getConsequence(String name)
+    public ConsequenceFactory getConsequenceFactory(String name)
     {
-        return (Class) this.consequences.get( name );
+        return (ConsequenceFactory) this.consequenceFactories.get( name );
     }
 
     /** @see SemanticModule
      */
-    public Set getConsequenceNames()
+    public Set getConsequenceFactoryNames()
     {
-        return this.consequences.keySet();
+        return this.consequenceFactories.keySet();
     }
 }

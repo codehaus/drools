@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Extraction.java,v 1.3 2003-11-19 21:31:11 bob Exp $
+ $Id: Extraction.java,v 1.4 2003-11-27 04:32:22 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -89,8 +89,14 @@ public class Extraction
     public Extraction(Declaration targetDeclaration,
                       Extractor extractor)
     {
+        this( targetDeclaration );
+
+        this.extractor = extractor;
+    }
+
+    public Extraction(Declaration targetDeclaration)
+    {
         this.targetDeclaration = targetDeclaration;
-        this.extractor         = extractor;
     }
 
     // ------------------------------------------------------------
@@ -105,6 +111,11 @@ public class Extraction
     public Declaration getTargetDeclaration()
     {
         return this.targetDeclaration;
+    }
+
+    public void setExtractor(Extractor extractor)
+    {
+        this.extractor = extractor;
     }
 
     /** Retrieve the <code>Extractor</code> responsible

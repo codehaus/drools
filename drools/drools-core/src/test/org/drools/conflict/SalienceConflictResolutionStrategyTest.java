@@ -4,6 +4,7 @@ import org.drools.DroolsTestCase;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.Tuple;
+import org.drools.spi.ConflictResolutionStrategy;
 
 public class SalienceConflictResolutionStrategyTest
     extends DroolsTestCase
@@ -27,7 +28,7 @@ public class SalienceConflictResolutionStrategyTest
                 }
             };
 
-        SalienceConflictResolutionStrategy strategy = SalienceConflictResolutionStrategy.getInstance();
+        ConflictResolutionStrategy strategy = SalienceConflictResolutionStrategy.getInstance();
 
         assertEquals( 0,
                       strategy.compare( activation,
@@ -71,7 +72,7 @@ public class SalienceConflictResolutionStrategyTest
                 }
             };
 
-        SalienceConflictResolutionStrategy strategy = SalienceConflictResolutionStrategy.getInstance();
+        ConflictResolutionStrategy strategy = SalienceConflictResolutionStrategy.getInstance();
 
         assertEquals( -1,
                       strategy.compare( activation1,
@@ -115,7 +116,7 @@ public class SalienceConflictResolutionStrategyTest
                 }
             };
 
-        SalienceConflictResolutionStrategy strategy = SalienceConflictResolutionStrategy.getInstance();
+        ConflictResolutionStrategy strategy = SalienceConflictResolutionStrategy.getInstance();
 
         assertEquals( 1,
                       strategy.compare( activation1,

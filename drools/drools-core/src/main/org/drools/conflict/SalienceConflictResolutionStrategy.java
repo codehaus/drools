@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: SalienceConflictResolutionStrategy.java,v 1.4 2003-11-19 21:31:10 bob Exp $
+ $Id: SalienceConflictResolutionStrategy.java,v 1.5 2003-11-27 04:32:22 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import org.drools.spi.Activation;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SalienceConflictResolutionStrategy.java,v 1.4 2003-11-19 21:31:10 bob Exp $
+ *  @version $Id: SalienceConflictResolutionStrategy.java,v 1.5 2003-11-27 04:32:22 bob Exp $
  */
 public class SalienceConflictResolutionStrategy
     implements ConflictResolutionStrategy
@@ -75,7 +75,7 @@ public class SalienceConflictResolutionStrategy
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
-    private static final SalienceConflictResolutionStrategy INSTANCE = new SalienceConflictResolutionStrategy();
+    private static final ConflictResolutionStrategy INSTANCE = new SalienceConflictResolutionStrategy();
 
     // ----------------------------------------------------------------------
     //     Class methods
@@ -85,7 +85,7 @@ public class SalienceConflictResolutionStrategy
      *
      *  @return The singleton instance.
      */
-    public static SalienceConflictResolutionStrategy getInstance()
+    public static ConflictResolutionStrategy getInstance()
     {
         return INSTANCE;
     }
