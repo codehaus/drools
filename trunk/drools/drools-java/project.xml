@@ -72,6 +72,7 @@
                 <directory>src/conf</directory>
                 <includes>
                     <include>**/*.conf</include>
+                    <include>**/*.xsd</include>
                 </includes>
             </resource>
         </resources>
