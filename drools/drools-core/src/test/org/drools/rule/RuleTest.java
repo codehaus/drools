@@ -184,6 +184,50 @@ public class RuleTest
                       rule.getLoadOrder() );
     }
 
+    public void testParameterOrder()
+        throws Exception
+    {
+        Declaration paramDecl0 = new Declaration( new MockObjectType( true ),
+                                                 "paramVar0" );
+
+        Declaration paramDecl1 = new Declaration( new MockObjectType( true ),
+                                                 "paramVar1" );
+
+        Declaration paramDecl2 = new Declaration( new MockObjectType( true ),
+                                                 "paramVar2" );
+
+        Declaration paramDecl3 = new Declaration( new MockObjectType( true ),
+                                                 "paramVar3" );
+
+        Rule rule = new Rule( "test-rule" );
+        rule.addParameterDeclaration( paramDecl0 );
+        rule.addParameterDeclaration( paramDecl1 );
+        rule.addParameterDeclaration( paramDecl2 );
+
+        assertEquals( 0, rule.getParameterOrder( paramDecl0 ) );
+        assertEquals( 1, rule.getParameterOrder( paramDecl1 ) );
+        assertEquals( 2, rule.getParameterOrder( paramDecl2 ) );
+
+        rule = new Rule( "test-rule" );
+        rule.addParameterDeclaration( paramDecl1 );
+        rule.addParameterDeclaration( paramDecl0 );
+        rule.addParameterDeclaration( paramDecl2 );
+
+        assertEquals( 1, rule.getParameterOrder( "paramVar0" ) );
+        assertEquals( 2, rule.getParameterOrder( "paramVar2" ) );
+        assertEquals( 0, rule.getParameterOrder( "paramVar1" ) );
+
+        try
+        {
+        	int i = rule.getParameterOrder( paramDecl3 );
+        	fail("getParameterOrder(paramDecl3) Should not be able to find this parameter");
+        }
+        catch ( RuntimeException e )
+        {
+        	//
+        }
+    }
+
     public void testDuration_SimpleLong()
         throws Exception
     {
@@ -264,22 +308,22 @@ public class RuleTest
 
         // Serialize to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
-        ObjectOutput out = new ObjectOutputStream(bos) ;
-        out.writeObject(rule);
+        ObjectOutput out = new ObjectOutputStream( bos ) ;
+        out.writeObject( rule );
         out.close();
 
         // Get the bytes of the serialized object
         byte[] bytes = bos.toByteArray();
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
         rule = (Rule) in.readObject();
         in.close();
 
-        assertEquals(42, rule.getSalience());
-        assertEquals(22, rule.getLoadOrder());
-        assertLength(1, rule.getLocalDeclarations());
-        assertLength(1, rule.getParameterDeclarations());
-        assertLength(2, rule.getConditions());
+        assertEquals( 42, rule.getSalience() );
+        assertEquals( 22, rule.getLoadOrder() );
+        assertLength( 1, rule.getLocalDeclarations() );
+        assertLength( 1, rule.getParameterDeclarations() );
+        assertLength( 2, rule.getConditions() );
     }
 }

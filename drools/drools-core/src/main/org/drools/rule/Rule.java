@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.32 2004-08-07 16:23:32 mproctor Exp $
+ $Id: Rule.java,v 1.33 2004-09-01 20:38:32 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -53,6 +53,8 @@ import org.drools.spi.Duration;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,7 +73,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.32 2004-08-07 16:23:32 mproctor Exp $
+ *  @version $Id: Rule.java,v 1.33 2004-09-01 20:38:32 mproctor Exp $
  */
 public class Rule implements Serializable
 {
@@ -100,6 +102,12 @@ public class Rule implements Serializable
 
     /** Formal parameter decls of the rule. */
     private Set parameterDeclarations;
+
+    /** Map holding the parameter addition order */
+    private Map parameterOrder;
+
+		/** Counter used to provide the order number for the added */
+    private int parameterCounter;
 
     /** Conditions. */
     private List conditions;
@@ -133,6 +141,7 @@ public class Rule implements Serializable
 
         this.conditions            = Collections.EMPTY_LIST;
         this.extractions           = Collections.EMPTY_SET;
+        this.parameterOrder				 = Collections.	EMPTY_MAP;
     }
 
     /** Set the documentation.
@@ -275,9 +284,11 @@ public class Rule implements Serializable
         if ( this.parameterDeclarations == Collections.EMPTY_SET )
         {
             this.parameterDeclarations = new HashSet();
+            this.parameterOrder = new HashMap();
         }
 
         this.parameterDeclarations.add( declaration );
+        parameterOrder.put( declaration.getIdentifier(), new Integer( this.parameterCounter++ ) );
         addDeclaration( declaration );
     }
 
@@ -319,6 +330,27 @@ public class Rule implements Serializable
 
         return null;
     }
+
+    /**
+     * Must pass an existing Parameter otherwise a NullPointer RuntimeException will occur
+     */
+    public int getParameterOrder(Declaration declaration)
+    {
+    		return getParameterOrder(declaration.getIdentifier());
+    }
+
+    /**
+     * Must pass an existing Parameter otherwise a NullPointer RuntimeException will occur
+     */
+    public int getParameterOrder(String identifier)
+    {
+    	  Integer pInt = (Integer) parameterOrder.get(identifier);
+    	  int pint = pInt.intValue();
+    	  return pint;
+
+    		//return ((Integer) parameterOrder.get(identifier)).intValue();
+    }
+
 
     /** Retrieve a <code>Declaration</code> by identifier.
      *
