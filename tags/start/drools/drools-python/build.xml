@@ -1,0 +1,484 @@
+<project default="dev" basedir=".">
+
+   <!-- Patternsets for compiling support for -->
+   <!-- only some of the supported models.   -->
+ 
+   <patternset id="werken.drools">
+       <include name="org/drools/**/*"/>
+   </patternset>
+
+  <!-- =================================================================== -->
+  <!-- Properties                                                          -->
+  <!-- =================================================================== -->
+
+  <property name="name.marketing"  value="werken drools"/>
+  <property name="name"            value="drools"/>
+  <property name="version"         value="1.0-alpha-3"/>
+  <property name="year"            value="2001"/>
+
+  <property name="copyright.owner"  value="The Werken Company"/>
+  <property name="copyright.year"   value="2001"/>
+
+  <!-- Compilation Properties -->
+
+  <property name="build.compiler" value="classic"/>
+  <property name="debug"          value="on"/>
+  <property name="optimize"       value="on"/>
+  <property name="deprecation"    value="on"/>
+
+  <property name="src.dir"      value="./src/java/main"/>
+  <property name="doc.dir"      value="./src/doc"/>
+  <property name="samples.dir"  value="./src/java/samples"/>
+  <property name="test.dir"     value="./src/java/test"/>
+  <property name="lib.dir"      value="./lib"/>
+
+  <property name="packages.all"  value="org.drools.*"/>
+
+  <property name="build.dir"      value="./build"/>
+  <property name="build.src"      value="./build/src"/>
+  <property name="build.src.main" value="./build/src/main"/>
+  <property name="build.src.test" value="./build/src/test"/>
+
+  <property name="build.dest"      value="./build/classes"/>
+  <property name="build.dest.main" value="./build/classes/main"/>
+  <property name="build.dest.test" value="./build/classes/test"/>
+
+  <property name="build.doc"  value="./build/doc"/>
+
+  <property name="build.apidocs"       value="./build/doc/apidocs"/>
+  <property name="build.javadocs"      value="./build/doc/javadoc"/>
+  <property name="build.generated.src" value="./build/generated"/>
+
+  <property name="dist.root"     value="./dist"/>
+  <property name="dist.dir"      value="${dist.root}/tmp/${name}-${version}"/>
+  <property name="dist.jar.dir"  value="${dist.root}/tmp"/>
+  <property name="dist.target"   value="${dist.root}"/>
+
+  <property name="web.htdocs"  value="../htdocs"/>
+  <property name="web.dist"    value="${web.htdocs}/dist"/>
+  <property name="web.ftp"     value="./build/ftp"/>
+
+  <property name="javadoc.overview" value="${build.src.main}/org/drools/overview.html"/>
+
+  <property name="test.packages" value="**"/>
+
+  <property name="xml.format.options" value="-indentSize 2 -trimText -newlines"/>
+
+    <!--
+    <filter token="year"    value="${year}"/>
+    <filter token="version" value="${version}"/>
+    <filter token="date"    value="${TODAY}"/>
+    <filter token="log"     value="true"/>
+    <filter token="verbose" value="true"/>
+    -->
+
+  <target name="init">
+
+    <tstamp/>
+
+    <echo message="${name.marketing} -- ${version}"/>
+    <echo message="copyright ${copyright.year} by ${copyright.owner}"/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+
+  <target name="usage">
+    <echo message=" not implemented yet "/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+
+  <target name="prepare" depends="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.dest}"/>
+    <mkdir dir="${build.dest.main}"/>
+    <mkdir dir="${build.dest.test}"/>
+    <mkdir dir="${build.src}"/>
+    <mkdir dir="${build.src.main}"/>
+    <mkdir dir="${build.src.test}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Modular compilation structure                                       -->
+  <!-- =================================================================== -->
+
+  <target name="rule.compile">
+    <javac destdir="${build.dest.main}"
+           debug="${debug}"
+           optimize="${optimize}"
+           deprecation="${deprecation}">
+        <src path="${build.src.main}"/>
+        <patternset refid="${compile.target}"/>
+    </javac>
+  </target>
+
+  <target name="rule.compile.test">
+    <javac destdir="${build.dest.test}"
+           debug="${debug}"
+           optimize="${optimize}"
+           deprecation="${deprecation}">
+        <src path="${build.src.test}"/>
+        <classpath path="${build.dest.test}"/>
+        <classpath path="${build.dest.main}"/>
+        <patternset refid="${compile.target}"/>
+    </javac>
+  </target>
+
+  <target name="rule.jar">
+    <jar jarfile="${build.dir}/${name}.jar"
+         basedir="${build.dest.main}">
+      <patternset refid="${compile.target}"/>
+    </jar>
+  </target>
+
+  <target name="rule.test">
+
+    <mkdir dir="${build.dir}/test-results"/>
+
+    <junit printsummary="yes" haltonfailure="yes">
+      <formatter type="plain"/>
+
+      <classpath>
+        <pathelement location="${build.dest.main}" />
+        <pathelement location="${build.dest.test}" />
+        <pathelement path="${java.class.path}" />
+      </classpath>
+
+      <batchtest fork="yes" todir="${build.dir}/test-results">
+        <fileset dir="${test.dir}">
+          <include name="**/*Test.java"/>
+          <!-- <include name="${test.packages}/*Test.java"/> -->
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- ======================================================================== -->
+  <!-- Werken All                                                               -->
+  <!-- ======================================================================== -->
+  
+  <target name="compile.all" 
+          depends="compile.drools">
+  </target>
+
+  <target name="compile.all.test" 
+          depends="compile.drools.test">
+  </target>
+
+  <target name="test.all"
+          depends="test.drools">
+  </target>
+
+  <target name="jar.all"
+          depends="jar.drools">
+  </target>
+
+  <target name="prepare.all"
+          depends="prepare.drools">
+  </target>
+
+  <!--
+  <target name="jar.full" depends="compile.all">
+    <jar jarfile="${build.dir}/${name}.jar"
+         basedir="${build.dest.main}">
+    </jar>
+  </target>
+  -->
+
+  <!-- ======================================================================== -->
+  <!-- Werken Common                                                            -->
+  <!-- ======================================================================== -->
+
+  <target name="prepare.drools" 
+          depends="prepare">
+ 
+    <tstamp>
+        <format property="build.stamp" pattern="dd MMMMMM yyyy hh:mm aa"/>
+    </tstamp>
+
+    <filter token="MARKETING_NAME"    value="${name.marketing}"/>
+    <filter token="MARKETING_VERSION" value="${version}"/>
+    <filter token="BUILD_DATE"        value="${build.stamp}"/>
+
+    <copy todir="${build.src.main}" filtering="true">
+      <fileset dir="${src.dir}">
+         <patternset refid="werken.drools"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile.drools" 
+          depends="prepare.drools">
+    <antcall target="rule.compile">
+      <param name="compile.target" value="werken.drools"/> 
+    </antcall>
+  </target>
+
+  <target name="prepare.drools.test"
+          depends="prepare">
+    <copy todir="${build.src.test}">
+      <fileset dir="${test.dir}">
+         <patternset refid="werken.drools"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile.drools.test" 
+          depends="compile.drools,prepare.drools.test">
+    <antcall target="rule.compile.test">
+      <param name="compile.target" value="werken.drools"/> 
+    </antcall>
+  </target>
+
+  <target name="test.drools"
+          depends="compile.drools.test">
+    <antcall target="rule.test">
+       <param name="test.packages" value="com/werken"/>
+    </antcall>
+  </target>
+
+  <target name="jar.drools"
+          depends="compile.drools">
+    <antcall target="rule.jar">
+      <param name="compile.target" value="werken.drools"/>
+    </antcall>
+  </target>
+
+  <!-- ************************************************************************ -->
+  <!-- Documentation                                                            -->
+  <!-- ************************************************************************ -->
+
+  <target name="javadoc.all" depends="prepare.all">
+    <mkdir dir="${build.javadocs}"/>
+    <antcall target="rule.javadoc">
+      <param name="javadoc.packages" value="${packages.all}"/>
+      <param name="javadoc.dest"     value="${build.javadocs}"/>
+      <param name="javadoc.private"  value="false"/>
+    </antcall>
+  </target>
+
+  <target name="javadoc.api" depends="prepare.all">
+    <mkdir dir="${build.apidocs}"/>
+    <antcall target="rule.javadoc">
+      <param name="javadoc.packages" value="${packages.all}"/>
+      <param name="javadoc.dest"     value="${build.apidocs}"/>
+      <param name="javadoc.private"  value="false"/>
+    </antcall>
+  </target>
+
+  <target name="javadoc.devel" depends="prepare.all">
+    <mkdir dir="${build.apidocs}"/>
+    <antcall target="rule.javadoc">
+      <param name="javadoc.packages" value="${packages.all}"/>
+      <param name="javadoc.dest"     value="${build.apidocs}"/>
+      <param name="javadoc.private"  value="true"/>
+    </antcall>
+  </target>
+
+  <target name="rule.javadoc">
+    <javadoc packagenames="${javadoc.packages}"
+             sourcepath="${build.src.main}"
+             destdir="${javadoc.dest}"
+             private="${javadoc.private}"
+             author="true"
+             version="true"
+             use="true"
+             splitindex="true"
+             noindex="false"
+             windowtitle="${name.marketing} api"
+             doctitle="${name.marketing}"
+             overview="${javadoc.overview}"
+             bottom="Copyright &#169; ${copyright.year} ${copyright.owner}. All Rights Reserved."
+             stylesheetfile="${doc.dir}/style/javadoc.css">
+
+      <group title="drools Logic Engine"           packages="org.drools*" />
+      <group title="Semantics Provider Interface"  packages="org.drools.spi*" />
+      <group title="Java Semantics module"         packages="org.drools.semantic.java*" />
+      <group title="XML Semantics module"          packages="org.drools.semantic.xml*" />
+
+      <!--  
+      <link href="http://java.sun.com/products/jdk/1.3/docs/api"
+            offline="true"
+            packagelistLoc="./src/javadoc/j2se"/>
+
+      <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"
+            offline="true"
+            packagelistLoc="./src/javadoc/jaxp"/>
+      -->
+
+    </javadoc>
+  </target>
+
+  <!-- Build the documentation -->
+  <target name="doc" depends="prepare">
+    <mkdir    dir="${doc.dir}/images"/>
+
+    <mkdir    dir="${build.doc}"/>
+
+    <style    basedir="${doc.dir}"
+              destdir="${build.doc}" 
+              style="${doc.dir}/style/style.xsl"
+              includes="**/*.xml" excludes="style/**,project.xml,cookbook/**"/>
+
+    <copy todir="${build.doc}" overwrite="yes"> 
+      <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
+    </copy>
+    <copy todir="${build.doc}/images" overwrite="yes">
+      <fileset dir="${doc.dir}/images"/>
+    </copy>
+    <copy todir="${build.doc}" overwrite="yes">
+      <fileset dir="${doc.dir}" includes="*.css"/>
+    </copy>
+    <copy todir="${build.doc}/style" overwrite="yes">
+      <fileset dir="${doc.dir}/style" includes="images/**"/>
+    </copy>
+
+    <replace file="${build.doc}/index.html" token="$$VERSION$$" value="${version}"/>
+    <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${version}"/>
+
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Creates the distribution                                            -->
+  <!-- =================================================================== -->
+
+  <target name="dist" depends="clean,,jar.all,doc">
+    <mkdir dir="${dist.dir}"/>
+    <mkdir dir="${dist.dir}/lib"/>
+    <mkdir dir="${dist.dir}/src"/>
+    <mkdir dir="${dist.dir}/doc"/>
+    <mkdir dir="${dist.dir}/doc/apidocs"/>
+    <mkdir dir="${dist.dir}/xml"/>
+
+    <copy todir="${dist.dir}">
+      <fileset dir="${build.dir}">
+        <patternset>
+          <include name="*.jar"/>
+        </patternset>
+      </fileset>
+    </copy>
+
+    <copy todir="${dist.dir}/src">
+      <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g"/>
+    </copy>
+
+    <copy todir="${dist.dir}/lib">
+      <fileset dir="./lib" />
+    </copy>
+
+    <copy todir="${dist.dir}/doc">
+      <fileset dir="${build.doc}" />
+    </copy>
+
+    <copy todir="${dist.dir}/test_data">
+      <fileset dir="./test_data"/>
+    </copy>
+
+    <copy todir="${dist.dir}">
+      <fileset dir="." includes="build.pl, *.xml, *.html, INSTALL, LICENSE" />
+    </copy>
+
+    <chmod perm="+x" file="${dist.dir}/build.pl"/>
+
+    <fixcrlf srcdir="${dist.dir}" includes="build.pl"     cr="remove"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Packages the distribution as .zip                                   -->
+  <!-- =================================================================== -->
+
+  <target name="dist-zip" depends="dist">
+    <zip zipfile="${dist.target}/${name}-daily.zip" basedir="${dist.jar.dir}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Packages the distribution as .jar                                   -->
+  <!-- =================================================================== -->
+
+  <target name="dist-jar" depends="dist">
+    <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.jar.dir}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Packages the distribution with .tar.gzip                            -->
+  <!-- =================================================================== -->
+
+  <target name="dist-tgz" depends="dist">
+    <tar tarfile="${dist.target}/${name}-daily.tar" basedir="${dist.jar.dir}"/>
+    <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Performs a release on the website                                   -->
+  <!-- =================================================================== -->
+
+  <target name="release" depends="clean,compile.all,javadoc.all,javadoc.api,dist-zip,dist-tgz,dist-jar">
+     <copy file="${dist.target}/${name}-daily.tar.gz"
+           tofile="${dist.target}/${name}-${version}.tar.gz"/>
+     <copy file="${dist.target}/${name}-daily.zip"
+           tofile="${dist.target}/${name}-${version}.zip"/>
+  </target>
+
+
+  <!--
+  <target name="ftp" depends="dist-zip,dist-tgz,dist-jar">
+    <mkdir dir="${web.ftp}"/>
+    <copy todir="${web.ftp}" overwrite="yes">
+      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
+    </copy>
+  </target>
+  -->
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.root}"/>
+  </target>
+
+  <target name="distclean" depends="clean">
+    <delete dir="${dist.root}"/>
+    <delete file="${name}-daily.tar.gz"/>
+    <delete file="${name}-daily.tar"/>
+    <delete file="${name}-daily.zip"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Helper targets                                                      -->
+  <!-- =================================================================== -->
+
+  <target name="all"     
+          depends="clean,jar.all,doc,javadoc"/>
+
+  <target name="dev"     
+          depends="jar.all"/>
+
+  <target name="package"
+          depends="jar.all"/>
+
+  <target name="jars"
+          depends="jar.all"/>
+
+  <target name="compile"
+          depends="compile.all"/>
+
+  <target name="api" 
+          depends="javadoc.api"/>
+
+  <target name="javadoc" 
+          depends="javadoc.all"/>
+
+  <target name="test" 
+          depends="test.all"/>
+
+</project>
+
+<!-- End of file -->
