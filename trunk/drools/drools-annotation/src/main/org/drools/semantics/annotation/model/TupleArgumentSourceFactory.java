@@ -7,19 +7,19 @@ import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
 
-class TupleParameterValueFactory extends AnnotationParameterValueFactory {
+public class TupleArgumentSourceFactory extends AnnotationArgumentSourceFactory {
 
     static final String BASE_DEFAULT_IDENTIFIER = "DroolsParameter$";
 
-    public TupleParameterValueFactory() {
+    public TupleArgumentSourceFactory() {
         super(DroolsParameter.class);
     }
 
-    public Class<? extends ParameterValue> getParameterValueType() {
-        return TupleParameterValue.class;
+    public Class<? extends ArgumentSource> getParameterValueType() {
+        return TupleArgumentSource.class;
     }
 
-    protected ParameterValue doCreate(Rule rule, Class<?> parameterClass,
+    protected ArgumentSource doCreate(Rule rule, Class<?> parameterClass,
                                       Annotation annotation) throws InvalidRuleException {
         String parameterId = ((DroolsParameter) annotation).value();
         if (parameterId == null || parameterId.trim().length() == 0) {
@@ -30,7 +30,7 @@ class TupleParameterValueFactory extends AnnotationParameterValueFactory {
             ClassObjectType objectType = new ClassObjectType(parameterClass);
             declaration = rule.addParameterDeclaration(parameterId, objectType);
         }
-        return new TupleParameterValue(declaration);
+        return new TupleArgumentSource(declaration);
     }
 
     private String getDefaultIdentifier(Class<?> parameterClass) {

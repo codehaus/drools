@@ -5,17 +5,17 @@ import java.lang.annotation.Annotation;
 import org.drools.rule.Rule;
 import org.drools.spi.KnowledgeHelper;
 
-class KnowledgeHelperParameterValueFactory implements ParameterValueFactory {
+public class KnowledgeHelperArgumentSourceFactory implements ArgumentSourceFactory {
 
-    public Class<? extends ParameterValue> getParameterValueType() {
-        return KnowledgeHelperParameterValue.class;
+    public Class<? extends ArgumentSource> getParameterValueType() {
+        return KnowledgeHelperArgumentSource.class;
     }
 
-    public ParameterValue create(Rule rule, Class< ? > parameterClass,
+    public ArgumentSource create(Rule rule, Class< ? > parameterClass,
                                   Annotation[] parameterAnnotations) {
         if (parameterClass != KnowledgeHelper.class) {
             return null;
         }
-        return new KnowledgeHelperParameterValue(rule);
+        return new KnowledgeHelperArgumentSource(rule);
     }
 }

@@ -5,10 +5,10 @@ import java.lang.annotation.Annotation;
 import org.drools.DroolsException;
 import org.drools.rule.Rule;
 
-public interface ParameterValueFactory
+public interface ArgumentSourceFactory
 {
-    Class<? extends ParameterValue> getParameterValueType();
+    Class<? extends ArgumentSource> getParameterValueType();
 
-    ParameterValue create ( Rule rule, Class< ? > parameterClass,
+    ArgumentSource create ( Rule rule, Class< ? > parameterClass,
                             Annotation[] parameterAnnotations) throws DroolsException;
 }
