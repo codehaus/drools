@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.3 2004-11-07 18:36:25 mproctor Exp $
+ * $Id: MannersNativeTest.java,v 1.4 2004-11-07 18:38:53 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,7 +56,6 @@ import org.drools.examples.model.Seating;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.examples.ClassObjectType;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
