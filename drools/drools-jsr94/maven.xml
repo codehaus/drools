@@ -1,9 +1,11 @@
 
 <project default="java:jar" xmlns:jxr="jxr" xmlns:j="jelly:core">
 
+<!--
     <goal name="ant:generate-build">
       <echo>ant build not supported</echo>
     </goal>
+-->
 
     <postGoal name="clover">
       <copy tofile="${basedir}/target/docs/clover/style.css"
