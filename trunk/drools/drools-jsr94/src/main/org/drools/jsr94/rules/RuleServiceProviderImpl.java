@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleServiceProviderImpl.java,v 1.3 2003-05-23 14:17:47 tdiesler Exp $
+ $Id: RuleServiceProviderImpl.java,v 1.4 2003-05-26 16:10:36 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -61,19 +61,28 @@ import javax.rules.admin.RuleAdministrator;
 public class RuleServiceProviderImpl extends RuleServiceProvider
 {
 
+    private RuleAdministrator ruleAdministrator;
+    private RuleRuntime ruleRuntime;
+
     /**
      * Returns a class instance of <code>RuleRuntime</code>.
      */
     public synchronized RuleRuntime getRuleRuntime()
     {
-        return RuleRuntimeImpl.getInstance();
+        if (ruleRuntime != null) {
+            return ruleRuntime;
+        }
+        return ruleRuntime = new RuleRuntimeImpl();
     }
 
     /**
      * Returns a class instance of <code>RuleAdministrator</code>.
      */
-    public RuleAdministrator getRuleAdministrator()
+    public synchronized RuleAdministrator getRuleAdministrator()
     {
-        return RuleAdministratorImpl.getInstance();
+        if (ruleAdministrator != null) {
+            return ruleAdministrator;
+        }
+        return ruleAdministrator = new RuleAdministratorImpl();
     }
 }
