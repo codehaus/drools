@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rule-set name="Miss Manners"
+        xmlns="http://drools.org/rules"
+        xmlns:java="http://drools.org/semantics/java"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+        xs:schemaLocation="http://drools.org/rules rules.xsd
+                           http://drools.org/semantics/java java.xsd">
+
+    <java:import>org.drools.examples.benchmarks.manners.MannersWMEL</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.Chosen</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.Context</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.Count</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.Guest</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.LastSeat</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.Path</java:import>
+    <java:import>org.drools.examples.benchmarks.manners.model.Seating</java:import>
+
+    <rule name="assign_first_seat">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <parameter identifier="guest"><class>Guest</class></parameter>
+        <parameter identifier="count"><class>Count</class></parameter>
+        <java:condition>context.isState( "start" )</java:condition>
+        <java:consequence>
+            String n = guest.getName( );
+            int c = count.getC( );
+
+            drools.assertObject( new Seating( c, 0, 1, n, 1, n, true ) );
+            drools.assertObject( new Path( c, n, 1 ) );
+            count.setC( c + 1 );
+            drools.modifyObject( count );
+            System.out.println( "seat 1 " + n + " " + n + " 1 " + c + " 0 1" );
+            context.setState( "assign_seats" );
+            drools.modifyObject( context );
+        </java:consequence>
+    </rule>
+
+    <rule name="find_seating">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <parameter identifier="seating"><class>Seating</class></parameter>
+        <parameter identifier="guest1"><class>Guest</class></parameter>
+        <parameter identifier="guest2"><class>Guest</class></parameter>
+        <parameter identifier="count"><class>Count</class></parameter>
+        <java:condition>context.isState( "assign_seats" )</java:condition>
+        <java:condition>seating.isPathDone( )</java:condition>
+        <java:condition>guest1.getName( ).equals( seating.getName2(  ) )</java:condition>
+        <java:condition>guest2.getSex( ) != guest1.getSex( )</java:condition>
+        <java:condition>guest2.getHobby( ).equals( guest1.getHobby( ) )</java:condition>
+        <java:consequence>
+            int c = count.getC( );
+            int id = seating.getId( );
+            String g2 = guest2.getName( );
+            String h1 = guest1.getHobby( );
+            int seat2 = seating.getSeat2( );
+            String n2 = seating.getName2( );
+
+            if ( MannersWMEL.pathExists( id, g2 ) ) return;
+            if ( MannersWMEL.chosenExists( id, g2, h1 ) ) return;
+
+            drools.assertObject( new Seating( c, id, seat2, n2, seat2+1, g2, false ) );
+            drools.assertObject( new Path( c, g2, seat2+1 ) );
+            drools.assertObject( new Chosen( id, g2, h1 ) );
+            count.setC( c + 1 );
+            drools.modifyObject( count );
+            System.out.println( "seat " + seat2 + " " + n2 + " " + g2 );
+            context.setState( "make_path" );
+            drools.modifyObject( context );
+        </java:consequence>
+    </rule>
+
+    <rule name="make_path">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <parameter identifier="seating"><class>Seating</class></parameter>
+        <parameter identifier="path"><class>Path</class></parameter>
+        <java:condition>context.isState( "make_path" )</java:condition>
+        <java:condition>!seating.isPathDone( )</java:condition>
+        <java:condition>path.getId( ) == seating.getPid( )</java:condition>
+        <java:consequence>
+            int id = seating.getId( );
+            String n1 = path.getName( );
+
+            if ( MannersWMEL.pathExists( id, n1 ) ) return;
+
+            drools.assertObject( new Path( id, n1, path.getSeat( ) ) );
+        </java:consequence>
+    </rule>
+
+    <rule name="path_done">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <parameter identifier="seating"><class>Seating</class></parameter>
+        <java:condition>context.isState( "make_path" )</java:condition>
+        <java:condition>!seating.isPathDone( )</java:condition>
+        <java:consequence>
+            seating.setPathDone( true );
+            drools.modifyObject( seating );
+            context.setState( "check_done" );
+            drools.modifyObject( context );
+        </java:consequence>
+    </rule>
+
+    <rule name="are_we_done">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <parameter identifier="lastSeat"><class>LastSeat</class></parameter>
+        <parameter identifier="seating"><class>Seating</class></parameter>
+        <java:condition>context.isState( "check_done" )</java:condition>
+        <java:condition>seating.getSeat2( ) == lastSeat.getSeat( )</java:condition>
+        <java:consequence>
+            System.out.println( );
+            System.out.println( "Yes, we are done!!" );
+            context.setState( "print_results" );
+            drools.modifyObject( context );
+        </java:consequence>
+    </rule>
+
+    <rule name="continue">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <java:condition>context.isState( "check_done" )</java:condition>
+        <java:consequence>
+            context.setState( "assign_seats" );
+            drools.modifyObject( context );
+        </java:consequence>
+    </rule>
+
+    <rule name="print_results">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <parameter identifier="seating"><class>Seating</class></parameter>
+        <parameter identifier="lastSeat"><class>LastSeat</class></parameter>
+        <parameter identifier="path"><class>Path</class></parameter>
+        <java:condition>context.isState( "print_results" )</java:condition>
+        <java:condition>lastSeat.getSeat( ) == seating.getSeat2( )</java:condition>
+        <java:condition>path.getId( ) == seating.getId( )</java:condition>
+        <java:consequence>
+            drools.retractObject( path );
+            System.out.println( path.getName( ) + " " + path.getSeat( ) );
+        </java:consequence>
+    </rule>
+
+    <rule name="all_done">
+        <parameter identifier="context"><class>Context</class></parameter>
+        <java:condition>context.isState( "print_results" )</java:condition>
+        <java:consequence>
+            drools.clearAgenda( );
+        </java:consequence>
+    </rule>
+
+</rule-set>
