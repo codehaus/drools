@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.27 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.28 2004-10-20 12:50:59 bob Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -150,6 +150,15 @@ public interface WorkingMemory extends Serializable
      * @return The list of all known objects.
      */
     List getObjects();
+
+    /**
+     * Retrieve all known objects of the specified class.
+     *
+     * @param objectClass The class of object to return.
+     * 
+     * @return The list of all known objects of the specified class.
+     */
+    List getObjects(Class objectClass);
 
     /**
      * Retrieve all known Fact Handles.

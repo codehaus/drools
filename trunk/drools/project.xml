@@ -20,7 +20,7 @@
     <url>http://drools.codehaus.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
     <siteAddress>drools.codehaus.org</siteAddress>
-    <siteDirectory>/www/drools.codehaus.org</siteDirectory>
+    <siteDirectory>/home/projects/drools/public_html</siteDirectory>
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm:drools</connection>
         <url>http://cvs.drools.codehaus.org/</url>
