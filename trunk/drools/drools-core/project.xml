@@ -138,7 +138,7 @@
     <developer>
         <name>Thomas Diesler</name>
         <id>tdiesler</id>
-        <email>Thomas.Diesler@softcon.de</email>
+        <email>thomas.diesler@softcon-itec.de</email>
         <roles>
             <role>JSR-94 and JCA lead</role>
         </roles>
@@ -205,7 +205,7 @@
     </dependency>
 
     <dependency>
-      <id>jsr94</id>
+      <id>jaas</id>
       <version>1.0-pr</version>
     </dependency>
 
@@ -213,6 +213,11 @@
       <id>jca</id>
       <version>1.0</version>
     </dependency>
+
+     <dependency>
+       <id>jsr94</id>
+       <version>1.0-pr</version>
+     </dependency>
 
     <dependency>
       <id>xml-apis</id>
