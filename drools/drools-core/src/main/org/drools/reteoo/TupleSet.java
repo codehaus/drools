@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.20 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: TupleSet.java,v 1.21 2004-11-21 12:33:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -77,7 +77,7 @@ class TupleSet
 
     /**
      * Construct with a single tuple.
-     * 
+     *
      * @param tuple
      *            The tuple.
      */
@@ -89,7 +89,7 @@ class TupleSet
 
     /**
      * Construct with a size hint.
-     * 
+     *
      * @param sizeHint
      *            Hint as to desired size.
      */
@@ -100,7 +100,7 @@ class TupleSet
 
     /**
      * Retrieve the size (number of tuples) in this set.
-     * 
+     *
      * @return The size of this set.
      */
     public int size()
@@ -110,17 +110,17 @@ class TupleSet
 
     /**
      * Return empty status
-     * 
+     *
      * @return The size of this set.
      */
     public boolean isEmpty()
     {
-        return this.tuples.isEmpty();
-    }    
+        return this.tuples.isEmpty( );
+    }
 
     /**
      * Add a single <code>Tuple</code> to this set.
-     * 
+     *
      * @param tuple
      *            The tuple.
      */
@@ -138,13 +138,10 @@ class TupleSet
     public void addAllTuples(Set tuples)
     {
         Iterator tupleIter = tuples.iterator( );
-        ReteTuple eachTuple = null;
 
         while ( tupleIter.hasNext( ) )
         {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            addTuple( eachTuple );
+            addTuple( ( ReteTuple ) tupleIter.next( ) );
         }
     }
 
@@ -156,11 +153,11 @@ class TupleSet
     public void addAllTuples(TupleSet tupleSet)
     {
         this.tuples.putAll( tupleSet.tuples );
-    }    
+    }
 
     /**
      * Retract tuples from this memory.
-     * 
+     *
      * @param key
      *            The key for the tuples to be removed.
      */
@@ -169,7 +166,7 @@ class TupleSet
         Iterator tupleIter = iterator( );
         while ( tupleIter.hasNext( ) )
         {
-            if ( ((ReteTuple) tupleIter.next( )).getKey( ).containsAll( key ) )
+            if ( ( ( ReteTuple ) tupleIter.next( ) ).getKey( ).containsAll( key ) )
             {
                 tupleIter.remove( );
             }
@@ -178,16 +175,16 @@ class TupleSet
 
     /**
      * Retrieve all <code>Tuple</code>s.
-     * 
+     *
      * @see org.drools.spi.Tuple
-     * 
+     *
      * @return The set of tuples.
      */
     public Set getTuples()
     {
         return new HashSet( this.tuples.values( ) );
     }
-    
+
     /**
      * Determine if this set contains a <code>Tuple</code> matching the
      * specified <code>TupleKey</code>.
@@ -226,11 +223,11 @@ class TupleSet
     public void removeTuple(TupleKey key)
     {
         this.tuples.remove( key );
-    }    
+    }
 
     /**
      * Retrieve an iterator over the tuples.
-     * 
+     *
      * @return The iterator.
      */
     public Iterator iterator()

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.36 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ParameterNode.java,v 1.37 2004-11-21 12:33:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,16 +54,16 @@ import java.util.Set;
  * Receives <code>Objects</code> from an <code>ObjectTypeNode</code>, and
  * creates a <code>ReteTuple</code>, passing the result to the following
  * node.
- * 
+ *
  * <p>
  * The <code>ParameterNode</code> is the first node that works in terms of
  * <code>Tuples</code>. An instance of <code>ParameterNode</code> exists
  * for each <i>root fact object </i> parameter of each rule.
  * </p>
- * 
+ *
  * @see ObjectTypeNode
  * @see TupleSink
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class ParameterNode extends TupleSource
@@ -87,7 +87,7 @@ class ParameterNode extends TupleSource
 
     /**
      * Construct.
-     * 
+     *
      * @param rule
      *            The <code>Rule</code>.
      * @param inputNode
@@ -116,14 +116,14 @@ class ParameterNode extends TupleSource
     /**
      * Assert a new fact object into this <code>RuleBase</code> and the
      * specified <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle
      *            The fact handle.
      * @param object
      *            The object to assert.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws AssertionException
      *             if an error occurs during assertion.
      */
@@ -143,12 +143,12 @@ class ParameterNode extends TupleSource
     /**
      * Retract a fact object from this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle
      *            The handle to the fact to retract.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws RetractionException
      *             if an error occurs during retraction.
      */
@@ -165,17 +165,17 @@ class ParameterNode extends TupleSource
     /**
      * Modify a fact object in this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * With the exception of time-based nodes, modification of a fact object is
      * semantically equivelent to retracting and re-asserting it.
-     * 
+     *
      * @param handle
      *            The fact handle.
-     * @param object
+     * @param newObject
      *            The new fact value object.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws FactException
      *             if an error occurs during modification.
      */
@@ -199,7 +199,7 @@ class ParameterNode extends TupleSource
 
     /**
      * Retrieve the root fact object <code>Declaration</code>.
-     * 
+     *
      * @return The <code>Declaration</code>.
      */
     public Declaration getDeclaration()
@@ -214,7 +214,7 @@ class ParameterNode extends TupleSource
     /**
      * Retrieve the <code>Set</code> of <code>Declaration</code> s in the
      * propagated <code>Tuples</code>.
-     * 
+     *
      * @return The <code>Set</code> of <code>Declarations</code> in progated
      *         <code>Tuples</code>.
      */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.45 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: Agenda.java,v 1.46 2004-11-21 12:33:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.FactHandle;
-import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.ConflictResolver;
@@ -57,18 +56,18 @@ import java.util.Set;
 
 /**
  * Rule-firing Agenda.
- * 
+ *
  * <p>
  * Since many rules may be matched by a single assertObject(...) all scheduled
  * actions are placed into the <code>Agenda</code>.
  * </p>
- * 
+ *
  * <p>
  * While processing a scheduled action, it may modify or retract objects in
  * other scheduled actions, which must then be removed from the agenda.
  * Non-invalidated actions are left on the agenda, and are executed in turn.
  * </p>
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -98,7 +97,7 @@ class Agenda
 
     /**
      * Construct.
-     * 
+     *
      * @param workingMemory
      *            The <code>WorkingMemory</code> of this agenda.
      * @param conflictResolver
@@ -120,7 +119,7 @@ class Agenda
      * Schedule a rule action invokation on this <code>Agenda</code>. Rules
      * specified with noNoop=true that are active should not be added to the
      * agenda
-     * 
+     *
      * @param tuple
      *            The matching <code>Tuple</code>.
      * @param rule
@@ -165,7 +164,7 @@ class Agenda
 
     /**
      * Remove a tuple from the agenda.
-     * 
+     *
      * @param key
      *            The key to the tuple to be removed.
      * @param rule
@@ -220,7 +219,7 @@ class Agenda
 
     /**
      * Modify the agenda.
-     * 
+     *
      * @param trigger
      *            The triggering root object handle.
      * @param newTuples
@@ -236,23 +235,16 @@ class Agenda
         Iterator itemIter = this.items.iterator( );
         AgendaItem eachItem;
         ReteTuple eachTuple;
-        Tuple tuple;
-        Iterator iter;
 
         // make sure we dont add an existing Tuple onto the Agenda
         while ( itemIter.hasNext( ) )
         {
             eachItem = (AgendaItem) itemIter.next( );
 
-            if ( eachItem.getRule( ) == rule )
+            if ( eachItem.getRule( ) == rule
+                 && eachItem.dependsOn( trigger ) )
             {
-                if ( eachItem.dependsOn( trigger ) )
-                {
-                    if ( newTuples.containsTuple( eachItem.getKey( ) ) )
-                    {
-                        newTuples.removeTuple( eachItem.getKey( ) );
-                    }
-                }
+                newTuples.removeTuple( eachItem.getKey( ) );
             }
         }
 
@@ -262,15 +254,10 @@ class Agenda
         {
             eachItem = (AgendaItem) itemIter.next( );
 
-            if ( eachItem.getRule( ) == rule )
+            if ( eachItem.getRule( ) == rule
+                 && eachItem.dependsOn( trigger ) )
             {
-                if ( eachItem.dependsOn( trigger ) )
-                {
-                    if ( newTuples.containsTuple( eachItem.getKey( ) ) )
-                    {
-                        newTuples.removeTuple( eachItem.getKey( ) );
-                    }
-                }
+                newTuples.removeTuple( eachItem.getKey( ) );
             }
         }
 
@@ -286,32 +273,30 @@ class Agenda
     }
 
     /**
-     * Clears all Activations from the Agenda 
-     * 
+     * Clears all Activations from the Agenda
+     *
      */
     void clearAgenda()
     {
-        AgendaItem eachItem;
         Tuple tuple;
-        
+
         //Remove all items in the Agenda and fire a Cancelled event for each
         Iterator iter = this.items.iterator( );
         while ( iter.hasNext( ) )
         {
-            eachItem = (AgendaItem) iter.next( );
-
-            tuple = eachItem.getTuple( );
+            tuple = ( (AgendaItem) iter.next( ) ).getTuple( );
 
             iter.remove( );
 
             this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
                                                                            tuple );
         }
-        
 
+
+        AgendaItem eachItem;
 
         iter = this.scheduledItems.iterator( );
-        
+
         //Cancel all items in the Schedule and fire a Cancelled event for each
         while ( iter.hasNext( ) )
         {
@@ -325,12 +310,12 @@ class Agenda
 
             this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
                                                                            tuple );
-        }        
+        }
     }
 
     /**
      * Schedule an agenda item for delayed firing.
-     * 
+     *
      * @param item
      *            The item to schedule.
      */
@@ -342,7 +327,7 @@ class Agenda
 
     /**
      * Cancel a scheduled agenda item for delayed firing.
-     * 
+     *
      * @param item
      *            The item to cancel.
      */
@@ -353,7 +338,7 @@ class Agenda
 
     /**
      * Determine if this <code>Agenda</code> has any scheduled items.
-     * 
+     *
      * @return <code>true<code> if the agenda is empty, otherwise
      *          <code>false</code>.
      */
@@ -369,7 +354,7 @@ class Agenda
 
     /**
      * Fire the next scheduled <code>Agenda</code> item.
-     * 
+     *
      * @throws ConsequenceException
      *             If an error occurs while firing an agenda item.
      */
