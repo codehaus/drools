@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.24 2004-11-29 12:35:52 simon Exp $
+ * $Id: Interp.java,v 1.25 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,6 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
@@ -133,17 +132,13 @@ public class Interp
         this.origininalText = text;
         StringBuffer globalText = new StringBuffer();
 
-        Iterator it = rule.getImports( ).iterator();
+        Iterator it = rule.getImports( PythonImportEntry.class ).iterator( );
 
         while ( it.hasNext( ) )
         {
-            ImportEntry importEntry = (ImportEntry) it.next();
-            if (importEntry instanceof PythonImportEntry)
-            {
-                globalText.append(importEntry.getImportEntry());
-                globalText.append(";");
-                globalText.append(LINE_SEPARATOR);
-            }
+            globalText.append( it.next( ) );
+            globalText.append(";");
+            globalText.append(LINE_SEPARATOR);
         }
 
         globalText.append("def q(cond,on_true,on_false):\n");

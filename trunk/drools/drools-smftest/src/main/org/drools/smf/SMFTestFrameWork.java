@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.25 2004-12-04 02:46:38 dbarnett Exp $
+ * $Id: SMFTestFrameWork.java,v 1.26 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,18 +40,7 @@ package org.drools.smf;
  *
  */
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import junit.framework.TestCase;
-
 import org.drools.MockWorkingMemory;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
@@ -64,22 +53,32 @@ import org.drools.spi.MockTuple;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author mproctor
- * 
+ *
  * SMTTestFrameWork is a base class for unit testing Semantic Implementations
  * The semantic implementation unit test simply needs to extend this class along
  * with setup method that instructs SMFTEstFrameWork which semantic url to
  * instantiate for testing. public class JavaSemanticTest extends
  * SMFTestFrameWork { public JavaSemanticTest( String name ) { super( name ); }
- * 
+ *
  * public void setUp() throws Exception { super.setUp("java"); } }
- * 
+ *
  * Each class that extends SMFTestFrameWork must create 3 data files;
  * conditions.data, consequences.data. Each file is read depending the testType,
  * a List of the specified tests extracted from the file; usig the delimeter
  * <!--drools-test--!>to seperate each test block.
- * 
+ *
  * Each testType has a corresponding private helper method to instantiate a
  * Condition, Consequence for each test using the specified parameters
  */
@@ -417,7 +416,7 @@ public abstract class SMFTestFrameWork extends TestCase
                              HashMap.class );
 
         rule.setApplicationData( applicationData );
-        
+
         tuple.setWorkingMemory( workingMemory );
         testConsequence( 3,
                          tuple,
@@ -527,10 +526,17 @@ public abstract class SMFTestFrameWork extends TestCase
 
         public boolean equals(Object object)
         {
-            if ( object == null ) return false;
-            if ( !(object instanceof Cheese) ) return false;
-            Cheese otherCheese = (Cheese) object;
-            return this.name.equals( otherCheese.getName( ) );
+            if ( this == object )
+            {
+                return true;
+            }
+
+            if ( object == null || getClass( ) != object.getClass( ) )
+            {
+                return false;
+            }
+
+            return this.name.equals( ( ( Cheese ) object ).name );
         }
 
         public int hashCode()

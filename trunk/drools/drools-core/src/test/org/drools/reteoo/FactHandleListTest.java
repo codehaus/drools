@@ -16,7 +16,7 @@ public class FactHandleListTest extends TestCase
     {
         FactHandle handle = new FactHandleImpl( 37 );
         FactHandleList list = new FactHandleList( 2, handle );
-        assertEquals( 3, list.length( ) );
+        assertEquals( 3, list.size( ) );
         assertNull( list.get( 0 ) );
         assertNull( list.get( 1 ) );
         assertSame( handle, list.get( 2 ) );
@@ -30,7 +30,7 @@ public class FactHandleListTest extends TestCase
         FactHandleList list = new FactHandleList( new FactHandleList( 1, handleA ),
                                                   new FactHandleList( 3, handleB ) );
 
-        assertEquals( 4, list.length() );
+        assertEquals( 4, list.size() );
         assertNull( list.get( 0 ) );
         assertSame( handleA, list.get( 1 ) );
         assertNull( list.get( 2 ) );

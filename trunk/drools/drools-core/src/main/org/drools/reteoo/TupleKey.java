@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.31 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: TupleKey.java,v 1.32 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -144,7 +144,7 @@ class TupleKey
         FactHandleImpl eachHandle;
         long recency;
 
-        for ( int i = this.handles.length() - 1; i >= 0; i-- )
+        for ( int i = this.handles.size() - 1; i >= 0; i-- )
         {
             eachHandle = ( FactHandleImpl ) this.handles.get( i );
             if ( eachHandle != null )
@@ -169,7 +169,7 @@ class TupleKey
         long recency;
 
 
-        for ( int i = this.handles.length() - 1; i >= 0; i-- )
+        for ( int i = this.handles.size() - 1; i >= 0; i-- )
         {
             eachHandle = ( FactHandleImpl ) this.handles.get( i );
             if ( eachHandle != null )
@@ -198,19 +198,19 @@ class TupleKey
     /**
      * @see Object
      */
-    public boolean equals(Object thatObj)
+    public boolean equals( Object object )
     {
-        if ( this == thatObj )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( thatObj instanceof TupleKey )
+        if ( object == null || getClass( ) != object.getClass( ) )
         {
-            return this.handles.equals( ( ( TupleKey ) thatObj ).handles );
+            return false;
         }
 
-        return false;
+        return this.handles.equals( ( ( TupleKey ) object ).handles );
     }
 
     /**
