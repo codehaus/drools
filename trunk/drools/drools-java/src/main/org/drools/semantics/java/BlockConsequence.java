@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.21 2004-07-28 13:24:46 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.22 2004-07-28 13:34:31 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -74,7 +74,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.21 2004-07-28 13:24:46 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.22 2004-07-28 13:34:31 mproctor Exp $
  */
 public class BlockConsequence extends Interp
     implements Consequence
@@ -102,9 +102,7 @@ public class BlockConsequence extends Interp
 
     private void compile(Tuple tuple, Declaration[] availDecls) throws Exception
     {
-        String[] paramNames = new String[availDecls.length];
-        Class[] paramTypes = new Class[availDecls.length];
-        String block = getPreparedText(tuple, availDecls, paramNames, paramTypes);
+        String block = getPreparedText(tuple, availDecls);
 
         //System.err.println("block-----" );
         //System.err.println(block);
