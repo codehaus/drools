@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>drools</name>
   <id>drools</id>
-  <currentVersion>1.0-dev</currentVersion>
+  <currentVersion>1.0-beta-1</currentVersion>
 
   <organization>
     <name>The Werken Company</name>
@@ -22,17 +22,14 @@
     allow natural expression of rules within an object-oriented language.
   </description>
 
-  <logo>/images/logo.gif</logo>
   <url>http://drools.org/</url>
 
-  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;amp;atid=418734</issueTrackingUrl>
-  <siteAddress>drools.org</siteAddress>
-  <siteDirectory>/home/groups/d/dr/drools/htdocs</siteDirectory>
-  <distributionDirectory>/home/groups/d/dr/drools/htdocs/dist</distributionDirectory>
+  <siteAddress>drools.werken.com</siteAddress>
+  <siteDirectory>/www/drools.werken.com</siteDirectory>
   
   <repository>
-    <connection>scm:cvs::pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools:drools-2</connection>
-    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/drools/drools-2/</url>
+    <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
+    <url>http://cvs.werken.com/viewcvs.cgi/drools/drools/</url>
   </repository>
 
   <versions/>
@@ -40,10 +37,12 @@
 
   <mailingLists>
     <mailingList>
-      <name>droolers list</name>
-      <subscribe>drools-interest-subscribe@lists.sourceforge.net</subscribe>
-      <unsubscribe>drools-interest-unsubscribe@lists.sourceforge.net</unsubscribe>
-      <archive>http://www.mail-archive.com/drools-interest%40lists.sourceforge.net/</archive>
+      <name>blissed interest</name>
+      <archive>http://lists.werken.com/pipermail/blissed-interest/</archive>
+    </mailingList>
+    <mailingList>
+      <name>blissed cvs messages</name>
+      <archive>http://lists.werken.com/pipermail/blissed-cvs/</archive>
     </mailingList>
   </mailingLists>
 
@@ -54,6 +53,7 @@
       <id>werken</id>
       <email>bob@werken.com</email>
       <organization>The Werken Company</organization>
+      <role>Founder</role>
     </developer>
 
     <developer>
@@ -128,7 +128,7 @@
 
   <build>
 
-    <nagEmailAddress>drools-commits@lists.sourceforge.net</nagEmailAddress>
+    <nagEmailAddress>drools-cvs@lists.werken.com</nagEmailAddress>
 
     <sourceDirectory>src/java/main</sourceDirectory>
 
@@ -140,9 +140,11 @@
 
     <!-- Unit test classes -->
 
-    <unitTestPatterns>
-      <unitTestPattern>include = **/*Test.java</unitTestPattern>
-    </unitTestPatterns>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
 
     <!-- Integration unit test classes -->
 
@@ -152,11 +154,11 @@
     <!-- J A R  R E S O U R C E S -->
     <!-- Resources that are packaged up inside the JAR file -->
 
-    <jarResources>
-    </jarResources>
-
-    <jars>
-    </jars>
+    <resources>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </resources>
 
   </build>
 
