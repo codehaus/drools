@@ -117,7 +117,25 @@ public <a href="TOP/api/org/drools/rule/Declaration.html">Declaration</a> <a hre
     <div class="subsection">
       <div class="subsectionTitle"><a href="TOP/api/org/drools/spi/Consequence.html">Consequence</a></div> 
       <p>
+      When a rule has been selected for execution, a <a href="TOP/api/org/drools/spi/Consequence.html">Consequence</a>
+      determines what actions are taken.  Like a <code>Condition</code>, each consequence is presented
+      a <a href="TOP/api/org/drools/spi/Tuple.html">Tuple</a> of objects bound to declarations.
+      Additionally it is provided the <a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a>
+      so that it may, as a result of firing, manipulate facts.
       <p>
+      <div class="code">
+<pre>
+public void <a href="TOP/api/org/drools/spi/Consequence.html#invoke(org.drools.spi.Tuple,org.drools.WorkingMemory)">invoke</a>(<a href="TOP/api/org/drools/spi/Tuple.html">Tuple</a> tuple,
+                   <a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a> workingMemory)
+    throws <a href="TOP/api/org/drools/spi/ConsequenceException.html">ConsequenceException</a>
+{
+    Cheese cheese = (Cheese) tuple.<a href="TOP/api/org/drools/spi/Tuple.html#get(org.drools.rule.Declaration)">get</a>( this.cheeseDecl );
+    Toast  toast  = (Toast) tuple.<a href="TOP/api/org/drools/spi/Tuple.html#get(org.drools.rule.Declaration)">get</a>( this.toastDecl );
+
+    workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#assertObject(java.lang.Object)">assertObject</a>( new Breakfast( cheese, toast ) );
+}
+</pre>
+      </div>
     </div>
   </div>
 </div>
