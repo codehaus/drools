@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.1 2002-08-01 18:47:33 bob Exp $
+ $Id: RuleSet.java,v 1.2 2003-08-21 00:57:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -68,7 +68,7 @@ public class RuleSet
     private String name;
 
     /** Set of all rule-names in this <code>RuleSet</code>. */
-    private Set names;
+    private Set ruleNames;
 
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
     private List rules;
@@ -84,7 +84,7 @@ public class RuleSet
     public RuleSet(String name)
     {
         this.name  = name;
-        this.names = new HashSet();
+        this.ruleNames = new HashSet();
         this.rules = new ArrayList();
     }
 
@@ -131,7 +131,7 @@ public class RuleSet
                                                   rule );
         }
 
-        this.names.add( name );
+        this.ruleNames.add( name );
         this.rules.add( rule );
     }
 
@@ -170,7 +170,7 @@ public class RuleSet
      */
     public boolean containsRule(String name)
     {
-        return this.names.contains( name );
+        return this.ruleNames.contains( name );
     }
 
     /** Retrieve a <code>List</code> of all <code>Rules</code>
@@ -193,5 +193,14 @@ public class RuleSet
     public Iterator getRuleIterator()
     {
         return getRules().iterator();
+    }
+
+    /** Return a string representation of this object.
+     *
+     * @return a String
+     */
+    public String toString()
+    {
+      return "[RuleSet: name=" + name + ",ruleNames=" + ruleNames + "]";
     }
 }

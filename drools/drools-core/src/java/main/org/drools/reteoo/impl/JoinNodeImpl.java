@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeImpl.java,v 1.7 2002-08-10 20:57:34 bob Exp $
+ $Id: JoinNodeImpl.java,v 1.8 2003-08-21 00:57:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -329,5 +329,14 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode
         decls.addAll( getRightInput().getTupleDeclarations() );
 
         return decls;
+    }
+
+    /** Return a string representation of this object.
+     *
+     * @return a String
+     */
+    public String toString()
+    {
+      return "[JoinNodeImpl: leftInput=" + leftInput + ",rightInput=" + rightInput + ",commonDeclarations=" + commonDeclarations + "]";
     }
 }
