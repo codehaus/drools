@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<rule-set name="Family Tree Rules"
+          xmlns="http://drools.org/rules"
+          xmlns:groovy="http://drools.org/semantics/groovy">
+
+  <!-- ================================================================== -->
+  <rule name="Explode Tree">
+    <parameter identifier="familyHead">
+      <groovy:class>org.drools.examples.familytree.Person</groovy:class>
+    </parameter>
+    <groovy:condition>true</groovy:condition>
+    <groovy:consequence>
+      familyHead.getChildren().each { child | drools.assertObject(child) }
+    </groovy:consequence>
+  </rule>
+
+  <!-- ================================================================== -->
+  <rule name="child of">
+    <parameter identifier="theParent">
+      <groovy:class>org.drools.examples.familytree.Person</groovy:class>
+    </parameter>
+    <parameter identifier="theChild">
+      <groovy:class>org.drools.examples.familytree.Person</groovy:class>
+    </parameter>
+    <groovy:condition>theParent.hasChild(theChild);</groovy:condition>
+    <groovy:consequence>
+      theTree = [theChild : theParent]; 
+      drools.assertObject (theTree);
+    </groovy:consequence>
+  </rule>
+
+  <!-- ================================================================== -->
+  <rule name="Message Blab" salience="20">
+    <parameter identifier="message">
+      <groovy:class>java.lang.String</groovy:class>
+    </parameter>
+    <groovy:condition>
+      message.startsWith( "Relationship:" );
+    </groovy:condition>
+    <groovy:consequence>
+      println message ;
+    </groovy:consequence>
+  </rule>
+
+  <!-- ================================================================== -->
+  <rule name="Build the family tree" salience="20">
+    <parameter identifier="value">
+      <groovy:class>java.util.Map</groovy:class>
+    </parameter>
+    <groovy:condition>true</groovy:condition>
+    <groovy:consequence>
+      import java.util.HashSet;
+      import java.util.Set;
+
+      map = org.drools.examples.familytree.FamilyTree.tree;
+      Object descendent = value.keySet().toArray()[0];
+      Object parent = value.values().toArray()[0];
+
+      Set s = (Set)map.get( descendent );
+      if ( s == null )
+      {
+          s = new HashSet();
+          map.put( descendent, s );
+      }
+      s.add( parent );
+      if ( map.get( parent ) != null )
+      {
+          s.addAll ( (Set)map.get( parent ) );
+      }
+      println "";
+      println map ;
+      println "";
+    </groovy:consequence>
+  </rule>
+
+</rule-set>
+

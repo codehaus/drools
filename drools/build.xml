@@ -59,10 +59,14 @@
         <echo level="info" message="    ant examples"/>
         <echo level="info" message=" "/>
         <echo level="info" message="You can run the examples individually with the commands:"/>
-        <echo level="info" message="    ant example-familytree"/>
-        <echo level="info" message="    ant example-fibonacci"/>
-        <echo level="info" message="    ant example-state"/>
-        <echo level="info" message="    ant example-petstore"/>
+        <echo level="info" message="    ant example-familytree-java"/>
+        <echo level="info" message="    ant example-familytree-groovy"/>
+        <echo level="info" message="    ant example-fibonacci-java"/>
+        <echo level="info" message="    ant example-fibonacci-groovy"/>
+        <echo level="info" message="    ant example-state-java"/>
+        <echo level="info" message="    ant example-state-groovy"/>
+        <echo level="info" message="    ant example-petstore-java"/>
+        <echo level="info" message="    ant example-petstore-groovy"/>
 
         <antcall target="usage.clover">
             <param name="clover.enable" value="true"/>
@@ -92,7 +96,7 @@
         <echo level="warning" message=" "/>
         <echo level="warning" message="You do not appear to have Ant configured to use Clover."/>
         <echo level="warning" message="If you see Ant errors about Clover, try downloading the Clover JAR"/>
-	<echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
+        <echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
         <echo level="warning" message=" "/>
         <echo level="warning" message="    http://www.ibiblio.org/maven/clover/jars/${clover.jar}"/>
         <echo level="warning" message=" "/>
@@ -109,7 +113,7 @@
         <echo level="warning" message=" "/>
         <echo level="warning" message="You do not appear to have Ant configured to use ANTLR."/>
         <echo level="warning" message="If you see Ant errors about ANTLR, try downloading the ANTLR JAR"/>
-	<echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
+        <echo level="warning" message="  file from the ibiblio Maven JAR Repository at:"/>
         <echo level="warning" message=" "/>
         <echo level="warning" message="    http://www.ibiblio.org/maven/antlr/jars/${antlr.jar}"/>
         <echo level="warning" message=" "/>
@@ -149,6 +153,8 @@
     <property name="bsh.jar" value="bsh-2.0b1.jar"/>
     <property name="clover.jar" value="clover-1.2.3.jar"/>
     <property name="groovy.jar" value="groovy-1.0-rc1-snapshot.jar"/>
+    <property name="asm.jar" value="asm-1.4.1.jar"/>
+    <property name="asm-util.jar" value="asm-util-1.4.1.jar"/>
     <property name="jca.jar" value="jca-1.0.jar"/>
     <property name="jsr94.jar" value="jsr94-1.0.jar"/>
 
@@ -192,12 +198,12 @@
             src="http://www.ibiblio.org/maven/bsh/jars/${bsh.jar}"/>
         <get dest="${lib.dir}/${clover.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/clover/jars/${clover.jar}"/>
-
         <get dest="${lib.dir}/${groovy.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/groovy/jars/${groovy.jar}"/>
-        <!-- This JAR can also be found in the Codehaus repository.
-        <get dest="${lib.dir}/${groovy.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="http://dist.codehaus.org/groovy/jars/${groovy.jar}"/> -->
+        <get dest="${lib.dir}/${asm.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/asm/jars/${asm.jar}"/>
+        <get dest="${lib.dir}/${asm-util.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/asm/jars/${asm-util.jar}"/>
 
         <!-- Local JARs not found at ibiblio -->
         <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
@@ -343,74 +349,122 @@
     <!-- ===========vvvv========== Example Tasks ===========vvvv=========== -->
     <!-- ================================================================== -->
 
-    <target name="examples" depends="example-familytree,example-fibonacci,example-state,example-petstore"
+    <target name="examples" depends="example-familytree-java,example-familytree-groovy,example-fibonacci-java,example-fibonacci-groovy,example-state-java,example-state-groovy,example-petstore-java,example-petstore-groovy"
             description="Run all examples."/>
 
-    <target name="example-familytree" depends="compile,copy-resources"
+    <target name="example-familytree-java" depends="compile,copy-resources"
             description="Run the FamilyTree example.">
-        <java classname="org.drools.examples.java.familytree.FamilyTree" fork="true">
+        <java classname="org.drools.examples.familytree.FamilyTree" fork="true">
+            <arg value="familytree.java.drl"/>
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
-            <classpath path="${meta-inf-groovy.dir}"/>
-            <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${bsh.jar}"/>
-            <classpath location="${lib.dir}/${jsr94.jar}"/>
-            <classpath location="${lib.dir}/${xerces.jar}"/>
-            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
-    <target name="example-fibonacci" depends="compile,copy-resources"
+    <target name="example-familytree-groovy" depends="compile,copy-resources"
+            description="Run the FamilyTree example.">
+        <java classname="org.drools.examples.familytree.FamilyTree" fork="true">
+            <arg value="familytree.groovy.drl"/>
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${groovy.jar}"/>
+            <classpath location="${lib.dir}/${asm.jar}"/>
+            <classpath location="${lib.dir}/${asm-util.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-fibonacci-java" depends="compile,copy-resources"
             description="Run the Fibonacci example.">
-        <java classname="org.drools.examples.java.fibonacci.FibonacciExample" fork="true">
+        <java classname="org.drools.examples.fibonacci.FibonacciExample" fork="true">
+            <arg value="fibonacci.java.drl"/>
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
-            <classpath path="${meta-inf-groovy.dir}"/>
-            <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${bsh.jar}"/>
-            <classpath location="${lib.dir}/${jsr94.jar}"/>
-            <classpath location="${lib.dir}/${xerces.jar}"/>
-            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
-    <target name="example-state" depends="compile,copy-resources"
+    <target name="example-fibonacci-groovy" depends="compile,copy-resources"
+            description="Run the Fibonacci example.">
+        <java classname="org.drools.examples.fibonacci.FibonacciExample" fork="true">
+            <arg value="fibonacci.groovy.drl"/>
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${groovy.jar}"/>
+            <classpath location="${lib.dir}/${asm.jar}"/>
+            <classpath location="${lib.dir}/${asm-util.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-state-java" depends="compile,copy-resources"
             description="Run the State example.">
-	<java classname="org.drools.examples.java.state.StateExample" fork="true">
+        <java classname="org.drools.examples.state.StateExample" fork="true">
+            <arg value="state.java.drl"/>
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
-            <classpath path="${meta-inf-groovy.dir}"/>
-            <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${bsh.jar}"/>
-            <classpath location="${lib.dir}/${jsr94.jar}"/>
-            <classpath location="${lib.dir}/${xerces.jar}"/>
-            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
-    <target name="example-petstore" depends="compile,copy-resources"
+    <target name="example-state-groovy" depends="compile,copy-resources"
+            description="Run the State example.">
+        <java classname="org.drools.examples.state.StateExample" fork="true">
+            <arg value="state.groovy.drl"/>
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${groovy.jar}"/>
+            <classpath location="${lib.dir}/${asm.jar}"/>
+            <classpath location="${lib.dir}/${asm-util.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-petstore-java" depends="compile,copy-resources"
             description="Run the Pet Store example.">
-        <java classname="org.drools.examples.java.petstore.PetStore" fork="true">
+        <java classname="org.drools.examples.petstore.PetStore" fork="true">
+            <arg value="petstore.java.drl"/>
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
-            <classpath path="${meta-inf-groovy.dir}"/>
-            <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${bsh.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-petstore-groovy" depends="compile,copy-resources"
+            description="Run the Pet Store example.">
+        <java classname="org.drools.examples.petstore.PetStore" fork="true">
+            <arg value="petstore.groovy.drl"/>
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
-            <classpath location="${lib.dir}/${xerces.jar}"/>
-            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+            <classpath location="${lib.dir}/${groovy.jar}"/>
+            <classpath location="${lib.dir}/${asm.jar}"/>
+            <classpath location="${lib.dir}/${asm-util.jar}"/>
         </java>
     </target>
 

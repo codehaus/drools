@@ -1,7 +1,7 @@
-package org.drools.examples.java.fibonacci;
+package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciSerializedExample.java,v 1.1 2004-07-04 16:48:42 mproctor Exp $
+$Id: FibonacciJNDIExample.java,v 1.1 2004-07-07 04:45:21 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -47,55 +47,39 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import org.drools.RuleBase;
-import org.drools.reteoo.Dumper;
-import org.drools.rule.RuleSet;
-import org.drools.rule.Rule;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseBuilder;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectInputStream;
-import java.io.ObjectInput;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
-public class FibonacciSerializedExample
+public class FibonacciJNDIExample
 {
-    private static RuleBase getSerializedRuleBase(String drl)
+    private static void initJNDI(String[] args)
         throws Exception
     {
-        RuleBase ruleBaseIn = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( drl ) );
+        System.setProperty("java.naming.factory.initial", args[0]);
 
-        // Serialize to a byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
-        ObjectOutput out = new ObjectOutputStream(bos) ;
-        out.writeObject(ruleBaseIn);
-        out.close();
+        System.setProperty("org.osjava.jndi.shared", "true");
 
-        // Get the bytes of the serialized object
-        byte[] bytes = bos.toByteArray();
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciJNDIExample.class.getResource( "fibonacci.java.drl" ) );
 
-        // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
-        RuleBase ruleBaseOut = (RuleBase) in.readObject();
-        in.close();
-        return ruleBaseOut;
+        Context context =  new InitialContext();
+        context.bind("fibonacci", ruleBase);
     }
 
     public static void main(String[] args)
         throws Exception
     {
-        RuleBase ruleBase = getSerializedRuleBase("fibonacci.drl");
+        initJNDI(args);
+
+        Context context =  new InitialContext();
+
+        RuleBase ruleBase = (RuleBase) context.lookup("fibonacci");
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-        Fibonacci fibonacci = new Fibonacci( 50 );
+        org.drools.examples.fibonacci.Fibonacci fibonacci = new Fibonacci( 50 );
 
         long start = System.currentTimeMillis();
 
@@ -107,4 +91,6 @@ public class FibonacciSerializedExample
 
         System.out.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
     }
+
+
 }

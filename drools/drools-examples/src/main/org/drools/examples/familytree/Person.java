@@ -1,7 +1,7 @@
-package org.drools.examples.java.familytree;
+package org.drools.examples.familytree;
 
 /*
-$Id: Person.java,v 1.2 2004-06-26 15:45:16 mproctor Exp $
+$Id: Person.java,v 1.1 2004-07-07 04:45:21 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 

@@ -6,14 +6,14 @@
 
     <rule name="Bootstrap">
         <parameter identifier="a">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
 
         <java:condition>a.getName().equals("A")</java:condition>
         <java:condition>a.getState().equals("NOTRUN")</java:condition>
 
         <java:consequence>
-            System.err.println(a.getName() + " finished" );
+            System.out.println(a.getName() + " finished" );
             a.setState("FINISHED");
             drools.modifyObject(a);
         </java:consequence>
@@ -21,10 +21,10 @@
 
     <rule name="AtoB" salience="30">
         <parameter identifier="a">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
         <parameter identifier="b">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
 
         <java:condition>a.getName().equals("A")</java:condition>
@@ -33,7 +33,7 @@
         <java:condition>b.getState().equals("NOTRUN")</java:condition>
 
         <java:consequence>
-            System.err.println(b.getName() + " finished" );
+            System.out.println(b.getName() + " finished" );
             b.setState("FINISHED");
             drools.modifyObject(b);
         </java:consequence>
@@ -41,10 +41,10 @@
 
     <rule name="BtoC" salience="20">
         <parameter identifier="b">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
         <parameter identifier="c">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
 
         <java:condition>b.getName().equals("B")</java:condition>
@@ -53,7 +53,7 @@
         <java:condition>c.getState().equals("NOTRUN")</java:condition>
 
         <java:consequence>
-            System.err.println(c.getName() + " finished" );
+            System.out.println(c.getName() + " finished" );
             c.setState("FINISHED");
             drools.modifyObject(c);
         </java:consequence>
@@ -63,10 +63,10 @@
 
     <rule name="BtoD" salience="10">
         <parameter identifier="b">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
         <parameter identifier="d">
-            <java:class>org.drools.examples.java.state.State</java:class>
+            <java:class>org.drools.examples.state.State</java:class>
         </parameter>
 
         <java:condition>b.getName().equals("B")</java:condition>
@@ -75,7 +75,7 @@
         <java:condition>d.getState().equals("NOTRUN")</java:condition>
 
         <java:consequence>
-            System.err.println(d.getName() + " finished" );
+            System.out.println(d.getName() + " finished" );
             d.setState("FINISHED");
             drools.modifyObject(d);
         </java:consequence>

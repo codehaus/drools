@@ -1,7 +1,7 @@
-package org.drools.examples.java.fibonacci;
+package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciExample.java,v 1.2 2004-06-26 15:45:16 mproctor Exp $
+$Id: Fibonacci.java,v 1.4 2004-07-07 04:45:21 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,31 +46,34 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-import org.drools.RuleBase;
-import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseBuilder;
-
-
-public class FibonacciExample
+public class Fibonacci
 {
-    public static void main(String[] args)
-        throws Exception
+    private int sequence;
+    private long value;
+
+    public Fibonacci(int sequence)
     {
-        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( "fibonacci.drl" ) );
+        this.sequence = sequence;
+        this.value    = -1;
+    }
 
-        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+    public int getSequence()
+    {
+        return this.sequence;
+    }
 
-        Fibonacci fibonacci = new Fibonacci( 50 );
+    public void setValue(long value)
+    {
+        this.value = value;
+    }
 
-        long start = System.currentTimeMillis();
+    public long getValue()
+    {
+        return this.value;
+    }
 
-        workingMemory.assertObject( fibonacci );
-
-
-        workingMemory.fireAllRules();
-
-        long stop = System.currentTimeMillis();
-
-        System.err.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
+    public String toString()
+    {
+        return "Fibonacci(" + this.sequence + "/" + this.value + ")";
     }
 }

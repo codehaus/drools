@@ -1,7 +1,6 @@
-package org.drools.examples.java.state;
+package org.drools.examples.state;
 
-import java.util.Set;
-import java.util.HashSet;
+
 
 public class State
 {

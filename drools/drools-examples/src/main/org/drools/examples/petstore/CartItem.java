@@ -1,7 +1,7 @@
-package org.drools.examples.java.petstore;
+package org.drools.examples.petstore;
 
 /*
- * $Id: PetStore.java,v 1.2 2004-06-26 15:45:16 mproctor Exp $
+ * $Id: CartItem.java,v 1.1 2004-07-07 04:45:22 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,36 +40,30 @@ package org.drools.examples.java.petstore;
  *  
  */
 
-import java.net.URL;
-import java.util.Vector;
-
-import org.drools.RuleBase;
-import org.drools.io.RuleBaseBuilder;
-
-public class PetStore
+public class CartItem
 {
-	public static void main( String[] args )
+	private String name;
+	private double cost;
+
+	public CartItem( String name, double cost )
 	{
-		try
-		{
-			URL url = PetStore.class.getResource( "petstore.drl" );
-			RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
+		this.name = name;
+		this.cost = cost;
+	}
 
-			Vector stock = new Vector( );
-			stock.add( new CartItem( "Gold Fish", 5 ) );
-			stock.add( new CartItem( "Fish Tank", 25 ) );
-			stock.add( new CartItem( "Fish Food", 2 ) );
+	public String getName()
+	{
+		return this.name;
+	}
 
-			//The callback is responsible for populating working memory and
-			// fireing all rules
-			PetStoreUI ui = new PetStoreUI( stock, new CheckoutCallback(
-					ruleBase ) );
-			ui.createAndShowGUI( );
-		}
-		catch ( Exception e )
-		{
-			e.printStackTrace( );
-		}
+	public double getCost()
+	{
+		return this.cost;
+	}
+
+	public String toString()
+	{
+		return name + " " + this.cost;
 	}
 
 }
