@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.25 2004-12-07 14:52:00 simon Exp $
+ * $Id: Interp.java,v 1.26 2004-12-07 15:44:36 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *

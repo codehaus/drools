@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprCondition.java,v 1.11 2004-11-29 12:35:52 simon Exp $
+ * $Id: ExprCondition.java,v 1.12 2004-12-07 15:44:36 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -108,5 +108,27 @@ public class ExprCondition extends Eval implements Condition
                                           getRule( ),
                                           getText( ) );
         }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    public int hashCode()
+    {
+        return this.getText( ).hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object == null || getClass( ) != object.getClass( ) )
+        {
+            return false;
+        }
+
+        return this.getText().equals( ( ( Interp ) object ).getText( ) );
     }
 }
