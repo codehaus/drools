@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.23 2004-10-08 16:30:07 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.24 2004-10-20 12:51:00 bob Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * Implementation of <code>WorkingMemory</code>.
@@ -61,7 +62,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.23 2004-10-08 16:30:07 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.24 2004-10-20 12:51:00 bob Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -349,6 +350,24 @@ class WorkingMemoryImpl implements WorkingMemory
     public List getObjects()
     {
         return new ArrayList( this.objects.values( ) );
+    }
+
+    public List getObjects(Class objectClass)
+    {
+        List matching = new ArrayList();
+
+        for ( Iterator objIter = this.objects.values().iterator();
+              objIter.hasNext(); )
+        {
+            Object obj = objIter.next();
+
+            if ( objectClass.isInstance( obj ) )
+            {
+                matching.add( obj );
+            }
+        }
+
+        return matching;
     }
 
     /**

@@ -38,4 +38,19 @@ public class KnowledgeHelper
         this.tuple.getWorkingMemory( ).retractObject( handle );
     }
 
+    public String getRuleName()
+    {
+        return this.tuple.getRule().getName();
+    }
+
+    public Object getObjects()
+    {
+        return this.tuple.getWorkingMemory().getObjects();
+    }
+
+    public Object getObjects(Class objectClass)
+    {
+        return this.tuple.getWorkingMemory().getObjects( objectClass );
+    }
+
 }

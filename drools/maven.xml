@@ -185,6 +185,20 @@
       </ant:delete>
     </goal>
 
+    <goal name="drools:deploy" prereqs="drools:dist-javadoc">
+      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-javadoc-${pom.currentVersion}.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-javadoc-${pom.currentVersion}.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+
+    <exec dir="." executable="${maven.ssh.executable}">
+      <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-javadoc-${pom.currentVersion}.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
+    </exec>
+-->
+    </goal>
+
 		<!--
 			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 		-->
@@ -193,8 +207,19 @@
       <ant:mkdir dir="${basedir}/target/dist/"/>
     </goal>
 
-    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src,drools:jar-all">
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src,drools:jar-all">
       <!-- intentionally left blank -->
+    </goal>
+
+    <goal name="drools:dist-javadoc" prereqs="drools:dist-prepare,javadoc-all">
+        <zip destfile="${basedir}/target/drools-javadoc-${pom.currentVersion}.zip" compression="gzip">
+            <zipfileset dir="${basedir}/target/docs/apidocs"
+                        prefix="drools-${pom.currentVersion}/apidocs"/>
+        </zip>
+        <tar destfile="${basedir}/target/drools-javadoc-${pom.currentVersion}.tar.gz" compression="gzip">
+            <tarfileset dir="${basedir}/target/docs/apidocs"
+                        prefix="drools-${pom.currentVersion}/apidocs"/>
+        </tar>
     </goal>
 
     <goal name="drools:dist-bin" prereqs="drools:dist-prepare,javadoc-all">

@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark.drools;
 
 /*
- * $Id: DroolsBenchmarkTestCase.java,v 1.5 2004-09-17 00:29:43 mproctor Exp $
+ * $Id: DroolsBenchmarkTestCase.java,v 1.6 2004-10-20 12:51:01 bob Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -82,22 +82,22 @@ public class DroolsBenchmarkTestCase extends BenchmarkTestBase
 
         // obtain the RuleServiceProvider
         RuleServiceProviderManager
-                                  .registerRuleServiceProvider(
-                                                                RULE_SERVICE_PROVIDER,
-                                                                org.drools.jsr94.rules.RuleServiceProviderImpl.class );
+            .registerRuleServiceProvider(
+                                      RULE_SERVICE_PROVIDER,
+                                      org.drools.jsr94.rules.RuleServiceProviderImpl.class );
         ruleServiceProvider = RuleServiceProviderManager
-                                                        .getRuleServiceProvider( RULE_SERVICE_PROVIDER );
+            .getRuleServiceProvider( RULE_SERVICE_PROVIDER );
         ruleAdministrator = ruleServiceProvider.getRuleAdministrator( );
-
+        
         // load the rules and register them
         LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator
-                                                                         .getLocalRuleExecutionSetProvider( null );
+            .getLocalRuleExecutionSetProvider( null );
         InputStream rules = DroolsBenchmarkTestCase.class
-                                                         .getResourceAsStream( RULE_URI );
+            .getResourceAsStream( RULE_URI );
         RuleExecutionSet ruleExecutionSet = ruleSetProvider
-                                                           .createRuleExecutionSet(
-                                                                                    rules,
-                                                                                    null );
+            .createRuleExecutionSet(
+                rules,
+                null );
         ruleAdministrator.registerRuleExecutionSet( RULE_URI, ruleExecutionSet,
                                                     null );
 
