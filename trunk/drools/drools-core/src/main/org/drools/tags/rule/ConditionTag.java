@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConditionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: ConditionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.tags.rule;
  */
 
 import org.drools.spi.Condition;
+import org.drools.rule.Rule;
 
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
@@ -57,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConditionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: ConditionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
  */
 public class ConditionTag extends RuleTagSupport
 {
@@ -67,6 +68,8 @@ public class ConditionTag extends RuleTagSupport
 
     /** The condition.*/
     private Condition condition;
+
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -101,6 +104,16 @@ public class ConditionTag extends RuleTagSupport
         return this.condition;
     }
 
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -114,11 +127,26 @@ public class ConditionTag extends RuleTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        invokeBody( output );
+        Rule rule = getRule();
 
+        if ( rule == null )
+        {
+            throw new JellyException( "No rule available" );
+        }
+
+        invokeBody( output );
+        
         if ( this.condition == null )
         {
             throw new JellyException( "Condition expected" );
         }
+
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      this.condition );
+        }
+
+        rule.addCondition( this.condition );
     }
 }

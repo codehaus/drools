@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.3 2002-08-19 18:05:10 bob Exp $
+ $Id: RuleTagSupport.java,v 1.4 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.tags.rule;
  
  */
 
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
@@ -57,7 +58,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.3 2002-08-19 18:05:10 bob Exp $
+ *  @version $Id: RuleTagSupport.java,v 1.4 2002-08-19 21:00:13 bob Exp $
  */
 public abstract class RuleTagSupport extends TagSupport
 {
@@ -69,7 +70,7 @@ public abstract class RuleTagSupport extends TagSupport
      */
     protected RuleTagSupport()
     {
-        // intentionally left blank
+        super( true );
     }
 
     // ------------------------------------------------------------
@@ -96,19 +97,45 @@ public abstract class RuleTagSupport extends TagSupport
     /** Retrieve the current <code>Rule<code>.
      *
      *  @return The current rule.
-     *
-     *  @throws JellyException If no rule can be found.
      */
-    protected Rule getRule() throws JellyException
+    protected Rule getRule() 
     {
         RuleTag ruleTag = (RuleTag) findAncestorWithClass( RuleTag.class );
 
         if ( ruleTag == null )
         {
-            throw new JellyException( "No rule available" );
+            return null;
         }
 
         return ruleTag.getRule();
+    }
+
+    /** Retrieve the array of available <code>Declaration</code>s.
+     *
+     *  @return The array of declarations.
+     * 
+     *  @throws JellyException If no declarations are currently
+     *          available in scope.
+     */
+    protected Declaration[] getAvailableDeclarations() throws JellyException
+    {
+        Rule rule = getRule();
+
+        if ( rule == null )
+        {
+            throw new JellyException( "No rule available" );
+        }
+
+        System.err.println( "decl-array start for " + rule );
+        Declaration[] decls = rule.getDeclarationsArray();
+        
+        for ( int i = 0 ; i < decls.length ; ++i )
+        {
+            System.err.println( "decl: " + decls[i] );
+        }
+        System.err.println( "decl-array stop" );
+
+        return decls;
     }
 
     /** Check required attribute.

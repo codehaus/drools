@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.10 2002-08-19 00:31:42 bob Exp $
+ $Id: Rule.java,v 1.11 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.10 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: Rule.java,v 1.11 2002-08-19 21:00:13 bob Exp $
  */
 public class Rule
 {
@@ -268,6 +268,26 @@ public class Rule
         localDecls.removeAll( this.parameterDeclarations );
 
         return localDecls;
+    }
+
+    /** Retrieve the array of all <code>Declaration</code>s of
+     *  this rule.
+     *
+     *  @return The array of declarations.
+     */
+    public Declaration[] getDeclarationsArray()
+    {
+        Declaration[] decls = new Declaration[ this.allDeclarations.size() ];
+
+        int i = 0;
+        Iterator declIter = this.allDeclarations.iterator();
+
+        while ( declIter.hasNext() )
+        {
+            decls[ i++ ] = (Declaration) declIter.next();
+        }
+
+        return decls;
     }
 
     /** Add a <code>Condition</code> to this rule.
