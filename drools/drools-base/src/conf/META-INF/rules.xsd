@@ -25,7 +25,7 @@
     <xs:complexType>
       <xs:sequence>
 
-        <xs:element name="parameter" maxOccurs="unbounded" >
+        <xs:element name="parameter" minOccurs="0" maxOccurs="unbounded" >
           <xs:complexType>
             <xs:choice>
               <xs:element ref="rules:abstractClass" />

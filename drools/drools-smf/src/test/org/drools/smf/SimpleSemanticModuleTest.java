@@ -148,7 +148,7 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
         ConditionFactory
     {
 
-        public Condition newCondition(Rule rule,
+        public Condition[] newCondition(Rule rule,
                                       RuleBaseContext context,
                                       Configuration c)
         {

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: Configuration.java,v 1.4 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: Configuration.java,v 1.5 2005-01-23 18:16:20 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -52,7 +52,7 @@ package org.drools.smf;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Configuration.java,v 1.4 2004-11-03 22:54:36 mproctor Exp $
+ * @version $Id: Configuration.java,v 1.5 2005-01-23 18:16:20 mproctor Exp $
  */
 public interface Configuration
 {
@@ -62,7 +62,7 @@ public interface Configuration
 
     /** Empty <code>Configuration</code> array. */
     Configuration[] EMPTY_ARRAY = new Configuration[0];
-
+    
     // ----------------------------------------------------------------------
     //     Interface
     // ----------------------------------------------------------------------

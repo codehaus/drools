@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConditionHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: ConditionHandler.java,v 1.4 2005-01-23 18:16:19 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,6 +75,7 @@ class ConditionHandler extends BaseAbstractHandler
             this.validPeers = new HashSet( );
             this.validPeers.add( Declaration.class );
             this.validPeers.add( Condition.class );
+            this.validPeers.add( null );
 
             this.allowNesting = false;
         }
@@ -97,15 +98,18 @@ class ConditionHandler extends BaseAbstractHandler
                                                                          localName );
 
         ConditionFactory factory = module.getConditionFactory( localName );
-        Condition condition;
+        Condition[] conditions;
         try
         {
             Rule rule = (Rule) this.ruleSetReader.getParent( Rule.class );
-            condition = factory.newCondition( rule,
+            conditions = factory.newCondition( rule,
                                               this.ruleSetReader.getFactoryContext( ),
                                               config );
 
-            rule.addCondition( condition );
+            for (int i = 0; i < conditions.length; i++)
+            {
+                rule.addCondition( conditions[i] );
+            }
         }
         catch ( FactoryException e )
         {
@@ -113,7 +117,7 @@ class ConditionHandler extends BaseAbstractHandler
                                          this.ruleSetReader.getLocator( ),
                                          e );
         }
-        return condition;
+        return conditions[conditions.length-1];
     }
 
     public Class generateNodeFor()

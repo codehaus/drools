@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
-* $Id: PythonConditionFactory.java,v 1.3 2004-12-14 21:00:29 mproctor Exp $
+* $Id: PythonConditionFactory.java,v 1.4 2005-01-23 18:16:20 mproctor Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -59,14 +59,14 @@ public class PythonConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition( Rule rule,
+    public Condition[] newCondition( Rule rule,
                                    RuleBaseContext context,
                                    Configuration config ) throws FactoryException
     {
         try
         {
-            return new PythonCondition( config.getText( ),
-                                        rule );
+            return new Condition[] {new PythonCondition( config.getText( ),
+                                                         rule ) };
         }
         catch ( Exception e )
         {

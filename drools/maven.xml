@@ -476,9 +476,9 @@
       <j:set var="goal" value="clean:clean"/>
       <attainGoal name="drools-jdk5-maven"/>
     </preGoal>
-     
-    <!-- TODO Can ydoc handle java5? --> 
-     
+
+    <!-- TODO Can ydoc handle java5? -->
+
     <goal name="drools-jdk5-maven">
       <j:choose>
         <j:when test="${context.getVariable('drools.jdk5.home') == null}">

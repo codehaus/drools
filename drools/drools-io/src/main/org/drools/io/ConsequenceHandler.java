@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConsequenceHandler.java,v 1.4 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: ConsequenceHandler.java,v 1.5 2005-01-23 18:16:19 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -90,7 +90,7 @@ class ConsequenceHandler extends BaseAbstractHandler implements Handler
     {
         Configuration config = this.ruleSetReader.endConfiguration( );
         SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
-                                                                    localName );
+                                                                         localName );
 
         ConsequenceFactory factory = module.getConsequenceFactory( localName );
         Consequence consequence;
