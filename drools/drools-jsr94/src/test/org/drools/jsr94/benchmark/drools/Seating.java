@@ -1,32 +1,32 @@
 package org.drools.jsr94.benchmark.drools;
 
 /*
- * $Id: Seating.java,v 1.2 2004-09-17 00:29:43 mproctor Exp $
- * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ * $Id: Seating.java,v 1.3 2004-11-17 03:09:46 dbarnett Exp $
+ *
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,7 +38,7 @@ package org.drools.jsr94.benchmark.drools;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import java.util.ArrayList;
@@ -48,73 +48,74 @@ import org.drools.jsr94.benchmark.Guest;
 
 public class Seating
 {
-
-    private int   seat1, seat2;
+    private int seat1, seat2;
 
     private Guest guest1, guest2;
 
-    private List  tabooList = new ArrayList( );
+    private List tabooList = new ArrayList( );
 
     private Seating prevSeat, nextSeat;
 
-    public Seating(int seat1, Guest guest1, Seating prevSeat)
+    public Seating( int seat1, Guest guest1, Seating prevSeat )
     {
         this.seat1 = seat1;
         this.guest1 = guest1;
         this.prevSeat = prevSeat;
         this.seat2 = seat1 + 1;
 
-        if ( prevSeat != null ) tabooList.addAll( prevSeat.tabooList );
+        if ( prevSeat != null ) {
+            tabooList.addAll( prevSeat.tabooList );
+        }
 
         tabooList.add( guest1 );
     }
 
-    public int getSeat1()
+    public int getSeat1( )
     {
         return seat1;
     }
 
-    public int getSeat2()
+    public int getSeat2( )
     {
         return seat2;
     }
 
-    public Guest getGuest1()
+    public Guest getGuest1( )
     {
         return guest1;
     }
 
-    public Guest getGuest2()
+    public Guest getGuest2( )
     {
         return guest2;
     }
 
-    public void setGuest2(Guest guest2)
+    public void setGuest2( Guest guest2 )
     {
         this.guest2 = guest2;
     }
 
-    public Seating getPrevSeat()
+    public Seating getPrevSeat( )
     {
         return prevSeat;
     }
 
-    public Seating getNextSeat()
+    public Seating getNextSeat( )
     {
         return nextSeat;
     }
 
-    public void setNextSeat(Seating nextSeat)
+    public void setNextSeat( Seating nextSeat )
     {
         this.nextSeat = nextSeat;
     }
 
-    public List getTabooList()
+    public List getTabooList( )
     {
         return tabooList;
     }
 
-    public String toString()
+    public String toString( )
     {
         return "{seat1=" + seat1 + ",guest1=" + guest1 + ",seat2=" + seat2
                + ",guest2=" + guest2 + "}";
