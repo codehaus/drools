@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.19 2004-12-04 04:33:58 dbarnett Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.20 2004-12-04 14:08:54 simon Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,21 +41,21 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.rules.ObjectFilter;
-import javax.rules.admin.RuleExecutionSet;
-
 import org.drools.RuleBase;
+import org.drools.RuleBaseBuilder;
 import org.drools.RuleIntegrationException;
 import org.drools.RuleSetIntegrationException;
 import org.drools.WorkingMemory;
 import org.drools.jsr94.rules.Jsr94FactHandleFactory;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
+
+import javax.rules.ObjectFilter;
+import javax.rules.admin.RuleExecutionSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Drools implementation of the <code>RuleExecutionSet</code> interface
@@ -127,7 +127,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         this.ruleSet = ruleSet;
         this.description = ruleSet.getDocumentation( );
 
-        org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder( );
+        RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setFactHandleFactory( Jsr94FactHandleFactory.getInstance( ) );
         try
         {
@@ -141,7 +141,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         catch ( RuleSetIntegrationException e )
         {
             e.printStackTrace( );
-        }        
+        }
     }
 
     /**
@@ -155,16 +155,16 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         {
             return this.objectFilter;
         }
-        
+
         if ( this.defaultObjectFilterClassName != null )
         {
             ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-    
+
             if ( cl == null )
             {
                 cl = RuleExecutionSetImpl.class.getClassLoader( );
             }
-    
+
             try
             {
                 Class filterClass =

@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldExample.java,v 1.4 2004-11-23 22:04:16 dbarnett Exp $
+ * $Id: HelloWorldExample.java,v 1.5 2004-12-04 14:08:54 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,7 +43,7 @@ package org.drools.examples.helloworld;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.event.DebugWorkingMemoryEventListener;
-import org.drools.io.RuleBaseBuilder;
+import org.drools.io.RuleBaseFactory;
 import org.drools.reteoo.Dumper;
 
 public class HelloWorldExample
@@ -58,7 +58,7 @@ public class HelloWorldExample
         }
         System.out.println( "Using drl: " + args[0] );
 
-        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl(
+        RuleBase ruleBase = RuleBaseFactory.createFromUrl(
             HelloWorldExample.class.getResource( args[0] ) );
 
         System.out.println( "DUMP RETE" );

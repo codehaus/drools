@@ -1,13 +1,13 @@
 package org.drools.examples.escalation;
 
-import java.io.IOException;
-import java.net.URL;
-
 import org.drools.AssertionException;
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseBuilder;
+import org.drools.io.RuleBaseFactory;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class Escalation
 {
@@ -23,7 +23,7 @@ public class Escalation
         try
         {
             URL url = Escalation.class.getResource( args[0] );
-            RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
+            RuleBase ruleBase = RuleBaseFactory.createFromUrl( url );
 
             WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 

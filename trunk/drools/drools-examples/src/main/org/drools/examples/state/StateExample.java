@@ -1,7 +1,7 @@
 package org.drools.examples.state;
 
 /*
- * $Id: StateExample.java,v 1.3 2004-11-26 03:23:21 dbarnett Exp $
+ * $Id: StateExample.java,v 1.4 2004-12-04 14:08:54 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,11 @@ package org.drools.examples.state;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.net.URL;
-
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseBuilder;
+import org.drools.io.RuleBaseFactory;
+
+import java.net.URL;
 
 public class StateExample
 {
@@ -59,7 +59,7 @@ public class StateExample
         System.out.println( "Using drl: " + args[0] );
 
         URL url = StateExample.class.getResource( args[0] );
-        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
+        RuleBase ruleBase = RuleBaseFactory.createFromUrl( url );
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 
