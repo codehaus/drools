@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.33 2004-11-17 15:06:23 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.34 2004-11-17 15:09:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.33 2004-11-17 15:06:23 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.34 2004-11-17 15:09:12 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -685,6 +685,15 @@ public class RuleSetReader extends DefaultHandler
         catch (Exception e)
         {
         }
+
+        //Try looking in /META-INF
+        try
+        {
+            return new InputSource(cl.getResourceAsStream("/META-INF/" + xsd));
+        }
+        catch (Exception e)
+        {
+        }        
 
         //Try looking at root of classpath
         try
