@@ -3,14 +3,15 @@ package org.drools.semantics.annotation.model;
 import junit.framework.TestCase;
 
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.model.KnowledgeHelperArgumentSource;
+import org.drools.semantics.annotation.model.KnowledgeHelperArgument;
 import org.drools.spi.DefaultKnowledgeHelper;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
 
-public class KnowledgeHelperArgumentSourceTest extends TestCase {
+public class KnowledgeHelperArgumentTest extends TestCase {
+    
     private EasymockContainer mocks = new EasymockContainer();
 
     private Mock<Rule> mockRule = mocks.createMock(Rule.class);
@@ -18,7 +19,7 @@ public class KnowledgeHelperArgumentSourceTest extends TestCase {
 
     public void testConstructionNullRule() {
         try {
-            KnowledgeHelperArgumentSource arg = new KnowledgeHelperArgumentSource(null);
+            KnowledgeHelperArgument arg = new KnowledgeHelperArgument(null);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -26,7 +27,7 @@ public class KnowledgeHelperArgumentSourceTest extends TestCase {
     }
 
     public void testGetValue() {
-        KnowledgeHelperArgumentSource arg = new KnowledgeHelperArgumentSource(mockRule.object);
+        KnowledgeHelperArgument arg = new KnowledgeHelperArgument(mockRule.object);
         mocks.replay();
 
         KnowledgeHelper drools = arg.getValue(mockTuple.object);

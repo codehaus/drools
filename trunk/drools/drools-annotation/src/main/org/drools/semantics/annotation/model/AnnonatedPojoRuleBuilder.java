@@ -3,17 +3,15 @@ package org.drools.semantics.annotation.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.drools.DroolsException;
 import org.drools.rule.Rule;
 import org.drools.semantics.annotation.Condition;
 import org.drools.semantics.annotation.Consequence;
 
-public class AnnonatedPojoRuleBuilder
-{
+public class AnnonatedPojoRuleBuilder {
+
     public static final class InvalidReturnTypeException extends DroolsException {
         InvalidReturnTypeException(String message) {
             super(message);
@@ -24,9 +22,6 @@ public class AnnonatedPojoRuleBuilder
         InvalidParameterException(String message) {
             super(message);
         }
-        InvalidParameterException(String message, Throwable t) {
-            super(message, t);
-        }
     }
 
     public static final class MissingConsequenceMethodException extends DroolsException {
@@ -35,164 +30,147 @@ public class AnnonatedPojoRuleBuilder
         }
     }
 
-    //---- ---- ----
+    // ---- ---- ----
 
-    // TODO Extract the parameter factory registy to its own abstraction.
-    // Or maybe just take extensions in the builder instance :)
-    private static final Set<ArgumentSourceFactory> parameterValueFatories
-            = new HashSet<ArgumentSourceFactory>();
+    // TODO Extract the factory registy to its own abstraction.
+    // Or maybe just take extensions in the builder instance.
+    private static final List<ArgumentFactory> argumentSourceFactories = new ArrayList<ArgumentFactory>();
 
     static {
-        registerParameterValueFactory(new KnowledgeHelperArgumentSourceFactory());
-        registerParameterValueFactory(new TupleArgumentSourceFactory());
-        registerParameterValueFactory(new ApplicationDataArgumentSourceFactory());
+        registerArgumentSourceFactory(new TupleArgumentFactory());
+        registerArgumentSourceFactory(new KnowledgeHelperArgumentFactory());
+        registerArgumentSourceFactory(new ApplicationDataArgumentFactory());
     }
+    private static final ArgumentFactory nullArgumentFactory = new ArgumentFactory() {
+        public Class<? extends Argument> getArgumentType() {
+            return null;
+        }
+        public Argument create(Rule rule, Class<?> parameterClass, Annotation[] parameterAnnotations) throws DroolsException {
+            throw new InvalidParameterException("Method parameter type not recognized or not annotated");
+        }
+    };
+    private static final ArgumentFactory tupleArgumentFactory = new ArgumentFactory() {
+        public Class<? extends Argument> getArgumentType() {
+            return TupleArgument.class;
+        }
+        public Argument create(Rule rule, Class<?> parameterClass, Annotation[] parameterAnnotations) throws DroolsException {
+            return TupleArgumentFactory.createArgument(rule, parameterClass, null);
+        }
+    };
 
-    public static void registerParameterValueFactory( ArgumentSourceFactory factory) {
-        for (ArgumentSourceFactory registeredFactory : parameterValueFatories) {
-            if (factory.getParameterValueType() == registeredFactory.getParameterValueType()) {
+    public static void registerArgumentSourceFactory(ArgumentFactory factory) {
+        for (ArgumentFactory registeredFactory : argumentSourceFactories) {
+            if (factory.getArgumentType() == registeredFactory.getArgumentType()) {
                 throw new IllegalArgumentException("ParameterValueFactory already registered"
-                                                   + ": type=" + factory.getParameterValueType()
-                                                   + ", factory =" + factory
-                                                   + ", registered factory=" + registeredFactory);
+                        + ": type=" + factory.getArgumentType() + ", factory =" + factory
+                        + ", registered factory=" + registeredFactory);
             }
         }
-        parameterValueFatories.add(factory);
+        argumentSourceFactories.add(factory);
     }
 
-    //---- ---- ----
+    // ---- ---- ----
 
-    private static interface ParameterValidator {
-        void assertParameter(ArgumentSource newParameterValue, List<ArgumentSource> parameterValues)
-                throws DroolsException;
+    private static class BuildContext {
+        public Rule rule;
+        public ArgumentFactory defaultArgumentFactory;
+        public Object pojo;
     }
 
     public Rule buildRule(Rule rule, Object pojo) throws DroolsException {
-        Class< ? > ruleClass = pojo.getClass();
-        buildConditions(rule, ruleClass, pojo);
-        buildConsequence(rule, ruleClass, pojo);
-        return rule;
+        org.drools.semantics.annotation.Rule ruleAnnotation = pojo.getClass().getAnnotation(org.drools.semantics.annotation.Rule.class);
+
+        BuildContext context = new BuildContext();
+        context.rule = rule;
+        context.pojo = pojo;
+        context.defaultArgumentFactory = (ruleAnnotation.defaultParameterAnnotation())
+                ? tupleArgumentFactory : nullArgumentFactory;
+
+        buildConditions(context);
+        buildConsequence(context);
+
+        return context.rule;
     }
 
-    private static void buildConditions(Rule rule, Class<?> ruleClass, Object pojo) throws DroolsException {
-        for (Method method : ruleClass.getMethods()) {
+    private static void buildConditions(BuildContext context) throws DroolsException {
+        for (Method method : context.pojo.getClass().getMethods()) {
             Condition conditionAnnotation = method.getAnnotation(Condition.class);
             if (conditionAnnotation != null) {
-                PojoCondition condition = newPojoCondition(rule, pojo, method);
-                rule.addCondition(condition);
+                PojoCondition condition = newPojoCondition(context, method);
+                context.rule.addCondition(condition);
             }
         }
     }
 
-    private static void buildConsequence(Rule rule, Class< ? > ruleClass, Object pojo) throws DroolsException {
+    private static void buildConsequence(BuildContext context) throws DroolsException {
         PojoConsequence consequence = null;
         List<RuleReflectMethod> ruleReflectMethods = new ArrayList<RuleReflectMethod>();
-        for (Method method : ruleClass.getMethods()) {
+        for (Method method : context.pojo.getClass().getMethods()) {
             Consequence consequenceAnnotation = method.getAnnotation(Consequence.class);
             if (consequenceAnnotation != null) {
-                ruleReflectMethods.add(newConsequenceRuleReflectMethod(rule, pojo, method));
+                ruleReflectMethods.add(newConsequenceRuleReflectMethod(context, method));
             }
         }
         if (ruleReflectMethods.isEmpty()) {
             throw new MissingConsequenceMethodException(
-                    "Rule must define at least one consequence method" + ": class = " + ruleClass);
+                    "Rule must define at least one consequence method" +
+                    ": class = " + context.pojo.getClass());
         }
-        consequence = new PojoConsequence(
-                ruleReflectMethods.toArray(new RuleReflectMethod[ruleReflectMethods.size()]));
-        rule.setConsequence( consequence );
+        consequence = new PojoConsequence(ruleReflectMethods
+                .toArray(new RuleReflectMethod[ruleReflectMethods.size()]));
+        context.rule.setConsequence(consequence);
     }
 
-    private static RuleReflectMethod newConsequenceRuleReflectMethod(Rule rule, Object pojo,
-            Method pojoMethod) throws DroolsException {
+    private static RuleReflectMethod newConsequenceRuleReflectMethod(BuildContext context, Method pojoMethod) throws DroolsException {
         assertReturnType(pojoMethod, void.class);
-        return new RuleReflectMethod(rule, pojo, pojoMethod, getParameterValues(rule, pojoMethod,
-                new ConsequenceParameterValidator()));
-    }
+        Argument[] arguments = getArguments(context, pojoMethod);
+        return new RuleReflectMethod(context.rule, context.pojo, pojoMethod, arguments);
+   }
 
-    private static final class ConditionParameterValidator implements ParameterValidator {
-        public void assertParameter(ArgumentSource newParameterValue,
-                                    List<ArgumentSource> parameterValues) throws InvalidReturnTypeException {
-            if (newParameterValue instanceof KnowledgeHelperArgumentSource) {
-                throw new InvalidReturnTypeException(
-                        "Condition methods cannot declare a parameter of type KnowledgeHelper");
+    private static PojoCondition newPojoCondition(BuildContext context, Method pojoMethod) throws DroolsException {
+        assertReturnType(pojoMethod, boolean.class);
+        Argument[] arguments = getArguments(context, pojoMethod);
+        for (Argument argument : arguments) {
+            if (argument instanceof KnowledgeHelperArgument) {
+                throw new InvalidParameterException(
+                        "Condition methods cannot declare a parameter of type KnowledgeHelper" +
+                        ": method = " + pojoMethod);
             }
         }
-    };
-
-    private static PojoCondition newPojoCondition( Rule rule, Object pojo, Method pojoMethod )
-            throws DroolsException {
-        assertReturnType( pojoMethod, boolean.class );
-        return new PojoCondition( new RuleReflectMethod( rule, pojo, pojoMethod,
-                getParameterValues( rule, pojoMethod, new ConditionParameterValidator()) ) );
+        return new PojoCondition(new RuleReflectMethod(
+                context.rule, context.pojo, pojoMethod, arguments));
     }
 
-
-    private static final class ConsequenceParameterValidator implements ParameterValidator {
-        private boolean hasDroolsParameterValue;
-
-        public void assertParameter(ArgumentSource newParameterValue,
-                                    List<ArgumentSource> parameterValues) throws InvalidReturnTypeException {
-            if (newParameterValue instanceof KnowledgeHelperArgumentSource) {
-                if (hasDroolsParameterValue) {
-                    throw new InvalidReturnTypeException(
-                            "Consequence methods can only declare on parameter of type Drools" );
-                }
-                hasDroolsParameterValue = true;
-            }
-        }
-    };
-
-    private static void assertReturnType(Method method, Class returnClass) throws InvalidReturnTypeException {
-        if (method.getReturnType( ) != returnClass) {
-            throw new InvalidReturnTypeException(
-                    "Rule method returns the wrong class" + ": method = "
-                    + method + ", expected return class = " + returnClass
-                    + ", actual return class = " + method.getReturnType( ) );
+    private static void assertReturnType(Method method, Class returnClass)
+            throws InvalidReturnTypeException {
+        if (method.getReturnType() != returnClass) {
+            throw new InvalidReturnTypeException("Rule method returns the wrong class"
+                    + ": method = " + method + ", expected return class = " + returnClass
+                    + ", actual return class = " + method.getReturnType());
         }
     }
 
-    private static ArgumentSource[] getParameterValues(Rule rule, Method method, ParameterValidator validator)
-            throws DroolsException {
-        Class<?>[] parameterClasses = method.getParameterTypes();
+    private static Argument[] getArguments(BuildContext context, Method method) throws DroolsException {
+        Class[] parameterClasses = method.getParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        List<ArgumentSource> parameterValues = new ArrayList<ArgumentSource>();
-
+        List<Argument> arguments = new ArrayList<Argument>();
         for (int i = 0; i < parameterClasses.length; i++) {
-            Class<?> parameterClass = parameterClasses[i];
-            ArgumentSource parameterValue = null;
-            try {
-                parameterValue = getParameterValue(rule, parameterClass, parameterAnnotations[i]);
-                validator.assertParameter(parameterValue, parameterValues);
-            }
-            catch (DroolsException e) {
-              throw new InvalidParameterException(
-                      e.getMessage() +
-                      ": method = " + method + ", parameter[" + i +
-                      "] = " + parameterClass, e );
-            }
-            parameterValues.add(parameterValue);
+            Class parameterClass = parameterClasses[i];
+            Argument argument = getArgument(context, parameterClass, parameterAnnotations[i]);
+            arguments.add(argument);
         }
-        return parameterValues.toArray(new ArgumentSource[parameterValues.size()]);
+        return arguments.toArray(new Argument[arguments.size()]);
     }
 
-    private static ArgumentSource getParameterValue(Rule rule, Class<?> parameterClass,
-                                                    Annotation[] parameterAnnotations)
-                                                    throws DroolsException {
-        ArgumentSource parameterValue;
-        for (ArgumentSourceFactory factory : parameterValueFatories) {
-            parameterValue = factory.create(rule, parameterClass, parameterAnnotations);
+    private static Argument getArgument(BuildContext context, Class parameterClass,
+            Annotation[] parameterAnnotations) throws DroolsException {
+        Argument parameterValue;
+        for (ArgumentFactory factory : argumentSourceFactories) {
+            parameterValue = factory.create(context.rule, parameterClass, parameterAnnotations);
             if (parameterValue != null) {
                 return parameterValue;
             }
         }
-        throw new InvalidParameterException(
-                "Method parameter type not recognized or not annotated" );
-    }
-
-    private static void assertNonConflictingParameterAnnotation( ArgumentSource parameterValue )
-            throws InvalidParameterException {
-        if (parameterValue != null) {
-            throw new InvalidParameterException("Method parameter contains conflicting @Drools annotations");
-        }
+        return context.defaultArgumentFactory.create(context.rule, parameterClass, parameterAnnotations);
     }
 }

@@ -14,7 +14,7 @@ class RuleReflectMethod implements Externalizable {
     private Rule rule;
     private Object pojo;
     private Method method;
-    private ArgumentSource[] arguments;
+    private Argument[] arguments;
 
     /**
      * Not intended to be called. Required only for Externalizable.
@@ -22,14 +22,14 @@ class RuleReflectMethod implements Externalizable {
     public RuleReflectMethod() {
     }
 
-    public RuleReflectMethod(Rule rule, Object pojo, Method method, ArgumentSource[] arguments) {
+    public RuleReflectMethod(Rule rule, Object pojo, Method method, Argument[] arguments) {
         this.rule = rule;
         this.pojo = pojo;
         this.method = method;
         this.arguments = arguments;
     }
 
-    public ArgumentSource[] getArguments() {
+    public Argument[] getArguments() {
         return arguments;
     }
 
@@ -66,7 +66,7 @@ class RuleReflectMethod implements Externalizable {
             throw new RuntimeException(e);
         }
 
-        arguments = (ArgumentSource[]) in.readObject();
+        arguments = (Argument[]) in.readObject();
     }
 
     public String toString() {

@@ -2,12 +2,12 @@ package org.drools.semantics.annotation.model;
 
 import org.drools.spi.Tuple;
 
-public class ApplicationDataArgumentSource implements ArgumentSource
+public class ApplicationDataArgument implements Argument
 {
     private final String name;
     private final Class< ? > clazz;
 
-    public ApplicationDataArgumentSource(String name, Class< ? > clazz)
+    public ApplicationDataArgument(String name, Class< ? > clazz)
     {
         if (name == null)
         {

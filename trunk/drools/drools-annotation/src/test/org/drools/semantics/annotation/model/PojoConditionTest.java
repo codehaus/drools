@@ -19,13 +19,13 @@ public class PojoConditionTest extends TestCase
     private Mock< RuleReflectMethod > newMockRuleMethod( )
     {
         return mocks.createMock( RuleReflectMethod.class, new Class[] { Rule.class, Object.class,
-                Method.class, ArgumentSource[].class }, new Object[] { null, null, null, null } );
+                Method.class, Argument[].class }, new Object[] { null, null, null, null } );
     }
 
     public void testGetRequiredTupleMembers( ) throws Exception
     {
         Rule rule = new Rule( "test" ); // only for factorying Declarations
-        ArgumentSource[] parameterValues = new ArgumentSource[3];
+        Argument[] parameterValues = new Argument[3];
         Mock< ObjectType > mockObjectType_1 = mocks.createMock( ObjectType.class );
         Mock< ObjectType > mockObjectType_2 = mocks.createMock( ObjectType.class );
         Declaration expectedDeclaration_1 = rule.addParameterDeclaration( "id-1",
@@ -33,9 +33,9 @@ public class PojoConditionTest extends TestCase
         Declaration expectedDeclaration_2 = rule.addParameterDeclaration( "id-2",
                                                                           mockObjectType_2.object );
 
-        parameterValues[0] = new ApplicationDataArgumentSource( "name", Object.class );
-        parameterValues[1] = new TupleArgumentSource( expectedDeclaration_1 );
-        parameterValues[2] = new TupleArgumentSource( expectedDeclaration_2 );
+        parameterValues[0] = new ApplicationDataArgument( "name", Object.class );
+        parameterValues[1] = new TupleArgument( expectedDeclaration_1 );
+        parameterValues[2] = new TupleArgument( expectedDeclaration_2 );
 
         Mock< RuleReflectMethod > mockRuleMethod = newMockRuleMethod( );
         mockRuleMethod.control.expectAndReturn( mockRuleMethod.object.getArguments( ),
@@ -57,7 +57,7 @@ public class PojoConditionTest extends TestCase
     {
         Mock< RuleReflectMethod > mockRuleMethod = newMockRuleMethod( );
         mockRuleMethod.control.expectAndReturn( mockRuleMethod.object.getArguments( ),
-                                                new ArgumentSource[] {} );
+                                                new Argument[] {} );
         mockRuleMethod.control.expectAndThrow( mockRuleMethod.object.invokeMethod( null ),
                                                new RuntimeException( "test" ) );
 
@@ -82,7 +82,7 @@ public class PojoConditionTest extends TestCase
         Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
         Mock< RuleReflectMethod > mockRuleMethod = newMockRuleMethod( );
         mockRuleMethod.control.expectAndReturn( mockRuleMethod.object.getArguments( ),
-                                                new ArgumentSource[] {} );
+                                                new Argument[] {} );
         mockRuleMethod.control.expectAndReturn( mockRuleMethod.object
                 .invokeMethod( mockTuple.object ), true );
 

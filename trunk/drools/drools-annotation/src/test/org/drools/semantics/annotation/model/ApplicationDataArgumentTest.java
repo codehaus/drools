@@ -3,12 +3,13 @@ package org.drools.semantics.annotation.model;
 import junit.framework.TestCase;
 
 import org.drools.WorkingMemory;
-import org.drools.semantics.annotation.model.ApplicationDataArgumentSource;
+import org.drools.semantics.annotation.model.ApplicationDataArgument;
 import org.drools.spi.Tuple;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
 
-public class ApplicationDataArgumentSourceTest extends TestCase {
+public class ApplicationDataArgumentTest extends TestCase {
+    
     private EasymockContainer mocks = new EasymockContainer();
 
     private static final String APP_DATA_NAME = "app-data-name";
@@ -18,7 +19,7 @@ public class ApplicationDataArgumentSourceTest extends TestCase {
 
     public void testConstructionNullDeclaration() {
         try {
-            ApplicationDataArgumentSource arg = new ApplicationDataArgumentSource(
+            ApplicationDataArgument arg = new ApplicationDataArgument(
                     null, Integer.class);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
@@ -28,7 +29,7 @@ public class ApplicationDataArgumentSourceTest extends TestCase {
 
     public void testConstructionNullClass() {
         try {
-            ApplicationDataArgumentSource arg = new ApplicationDataArgumentSource("name", null);
+            ApplicationDataArgument arg = new ApplicationDataArgument("name", null);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -36,7 +37,7 @@ public class ApplicationDataArgumentSourceTest extends TestCase {
     }
 
     public void testGetValue() throws Exception {
-        ApplicationDataArgumentSource arg = new ApplicationDataArgumentSource(
+        ApplicationDataArgument arg = new ApplicationDataArgument(
                 APP_DATA_NAME, Integer.class);
         Integer expectedValue = new Integer(1);
 
@@ -53,7 +54,7 @@ public class ApplicationDataArgumentSourceTest extends TestCase {
     }
 
     public void testGetValueWrongClass() throws Exception {
-        ApplicationDataArgumentSource arg = new ApplicationDataArgumentSource(
+        ApplicationDataArgument arg = new ApplicationDataArgument(
                 APP_DATA_NAME, Integer.class);
         String expectedValue = "value";
 

@@ -9,28 +9,26 @@ import org.drools.semantics.annotation.Parameter;
 import org.drools.semantics.annotation.Condition;
 import org.drools.semantics.annotation.Consequence;
 
-@Rule
+@Rule(defaultParameterAnnotation=true)
 public class FloorTooHotPumpOff
 {
     @Condition
-    public boolean isPumpOff(@Parameter HeatPump pump) {
+    public boolean isPumpOff(HeatPump pump) {
         return pump.getState() == OFF;
      }
 
     @Condition
-    public boolean isPumpServicingFloor(@Parameter HeatPump pump,
-                                        @Parameter Thermometer thermometer) {
+    public boolean isPumpServicingFloor(HeatPump pump, Thermometer thermometer) {
         return thermometer.getFloor().getHeatPump() == pump;
     }
 
     @Condition
-    public boolean isTooHot(@Parameter Thermometer thermometer,
-                            @Parameter TempuratureControl control) {
+    public boolean isTooHot(Thermometer thermometer, TempuratureControl control) {
         return control.isTooHot(thermometer.getReading());
     }
 
     @Consequence
-    public void consequence(@Parameter HeatPump pump) {
+    public void consequence(HeatPump pump) {
         pump.setState(COOLING);
         System.out.println("FloorTooHotPumpOff: " + pump);
     }
