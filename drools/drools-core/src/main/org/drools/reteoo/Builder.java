@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.29 2003-10-28 07:37:18 bob Exp $
+ $Id: Builder.java,v 1.30 2003-10-28 08:00:14 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,9 +54,11 @@ import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ObjectType;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /** Builds the Rete-OO network for a <code>RuleSet</code>.
  *
@@ -124,8 +126,8 @@ public class Builder
      */
     public void addRule(Rule rule) throws RuleIntegrationException
     {
-        Set factExtracts = new HashSet( rule.getExtractions() );
-        Set conds        = new HashSet( rule.getConditions() );
+        Set factExtracts  = new HashSet( rule.getExtractions() );
+        List conds        = new ArrayList( rule.getConditions() );
 
         Set leafNodes = null;
 
@@ -251,11 +253,11 @@ public class Builder
      *  @param leafNodes The current attachable leaf nodes
      *         of the network.
      */
-    void attachConditions(Set conds,
+    void attachConditions(List conds,
                           Set leafNodes)
     {
-        Iterator        condIter    = conds.iterator();
-        Condition       eachCond    = null;
+        Iterator    condIter    = conds.iterator();
+        Condition   eachCond    = null;
         TupleSource tupleSource = null;
 
         ConditionNode conditionNode = null;
@@ -291,7 +293,7 @@ public class Builder
      *  @return <code>true</code> if a join was possible,
      *          otherwise, <code>false</code>.
      */
-    boolean joinForCondition(Set conds,
+    boolean joinForCondition(List conds,
                              Set leafNodes)
     {
         return joinArbitrary( leafNodes );
