@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: ConfigurableExtractor.java,v 1.4 2003-11-19 21:31:11 bob Exp $
+ $Id: FactoryException.java,v 1.1 2003-11-27 04:32:22 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,26 +46,42 @@ package org.drools.smf;
  
  */
 
-import org.drools.rule.Declaration;
-import org.drools.spi.Extractor;
+import org.drools.DroolsException;
 
-/** Configurable <code>Extractor</code>.
+/** Indicates an error while configuring a configurable semantic component.
+ *
+ *  @see RuleFactory
+ *  @see ObjectTypeFactory
+ *  @see ConditionFactory
+ *  @see ExtractorFactory
+ *  @see ConsequenceFactory
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConfigurableExtractor.java,v 1.4 2003-11-19 21:31:11 bob Exp $
+ *  @version $Id: FactoryException.java,v 1.1 2003-11-27 04:32:22 bob Exp $
  */
-public interface ConfigurableExtractor
-    extends Extractor
+public class FactoryException
+    extends DroolsException
 {
-    /** Configure.
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
      *
-     *  @param config Configuration.
-     *  @param decls Available declarations.
-     *
-     *  @throws ConfigurationException If an error occurs while
-     *          attempting to perform configuration.
+     *  @param msg The error message.
      */
-    void configure(Configuration config,
-                   Declaration[] decls) throws ConfigurationException;
+    public FactoryException(String msg)
+    {
+        super( msg );
+    }
+
+    /** Construct.
+     *
+     *  @param rootCause The underlying root cause.
+     */
+    public FactoryException(Throwable rootCause)
+    {
+        super( rootCause );
+    }
 }

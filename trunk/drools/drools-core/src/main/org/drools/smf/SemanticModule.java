@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.8 2003-11-19 21:31:11 bob Exp $
+ $Id: SemanticModule.java,v 1.9 2003-11-27 04:32:22 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -74,6 +74,10 @@ public interface SemanticModule
      */
     String getUri();
 
+    RuleFactory getRuleFactory(String name);
+
+    Set getRuleFactoryNames();
+
     /** Retrieve a semantic object type by name.
      *
      *  @param name the name.
@@ -81,13 +85,13 @@ public interface SemanticModule
      *  @return The object type implementation or <code>null</code>
      *          if none is bound to the name.
      */   
-    Class getObjectType(String name);
+    ObjectTypeFactory getObjectTypeFactory(String name);
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    Set getObjectTypeNames();
+    Set getObjectTypeFactoryNames();
 
     /** Retrieve a semantic condition by name.
      *
@@ -96,13 +100,13 @@ public interface SemanticModule
      *  @return The condition implementation or <code>null</code>
      *          if none is bound to the name.
      */   
-    Class getCondition(String name);
+    ConditionFactory getConditionFactory(String name);
 
     /** Retrieve the set of all condition names.
      *
      *  @return The set of names.
      */
-    Set getConditionNames();
+    Set getConditionFactoryNames();
 
     /** Retrieve a semantic extractor by name.
      *
@@ -111,13 +115,13 @@ public interface SemanticModule
      *  @return The extractor implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    Class getExtractor(String name);
+    ExtractorFactory getExtractorFactory(String name);
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    Set getExtractorNames();
+    Set getExtractorFactoryNames();
 
     /** Retrieve a semantic consequence by name.
      *
@@ -126,11 +130,11 @@ public interface SemanticModule
      *  @return The consequence implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    Class getConsequence(String name);
+    ConsequenceFactory getConsequenceFactory(String name);
 
     /** Retrieve the set of all consequence names.
      *
      *  @return The set of names.
      */
-    Set getConsequenceNames();
+    Set getConsequenceFactoryNames();
 }
