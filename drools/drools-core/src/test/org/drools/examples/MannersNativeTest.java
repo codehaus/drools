@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
-* $Id: MannersNativeTest.java,v 1.11 2004-11-15 23:06:07 mproctor Exp $
+* $Id: MannersNativeTest.java,v 1.12 2004-11-16 07:26:33 simon Exp $
 *
 * Copyright 2002 (C) The Werken Company. All Rights Reserved.
 *
@@ -42,7 +42,6 @@ package org.drools.examples;
 
 import junit.framework.TestCase;
 import org.drools.FactException;
-import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.TestWorkingMemoryEventListener;
@@ -177,10 +176,9 @@ public class MannersNativeTest extends TestCase implements Serializable
 
                 context.setState( "find_seating" );
 
-                Map objects = tuple.getObjectFactMapping();
                 try
                 {
-                    workingMemory.modifyObject( (FactHandle) objects.get( context ), context );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ), context );
                 }
                 catch ( FactException e )
                 {
@@ -352,10 +350,10 @@ public class MannersNativeTest extends TestCase implements Serializable
 
                 seating.setGuest2( guest );
                 seating.getTabooList( ).add( guest );
-                Map objects = tuple.getObjectFactMapping();
+
                 try
                 {
-                    workingMemory.modifyObject( (FactHandle) objects.get( seating ), seating );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( seating ), seating );
                 }
                 catch ( FactException e )
                 {
@@ -471,10 +469,9 @@ public class MannersNativeTest extends TestCase implements Serializable
                 Seating prevSeat = seating.getPrevSeat();
                 prevSeat.setGuest2( null );
 
-                Map objects = tuple.getObjectFactMapping();
                 try
                 {
-                    workingMemory.modifyObject( (FactHandle) objects.get( prevSeat ), prevSeat );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( prevSeat ), prevSeat );
                 }
                 catch ( FactException e )
                 {
@@ -483,7 +480,7 @@ public class MannersNativeTest extends TestCase implements Serializable
 
                 try
                 {
-                    workingMemory.retractObject( (FactHandle) objects.get( seating ) );
+                    workingMemory.retractObject( tuple.getFactHandleForObject( seating ) );
                 }
                 catch ( FactException e )
                 {
@@ -608,12 +605,11 @@ public class MannersNativeTest extends TestCase implements Serializable
                         throw new ConsequenceException( e );
                     }
                 }
-                
-                Map objects = tuple.getObjectFactMapping();
+
                 context.setState( "all_done" );
                 try
                 {
-                    workingMemory.modifyObject( (FactHandle) objects.get( context ), context );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ), context );
                 }
                 catch ( FactException e )
                 {

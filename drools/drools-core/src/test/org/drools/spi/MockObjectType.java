@@ -17,7 +17,7 @@ public class MockObjectType implements ObjectType
     public MockObjectType()
     {
 
-    }    
+    }
 
     public MockObjectType(Class type)
     {

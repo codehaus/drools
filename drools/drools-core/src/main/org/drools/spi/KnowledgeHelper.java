@@ -1,22 +1,15 @@
 package org.drools.spi;
 
-import java.util.Map;
-import java.util.Set;
-
 import org.drools.FactException;
 import org.drools.FactHandle;
 
 public class KnowledgeHelper
 {
     private Tuple tuple;
-    private Map objects;
 
     public KnowledgeHelper(Tuple tuple)
     {
         this.tuple = tuple;
-        Set declarationSet = this.tuple.getDeclarations();
-        
-        objects = tuple.getObjectFactMapping();
     }
 
     public void assertObject(Object object) throws FactException
@@ -26,21 +19,21 @@ public class KnowledgeHelper
 
     public void modifyObject(Object object) throws FactException
     {
-        FactHandle handle = (FactHandle) this.objects.get( object );
+        FactHandle handle = this.tuple.getFactHandleForObject( object );
 
         this.tuple.getWorkingMemory().modifyObject( handle, object );
     }
 
     public void modifyObject(Object oldObject, Object newObject) throws FactException
     {
-        FactHandle handle = (FactHandle) this.objects.get( oldObject);
+        FactHandle handle = this.tuple.getFactHandleForObject( oldObject );
 
         this.tuple.getWorkingMemory().modifyObject( handle, newObject );
     }
 
     public void retractObject(Object object) throws FactException
     {
-        FactHandle handle = (FactHandle) this.objects.get( object );
+        FactHandle handle = this.tuple.getFactHandleForObject( object );
 
         this.tuple.getWorkingMemory().retractObject( handle );
     }
