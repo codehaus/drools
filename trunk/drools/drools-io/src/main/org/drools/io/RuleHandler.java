@@ -1,6 +1,6 @@
 
 /*
- * $Id: RuleHandler.java,v 1.1 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: RuleHandler.java,v 1.2 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,6 +42,7 @@ package org.drools.io;
 
 import java.util.HashSet;
 
+import org.drools.rule.ApplicationData;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleConstructionException;
 import org.drools.rule.RuleSet;
@@ -75,6 +76,7 @@ class RuleHandler extends BaseAbstractHandler implements Handler
             this.validPeers.add( null );
             this.validPeers.add( Rule.class );
             this.validPeers.add( ImportEntry.class );
+            this.validPeers.add( ApplicationData.class );
 
             this.allowNesting = false;
         }
@@ -153,6 +155,7 @@ class RuleHandler extends BaseAbstractHandler implements Handler
         }
 
         rule.setImports( ruleSetReader.getRuleSet( ).getImports( ) );
+        rule.setApplicationData( ruleSetReader.getRuleSet().getApplicationData() );
     }
 
     public Object end( String uri, String localName ) throws SAXException

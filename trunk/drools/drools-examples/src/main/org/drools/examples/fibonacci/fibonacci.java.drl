@@ -8,7 +8,7 @@
                              http://drools.org/semantics/java java.xsd">
 
   <java:import>org.drools.examples.fibonacci.Fibonacci</java:import>
-
+  
   <rule name="Bootstrap 1" salience="20">
     <parameter identifier="f">
       <class>Fibonacci</class>

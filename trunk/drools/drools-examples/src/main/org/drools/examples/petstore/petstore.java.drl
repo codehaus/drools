@@ -7,6 +7,7 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/java java.xsd">
 
+   <application-data identifier="frame">javax.swing.JFrame</application-data>
 
     <!-- assert each item in the shopping cart into the Working Memory -->
     <rule name="Explode Cart" salience="20">

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReader.java,v 1.6 2004-11-28 06:45:25 simon Exp $
+ * $Id: SemanticsReader.java,v 1.7 2004-11-28 20:01:13 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,10 +47,10 @@ import java.util.Properties;
 
 /**
  * Loader of <code>SemanticModule</code> s from a set of properties.
- *
+ * 
  * <p>
  * The required properties are:
- *
+ * 
  * <ul>
  * <li><code>module.uri=<i>uri</i></code>: To denote the URI of the
  * module.</li>
@@ -58,32 +58,32 @@ import java.util.Properties;
  * component to associate a tag with the component.
  * </ul>
  * </p>
- *
+ * 
  * <p>
  * Instances of <code>SemanticsReader</code> are re-entrant and thread-safe.
  * The singleton may be used simultaneously by multiple threads.
  * </p>
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: SemanticsReader.java,v 1.6 2004-11-28 06:45:25 simon Exp $
+ * 
+ * @version $Id: SemanticsReader.java,v 1.7 2004-11-28 20:01:13 mproctor Exp $
  */
 public class SemanticsReader
 {
     // ----------------------------------------------------------------------
-    //     Class members
+    // Class members
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
     private static final SemanticsReader INSTANCE = new SemanticsReader( );
 
     // ----------------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ----------------------------------------------------------------------
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
      */
     public static SemanticsReader getInstance()
@@ -92,7 +92,7 @@ public class SemanticsReader
     }
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
@@ -104,17 +104,19 @@ public class SemanticsReader
     }
 
     // ----------------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ----------------------------------------------------------------------
 
     /**
      * Read a semantic module descriptor from a <code>URL</code>.
-     *
-     * @param url The descriptor URL.
-     *
+     * 
+     * @param url
+     *            The descriptor URL.
+     * 
      * @return The loaded semantic module.
-     *
-     * @throws Exception If an error occurs while loading the module.
+     * 
+     * @throws Exception
+     *             If an error occurs while loading the module.
      */
     public SemanticModule read(URL url) throws Exception
     {
@@ -132,12 +134,14 @@ public class SemanticsReader
 
     /**
      * Read a semantic module descriptor from an <code>InputStream</code>.
-     *
-     * @param in The descriptor input stream.
-     *
+     * 
+     * @param in
+     *            The descriptor input stream.
+     * 
      * @return The loaded semantic module.
-     *
-     * @throws Exception If an error occurs while loading the module.
+     * 
+     * @throws Exception
+     *             If an error occurs while loading the module.
      */
     public SemanticModule read(InputStream in) throws Exception
     {
@@ -161,10 +165,9 @@ public class SemanticsReader
 
         SimpleSemanticModule module = new SimpleSemanticModule( uri.trim( ) );
 
-        for ( Enumeration propNames = props.propertyNames( ); propNames
-                                                                       .hasMoreElements( ); )
+        for ( Enumeration propNames = props.propertyNames( ); propNames.hasMoreElements( ); )
         {
-            String key = ( String ) propNames.nextElement( );
+            String key = (String) propNames.nextElement( );
 
             if ( key.equals( "module.uri" ) )
             {
@@ -196,45 +199,52 @@ public class SemanticsReader
 
             if ( "Rule".equals( type ) )
             {
-                RuleFactory factory = ( RuleFactory ) factoryClass
-                                                                  .newInstance( );
+                RuleFactory factory = (RuleFactory) factoryClass.newInstance( );
 
-                module.addRuleFactory( componentName, factory );
+                module.addRuleFactory( componentName,
+                                       factory );
             }
             else if ( "ObjectType".equals( type ) )
             {
-                ObjectTypeFactory factory = ( ObjectTypeFactory ) factoryClass
-                                                                              .newInstance( );
+                ObjectTypeFactory factory = (ObjectTypeFactory) factoryClass.newInstance( );
 
-                module.addObjectTypeFactory( componentName, factory );
+                module.addObjectTypeFactory( componentName,
+                                             factory );
             }
             else if ( "Condition".equals( type ) )
             {
-                ConditionFactory factory = ( ConditionFactory ) factoryClass
-                                                                            .newInstance( );
+                ConditionFactory factory = (ConditionFactory) factoryClass.newInstance( );
 
-                module.addConditionFactory( componentName, factory );
+                module.addConditionFactory( componentName,
+                                            factory );
             }
             else if ( "Consequence".equals( type ) )
             {
-                ConsequenceFactory factory = ( ConsequenceFactory ) factoryClass
-                                                                                .newInstance( );
+                ConsequenceFactory factory = (ConsequenceFactory) factoryClass.newInstance( );
 
-                module.addConsequenceFactory( componentName, factory );
+                module.addConsequenceFactory( componentName,
+                                              factory );
             }
             else if ( "Duration".equals( type ) )
             {
-                DurationFactory factory = ( DurationFactory ) factoryClass
-                                                                          .newInstance( );
+                DurationFactory factory = (DurationFactory) factoryClass.newInstance( );
 
-                module.addDurationFactory( componentName, factory );
+                module.addDurationFactory( componentName,
+                                           factory );
             }
             else if ( "ImportEntry".equals( type ) )
             {
-                ImportEntryFactory factory = ( ImportEntryFactory ) factoryClass
-                                                                          .newInstance( );
+                ImportEntryFactory factory = (ImportEntryFactory) factoryClass.newInstance( );
 
-                module.addImportEntryFactory( componentName, factory );
+                module.addImportEntryFactory( componentName,
+                                              factory );
+            }
+            else if ( "ApplicationData".equals( type ) )
+            {
+                ApplicationDataFactory factory = (ApplicationDataFactory) factoryClass.newInstance( );
+
+                module.addApplicationDataFactory( componentName,
+                                                  factory );
             }
             else
             {
@@ -254,7 +264,8 @@ public class SemanticsReader
             return null;
         }
 
-        return key.substring( 0, leftParen ).trim( );
+        return key.substring( 0,
+                              leftParen ).trim( );
     }
 
     protected String parseName(String key)
@@ -267,6 +278,7 @@ public class SemanticsReader
             return null;
         }
 
-        return key.substring( leftParen + 1, rightParen ).trim( );
+        return key.substring( leftParen + 1,
+                              rightParen ).trim( );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticModule.java,v 1.5 2004-11-28 06:45:25 simon Exp $
+ * $Id: SemanticModule.java,v 1.6 2004-11-28 20:01:13 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,8 @@ package org.drools.smf;
  */
 
 import java.util.Set;
+
+import org.drools.rule.ApplicationData;
 
 /**
  * Collection of entities forming a semantic module.
@@ -135,5 +137,12 @@ public interface SemanticModule
 
     public ImportEntryFactory getImportEntryFactory(String name);
 
-    public Set getImportEntryFactoryNames();
+    public Set getImportEntryFactoryNames();     
+
+    public void addApplicationDataFactory(String name, ApplicationDataFactory factory);
+    
+    public ApplicationDataFactory getApplicationDataFactory(String name);
+    
+    public Set getApplicationDataFactoryNames();
+
 }

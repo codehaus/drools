@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.37 2004-11-28 06:45:25 simon Exp $
+ * $Id: RuleSetReader.java,v 1.38 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.37 2004-11-28 06:45:25 simon Exp $
+ * @version $Id: RuleSetReader.java,v 1.38 2004-11-28 20:01:12 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -144,6 +144,7 @@ public class RuleSetReader extends DefaultHandler
         this.localNameMap = new HashMap( );
         localNameMap.put( "rule-set", new RuleSetHandler( this ) );
         localNameMap.put( "import", new ImportHandler( this ) );
+        localNameMap.put( "application-data", new ApplicationDataHandler( this ) );
         localNameMap.put( "rule", new RuleHandler( this ) );
         localNameMap.put( "parameter", new ParameterHandler( this ) );
         //localNameMap.put( "declaration", new DeclarationHandler( this ) );

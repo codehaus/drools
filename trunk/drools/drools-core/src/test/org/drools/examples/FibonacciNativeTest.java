@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.10 2004-11-19 02:15:49 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.11 2004-11-28 20:01:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import org.drools.RuleBaseBuilder;
 import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
 import org.drools.reteoo.Dumper;
+import org.drools.rule.ApplicationData;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -74,6 +75,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
     {
         // <rule-set name="fibonacci" ...>
         final RuleSet ruleSet = new RuleSet( "fibonacci" );
+        ruleSet.addApplicationData(new ApplicationData("fibtotal", FibTotal.class));
 
         // <rule name="Bootstrap 1" salience="20">
         final Rule bootstrap1Rule = new Rule( "Bootstrap 1" );

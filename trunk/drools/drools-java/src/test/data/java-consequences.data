@@ -31,7 +31,7 @@ String trimmed = favouriteCheese.trim();
 camembert.eatCheese();
 String trimmed = favouriteCheese.trim();
 <!--drools-test--!> // 6
-SMFTestFrameWork.consequenceExceptionTest()
+SMFTestFrameWork.consequenceExceptionTest();
 <!--drools-test--!> // 7
 BigInteger bigInt = new BigInteger("1");
 SMFTestFrameWork.Cheese brie = new SMFTestFrameWork.Cheese("brie");

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticModule.java,v 1.6 2004-11-28 06:45:25 simon Exp $
+ * $Id: SimpleSemanticModule.java,v 1.7 2004-11-28 20:01:13 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.drools.rule.ApplicationData;
+
 /**
  * Simple implementation of a Semantic Module.
  *
@@ -77,6 +79,10 @@ public class SimpleSemanticModule implements SemanticModule
     /** Imports factories */
     private Map    importEntryFactories;
 
+    /** ApplicationData factories */
+    private Map    applicationDataFactories;    
+
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -96,6 +102,7 @@ public class SimpleSemanticModule implements SemanticModule
         this.consequenceFactories = new HashMap( );
         this.durationFactories = new HashMap( );
         this.importEntryFactories = new HashMap( );
+        this.applicationDataFactories = new HashMap( );  
     }
 
     // ------------------------------------------------------------
@@ -238,5 +245,20 @@ public class SimpleSemanticModule implements SemanticModule
     public Set getImportEntryFactoryNames()
     {
         return this.importEntryFactories.keySet( );
+    }    
+
+    public void addApplicationDataFactory(String name, ApplicationDataFactory factory)
+    {
+        this.applicationDataFactories.put( name, factory );
     }
+
+    public ApplicationDataFactory getApplicationDataFactory(String name)
+    {
+        return ( ApplicationDataFactory ) this.applicationDataFactories.get( name );
+    }
+
+    public Set getApplicationDataFactoryNames()
+    {
+        return this.applicationDataFactories.keySet( );
+    }    
 }

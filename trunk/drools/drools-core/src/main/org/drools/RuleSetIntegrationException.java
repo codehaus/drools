@@ -1,31 +1,31 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.33 2004-11-28 20:01:12 mproctor Exp $
- *
+ * $Id: RuleSetIntegrationException.java,v 1.1 2004-11-28 20:01:12 mproctor Exp $
+ * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- *
+ * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- *
+ * 
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- *
+ * 
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- *
+ * 
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- *
+ * 
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,63 +37,72 @@ package org.drools;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
+ *  
  */
 
-import org.drools.reteoo.FactHandleFactory;
-import org.drools.spi.ConflictResolver;
-
-import java.util.List;
-import java.io.Serializable;
+import org.drools.rule.RuleSet;
 
 /**
- * Active collection of <code>Rule</code>s.
+ * Indicates an error integrating a <code>RuleSet</code>
+ * into a <code>RuleBase</code>.
  * 
- * <p>
- * From a <code>RuleBase</code> many <code>WorkingMemory</code> rule
- * sessions may be instantiated. Additionally, it may be inspected to determine
- * which <code>RuleSet</code> s it contains.
- * </p>
+ * @see RuleBase#addRule
+ * @see RuleBase#addRuleSet
  * 
- * @see WorkingMemory
+ * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: RuleBase.java,v 1.33 2004-11-28 20:01:12 mproctor Exp $
+ * @version $Id: RuleIntegrationException.java,v 1.6 2004/09/17 00:14:06
+ *          mproctor Exp $
  */
-public interface RuleBase
-    extends
-    Serializable
+public class RuleSetIntegrationException extends DroolsException
 {
-    /**
-     * Create a new <code>WorkingMemory</code> session for this
-     * <code>RuleBase</code>.
-     * 
-     * <p>
-     * The created <code>WorkingMemory</code> uses the default conflict
-     * resolution strategy.
-     * </p>
-     * 
-     * @see WorkingMemory
-     * @see org.drools.conflict.DefaultConflictResolver
-     * 
-     * @return A newly initialized <code>WorkingMemory</code>.
-     */
-    WorkingMemory newWorkingMemory();
+    // ------------------------------------------------------------
+    // Instance members
+    // ------------------------------------------------------------
+
+    /** The rule. */
+    private RuleSet ruleSet;
+
+    // ------------------------------------------------------------
+    // Constructors
+    // ------------------------------------------------------------
 
     /**
-     * Retrieve the <code>ConflictResolver</code>.
+     * Construct.
      * 
-     * @return The conflict resolution strategy.
+     * @param ruleSet
+     *            The offending rule.
      */
-    ConflictResolver getConflictResolver();
+    public RuleSetIntegrationException(RuleSet ruleSet)
+    {
+        this.ruleSet = ruleSet;
+    }
+
+    // ------------------------------------------------------------
+    // Instance methods
+    // ------------------------------------------------------------
 
     /**
-     * Retrieve the <code>FactHandleFactor</code>.
+     * Retrieve the <code>RuleSet</code>.
      * 
-     * @return The fact handle factory.
+     * @return The ruleSet
      */
-    FactHandleFactory getFactHandleFactory();
-    
-    List getRuleSets();
+    public RuleSet getRuleSet()
+    {
+        return this.ruleSet;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // java.lang.Throwable
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * Retrieve the error message.
+     * 
+     * @return The error message.
+     */
+    public String getMessage()
+    {
+        return getRuleSet( ).getName( ) + " cannot be integrated";
+    }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyImportEntry.java,v 1.2 2004-11-04 19:08:58 dbarnett Exp $
+ * $Id: GroovyImportEntry.java,v 1.3 2004-11-28 20:01:12 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,11 +41,9 @@ package org.drools.semantics.groovy;
  *  
  */
 
-import java.io.Serializable;
-
 import org.drools.spi.ImportEntry;
 
-public class GroovyImportEntry implements ImportEntry, Serializable
+public class GroovyImportEntry implements ImportEntry
 {
 
     private String importEntry;

@@ -150,7 +150,7 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
     private class MockDurationFactory implements DurationFactory
     {
 
-        public Duration newDuration(Configuration c, List d)
+        public Duration newDuration(Configuration c)
         {
 
             return null;
