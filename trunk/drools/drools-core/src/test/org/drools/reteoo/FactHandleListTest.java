@@ -75,7 +75,7 @@ public class FactHandleListTest extends TestCase
 
     public void testIndexOutOfBoundsThrowsException()
     {
-        FactHandleImpl handle = new FactHandleImpl( 253 );
+        FactHandle handle = new FactHandleImpl( 253 );
         FactHandleList list = new FactHandleList( 0, handle );
         try
         {
