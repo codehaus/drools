@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Eval.java,v 1.12 2004-11-29 12:14:43 simon Exp $
+ * $Id: GroovyCondition.java,v 1.1 2004-12-08 22:46:06 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,39 +44,43 @@ package org.drools.semantics.groovy;
 import groovy.lang.Binding;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.spi.Condition;
+import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 
 /**
- * Base class for Groovy based semantic components.
+ * Groovy expression semantics <code>Condition</code>.
  *
- * @see ExprCondition
- *
+ * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
- * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  */
-public class Eval extends Interp
+public class GroovyCondition extends GroovyInterp implements Condition
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Required decls. */
-    private Declaration[] decls;
+    /** Required declarations. */
+    private Declaration[] requiredDeclarations;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
+
     /**
      * Construct.
      */
-    protected Eval(String text, Rule rule ) throws Exception
+    protected GroovyCondition( String text,
+                               Rule rule ) throws Exception
     {
-        super( text, rule );
+        super( text,
+               rule );
 
         ExprAnalyzer analyzer = new ExprAnalyzer( );
 
-        this.decls = analyzer.analyze( getText( ), rule.getParameterDeclarations( ) );
+        this.requiredDeclarations = analyzer.analyze( getText( ),
+                                                      rule.getParameterDeclarations( ) );
     }
 
     // ------------------------------------------------------------
@@ -87,10 +91,9 @@ public class Eval extends Interp
      * Evaluate.
      *
      * @param tuple Tuple containing variable bindings.
-     *
      * @return The result of evaluation.
      */
-    public Object evaluate(Tuple tuple)
+    public Object evaluate( Tuple tuple )
     {
         Binding dict = setUpDictionary( tuple );
 
@@ -101,10 +104,9 @@ public class Eval extends Interp
      * Evaluate.
      *
      * @param locals The evaluation dictionary.
-     *
      * @return The result of evaluation.
      */
-    protected Object evaluate(Binding locals)
+    protected Object evaluate( Binding locals )
     {
         //ScriptContext globals = new ScriptContext();
         getCode( ).setBinding( locals );
@@ -112,14 +114,70 @@ public class Eval extends Interp
     }
 
     /**
-     * Retrieve the array of <code>Declaration</code> s required by this
-     * condition to perform its duties.
+     * Retrieve the array of <code>Declaration</code> s required by this condition to perform its duties.
      *
-     * @return The array of <code>Declarations</code> expected on incoming
-     *         <code>Tuples</code>.
+     * @return The array of <code>Declarations</code> expected on incoming <code>Tuples</code>.
      */
     public Declaration[] getRequiredTupleMembers()
     {
-        return this.decls;
+        return this.requiredDeclarations;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //     org.drools.spi.Condition
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * Determine if the supplied <code>Tuple</code> is allowed by this
+     * condition.
+     *
+     * @param tuple The <code>Tuple</code> to test.
+     *
+     * @return <code>true</code> if the <code>Tuple</code> passes this
+     *         condition, else <code>false</code>.
+     *
+     * @throws ConditionException if an error occurs during filtering.
+     */
+    public boolean isAllowed( Tuple tuple ) throws ConditionException
+    {
+        try
+        {
+            Object answer = evaluate( tuple );
+
+            if ( !( answer instanceof Boolean ) )
+            {
+                throw new NonBooleanExprException( getText( ) );
+            }
+
+            return ( ( Boolean ) answer ).booleanValue( );
+        }
+        catch ( RuntimeException e )
+        {
+            throw new ConditionException( e,
+                                          getRule( ),
+                                          getText( ) );
+        }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    public int hashCode()
+    {
+        return this.getText( ).hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object == null || getClass( ) != object.getClass( ) )
+        {
+            return false;
+        }
+
+        return this.getText().equals( ( ( GroovyInterp ) object ).getText( ) );
     }
 }
