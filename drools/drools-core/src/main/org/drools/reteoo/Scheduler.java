@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.12 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: Scheduler.java,v 1.13 2005-01-09 02:23:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,8 +84,9 @@ final class Scheduler
     private Timer scheduler;
 
     /** Scheduled tasks. */
-    private Map tasks;
+    private Map   tasks;
 
+    private ConsequenceException consequenceException;
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
@@ -115,21 +116,14 @@ final class Scheduler
 
         Date then = new Date( now.getTime( ) + (item.getRule( ).getDuration( ).getDuration( item.getTuple( ) ) * 1000) );
 
-        try
-        {
-            TimerTask task = new AgendaItemFireListener( item,
-                                                         workingMemory );
+        TimerTask task = new AgendaItemFireListener( item,
+                                                     workingMemory );
 
-            this.scheduler.schedule( task,
-                                     then );
+        this.scheduler.schedule( task,
+                                 then );
 
-            this.tasks.put( item,
-                            task );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace( );
-        }
+        this.tasks.put( item,
+                        task );
     }
 
     /**
@@ -147,6 +141,21 @@ final class Scheduler
             task.cancel( );
         }
     }
+    
+    void setError(ConsequenceException e)
+    {
+        this.consequenceException = e;
+    }
+    
+    boolean hadError()
+    {
+        return (this.consequenceException != null);
+    }
+
+    ConsequenceException getConsequenceException()
+    {
+        return this.consequenceException;
+    }    
 }
 
 /**
@@ -162,7 +171,7 @@ class AgendaItemFireListener extends TimerTask
     // ------------------------------------------------------------
 
     /** The agenda item. */
-    private AgendaItem item;
+    private AgendaItem        item;
 
     /** The working-memory session. */
     private WorkingMemoryImpl workingMemory;
@@ -205,7 +214,7 @@ class AgendaItemFireListener extends TimerTask
         }
         catch ( ConsequenceException e )
         {
-            e.printStackTrace( );
+            Scheduler.getInstance( ).setError(e);            
         }
     }
 }
