@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.20 2004-12-04 14:08:54 simon Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.21 2004-12-05 20:37:06 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,6 +52,7 @@ import org.drools.rule.RuleSet;
 
 import javax.rules.ObjectFilter;
 import javax.rules.admin.RuleExecutionSet;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,8 +114,16 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      *        <code>RuleExecutionSet</code>.
      * @param properties A <code>Map</code> of user-defined and
      *        Drools-defined properties. May be <code>null</code>.
+     *
+     * @throws RuleIntegrationException if an error occurs integrating
+     *         a <code>Rule</code> or <code>RuleSet</code>
+     *         into the <code>RuleBase</code>
+     * @throws RuleSetIntegrationException if an error occurs integrating
+     *         a <code>Rule</code> or <code>RuleSet</code>
+     *         into the <code>RuleBase</code>
      */
     RuleExecutionSetImpl( RuleSet ruleSet, Map properties )
+        throws RuleIntegrationException, RuleSetIntegrationException
     {
         if ( null == properties )
         {
@@ -129,19 +138,9 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
 
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setFactHandleFactory( Jsr94FactHandleFactory.getInstance( ) );
-        try
-        {
-            builder.addRuleSet( ruleSet );
-            this.ruleBase = builder.build( );
-        }
-        catch ( RuleIntegrationException e )
-        {
-            e.printStackTrace( );
-        }
-        catch ( RuleSetIntegrationException e )
-        {
-            e.printStackTrace( );
-        }
+
+        builder.addRuleSet( ruleSet );
+        this.ruleBase = builder.build( );
     }
 
     /**
