@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<rule-set name="fibonacci"
+          xmlns="http://drools.org/rules"
+          xmlns:groovy="http://drools.org/semantics/groovy"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/groovy groovy.xsd">
+
+  <groovy:import>org.drools.examples.fibonacci.Fibonacci</groovy:import>
+
+  <rule name="Bootstrap 1"   salience="20">
+    <parameter identifier="f">
+      <class>Fibonacci</class>
+    </parameter>
+    <groovy:condition>f.getSequence() == 1</groovy:condition>
+    <groovy:condition>f.getValue() == -1</groovy:condition>
+    <groovy:consequence>
+      f.setValue( 1 );
+      println f.getSequence() + " == " + f.getValue() ;
+      drools.modifyObject( f );
+    </groovy:consequence>
+  </rule>
+
+  <rule name="Bootstrap 2">
+    <parameter identifier="f">
+      <class>Fibonacci</class>
+    </parameter>
+    <groovy:condition>f.getSequence() == 2</groovy:condition>
+    <groovy:condition>f.getValue() == -1</groovy:condition>
+    <groovy:consequence>
+      f.setValue( 1 );
+      println f.getSequence() + " == " + f.getValue() ;
+      drools.modifyObject( f );
+    </groovy:consequence>
+  </rule>
+
+  <rule name="Recurse" salience="10">
+    <parameter identifier="f">
+      <class>Fibonacci</class>
+    </parameter>
+    <groovy:condition>f.getValue() == -1</groovy:condition>
+    <groovy:consequence>
+      println "recurse for " + f.getSequence() ;
+      drools.assertObject( new org.drools.examples.fibonacci.Fibonacci( f.getSequence() - 1 ) );
+    </groovy:consequence>
+  </rule>
+
+  <rule name="Calculate">
+    <parameter identifier="f1">
+      <class>Fibonacci</class>
+    </parameter>
+    <parameter identifier="f2">
+      <class>Fibonacci</class>
+    </parameter>
+    <parameter identifier="f3">
+      <class>Fibonacci</class>
+    </parameter>
+    <groovy:condition>f2.getSequence() == (f1.getSequence() + 1)</groovy:condition>
+    <groovy:condition>f3.getSequence() == (f2.getSequence() + 1)</groovy:condition>
+    <groovy:condition>f1.getValue() != -1</groovy:condition>
+    <groovy:condition>f2.getValue() != -1</groovy:condition>
+    <groovy:condition>f3.getValue() == -1</groovy:condition>
+    <groovy:consequence>
+      f3.setValue( f1.getValue() + f2.getValue() );
+      println f3.getSequence() + " == " + f3.getValue() ;
+      drools.modifyObject( f3 );
+      drools.retractObject( f1 );
+    </groovy:consequence>
+  </rule>
+
+</rule-set>

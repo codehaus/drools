@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Release Process</title>
+    <author email="matt@indigoegg.com">Matt Ho</author>
+  </properties>
+
+  <body>
+
+  <section name="Release Process">
+
+  <subsection name="...Checklist...">
+  <p>
+    The following actions should be performed when releasing a new version of drools.  
+  </p>
+  <p>
+    After deploying the release, take a few moments to verify that the files were all
+    posted as expected.  Verify that the new release does download from the links 
+    provided.
+  </p>
+  </subsection>
+
+  <subsection name="...Checklist...">
+  <ol>
+    <li>Send email to the development mailing list announcing a version control freeze for tagging.</li>
+    <li>Check out fresh working copy of CVS module you're going to tag.</li>
+    <li>
+      Convert all SNAPSHOT jars in project.xml to concrete timestamped or versioned jar references.
+    </li>
+    <li>
+      Ensure that build.xml agrees with project.xml with respect to dependent jars names.
+    </li>
+    <li>
+      Update xdocs/releases.xml to reflect the current build version.
+    </li>
+    <li>
+      Set the release version number in Maven project.xml . For 
+      example, 2.0-beta-9-dev would become 2.0-beta-9
+    </li>
+    <li>
+      Perform a successful build and test suite execution, and run the clean target to remove 
+      any generated files using maven.  Repeat this process using ant.
+    </li>
+    <li>
+      Commit your changes to the version control repository.
+    </li>
+    <li>
+      Tag the release via cvs -q tag PROJECT_VERSION_MODIFIER . An example release tag is 
+      DROOLS_2_0_BETA_9 .
+    </li>
+    <li>
+      Deploy the drools maven-generated project site.
+    </li>
+    <li>
+      Set the next development version number in Maven project.xml and/or Ant default.properties 
+      and commit the change to the version control repository. For example, 2.0-beta-9 would become
+      2.0-beta-10-dev
+    </li>
+    <li>
+      Send email to the development mailing list announcing completion of the tag.
+    </li>
+  </ol>
+  </subsection>
+
+  </section>
+
+</body>
+</document>
+

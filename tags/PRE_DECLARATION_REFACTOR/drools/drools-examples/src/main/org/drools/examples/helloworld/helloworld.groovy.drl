@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<rule-set name="HelloWorld"
+          xmlns="http://drools.org/rules"
+          xmlns:groovy="http://drools.org/semantics/groovy"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/groovy groovy.xsd">
+
+  <rule name="Hello World">
+    <parameter identifier="hello">
+      <class>java.lang.String</class>
+    </parameter>
+
+    <groovy:condition>hello.equals("Hello")</groovy:condition>
+
+    <groovy:consequence>
+      println hello + " World" ;
+    </groovy:consequence>
+  </rule>
+
+  <rule name="Goodbye Cruel World">
+    <parameter identifier="goodbye">
+      <class>java.lang.String</class>
+    </parameter>
+
+    <groovy:condition>goodbye.equals("Goodbye")</groovy:condition>
+
+    <groovy:consequence>
+      println goodbye + " Cruel World" ;
+    </groovy:consequence>
+  </rule>
+
+</rule-set>

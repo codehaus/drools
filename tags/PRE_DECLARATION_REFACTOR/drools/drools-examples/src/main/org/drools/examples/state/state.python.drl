@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<rule-set name="State Example"
+          xmlns="http://drools.org/rules"
+          xmlns:python="http://drools.org/semantics/python"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/python python.xsd">
+
+    <python:import>from org.drools.examples.state import State</python:import>
+
+    <rule name="Bootstrap">
+        <parameter identifier="a">
+            <class-field field="name" value="A">State</class-field>
+        </parameter>
+
+        <python:condition>a.getState() == "NOTRUN"</python:condition>
+
+        <python:consequence>
+            print "%s finished" % a.getName();
+            a.setState("FINISHED");
+            drools.modifyObject(a);
+        </python:consequence>
+    </rule>
+
+    <rule name="AtoB" salience="30">
+        <parameter identifier="a">
+            <class-field field="name" value="A">State</class-field>
+        </parameter>
+        <parameter identifier="b">
+            <class-field field="name" value="B">State</class-field>
+        </parameter>
+
+
+        <python:condition>a.getState() == "FINISHED"</python:condition>
+        <python:condition>b.getState() == "NOTRUN"</python:condition>
+
+        <python:consequence>
+            print "%s finished" % b.getName();
+            b.setState("FINISHED");
+            drools.modifyObject(b);
+        </python:consequence>
+    </rule>
+
+    <rule name="BtoC" salience="20">
+        <parameter identifier="b">
+            <class-field field="name" value="B">State</class-field>
+        </parameter>
+        <parameter identifier="c">
+            <class-field field="name" value="C">State</class-field>
+        </parameter>
+
+        <python:condition>b.getState() == "FINISHED"</python:condition>
+        <python:condition>c.getState() == "NOTRUN"</python:condition>
+
+        <python:consequence>
+            print "%s finished" % c.getName();
+            c.setState("FINISHED");
+            drools.modifyObject(c);
+        </python:consequence>
+    </rule>
+
+
+
+    <rule name="BtoD" salience="10">
+        <parameter identifier="b">
+            <class-field field="name" value="B">State</class-field>
+        </parameter>
+        <parameter identifier="d">
+            <class-field field="name" value="D">State</class-field>
+        </parameter>
+
+
+        <python:condition>b.getState() == "FINISHED"</python:condition>
+        <python:condition>d.getState() == "NOTRUN"</python:condition>
+
+        <python:consequence>
+            print "%s finished" % d.getName();
+            d.setState("FINISHED");
+            drools.modifyObject(d);
+        </python:consequence>
+    </rule>
+
+
+  </rule-set>
