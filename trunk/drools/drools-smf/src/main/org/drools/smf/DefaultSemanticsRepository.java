@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: DefaultSemanticsRepository.java,v 1.2 2004-06-13 03:36:25 bob Exp $
+ $Id: DefaultSemanticsRepository.java,v 1.3 2004-06-15 05:08:48 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,8 @@ package org.drools.smf;
 
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Set;
+import java.util.HashSet;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -67,7 +69,7 @@ import java.io.BufferedReader;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefaultSemanticsRepository.java,v 1.2 2004-06-13 03:36:25 bob Exp $
+ *  @version $Id: DefaultSemanticsRepository.java,v 1.3 2004-06-15 05:08:48 bob Exp $
  */
 public final class DefaultSemanticsRepository
     implements SemanticsRepository
@@ -105,6 +107,8 @@ public final class DefaultSemanticsRepository
     //     Instance members
     // ----------------------------------------------------------------------
 
+    private Set loadedSemantics;
+
     /** Module repository. */
     private SimpleSemanticsRepository repository;
 
@@ -120,7 +124,8 @@ public final class DefaultSemanticsRepository
     private DefaultSemanticsRepository()
         throws Exception
     {
-        this.repository = new SimpleSemanticsRepository();
+        this.loadedSemantics = new HashSet();
+        this.repository  = new SimpleSemanticsRepository();
         init();
     }
 
@@ -137,8 +142,6 @@ public final class DefaultSemanticsRepository
     protected void init()
         throws Exception
     {
-        String droolsConfigProp = System.getProperty( "drools.config" );
-
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         if ( cl == null )
@@ -146,26 +149,27 @@ public final class DefaultSemanticsRepository
             cl = getClass().getClassLoader();
         }
 
+        String droolsConfigProp = System.getProperty( "drools.config" );
+
         if ( droolsConfigProp != null )
         {
             loadConfig( droolsConfigProp );
         }
-        else
+
+        Enumeration configUrls = cl.getResources( "META-INF/drools.conf" );
+        
+        while ( configUrls.hasMoreElements() )
         {
-            Enumeration configUrls = cl.getResources( "META-INF/drools.conf" );
+            URL configUrl = (URL) configUrls.nextElement();
             
-            while ( configUrls.hasMoreElements() )
-            {
-                URL configUrl = (URL) configUrls.nextElement();
-                
-                loadConfig( configUrl );
-            }
+            loadConfig( configUrl );
         }
     }
 
     protected void loadConfig(String path)
         throws Exception
     {
+
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         if ( cl == null )
@@ -173,7 +177,6 @@ public final class DefaultSemanticsRepository
             cl = getClass().getClassLoader();
         }
 
-        System.err.println( "looading for [" + path + "]");
         URL url = cl.getResource( path );
 
         if ( url == null )
@@ -188,6 +191,8 @@ public final class DefaultSemanticsRepository
     protected void loadConfig(URL url)
         throws Exception
     {
+        System.err.println( "loading: " + url );
+
         InputStream config = url.openStream();
 
         BufferedReader in = new BufferedReader( new InputStreamReader( config ) );
@@ -216,9 +221,17 @@ public final class DefaultSemanticsRepository
         } 
     }
 
-    protected void loadSemantics(String configName)
+    protected void loadSemantics(String semanticsName)
         throws Exception
     {
+        if ( this.loadedSemantics.contains( semanticsName ) ) {
+            return;
+        }
+
+        this.loadedSemantics.add( semanticsName );
+
+        System.err.println( "loading semantics: " + semanticsName );
+
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         if ( cl == null )
@@ -226,13 +239,16 @@ public final class DefaultSemanticsRepository
             cl = getClass().getClassLoader();
         }
 
-        URL descriptor = cl.getResource( configName + ".conf");
-
+        String semanticsFile = "META-INF/" + semanticsName + ".conf";
+        
+        URL descriptor = cl.getResource( semanticsFile );
+        
         if ( descriptor == null )
         {
-            System.err.println( "cannot load " + configName );
+            System.err.println( "cannot load " + semanticsFile );
             return;
         }
+
         SemanticsReader semanticsReader = new SemanticsReader();
 
         SemanticModule module = semanticsReader.read( descriptor );
