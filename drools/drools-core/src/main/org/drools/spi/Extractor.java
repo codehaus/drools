@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Extractor.java,v 1.3 2003-11-19 21:31:12 bob Exp $
+ $Id: Extractor.java,v 1.4 2004-06-18 19:03:37 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.drools.rule.Declaration;
 public interface Extractor
     extends SemanticComponent
 {
-    /** Retrieve the array of <code>Declaration</code>s required
+    /** Retrieve the array of <code>Declaration</code> objects required
      *  by this <code>Extractor</code> to perform its duties.
      *
      *  @return The array of <code>Declarations</code> expected
