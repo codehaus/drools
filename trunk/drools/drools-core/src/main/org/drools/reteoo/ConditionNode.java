@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.19 2004-10-31 12:15:42 simon Exp $
+ * $Id: ConditionNode.java,v 1.20 2004-11-02 10:15:36 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -181,8 +181,8 @@ class ConditionNode extends TupleSource implements TupleSink
         Set retractedKeys = new HashSet( );
 
         Iterator tupleIter = newTuples.iterator( );
-        ReteTuple eachTuple = null;
-        TupleKey eachKey = null;
+        ReteTuple eachTuple;
+        TupleKey eachKey;
 
         while ( tupleIter.hasNext( ) )
         {

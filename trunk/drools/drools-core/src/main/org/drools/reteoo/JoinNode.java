@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.23 2004-10-31 00:31:14 simon Exp $
+ * $Id: JoinNode.java,v 1.24 2004-11-02 10:15:37 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -122,7 +122,7 @@ class JoinNode extends TupleSource
         Set rightDecls = rightInput.getTupleDeclarations( );
 
         Iterator declIter = rightDecls.iterator( );
-        Declaration eachDecl = null;
+        Declaration eachDecl;
 
         while ( declIter.hasNext( ) )
         {
@@ -183,7 +183,7 @@ class JoinNode extends TupleSource
     void propagateAssertTuples(Set joinedTuples, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Iterator tupleIter = joinedTuples.iterator( );
-        ReteTuple eachTuple = null;
+        ReteTuple eachTuple;
 
         while ( tupleIter.hasNext( ) )
         {

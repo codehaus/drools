@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.19 2004-09-17 00:14:10 mproctor Exp $
- * 
+ * $Id: ObjectTypeNode.java,v 1.20 2004-11-02 10:15:37 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,8 +37,12 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -46,25 +50,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.spi.ObjectType;
-
 /**
  * Filters <code>Objects</code> coming from the <code>Rete</code> using a
  * <code>ObjectType</code> semantic module.
- * 
+ *
  * <p>
  * It receives <code>Objects</code> from the <code>Rete</code>, uses a
  * <code>ObjectType</code> instance to determine membership, and propagates
  * matching <code>Objects</code> further to all matching
  * <code>ParameterNode</code>s.
  * </p>
- * 
+ *
  * @see ObjectType
  * @see ParameterNode
  * @see Rete
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com </a>
  */
 class ObjectTypeNode implements Serializable
@@ -85,7 +85,7 @@ class ObjectTypeNode implements Serializable
 
     /**
      * Construct given a semantic <code>ObjectType</code>.
-     * 
+     *
      * @param objectType The semantic object-type differentiator.
      */
     public ObjectTypeNode(ObjectType objectType)
@@ -101,7 +101,7 @@ class ObjectTypeNode implements Serializable
 
     /**
      * Retrieve the semantic <code>ObjectType</code> differentiator.
-     * 
+     *
      * @return The semantic <code>ObjectType</code> differentiator.
      */
     public ObjectType getObjectType()
@@ -111,7 +111,7 @@ class ObjectTypeNode implements Serializable
 
     /**
      * Add a <code>ParameterNode</code> child to this node.
-     * 
+     *
      * @param node The <code>ParameterNode</code> child to add.
      */
     void addParameterNode(ParameterNode node)
@@ -139,7 +139,7 @@ class ObjectTypeNode implements Serializable
     /**
      * Retreive an <code>Iterator</code> over <code>ParameterNode</code>
      * children of this node.
-     * 
+     *
      * @return An <code>Iterator</code> over <code>ParameterNode</code>
      *         children of this node.
      */
@@ -151,11 +151,11 @@ class ObjectTypeNode implements Serializable
     /**
      * Assert a new fact object into this <code>RuleBase</code> and the
      * specified <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle The fact handle.
      * @param object The object to assert.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during assertion.
      */
     void assertObject(FactHandle handle,
@@ -170,7 +170,7 @@ class ObjectTypeNode implements Serializable
         }
 
         Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode = null;
+        ParameterNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {
@@ -182,10 +182,10 @@ class ObjectTypeNode implements Serializable
     /**
      * Retract a fact object from this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle The handle of the fact to retract.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during assertion.
      */
     void retractObject(FactHandle handle, WorkingMemoryImpl workingMemory) throws FactException
@@ -200,7 +200,7 @@ class ObjectTypeNode implements Serializable
         }
 
         Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode = null;
+        ParameterNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {
@@ -213,14 +213,14 @@ class ObjectTypeNode implements Serializable
     /**
      * Modify a fact object in this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * With the exception of time-based nodes, modification of a fact object is
      * semantically equivelent to retracting and re-asserting it.
-     * 
+     *
      * @param handle The fact handle.
      * @param object The modified value object.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during assertion.
      */
     void modifyObject(FactHandle handle,
@@ -230,7 +230,7 @@ class ObjectTypeNode implements Serializable
         ObjectType objectType = getObjectType( );
 
         Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode = null;
+        ParameterNode eachNode;
 
         if ( !objectType.matches( object ) )
         {
