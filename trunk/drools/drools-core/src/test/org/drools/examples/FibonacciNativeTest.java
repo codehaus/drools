@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.3 2004-11-07 18:38:53 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.4 2004-11-08 14:18:26 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools.examples;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
+import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
 import org.drools.reteoo.Dumper;
 import org.drools.rule.Declaration;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.50 2004-11-05 00:39:23 mproctor Exp $
+ * $Id: Builder.java,v 1.51 2004-11-08 14:18:26 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -177,6 +177,7 @@ public class Builder
         boolean joinedForCondition;
 
         leafNodes = createParameterNodes( rule );
+        
 
         while ( true )
         {

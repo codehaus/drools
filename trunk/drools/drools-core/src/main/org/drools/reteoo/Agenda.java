@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.39 2004-11-08 11:08:31 mproctor Exp $
+ * $Id: Agenda.java,v 1.40 2004-11-08 14:18:26 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -96,7 +96,7 @@ class Agenda implements Serializable
     /** The current agenda item being fired; or null if none. */
     private AgendaItem          item;
     
-    private final Set 			agendaFilters;
+    private AgendaFilter	    agendaFilter;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -113,7 +113,6 @@ class Agenda implements Serializable
         this.workingMemory = workingMemory;
         this.items = new PriorityQueue( conflictResolver );
         this.scheduledItems = new HashSet( );
-        this.agendaFilters = new HashSet( );
     }
 
     // ------------------------------------------------------------
@@ -148,19 +147,10 @@ class Agenda implements Serializable
 
         AgendaItem item = new AgendaItem( tuple, rule );
         
-        if (!this.agendaFilters.isEmpty())
+        // if agenda filter is set and returns false drop the activation
+        if ((this.agendaFilter != null)&&(!agendaFilter.accept(item)))
         {
-            Iterator it = this.agendaFilters.iterator();
-            AgendaFilter filter;
-            //If a filter returns false do not accept the activation
-            while (it.hasNext())
-            {
-                filter = (AgendaFilter) it.next();
-                if (!filter.accept(item))
-                {
-                    return;
-                }
-            }
+            return;
         }
 
         Duration dur = rule.getDuration( );
@@ -489,13 +479,9 @@ class Agenda implements Serializable
         }
     }
 
-    public void addAgendaFilter(AgendaFilter agendaFilter)
+    public void setAgendaFilter(AgendaFilter agendaFilter)
     {
-        this.agendaFilters.add(agendaFilter);
+        this.agendaFilter = agendaFilter;
     }
     
-    public void removeAgendaFilter(AgendaFilter agendaFilter)
-    {
-        this.agendaFilters.remove(agendaFilter);
-    }    
 }
