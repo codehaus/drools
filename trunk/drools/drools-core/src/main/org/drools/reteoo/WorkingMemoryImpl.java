@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.26 2004-10-22 22:21:16 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.27 2004-10-25 13:23:32 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,7 @@ import org.drools.event.WorkingMemoryEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.26 2004-10-22 22:21:16 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.27 2004-10-25 13:23:32 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -301,16 +302,24 @@ class WorkingMemoryImpl implements WorkingMemory
         return this.objects.containsKey( handle );
     }
 
+
+    private final Map handles = new IdentityHashMap( );
+
     /**
      * @see WorkingMemory
      */
     public synchronized FactHandle assertObject(Object object) throws FactException
     {
-        FactHandle handle = newFactHandle( );
+        FactHandle handle = ( FactHandle ) this.handles.get( object );
 
-        this.ruleBase.assertObject( handle, object, this );
+        if ( handle == null )
+        {
+            handle = newFactHandle( );
 
-        putObject( handle, object );
+            this.ruleBase.assertObject( handle, object, this );
+
+            putObject( handle, object );
+        }
 
         return handle;
     }
@@ -324,6 +333,8 @@ class WorkingMemoryImpl implements WorkingMemory
     void putObject(FactHandle handle, Object object)
     {
         this.objects.put( handle, object );
+
+        this.handles.put( object, handle );
     }
 
     /**
@@ -333,7 +344,7 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         this.ruleBase.retractObject( handle, this );
 
-        this.objects.remove( handle );
+        this.handles.remove( this.objects.remove( handle ) );
     }
 
     /**
@@ -341,14 +352,18 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized void modifyObject(FactHandle handle, Object object) throws FactException
     {
-        if ( !containsObject( handle ) )
+        Object original = this.objects.put( handle, object );
+
+        if ( object == null )
         {
             throw new NoSuchFactObjectException( handle );
         }
 
-        this.ruleBase.modifyObject( handle, object, this );
+        this.handles.remove( original );
 
-        this.objects.put( handle, object );
+        this.handles.put( object, handle );
+
+        this.ruleBase.modifyObject( handle, object, this );
     }
 
     /**
