@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.24 2004-12-04 15:18:19 simon Exp $
+ * $Id: ObjectTypeNode.java,v 1.25 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,12 +42,14 @@ package org.drools.reteoo;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
+import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Filters <code>Objects</code> coming from the <code>Rete</code> using a
@@ -78,7 +80,7 @@ class ObjectTypeNode
     private final ObjectType objectType;
 
     /** The <code>ParameterNode</code> children. */
-    private final Set parameterNodes = new HashSet( );
+    private final Map parameterNodes = new HashMap( );
 
     // ------------------------------------------------------------
     // Constructors
@@ -112,12 +114,11 @@ class ObjectTypeNode
     /**
      * Add a <code>ParameterNode</code> child to this node.
      *
-     * @param node
-     *            The <code>ParameterNode</code> child to add.
+     * @param node The <code>ParameterNode</code> child to add.
      */
     void addParameterNode(ParameterNode node)
     {
-        this.parameterNodes.add( node );
+        this.parameterNodes.put( node.getDeclaration( ), node );
     }
 
     /**
@@ -126,10 +127,11 @@ class ObjectTypeNode
      *
      *  @return The <code>Set</code> of <code>ParameterNode</code>
      *          children.
+     * TODO: Remove this.
      */
-    Set getParameterNodes()
+    Collection getParameterNodes()
     {
-        return this.parameterNodes;
+        return this.parameterNodes.values( );
     }
 
     /**
@@ -141,22 +143,18 @@ class ObjectTypeNode
      */
     Iterator getParameterNodeIterator()
     {
-        return this.parameterNodes.iterator( );
+        return this.parameterNodes.values( ).iterator( );
     }
 
     /**
      * Assert a new fact object into this <code>RuleBase</code> and the
      * specified <code>WorkingMemory</code>.
      *
-     * @param handle
-     *            The fact handle.
-     * @param object
-     *            The object to assert.
-     * @param workingMemory
-     *            The working memory session.
+     * @param handle The fact handle.
+     * @param object The object to assert.
+     * @param workingMemory The working memory session.
      *
-     * @throws FactException
-     *             if an error occurs during assertion.
+     * @throws FactException if an error occurs during assertion.
      */
     void assertObject(FactHandle handle,
                       Object object,
@@ -181,13 +179,10 @@ class ObjectTypeNode
      * Retract a fact object from this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
      *
-     * @param handle
-     *            The handle of the fact to retract.
-     * @param workingMemory
-     *            The working memory session.
+     * @param handle The handle of the fact to retract.
+     * @param workingMemory The working memory session.
      *
-     * @throws FactException
-     *             if an error occurs during assertion.
+     * @throws FactException if an error occurs during assertion.
      */
     void retractObject(FactHandle handle,
                        WorkingMemoryImpl workingMemory) throws FactException
@@ -213,15 +208,11 @@ class ObjectTypeNode
      * With the exception of time-based nodes, modification of a fact object is
      * semantically equivelent to retracting and re-asserting it.
      *
-     * @param handle
-     *            The fact handle.
-     * @param object
-     *            The modified value object.
-     * @param workingMemory
-     *            The working memory session.
+     * @param handle The fact handle.
+     * @param object The modified value object.
+     * @param workingMemory The working memory session.
      *
-     * @throws FactException
-     *             if an error occurs during assertion.
+     * @throws FactException if an error occurs during assertion.
      */
     void modifyObject(FactHandle handle,
                       Object object,
@@ -233,9 +224,9 @@ class ObjectTypeNode
         {
             while ( nodeIter.hasNext( ) )
             {
-                ( (ParameterNode) nodeIter.next( ) ).modifyObject( handle,
-                                                                   object,
-                                                                   workingMemory );
+                ( ( ParameterNode ) nodeIter.next( ) ).modifyObject( handle,
+                                                                     object,
+                                                                     workingMemory );
             }
         }
         else
@@ -246,5 +237,19 @@ class ObjectTypeNode
                                                                       workingMemory );
             }
         }
+    }
+
+    public ParameterNode getOrCreateParameterNode( Declaration declaration )
+    {
+        ParameterNode node = ( ParameterNode ) this.parameterNodes.get( declaration );
+
+        if ( node == null )
+        {
+            node = new ParameterNode( this, declaration );
+
+            addParameterNode( node );
+        }
+
+        return node;
     }
 }

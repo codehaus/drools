@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.40 2004-12-04 02:27:21 simon Exp $
+ * $Id: ParameterNode.java,v 1.41 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -216,7 +216,6 @@ class ParameterNode extends TupleSource
             return false;
         }
 
-        return this.declaration == ( ( ParameterNode ) object ).declaration;
-//        return this.declaration.equals( ( ( ParameterNode ) object ).declaration );
+        return this.declaration.equals( ( ( ParameterNode ) object ).declaration );
     }
 }

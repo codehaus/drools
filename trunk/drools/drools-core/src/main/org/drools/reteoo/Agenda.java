@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.48 2004-11-29 11:57:49 simon Exp $
+ * $Id: Agenda.java,v 1.49 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -128,6 +128,7 @@ class Agenda
     void addToAgenda(ReteTuple tuple,
                      Rule rule)
     {
+        // TODO: Remove this defensive rubbish.
         if ( rule == null )
         {
             return;
@@ -220,16 +221,13 @@ class Agenda
     /**
      * Modify the agenda.
      *
-     * @param trigger
-     *            The triggering root object handle.
-     * @param newTuples
-     *            New tuples from the modification.
-     * @param rule
-     *            The rule.
+     * @param trigger The triggering root object handle.
+     * @param modifyTuples New tuples from the modification.
+     * @param rule The rule.
+     * TODO: Can't simply remove them from the TupleSet!!!
      */
-
     void modifyAgenda(FactHandle trigger,
-                      TupleSet newTuples,
+                      TupleSet modifyTuples,
                       Rule rule)
     {
         Iterator itemIter = this.items.iterator( );
@@ -244,7 +242,7 @@ class Agenda
             if ( eachItem.getRule( ) == rule
                  && eachItem.dependsOn( trigger ) )
             {
-                newTuples.removeTuple( eachItem.getKey( ) );
+                modifyTuples.removeTuple( eachItem.getKey( ) );
             }
         }
 
@@ -257,12 +255,12 @@ class Agenda
             if ( eachItem.getRule( ) == rule
                  && eachItem.dependsOn( trigger ) )
             {
-                newTuples.removeTuple( eachItem.getKey( ) );
+                modifyTuples.removeTuple( eachItem.getKey( ) );
             }
         }
 
         // All remaining tuples are new so add them to the Agenda
-        Iterator tupleIter = newTuples.iterator( );
+        Iterator tupleIter = modifyTuples.iterator( );
         while ( tupleIter.hasNext( ) )
         {
             eachTuple = (ReteTuple) tupleIter.next( );

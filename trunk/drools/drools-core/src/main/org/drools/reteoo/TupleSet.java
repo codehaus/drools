@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.26 2004-11-30 05:31:09 simon Exp $
+ * $Id: TupleSet.java,v 1.27 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,8 +41,6 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -121,8 +119,7 @@ class TupleSet
     /**
      * Add a single <code>Tuple</code> to this set.
      *
-     * @param tuple
-     *            The tuple.
+     * @param tuple The tuple.
      */
     public void addTuple(ReteTuple tuple)
     {
@@ -139,7 +136,7 @@ class TupleSet
     public boolean removeAllTuples(TupleKey key)
     {
         boolean removed = false;
-        Iterator tupleIter = iterator( );
+        Iterator tupleIter = this.tuples.values( ).iterator( );
         while ( tupleIter.hasNext( ) )
         {
             if ( ( ( ReteTuple ) tupleIter.next( ) ).getKey( ).containsAll( key ) )
@@ -152,21 +149,7 @@ class TupleSet
     }
 
     /**
-     * Retrieve all <code>Tuple</code>s.
-     *
-     * @see org.drools.spi.Tuple
-     *
-     * @return The set of tuples.
-     */
-    public Collection getTuples()
-    {
-        return Collections.unmodifiableCollection( this.tuples.values( ) );
-    }
-
-    /**
      * Retrieve a <code>Tuple</code> by <code>TupleKey</code>.
-     *
-     * @see org.drools.spi.Tuple
      *
      * @param key The tuple key.
      *

@@ -5,8 +5,8 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class ObjectTypeNodeTest extends DroolsTestCase
 {
@@ -19,7 +19,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
         ObjectTypeNode objectTypeNode = new ObjectTypeNode( new MockObjectType( String.class ) );
 
         InstrumentedParameterNode paramNode = new InstrumentedParameterNode( null, decl );
-        paramNode.setTupleSink( new InstrumentedTupleSink( ) );
+        paramNode.addTupleSink( new InstrumentedTupleSink( ) );
 
         objectTypeNode.addParameterNode( paramNode );
 
@@ -45,7 +45,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
 
         assertSame( string1, asserted.get( 0 ) );
 
-        Set paramNodes = objectTypeNode.getParameterNodes( );
+        Collection paramNodes = objectTypeNode.getParameterNodes( );
 
         assertEquals( 1, paramNodes.size( ) );
 

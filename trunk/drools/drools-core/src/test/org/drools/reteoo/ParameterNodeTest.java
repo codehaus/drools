@@ -34,7 +34,7 @@ public class ParameterNodeTest extends DroolsTestCase
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
-        node.setTupleSink( sink );
+        node.addTupleSink( sink );
 
         FactHandleImpl handle = new FactHandleImpl( 1 );
         WorkingMemoryImpl memory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
