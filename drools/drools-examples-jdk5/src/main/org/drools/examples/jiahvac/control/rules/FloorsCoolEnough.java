@@ -14,20 +14,20 @@ import org.drools.semantics.annotation.Consequence;
 public class FloorsCoolEnough
 {
     @Condition
-    public boolean isPumpCooling(@Parameter("pump") HeatPump pump) {
+    public boolean isPumpCooling(@Parameter HeatPump pump) {
         return pump.getState() == COOLING;
     }
 
     @Condition
-    public boolean isPumpServicingFloor(@Parameter("pump") HeatPump pump,
-                                        @Parameter("thermometer") Thermometer thermometer) {
+    public boolean isPumpServicingFloor(@Parameter HeatPump pump,
+                                        @Parameter Thermometer thermometer) {
         return thermometer.getFloor().getHeatPump() == pump;
     }
 
     @Condition
-    public boolean isAllFloorsCoolEnough(@Parameter("pump") HeatPump pump,
-                                         @Parameter("thermometer") Thermometer thermometer,
-                                         @Parameter("control") TempuratureControl control) {
+    public boolean isAllFloorsCoolEnough(@Parameter HeatPump pump,
+                                         @Parameter Thermometer thermometer,
+                                         @Parameter TempuratureControl control) {
         if (!control.isCoolEnough(thermometer.getReading())) {
             return false;
         }
@@ -43,7 +43,7 @@ public class FloorsCoolEnough
      }
 
     @Consequence
-    public void consequence(@Parameter("pump") HeatPump pump) {
+    public void consequence(@Parameter HeatPump pump) {
         pump.setState(OFF);
         System.out.println("FloorsCoolEnough: " + pump);
     }
