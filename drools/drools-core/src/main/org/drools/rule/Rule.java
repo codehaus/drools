@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.20 2003-10-28 19:16:52 bob Exp $
+ $Id: Rule.java,v 1.21 2003-10-28 19:32:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -69,7 +69,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.20 2003-10-28 19:16:52 bob Exp $
+ *  @version $Id: Rule.java,v 1.21 2003-10-28 19:32:48 bob Exp $
  */
 public class Rule
 {
@@ -348,7 +348,7 @@ public class Rule
      *
      *  @return The array of declarations.
      */
-    public Declaration[] getDeclarationsArray()
+    public Declaration[] getAllDeclarations()
     {
         return (Declaration[]) this.allDeclarations.toArray( Declaration.EMPTY_ARRAY );
     }

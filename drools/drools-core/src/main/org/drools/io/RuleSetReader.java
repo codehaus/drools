@@ -607,7 +607,7 @@ public class RuleSetReader
             try
             {
                 ((ConfigurableCondition)this.condition).configure( config,
-                                                                   this.rule.getDeclarationsArray() );
+                                                                   this.rule.getAllDeclarations() );
             }
             catch (ConfigurationException e)
             {
@@ -669,7 +669,7 @@ public class RuleSetReader
             try
             {
                 ((ConfigurableConsequence)this.consequence).configure( config,
-                                                                       this.rule.getDeclarationsArray() );
+                                                                       this.rule.getAllDeclarations() );
             }
             catch (ConfigurationException e)
             {
