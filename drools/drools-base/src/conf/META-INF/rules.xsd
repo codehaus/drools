@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://drools.org/rules"
            elementFormDefault="qualified"
@@ -29,6 +29,16 @@
   <xs:element name="rule">
     <xs:complexType>
       <xs:sequence>
+
+        <xs:element name="imports" minOccurs="0" maxOccurs="1" >
+          <xs:complexType>
+            <xs:choice>
+              <xs:element ref="java:import"/>
+              <xs:element ref="groovy:import"/>
+              <xs:element ref="python:import"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
 
         <xs:element name="parameter" maxOccurs="unbounded" >
           <xs:complexType>
