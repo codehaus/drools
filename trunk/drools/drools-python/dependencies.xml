@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="jar" name="drools" basedir=".">
+  
+  <property name="defaulttargetdir" value="target"></property> 
+  <property name="classesdir" value="target/classes"></property>
+  <property name="testclassesdir" value="target/test-classes"></property>
+  <property name="testreportdir" value="target/test-reports"></property>
+  <property name="distdir" value="dist"></property>
+  <property name="javadocdir" value="target/docs/apidocs"></property>
+  <property name="final.name" value="drools-2.0-beta-7-dev"></property>
+  
+  <target name="get-deps" unless="noget">
+  
+    <mkdir dir="lib"></mkdir>
+    
+    <get dest="lib/antlrall-2.7.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/antlr/jars/antlrall-2.7.1.jar"></get>
+    <get dest="lib/bsh-1.2-b3.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/bsh/jars/bsh-1.2-b3.jar"></get>
+    <get dest="lib/commons-beanutils-1.4-dev.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-beanutils/jars/commons-beanutils-1.4-dev.jar"></get>
+    <get dest="lib/commons-collections-2.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.0.jar"></get>
+    <get dest="lib/commons-jelly-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jelly/jars/commons-jelly-SNAPSHOT.jar"></get>
+    <get dest="lib/commons-jexl-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-jexl/jars/commons-jexl-SNAPSHOT.jar"></get>
+    <get dest="lib/commons-logging-1.1-dev.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-logging/jars/commons-logging-1.1-dev.jar"></get>
+    <get dest="lib/dom4j-1.4-dev-7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/dom4j/jars/dom4j-1.4-dev-7.jar"></get>
+    <get dest="lib/jaxen-1.0-FCS-full.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jaxen/jars/jaxen-1.0-FCS-full.jar"></get>
+    <get dest="lib/junit-3.7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.7.jar"></get>
+    <get dest="lib/jython-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jython/jars/jython-SNAPSHOT.jar"></get>
+    <get dest="lib/jsr94-1.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jsr94/jars/jsr94-1.0.jar"></get>
+    <get dest="lib/saxpath-1.0-FCS.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/saxpath/jars/saxpath-1.0-FCS.jar"></get>
+    <get dest="lib/velocity-1.4-dev.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/velocity/jars/velocity-1.4-dev.jar"></get>
+    <get dest="lib/xml-apis-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xml-apis/jars/xml-apis-2.0.2.jar"></get>
+    <get dest="lib/xerces-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-2.0.2.jar"></get>
+    
+    <get dest="lib/junit-3.7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.7.jar"></get>
+  
+  </target>
+
+</project>
+    
