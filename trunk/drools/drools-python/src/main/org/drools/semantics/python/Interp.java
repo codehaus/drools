@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.12 2004-08-31 09:57:40 ckl Exp $
+ $Id: Interp.java,v 1.13 2004-09-01 20:23:39 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -76,7 +76,7 @@ import org.python.util.PythonInterpreter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.12 2004-08-31 09:57:40 ckl Exp $
+ *  @version $Id: Interp.java,v 1.13 2004-09-01 20:23:39 dbarnett Exp $
  */
 public class Interp
 {
@@ -232,7 +232,7 @@ public class Interp
             }
             catch (IOException e)
             {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage());
             }
 
             // Remove extraneous trailing LINE_SEPARATOR
@@ -253,7 +253,7 @@ public class Interp
                 throw (RuntimeException) e;
             }
 
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 

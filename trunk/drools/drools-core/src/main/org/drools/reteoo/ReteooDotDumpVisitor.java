@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteooDotDumpVisitor.java,v 1.1 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: ReteooDotDumpVisitor.java,v 1.2 2004-09-01 20:23:31 dbarnett Exp $
 
  Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -358,7 +358,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Error formatting '" + label + "'", e);
+            throw new RuntimeException("Error formatting '" + label + "': " +  e.getMessage());
         }
 
         return buffer.toString();
