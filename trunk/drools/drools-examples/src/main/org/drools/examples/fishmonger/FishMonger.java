@@ -74,6 +74,7 @@ public class FishMonger
                 // and let the logic engine do the rest.
 
                 workingMemory.assertObject( cart );
+                workingMemory.fireAllRules();
 
                 System.err.println( "----------------------------------------");
                 System.err.println( "    POST" );
