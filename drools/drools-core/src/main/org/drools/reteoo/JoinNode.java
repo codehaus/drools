@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.22 2004-10-29 13:22:43 simon Exp $
+ * $Id: JoinNode.java,v 1.23 2004-10-31 00:31:14 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,15 @@ package org.drools.reteoo;
  *
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * A two-input Rete-OO <i>join node </i>.
@@ -67,18 +67,18 @@ class JoinNode extends TupleSource
     /**
      * The left input <code>TupleSource</code>.
      */
-    private TupleSource leftInput;
+    private final TupleSource leftInput;
 
     /**
      * The right input <code>TupleSource</code>.
      */
-    private TupleSource rightInput;
+    private final TupleSource rightInput;
 
     /**
      * A <code>Set</code> of <code>Declarations</code> common to both left
      * and right input sources.
      */
-    private Set         commonDeclarations;
+    private final Set         commonDeclarations;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -94,8 +94,7 @@ class JoinNode extends TupleSource
     {
         this.leftInput = leftInput;
         this.rightInput = rightInput;
-
-        determineCommonDeclarations( );
+        this.commonDeclarations = determineCommonDeclarations( );
 
         leftInput.setTupleSink( getLeftNodeInput( ) );
         rightInput.setTupleSink( getRightNodeInput( ) );
@@ -115,9 +114,9 @@ class JoinNode extends TupleSource
      * Set up the <code>Set</code> of common <code>Declarations</code>
      * across the two input <code>TupleSources</code>.
      */
-    private void determineCommonDeclarations()
+    private Set determineCommonDeclarations()
     {
-        this.commonDeclarations = new HashSet( );
+        Set commonDeclarations = new HashSet( );
 
         Set leftDecls = leftInput.getTupleDeclarations( );
         Set rightDecls = rightInput.getTupleDeclarations( );
@@ -131,9 +130,11 @@ class JoinNode extends TupleSource
 
             if ( leftDecls.contains( eachDecl ) )
             {
-                this.commonDeclarations.add( eachDecl );
+                commonDeclarations.add( eachDecl );
             }
         }
+
+        return commonDeclarations;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
