@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <project>
-  
 
   <pomVersion>3</pomVersion>
   <name>drools</name>
@@ -28,8 +27,8 @@
 
   <siteAddress>drools.werken.com</siteAddress>
   <siteDirectory>/www/drools.werken.com</siteDirectory>
-  <issueTrackingUrl>http://jira.werken.com/</issueTrackingUrl>
-  
+  <issueTrackingUrl>http://jira.werken.com:8181/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
+
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
     <url>http://cvs.werken.com/viewcvs.cgi/drools/drools/</url>
@@ -57,7 +56,7 @@
 
     <developer>
       <name>Bob McWhirter</name>
-      <id>werken</id>
+      <id>bob</id>
       <email>bob@werken.com</email>
       <organization>The Werken Company</organization>
       <role>Founder</role>
@@ -93,7 +92,7 @@
     <dependency>
       <id>antlr</id>
       <version>2.7.1</version>
-      <jar>antlrall-2.7.1</jar>
+      <jar>antlrall-2.7.1.jar</jar>
     </dependency>
 
     <dependency>
@@ -187,6 +186,9 @@
       <includes>
         <include>**/*Test.java</include>
       </includes>
+      <excludes>
+        <exclude>**/SemanticsLoaderTest.java</exclude>
+      </excludes>
     </unitTest>
 
     <!-- Integration unit test classes -->

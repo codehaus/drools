@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeInput.java,v 1.1 2002-08-10 19:16:17 bob Exp $
+ $Id: JoinNodeInput.java,v 1.2 2002-08-10 20:57:34 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,26 +52,43 @@ import org.drools.RetractionException;
 import org.drools.FactException;
 import org.drools.reteoo.TupleSink;
 
+/** Input <code>TupleSinkImpl</code> for a <code>JoinNodeImpl</code>.
+ *
+ *  @see JoinNodeImpl
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 class JoinNodeInput implements TupleSinkImpl
 {
     // ------------------------------------------------------------
     //     Constants
     // ------------------------------------------------------------
 
+    /** Left-side input. */
     static final int LEFT  = 41;
+
+    /** Right-side input. */
     static final int RIGHT = 42;
     
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    private int side;
+    /** Join node. */
     private JoinNodeImpl joinNode;
+
+    /** Side. */
+    private int side;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param joinNode Join node.
+     *  @param side Side marker.
+     */
     JoinNodeInput(JoinNodeImpl joinNode,
                   int side)
     {
@@ -79,15 +96,31 @@ class JoinNodeInput implements TupleSinkImpl
         this.side     = side;
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the side marker.
+     *
+     *  @return The side marker.
+     */
     int getSide()
     {
         return this.side;
     }
 
+    /** Retrieve the destination join node.
+     *
+     *  @return The join node.
+     */
     JoinNodeImpl getJoinNode()
     {
         return this.joinNode;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.reteoo.impl.TupleSinkImpl
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     /** Assert a new <code>Tuple</code>.
      *
