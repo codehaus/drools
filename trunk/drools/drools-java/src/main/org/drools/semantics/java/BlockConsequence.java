@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.32 2004-11-13 01:43:07 simon Exp $
+ * $Id: BlockConsequence.java,v 1.33 2004-11-13 13:19:33 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,7 @@ import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -61,7 +62,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: BlockConsequence.java,v 1.32 2004-11-13 01:43:07 simon Exp $
+ * @version $Id: BlockConsequence.java,v 1.33 2004-11-13 13:19:33 simon Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
@@ -110,6 +111,7 @@ public class BlockConsequence implements Consequence, Serializable
         {
             Set decls = tuple.getDeclarations( );
             Declaration[] params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
+            Arrays.sort( params );
             Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
 
             if ( script == null )
