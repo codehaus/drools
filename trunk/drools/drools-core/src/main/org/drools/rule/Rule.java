@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.22 2003-10-28 19:55:17 bob Exp $
+ $Id: Rule.java,v 1.23 2003-10-30 05:05:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -69,7 +69,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.22 2003-10-28 19:55:17 bob Exp $
+ *  @version $Id: Rule.java,v 1.23 2003-10-30 05:05:48 bob Exp $
  */
 public class Rule
 {
@@ -212,9 +212,17 @@ public class Rule
     public void checkValidity()
         throws InvalidRuleException
     {
-        if ( ! isValid() )
+        if ( getParameterDeclarations().length == 0 )
         {
             throw new NoParameterDeclarationException( this );
+        }
+        if ( getConditions().length == 0 )
+        {
+            throw new NoConditionException( this );
+        }
+        if ( getConsequence() == null )
+        {
+            throw new NoConsequenceException( this );
         }
     }
 

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.6 2002-08-18 23:24:48 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.7 2003-10-30 05:05:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -111,15 +111,6 @@ public class SimpleSemanticModule implements SemanticModule
     public String getUri()
     {
         return this.uri;
-    }
-
-    /** Set the URI.
-     *
-     *  @param uri The URI.
-     */
-    void setUri(String uri)
-    {
-        this.uri = uri;
     }
 
     /** Add a semantic object type.

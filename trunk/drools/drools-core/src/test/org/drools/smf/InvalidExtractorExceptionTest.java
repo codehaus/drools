@@ -12,7 +12,7 @@ public class InvalidExtractorExceptionTest
         assertSame( Object.class,
                     e.getInvalidClass() );
 
-        assertEquals( "java.lang.Object is not a valid extractor",
+        assertEquals( "java.lang.Object is not a valid fact extractor",
                       e.getMessage() );
     }
 }

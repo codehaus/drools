@@ -1,7 +1,7 @@
-package org.drools.smf;
+package org.drools.rule;
 
 /*
- $Id: NoSuchSemanticModuleException.java,v 1.2 2003-10-30 05:05:48 bob Exp $
+ $Id: NoConsequenceException.java,v 1.1 2003-10-30 05:05:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,57 +46,24 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to lookup a non-existant <code>SemanticModule</code>.
- *
- *  @see SemanticsRepository
+/** Validity exception indicating that a <code>Rule</code> does not
+ *  contain a <code>Consequence</code>s.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class NoSuchSemanticModuleException extends SemanticModuleException 
+public class NoConsequenceException
+    extends InvalidRuleException
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The uri. */
-    private String uri;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
-     *  @param uri The invalid URI.
+     *  @param rule The invalid <code>Rule</code>.
      */
-    public NoSuchSemanticModuleException(String uri)
+    public NoConsequenceException(Rule rule)
     {
-        this.uri = uri;
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the URI.
-     *
-     *  @return The URI;
-     */
-    public String getUri()
-    {
-        return this.uri;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the error message.
-     *
-     *  @return The error message.
-     */
-    public String getMessage()
-    {
-        return "no such semantic module: " + getUri();
+        super( rule );
     }
 }
