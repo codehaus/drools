@@ -3,7 +3,7 @@
     <extend>../project.xml</extend>
     <pomVersion>3</pomVersion>
     <name>Drools :: Semantics Module Test Framework</name>
-    <artifactId>drools-smftestframework</artifactId>
+    <artifactId>drools-smftest</artifactId>
     <groupId>drools</groupId>
 
     <dependencies>
