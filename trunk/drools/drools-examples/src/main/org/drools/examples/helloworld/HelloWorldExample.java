@@ -1,9 +1,9 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldExample.java,v 1.3 2004-10-17 02:44:45 mproctor Exp $
+ * $Id: HelloWorldExample.java,v 1.4 2004-11-23 22:04:16 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -48,7 +48,7 @@ import org.drools.reteoo.Dumper;
 
 public class HelloWorldExample
 {
-    public static void main(String[] args) throws Exception
+    public static void main( String[] args ) throws Exception
     {
         if ( args.length != 1 )
         {
@@ -58,9 +58,8 @@ public class HelloWorldExample
         }
         System.out.println( "Using drl: " + args[0] );
 
-        RuleBase ruleBase = RuleBaseBuilder
-                                           .buildFromUrl( HelloWorldExample.class
-                                                                                 .getResource( args[0] ) );
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl(
+            HelloWorldExample.class.getResource( args[0] ) );
 
         System.out.println( "DUMP RETE" );
         System.out.println( "---------" );
@@ -70,7 +69,8 @@ public class HelloWorldExample
         System.out.println( "FIRE RULES(Hello)" );
         System.out.println( "----------" );
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
-        workingMemory.addEventListener( new DebugWorkingMemoryEventListener( ) );
+        workingMemory.addEventListener(
+            new DebugWorkingMemoryEventListener( ) );
         workingMemory.assertObject( "Hello" );
         workingMemory.fireAllRules( );
 
@@ -79,9 +79,9 @@ public class HelloWorldExample
         System.out.println( "FIRE RULES(GoodBye)" );
         System.out.println( "----------" );
         workingMemory = ruleBase.newWorkingMemory( );
-        workingMemory.addEventListener( new DebugWorkingMemoryEventListener( ) );
+        workingMemory.addEventListener(
+            new DebugWorkingMemoryEventListener( ) );
         workingMemory.assertObject( "Goodbye" );
         workingMemory.fireAllRules( );
-
     }
 }
