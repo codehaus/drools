@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprCondition.java,v 1.1 2002-08-27 06:46:44 bob Exp $
+ $Id: ExprCondition.java,v 1.2 2002-08-28 01:18:29 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,11 +50,13 @@ import org.drools.smf.ConfigurableCondition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 
+import org.python.core.PyException;
+
 /** Python expression semantics <code>Condition</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprCondition.java,v 1.1 2002-08-27 06:46:44 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.2 2002-08-28 01:18:29 bob Exp $
  */
 public class ExprCondition extends Eval implements ConfigurableCondition
 {
@@ -68,7 +70,7 @@ public class ExprCondition extends Eval implements ConfigurableCondition
      */
     public ExprCondition(String expr)
     {
-        setText( expr );
+        setExpression( expr );
     }
 
     /** Construct, partially.
@@ -98,14 +100,24 @@ public class ExprCondition extends Eval implements ConfigurableCondition
      */
     public boolean isAllowed(Tuple tuple) throws ConditionException
     {
-        Object answer = evaluate( tuple );
-
-        if ( ! ( answer instanceof Boolean ) )
+        try
         {
-            throw new NonBooleanExprException( getExpression() );
-        }
+            Object answer = evaluate( tuple );
 
-        return ((Boolean)answer).booleanValue();
+            if ( ! ( answer instanceof Number ) )
+            {
+                throw new NonBooleanExprException( getExpression() );
+            }
+            
+            return ( ( ((Number)answer).intValue() == 0 )
+                     ? false
+                     : true
+                     );
+        }
+        catch (PyException e)
+        {
+            throw new ConditionException( e );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
