@@ -47,7 +47,7 @@ import java.util.Set;
  */
 public abstract class SMFTestFrameWork extends TestCase
 {
-    /** the samentic name being tested */
+    /** the semantic name being tested */
     private String              semantic;
 
     /** The List of tests extracted from the data file */
