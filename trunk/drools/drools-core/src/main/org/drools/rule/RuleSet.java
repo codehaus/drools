@@ -1,31 +1,31 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
- * 
+ * $Id: RuleSet.java,v 1.14 2004-11-13 01:43:07 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,8 +37,10 @@ package org.drools.rule;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
+
+import org.drools.spi.ImportEntry;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,16 +48,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.drools.spi.ImportEntry;
-
 /**
  * Collection of related <code>Rule</code>s.
- * 
+ *
  * @see Rule
- * 
+ *
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: RuleSet.java,v 1.13 2004-11-03 22:54:36 mproctor Exp $
+ *
+ * @version $Id: RuleSet.java,v 1.14 2004-11-13 01:43:07 simon Exp $
  */
 public class RuleSet implements Serializable
 {
@@ -81,7 +81,7 @@ public class RuleSet implements Serializable
 
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
     private List                  rules;
-    
+
     private Set                   imports;
 
     // ------------------------------------------------------------
@@ -90,7 +90,7 @@ public class RuleSet implements Serializable
 
     /**
      * Construct.
-     * 
+     *
      * @param name The name of this <code>RuleSet</code>.
      */
     public RuleSet(String name)
@@ -107,7 +107,7 @@ public class RuleSet implements Serializable
 
     /**
      * Retrieve the name of this <code>RuleSet</code>.
-     * 
+     *
      * @return The name of this <code>RuleSet</code>.
      */
     public String getName()
@@ -117,7 +117,7 @@ public class RuleSet implements Serializable
 
     /**
      * Set the documentation.
-     * 
+     *
      * @param documentation The documentation.
      */
     public void setDocumentation(String documentation)
@@ -127,7 +127,7 @@ public class RuleSet implements Serializable
 
     /**
      * Retrieve the documentation.
-     * 
+     *
      * @return The documentation or <code>null</code> if none.
      */
     public String getDocumentation()
@@ -137,9 +137,9 @@ public class RuleSet implements Serializable
 
     /**
      * Add a <code>Rule</code> to this <code>RuleSet</code>.
-     * 
+     *
      * @param rule The rule to add.
-     * 
+     *
      * @throws DuplicateRuleNameException If the <code>Rule</code> attempting
      *         to be added has the same name as another previously added
      *         <code>Rule</code>.
@@ -160,14 +160,14 @@ public class RuleSet implements Serializable
         this.ruleNames.add( name );
         rule.setLoadOrder( rules.size( ) );
         rule.setImports(this.imports);
-        this.rules.add( rule );                      
+        this.rules.add( rule );
     }
 
     /**
      * Retrieve a <code>Rule</code> by name.
-     * 
+     *
      * @param name The name of the <code>Rule</code> to retrieve.
-     * 
+     *
      * @return The named <code>Rule</code>, or <code>null</code> if not
      *         such <code>Rule</code> has been added to this
      *         <code>RuleSet</code>.
@@ -203,14 +203,14 @@ public class RuleSet implements Serializable
 
     /**
      * Retrieve all <code>Rules</code> in this <code>RuleSet</code>.
-     * 
+     *
      * @return An array of all <code>Rules</code> in this <code>RuleSet</code>.
      */
     public Rule[] getRules()
     {
-        return ( Rule[] ) this.rules.toArray( Rule.EMPTY_ARRAY );
+        return ( Rule[] ) this.rules.toArray( new Rule[ this.rules.size( ) ] );
     }
-    
+
     public void addImport(ImportEntry importEntry)
     {
         this.imports.add(importEntry);
@@ -219,5 +219,5 @@ public class RuleSet implements Serializable
     public Set getImports()
     {
         return this.imports;
-    }    
+    }
 }

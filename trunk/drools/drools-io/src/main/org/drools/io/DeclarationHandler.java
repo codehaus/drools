@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DeclarationHandler.java,v 1.2 2004-11-12 17:11:15 simon Exp $
+ * $Id: DeclarationHandler.java,v 1.3 2004-11-13 01:43:06 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -86,7 +86,7 @@ class DeclarationHandler extends BaseAbstractHandler implements Handler
                     ruleSetReader.getLocator( ) );
         }
 
-        return rule.addDeclaration( identifier.trim( ), null );
+        return rule.addLocalDeclaration( identifier.trim( ), null );
     }
 
     public Object end( String uri, String localName ) throws SAXException

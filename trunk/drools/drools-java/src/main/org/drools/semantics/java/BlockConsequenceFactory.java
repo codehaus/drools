@@ -15,12 +15,11 @@ public class BlockConsequenceFactory implements ConsequenceFactory
         return INSTANCE;
     }
 
-    public Consequence newConsequence(Configuration config,
-                                      Rule  rule) throws FactoryException
+    public Consequence newConsequence(Configuration config, Rule rule ) throws FactoryException
     {
         try
         {
-            return new BlockConsequence( config.getText( ), rule.getAllDeclarations() );
+            return new BlockConsequence( config.getText( ) );
         }
         catch ( Exception e )
         {

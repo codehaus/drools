@@ -117,7 +117,7 @@ public class RuleSetTest extends DroolsTestCase
 
         rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        rule1.addDeclaration( "localVar", new MockObjectType( true ) );
+        rule1.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
         rule1.addExtraction( "localVar", null );
 
@@ -135,7 +135,7 @@ public class RuleSetTest extends DroolsTestCase
 
         rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        rule2.addDeclaration( "localVar", new MockObjectType( true ) );
+        rule2.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
         rule2.addExtraction( "localVar", null );
 

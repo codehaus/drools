@@ -7,6 +7,10 @@ import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ObjectType;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
+
 /**
  * This simple Rete builder and it create a completely unoptimised Rete, ie not
  * JoinNodes, but is an ideal starting point to learn more about how Rete's are
@@ -36,23 +40,19 @@ public class HelloWorldBuilder
         for ( int i = 0; i < rules.length; i++ )
         {
             rule = rules[i];
-            Declaration[] declarations = rule.getParameterDeclarations( );
-            for ( int j = 0; j < declarations.length; j++ )
+            SortedSet declarations = rule.getParameterDeclarations( );
+            for ( Iterator j = declarations.iterator(); j.hasNext(); )
             {
-                declaration = declarations[j];
+                declaration = ( Declaration ) j.next();
                 objectType = declaration.getObjectType( );
-                ObjectTypeNode objectTypeNode = rete
-                                                    .getOrCreateObjectTypeNode( objectType );
-                parameterNode = new ParameterNode( rule, objectTypeNode,
-                                                   declaration );
+                ObjectTypeNode objectTypeNode = rete.getOrCreateObjectTypeNode( objectType );
+                parameterNode = new ParameterNode( rule, objectTypeNode, declaration );
 
-                Condition[] conditions = rule.getConditions( );
-                for ( int k = 0; k < conditions.length; k++ )
+                List conditions = rule.getConditions( );
+                for ( int k = 0; k < conditions.size( ); k++ )
                 {
-                    conditionNode = new ConditionNode( parameterNode,
-                                                       conditions[k], k );
-                    TerminalNode terminal = new TerminalNode( conditionNode,
-                                                              rule );
+                    conditionNode = new ConditionNode( parameterNode, ( Condition ) conditions.get( k ), k );
+                    TerminalNode terminal = new TerminalNode( conditionNode, rule );
                 }
             }
         }

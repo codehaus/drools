@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Extraction.java,v 1.13 2004-11-12 17:11:15 simon Exp $
+ * $Id: Extraction.java,v 1.14 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,13 +58,6 @@ import java.io.Serializable;
 public class Extraction implements Serializable
 {
     // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Empty <code>Extraction</code> array. */
-    public static final Extraction[] EMPTY_ARRAY = new Extraction[0];
-
-    // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
@@ -120,7 +113,8 @@ public class Extraction implements Serializable
     public void setExtractor( Extractor extractor )
     {
         this.extractor = extractor;
-}
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.drools.spi.Condition
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

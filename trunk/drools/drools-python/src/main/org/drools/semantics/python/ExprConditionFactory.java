@@ -1,6 +1,5 @@
 package org.drools.semantics.python;
 
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;

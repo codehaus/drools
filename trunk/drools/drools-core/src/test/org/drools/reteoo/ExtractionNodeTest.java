@@ -20,8 +20,8 @@ public class ExtractionNodeTest extends TestCase
     public void setUp()
     {
         this.rule = new Rule( getName() );
-        this.stringDecl = this.rule.addDeclaration( "string", new MockObjectType( ) );
-        this.objectDecl = this.rule.addDeclaration( "object", new MockObjectType( ) );
+        this.stringDecl = this.rule.addLocalDeclaration( "string", new MockObjectType( ) );
+        this.objectDecl = this.rule.addLocalDeclaration( "object", new MockObjectType( ) );
     }
 
     public void tearDown()

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: SimplicityConflictResolver.java,v 1.8 2004-10-30 01:11:48 simon Exp $
+ * $Id: SimplicityConflictResolver.java,v 1.9 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,7 +54,7 @@ import org.drools.spi.ConflictResolver;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: SimplicityConflictResolver.java,v 1.8 2004-10-30 01:11:48 simon Exp $
+ * @version $Id: SimplicityConflictResolver.java,v 1.9 2004-11-13 01:43:07 simon Exp $
  */
 public class SimplicityConflictResolver extends AbstractConflictResolver
 {
@@ -98,6 +98,6 @@ public class SimplicityConflictResolver extends AbstractConflictResolver
      */
     public int compare(Activation lhs, Activation rhs)
     {
-        return lhs.getRule( ).getConditions( ).length - rhs.getRule( ).getConditions( ).length;
+        return lhs.getRule( ).getConditions( ).size( ) - rhs.getRule( ).getConditions( ).size( );
     }
 }

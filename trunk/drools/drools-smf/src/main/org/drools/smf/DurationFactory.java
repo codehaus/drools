@@ -1,9 +1,10 @@
 package org.drools.smf;
 
-import org.drools.rule.Declaration;
 import org.drools.spi.Duration;
+
+import java.util.Set;
 
 public interface DurationFactory
 {
-    Duration newDuration(Configuration config, Declaration[] availDecls) throws FactoryException;    
+    Duration newDuration(Configuration config, Set availDecls) throws FactoryException;    
 }

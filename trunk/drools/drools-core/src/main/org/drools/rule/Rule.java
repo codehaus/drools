@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.41 2004-11-12 17:11:15 simon Exp $
+ * $Id: Rule.java,v 1.42 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,6 +54,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * A set of <code>Condition</code> s and a <code>Consequence</code>.
@@ -67,17 +69,10 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Rule.java,v 1.41 2004-11-12 17:11:15 simon Exp $
+ * @version $Id: Rule.java,v 1.42 2004-11-13 01:43:07 simon Exp $
  */
 public class Rule implements Serializable
 {
-    // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Empty <code>Rule</code> array. */
-    public static final Rule[] EMPTY_ARRAY = new Rule[0];
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -92,10 +87,13 @@ public class Rule implements Serializable
     private int                 salience;
 
     /** All declarations. */
-    private final Set           allDeclarations         = new HashSet( );
+    private final SortedSet     allDeclarations         = new TreeSet( );
 
-    /** Formal parameter decls of the rule. */
-    private final Set           parameterDeclarations   = new HashSet( );
+    /** The local declarations. */
+    private final SortedSet     localDeclarations       = new TreeSet( );
+
+    /** Formal parameter declarations. */
+    private final SortedSet     parameterDeclarations   = new TreeSet( );
 
     /** Conditions. */
     private final List          conditions              = new ArrayList( );
@@ -199,8 +197,8 @@ public class Rule implements Serializable
      */
     public boolean isValid()
     {
-        return !( getParameterDeclarations().length == 0 || getConditions().length == 0 || getExtractions().length
-                == 0 ) && getConsequence() != null;
+        return !( getParameterDeclarations().isEmpty( ) || getConditions().isEmpty( ) || getExtractions( ).isEmpty( ) )
+                && getConsequence( ) != null;
     }
 
     /**
@@ -224,11 +222,11 @@ public class Rule implements Serializable
      */
     public void checkValidity() throws InvalidRuleException
     {
-        if ( getParameterDeclarations( ).length == 0 )
+        if ( getParameterDeclarations( ).isEmpty( ) )
         {
             throw new NoParameterDeclarationException( this );
         }
-        if ( getConditions( ).length == 0 )
+        if ( getConditions( ).isEmpty( ) )
         {
             throw new NoConditionException( this );
         }
@@ -284,11 +282,11 @@ public class Rule implements Serializable
      * @param identifier The identifier.
      * @param objectType The type.
      */
-    public Declaration addDeclaration( String identifier, ObjectType objectType )
+    public Declaration addLocalDeclaration( String identifier, ObjectType objectType )
     {
-        Declaration declaration = new Declaration( identifier, objectType, allDeclarations.size() );
+        Declaration declaration = addDeclaration( identifier, objectType );
 
-        this.allDeclarations.add( declaration );
+        this.localDeclarations.add( declaration );
 
         return declaration;
     }
@@ -359,9 +357,9 @@ public class Rule implements Serializable
      * @return The <code>Set</code> of <code>Declarations</code> which
      *         specify the <i>root fact objects </i>.
      */
-    public Declaration[] getParameterDeclarations()
+    public SortedSet getParameterDeclarations()
     {
-        return ( Declaration[] ) this.parameterDeclarations.toArray( Declaration.EMPTY_ARRAY );
+        return Collections.unmodifiableSortedSet( this.parameterDeclarations );
     }
 
     /**
@@ -370,23 +368,19 @@ public class Rule implements Serializable
      * @return The <code>Set</code> of all implied <code>Declarations</code>
      *         which are implied by the conditions.
      */
-    public Declaration[] getLocalDeclarations()
+    public SortedSet getLocalDeclarations()
     {
-        Set localDecls = new HashSet( this.allDeclarations );
-
-        localDecls.removeAll( this.parameterDeclarations );
-
-        return ( Declaration[] ) localDecls.toArray( Declaration.EMPTY_ARRAY );
+        return Collections.unmodifiableSortedSet( this.localDeclarations );
     }
 
     /**
      * Retrieve the array of all <code>Declaration</code> s of this rule.
      *
-     * @return The array of declarations.
+     * @return The <code>Set</code> of all <code>Declarations</code>.
      */
-    public Declaration[] getAllDeclarations()
+    public SortedSet getAllDeclarations()
     {
-        return ( Declaration[] ) this.allDeclarations.toArray( Declaration.EMPTY_ARRAY );
+        return Collections.unmodifiableSortedSet( this.allDeclarations );
     }
 
     /**
@@ -400,14 +394,14 @@ public class Rule implements Serializable
     }
 
     /**
-     * Retrieve the <code>Set</code> of <code>Conditions</code> for this
+     * Retrieve the <code>List</code> of <code>Conditions</code> for this
      * rule.
      *
-     * @return The <code>Set</code> of <code>Conditions</code>.
+     * @return The <code>List</code> of <code>Conditions</code>.
      */
-    public Condition[] getConditions()
+    public List getConditions()
     {
-        return ( Condition[] ) this.conditions.toArray( Condition.EMPTY_ARRAY );
+        return Collections.unmodifiableList( this.conditions );
     }
 
     public int getConditionSize()
@@ -421,9 +415,9 @@ public class Rule implements Serializable
      *
      * @return The <code>Set</code> of <code>Extractions</code>.
      */
-    public Extraction[] getExtractions()
+    public Set getExtractions()
     {
-        return ( Extraction[] ) this.extractions.toArray( Extraction.EMPTY_ARRAY );
+        return Collections.unmodifiableSet( this.extractions );
     }
 
     /**
@@ -472,43 +466,50 @@ public class Rule implements Serializable
     public String dump(String indent)
     {
         StringBuffer buffer = new StringBuffer( );
-        buffer.append( indent + "Rule\n" );
-        buffer.append( indent + "----\n" );
-        buffer.append( indent + "name: " );
+        buffer.append( indent ).append( "Rule\n" );
+        buffer.append( indent ).append( "----\n" );
+        buffer.append( indent ).append( "name: " );
         buffer.append( this.name );
         buffer.append( "\n" );
-        buffer.append( indent + "salience: " );
+        buffer.append( indent ).append( "salience: " );
         buffer.append( this.salience );
         buffer.append( "\n" );
-        buffer.append( indent + "load order: " );
+        buffer.append( indent ).append( "load order: " );
         buffer.append( this.loadOrder );
         buffer.append( "\n" );
-        buffer.append( indent + "duration: " );
+        buffer.append( indent ).append( "duration: " );
         buffer.append( this.duration );
         buffer.append( "\n" );
-        Declaration[] declarations = getAllDeclarations( );
-        for ( int i = 0; i < declarations.length; i++ )
+
+        for ( Iterator i = this.allDeclarations.iterator(); i.hasNext(); )
         {
-            buffer.append( indent + declarations[i] );
+            buffer.append( indent ).append( i.next( ) );
         }
 
-        Extraction[] extractions = getExtractions( );
-        for ( int i = 0; i < extractions.length; i++ )
+        for ( Iterator i = this.extractions.iterator(); i.hasNext(); )
         {
-            buffer.append( indent + extractions[i] );
+            buffer.append( indent ).append( i.next( ) );
         }
 
-        Condition[] conditions = getConditions( );
-        for ( int i = 0; i < conditions.length; i++ )
+        for ( Iterator i = this.conditions.iterator(); i.hasNext(); )
         {
-            buffer.append( indent + "condition:\n" );
-            buffer.append( indent + conditions[i] + "\n" );
+            buffer.append( indent ).append( "condition:\n" )
+                    .append( indent ).append( i.next() ).append( '\n' );
         }
 
-        buffer.append( indent + "consequence:\n" );
-        buffer.append( indent + this.consequence );
+        buffer.append( indent ).append( "consequence:\n" );
+        buffer.append( indent ).append( this.consequence );
         buffer.append( "\n" );
         return buffer.toString( );
+    }
+
+    private Declaration addDeclaration( String identifier, ObjectType objectType )
+    {
+        Declaration declaration = new Declaration( identifier, objectType, allDeclarations.size() );
+
+        this.allDeclarations.add( declaration );
+
+        return declaration;
     }
 
     private Declaration getDeclaration( Collection declarations, String identifier )

@@ -1,32 +1,32 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.27 2004-11-07 22:39:43 bob Exp $
- * 
+ * $Id: Expr.java,v 1.28 2004-11-13 01:43:07 simon Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,44 +38,34 @@ package org.drools.semantics.java;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
+import net.janino.Scanner;
+import org.drools.rule.Declaration;
+import org.drools.spi.ImportEntry;
+import org.drools.spi.KnowledgeHelper;
+import org.drools.spi.Tuple;
+
+import javax.naming.ConfigurationException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.drools.rule.Declaration;
-import org.drools.spi.ImportEntry;
-import org.drools.spi.KnowledgeHelper;
-import org.drools.spi.Tuple;
-
-import net.janino.Scanner;
-
-import java.io.IOException;
-import javax.naming.ConfigurationException;
-
 
 /**
  * Base class for expression-based Java semantic components.
- * 
+ *
  * @see ExprCondition
  * @see ExprExtractor
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- * 
- * @version $Id: Expr.java,v 1.27 2004-11-07 22:39:43 bob Exp $
+ *
+ * @version $Id: Expr.java,v 1.28 2004-11-13 01:43:07 simon Exp $
  */
 public class Expr implements Serializable
 {
-    // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Empty declaration array. */
-    private static final Declaration[] EMPTY_DECLS      = new Declaration[0];
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -105,14 +95,14 @@ public class Expr implements Serializable
 
     /**
      * Construct.
-     * 
+     *
      * @param expr The expression.
      * @param availDecls The available declarations.
-     * 
+     *
      * @throws ConfigurationException If an error occurs while attempting to
      *         perform configuration.
      */
-    protected Expr(String expr, Declaration[] availDecls) throws Exception
+    protected Expr(String expr, Set availDecls) throws Exception
     {
         if ( this instanceof ExprCondition )
         {
@@ -123,7 +113,8 @@ public class Expr implements Serializable
             this.expr = "return (" + expr + ");";
         }
         this.originalExpression = expr;
-        this.requiredDecls = analyze( expr, availDecls );
+        Set requiredDecls = analyze( expr, availDecls );
+        this.requiredDecls = ( Declaration[] ) requiredDecls.toArray( new Declaration[ requiredDecls.size( ) ] );
     }
 
     // ------------------------------------------------------------
@@ -132,7 +123,7 @@ public class Expr implements Serializable
 
     /**
      * Retrieve the expression.
-     * 
+     *
      * @return The expression.
      */
     public String getExpression()
@@ -146,7 +137,7 @@ public class Expr implements Serializable
         Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
         if ( conditionScript == null )
         {
-            Set imports = new HashSet();  
+            Set imports = new HashSet();
             if (tuple.getRule().getImports() != null)
             {
                 Iterator it = tuple.getRule().getImports().iterator();
@@ -158,12 +149,11 @@ public class Expr implements Serializable
                     {
                         imports.add(importEntry.getImportEntry());
                     }
-                }                
+                }
             }
             try
-            {            
-            	conditionScript = ( ConditionScript ) DroolsScriptEvaluator
-                                                                       .compile(
+            {
+            	conditionScript = ( ConditionScript ) DroolsScriptEvaluator.compile(
                                                                                  this.expr,
                                                                                  ConditionScript.class,
                                                                                  scriptParamNames,
@@ -207,8 +197,8 @@ public class Expr implements Serializable
                     {
                         imports.add(importEntry.getImportEntry());
                     }
-                }                
-            }                
+                }
+            }
             extractorScript = ( ExtractorScript ) DroolsScriptEvaluator
                                                                        .compile(
                                                                                  this.expr,
@@ -225,7 +215,7 @@ public class Expr implements Serializable
                                             .getApplicationDataMap( ) );
     }
 
-    protected Declaration[] analyze(String expr, Declaration[] available) throws Exception
+    protected Set analyze(String expr, Set available) throws Exception
     {
         ExprAnalyzer analyzer = new ExprAnalyzer( );
 
@@ -235,13 +225,13 @@ public class Expr implements Serializable
     /**
      * Retrieve the <code>Declaration</code> s required for evaluating the
      * expression.
-     * 
+     *
      * @return The required declarations.
      */
     public Declaration[] getRequiredTupleMembers()
     {
         return this.requiredDecls;
-    }   
+    }
 
     public interface ConditionScript
     {

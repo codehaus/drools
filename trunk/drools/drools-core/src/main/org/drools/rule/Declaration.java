@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.21 2004-11-12 17:11:15 simon Exp $
+ * $Id: Declaration.java,v 1.22 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,15 +53,8 @@ import java.io.Serializable;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
  */
-public class Declaration implements Serializable
+public class Declaration implements Serializable, Comparable
 {
-    // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Empty <code>Declaraton</code> array. */
-    public static final Declaration[] EMPTY_ARRAY = new Declaration[0];
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -131,6 +124,13 @@ public class Declaration implements Serializable
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    public int compareTo( Object object )
+    {
+        return this.order - ( ( Declaration ) object ).order;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // TODO: Remove this. Requires fixing MissMannersNative/Test
     public int hashCode()
     {
         return this.order;

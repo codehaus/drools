@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersNative.java,v 1.4 2004-11-12 17:11:15 simon Exp $
+ * $Id: MannersNative.java,v 1.5 2004-11-13 01:43:07 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
