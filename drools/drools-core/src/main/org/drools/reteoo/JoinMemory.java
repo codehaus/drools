@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.38 2004-11-21 12:33:52 simon Exp $
+ * $Id: JoinMemory.java,v 1.39 2004-11-25 17:53:53 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -197,9 +197,11 @@ class JoinMemory
      */
 
     protected TupleSet modifyLeftTuples(FactHandle trigger,
+                                        TupleSet newTuples,
                                         WorkingMemoryImpl workingMemory) throws FactException
     {
         return modifyTuples( trigger,
+                             newTuples,
                              getLeftTuples( ),
                              getRightTuples( ),
                              workingMemory );
@@ -217,9 +219,11 @@ class JoinMemory
      *             if an error occurs during modification.
      */
     protected TupleSet modifyRightTuples(FactHandle trigger,
+                                         TupleSet newTuples,
                                          WorkingMemoryImpl workingMemory) throws FactException
     {
         return modifyTuples( trigger,
+                             newTuples,
                              getRightTuples( ),
                              getLeftTuples( ),
                              workingMemory );
@@ -242,12 +246,14 @@ class JoinMemory
      *             if an error occurs during modification.
      */
     protected TupleSet modifyTuples(FactHandle trigger,
+                                    TupleSet newTuples,
                                     TupleSet thisSideTuples,
                                     TupleSet thatSideTuples,
                                     WorkingMemoryImpl workingMemory) throws FactException
     {
         ReteTuple tuple;
-
+        ReteTuple oldTuple;
+        
         TupleSet newJoined = new TupleSet( );
 
         Iterator tupleIter = thisSideTuples.iterator( );
@@ -258,6 +264,10 @@ class JoinMemory
 
             if ( tuple.dependsOn( trigger ) )
             {
+                //nasty hack to propagate extractions
+                //we can move to centralised extractions
+                //when a JoinMemory can specify which extractions to retract
+                tuple.updateExtractions(newTuples.getTuple(tuple.getKey()));
                 newJoined.addAllTuples( attemptJoin( tuple,
                                                      thatSideTuples ) );
             }

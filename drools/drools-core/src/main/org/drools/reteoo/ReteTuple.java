@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.57 2004-11-24 16:16:13 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.58 2004-11-25 17:53:54 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -77,10 +77,12 @@ class ReteTuple
 
     /** Key objects for this tuple. */
     private final TupleKey key;
-
-    private final Map extractions;
     
-    private final Set declarations;
+    private final Set declarations;    
+
+    private Map extractions;
+    
+
 
     private FactHandleImpl mostRecentFact;
 
@@ -260,6 +262,11 @@ class ReteTuple
         {
             return null;
         }
+    }
+
+    public void updateExtractions(ReteTuple tuple)
+    {
+        this.extractions = tuple.extractions;
     }
 
     
