@@ -30,4 +30,14 @@
       </classpath>
     </java>
   </goal>
+
+  <goal name="state" prereqs="jar:jar">
+    <java classname="org.drools.examples.java.state.StateExample"
+          fork="true">
+      <classpath refid="maven.dependency.classpath"/>
+      <classpath>
+        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+      </classpath>
+    </java>
+  </goal>
 </project>

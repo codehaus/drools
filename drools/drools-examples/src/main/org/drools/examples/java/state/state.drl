@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<rule-set name="State Example"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="AtoB" salience="30">
+
+      <parameter identifier="a">
+        <java:class>org.drools.examples.java.state.State</java:class>
+      </parameter>
+      <parameter identifier="b">
+        <java:class>org.drools.examples.java.state.State</java:class>
+      </parameter>
+
+        <java:condition>a.getName().equals("A")</java:condition>
+        <java:condition>a.getState().equals("FINISHED")</java:condition>
+        <java:condition>b.getName().equals("B")</java:condition>
+        <java:condition>b.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.err.println(b.getName() + " finished" );
+            b.setState("FINISHED");
+            modifyObject(b);
+        </java:consequence>
+
+    </rule>
+
+    <rule name="BtoC" salience="20">
+
+      <parameter identifier="b">
+        <java:class>org.drools.examples.java.state.State</java:class>
+      </parameter>
+      <parameter identifier="c">
+        <java:class>org.drools.examples.java.state.State</java:class>
+      </parameter>
+
+        <java:condition>b.getName().equals("B")</java:condition>
+        <java:condition>b.getState().equals("FINISHED")</java:condition>
+        <java:condition>c.getName().equals("C")</java:condition>
+        <java:condition>c.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.err.println(c.getName() + " finished" );
+            c.setState("FINISHED");
+            modifyObject(c);
+        </java:consequence>
+
+    </rule>
+
+
+
+    <rule name="BtoD" salience="10">
+
+      <parameter identifier="b">
+        <java:class>org.drools.examples.java.state.State</java:class>
+      </parameter>
+      <parameter identifier="d">
+        <java:class>org.drools.examples.java.state.State</java:class>
+      </parameter>
+
+        <java:condition>b.getName().equals("B")</java:condition>
+        <java:condition>b.getState().equals("FINISHED")</java:condition>
+        <java:condition>d.getName().equals("D")</java:condition>
+        <java:condition>d.getState().equals("NOTRUN")</java:condition>
+
+        <java:consequence>
+            System.err.println(d.getName() + " finished" );
+            d.setState("FINISHED");
+            modifyObject(d);
+        </java:consequence>
+
+    </rule>
+
+
+  </rule-set>
