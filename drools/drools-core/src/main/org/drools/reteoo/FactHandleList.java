@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
-* $Id: FactHandleList.java,v 1.4 2004-12-07 14:52:00 simon Exp $
+* $Id: FactHandleList.java,v 1.5 2004-12-15 20:57:36 dbarnett Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -54,7 +54,7 @@ import java.util.Arrays;
  *
  * This class exists purely for performance reasons and as such, many assumptions have been
  * made regarding behaviour based on know usage. Therefore, this class should in no way be
- * considerd a general purpose data structure. Hence it resides in this package and not a more
+ * considered a general purpose data structure. Hence it resides in this package and not a more
  * generic "util" package.
  *
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
@@ -151,7 +151,8 @@ final class FactHandleList implements Serializable
     /**
      * Determines if the list is a super-set of another list.
      * @param other The list to be checked.
-     * @return <code>true</code> if this list contains all values from the other list; <code>false otherwise.
+     * @return <code>true</code> if this list contains all values
+     *         from the other list; <code>false</code> otherwise.
      */
     public boolean containsAll( FactHandleList other )
     {
