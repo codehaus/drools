@@ -1,8 +1,8 @@
 
 package org.drools.semantic.java;
 
+import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
-import org.drools.spi.Declaration;
 
 import bsh.Interpreter;
 import bsh.EvalError;

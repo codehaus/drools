@@ -1,5 +1,4 @@
-
-package org.drools.spi;
+package org.drools.rule;
 
 public class InstrumentedRule extends Rule
 {

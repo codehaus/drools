@@ -10,8 +10,8 @@ import org.drools.semantic.java.parser.JavaRecognizer;
 import org.drools.semantic.java.parser.JavaTreeParser;
 import org.drools.semantic.java.parser.JavaTokenTypes;
 
-import org.drools.spi.Declaration;
-import org.drools.spi.AssignmentCondition;
+import org.drools.rule.Declaration;
+import org.drools.rule.AssignmentCondition;
 
 import org.dom4j.Element;
 import org.dom4j.ElementPath;

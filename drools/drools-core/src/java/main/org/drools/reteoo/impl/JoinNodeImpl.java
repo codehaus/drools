@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeImpl.java,v 1.3 2002-07-30 19:52:56 bob Exp $
+ $Id: JoinNodeImpl.java,v 1.4 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.reteoo.JoinNode;
 import org.drools.reteoo.TupleSource;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 
 import java.util.Set;
 import java.util.HashSet;

@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.8 2002-07-27 01:50:17 bob Exp $
+ $Id: RuleSet.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  

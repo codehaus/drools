@@ -2,14 +2,14 @@
 package org.drools;
 
 import org.drools.AssertionException;
-import org.drools.spi.Tuple;
-import org.drools.spi.Rule;
-import org.drools.spi.Action;
-import org.drools.spi.Declaration;
-import org.drools.spi.FactExtractor;
-import org.drools.spi.AssignmentCondition;
-import org.drools.spi.DeclarationAlreadyCompleteException;
 import org.drools.reteoo.ReteConstructionException;
+import org.drools.rule.Rule;
+import org.drools.rule.Declaration;
+import org.drools.rule.AssignmentCondition;
+import org.drools.rule.DeclarationAlreadyCompleteException;
+import org.drools.spi.Tuple;
+import org.drools.spi.Action;
+import org.drools.spi.FactExtractor;
 import org.drools.semantic.java.JavaObjectType;
 import org.drools.semantic.xml.Dom4jXmlObjectType;
 import org.drools.semantic.xml.Dom4jXPathFactExtractor;

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AssignmentNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: AssignmentNodeImpl.java,v 1.3 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,7 @@ import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.reteoo.AssignmentNode;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 import org.drools.spi.FactExtractor;
 
 import java.util.Set;

@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: NoParameterDeclarationException.java,v 1.3 2002-07-27 05:52:18 bob Exp $
+ $Id: RuleConstructionException.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,23 +45,22 @@ package org.drools.spi;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-/** Validity exception indicating that a <code>Rule</code> does not
- *  contain any root object parameter <code>Declaration</code>s.
+import org.drools.DroolsException;
+
+/** Base exception for errors during <code>Rule</code> construction.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class NoParameterDeclarationException extends InvalidRuleException
+public class RuleConstructionException extends DroolsException
 {
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param rule The invalid <code>Rule</code>.
      */
-    public NoParameterDeclarationException(Rule rule)
+    RuleConstructionException()
     {
-        super( rule );
+        // intentionally left blank
     }
 }

@@ -1,5 +1,6 @@
-
 package org.drools.spi;
+
+import org.drools.rule.Declaration;
 
 public class FalseFilterCondition implements FilterCondition
 {

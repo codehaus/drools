@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Tuple.java,v 1.4 2002-07-27 05:52:18 bob Exp $
+ $Id: Tuple.java,v 1.5 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,8 @@ package org.drools.spi;
  */
 
 import java.util.Set;
+
+import org.drools.rule.Declaration;
 
 /** A mapping of <code>Declaration</code>s to current fact values.
  *

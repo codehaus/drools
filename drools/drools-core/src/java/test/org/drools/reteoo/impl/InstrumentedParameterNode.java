@@ -4,7 +4,7 @@ package org.drools.reteoo.impl;
 import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: DeclarationAlreadyCompleteException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
+ $Id: Declaration.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,20 +46,26 @@ package org.drools.spi;
  
  */
 
-/** Indicates an attempt to add a parameter declaration to a
- *  <code>Rule</code> after adding a <code>Condition</condition> to that
- *  <code>Rule</code>.
+import org.drools.spi.ObjectType;
+
+/** A typed, named variable for <code>Condition</code> evaluation.
+ *
+ *  @see ObjectType
+ *  @see Condition
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class DeclarationAlreadyCompleteException extends RuleConstructionException
+public class Declaration
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The troubled rule. */
-    private Rule rule;
+    /** The type of the variable. */
+    private ObjectType objectType;
+
+    /** The identifier for the variable. */
+    private String     identifier;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -67,23 +73,65 @@ public class DeclarationAlreadyCompleteException extends RuleConstructionExcepti
 
     /** Construct.
      *
-     *  @param rule The Rule involved in the error.
+     *  @param objectType The type of this variable declaration.
+     *  @param identifier The name of the variable.
      */
-    public DeclarationAlreadyCompleteException(Rule rule)
+    public Declaration(ObjectType objectType,
+                       String identifier)
     {
-        this.rule = rule;
+        this.objectType = objectType;
+        this.identifier = identifier;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the implicated <code>Rule</code>.
+    /** Retrieve the <code>ObjectType</code> of this <code>Declaration</code>.
      *
-     *  @return The rule.
+     *  @return The <code>ObjectType</code> of this <code>Declaration</code>.
      */
-    public Rule getRule()
+    public ObjectType getObjectType()
     {
-        return this.rule;
+        return this.objectType;
+    }
+
+    /** Retrieve the variable's identifier.
+     *
+     *  @return The variable's identifier.
+     */
+    public String getIdentifier()
+    {
+        return this.identifier;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Determine if another <code>Declaration</code> is
+     *  <b>semantically</b> equivelent to this one.
+     *
+     *  @param thatObj The object to compare to.
+     *
+     *  @return <code>true</code> if <code>thatObj</code> is
+     *          semantically equal to this object.
+     */
+    public boolean equals(Object thatObj)
+    {
+        Declaration that = (Declaration) thatObj;
+
+        return ( this.objectType.equals( that.objectType )
+                 &&
+                 this.identifier.equals( that.identifier ) );
+    }
+
+    /** Produce debug string.
+     *
+     *  @return debug string.
+     */
+    public String toString()
+    {
+        return "[Declaration: identifier='" + getIdentifier() + "'; objectType=" + getObjectType() + "]";
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FilterCondition.java,v 1.4 2002-07-31 20:51:03 bob Exp $
+ $Id: FilterCondition.java,v 1.5 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,6 +45,8 @@ package org.drools.spi;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
+
+import org.drools.rule.Declaration;
 
 /** A <code>Condition</code> that filters facts.
  *

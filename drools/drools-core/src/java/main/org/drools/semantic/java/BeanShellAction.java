@@ -2,7 +2,7 @@
 package org.drools.semantic.java;
 
 import org.drools.WorkingMemory;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
 import org.drools.spi.Action;
 import org.drools.spi.ActionInvokationException;

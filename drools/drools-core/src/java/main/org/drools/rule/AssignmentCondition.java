@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.5 2002-07-27 05:52:17 bob Exp $
+ $Id: AssignmentCondition.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,90 +46,84 @@ package org.drools.spi;
  
  */
 
-/** A typed, named variable for <code>Condition</code> evaluation.
+import org.drools.spi.FactExtractor;
+import org.drools.spi.Condition;
+
+/** A <code>Condition</code> representing a <i>consistent assignment</i>
+ *  as defined by the Rete-OO algorithm.
  *
- *  @see ObjectType
+ *  The assignment occurs through the process of extracting a
+ *  new fact from existing facts.
+ *
  *  @see Condition
+ *  @see FactExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Declaration
+public class AssignmentCondition implements Condition
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The type of the variable. */
-    private ObjectType objectType;
+    /** The target of the assignment. */
+    private Declaration targetDeclaration;
 
-    /** The identifier for the variable. */
-    private String     identifier;
+    /** FactExtractor to acquire value for assignment. */
+    private FactExtractor factExtractor;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
+    
     /** Construct.
      *
-     *  @param objectType The type of this variable declaration.
-     *  @param identifier The name of the variable.
+     *  @param targetDeclaration The target of this assignment.
+     *  @param factExtractor Value generator for the assignment.
      */
-    public Declaration(ObjectType objectType,
-                       String identifier)
+    public AssignmentCondition(Declaration targetDeclaration,
+                               FactExtractor factExtractor)
     {
-        this.objectType = objectType;
-        this.identifier = identifier;
+        this.targetDeclaration = targetDeclaration;
+        this.factExtractor     = factExtractor;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>ObjectType</code> of this <code>Declaration</code>.
+    /** Retrieve the <code>Declaration</code> for the target
+     *  of the assignment.
      *
-     *  @return The <code>ObjectType</code> of this <code>Declaration</code>.
+     *  @return The target's <code>Declaration</code>
      */
-    public ObjectType getObjectType()
+    public Declaration getTargetDeclaration()
     {
-        return this.objectType;
+        return this.targetDeclaration;
     }
 
-    /** Retrieve the variable's identifier.
+    /** Retrieve the <code>FactExtractor</code> responsible
+     *  for generating the assignment value.
      *
-     *  @return The variable's identifier.
+     *  @return The <code>FactExtractor</code>.
      */
-    public String getIdentifier()
+    public FactExtractor getFactExtractor()
     {
-        return this.identifier;
+        return this.factExtractor;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
+    //     org.drools.spi.Condition
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Determine if another <code>Declaration</code> is
-     *  <b>semantically</b> equivelent to this one.
+    /** Retrieve the array of <code>Declaration</code>s required
+     *  by this condition to perform its duties.
      *
-     *  @param thatObj The object to compare to.
-     *
-     *  @return <code>true</code> if <code>thatObj</code> is
-     *          semantically equal to this object.
+     *  @return The array of <code>Declarations</code> expected
+     *          on incoming <code>Tuple</code>s.
      */
-    public boolean equals(Object thatObj)
+    public Declaration[] getRequiredTupleMembers()
     {
-        Declaration that = (Declaration) thatObj;
-
-        return ( this.objectType.equals( that.objectType )
-                 &&
-                 this.identifier.equals( that.identifier ) );
-    }
-
-    /** Produce debug string.
-     *
-     *  @return debug string.
-     */
-    public String toString()
-    {
-        return "[Declaration: identifier='" + getIdentifier() + "'; objectType=" + getObjectType() + "]";
+        return getFactExtractor().getRequiredTupleMembers();
     }
 }

@@ -1,7 +1,7 @@
 
 package org.drools.semantic.java.io;
 
-import org.drools.spi.RuleSet;
+import org.drools.rule.RuleSet;
 
 import org.dom4j.ElementPath;
 import org.dom4j.Element;

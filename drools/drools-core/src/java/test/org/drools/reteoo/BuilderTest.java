@@ -2,11 +2,11 @@
 package org.drools.reteoo;
 
 import org.drools.reteoo.impl.ReteImpl;
-import org.drools.spi.Rule;
-import org.drools.spi.Declaration;
+import org.drools.rule.Rule;
+import org.drools.rule.Declaration;
+import org.drools.rule.AssignmentCondition;
+import org.drools.rule.DeclarationAlreadyCompleteException;
 import org.drools.spi.ObjectType;
-import org.drools.spi.AssignmentCondition;
-import org.drools.spi.DeclarationAlreadyCompleteException;
 import org.drools.spi.InstrumentedFilterCondition;
 import org.drools.spi.InstrumentedFactExtractor;
 import org.drools.semantic.java.JavaObjectType;
