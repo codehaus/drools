@@ -27,7 +27,7 @@
     <siteDirectory>/www/drools.codehaus.org/java</siteDirectory>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-java</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm:drools/drools-java</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
 
