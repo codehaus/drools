@@ -4,27 +4,39 @@
            targetNamespace="http://drools.org/semantics/jelly"
            xmlns="http://drools.org/semantics/jelly"
            elementFormDefault="qualified"
-           version="DRL-Schema ALPHA 1.1">
+           version="DRL-Schema v1.0">
 
 <xs:annotation>
  <xs:documentation>
-  Title: jelly.xsd supplement to DRL-Schema version ALPHA 1.1
+  Title: jelly.xsd supplement to DRL-Schema version 1.0
  </xs:documentation>
  <xs:documentation>
   Author: Roger F. Gay 
   Contact: roger.f.gay@picslt.org 
-  Date: August 18, 2003
+  Date: September 7, 2003
  </xs:documentation>
 </xs:annotation>
 <xs:annotation>
  <xs:documentation>
-  The element "consequence" supported by this semantic module related xsd is
-   defined in org/drools/semantics/jelly/semantics.xml
+  Copyright 2003 (C) Roger F. Gay. All Rights Reserved.
+  Intelligent Systems Research Corporation
+  This schema is the original work of Roger F. Gay ( roger.f.gay@picslt.org ), 
+   provided as a contribution to the drools Open Source project 
+   ( http://www.drools.org ). This schema may be redistributed, subject to 
+   the conditions that appropriate written notification of this author's contribution 
+   is included in every copy and derivative of this schema by including this 
+   statement along with your statement of changes if any, and by including the above
+   copyright notice and an author acknowledgment in documentation associated with
+   any redistribution of this schema or derivative of this schema. This schema is
+   provided "as is" without warranty of any kind. Neither Roger F. Gay nor 
+   Intelligent Systems Research Corporation nor the drools Open Source project 
+   are liable for any use of this schema.
+   Feedback regarding errors and improvements would be appreciated.
  </xs:documentation>
 </xs:annotation>
 
 <xs:import namespace="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary" 
-           schemaLocation="jellyTags.xsd" />
+           schemaLocation="JellyTags.xsd" />
 
 <xs:element name="consequence">
   <xs:complexType mixed="true">

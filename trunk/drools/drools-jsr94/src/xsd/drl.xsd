@@ -5,50 +5,90 @@
            xmlns="http://drools.org/rules"
            xmlns:drl="http://drools.org/rules"
            elementFormDefault="qualified"
-           version="ALPHA 1.0">
+           version="1.0">
 
 <xs:annotation>
  <xs:documentation>
-  Title: DRL.xsd DRL-Schema version ALPHA 1.0
+  Title: DRL.xsd DRL-Schema version 1.0
  </xs:documentation>
  <xs:documentation>
   Author: Roger F. Gay 
   Contact: roger.f.gay@picslt.org 
-  Date: August 18, 2003
+  Date: September 7, 2003
+ </xs:documentation>
+</xs:annotation>
+
+<xs:annotation>
+ <xs:documentation>
+  Copyright 2003 (C) Roger F. Gay. All Rights Reserved.
+  Intelligent Systems Research Corporation
+  This schema is the original work of Roger F. Gay ( roger.f.gay@picslt.org ), 
+   provided as a contribution to the drools Open Source project 
+   ( http://www.drools.org ). This schema may be redistributed, subject to 
+   the conditions that appropriate written notification of this author's contribution 
+   is included in every copy and derivative of this schema by including this 
+   statement along with your statement of changes if any, and by including the above
+   copyright notice and an author acknowledgment in documentation associated with
+   any redistribution of this schema or derivative of this schema. This schema is
+   provided "as is" without warranty of any kind. Neither Roger F. Gay nor 
+   Intelligent Systems Research Corporation nor the drools Open Source project 
+   are liable for any use of this schema.
+   Feedback regarding errors and improvements would be appreciated.
  </xs:documentation>
 </xs:annotation>
 
 <xs:annotation>
  <xs:documentation>
   Imports the schemata that support use of specific semantic modules
-    this version: java, python, and jelly. Namespace qualified.
+    This version: java, python, and jelly. Namespace qualified.
+    There is a also supplement to jelly (jellyTags.xsd) that is 
+      imported in jelly.xsd
  </xs:documentation>
 </xs:annotation>
 
-<xs:import namespace="http://drools.org/semantics/java"   schemaLocation="java.xsd" />
 <xs:import namespace="http://drools.org/semantics/python" schemaLocation="python.xsd" />
 <xs:import namespace="http://drools.org/semantics/jelly"  schemaLocation="jelly.xsd" />
+<xs:import namespace="http://drools.org/semantics/java"   schemaLocation="java.xsd" />
 
 <xs:annotation>
  <xs:documentation>
   Define the head element "rules" with 0 to unbounded "RulesChildren"
    The name (attribute) of a rule in the rules context (rules.rule outside
-    a rule-set) must be unique.
-   The name (attribute) for any rule-set (rules.rule-set) must be unique.
+    a rule-set) is required and must be unique.
+   The name (attribute) for any rule-set (rules.rule-set) is required and 
+    must be unique.
+   The module (attribute) for any semantics (rules.semantics) module declaration
+    is required and must be unique. (Or I can do this one through rogertron() and
+    just issue a warning to drl developers if a semantics delcaration is repeated.)
  </xs:documentation>
 </xs:annotation>
 <xs:element name="rules">
+  <xs:annotation>
+    <xs:documentation>
+      The following rogertron is processed by rogertron() in rogertron.js
+      Rogertron() provides supplemental checking of logical relationships
+       and any other checks that are beyond the scope of the schema language.
+      For more detail on this application of rogertron() see rule.rtn
+      Processors that do not have access to rogertron() should ignore the 
+       appinfo element.
+    </xs:documentation>
+    <xs:appinfo source="rules.rtn" />
+  </xs:annotation>
   <xs:complexType>
    <xs:group ref="RulesChildren" minOccurs="0" maxOccurs="unbounded" />
   </xs:complexType>
-  <xs:unique name="unique1">
+  <xs:key name="rule.name_attribute">
    <xs:selector xpath="drl:rule" />
    <xs:field xpath="@name" />
-  </xs:unique>
-  <xs:unique name="unique2">
+  </xs:key>
+  <xs:key name="rule-set.name_attribute">
    <xs:selector xpath="drl:rule-set" />
    <xs:field xpath="@name" />
-  </xs:unique>
+  </xs:key>
+  <xs:key name="semantics.module_attribute">
+   <xs:selector xpath="drl:semantics" />
+   <xs:field xpath="@module" />
+  </xs:key>
 </xs:element>
 
 <xs:annotation>
@@ -56,42 +96,57 @@
    The "rules" children (RulesChildren) are semantics, rule, and rule-set
    These children may appear any number of times (see 0 to unbounded in "rules"),
     and by "choice" (in this group) they may appear in any order.
-   The identifier (attribute) of a parameter within the context of a rule must be unique.
-   The identifier (attribute) of a declaration within the context of a rule must be unique.
-   The target (attribute) of an extraction within the context of a rule must be unique.
-   The name (attribute) of a rule within a rules.rule-set context must be unique.
+   The identifier (attribute) of a parameter within the context of a rule is required
+     and must be unique.
+   The identifier (attribute) of a declaration within the context of a rule is required
+     and must be unique.
+   The target (attribute) of an extraction within the context of a rule is required
+     and must be unique.
+   The name (attribute) of a rule within a rules.rule-set context is required and
+     must be unique.
  </xs:documentation>
 </xs:annotation>
 <xs:group name="RulesChildren">
  <xs:choice>
   <xs:element name="semantics" type="drl-semantics" />
   <xs:element name="rule"      type="drl-rule">
-   <xs:unique name="unique3">
+   <xs:annotation>
+     <xs:documentation>
+      The following rogertron is processed by rogertron() in rogertron.js
+      Rogertron() provides supplemental checking of logical relationships
+       and any other checks that are beyond the scope of the schema language.
+      For more detail on this application of rogertron() see rule.rtn
+      Processors that do not have access to rogertron() should ignore the 
+        appinfo element.
+     </xs:documentation>
+     <xs:appinfo source="rule.rtn" />
+   </xs:annotation>
+   <xs:key name="rule.parameter.identifier_attribute">
     <xs:selector xpath="drl:parameter" />
     <xs:field xpath="@identifier" />
-   </xs:unique>
-   <xs:unique name="unique4">
+   </xs:key>
+   <xs:key name="rule.declaration.identifier_attribute">
     <xs:selector xpath="drl:declaration" />
     <xs:field xpath="@identifier" />
-   </xs:unique>
-   <xs:unique name="unique5">
+   </xs:key>
+   <xs:key name="rule.extraction.target_attribute">
     <xs:selector xpath="drl:extraction" />
     <xs:field xpath="@target" />
-   </xs:unique>
+   </xs:key>
   </xs:element>
-  <xs:element name="rule-set"  type="drl-rule-set">
-   <xs:unique name="unique6">
+  <xs:element name="rule-set" type="drl-rule-set">
+   <xs:key name="rule-set.rule.name_attribute">
     <xs:selector xpath="drl:rule" />
     <xs:field xpath="@name" />
-   </xs:unique>
+   </xs:key>
   </xs:element>
  </xs:choice>
 </xs:group>
 
 <xs:annotation>
  <xs:documentation>
-  The semantics tag has one attibute, "value." The value of "value" is
-    restricted to reference one of the existing semantics support modules;
+  The semantics tag has one attibute, "module", which is required. The value of 
+    "module" is restricted to reference one of the existing semantics support modules;
     java, python, or jelly. In this version of the schema, semantics tags can 
     appear any number of times (allows repetition), and in any order in 
     relation to rule-set tags and rule tags that are outside of rule-set tags.
@@ -111,15 +166,16 @@
 
 <xs:annotation>
  <xs:documentation>
-   "rule-set" is a container for "rule"s. It may contain any number 
-      of "rule"s (including 0). 
+   "rule-set" is a container for "rule"s. It may contain any number of "rule"s 
+      (including 0). It has one attribute, "name", which is required and must be 
+      unique (key tag "rule-set.name_attribute" is defined in "rules" element.)
  </xs:documentation>
 </xs:annotation>
 <xs:complexType name="drl-rule-set">
   <xs:sequence>
    <xs:element name="rule" type="drl-rule" minOccurs="0" maxOccurs="unbounded" />
   </xs:sequence>
-  <xs:attribute name="name" use="required" type="xs:string" />
+  <xs:attribute name="name" type="xs:string" />
 </xs:complexType>
 
 <xs:annotation>
@@ -129,7 +185,11 @@
       parameter (at least one)
       declaration, extraction, and condition (any number in any order)
       duration (at most one)
-      consequence (1 occurrence)
+      consequence (once)
+    The attribute "name" is defined as "key" in both RulesChildren.rule and 
+      RulesChildren.rule-set.rule. The "name" attribute is therefore required 
+      and must be unique within the context of the rules that exist outside of 
+      any rule-set and within the context of any rule-set.
  </xs:documentation>
 </xs:annotation>
 <xs:complexType name="drl-rule">
@@ -139,25 +199,26 @@
   <xs:element name="duration"    type="drl-duration" minOccurs="0" />
   <xs:element name="consequence" type="drl-consequence" />
  </xs:sequence>
- <xs:attribute name="name" use="required" type="xs:string" />
+ <xs:attribute name="name" type="xs:string" />
 </xs:complexType>
 
 <xs:annotation>
  <xs:documentation>
    "parameter" is currently supported by the java semantics module only.
-     The "any" tag allows externally defined tags, in this case for 
+     The "any" tag allows externally defined tags, in this case exclusively for 
      the java:class tag that wraps parameter information. Use of externally
-     defined tags for "parameter"is restricted to the drools ... java namespace.
+     defined tags for "parameter"is restricted to the drools. ... /java namespace.
      By definition in drl-rule, parameter tag(s) must appear as the first 
-      element(s) in a rule, and there must be at least one.
-     The "declaration" tag also uses the drl-parameter definition.
+      element(s) in a rule, and there must be at least one in each rule.
+     The "identifier" attribute is key "rule.parameter.identifier_attribute"
+      defined within the rule element, so it is required and must be unique.
  </xs:documentation>
 </xs:annotation>
 <xs:complexType name="drl-parameter">
  <xs:sequence>
   <xs:any namespace="http://drools.org/semantics/java" />
  </xs:sequence>
- <xs:attribute name="identifier" use="required" type="xs:string" />
+ <xs:attribute name="identifier" type="xs:string" />
 </xs:complexType>
 
 <xs:annotation>
@@ -166,7 +227,6 @@
      of the "rule" element. By definition in the "rule" element, they may 
      appear any number of times, and in any order (choice) in relation to 
      one another. 
-      Note that the "declaration" element uses the drl-parameter definition.
  </xs:documentation>
 </xs:annotation>
 <xs:group name="OptionalRuleChildren">
@@ -179,6 +239,23 @@
 
 <xs:annotation>
  <xs:documentation>
+   Declaration: The attribute "identifier" is defined as "key" within the 
+    RulesChildren.rule element. It is therefore required, and must be unique 
+    within the context of any rule.
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-declaration">
+ <xs:sequence>
+  <xs:any namespace="http://drools.org/semantics/java" />
+ </xs:sequence>
+ <xs:attribute name="identifier" type="xs:string" />
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+   Extraction: The attribute "target" is defined as "key" within the 
+    RulesChildren.rule element. It is therefore required, and must be unique 
+    within the context of any rule.
  </xs:documentation>
 </xs:annotation>
 <xs:complexType name="drl-extraction">
@@ -186,11 +263,13 @@
   <xs:any namespace="http://drools.org/semantics/java
                      http://drools.org/semantics/python" />
   </xs:sequence>
-  <xs:attribute name="target" use="required" type="xs:string" />
+  <xs:attribute name="target" type="xs:string" />
 </xs:complexType>
 
 <xs:annotation>
  <xs:documentation>
+   Condition: Is allowed to use sematic elements defined in any of the 
+     listed namespaces.
  </xs:documentation>
 </xs:annotation>
 <xs:complexType name="drl-condition">
