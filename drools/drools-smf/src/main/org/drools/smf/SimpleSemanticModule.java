@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticModule.java,v 1.3 2004-09-17 00:32:24 mproctor Exp $
+ * $Id: SimpleSemanticModule.java,v 1.4 2004-10-24 00:54:29 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -76,6 +76,12 @@ public class SimpleSemanticModule implements SemanticModule
     private Map    consequenceFactories;
 
     private Map    durationFactories;
+    
+    /** Imports factories */
+    private Map    importsFactories;
+
+    /** Imports factories */
+    private Map    importEntryFactories;    
 
     // ------------------------------------------------------------
     //     Constructors
@@ -96,6 +102,8 @@ public class SimpleSemanticModule implements SemanticModule
         this.extractorFactories = new HashMap( );
         this.consequenceFactories = new HashMap( );
         this.durationFactories = new HashMap( );
+        this.importsFactories = new HashMap( );
+        this.importEntryFactories = new HashMap( );        
     }
 
     // ------------------------------------------------------------
@@ -251,4 +259,34 @@ public class SimpleSemanticModule implements SemanticModule
     {
         return this.durationFactories.keySet( );
     }
+
+    public void addImportsFactory(String name, ImportsFactory factory)
+    {
+        this.importsFactories.put( name, factory );
+    }
+
+    public ImportsFactory getImportsFactory(String name)
+    {
+        return ( ImportsFactory ) this.importsFactories.get( name );
+    }
+
+    public Set getImportsFactoryNames()
+    {
+        return this.importsFactories.keySet( );
+    } 
+
+    public void addImportEntryFactory(String name, ImportEntryFactory factory)
+    {
+        this.importEntryFactories.put( name, factory );
+    }
+
+    public ImportEntryFactory getImportEntryFactory(String name)
+    {
+        return ( ImportEntryFactory ) this.importEntryFactories.get( name );
+    }
+
+    public Set getImportEntryFactoryNames()
+    {
+        return this.importEntryFactories.keySet( );
+    }     
 }
