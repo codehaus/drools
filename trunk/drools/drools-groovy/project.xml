@@ -8,6 +8,8 @@
 
     <dependencies>
         <dependency>
+	    <!-- Note: groovy-1.0-beta-7.jar depends on JDK1.4
+	         so this module is really not JDK1.3-compatible. -->
             <groupId>groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>1.0-beta-7</version>
