@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,30 +59,36 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleImpl implements Rule {
+public class RuleImpl implements Rule
+{
 
-   private String name;
-   private String description;
-   private Map props = new HashMap();
+    private String name;
+    private String description;
+    private Map props = new HashMap();
 
-   RuleImpl(String name, String description) {
-      this.name = name;
-      this.description = description;
-   }
+    RuleImpl(String name, String description)
+    {
+        this.name = name;
+        this.description = description;
+    }
 
-   public String getName() {
-      return name;
-   }
+    public String getName()
+    {
+        return name;
+    }
 
-   public String getDescription() {
-      return description;
-   }
+    public String getDescription()
+    {
+        return description;
+    }
 
-   public Object getProperty(Object key) {
-      return props.get(key);
-   }
+    public Object getProperty(Object key)
+    {
+        return props.get(key);
+    }
 
-   public void setProperty(Object key, Object val) {
-      props.put(key, val);
-   }
+    public void setProperty(Object key, Object val)
+    {
+        props.put(key, val);
+    }
 }

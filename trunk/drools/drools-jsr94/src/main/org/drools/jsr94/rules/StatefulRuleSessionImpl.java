@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionImpl.java,v 1.3 2003-03-22 22:03:45 tdiesler Exp $
+ $Id: StatefulRuleSessionImpl.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -67,7 +67,8 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class StatefulRuleSessionImpl extends RuleSessionImpl implements StatefulRuleSession {
+public class StatefulRuleSessionImpl extends RuleSessionImpl implements StatefulRuleSession
+{
 
     /** the rule set from the repository */
     private RuleExecutionSetImpl ruleSet;
@@ -81,17 +82,17 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      * @param bindUri the URI the <code>RuleExecutionSet</code> has been bound to
      * @throws RuleExecutionSetNotFoundException if there is no rule set under the given URI
      */
-    StatefulRuleSessionImpl( String bindUri, Map properties ) throws RuleExecutionSetNotFoundException
+    StatefulRuleSessionImpl(String bindUri, Map properties) throws RuleExecutionSetNotFoundException
     {
 
         // get the rule set from the repository
         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-        ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet( bindUri );
-        if (ruleSet == null) throw new RuleExecutionSetNotFoundException( "no execution set bound to: " + bindUri );
+        ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet(bindUri);
+        if (ruleSet == null) throw new RuleExecutionSetNotFoundException("no execution set bound to: " + bindUri);
 
         // Note: this breaks the factory intension of RuleBase.createTransactionalWorkingMemory
-        workingMemory = new JSR94TransactionalWorkingMemory( ruleSet.getRuleBase() );
-        workingMemory.setApplicationData( properties );
+        workingMemory = new JSR94TransactionalWorkingMemory(ruleSet.getRuleBase());
+        workingMemory.setApplicationData(properties);
 
     }
 
@@ -100,9 +101,9 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#containsObject
      */
-    public boolean containsObject( Handle handle )
+    public boolean containsObject(Handle handle)
     {
-        return workingMemory.getObjectHandles().contains( handle );
+        return workingMemory.getObjectHandles().contains(handle);
     }
 
     /**
@@ -113,16 +114,17 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#addObject
      */
-    public Handle addObject( Object object ) throws InvalidRuleSessionException
+    public Handle addObject(Object object) throws InvalidRuleSessionException
     {
         try
         {
             Handle handle = workingMemory.getNextHandle();
-            workingMemory.assertObjectForHandle( handle, object );
+            workingMemory.assertObjectForHandle(handle, object);
             return handle;
-        } catch (AssertionException ex)
+        }
+        catch (AssertionException ex)
         {
-            throw new InvalidRuleSessionException( "cannot assert object", ex );
+            throw new InvalidRuleSessionException("cannot assert object", ex);
         }
     }
 
@@ -131,14 +133,14 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#addObjects
      */
-    public List addObjects( List list ) throws InvalidRuleSessionException
+    public List addObjects(List list) throws InvalidRuleSessionException
     {
 
         // return a list of handles
         List retList = new ArrayList();
         for (int i = 0; i < list.size(); i++)
         {
-            retList.add( addObject( list.get( i ) ) );
+            retList.add(addObject(list.get(i)));
         }
         return retList;
     }
@@ -151,18 +153,20 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#updateObject
      */
-    public void updateObject( Handle handle, Object object ) throws InvalidRuleSessionException
+    public void updateObject(Handle handle, Object object) throws InvalidRuleSessionException
     {
         try
         {
-            workingMemory.removeObjectForHandle( handle );
-            workingMemory.assertObjectForHandle( handle, object );
-        } catch (RetractionException ex)
+            workingMemory.removeObjectForHandle(handle);
+            workingMemory.assertObjectForHandle(handle, object);
+        }
+        catch (RetractionException ex)
         {
-            throw new InvalidRuleSessionException( "cannot retract object", ex );
-        } catch (AssertionException ex)
+            throw new InvalidRuleSessionException("cannot retract object", ex);
+        }
+        catch (AssertionException ex)
         {
-            throw new InvalidRuleSessionException( "cannot assert object", ex );
+            throw new InvalidRuleSessionException("cannot assert object", ex);
         }
     }
 
@@ -171,14 +175,15 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#removeObject
      */
-    public void removeObject( Handle handle ) throws InvalidRuleSessionException
+    public void removeObject(Handle handle) throws InvalidRuleSessionException
     {
         try
         {
-            workingMemory.removeObjectForHandle( handle );
-        } catch (RetractionException ex)
+            workingMemory.removeObjectForHandle(handle);
+        }
+        catch (RetractionException ex)
         {
-            throw new InvalidRuleSessionException( "cannot retract object", ex );
+            throw new InvalidRuleSessionException("cannot retract object", ex);
         }
     }
 
@@ -192,7 +197,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
     {
 
         List outList = new ArrayList();
-        outList.addAll( workingMemory.getObjects() );
+        outList.addAll(workingMemory.getObjects());
 
         // apply the default filter
         ObjectFilter objectFilter = ruleSet.getObjectFilter();
@@ -203,8 +208,8 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
             List cpyList = new ArrayList();
             for (int i = 0; i < outList.size(); i++)
             {
-                Object obj = objectFilter.filter( outList.get( i ) );
-                if (obj != null) cpyList.add( obj );
+                Object obj = objectFilter.filter(outList.get(i));
+                if (obj != null) cpyList.add(obj);
             }
             outList = cpyList;
         }
@@ -217,18 +222,18 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#getObjects(ObjectFilter)
      */
-    public List getObjects( ObjectFilter objectFilter )
+    public List getObjects(ObjectFilter objectFilter)
     {
 
         List outList = new ArrayList();
-        outList.addAll( workingMemory.getObjects() );
+        outList.addAll(workingMemory.getObjects());
 
         // apply the filter
         List cpyList = new ArrayList();
         for (int i = 0; i < outList.size(); i++)
         {
-            Object obj = objectFilter.filter( outList.get( i ) );
-            if (obj != null) cpyList.add( obj );
+            Object obj = objectFilter.filter(outList.get(i));
+            if (obj != null) cpyList.add(obj);
         }
 
         return cpyList;
@@ -245,9 +250,10 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
         try
         {
             workingMemory.commit();
-        } catch (DroolsException ex)
+        }
+        catch (DroolsException ex)
         {
-            throw new InvalidRuleSessionException( "cannot commit working memory", ex );
+            throw new InvalidRuleSessionException("cannot commit working memory", ex);
         }
     }
 
@@ -260,7 +266,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
     public void reset()
     {
         workingMemory.abort();
-        workingMemory = new JSR94TransactionalWorkingMemory( ruleSet.getRuleBase() );
+        workingMemory = new JSR94TransactionalWorkingMemory(ruleSet.getRuleBase());
     }
 
     /**
@@ -268,9 +274,9 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements Stateful
      *
      * @see StatefulRuleSessionImpl#getObject
      */
-    public Object getObject( Handle handle )
+    public Object getObject(Handle handle)
     {
-        return workingMemory.getObject( handle );
+        return workingMemory.getObject(handle);
     }
 
     /**

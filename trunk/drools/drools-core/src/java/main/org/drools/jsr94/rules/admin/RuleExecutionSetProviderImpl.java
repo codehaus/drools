@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -63,37 +63,41 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider {
+public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
+{
 
-   /**
-    * Creates a <code>RuleExecutionSet</code> implementation from an XML Document and additional
-    * vendor-specific properties.
-    *
-    * @see RuleExecutionSetProvider#createRuleExecutionSet(Document,Map)
-    */
-   public RuleExecutionSet createRuleExecutionSet(Document document, Map properties) {
-      // [TODO]
-      throw new NotImplementedException();
-   }
+    /**
+     * Creates a <code>RuleExecutionSet</code> implementation from an XML Document and additional
+     * vendor-specific properties.
+     *
+     * @see RuleExecutionSetProvider#createRuleExecutionSet(Document,Map)
+     */
+    public RuleExecutionSet createRuleExecutionSet(Document document, Map properties)
+    {
+        // [TODO]
+        throw new NotImplementedException();
+    }
 
-   /**
-    * Creates a <code>RuleExecutionSet</code> implementation from a vendor specific AST representation
-    * and vendor-specific properties.
-    *
-    * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable,Map)
-    */
-   public RuleExecutionSet createRuleExecutionSet(Serializable serializable, Map properties) {
-      // [TODO]
-      throw new NotImplementedException();
-   }
+    /**
+     * Creates a <code>RuleExecutionSet</code> implementation from a vendor specific AST representation
+     * and vendor-specific properties.
+     *
+     * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable,Map)
+     */
+    public RuleExecutionSet createRuleExecutionSet(Serializable serializable, Map properties)
+    {
+        // [TODO]
+        throw new NotImplementedException();
+    }
 
-   /**
-    * Creates a <code>RuleExecutionSet</code> implementation from a URI.
-    *
-    * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
-    */
-   public RuleExecutionSet createRuleExecutionSet(String ruleExecutionSetUri, Map properties) {
-      // [TODO]
-      throw new NotImplementedException();
-   }
+    /**
+     * Creates a <code>RuleExecutionSet</code> implementation from a URI.
+     *
+     * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
+     */
+    public RuleExecutionSet createRuleExecutionSet(String ruleExecutionSetUri, Map properties)
+    {
+        // [TODO]
+        throw new NotImplementedException();
+    }
 }

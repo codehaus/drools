@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TransactionalWorkingMemory.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: JSR94TransactionalWorkingMemory.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -64,109 +64,121 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory {
+public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
+{
 
-   // list of Handles
-   private Map objectMap = new HashMap();
+    // list of Handles
+    private Map objectMap = new HashMap();
 
-   // the next handle id
-   private static BigInteger nextHandleid = new BigInteger("1");
+    // the next handle id
+    private static BigInteger nextHandleid = new BigInteger("1");
 
-   /**
-    * Construct a new transactional working memory for a ruleBase.
-    *
-    *  @param ruleBase The rule base with which this memory is associated.
-    */
-   JSR94TransactionalWorkingMemory(RuleBase ruleBase) {
-      super(ruleBase);
-   }
+    /**
+     * Construct a new transactional working memory for a ruleBase.
+     *
+     *  @param ruleBase The rule base with which this memory is associated.
+     */
+    JSR94TransactionalWorkingMemory(RuleBase ruleBase)
+    {
+        super(ruleBase);
+    }
 
-   /**
-    * Gets the next <code>Handle</code> for this <code>RuleRuntime</code>.
-    */
-   Handle getNextHandle() {
-      Handle handle = new HandleImpl(nextHandleid);
-      nextHandleid = nextHandleid.add(new BigInteger("1"));
-      return handle;
-   }
+    /**
+     * Gets the next <code>Handle</code> for this <code>RuleRuntime</code>.
+     */
+    Handle getNextHandle()
+    {
+        Handle handle = new HandleImpl(nextHandleid);
+        nextHandleid = nextHandleid.add(new BigInteger("1"));
+        return handle;
+    }
 
-   /**
-    * Get a collection of handles currently asserted to the working memory.
-    */
-   Collection getObjectHandles() {
-      return objectMap.keySet();
-   }
+    /**
+     * Get a collection of handles currently asserted to the working memory.
+     */
+    Collection getObjectHandles()
+    {
+        return objectMap.keySet();
+    }
 
-   /**
-    * Get a collection of handles currently asserted to the working memory.
-    */
-   Collection getObjects() {
-      return objectMap.values();
-   }
+    /**
+     * Get a collection of handles currently asserted to the working memory.
+     */
+    Collection getObjects()
+    {
+        return objectMap.values();
+    }
 
 
-   Object getObject(Handle handle) {
-      return objectMap.get(handle);
-   }
+    Object getObject(Handle handle)
+    {
+        return objectMap.get(handle);
+    }
 
-   /**
-    * Assert a new object with the given handle into this working memory.
-    *
-    *  @throws AssertionException if an error occurs during assertion.
-    */
-   void assertObjectForHandle(Handle handle, Object object) throws AssertionException {
-      super.assertObject(object);
-      objectMap.put(handle, object);
-   }
+    /**
+     * Assert a new object with the given handle into this working memory.
+     *
+     *  @throws AssertionException if an error occurs during assertion.
+     */
+    void assertObjectForHandle(Handle handle, Object object) throws AssertionException
+    {
+        super.assertObject(object);
+        objectMap.put(handle, object);
+    }
 
-   /**
-    * Retract an object with the given handle from this working memory.
-    *
-    *  @param handle The handle to retract.
-    *
-    *  @throws RetractionException if an error occurs during retraction.
-    */
-   void removeObjectForHandle(Handle handle) throws RetractionException, InvalidRuleSessionException {
-      Object object = objectMap.get(handle);
-      if (object == null) throw new InvalidRuleSessionException("invalid handle: " + handle);
-      super.retractObject(object);
-      objectMap.remove(handle);
-   }
+    /**
+     * Retract an object with the given handle from this working memory.
+     *
+     *  @param handle The handle to retract.
+     *
+     *  @throws RetractionException if an error occurs during retraction.
+     */
+    void removeObjectForHandle(Handle handle) throws RetractionException, InvalidRuleSessionException
+    {
+        Object object = objectMap.get(handle);
+        if (object == null) throw new InvalidRuleSessionException("invalid handle: " + handle);
+        super.retractObject(object);
+        objectMap.remove(handle);
+    }
 
-   /**
-    * Assert a new fact object into this working memory.
-    * <p>
-    * When a fact is asserted during <code>StatefulRuleSession.executeRules</code> we commit immediately.
-    *
-    *  @param object The object to assert.
-    *
-    *  @throws AssertionException if an error occurs during assertion.
-    */
-   public void assertObject(Object object) throws AssertionException {
-      super.assertObject(object);
+    /**
+     * Assert a new fact object into this working memory.
+     * <p>
+     * When a fact is asserted during <code>StatefulRuleSession.executeRules</code> we commit immediately.
+     *
+     *  @param object The object to assert.
+     *
+     *  @throws AssertionException if an error occurs during assertion.
+     */
+    public void assertObject(Object object) throws AssertionException
+    {
+        super.assertObject(object);
 
-      Handle handle = getNextHandle();
-      objectMap.put(handle, object);
-   }
+        Handle handle = getNextHandle();
+        objectMap.put(handle, object);
+    }
 
-   /** Retract a fact object from this working memory.
-    *
-    *  @param object The object to retract.
-    *
-    *  @throws RetractionException if an error occurs during retraction.
-    */
-   public void retractObject(Object object) throws RetractionException {
-      super.retractObject(object);
+    /** Retract a fact object from this working memory.
+     *
+     *  @param object The object to retract.
+     *
+     *  @throws RetractionException if an error occurs during retraction.
+     */
+    public void retractObject(Object object) throws RetractionException
+    {
+        super.retractObject(object);
 
-      // Note: this is really bad, for each removal we have to scan the entire map.
-      // Any other ways?
-      Iterator itKeys = objectMap.keySet().iterator();
-      while (itKeys.hasNext()) {
-         Handle handle = (Handle)itKeys.next();
-         if (objectMap.get(handle) == object) {
-            objectMap.remove(handle);
-            break;
-         }
-      }
-   }
+        // Note: this is really bad, for each removal we have to scan the entire map.
+        // Any other ways?
+        Iterator itKeys = objectMap.keySet().iterator();
+        while (itKeys.hasNext())
+        {
+            Handle handle = (Handle) itKeys.next();
+            if (objectMap.get(handle) == object)
+            {
+                objectMap.remove(handle);
+                break;
+            }
+        }
+    }
 }

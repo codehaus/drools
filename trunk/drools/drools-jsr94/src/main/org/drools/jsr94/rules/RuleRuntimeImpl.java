@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleRuntimeImpl.java,v 1.3 2003-03-22 22:03:45 tdiesler Exp $
+ $Id: RuleRuntimeImpl.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -60,7 +60,8 @@ import java.util.Map;
  *
  * @see RuleRuntime
  */
-public class RuleRuntimeImpl implements RuleRuntime {
+public class RuleRuntimeImpl implements RuleRuntime
+{
 
     private static RuleRuntimeImpl ruleRuntime;
 
@@ -82,23 +83,23 @@ public class RuleRuntimeImpl implements RuleRuntime {
      *
      * @see RuleRuntime#createRuleSession
      */
-    public RuleSession createRuleSession( String bindUri, Map properties, int ruleSessionType )
+    public RuleSession createRuleSession(String bindUri, Map properties, int ruleSessionType)
             throws RuleExecutionSetNotFoundException, RuleSessionTypeUnsupportedException
     {
 
         if (ruleSessionType == RuleRuntime.STATELESS_SESSION_TYPE)
         {
-            StatelessRuleSessionImpl session = new StatelessRuleSessionImpl( bindUri, properties );
+            StatelessRuleSessionImpl session = new StatelessRuleSessionImpl(bindUri, properties);
             return session;
         }
 
         if (ruleSessionType == RuleRuntime.STATEFUL_SESSION_TYPE)
         {
-            StatefulRuleSessionImpl session = new StatefulRuleSessionImpl( bindUri, properties );
+            StatefulRuleSessionImpl session = new StatefulRuleSessionImpl(bindUri, properties);
             return session;
         }
 
-        throw new RuleSessionTypeUnsupportedException( "invalid session type: " + ruleSessionType );
+        throw new RuleSessionTypeUnsupportedException("invalid session type: " + ruleSessionType);
     }
 
 

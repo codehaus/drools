@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94WorkingMemory.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: JSR94WorkingMemory.java,v 1.3 2003-05-23 14:17:47 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,46 +59,51 @@ import java.util.List;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class JSR94WorkingMemory extends WorkingMemory {
+public class JSR94WorkingMemory extends WorkingMemory
+{
 
-   /** contains the objects currently in the working memory. */
-   private List objectList = new ArrayList();
+    /** contains the objects currently in the working memory. */
+    private List objectList = new ArrayList();
 
-   /**
-    * Construct a new working memory for a ruleBase.
-    *
-    *  @param ruleBase The rule base with which this memory is associated.
-    */
-   JSR94WorkingMemory(RuleBase ruleBase) {
-      super(ruleBase);
-   }
+    /**
+     * Construct a new working memory for a ruleBase.
+     *
+     *  @param ruleBase The rule base with which this memory is associated.
+     */
+    JSR94WorkingMemory(RuleBase ruleBase)
+    {
+        super(ruleBase);
+    }
 
-   /**
-    * Get a list of objects currently asserted to the working memory.
-    */
-   List getObjectList() {
-      return objectList;
-   }
+    /**
+     * Get a list of objects currently asserted to the working memory.
+     */
+    List getObjectList()
+    {
+        return objectList;
+    }
 
-   /** Assert a new fact object into this working memory.
-    *
-    *  @param object The object to assert.
-    *
-    *  @throws AssertionException if an error occurs during assertion.
-    */
-   public synchronized void assertObject(Object object) throws AssertionException {
-      super.assertObject(object);
-      objectList.add(object);
-   }
+    /** Assert a new fact object into this working memory.
+     *
+     *  @param object The object to assert.
+     *
+     *  @throws AssertionException if an error occurs during assertion.
+     */
+    public synchronized void assertObject(Object object) throws AssertionException
+    {
+        super.assertObject(object);
+        objectList.add(object);
+    }
 
-   /** Retract a fact object from this working memory.
-    *
-    *  @param object The object to retract.
-    *
-    *  @throws RetractionException if an error occurs during retraction.
-    */
-   public synchronized void retractObject(Object object) throws RetractionException {
-      super.retractObject(object);
-      objectList.remove(object);
-   }
+    /** Retract a fact object from this working memory.
+     *
+     *  @param object The object to retract.
+     *
+     *  @throws RetractionException if an error occurs during retraction.
+     */
+    public synchronized void retractObject(Object object) throws RetractionException
+    {
+        super.retractObject(object);
+        objectList.remove(object);
+    }
 }

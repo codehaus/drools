@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetRepository.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleExecutionSetRepository.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -57,57 +57,64 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleExecutionSetRepository {
+public class RuleExecutionSetRepository
+{
 
-   // holds the registered <code>RuleExecutionSet</code> objects.
-   private Map map = new HashMap();
+    // holds the registered <code>RuleExecutionSet</code> objects.
+    private Map map = new HashMap();
 
-   private static RuleExecutionSetRepository repository;
+    private static RuleExecutionSetRepository repository;
 
-   /** Hide the constructor. */
-   private RuleExecutionSetRepository() {
-   }
+    /** Hide the constructor. */
+    private RuleExecutionSetRepository()
+    {
+    }
 
-   /** Get the class instance of a <code>RuleExecutionSetRepository</code>. */
-   public static RuleExecutionSetRepository getInstance() {
-      if (repository != null) return repository;
-      return repository = new RuleExecutionSetRepository();
-   }
+    /** Get the class instance of a <code>RuleExecutionSetRepository</code>. */
+    public static RuleExecutionSetRepository getInstance()
+    {
+        if (repository != null) return repository;
+        return repository = new RuleExecutionSetRepository();
+    }
 
-   /**
-    * Retrieves a List of the URIs that currently have <code>RuleExecutionSets</code>
-    * associated with them.
-    *
-    * An empty list is returned is there are no associations.
-    */
-   public List getRegistrations() {
-      List list = new ArrayList();
-      list.addAll(map.keySet());
-      return list;
-   }
+    /**
+     * Retrieves a List of the URIs that currently have <code>RuleExecutionSets</code>
+     * associated with them.
+     *
+     * An empty list is returned is there are no associations.
+     */
+    public List getRegistrations()
+    {
+        List list = new ArrayList();
+        list.addAll(map.keySet());
+        return list;
+    }
 
-   /**
-    * Get the <code>RuleExecutionSet</code> bound to this URI, or return null.
-    */
-   public RuleExecutionSet getRuleExecutionSet(String bindUri) {
-      return (RuleExecutionSet)map.get(bindUri);
-   }
+    /**
+     * Get the <code>RuleExecutionSet</code> bound to this URI, or return null.
+     */
+    public RuleExecutionSet getRuleExecutionSet(String bindUri)
+    {
+        return (RuleExecutionSet) map.get(bindUri);
+    }
 
-   /**
-    * Register a <code>RuleExecutionSet</code> under the given URI.
-    */
-   public void registerRuleExecutionSet(String bindUri, RuleExecutionSet ruleSet) {
-      if (bindUri == null) throw new NullPointerException("bindUri cannot be null");
-      if (ruleSet == null) throw new NullPointerException("ruleSet cannot be null");
-      map.put(bindUri, ruleSet);
-   }
+    /**
+     * Register a <code>RuleExecutionSet</code> under the given URI.
+     */
+    public void registerRuleExecutionSet(String bindUri, RuleExecutionSet ruleSet)
+    {
+        if (bindUri == null) throw new NullPointerException("bindUri cannot be null");
+        if (ruleSet == null) throw new NullPointerException("ruleSet cannot be null");
+        map.put(bindUri, ruleSet);
+    }
 
-   /**
-    * Unregister a <code>RuleExecutionSet</code> from the given URI.
-    */
-   public void unregisterRuleExecutionSet(String bindUri) {
-      if (bindUri == null) throw new NullPointerException("bindUri cannot be null");
-      map.remove(bindUri);
-   }
+    /**
+     * Unregister a <code>RuleExecutionSet</code> from the given URI.
+     */
+    public void unregisterRuleExecutionSet(String bindUri)
+    {
+        if (bindUri == null) throw new NullPointerException("bindUri cannot be null");
+        map.remove(bindUri);
+    }
 
 }
