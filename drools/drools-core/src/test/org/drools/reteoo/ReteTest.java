@@ -1,10 +1,10 @@
 package org.drools.reteoo;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.drools.DroolsTestCase;
 import org.drools.MockObjectType;
+
+import java.util.Collection;
+import java.util.List;
 
 public class ReteTest extends DroolsTestCase
 {
@@ -86,7 +86,7 @@ public class ReteTest extends DroolsTestCase
      */
     public void testRetractObject() throws Exception
     {
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
         FactHandleImpl handle1 = new FactHandleImpl( 1 );
         FactHandleImpl handle2 = new FactHandleImpl( 2 );
@@ -124,7 +124,7 @@ public class ReteTest extends DroolsTestCase
 
     public void testModifyObject() throws Exception
     {
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
 
         FactHandleImpl handle1 = new FactHandleImpl( 1 );
         FactHandleImpl handle2 = new FactHandleImpl( 2 );

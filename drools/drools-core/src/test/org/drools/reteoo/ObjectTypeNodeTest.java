@@ -1,11 +1,11 @@
 package org.drools.reteoo;
 
-import java.util.List;
-import java.util.Set;
-
 import org.drools.DroolsTestCase;
 import org.drools.MockObjectType;
 import org.drools.rule.Declaration;
+
+import java.util.List;
+import java.util.Set;
 
 public class ObjectTypeNodeTest extends DroolsTestCase
 {
@@ -34,7 +34,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
 
         objectTypeNode.addParameterNode( paramNode );
 
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
         Object string1 = new String( "cheese" );
         Object object1 = new Object( );

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.25 2004-10-22 15:20:48 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.26 2004-10-22 22:21:16 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,41 +60,36 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.25 2004-10-22 15:20:48 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.26 2004-10-22 22:21:16 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
-//    private static final String      JSR_FACT_HANDLE_FACTORY_NAME = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
-//
-//    private static final String      JSR_HANDLE_CLASS             = "javax.rules.Handle";
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-
     /** The actual memory for the <code>JoinNode</code>s. */
-    private final Map                joinMemories                 = new HashMap( );
+    private final Map           joinMemories        = new HashMap( );
 
     /** Application data which is associated with this memory. */
-    private final Map                applicationData              = new HashMap( );
+    private final Map           applicationData     = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final Map                objects                      = new HashMap( );
+    private final Map           objects             = new HashMap( );
 
     /** Array of listeners */
-    private final List               listeners                    = new ArrayList( );
+    private final List          listeners           = new ArrayList( );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
-    private final RuleBaseImpl ruleBase;
+    private final RuleBaseImpl  ruleBase;
 
     /** Rule-firing agenda. */
-    private final Agenda agenda;
+    private final Agenda        agenda;
 
     /** Flag to determine if a rule is currently being fired. */
-    private boolean firing;
+    private boolean             firing;
 
-    private long conditionCounter = 0;
+    private long                conditionCounter    = 0;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -105,10 +100,10 @@ class WorkingMemoryImpl implements WorkingMemory
      *
      * @param ruleBase The backing rule-base.
      */
-    public WorkingMemoryImpl(RuleBaseImpl ruleBase)
+    public WorkingMemoryImpl( RuleBaseImpl ruleBase )
     {
         this.ruleBase = ruleBase;
-        this.agenda = new Agenda( this, ruleBase.getConflictResolver() );
+        this.agenda = new Agenda( this, ruleBase.getConflictResolver( ) );
     }
 
     // ------------------------------------------------------------
