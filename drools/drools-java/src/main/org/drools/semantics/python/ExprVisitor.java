@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprVisitor.java,v 1.1 2002-08-27 06:46:44 bob Exp $
+ $Id: ExprVisitor.java,v 1.2 2002-10-11 15:02:30 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -61,6 +61,7 @@ import org.python.parser.ast.Name;
  *
  *  @author <a href="martin@tonic.com">Martin Chilvers</a>
  *  @author <a href="bob@werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a> 
  */
 public class ExprVisitor extends Visitor
 {
@@ -104,23 +105,22 @@ public class ExprVisitor extends Visitor
 
         traverse( node );
 
-        System.out.println("JythonExpressionVisitor.eval_input: " + variables);
-
         return variables;
     }
 
     /** Visit a Name node.
      *
-     *  @param node The node.
+     *  @param Name The node.
      *
      *  @return The node.
      * 
      *  @throws Exception If an error occurs while traversing.
      */
-    public Object Name(SimpleNode node) throws Exception
+    public Object visitName(Name node) throws Exception
     {
         variables.add( ((Name)node).id );
 
         return node;
     }
+    
 }
