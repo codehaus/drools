@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.16 2004-07-06 20:16:40 dbarnett Exp $
+ $Id: WorkingMemoryImpl.java,v 1.17 2004-07-27 01:31:49 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -65,12 +65,13 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.16 2004-07-06 20:16:40 dbarnett Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.17 2004-07-27 01:31:49 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
 {
     private static final String JSR_FACT_HANDLE_FACTORY_NAME = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
+    private static final String JSR_HANDLE_CLASS = "javax.rules.Handle";
 
     // ------------------------------------------------------------
     //     Instance members
@@ -167,15 +168,18 @@ class WorkingMemoryImpl
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         Class jsrHandleFactoryClass = null;
+        Class jsrHandle = null;
 
         if(cl != null)
         {
             try
             {
                 jsrHandleFactoryClass = cl.loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
+                jsrHandle = cl.loadClass( JSR_HANDLE_CLASS );
             }
             catch (ClassNotFoundException e)
             {
+              jsrHandleFactoryClass = null;
                 // swallow
             }
         }
@@ -185,9 +189,11 @@ class WorkingMemoryImpl
             try
             {
                 jsrHandleFactoryClass = cl.loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
+                jsrHandle = cl.loadClass( JSR_HANDLE_CLASS );
             }
             catch (ClassNotFoundException e2)
             {
+                jsrHandleFactoryClass = null;
                 // swallow
             }
         }
