@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.6 2004-12-04 06:26:39 mproctor Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.7 2004-12-09 11:23:39 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,17 +62,19 @@ public class PrimitiveLongMapTest extends TestCase
 
     public void testPaging()
     {
-        PrimitiveLongMap map = new PrimitiveLongMap( 8,
-                                                     4 );
+        PrimitiveLongMap map = new PrimitiveLongMap( 32,
+                                                     8 );
 
-        for ( int i = 0; i < 128; i++ )
+        for ( int i = 0; i < 512; i++ )
         {
+            Integer value = new Integer( i );
+
             Object oldValue = map.put( i,
-                                       new Integer( i ) );
+                                       value );
             assertNull( "OldValueNullTest ",
                         oldValue );
             assertEquals( "OldValueNullTest ",
-                          new Integer( i ),
+                          value,
                           map.get( i ) );
         }
 
@@ -116,18 +118,18 @@ public class PrimitiveLongMapTest extends TestCase
      *   if ( key > this.maxKey || key < 0 )
      *   {
      *       return null;
-     *   } 
+     *   }
      *
      */
     public void testMaxKey()
     {
-        
+
         PrimitiveLongMap map = new PrimitiveLongMap( 8,
                                                      4 );
 
         //Test maxKey for key 0
-        Object oldValue = map.put( 0,
-                                   new Integer( 0 ) );
+        map.put( 0,
+                 new Integer( 0 ) );
 
         assertEquals( new Integer( 0 ),
                       map.get( 0 ) );
@@ -138,19 +140,19 @@ public class PrimitiveLongMapTest extends TestCase
         assertNull( map.get( 0 ) );
 
         //Test maxKey for key 1
-        oldValue = map.put( 1,
-                                   new Integer( 1 ) );        
+        map.put( 1,
+                 new Integer( 1 ) );
         assertEquals( new Integer( 1 ),
                       map.get( 1 ) );
         assertNull( map.remove( 2 ) );
         assertEquals( new Integer( 1 ),
                       map.get( 1 ) );
         assertNotNull( map.remove( 1 ) );
-        assertNull( map.get( 1 ) );        
+        assertNull( map.get( 1 ) );
 
         //Test maxKey for key 127, an end to a page border
-        oldValue = map.put( 127,
-                            new Integer( 127 ) );
+        map.put( 127,
+                 new Integer( 127 ) );
         assertEquals( new Integer( 127 ),
                       map.get( 127 ) );
         assertNull( map.remove( 128 ) );
@@ -160,8 +162,8 @@ public class PrimitiveLongMapTest extends TestCase
         assertNull( map.get( 127 ) );
 
         //Test maxKey for key 128, a start to a new page
-        oldValue = map.put( 128,
-                            new Integer( 128 ) );
+        map.put( 128,
+                 new Integer( 128 ) );
         assertEquals( new Integer( 128 ),
                       map.get( 128 ) );
         assertNull( map.remove( 129 ) );

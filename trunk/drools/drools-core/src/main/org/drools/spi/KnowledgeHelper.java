@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: KnowledgeHelper.java,v 1.14 2004-11-29 12:35:52 simon Exp $
+ * $Id: KnowledgeHelper.java,v 1.15 2004-12-09 11:23:38 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -63,6 +63,13 @@ public class KnowledgeHelper
         this.tuple.getWorkingMemory( ).assertObject( object );
     }
 
+    public void assertObject(Object object,
+                             boolean dynamic ) throws FactException
+    {
+        this.tuple.getWorkingMemory( ).assertObject( object,
+                                                     dynamic );
+    }
+
     public void modifyObject(Object object) throws FactException
     {
         FactHandle handle = this.tuple.getFactHandleForObject( object );
@@ -71,8 +78,8 @@ public class KnowledgeHelper
                                                      object );
     }
 
-    public void modifyObject(Object oldObject,
-                             Object newObject) throws FactException
+    public void modifyObject( Object oldObject,
+                              Object newObject ) throws FactException
     {
         FactHandle handle = this.tuple.getFactHandleForObject( oldObject );
 
@@ -80,7 +87,7 @@ public class KnowledgeHelper
                                                      newObject );
     }
 
-    public void retractObject(Object object) throws FactException
+    public void retractObject( Object object ) throws FactException
     {
         FactHandle handle = this.tuple.getFactHandleForObject( object );
 
@@ -97,7 +104,7 @@ public class KnowledgeHelper
         return this.tuple.getWorkingMemory( ).getObjects( );
     }
 
-    public List getObjects(Class objectClass)
+    public List getObjects( Class objectClass )
     {
         return this.tuple.getWorkingMemory( ).getObjects( objectClass );
     }
@@ -106,5 +113,4 @@ public class KnowledgeHelper
     {
         this.tuple.getWorkingMemory( ).clearAgenda( );
     }
-
 }
