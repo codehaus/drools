@@ -14,5 +14,7 @@ public interface WorkingMemoryEventListener extends EventListener
 
     void activationCreated(ActivationCreatedEvent event);
 
+    void activationCancelled(ActivationCancelledEvent event);
+
     void activationFired(ActivationFiredEvent event);
 }

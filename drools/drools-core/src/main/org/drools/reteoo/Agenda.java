@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.35 2004-11-02 10:15:33 simon Exp $
+ * $Id: Agenda.java,v 1.36 2004-11-06 03:29:24 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,12 +46,19 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
+import org.drools.spi.Tuple;
+
+import org.drools.event.WorkingMemoryEventListener;
+import org.drools.event.ActivationCreatedEvent;
+import org.drools.event.ActivationCancelledEvent;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
 
 /**
  * Rule-firing Agenda.
@@ -148,6 +155,21 @@ class Agenda implements Serializable
         {
             this.items.add( item );
         }
+
+        List listeners = workingMemory.getListeners();
+        if (!listeners.isEmpty())
+        {
+            ActivationCreatedEvent activationCreatedEvent =  new ActivationCreatedEvent(workingMemory,
+                                                                                        tuple.getRule( ).getConsequence( ),
+                                                                                        tuple);
+            Iterator iter = listeners.iterator();
+            WorkingMemoryEventListener listener;
+            while ( iter.hasNext() )
+            {
+                listener = (WorkingMemoryEventListener) iter.next();
+                listener.activationCreated(activationCreatedEvent);
+            }
+        }
     }
 
     /**
@@ -165,7 +187,11 @@ class Agenda implements Serializable
 
         Iterator itemIter = this.items.iterator( );
         AgendaItem eachItem;
-
+        Tuple tuple;
+        ActivationCancelledEvent activationCancelledEvent;
+        List listeners = workingMemory.getListeners();
+        WorkingMemoryEventListener listener;
+        Iterator iter;
         while ( itemIter.hasNext( ) )
         {
             eachItem = ( AgendaItem ) itemIter.next( );
@@ -175,6 +201,20 @@ class Agenda implements Serializable
                 if ( eachItem.getKey( ).containsAll( key ) )
                 {
                     itemIter.remove( );
+                    if (!listeners.isEmpty())
+                    {
+                        tuple = eachItem.getTuple();
+                        activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
+                                                                                                          tuple.getRule( ).getConsequence( ),
+                                                                                                          tuple);
+
+                        iter = workingMemory.getListeners().iterator();
+                        while ( iter.hasNext() )
+                        {
+                            listener = (WorkingMemoryEventListener) iter.next();
+                            listener.activationCancelled(activationCancelledEvent);
+                        }
+                    }
                 }
             }
         }
@@ -191,6 +231,20 @@ class Agenda implements Serializable
                 {
                     cancelItem( eachItem );
                     itemIter.remove( );
+                    if (!listeners.isEmpty())
+                    {
+                        tuple = eachItem.getTuple();
+                        activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
+                                                                                                          tuple.getRule( ).getConsequence( ),
+                                                                                                          tuple);
+
+                        iter = workingMemory.getListeners().iterator();
+                        while ( iter.hasNext() )
+                        {
+                            listener = (WorkingMemoryEventListener) iter.next();
+                            listener.activationCancelled(activationCancelledEvent);
+                        }
+                    }
                 }
             }
         }
@@ -208,7 +262,11 @@ class Agenda implements Serializable
         Iterator itemIter = this.items.iterator( );
         AgendaItem eachItem;
         ReteTuple eachTuple;
-
+        Tuple tuple;
+        List listeners = workingMemory.getListeners();
+        WorkingMemoryEventListener listener;
+        ActivationCancelledEvent activationCancelledEvent;
+        Iterator iter;
         while ( itemIter.hasNext( ) )
         {
             eachItem = ( AgendaItem ) itemIter.next( );
@@ -219,8 +277,22 @@ class Agenda implements Serializable
                 {
                     if ( !newTuples.containsTuple( eachItem.getKey( ) ) )
                     {
-                        // System.err.println( "REMOVE: " + eachItem );
-                        // itemIter.remove();
+                        itemIter.remove();
+
+                        if (!listeners.isEmpty())
+                        {
+                            tuple = eachItem.getTuple();
+                            activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
+                                                                                                              tuple.getRule( ).getConsequence( ),
+                                                                                                              tuple);
+
+                            iter = workingMemory.getListeners().iterator();
+                            while ( iter.hasNext() )
+                            {
+                                listener = (WorkingMemoryEventListener) iter.next();
+                                listener.activationCancelled(activationCancelledEvent);
+                            }
+                        }
                     }
                     else
                     {
@@ -248,6 +320,20 @@ class Agenda implements Serializable
                     {
                         cancelItem( eachItem );
                         itemIter.remove( );
+                        if (!listeners.isEmpty())
+                        {
+                            tuple = eachItem.getTuple();
+                            activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
+                                                                                                              tuple.getRule( ).getConsequence( ),
+                                                                                                              tuple);
+
+                            iter = workingMemory.getListeners().iterator();
+                            while ( iter.hasNext() )
+                            {
+                                listener = (WorkingMemoryEventListener) iter.next();
+                                listener.activationCancelled(activationCancelledEvent);
+                            }
+                        }
                     }
 
                     else
