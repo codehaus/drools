@@ -7,52 +7,44 @@ import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.spi.ObjectType;
 
-public class InstrumentedObjectTypeNode
-    extends ObjectTypeNode
+public class InstrumentedObjectTypeNode extends ObjectTypeNode
 {
     private List assertedObjects;
+
     private List retractedHandles;
+
     private List modifiedHandles;
 
     public InstrumentedObjectTypeNode(ObjectType objectType)
     {
         super( objectType );
 
-        this.assertedObjects  = new ArrayList();
-        this.retractedHandles = new ArrayList();
-        this.modifiedHandles  = new ArrayList();
+        this.assertedObjects = new ArrayList( );
+        this.retractedHandles = new ArrayList( );
+        this.modifiedHandles = new ArrayList( );
     }
 
     public void assertObject(FactHandle handle,
                              Object object,
-                             WorkingMemoryImpl memory)
-        throws FactException
+                             WorkingMemoryImpl memory) throws FactException
     {
-        super.assertObject( handle,
-                            object,
-                            memory );
+        super.assertObject( handle, object, memory );
 
         this.assertedObjects.add( object );
     }
 
     public void modifyObject(FactHandle handle,
                              Object object,
-                             WorkingMemoryImpl memory)
-        throws FactException
+                             WorkingMemoryImpl memory) throws FactException
     {
-        super.modifyObject( handle,
-                            object,
-                            memory );
+        super.modifyObject( handle, object, memory );
 
         this.modifiedHandles.add( handle );
     }
 
-    public void retractObject(FactHandle handle,
-                              WorkingMemoryImpl memory)
-        throws FactException
+    public void retractObject(FactHandle handle, WorkingMemoryImpl memory) throws FactException
     {
-        super.retractObject( handle,
-                             memory );
+        super.retractObject( handle, memory );
 
         this.retractedHandles.add( handle );
     }
@@ -66,7 +58,7 @@ public class InstrumentedObjectTypeNode
     {
         return this.modifiedHandles;
     }
-    
+
     public List getRetractedHandles()
     {
         return this.retractedHandles;

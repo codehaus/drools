@@ -11,9 +11,8 @@ public class FalseCondition implements Condition
 
     public Declaration[] getRequiredTupleMembers()
     {
-        return new Declaration[]
-            {
-                /* empty */
-            };
+        return new Declaration[]{
+        /* empty */
+        };
     }
 }

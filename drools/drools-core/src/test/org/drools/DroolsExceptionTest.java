@@ -2,29 +2,26 @@ package org.drools;
 
 import junit.framework.TestCase;
 
-public class DroolsExceptionTest
-    extends TestCase
+public class DroolsExceptionTest extends TestCase
 {
     public void testConstruct()
     {
-        DroolsException e = new DroolsException();
+        DroolsException e = new DroolsException( );
 
-        assertNull( e.getRootCause() );
+        assertNull( e.getRootCause( ) );
 
-        assertNull( e.getMessage() );
+        assertNull( e.getMessage( ) );
     }
 
     public void testConstruct_WithMessage()
     {
         DroolsException e = new DroolsException( "cheese" );
 
-        assertNull( e.getRootCause() );
+        assertNull( e.getRootCause( ) );
 
-        assertEquals( "cheese",
-                      e.getMessage() );
+        assertEquals( "cheese", e.getMessage( ) );
 
-        assertEquals( "cheese",
-                      e.getLocalizedMessage() );
+        assertEquals( "cheese", e.getLocalizedMessage( ) );
     }
 
     public void testConstruct_WithRootCause()
@@ -33,13 +30,10 @@ public class DroolsExceptionTest
 
         DroolsException e = new DroolsException( rootCause );
 
-        assertSame( rootCause,
-                    e.getRootCause() );
+        assertSame( rootCause, e.getRootCause( ) );
 
-        assertEquals( "rootCheese",
-                      e.getMessage() );
+        assertEquals( "rootCheese", e.getMessage( ) );
 
-        assertEquals( "rootCheese",
-                      e.getLocalizedMessage() );
+        assertEquals( "rootCheese", e.getLocalizedMessage( ) );
     }
 }

@@ -16,33 +16,33 @@ import org.drools.spi.ObjectType;
 
 public class BuilderTest extends TestCase
 {
-    private Builder  builder;
+    private Builder     builder;
 
-    private ObjectType stringType;
-    private ObjectType objectType;
+    private ObjectType  stringType;
+
+    private ObjectType  objectType;
 
     private Declaration stringDecl;
+
     private Declaration objectDecl;
 
-    private Rule rule1;
+    private Rule        rule1;
 
     public void setUp()
     {
-        this.builder  = new Builder();
+        this.builder = new Builder( );
 
-        this.stringType = new MockObjectType(true);
-        this.objectType = new MockObjectType(true);
+        this.stringType = new MockObjectType( true );
+        this.objectType = new MockObjectType( true );
 
         this.rule1 = new Rule( "cheese" );
 
-        this.stringDecl = new Declaration( this.stringType,
-                                           "string" );
-        
-        this.objectDecl = new Declaration( this.objectType,
-                                           "object" );
-        
+        this.stringDecl = new Declaration( this.stringType, "string" );
+
+        this.objectDecl = new Declaration( this.objectType, "object" );
+
         this.rule1.addParameterDeclaration( this.stringDecl );
-        
+
         this.rule1.addParameterDeclaration( this.objectDecl );
     }
 
@@ -50,23 +50,21 @@ public class BuilderTest extends TestCase
     {
         Set nodes = this.builder.createParameterNodes( this.rule1 );
 
-        assertEquals( 2,
-                      nodes.size() );
+        assertEquals( 2, nodes.size( ) );
 
-        Set decls    = new HashSet();
+        Set decls = new HashSet( );
 
-        Iterator      nodeIter = nodes.iterator();
+        Iterator nodeIter = nodes.iterator( );
         ParameterNode eachNode = null;
 
-        while ( nodeIter.hasNext() )
+        while ( nodeIter.hasNext( ) )
         {
-            eachNode = (ParameterNode) nodeIter.next();
+            eachNode = ( ParameterNode ) nodeIter.next( );
 
-            decls.add( eachNode.getDeclaration() );
+            decls.add( eachNode.getDeclaration( ) );
         }
 
-        assertEquals( 2,
-                      decls.size() );
+        assertEquals( 2, decls.size( ) );
 
         assertTrue( decls.contains( this.stringDecl ) );
         assertTrue( decls.contains( this.objectDecl ) );
@@ -74,66 +72,62 @@ public class BuilderTest extends TestCase
 
     public void testMatches()
     {
-        Set decls = new HashSet();
+        Set decls = new HashSet( );
 
-        InstrumentedCondition cond = new InstrumentedCondition();
+        InstrumentedCondition cond = new InstrumentedCondition( );
 
         cond.addDeclaration( this.stringDecl );
         cond.addDeclaration( this.objectDecl );
 
-        assertTrue( ! this.builder.matches( cond,
-                                            decls ) );
+        assertTrue( !this.builder.matches( cond, decls ) );
 
         decls.add( this.stringDecl );
 
-        assertTrue( ! this.builder.matches( cond,
-                                            decls ) );
+        assertTrue( !this.builder.matches( cond, decls ) );
 
         decls.add( this.objectDecl );
 
-        assertTrue( this.builder.matches( cond,
-                                          decls ) );
+        assertTrue( this.builder.matches( cond, decls ) );
     }
 
     public void testFindMatchingTupleSourceForExtraction()
     {
-        Set sources = new HashSet();
+        Set sources = new HashSet( );
 
         MockTupleSource source = null;
 
         InstrumentedExtractor extractor = null;
 
         Extraction extract = null;
-        
+
         TupleSource found = null;
 
         // ----------------------------------------
         // ----------------------------------------
 
-        source = new MockTupleSource();
+        source = new MockTupleSource( );
 
         source.addTupleDeclaration( this.objectDecl );
 
         sources.add( source );
 
-        extractor = new InstrumentedExtractor();
+        extractor = new InstrumentedExtractor( );
 
         extractor.addDeclaration( this.stringDecl );
 
-        extract = new Extraction( this.objectDecl,
-                                  extractor );
+        extract = new Extraction( this.objectDecl, extractor );
 
         found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
 
         assertNull( found );
-        
+
         // ----------------------------------------
         // ----------------------------------------
 
-        sources.clear();
+        sources.clear( );
 
-        source = new MockTupleSource();
+        source = new MockTupleSource( );
 
         source.addTupleDeclaration( this.objectDecl );
 
@@ -149,9 +143,9 @@ public class BuilderTest extends TestCase
         // ----------------------------------------
         // ----------------------------------------
 
-        sources.clear();
+        sources.clear( );
 
-        source = new MockTupleSource();
+        source = new MockTupleSource( );
 
         source.addTupleDeclaration( this.stringDecl );
 
@@ -162,50 +156,48 @@ public class BuilderTest extends TestCase
 
         assertNotNull( found );
 
-        assertSame( source,
-                    found );
+        assertSame( source, found );
     }
 
     public void testFindMatchingTupleSourceForCondition()
     {
-        Set sources = new HashSet();
+        Set sources = new HashSet( );
 
         MockTupleSource source = null;
 
         // ----------------------------------------
         // ----------------------------------------
 
-        source = new MockTupleSource();
+        source = new MockTupleSource( );
 
         source.addTupleDeclaration( this.stringDecl );
 
         sources.add( source );
 
-        InstrumentedCondition cond = new InstrumentedCondition();
+        InstrumentedCondition cond = new InstrumentedCondition( );
 
         cond.addDeclaration( this.stringDecl );
 
         TupleSource found = null;
 
-        found = this.builder.findMatchingTupleSourceForCondition( cond,
-                                                                  sources );
+        found = this.builder
+                            .findMatchingTupleSourceForCondition( cond, sources );
 
         assertNotNull( found );
 
-        assertSame( source,
-                    found );
+        assertSame( source, found );
 
         // ----------------------------------------
         // ----------------------------------------
 
-        sources.clear();
+        sources.clear( );
 
-        source = new MockTupleSource();
+        source = new MockTupleSource( );
 
         source.addTupleDeclaration( this.objectDecl );
 
-        found = this.builder.findMatchingTupleSourceForCondition( cond,
-                                                                  sources );
+        found = this.builder
+                            .findMatchingTupleSourceForCondition( cond, sources );
 
         assertNull( found );
 
@@ -214,21 +206,20 @@ public class BuilderTest extends TestCase
 
         cond.addDeclaration( this.objectDecl );
 
-        sources.clear();
+        sources.clear( );
 
-        source = new MockTupleSource();
+        source = new MockTupleSource( );
 
         source.addTupleDeclaration( this.objectDecl );
         source.addTupleDeclaration( this.stringDecl );
 
         sources.add( source );
 
-        found = this.builder.findMatchingTupleSourceForCondition( cond,
-                                                                  sources );
+        found = this.builder
+                            .findMatchingTupleSourceForCondition( cond, sources );
 
         assertNotNull( found );
 
-        assertSame( source,
-                    found );
+        assertSame( source, found );
     }
 }

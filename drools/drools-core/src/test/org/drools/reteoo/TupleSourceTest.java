@@ -12,8 +12,7 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
 
-public class TupleSourceTest
-    extends TestCase
+public class TupleSourceTest extends TestCase
 {
     public void setUp()
     {
@@ -27,47 +26,45 @@ public class TupleSourceTest
 
     public void testPropagateAssertTuple()
     {
-        TupleSource           source = new MockTupleSource();
-        InstrumentedTupleSink sink   = new InstrumentedTupleSink();
+        TupleSource source = new MockTupleSource( );
+        InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
         source.setTupleSink( sink );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-    	WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
+                                              new DefaultConflictResolver( ) );
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 
         Rule rule = new Rule( "test-rule" );
-        
+
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
-        "paramVar" );                                                 
+                                                 "paramVar" );
         rule.addParameterDeclaration( paramDecl );
         //add consequence
-        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition() );
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple(workingMemory, rule);
+        ReteTuple tuple = new ReteTuple( workingMemory, rule );
 
         try
         {
             source.propagateAssertTuple( tuple,
-            		                     (WorkingMemoryImpl) workingMemory  );
+                                         ( WorkingMemoryImpl ) workingMemory );
 
-            List tuples = sink.getAssertedTuples();
+            List tuples = sink.getAssertedTuples( );
 
-            assertEquals( 1,
-                          tuples.size() );
+            assertEquals( 1, tuples.size( ) );
 
-            assertSame( tuple,
-                        tuples.get( 0 ) );
+            assertSame( tuple, tuples.get( 0 ) );
 
-            List objects = sink.getRetractedObjects();
+            List objects = sink.getRetractedObjects( );
 
-            assertEquals( 0,
-                          objects.size() );
+            assertEquals( 0, objects.size( ) );
         }
-        catch (AssertionException e)
+        catch ( AssertionException e )
         {
-            fail( e.toString() );
+            fail( e.toString( ) );
         }
     }
 }

@@ -5,21 +5,21 @@ import java.util.List;
 
 import org.drools.FactHandle;
 
-public class InstrumentedTupleSink
-    implements TupleSink
+public class InstrumentedTupleSink implements TupleSink
 {
     private List assertedTuples;
+
     private List retractedObjects;
+
     private List retractedKeys;
 
     public InstrumentedTupleSink()
     {
-        this.assertedTuples   = new ArrayList();
-        this.retractedObjects = new ArrayList();
+        this.assertedTuples = new ArrayList( );
+        this.retractedObjects = new ArrayList( );
     }
 
-    public void assertTuple(ReteTuple tuple,
-                            WorkingMemoryImpl workingMemory)
+    public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory)
     {
         this.assertedTuples.add( tuple );
     }
@@ -29,14 +29,12 @@ public class InstrumentedTupleSink
         return this.assertedTuples;
     }
 
-    public void retractObject(Object object,
-                              WorkingMemoryImpl workingMemory)
+    public void retractObject(Object object, WorkingMemoryImpl workingMemory)
     {
         this.retractedObjects.add( object );
     }
 
-    public void retractTuples(TupleKey key,
-                              WorkingMemoryImpl workingMemory)
+    public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory)
     {
         this.retractedKeys.add( key );
     }

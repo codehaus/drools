@@ -1,49 +1,43 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSet.java,v 1.14 2004-09-16 23:43:03 mproctor Exp $
-
- Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
-
- Redistribution and use of this software and associated documentation
- ("Software"), with or without modification, are permitted provided
- that the following conditions are met:
-
- 1. Redistributions of source code must retain copyright
-    statements and notices.  Redistributions must also contain a
-    copy of this document.
-
- 2. Redistributions in binary form must reproduce the
-    above copyright notice, this list of conditions and the
-    following disclaimer in the documentation and/or other
-    materials provided with the distribution.
-
- 3. The name "drools" must not be used to endorse or promote
-    products derived from this Software without prior written
-    permission of The Werken Company.  For written permission,
-    please contact bob@werken.com.
-
- 4. Products derived from this Software may not be called "drools"
-    nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of
-    The Werken Company.
-
- 5. Due credit should be given to The Werken Company.
-    (http://werken.com/)
-
- THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
- ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ * $Id: TupleSet.java,v 1.15 2004-09-17 00:14:10 mproctor Exp $
+ * 
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * 
+ * Redistribution and use of this software and associated documentation
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "drools" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of The Werken Company.
+ * For written permission, please contact bob@werken.com.
+ * 
+ * 4. Products derived from this Software may not be called "drools" nor may
+ * "drools" appear in their names without prior written permission of The Werken
+ * Company. "drools" is a trademark of The Werken Company.
+ * 
+ * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
+ * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *  
  */
 
 import java.io.Serializable;
@@ -55,7 +49,8 @@ import java.util.Set;
 
 import org.drools.FactHandle;
 
-/** A set of <code>Tuple<code>s indexed by <code>TupleKey<code>s.
+/**
+ * A set of <code>Tuple<code>s indexed by <code>TupleKey<code>s.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -72,16 +67,18 @@ class TupleSet implements Serializable
     //     Constructors
     // ------------------------------------------------------------
 
-    /** Construct.
+    /**
+     * Construct.
      */
     TupleSet()
     {
-        this.tuples = new HashMap();
+        this.tuples = new HashMap( );
     }
 
-    /** Construct with a single tuple.
-     *
-     *  @param tuple The tuple.
+    /**
+     * Construct with a single tuple.
+     * 
+     * @param tuple The tuple.
      */
     TupleSet(ReteTuple tuple)
     {
@@ -89,53 +86,58 @@ class TupleSet implements Serializable
         addTuple( tuple );
     }
 
-    /** Construct with a set of tuples.
-     *
-     *  @param tuples The tuples.
+    /**
+     * Construct with a set of tuples.
+     * 
+     * @param tuples The tuples.
      */
     TupleSet(Set tuples)
     {
-        this.tuples = new HashMap( tuples.size() );
+        this.tuples = new HashMap( tuples.size( ) );
 
         addAllTuples( tuples );
     }
 
-    /** Construct with a size hint.
-     *
-     *  @param sizeHint Hint as to desired size.
+    /**
+     * Construct with a size hint.
+     * 
+     * @param sizeHint Hint as to desired size.
      */
     TupleSet(int sizeHint)
     {
         this.tuples = new HashMap( sizeHint );
     }
 
-    /** Retrieve the size (number of tuples) in this set.
-     *
-     *  @return The size of this set.
+    /**
+     * Retrieve the size (number of tuples) in this set.
+     * 
+     * @return The size of this set.
      */
     public int size()
     {
-        return this.tuples.size();
+        return this.tuples.size( );
     }
 
-    /** Add a <code>Set</code> of <code>Tuple</code>s to this set.
-     *
-     *  @param tuples The tuples.
+    /**
+     * Add a <code>Set</code> of <code>Tuple</code> s to this set.
+     * 
+     * @param tuples The tuples.
      */
     public void addAllTuples(Set tuples)
     {
-        Iterator tupleIter = tuples.iterator();
+        Iterator tupleIter = tuples.iterator( );
         ReteTuple eachTuple = null;
 
-        while ( tupleIter.hasNext() )
+        while ( tupleIter.hasNext( ) )
         {
-            eachTuple = (ReteTuple) tupleIter.next();
+            eachTuple = ( ReteTuple ) tupleIter.next( );
 
             addTuple( eachTuple );
         }
     }
 
-    /** Add a <code>TupleSet</code> of <code>Tuple<code>s to this set.
+    /**
+     * Add a <code>TupleSet</code> of <code>Tuple<code>s to this set.
      *
      *  @param tupleSet The tuple set.
      */
@@ -144,82 +146,86 @@ class TupleSet implements Serializable
         this.tuples.putAll( tupleSet.tuples );
     }
 
-    /** Add a single <code>Tuple</code> to this set.
-     *
-     *  @param tuple The tuple.
+    /**
+     * Add a single <code>Tuple</code> to this set.
+     * 
+     * @param tuple The tuple.
      */
     public void addTuple(ReteTuple tuple)
     {
-        this.tuples.put( tuple.getKey(),
-                         tuple );
+        this.tuples.put( tuple.getKey( ), tuple );
     }
 
-    /** Remove a tuple from this set.
-     *
-     *  @param key Key matching the tuple.
+    /**
+     * Remove a tuple from this set.
+     * 
+     * @param key Key matching the tuple.
      */
     public void removeTuple(TupleKey key)
     {
         this.tuples.remove( key );
     }
 
-    /** Remove several tuples matching a subsset key.
-     *
-     *  @param key The partial key to match.
+    /**
+     * Remove several tuples matching a subsset key.
+     * 
+     * @param key The partial key to match.
      */
     public void removeTuplesByPartialKey(TupleKey key)
     {
-        Iterator  tupleIter = iterator();
+        Iterator tupleIter = iterator( );
         ReteTuple eachTuple = null;
 
-        while ( tupleIter.hasNext() )
+        while ( tupleIter.hasNext( ) )
         {
-            eachTuple = (ReteTuple) tupleIter.next();
+            eachTuple = ( ReteTuple ) tupleIter.next( );
 
-            if ( eachTuple.getKey().containsAll( key ) )
+            if ( eachTuple.getKey( ).containsAll( key ) )
             {
-                tupleIter.remove();
+                tupleIter.remove( );
             }
         }
     }
 
-    /** Retrieve all <code>Tuple</code>s.
-     *
-     *  @see org.drools.spi.Tuple
-     *
-     *  @return The set of tuples.
+    /**
+     * Retrieve all <code>Tuple</code>s.
+     * 
+     * @see org.drools.spi.Tuple
+     * 
+     * @return The set of tuples.
      */
     public Set getTuples()
     {
-        return new HashSet( this.tuples.values() );
+        return new HashSet( this.tuples.values( ) );
     }
 
-    /** Retrieve an iterator over the tuples.
-     *
-     *  @return The iterator.
+    /**
+     * Retrieve an iterator over the tuples.
+     * 
+     * @return The iterator.
      */
     public Iterator iterator()
     {
         return new Itr( this.tuples );
     }
 
-    /** Retrieve all tuples related to a specified
-     *  root fact object.
-     *
-     *  @param handle The root fact object handle.
-     *
-     *  @return Matching tuples.
+    /**
+     * Retrieve all tuples related to a specified root fact object.
+     * 
+     * @param handle The root fact object handle.
+     * 
+     * @return Matching tuples.
      */
     public Set getTuples(FactHandle handle)
     {
-        Set matchingTuples = new HashSet();
+        Set matchingTuples = new HashSet( );
 
-        Iterator keyIter = getKeys().iterator();
+        Iterator keyIter = getKeys( ).iterator( );
         TupleKey eachKey = null;
 
-        while ( keyIter.hasNext() )
+        while ( keyIter.hasNext( ) )
         {
-            eachKey = (TupleKey) keyIter.next();
+            eachKey = ( TupleKey ) keyIter.next( );
 
             if ( eachKey.containsRootFactHandle( handle ) )
             {
@@ -230,7 +236,8 @@ class TupleSet implements Serializable
         return matchingTuples;
     }
 
-    /** Retriave all <code>TupleKey<code>s.
+    /**
+     * Retriave all <code>TupleKey<code>s.
      *
      *  @see TupleKey
      *
@@ -238,31 +245,33 @@ class TupleSet implements Serializable
      */
     public Set getKeys()
     {
-        return this.tuples.keySet();
+        return this.tuples.keySet( );
     }
 
-    /** Retrieve a <code>Tuple</code> by <code>TupleKey</code>.
-     *
-     *  @see org.drools.spi.Tuple
-     *  @see #containsTuple
-     *
-     *  @param key The tuple key.
-     *
-     *  @return The matching tuple or <code>null</code> if this
-     *          set contains no matching tuple.
+    /**
+     * Retrieve a <code>Tuple</code> by <code>TupleKey</code>.
+     * 
+     * @see org.drools.spi.Tuple
+     * @see #containsTuple
+     * 
+     * @param key The tuple key.
+     * 
+     * @return The matching tuple or <code>null</code> if this set contains no
+     *         matching tuple.
      */
     public ReteTuple getTuple(TupleKey key)
     {
-        return (ReteTuple) this.tuples.get( key );
+        return ( ReteTuple ) this.tuples.get( key );
     }
 
-    /** Determine if this set contains a <code>Tuple</code> matching
-     *  the specified <code>TupleKey</code>.
-     *
-     *  @param key The tuple key.
-     *
-     *  @return <code>true</code> if a matching tuple exists within
-     *          this set, otherwise <code>false<code>.
+    /**
+     * Determine if this set contains a <code>Tuple</code> matching the
+     * specified <code>TupleKey</code>.
+     * 
+     * @param key The tuple key.
+     * 
+     * @return <code>true</code> if a matching tuple exists within this set,
+     *         otherwise <code>false<code>.
      */
     public boolean containsTuple(TupleKey key)
     {
@@ -271,12 +280,13 @@ class TupleSet implements Serializable
 
     public String toString()
     {
-        return this.tuples.values().toString();
+        return this.tuples.values( ).toString( );
     }
 
-    /** Iterator over tuples.
-     *
-     *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+    /**
+     * Iterator over tuples.
+     * 
+     * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
      */
     static class Itr implements Iterator
     {
@@ -285,7 +295,7 @@ class TupleSet implements Serializable
         // ------------------------------------------------------------
 
         /** Tuples. */
-        private Map tuples;
+        private Map      tuples;
 
         /** Internal iterator. */
         private Iterator keyIter;
@@ -294,14 +304,15 @@ class TupleSet implements Serializable
         //     Constructors
         // ------------------------------------------------------------
 
-        /** Construct.
-         *
-         *  @param tuples The tuples.
+        /**
+         * Construct.
+         * 
+         * @param tuples The tuples.
          */
         Itr(Map tuples)
         {
             this.tuples = tuples;
-            this.keyIter = tuples.keySet().iterator();
+            this.keyIter = tuples.keySet( ).iterator( );
         }
 
         // ------------------------------------------------------------
@@ -312,30 +323,33 @@ class TupleSet implements Serializable
         //     java.util.Iterator
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        /** Determine if this iterator has an element in the next position.
-         *
-         *  @return <code>true</code> if an element exists in the next
-         *          position, otherwise <code>false</code>.
+        /**
+         * Determine if this iterator has an element in the next position.
+         * 
+         * @return <code>true</code> if an element exists in the next
+         *         position, otherwise <code>false</code>.
          */
         public boolean hasNext()
         {
-            return this.keyIter.hasNext();
+            return this.keyIter.hasNext( );
         }
 
-        /** Retrieve the element in the next position.
-         *
-         *  @return The element in the next position.
+        /**
+         * Retrieve the element in the next position.
+         * 
+         * @return The element in the next position.
          */
         public Object next()
         {
-            return this.tuples.get( this.keyIter.next() );
+            return this.tuples.get( this.keyIter.next( ) );
         }
 
-        /** Remove the element at the current position.
+        /**
+         * Remove the element at the current position.
          */
         public void remove()
         {
-            this.keyIter.remove();
+            this.keyIter.remove( );
         }
     }
 }

@@ -1,49 +1,43 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.44 2004-09-16 23:43:03 mproctor Exp $
-
- Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
-
- Redistribution and use of this software and associated documentation
- ("Software"), with or without modification, are permitted provided
- that the following conditions are met:
-
- 1. Redistributions of source code must retain copyright
-    statements and notices.  Redistributions must also contain a
-    copy of this document.
-
- 2. Redistributions in binary form must reproduce the
-    above copyright notice, this list of conditions and the
-    following disclaimer in the documentation and/or other
-    materials provided with the distribution.
-
- 3. The name "drools" must not be used to endorse or promote
-    products derived from this Software without prior written
-    permission of The Werken Company.  For written permission,
-    please contact bob@werken.com.
-
- 4. Products derived from this Software may not be called "drools"
-    nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of
-    The Werken Company.
-
- 5. Due credit should be given to The Werken Company.
-    (http://werken.com/)
-
- THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
- ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ * $Id: Builder.java,v 1.45 2004-09-17 00:14:10 mproctor Exp $
+ * 
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * 
+ * Redistribution and use of this software and associated documentation
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "drools" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of The Werken Company.
+ * For written permission, please contact bob@werken.com.
+ * 
+ * 4. Products derived from this Software may not be called "drools" nor may
+ * "drools" appear in their names without prior written permission of The Werken
+ * Company. "drools" is a trademark of The Werken Company.
+ * 
+ * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
+ * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *  
  */
 
 import java.util.ArrayList;
@@ -64,16 +58,16 @@ import org.drools.spi.Condition;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ObjectType;
 
-/** Builds the Rete-OO network for a <code>RuleSet</code>.
- *
- *  @see org.drools.rule.RuleSet
- *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
- *
- *  @task Make joinForCondition actually be intelligent enough to
- *        build optimal joins.  Currently using forgy's original
- *        description of 2-input nodes, which I feel (but don't
- *        know for sure, is sub-optimal.
+/**
+ * Builds the Rete-OO network for a <code>RuleSet</code>.
+ * 
+ * @see org.drools.rule.RuleSet
+ * 
+ * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * 
+ * @task Make joinForCondition actually be intelligent enough to build optimal
+ *       joins. Currently using forgy's original description of 2-input nodes,
+ *       which I feel (but don't know for sure, is sub-optimal.
  */
 public class Builder
 {
@@ -82,10 +76,10 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Rete network to build against. */
-    private Rete rete;
+    private Rete             rete;
 
     /** Rule-sets added. */
-    private List ruleSets;
+    private List             ruleSets;
 
     private ConflictResolver conflictResolver;
 
@@ -93,123 +87,117 @@ public class Builder
     //     Constructors
     // ------------------------------------------------------------
 
-    /** Construct a <code>Builder</code> against an existing
-     *  <code>Rete</code> network.
+    /**
+     * Construct a <code>Builder</code> against an existing <code>Rete</code>
+     * network.
      */
     public Builder()
     {
-        this.rete             = new Rete();
-        this.ruleSets         = new ArrayList();
-        this.conflictResolver = DefaultConflictResolver.getInstance();
+        this.rete = new Rete( );
+        this.ruleSets = new ArrayList( );
+        this.conflictResolver = DefaultConflictResolver.getInstance( );
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>Rete</code> this <code>Builder</code>
-     *  appends to.
-     *
-     *  @return The <code>Rete</code>.
+    /**
+     * Retrieve the <code>Rete</code> this <code>Builder</code> appends to.
+     * 
+     * @return The <code>Rete</code>.
      */
     public Rete getRete()
     {
         return this.rete;
     }
 
-    /** Build the <code>RuleBase</code>.
-     *
-     *  @return The rule-base.
+    /**
+     * Build the <code>RuleBase</code>.
+     * 
+     * @return The rule-base.
      */
     public RuleBase buildRuleBase()
     {
-        RuleBase ruleBase = new RuleBaseImpl( getRete(), this.conflictResolver );
+        RuleBase ruleBase = new RuleBaseImpl( getRete( ), this.conflictResolver );
 
         this.rete = null;
-        this.ruleSets.clear();
-        this.conflictResolver = DefaultConflictResolver.getInstance();
+        this.ruleSets.clear( );
+        this.conflictResolver = DefaultConflictResolver.getInstance( );
 
         return ruleBase;
     }
 
-    /** Set the <code>ConflictResolver</code>.
-     *
-     *  @param conflictResolver The conflict resolver.
+    /**
+     * Set the <code>ConflictResolver</code>.
+     * 
+     * @param conflictResolver The conflict resolver.
      */
     public void setConflictResolver(ConflictResolver conflictResolver)
     {
         this.conflictResolver = conflictResolver;
     }
 
-    /** Add a <code>RuleSet</code> to the network.
-     *
-     *  @param ruleSet The rule-set to add.
-     *
-     *  @throws RuleIntegrationException if an error prevents complete
-     *          construction of the network for the <code>Rule</code>.
+    /**
+     * Add a <code>RuleSet</code> to the network.
+     * 
+     * @param ruleSet The rule-set to add.
+     * 
+     * @throws RuleIntegrationException if an error prevents complete
+     *         construction of the network for the <code>Rule</code>.
      */
-    public void addRuleSet(RuleSet ruleSet)
-        throws RuleIntegrationException
+    public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException
     {
         this.ruleSets.add( ruleSet );
 
-        Rule[] rules = ruleSet.getRules();
+        Rule[] rules = ruleSet.getRules( );
 
-        for ( int i = 0 ; i < rules.length ; ++i )
+        for ( int i = 0; i < rules.length; ++i )
         {
-            addRule( ruleSet,
-                     rules[ i ] );
+            addRule( ruleSet, rules[i] );
         }
     }
 
-    /** Add a <code>Rule</code> to the network.
-     *
-     *  @param ruleSet The rule-set containing the rule.
-     *  @param rule The rule to add.
-     *
-     *  @throws RuleIntegrationException if an error prevents complete
-     *          construction of the network for the <code>Rule</code>.
+    /**
+     * Add a <code>Rule</code> to the network.
+     * 
+     * @param ruleSet The rule-set containing the rule.
+     * @param rule The rule to add.
+     * 
+     * @throws RuleIntegrationException if an error prevents complete
+     *         construction of the network for the <code>Rule</code>.
      */
-    protected void addRule(RuleSet ruleSet,
-                           Rule rule)
-        throws RuleIntegrationException
+    protected void addRule(RuleSet ruleSet, Rule rule) throws RuleIntegrationException
     {
-        Set factExtracts  = new HashSet( Arrays.asList( rule.getExtractions() ) );
-        List conds        = new ArrayList( Arrays.asList( rule.getConditions() ) );
+        Set factExtracts = new HashSet( Arrays.asList( rule.getExtractions( ) ) );
+        List conds = new ArrayList( Arrays.asList( rule.getConditions( ) ) );
 
         Set leafNodes = null;
 
-        boolean performedJoin      = false;
-        boolean attachedExtract    = false;
+        boolean performedJoin = false;
+        boolean attachedExtract = false;
         boolean joinedForCondition = false;
 
         leafNodes = createParameterNodes( rule );
 
         while ( true )
         {
-            performedJoin      = false;
-            attachedExtract    = false;
+            performedJoin = false;
+            attachedExtract = false;
             joinedForCondition = false;
 
-            if ( ! conds.isEmpty() )
+            if ( !conds.isEmpty( ) )
             {
-                attachConditions( conds,
-                                  leafNodes );
+                attachConditions( conds, leafNodes );
             }
 
-            attachedExtract = attachExtractions( factExtracts,
-                                                 leafNodes );
+            attachedExtract = attachExtractions( factExtracts, leafNodes );
 
             performedJoin = createJoinNodes( leafNodes );
 
-            if ( ! performedJoin
-                 &&
-                 ! attachedExtract
-                 &&
-                 ! conds.isEmpty())
+            if ( !performedJoin && !attachedExtract && !conds.isEmpty( ) )
             {
-                joinedForCondition = joinForCondition( conds,
-                                                       leafNodes );
+                joinedForCondition = joinForCondition( conds, leafNodes );
             }
 
             if ( joinedForCondition )
@@ -217,68 +205,66 @@ public class Builder
                 continue;
             }
 
-            if ( ( performedJoin
-                   ||
-                   attachedExtract )
-                 &&
-                 leafNodes.size() > 1 )
+            if ( ( performedJoin || attachedExtract ) && leafNodes.size( ) > 1 )
             {
                 continue;
             }
 
-            if ( leafNodes.size() > 1 )
+            if ( leafNodes.size( ) > 1 )
             {
                 joinArbitrary( leafNodes );
             }
-            else if ( ! attachedExtract )
+            else if ( !attachedExtract )
             {
                 break;
             }
         }
 
-        if ( leafNodes.size() != 1 )
+        if ( leafNodes.size( ) != 1 )
         {
             throw new RuleIntegrationException( rule );
         }
 
-        TupleSource lastNode = (TupleSource) leafNodes.iterator().next();
+        TupleSource lastNode = ( TupleSource ) leafNodes.iterator( ).next( );
 
-        TerminalNode terminal = new TerminalNode( lastNode,
-                                                      rule );
+        TerminalNode terminal = new TerminalNode( lastNode, rule );
     }
 
-    /** Create the <code>ParameterNode</code>s for the <code>Rule</code>,
-     *  and link into the network.
-     *
-     *  @param rule The rule.
-     *
-     *  @return A <code>Set</code> of <code>ParameterNodes</code> created
-     *          and linked into the network.
+    /**
+     * Create the <code>ParameterNode</code> s for the <code>Rule</code>,
+     * and link into the network.
+     * 
+     * @param rule The rule.
+     * 
+     * @return A <code>Set</code> of <code>ParameterNodes</code> created and
+     *         linked into the network.
      */
     Set createParameterNodes(Rule rule)
     {
-        Set leafNodes = new HashSet();
+        Set leafNodes = new HashSet( );
 
-        Set parameterDecls  = new HashSet( Arrays.asList( rule.getParameterDeclarations() ) );
+        Set parameterDecls = new HashSet(
+                                          Arrays
+                                                .asList( rule
+                                                             .getParameterDeclarations( ) ) );
 
-        Iterator    declIter = parameterDecls.iterator();
+        Iterator declIter = parameterDecls.iterator( );
         Declaration eachDecl = null;
 
-        ObjectType         objectType     = null;
+        ObjectType objectType = null;
         ObjectTypeNode objectTypeNode = null;
-        ParameterNode      paramNode      = null;
+        ParameterNode paramNode = null;
 
-        while ( declIter.hasNext() )
+        while ( declIter.hasNext( ) )
         {
-            eachDecl = (Declaration) declIter.next();
+            eachDecl = ( Declaration ) declIter.next( );
 
-            objectType = eachDecl.getObjectType();
+            objectType = eachDecl.getObjectType( );
 
-            objectTypeNode = ((Rete)getRete()).getOrCreateObjectTypeNode( objectType );
+            objectTypeNode = ( ( Rete ) getRete( ) )
+                                                    .getOrCreateObjectTypeNode( objectType );
 
-            paramNode = new ParameterNode( rule,
-                                           objectTypeNode,
-                                           eachDecl );
+            paramNode = new ParameterNode( rule, objectTypeNode, eachDecl );
 
             leafNodes.add( paramNode );
 
@@ -287,33 +273,30 @@ public class Builder
         return leafNodes;
     }
 
-
-    /** Create and attach <code>Condition</code>s to the network.
-     *
-     *  <p>
-     *  It may not be possible to satisfy all filder conditions
-     *  on the first pass.  This method removes satisfied conditions
-     *  from the <code>Condition</code> parameter, and leaves
-     *  unsatisfied ones in the <code>Set</code>.
-     *  </p>
-     *
-     *  @param conds Set of <code>Conditions</code>
-     *         to attempt attaching.
-     *  @param leafNodes The current attachable leaf nodes
-     *         of the network.
+    /**
+     * Create and attach <code>Condition</code> s to the network.
+     * 
+     * <p>
+     * It may not be possible to satisfy all filder conditions on the first
+     * pass. This method removes satisfied conditions from the
+     * <code>Condition</code> parameter, and leaves unsatisfied ones in the
+     * <code>Set</code>.
+     * </p>
+     * 
+     * @param conds Set of <code>Conditions</code> to attempt attaching.
+     * @param leafNodes The current attachable leaf nodes of the network.
      */
-    void attachConditions(List conds,
-                          Set leafNodes)
+    void attachConditions(List conds, Set leafNodes)
     {
-        Iterator    condIter    = conds.iterator();
-        Condition   eachCond    = null;
+        Iterator condIter = conds.iterator( );
+        Condition eachCond = null;
         TupleSource tupleSource = null;
 
         ConditionNode conditionNode = null;
         int order = 0;
-        while ( condIter.hasNext() )
+        while ( condIter.hasNext( ) )
         {
-            eachCond = (Condition) condIter.next();
+            eachCond = ( Condition ) condIter.next( );
 
             tupleSource = findMatchingTupleSourceForCondition( eachCond,
                                                                leafNodes );
@@ -323,121 +306,115 @@ public class Builder
                 continue;
             }
 
-            condIter.remove();
+            condIter.remove( );
 
-            conditionNode = new ConditionNode( tupleSource,
-                                               eachCond,
-                                               order);
+            conditionNode = new ConditionNode( tupleSource, eachCond, order );
 
             leafNodes.remove( tupleSource );
             leafNodes.add( conditionNode );
         }
     }
 
-    /** Join two arbitrary leaves in order to satisfy a filter
-     *  that currently cannot be applied.
-     *
-     *  @param conds The filter conditions remaining.
-     *  @param leafNodes Available leaf nodes.
-     *
-     *  @return <code>true</code> if a join was possible,
-     *          otherwise, <code>false</code>.
+    /**
+     * Join two arbitrary leaves in order to satisfy a filter that currently
+     * cannot be applied.
+     * 
+     * @param conds The filter conditions remaining.
+     * @param leafNodes Available leaf nodes.
+     * 
+     * @return <code>true</code> if a join was possible, otherwise,
+     *         <code>false</code>.
      */
-    boolean joinForCondition(List conds,
-                             Set leafNodes)
+    boolean joinForCondition(List conds, Set leafNodes)
     {
         return joinArbitrary( leafNodes );
     }
 
-    /** Join two arbitrary leaves in order to satisfy a filter
-     *  that currently cannot be applied.
-     *
-     *  @param leafNodes Available leaf nodes.
-     *
-     *  @return <code>true</code> if successfully joined some nodes,
-     *          otherwise <code>false</code>.
+    /**
+     * Join two arbitrary leaves in order to satisfy a filter that currently
+     * cannot be applied.
+     * 
+     * @param leafNodes Available leaf nodes.
+     * 
+     * @return <code>true</code> if successfully joined some nodes, otherwise
+     *         <code>false</code>.
      */
     boolean joinArbitrary(Set leafNodes)
     {
-        Iterator leafIter = leafNodes.iterator();
+        Iterator leafIter = leafNodes.iterator( );
 
-        TupleSource left = (TupleSource) leafIter.next();
+        TupleSource left = ( TupleSource ) leafIter.next( );
 
-        if ( ! leafIter.hasNext() )
+        if ( !leafIter.hasNext( ) )
         {
             return false;
         }
 
-        leafIter.remove();
+        leafIter.remove( );
 
-        TupleSource right = (TupleSource) leafIter.next();
+        TupleSource right = ( TupleSource ) leafIter.next( );
 
-        leafIter.remove();
+        leafIter.remove( );
 
-        JoinNode joinNode = new JoinNode( left,
-                                          right );
+        JoinNode joinNode = new JoinNode( left, right );
 
         leafNodes.add( joinNode );
 
         return true;
     }
 
-    /** Create and attach <code>JoinNode</code>s to the network.
-     *
-     *  <p>
-     *  It may not be possible to join all <code>leafNodes</code>.
-     *  </p>
-     *
-     *  <p>
-     *  Any <code>leafNodes</code> member that particiates
-     *  in a <i>join</i> is removed from the <code>leafNodes</code>
-     *  collection, and replaced by the joining <code>JoinNode</code>.
-     *  </p>
-     *
-     *  @param leafNodes The current attachable leaf nodes of
-     *         the network.
-     *
-     *  @return <code>true</code> if at least one <code>JoinNode</code>
-     *          was created, else <code>false</code>.
+    /**
+     * Create and attach <code>JoinNode</code> s to the network.
+     * 
+     * <p>
+     * It may not be possible to join all <code>leafNodes</code>.
+     * </p>
+     * 
+     * <p>
+     * Any <code>leafNodes</code> member that particiates in a <i>join </i> is
+     * removed from the <code>leafNodes</code> collection, and replaced by the
+     * joining <code>JoinNode</code>.
+     * </p>
+     * 
+     * @param leafNodes The current attachable leaf nodes of the network.
+     * 
+     * @return <code>true</code> if at least one <code>JoinNode</code> was
+     *         created, else <code>false</code>.
      */
     boolean createJoinNodes(Set leafNodes)
     {
         boolean performedJoin = false;
 
-        Object[] leftNodes  = leafNodes.toArray();
-        Object[] rightNodes = leafNodes.toArray();
+        Object[] leftNodes = leafNodes.toArray( );
+        Object[] rightNodes = leafNodes.toArray( );
 
-        TupleSource left  = null;
+        TupleSource left = null;
         TupleSource right = null;
 
         JoinNode joinNode = null;
 
-      OUTTER:
-        for ( int i = 0 ; i < leftNodes.length ; ++i )
+        OUTTER : for ( int i = 0; i < leftNodes.length; ++i )
         {
-            left = (TupleSource) leftNodes[i];
+            left = ( TupleSource ) leftNodes[i];
 
-            if ( ! leafNodes.contains( left ) )
+            if ( !leafNodes.contains( left ) )
             {
                 continue OUTTER;
             }
 
-          INNER:
-            for ( int j = i + 1; j < rightNodes.length ; ++j )
+            INNER : for ( int j = i + 1; j < rightNodes.length; ++j )
             {
-                right = (TupleSource) rightNodes[j];
+                right = ( TupleSource ) rightNodes[j];
 
-                if ( ! leafNodes.contains( right ) )
+                if ( !leafNodes.contains( right ) )
                 {
                     continue INNER;
                 }
 
-                if ( canBeJoined( left,
-                                  right ) )
+                if ( canBeJoined( left, right ) )
 
                 {
-                    joinNode = new JoinNode( left,
-                                                 right );
+                    joinNode = new JoinNode( left, right );
 
                     leafNodes.remove( left );
                     leafNodes.remove( right );
@@ -454,24 +431,23 @@ public class Builder
         return performedJoin;
     }
 
-    /** Determine if two <code>TupleSource</code>s can be joined.
-     *
-     *  @param left The left tuple source
-     *  @param right The right tuple source
-     *
-     *  @return <code>true</code> if they can be joined (they share
-     *          at least one common member declaration), else
-     *          <code>false</code>.
+    /**
+     * Determine if two <code>TupleSource</code> s can be joined.
+     * 
+     * @param left The left tuple source
+     * @param right The right tuple source
+     * 
+     * @return <code>true</code> if they can be joined (they share at least
+     *         one common member declaration), else <code>false</code>.
      */
-    boolean canBeJoined(TupleSource left,
-                        TupleSource right)
+    boolean canBeJoined(TupleSource left, TupleSource right)
     {
-        Set      leftDecls     = left.getTupleDeclarations();
-        Iterator rightDeclIter = right.getTupleDeclarations().iterator();
+        Set leftDecls = left.getTupleDeclarations( );
+        Iterator rightDeclIter = right.getTupleDeclarations( ).iterator( );
 
-        while ( rightDeclIter.hasNext() )
+        while ( rightDeclIter.hasNext( ) )
         {
-            if ( leftDecls.contains( rightDeclIter.next() ) )
+            if ( leftDecls.contains( rightDeclIter.next( ) ) )
             {
                 return true;
             }
@@ -480,42 +456,42 @@ public class Builder
         return false;
     }
 
-    /** Create and attach <code>Extraction</code>s to the network.
-     *
-     *  <p>
-     *  It may not be possible to satisfy all <code>Extraction</code>,
-     *  in which case, unsatisfied conditions will remain in the <code>Set</code>
-     *  passed in as <code>Extraction</code>.
-     *  </p>
-     *
-     *  @param factExtracts Set of <code>Extractions</code> to
-     *         attach to the network.
-     *  @param leafNodes The current attachable leaf nodes of
-     *         the network.
-     *
-     *  @return <code>true</code> if fact extractions have been
-     *          attached, otherwise <code>false</code>.
+    /**
+     * Create and attach <code>Extraction</code> s to the network.
+     * 
+     * <p>
+     * It may not be possible to satisfy all <code>Extraction</code>, in
+     * which case, unsatisfied conditions will remain in the <code>Set</code>
+     * passed in as <code>Extraction</code>.
+     * </p>
+     * 
+     * @param factExtracts Set of <code>Extractions</code> to attach to the
+     *        network.
+     * @param leafNodes The current attachable leaf nodes of the network.
+     * 
+     * @return <code>true</code> if fact extractions have been attached,
+     *         otherwise <code>false</code>.
      */
-    boolean attachExtractions(Set factExtracts,
-                              Set leafNodes)
+    boolean attachExtractions(Set factExtracts, Set leafNodes)
     {
-        boolean attached      = false;
+        boolean attached = false;
         boolean cycleAttached = false;
 
         do
         {
             cycleAttached = false;
 
-            Iterator        extractIter = factExtracts.iterator();
-            Extraction      eachExtract = null;
+            Iterator extractIter = factExtracts.iterator( );
+            Extraction eachExtract = null;
             TupleSource tupleSource = null;
 
             ExtractionNode extractNode = null;
-            while ( extractIter.hasNext() )
+            while ( extractIter.hasNext( ) )
             {
-                eachExtract = (Extraction) extractIter.next();
+                eachExtract = ( Extraction ) extractIter.next( );
 
-                tupleSource = findMatchingTupleSourceForExtraction( eachExtract,
+                tupleSource = findMatchingTupleSourceForExtraction(
+                                                                    eachExtract,
                                                                     leafNodes );
 
                 if ( tupleSource == null )
@@ -523,11 +499,13 @@ public class Builder
                     continue;
                 }
 
-                extractIter.remove();
+                extractIter.remove( );
 
-                extractNode = new ExtractionNode( tupleSource,
-                                                      eachExtract.getTargetDeclaration(),
-                                                      eachExtract.getExtractor() );
+                extractNode = new ExtractionNode(
+                                                  tupleSource,
+                                                  eachExtract
+                                                             .getTargetDeclaration( ),
+                                                  eachExtract.getExtractor( ) );
 
                 leafNodes.remove( tupleSource );
                 leafNodes.add( extractNode );
@@ -545,31 +523,31 @@ public class Builder
         return attached;
     }
 
-    /** Locate a <code>TupleSource</code> suitable for attaching
-     *  the <code>Condition</code>.
-     *
-     *  @param condition The <code>Condition</code> to attach.
-     *  @param sources Candidate <code>TupleSources</code>.
-     *
-     *  @return Matching <code>TupleSource</code> if a suitable one
-     *          can be found, else <code>null</code>.
+    /**
+     * Locate a <code>TupleSource</code> suitable for attaching the
+     * <code>Condition</code>.
+     * 
+     * @param condition The <code>Condition</code> to attach.
+     * @param sources Candidate <code>TupleSources</code>.
+     * 
+     * @return Matching <code>TupleSource</code> if a suitable one can be
+     *         found, else <code>null</code>.
      */
     TupleSource findMatchingTupleSourceForCondition(Condition condition,
                                                     Set sources)
     {
-        Iterator        sourceIter = sources.iterator();
+        Iterator sourceIter = sources.iterator( );
         TupleSource eachSource = null;
 
         Set decls = null;
 
-        while ( sourceIter.hasNext() )
+        while ( sourceIter.hasNext( ) )
         {
-            eachSource = (TupleSource) sourceIter.next();
+            eachSource = ( TupleSource ) sourceIter.next( );
 
-            decls = eachSource.getTupleDeclarations();
+            decls = eachSource.getTupleDeclarations( );
 
-            if ( matches( condition,
-                          decls ) )
+            if ( matches( condition, decls ) )
             {
                 return eachSource;
             }
@@ -578,38 +556,38 @@ public class Builder
         return null;
     }
 
-    /** Locate a <code>TupleSource</code> suitable for attaching
-     *  the <code>Extraction</code>.
-     *
-     *  @param extract The <code>Extraction</code> to attach.
-     *  @param sources Candidate <code>TupleSources</code>.
-     *
-     *  @return Matching <code>TupleSource</code> if a suitable one
-     *          can be found, else <code>null</code>.
+    /**
+     * Locate a <code>TupleSource</code> suitable for attaching the
+     * <code>Extraction</code>.
+     * 
+     * @param extract The <code>Extraction</code> to attach.
+     * @param sources Candidate <code>TupleSources</code>.
+     * 
+     * @return Matching <code>TupleSource</code> if a suitable one can be
+     *         found, else <code>null</code>.
      */
     TupleSource findMatchingTupleSourceForExtraction(Extraction extract,
                                                      Set sources)
     {
-        Declaration targetDecl = extract.getTargetDeclaration();
+        Declaration targetDecl = extract.getTargetDeclaration( );
 
-        Iterator        sourceIter = sources.iterator();
+        Iterator sourceIter = sources.iterator( );
         TupleSource eachSource = null;
 
         Set decls = null;
 
-        while ( sourceIter.hasNext() )
+        while ( sourceIter.hasNext( ) )
         {
-            eachSource = (TupleSource) sourceIter.next();
+            eachSource = ( TupleSource ) sourceIter.next( );
 
-            decls = eachSource.getTupleDeclarations();
+            decls = eachSource.getTupleDeclarations( );
 
             if ( decls.contains( targetDecl ) )
             {
                 continue;
             }
 
-            if ( matches( extract,
-                          decls ) )
+            if ( matches( extract, decls ) )
             {
                 return eachSource;
             }
@@ -618,56 +596,57 @@ public class Builder
         return null;
     }
 
-    /** Determine if a set of <code>Declarations</code> match those
-     *  required by a <code>Condition</code>.
-     *
-     *  @param condition The <code>Condition</code>.
-     *  @param declarations The set of <code>Declarations</code> to compare against.
-     *
-     *  @return <code>true</code> if the set of <code>Declarations</code> is a
-     *          super-set of the <code>Declarations</code> required by the
-     *          <code>Condition</code>.
+    /**
+     * Determine if a set of <code>Declarations</code> match those required by
+     * a <code>Condition</code>.
+     * 
+     * @param condition The <code>Condition</code>.
+     * @param declarations The set of <code>Declarations</code> to compare
+     *        against.
+     * 
+     * @return <code>true</code> if the set of <code>Declarations</code> is
+     *         a super-set of the <code>Declarations</code> required by the
+     *         <code>Condition</code>.
      */
-    boolean matches(Condition condition,
-                    Set declarations)
+    boolean matches(Condition condition, Set declarations)
     {
-        return matches( condition.getRequiredTupleMembers(),
-                        declarations );
+        return matches( condition.getRequiredTupleMembers( ), declarations );
     }
 
-    /** Determine if a set of <code>Declarations</code> match those
-     *  required by a <code>Extraction</code>.
-     *
-     *  @param extract The <code>Extraction</code>.
-     *  @param declarations The set of <code>Declarations</code> to compare against.
-     *
-     *  @return <code>true</code> if the set of <code>Declarations</code> is a
-     *          super-set of the <code>Declarations</code> required by the
-     *          <code>Condition</code>.
+    /**
+     * Determine if a set of <code>Declarations</code> match those required by
+     * a <code>Extraction</code>.
+     * 
+     * @param extract The <code>Extraction</code>.
+     * @param declarations The set of <code>Declarations</code> to compare
+     *        against.
+     * 
+     * @return <code>true</code> if the set of <code>Declarations</code> is
+     *         a super-set of the <code>Declarations</code> required by the
+     *         <code>Condition</code>.
      */
-    boolean matches(Extraction extract,
-                    Set declarations)
+    boolean matches(Extraction extract, Set declarations)
     {
-        return matches( extract.getRequiredTupleMembers(),
-                        declarations );
+        return matches( extract.getRequiredTupleMembers( ), declarations );
     }
 
-    /** Determine if a set of <code>Declarations</code> is a super
-     *  set of required <code>Declarations</code>
-     *
-     *  @param requiredDecls The required <code>Declarations</code>.
-     *  @param declarations The set of <code>Declarations</code> to compare against.
-     *
-     *  @return <code>true</code> if the set of <code>Declarations</code> is a
-     *          super-set of the <code>Declarations</code> required by the
-     *          <code>Condition</code>.
+    /**
+     * Determine if a set of <code>Declarations</code> is a super set of
+     * required <code>Declarations</code>
+     * 
+     * @param requiredDecls The required <code>Declarations</code>.
+     * @param declarations The set of <code>Declarations</code> to compare
+     *        against.
+     * 
+     * @return <code>true</code> if the set of <code>Declarations</code> is
+     *         a super-set of the <code>Declarations</code> required by the
+     *         <code>Condition</code>.
      */
-    boolean matches(Declaration[] requiredDecls,
-                    Set declarations)
+    boolean matches(Declaration[] requiredDecls, Set declarations)
     {
-        for ( int i = 0 ; i < requiredDecls.length ; ++i )
+        for ( int i = 0; i < requiredDecls.length; ++i )
         {
-            if ( ! declarations.contains( requiredDecls[i] ) )
+            if ( !declarations.contains( requiredDecls[i] ) )
             {
                 return false;
             }

@@ -8,126 +8,99 @@ import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.spi.MockObjectType;
 
-public class AgendaItemTest
-    extends DroolsTestCase
+public class AgendaItemTest extends DroolsTestCase
 {
-    public void testConstruct()
-        throws Exception
+    public void testConstruct() throws Exception
     {
-        Declaration decl = new Declaration( new MockObjectType(true),
+        Declaration decl = new Declaration( new MockObjectType( true ),
                                             "cheese" );
 
         FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );                                                 
+                                                 "paramVar" );
         rule.addParameterDeclaration( paramDecl );
         //add consequence
-        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition() );         
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( null,
-                                         rule,
-                                         decl,
-                                         handle,
-                                         new Object() );
+        ReteTuple tuple = new ReteTuple( null, rule, decl, handle, new Object( ) );
 
-        AgendaItem item = new AgendaItem( tuple,
-                                          rule );
+        AgendaItem item = new AgendaItem( tuple, rule );
 
-        assertSame( rule,
-                    item.getRule() );
+        assertSame( rule, item.getRule( ) );
 
-        assertSame( tuple,
-                    item.getTuple() );
+        assertSame( tuple, item.getTuple( ) );
 
-        assertSame( tuple.getKey(),
-                    item.getKey() );
+        assertSame( tuple.getKey( ), item.getKey( ) );
 
         assertTrue( item.dependsOn( handle ) );
         assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );
     }
 
-    public void testSetTuple()
-        throws Exception
+    public void testSetTuple() throws Exception
     {
-        Declaration decl = new Declaration( new MockObjectType(true),
+        Declaration decl = new Declaration( new MockObjectType( true ),
                                             "cheese" );
 
         FactHandleImpl handle = new FactHandleImpl( 1 );
         Rule rule = new Rule( "test-rule" );
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );                                                 
+                                                 "paramVar" );
         rule.addParameterDeclaration( paramDecl );
         //add consequence
-        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition() ); 
-        
-        ReteTuple tuple = new ReteTuple( null,
-                                         rule,
-                                         decl,
-                                         handle,
-                                         new Object() );
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        AgendaItem item = new AgendaItem( tuple,
-                                          rule );
+        ReteTuple tuple = new ReteTuple( null, rule, decl, handle, new Object( ) );
 
-        assertSame( tuple,
-                    item.getTuple() );
+        AgendaItem item = new AgendaItem( tuple, rule );
+
+        assertSame( tuple, item.getTuple( ) );
 
         assertTrue( item.dependsOn( handle ) );
-        assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );      
-        
-        ReteTuple newTuple = new ReteTuple( null,
-                                            rule,
-                                            decl,
-                                            handle,
-                                            new Object() );
+        assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );
+
+        ReteTuple newTuple = new ReteTuple( null, rule, decl, handle,
+                                            new Object( ) );
 
         item.setTuple( newTuple );
 
-        assertSame( newTuple,
-                    item.getTuple() );
+        assertSame( newTuple, item.getTuple( ) );
 
         assertTrue( item.dependsOn( handle ) );
         assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );
     }
 
-    public void testFire()
-        throws Exception
+    public void testFire() throws Exception
     {
 
-        RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
+                                              new DefaultConflictResolver( ) );
 
-
-        Declaration decl = new Declaration( new MockObjectType(true),
+        Declaration decl = new Declaration( new MockObjectType( true ),
                                             "cheese" );
 
         FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
 
-        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory(),
-            rule,
-            decl,
-            handle,
-            new Object() );
+        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule,
+                                         decl, handle, new Object( ) );
 
-        InstrumentedConsequence consequence = new InstrumentedConsequence();
+        InstrumentedConsequence consequence = new InstrumentedConsequence( );
 
         rule.setConsequence( consequence );
 
-        AgendaItem item = new AgendaItem( tuple,
-                                          rule );
+        AgendaItem item = new AgendaItem( tuple, rule );
 
-        item.fire( tuple.getWorkingMemory() );
+        item.fire( tuple.getWorkingMemory( ) );
 
-        assertEquals( 1,
-                      consequence.getInvokedTuples().size() );
+        assertEquals( 1, consequence.getInvokedTuples( ).size( ) );
 
-        assertTrue( consequence.getInvokedTuples().contains( tuple ) );
+        assertTrue( consequence.getInvokedTuples( ).contains( tuple ) );
     }
 }

@@ -3,12 +3,11 @@ package org.drools.event;
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 
-public class ObjectAssertedEvent
-    extends WorkingMemoryEvent
+public class ObjectAssertedEvent extends WorkingMemoryEvent
 {
     private FactHandle handle;
 
-    private Object object;
+    private Object     object;
 
     public ObjectAssertedEvent(WorkingMemory workingMemory,
                                FactHandle handle,
@@ -31,6 +30,7 @@ public class ObjectAssertedEvent
 
     public String toString()
     {
-        return "[ObjectAsserted: handle=" + this.handle + "; object=" + this.object + "]";
+        return "[ObjectAsserted: handle=" + this.handle + "; object="
+               + this.object + "]";
     }
 }

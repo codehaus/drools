@@ -2,24 +2,22 @@ package org.drools.spi;
 
 import org.drools.DroolsTestCase;
 
-public class ConditionExceptionTest
-    extends DroolsTestCase
+public class ConditionExceptionTest extends DroolsTestCase
 {
     public void testConstruct()
     {
-        ConditionException e = new ConditionException();
+        ConditionException e = new ConditionException( );
 
-        assertNull( e.getRootCause() );
+        assertNull( e.getRootCause( ) );
     }
 
     public void testConstruct_WithRootCause()
     {
-        Exception rootCause = new Exception();
+        Exception rootCause = new Exception( );
 
         ConditionException e = new ConditionException( rootCause );
 
-        assertSame( rootCause,
-                    e.getRootCause() );
+        assertSame( rootCause, e.getRootCause( ) );
     }
 
 }

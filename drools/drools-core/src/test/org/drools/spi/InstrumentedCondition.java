@@ -1,4 +1,3 @@
-
 package org.drools.spi;
 
 import java.util.HashSet;
@@ -10,24 +9,25 @@ import org.drools.rule.Declaration;
 public class InstrumentedCondition implements Condition
 {
     private Set     decls;
+
     private boolean isAllowed;
 
     public InstrumentedCondition()
     {
-        this.decls = new HashSet();
+        this.decls = new HashSet( );
     }
 
     public Declaration[] getRequiredTupleMembers()
     {
-        Declaration[] declArray = new Declaration[ this.decls.size() ];
+        Declaration[] declArray = new Declaration[this.decls.size( )];
 
-        Iterator declIter = this.decls.iterator();
+        Iterator declIter = this.decls.iterator( );
 
         int i = 0;
 
-        while ( declIter.hasNext() )
+        while ( declIter.hasNext( ) )
         {
-            declArray[i++] = (Declaration) declIter.next();
+            declArray[i++] = ( Declaration ) declIter.next( );
         }
 
         return declArray;

@@ -7,22 +7,22 @@ import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
 
-public class InstrumentedAgenda
-    extends Agenda
+public class InstrumentedAgenda extends Agenda
 {
     private List added;
+
     private List removed;
+
     private List modified;
 
     public InstrumentedAgenda(WorkingMemoryImpl workingMemory,
                               ConflictResolver conflictResolver)
     {
-        super( workingMemory,
-               conflictResolver );
+        super( workingMemory, conflictResolver );
 
-        this.added = new ArrayList();
-        this.removed = new ArrayList();
-        this.modified = new ArrayList();
+        this.added = new ArrayList( );
+        this.removed = new ArrayList( );
+        this.modified = new ArrayList( );
     }
 
     public List getAdded()
@@ -40,30 +40,22 @@ public class InstrumentedAgenda
         return this.modified;
     }
 
-    public void addToAgenda(ReteTuple tuple,
-                            Rule rule)
+    public void addToAgenda(ReteTuple tuple, Rule rule)
     {
         this.added.add( tuple );
-        super.addToAgenda( tuple,
-                           rule );
+        super.addToAgenda( tuple, rule );
     }
 
-    public void removeFromAgenda(TupleKey key,
-                                 Rule rule)
+    public void removeFromAgenda(TupleKey key, Rule rule)
     {
         this.removed.add( key );
-        super.removeFromAgenda( key,
-                                rule );
+        super.removeFromAgenda( key, rule );
     }
 
-    public void modifyAgenda(FactHandle handle,
-                             TupleSet newTuples,
-                             Rule rule)
+    public void modifyAgenda(FactHandle handle, TupleSet newTuples, Rule rule)
     {
         this.modified.add( handle );
-        super.modifyAgenda( handle,
-                            newTuples,
-                            rule );
+        super.modifyAgenda( handle, newTuples, rule );
     }
 }
 
