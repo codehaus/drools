@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: DefaultSemanticsRepository.java,v 1.3 2004-06-15 05:08:48 bob Exp $
+ $Id: DefaultSemanticsRepository.java,v 1.4 2004-06-22 17:17:27 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -69,7 +69,7 @@ import java.io.BufferedReader;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefaultSemanticsRepository.java,v 1.3 2004-06-15 05:08:48 bob Exp $
+ *  @version $Id: DefaultSemanticsRepository.java,v 1.4 2004-06-22 17:17:27 bob Exp $
  */
 public final class DefaultSemanticsRepository
     implements SemanticsRepository
@@ -191,8 +191,6 @@ public final class DefaultSemanticsRepository
     protected void loadConfig(URL url)
         throws Exception
     {
-        System.err.println( "loading: " + url );
-
         InputStream config = url.openStream();
 
         BufferedReader in = new BufferedReader( new InputStreamReader( config ) );
@@ -229,8 +227,6 @@ public final class DefaultSemanticsRepository
         }
 
         this.loadedSemantics.add( semanticsName );
-
-        System.err.println( "loading semantics: " + semanticsName );
 
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
