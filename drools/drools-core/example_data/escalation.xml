@@ -34,9 +34,6 @@
 
 		<when>
 			<cond>
-				! ticket.getSubmitter().equals( "bob" );
-			</cond>
-			<cond>
 				ticket.getStatus() == TroubleTicket.NEW;
 			</cond>
 
@@ -51,7 +48,7 @@
 			System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
 			System.err.println( "** ticket == " + ticket );
 			ticket.setStatus( TroubleTicket.NOTIFIED );
-			System.err.println( "** Escalating trouble ticket from NEW to NOTIFIED" );
+			System.err.println( "** Escalating trouble ticket from NEW to NOTIFIED after 2 seconds" );
 			System.err.println( "** ticket == " + ticket );
 			System.err.println( "----------------------------------------" );
 
@@ -79,11 +76,11 @@
 			System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
 			System.err.println( "** ticket == " + ticket );
 			ticket.setStatus( TroubleTicket.NULL );
-			System.err.println( "** Escalating trouble ticket from NOTIFIED to /dev/null" );
+			System.err.println( "** Escalating trouble ticket from NOTIFIED to /dev/null after 5 seconds" );
 			System.err.println( "** ticket == " + ticket );
 			System.err.println( "----------------------------------------" );
 
-			// modifyObject( ticket );
+			modifyObject( ticket );
 		</then>
 	</rule>
 
