@@ -18,7 +18,6 @@
 \usepackage{plain}
 \usepackage{epic}
 \usepackage{ecltree}
-%\usepackage{fancybox}
 \usepackage{ftnright}
 \usepackage{hyperref}
 
@@ -26,14 +25,9 @@
 %% Extra Commands and Evironments
 %%
 
-% \newenvironment{codelisting}%
-	% {\begin{Sbox}\begin{minipage}{250pt}\small\begin{alltt}}%
-	% {\end{alltt}\end{minipage}\end{Sbox}\fbox{\TheSbox}}
-
 \newenvironment{codelisting}%
 	{\begin{minipage}{250pt}\small\begin{alltt}}%
 	{\end{alltt}\end{minipage}}
-
 
 \begin{document}
 
@@ -318,7 +312,7 @@ matched for a rule (Figure \ref{example.exprs}).
 %% Adapting Rete to an Object-Oriented Environment
 %%
 
-\section{Rete-OO: Adapting Rete to an\\Object-Oriented Environment}
+\section{Rete-OO: Adapting Rete\\to an Object-Oriented\\Environment}
 
 Adapting a Rete-based system seamlessly to an object-oriented
 environment requires both a new condition pattern syntax and through a
@@ -652,7 +646,7 @@ the rule.
 \section{Research Implementation}
 
 An open-source Java implementation of the Rete-OO algorithm  was written by
-the author, and is available a \verb|http://drools.org|.  It uses a
+the author, and is available a \verb|http://drools.org/|.  It uses a
 Java expression parser to analyze the expressions used in the
 condition block so as to be able to build the appropriate Rete-OO
 network structure. Additionally, using the Java reflection API,
