@@ -22,7 +22,7 @@
     <siteAddress>drools.codehaus.org</siteAddress>
     <siteDirectory>/www/drools.codehaus.org</siteDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm:drools</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
     <versions/>
