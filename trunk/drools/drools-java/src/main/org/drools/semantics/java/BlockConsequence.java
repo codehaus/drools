@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.36 2004-11-22 02:38:39 simon Exp $
+ * $Id: BlockConsequence.java,v 1.37 2004-11-28 07:40:23 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,9 +53,9 @@ import org.drools.spi.Tuple;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -63,8 +63,6 @@ import java.util.Set;
  * Java block semantics <code>Consequence</code>.
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
- *
- * @version $Id: BlockConsequence.java,v 1.36 2004-11-22 02:38:39 simon Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
@@ -73,12 +71,12 @@ public class BlockConsequence implements Consequence, Serializable
         "tuple", "decls", "drools", "applicationData"
     };
 
+
+    private final String            block;
+
     private transient Script        script;
 
-    private transient Declaration[] params;
-
-    private String                  block;
-
+    private transient Declaration[] declarations;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -88,10 +86,10 @@ public class BlockConsequence implements Consequence, Serializable
      * Construct.
      *
      * @param block The statement block.
+     * @param block The available delcarations.
      */
     public BlockConsequence( String block ) throws Exception
     {
-        //super(block);
         this.block = block;
     }
 
@@ -121,12 +119,11 @@ public class BlockConsequence implements Consequence, Serializable
             if ( this.script == null )
             {
                 compileScript( tuple.getRule( ),
-                               tuple.getDeclarations( ),
                                applicationData );
             }
 
             script.invoke( tuple,
-                           this.params,
+                           this.declarations,
                            new KnowledgeHelper( tuple ),
                            applicationData );
         }
@@ -156,11 +153,8 @@ public class BlockConsequence implements Consequence, Serializable
                 throws Exception;
     }
 
-    private void compileScript( Rule rule, Set decls, Map applicationData ) throws IOException, ConsequenceException
+    private void compileScript( Rule rule, Map applicationData ) throws IOException, ConsequenceException
     {
-        this.params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
-        Arrays.sort( this.params );
-
         Set imports = new HashSet( );
         Iterator it = rule.getImports( ).iterator( );
         ImportEntry importEntry;
@@ -173,12 +167,15 @@ public class BlockConsequence implements Consequence, Serializable
             }
         }
 
+        List declarations = rule.getAllDeclarations();
+        this.declarations = ( Declaration[] ) declarations.toArray( new Declaration[ declarations.size() ] );
+
         try
         {
             this.script = ( Script ) DroolsScriptEvaluator.compile( this.block,
                                                                     Script.class,
                                                                     SCRIPT_PARAM_NAMES,
-                                                                    this.params,
+                                                                    this.declarations,
                                                                     applicationData,
                                                                     imports );
         }

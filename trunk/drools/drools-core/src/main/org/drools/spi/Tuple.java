@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.23 2004-11-28 05:02:38 simon Exp $
+ * $Id: Tuple.java,v 1.24 2004-11-28 07:40:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,8 +45,6 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
-import java.util.Set;
-
 /**
  * A mapping of <code>Declaration</code> s to current fact values.
  *
@@ -65,15 +63,6 @@ public interface Tuple
      * @return The currently bound <code>Object</code> value.
      */
     Object get(Declaration declaration);
-
-    /**
-     * Retrieve the <code>Collection</code> of all <code>Declarations</code>
-     * active in this tuple.
-     *
-     * @return The <code>Collection</code> of all <code>Declarations</code>
-     *         in this tuple.
-     */
-    Set getDeclarations();
 
     /**
      * Returns a reference to the <code>Rule</code> associated with this

@@ -1,13 +1,12 @@
 package org.drools.spi;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MockTuple implements Tuple
 {
@@ -36,11 +35,6 @@ public class MockTuple implements Tuple
     public void put(Declaration declaration, Object value)
     {
         this.tuple.put( declaration, value );
-    }
-
-    public Set getDeclarations()
-    {
-        return this.tuple.keySet( );
     }
 
     public FactHandle getFactHandleForObject(Object object)

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.60 2004-11-28 05:55:46 simon Exp $
+ * $Id: ReteTuple.java,v 1.61 2004-11-28 07:40:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,6 @@ import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
 
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
@@ -123,7 +122,7 @@ class ReteTuple
 
     public String toString()
     {
-        return "{" + getDeclarations( ) + "}";
+        return "{" + key.getDeclarations( ) + "}";
     }
 
     // ------------------------------------------------------------
@@ -174,15 +173,6 @@ class ReteTuple
         }
 
         return null;
-    }
-
-    /**
-     * @see Tuple
-     * TODO: Remove this at some stage as t shouldn't be necessary. The net can determine this by itself!
-     */
-    public Set getDeclarations()
-    {
-        return this.key.getDeclarations( );
     }
 
     /**
