@@ -101,7 +101,14 @@ class ImportManager
 
         if ( fullName != null )
         {
-            clazz = Class.forName( fullName, true, Thread.currentThread().getContextClassLoader() );
+            try
+            {
+                clazz = Class.forName( fullName, true, Thread.currentThread().getContextClassLoader() );
+            }
+            catch (ClassNotFoundException e)
+            {
+                clazz = Class.forName( fullName );
+            }
         }
         else
         {
