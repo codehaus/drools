@@ -7,7 +7,7 @@ JAVA=java
 JAR=jar
 
 DEPLOY_SITE=codehaus.org
-DEPLOY_DIR=/www/drools.codehaus.org/preview
+DEPLOY_DIR=/www/drools.codehaus.org
 
 #IFS=""
 MODULES="core io base java python groovy smf jsr94"
