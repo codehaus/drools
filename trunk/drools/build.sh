@@ -468,6 +468,7 @@ target_source_dist()
   cp *.sh  $BASE/build/dists/drools-$VERSION-src/
   cp -R ./lib $BASE/build/dists/drools-$VERSION-src/
   cp -R ./site $BASE/build/dists/drools-$VERSION-src/
+  copy_tree $BASE/src/ $BASE/build/dists/drools-$VERSION-src/src tex pdf 
 
   local module
 
@@ -485,18 +486,33 @@ target_binary_dist()
 {
   echo "creating binary distribution" 
 
-  build compile javadoc
+  build compile javadoc pdf
 
   mkdir -p $BASE/build/dists/drools-$VERSION/
 
   cp *.txt  $BASE/build/dists/drools-$VERSION/
   copy_tree $BASE/build/lib/ $BASE/build/dists/drools-$VERSION/lib
-  copy_tree $BASE/build/docs/api $BASE/build/dists/drools-$VERSION/docs
+  copy_tree $BASE/build/docs/api $BASE/build/dists/drools-$VERSION/docs/api
+  copy_tree $BASE/build/docs/ $BASE/build/dists/drools-$VERSION/docs pdf
 
   cd $BASE/build/dists
   tar zcvf drools-$VERSION.tar.gz drools-$VERSION
   zip -r9 drools-$VERSION.zip drools-$VERSION
   cd -
+}
+
+target_deploy_release()
+{
+  build compile
+
+  ssh bob@codehaus.org mkdir -p /www/dist.codehaus.org/drools/jars
+  ssh bob@codehaus.org mkdir -p /www/dist.codehaus.org/drools/distributions
+
+  scp $BASE/build/lib/drools-*.jar bob@codehaus.org:/www/dist.codehaus.org/drools/jars
+  scp $BASE/build/dists/drools-*.tar.gz bob@codehaus.org:/www/dist.codehaus.org/drools/distributions
+  scp $BASE/build/dists/drools-*.zip bob@codehaus.org:/www/dist.codehaus.org/drools/distributions
+
+  build deploy_site
 }
 
 target_deploy_site()
