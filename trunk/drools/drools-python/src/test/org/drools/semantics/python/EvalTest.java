@@ -2,7 +2,7 @@ package org.drools.semantics.python;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -20,9 +20,9 @@ public class EvalTest extends TestCase
     public void setUp()
     {
         this.eval = new Eval();
-        this.aDecl = new Declaration( new ClassObjectType( Integer.class ),
+        this.aDecl = new Declaration( new MockObjectType( Integer.class ),
                                       "a" );
-        this.bDecl = new Declaration( new ClassObjectType( Integer.class ),
+        this.bDecl = new Declaration( new MockObjectType( Integer.class ),
                                       "b" );
     }
 

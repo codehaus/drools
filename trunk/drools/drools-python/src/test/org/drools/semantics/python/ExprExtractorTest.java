@@ -1,6 +1,6 @@
 package org.drools.semantics.python;
 
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
@@ -69,7 +69,7 @@ public class ExprExtractorTest extends TestCase
 
         String value = "I like cheese";
 
-        tuple.put( new Declaration( new ClassObjectType( java.lang.String.class ),
+        tuple.put( new Declaration( new MockObjectType( java.lang.String.class ),
                                     "a" ),
                    value );
 
