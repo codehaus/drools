@@ -1,17 +1,26 @@
 package org.drools.semantics.annotation.model;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.lang.reflect.Method;
 
 import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
 
-class RuleReflectMethod
+class RuleReflectMethod implements Externalizable
 {
-    private final Rule rule;
-    private final Object pojo;
-    private final Method method;
-    private final ParameterValue[] parameterValues;
+    private Rule rule;
+    private Object pojo;
+    private Method method;
+    private ParameterValue[] parameterValues;
 
+    /**
+     * Not intended to be called. Required only for Externalizable. 
+     */
+    public RuleReflectMethod() {}
+    
     public RuleReflectMethod( Rule rule, Object pojo, Method method,
             ParameterValue[] parameterValues )
     {
@@ -40,5 +49,34 @@ class RuleReflectMethod
             args[i] = parameterValues[i].getValue( tuple );
         }
         return args;
+    }
+
+    public void writeExternal(ObjectOutput out) throws IOException
+    {
+        out.writeObject(rule);
+        out.writeObject(pojo);
+        out.writeObject(method.getName());
+        out.writeObject(method.getParameterTypes());
+        out.writeObject(parameterValues);
+    }
+
+    public void readExternal(ObjectInput in) throws IOException,
+                                            ClassNotFoundException
+    {
+        rule = (Rule) in.readObject();
+        pojo = in.readObject();
+        
+        String methodName = (String) in.readObject();
+        Class[] parameterTypes = (Class[]) in.readObject(); 
+        try
+        {
+            method = pojo.getClass().getMethod(methodName, parameterTypes);
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException(e);
+        }
+        
+        parameterValues = (ParameterValue[]) in.readObject();
     }
 }

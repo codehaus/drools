@@ -1,14 +1,14 @@
 package org.drools.semantics.annotation.model;
 
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsContext;
 import org.drools.spi.Tuple;
 
-class DroolsParameterValue implements ParameterValue
+class DroolsContextParameterValue implements ParameterValue
 {
     private final Rule rule;
 
-    public DroolsParameterValue(Rule rule)
+    public DroolsContextParameterValue(Rule rule)
     {
         if (rule == null)
         {
@@ -17,8 +17,8 @@ class DroolsParameterValue implements ParameterValue
         this.rule = rule;
     }
 
-    public Drools getValue( Tuple tuple )
+    public DroolsContext getValue( Tuple tuple )
     {
-        return new KnowledgeHelperDrools( rule, tuple );
+        return new KnowledgeHelperDroolsContext( rule, tuple );
     }
 }

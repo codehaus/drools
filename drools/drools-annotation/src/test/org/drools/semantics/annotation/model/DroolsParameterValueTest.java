@@ -3,7 +3,7 @@ package org.drools.semantics.annotation.model;
 import junit.framework.TestCase;
 
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsContext;
 import org.drools.spi.Tuple;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
@@ -19,7 +19,7 @@ public class DroolsParameterValueTest extends TestCase
     {
         try
         {
-            DroolsParameterValue value = new DroolsParameterValue( null );
+            DroolsContextParameterValue value = new DroolsContextParameterValue( null );
             fail( "expected IllegalArgumentException" );
         }
         catch (IllegalArgumentException e)
@@ -30,13 +30,13 @@ public class DroolsParameterValueTest extends TestCase
 
     public void testGetValue( )
     {
-        DroolsParameterValue value = new DroolsParameterValue( mockRule.object );
+        DroolsContextParameterValue value = new DroolsContextParameterValue( mockRule.object );
         mocks.replay( );
 
-        Drools drools = value.getValue( mockTuple.object );
+        DroolsContext drools = value.getValue( mockTuple.object );
 
         // TODO Asserting the instanceof is a bit weak.
-        assertTrue( drools instanceof KnowledgeHelperDrools );
+        assertTrue( drools instanceof KnowledgeHelperDroolsContext );
         mocks.verify( );
     }
 }

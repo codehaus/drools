@@ -3,15 +3,15 @@ package org.drools.semantics.annotation.model;
 import java.util.List;
 
 import org.drools.FactException;
-import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsContext;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
-class KnowledgeHelperDrools implements Drools
+class KnowledgeHelperDroolsContext implements DroolsContext
 {
     private final KnowledgeHelper knowledgeHelper;
 
-    public KnowledgeHelperDrools(org.drools.rule.Rule rule, Tuple tuple)
+    public KnowledgeHelperDroolsContext(org.drools.rule.Rule rule, Tuple tuple)
     {
         if (rule == null)
         {

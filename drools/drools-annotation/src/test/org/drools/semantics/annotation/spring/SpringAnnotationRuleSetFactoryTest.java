@@ -7,15 +7,11 @@ import java.util.logging.Level;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.WorkingMemory;
-import org.drools.rule.DuplicateRuleNameException;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.semantics.annotation.testrules.AuditService;
 import org.drools.semantics.annotation.testrules.FooBar;
-import org.drools.semantics.annotation.testrules.RuleOne;
-import org.drools.semantics.annotation.testrules.RuleTwo;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

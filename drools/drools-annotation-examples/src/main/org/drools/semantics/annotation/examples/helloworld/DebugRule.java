@@ -2,11 +2,11 @@ package org.drools.semantics.annotation.examples.helloworld;
 
 import org.drools.semantics.annotation.*;
 
-@DroolsRule
+@Drools.Rule
 class DebugRule {
 
-    @DroolsConsequence
-    public void consequence(@DroolsParameter("object") Object object) {
+    @Drools.Consequence
+    public void consequence(@Drools.Parameter("object") Object object) {
         System.out.println("\n" + "Asserted object: " + object);
     }
 }

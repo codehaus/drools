@@ -17,7 +17,7 @@ class TupleParameterValue implements ParameterValue
     }
 
     /**
-     * @return The fact associated with the paramter declaration. The returned
+     * @return The fact associated with the parameter declaration. The returned
      *         value may be null.
      */
     public Object getValue( Tuple tuple )

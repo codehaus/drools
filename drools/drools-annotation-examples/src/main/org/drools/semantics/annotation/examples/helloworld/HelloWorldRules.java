@@ -4,38 +4,38 @@ import org.drools.semantics.annotation.*;
 
 class HelloWorldRules {
     
-    @DroolsRule
+    @Drools.Rule
     public static class Hello {
         
-        @DroolsCondition
-        public boolean condition(@DroolsParameter("hello") String hello) {
+        @Drools.Condition
+        public boolean condition(@Drools.Parameter("hello") String hello) {
             return hello.equals("Hello");
         }
         
-        @DroolsConsequence
-        public void consequence(@DroolsParameter("hello") String hello) {
+        @Drools.Consequence
+        public void consequence(@Drools.Parameter("hello") String hello) {
             System.out.println("\n" + hello + " World");
         }
     }
 
-    @DroolsRule
+    @Drools.Rule
     public static class Goodbye {
-        @DroolsCondition
-        public boolean condition(@DroolsParameter("goodbye") String goodbye) {
+        @Drools.Condition
+        public boolean condition(@Drools.Parameter("goodbye") String goodbye) {
             return goodbye.equals("Goodbye");
         }
         
-        @DroolsConsequence
-        public void consequence(@DroolsParameter("goodbye") String goodbye) {
+        @Drools.Consequence
+        public void consequence(@Drools.Parameter("goodbye") String goodbye) {
             System.out.println("\n" + goodbye + " Cruel World");
         }
     }
     
-    @DroolsRule
+    @Drools.Rule
     public static class Debug {
 
-        @DroolsConsequence
-        public void consequence(@DroolsParameter("object") Object object) {
+        @Drools.Consequence
+        public void consequence(@Drools.Parameter("object") Object object) {
             System.out.println("\n" + "Asserted object: " + object);
         }
     }

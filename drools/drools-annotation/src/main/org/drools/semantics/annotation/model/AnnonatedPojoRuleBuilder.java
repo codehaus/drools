@@ -9,7 +9,8 @@ import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.*;
+import org.drools.semantics.annotation.Drools;
+import org.drools.semantics.annotation.DroolsContext;
 import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.Consequence;
 
@@ -34,10 +35,10 @@ public class AnnonatedPojoRuleBuilder
     {
         for (Method method : ruleClass.getMethods( ))
         {
-            DroolsCondition conditionAnnotation = method.getAnnotation( DroolsCondition.class );
+            Drools.Condition conditionAnnotation = method.getAnnotation( Drools.Condition.class );
             if (conditionAnnotation != null)
             {
-                PojoCondition condition = newMethodCondition( rule, pojo, method );
+                PojoCondition condition = newPojoCondition( rule, pojo, method );
                 rule.addCondition( condition );
             }
         }
@@ -49,8 +50,8 @@ public class AnnonatedPojoRuleBuilder
         Consequence consequence = null;
         for (Method method : ruleClass.getMethods( ))
         {
-            DroolsConsequence consequenceAnnotation = method
-                    .getAnnotation( DroolsConsequence.class );
+            Drools.Consequence consequenceAnnotation = method
+                    .getAnnotation( Drools.Consequence.class );
             if (consequenceAnnotation != null)
             {
                 if (consequence != null)
@@ -58,7 +59,7 @@ public class AnnonatedPojoRuleBuilder
                     throw new DroolsException( "Rule must only contain one consequence method"
                             + ": class = " + ruleClass + ", method = " + method );
                 }
-                consequence = newMethodConsequence( rule, pojo, method );
+                consequence = newPojoConsequence( rule, pojo, method );
                 rule.setConsequence( consequence );
             }
         }
@@ -69,7 +70,7 @@ public class AnnonatedPojoRuleBuilder
         }
     }
 
-    private static PojoCondition newMethodCondition( Rule rule, Object pojo, Method pojoMethod )
+    private static PojoCondition newPojoCondition( Rule rule, Object pojo, Method pojoMethod )
             throws DroolsException
     {
         assertReturnType( pojoMethod, boolean.class );
@@ -78,7 +79,7 @@ public class AnnonatedPojoRuleBuilder
                                         List<ParameterValue> parameterValues )
                     throws DroolsException
             {
-                if (newParameterValue instanceof DroolsParameterValue)
+                if (newParameterValue instanceof DroolsContextParameterValue)
                 {
                     throw new DroolsException(
                             "Condition methods cannot declare a parameter of type Drools" );
@@ -89,7 +90,7 @@ public class AnnonatedPojoRuleBuilder
                 getParameterValues( rule, pojoMethod, parameterValidator ) ) );
     }
 
-    private static PojoConsequence newMethodConsequence( Rule rule, Object pojo, Method pojoMethod )
+    private static PojoConsequence newPojoConsequence( Rule rule, Object pojo, Method pojoMethod )
             throws DroolsException
     {
         assertReturnType( pojoMethod, void.class );
@@ -100,7 +101,7 @@ public class AnnonatedPojoRuleBuilder
                                         List<ParameterValue> parameterValues )
                     throws DroolsException
             {
-                if (newParameterValue instanceof DroolsParameterValue)
+                if (newParameterValue instanceof DroolsContextParameterValue)
                 {
                     if (hasDroolsParameterValue)
                     {
@@ -173,18 +174,18 @@ public class AnnonatedPojoRuleBuilder
     {
 
         ParameterValue parameterValue = null;
-        if (parameterClass == Drools.class)
+        if (parameterClass == DroolsContext.class)
         {
-            parameterValue = new DroolsParameterValue( rule );
+            parameterValue = new DroolsContextParameterValue( rule );
         }
         else
         {
             for (Annotation annotation : parameterAnnotations)
             {
-                if (annotation instanceof DroolsParameter)
+                if (annotation instanceof Drools.Parameter)
                 {
                     assertNonConflictingParameterAnnotation( parameterValue );
-                    String parameterId = ((DroolsParameter) annotation).value( );
+                    String parameterId = ((Drools.Parameter) annotation).value( );
                     Declaration declaration = rule.getParameterDeclaration( parameterId );
                     if (declaration == null)
                     {
@@ -193,10 +194,10 @@ public class AnnonatedPojoRuleBuilder
                     }
                     parameterValue = new TupleParameterValue( declaration );
                 }
-                else if (annotation instanceof DroolsApplicationData)
+                else if (annotation instanceof Drools.ApplicationData)
                 {
                     assertNonConflictingParameterAnnotation( parameterValue );
-                    String parameterId = ((DroolsApplicationData) annotation).value( );
+                    String parameterId = ((Drools.ApplicationData) annotation).value( );
                     parameterValue = new ApplicationDataParameterValue( parameterId, parameterClass );
                 }
             }
