@@ -7,52 +7,55 @@ import java.util.ArrayList;
 import java.io.Serializable;
 
 /*
-* $Id: PrimitiveLongMap.java,v 1.4 2004-11-15 23:06:07 mproctor Exp $
-*
-* Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
-*
-* Redistribution and use of this software and associated documentation
-* ("Software"), with or without modification, are permitted provided that the
-* following conditions are met:
-*
-* 1. Redistributions of source code must retain copyright statements and
-* notices. Redistributions must also contain a copy of this document.
-*
-* 2. Redistributions in binary form must reproduce the above copyright notice,
-* this list of conditions and the following disclaimer in the documentation
-* and/or other materials provided with the distribution.
-*
-* 3. The name "drools" must not be used to endorse or promote products derived
-* from this Software without prior written permission of The Werken Company.
-* For written permission, please contact bob@werken.com.
-*
-* 4. Products derived from this Software may not be called "drools" nor may
-* "drools" appear in their names without prior written permission of The Werken
-* Company. "drools" is a trademark of The Werken Company.
-*
-* 5. Due credit should be given to The Werken Company. (http://werken.com/)
-*
-* THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
-* AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-* ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
-* LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-* SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
-*
-*/
-
+ * $Id: PrimitiveLongMap.java,v 1.5 2004-11-16 13:17:22 mproctor Exp $
+ *
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ *
+ * Redistribution and use of this software and associated documentation
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ *
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * 3. The name "drools" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of The Werken Company.
+ * For written permission, please contact bob@werken.com.
+ *
+ * 4. Products derived from this Software may not be called "drools" nor may
+ * "drools" appear in their names without prior written permission of The Werken
+ * Company. "drools" is a trademark of The Werken Company.
+ *
+ * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
+ * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
 
 /**
- *
+ * 
  * @author Mark Proctor
  */
-public class PrimitiveLongMap implements Serializable
+public class PrimitiveLongMap
+    implements
+    Serializable
 {
+    private final static Object NULL = new Serializable( ) { };
+
     private final int indexIntervals;
     private final int intervalShifts;
     private final int midIntervalPoint;
@@ -65,20 +68,22 @@ public class PrimitiveLongMap implements Serializable
     private long maxKey;
     private Page[] pageIndex;
 
-
     public PrimitiveLongMap()
     {
-        this(32, 8);
+        this( 32,
+              8 );
     }
 
     public PrimitiveLongMap(int tableSize)
     {
-        this(tableSize, 8);
+        this( tableSize,
+              8 );
     }
 
-    public PrimitiveLongMap(int tableSize, int indexIntervals )
+    public PrimitiveLongMap(int tableSize,
+                            int indexIntervals)
     {
-        //determine number of shifts for intervals
+        // determine number of shifts for intervals
         int i = 1;
         int size = 2;
         while ( size < indexIntervals )
@@ -89,7 +94,7 @@ public class PrimitiveLongMap implements Serializable
         this.indexIntervals = size;
         this.intervalShifts = i;
 
-        //determine number of shifts for tableSize
+        // determine number of shifts for tableSize
         i = 1;
         size = 2;
         while ( size < tableSize )
@@ -101,180 +106,206 @@ public class PrimitiveLongMap implements Serializable
         this.shifts = i;
         this.doubleShifts = this.shifts << 1;
 
-        //determine mid point of an interval
+        // determine mid point of an interval
         this.midIntervalPoint = ((this.tableSize << this.shifts) << this.intervalShifts) >> 1;
 
         this.lastPageId = 0;
 
-        //instantiate the first page
-        //previous sibling of first page is null
-        //next sibling of last page is null
-        this.firstPage = new Page( null, this.lastPageId, this.tableSize );
+        // instantiate the first page
+        // previous sibling of first page is null
+        // next sibling of last page is null
+        this.firstPage = new Page( null,
+                                   this.lastPageId,
+                                   this.tableSize );
         this.maxKey = this.lastPageId + 1 << this.doubleShifts;
-        //create an index of one
+        // create an index of one
         pageIndex = new Page[]{this.firstPage};
 
-        //our first page is also our last page
+        // our first page is also our last page
         this.lastPage = this.firstPage;
     }
 
-    public Object put(long key, Object value )
+    public Object put(long key,
+                      Object value)
     {
-        //determine Page
-        int pageId = (int) key >> this.doubleShifts;
-        Page page = null;
+        // NULL is a placeholder to show the key exists
+        // but contains a null value
+        if ( value == null )
+        {
+            value = NULL;
+        }
+        
+        Page page = findPage(key);
 
-        //if pageId is lastNodeId use lastNode reference
-        if (pageId == this.lastPageId)
-        {
-            page = this.lastPage;
-        }
-        //if pageId is zero use first page reference
-        else if (pageId == 0)
-        {
-            page = this.firstPage;
-        }
-        //if pageId is greater than lastTopNodeId need to expand
-        else if ( pageId > this.lastPageId )
-        {
-            page = expandPages(pageId);
-        }
-        else
-        {
-           page = findPage(pageId, key);
-        }
-
-        Object oldValue =  page.put( key, value );
-
-        if ((this.lastPageId != 0) && this.lastPage.isEmpty())
-        {
-            page = shrinkPages(this.lastPageId);
-        }
+        Object oldValue = page.put( key,
+                                    value );
 
         return oldValue;
     }
 
     public Object remove(long key)
     {
-        if (key >= this.maxKey)
+        if ( key >= this.maxKey )
         {
             return null;
         }
-        return put(key, null);
-    }
+        
+        Page page = findPage(key);
 
+        Object oldValue = page.put( key,
+                                    null );
+
+        if ( (this.lastPageId != 0) && this.lastPage.isEmpty( ) )
+        {
+            page = shrinkPages( this.lastPageId );
+        }        
+        
+        return oldValue;
+    }
 
     public Object get(long key)
     {
-        if (key >= this.maxKey)
+        if ( key >= this.maxKey )
         {
             return null;
         }
-        //determine TopNode
-        int pageId = (int) key >> this.doubleShifts;
 
+        Object value = findPage( key ).get( key );
 
-        return findPage(pageId, key).get( key );
-    }
-    
-    public Collection values( )
-    {
-        CompositeCollection collection = new CompositeCollection();
-        Page page = this.firstPage;
-        while ((page != null) && (page.getPageId() <= this.lastPageId))
+        // NULL means the key exists, so return a real null
+        if ( value == NULL )
         {
-            collection.addComposited(Arrays.asList(page.getValues()));
-            page = page.getNextSibling() ;
+            value = null;
+        }
+        return value;
+    }
+
+    public Collection values()
+    {
+        CompositeCollection collection = new CompositeCollection( );
+        Page page = this.firstPage;
+        while ( (page != null) && (page.getPageId( ) <= this.lastPageId) )
+        {
+            collection.addComposited( Arrays.asList( page.getValues( ) ) );
+            page = page.getNextSibling( );
         }
         return collection;
     }
-    
+
     public boolean containsKey(long key)
     {
-        return (get(key) != null) ? true : false;
+        return (get( key ) != null) ? true : false;
     }
 
     /**
-     * Expand index to accomodate given pageId
-     * Create empty TopNodes
+     * Expand index to accomodate given pageId Create empty TopNodes
      */
     public Page expandPages(int toPageId)
     {
-        for (int x = this.lastPageId; x < toPageId; x++)
+        for ( int x = this.lastPageId; x < toPageId; x++ )
         {
-            this.lastPage = new Page( this.lastPage, ++this.lastPageId, this.tableSize );
-            //index interval, so expand index
+            this.lastPage = new Page( this.lastPage,
+                                      ++this.lastPageId,
+                                      this.tableSize );
+            // index interval, so expand index
             if ( this.lastPage.getPageId( ) % this.indexIntervals == 0 )
             {
                 int newSize = this.pageIndex.length + 1;
-                resizeIndex(newSize);
+                resizeIndex( newSize );
                 this.pageIndex[newSize - 1] = this.lastPage;
             }
         }
         this.maxKey = (this.lastPageId + 1 << this.doubleShifts) - 1;
-        return  this.lastPage;
+        return this.lastPage;
     }
 
     /**
-     * Expand index to accomodate given pageId
-     * Create empty TopNodes
+     * Expand index to accomodate given pageId Create empty TopNodes
      */
     public Page shrinkPages(int toPageId)
     {
-        for (int x = this.lastPageId; x >= toPageId; x--)
+        for ( int x = this.lastPageId; x >= toPageId; x-- )
         {
-            Page page = this.lastPage.getPreviousSibling();
-            page.setNextSibling(null);
-            this.lastPage.clear();
+            Page page = this.lastPage.getPreviousSibling( );
+            page.setNextSibling( null );
+            this.lastPage.clear( );
             this.lastPage = page;
-            this.lastPageId = page.getPageId();
-            if ( (page.getPageId( ) % this.indexIntervals == 0) && (page.getPageId( ) != 0))
+            this.lastPageId = page.getPageId( );
+            if ( (page.getPageId( ) % this.indexIntervals == 0) && (page.getPageId( ) != 0) )
             {
                 int newSize = this.pageIndex.length - 1;
-                resizeIndex(newSize);
+                resizeIndex( newSize );
                 this.pageIndex[newSize - 1] = page;
             }
         }
-        return  this.lastPage;
+        return this.lastPage;
     }
 
     public void resizeIndex(int newSize)
     {
         int oldSize = this.pageIndex.length;
-        Page[ ] newIndex = new Page[newSize];
-        System.arraycopy( this.pageIndex, 0, newIndex, 0, newSize -1);
+        Page[] newIndex = new Page[newSize];
+        System.arraycopy( this.pageIndex,
+                          0,
+                          newIndex,
+                          0,
+                          newSize - 1 );
         this.pageIndex = newIndex;
     }
 
-    private Page findPage(int pageId, long key)
+    private Page findPage( long key )
     {
-        Page page;
-        //determine offset
-        int offset = (int) pageId >> intervalShifts;
-        //are we before or after the halfway point of an index interval
-        if ((offset != (this.pageIndex.length-1))&&((key - (offset << intervalShifts << this.doubleShifts)) > this.midIntervalPoint))
+        // determine Page
+        int pageId = (int) key >> this.doubleShifts;
+        Page page = null;
+
+        // if pageId is lastNodeId use lastNode reference
+        if ( pageId == this.lastPageId )
         {
-            //after so go to next node index and go backwards
-            page = this.pageIndex[ offset + 1];
-            while (page.getPageId() != pageId)
-            {
-                page = page.getPreviousSibling() ;
-            }
+            page = this.lastPage;
+        }
+        // if pageId is zero use first page reference
+        else if ( pageId == 0 )
+        {
+            page = this.firstPage;
+        }
+        // if pageId is greater than lastTopNodeId need to expand
+        else if ( pageId > this.lastPageId )
+        {
+            page = expandPages( pageId );
         }
         else
         {
-            //before so go to node index and go forwards
-            page = pageIndex[ offset ];
-            while (page.getPageId() != pageId)
+            // determine offset
+            int offset = (int) pageId >> intervalShifts;
+            // are we before or after the halfway point of an index interval
+            if ( (offset != (this.pageIndex.length - 1)) && ((key - (offset << intervalShifts << this.doubleShifts)) > this.midIntervalPoint) )
             {
-                page = page.getNextSibling();
+                // after so go to next node index and go backwards
+                page = this.pageIndex[offset + 1];
+                while ( page.getPageId( ) != pageId )
+                {
+                    page = page.getPreviousSibling( );
+                }
+            }
+            else
+            {
+                // before so go to node index and go forwards
+                page = pageIndex[offset];
+                while ( page.getPageId( ) != pageId )
+                {
+                    page = page.getNextSibling( );
+                }
             }
         }
+        
+
         return page;
     }
 
-
-    private static class Page implements Serializable
+    private static class Page
+        implements
+        Serializable
     {
         private final int pageSize;
         private final int pageId;
@@ -285,10 +316,11 @@ public class PrimitiveLongMap implements Serializable
         private Object[][] tables;
         private int filledSlots;
 
-
-        Page(Page previousSibling, int pageId, int tableSize )
+        Page(Page previousSibling,
+             int pageId,
+             int tableSize)
         {
-            //determine number of shifts
+            // determine number of shifts
             int i = 1;
             int size = 2;
             while ( size < tableSize )
@@ -296,7 +328,7 @@ public class PrimitiveLongMap implements Serializable
                 size = size << 1;
                 ++i;
             }
-            //make sure table size is valid
+            // make sure table size is valid
             this.tableSize = size;
             this.shifts = i;
 
@@ -337,60 +369,61 @@ public class PrimitiveLongMap implements Serializable
 
         public Object get(long key)
         {
-            if (this.tables == null)
+            if ( this.tables == null )
             {
                 return null;
             }
-            //normalise key
+            // normalise key
             key = key - (this.pageSize * this.pageId);
 
-            //determine page
+            // determine page
             int page = (int) key >> this.shifts;
 
-            //determine offset
+            // determine offset
             int offset = page << this.shifts;
 
-            //tables[page][slot]
-            return this.tables[ page ][ (int) key - offset ];
+            // tables[page][slot]
+            return this.tables[page][(int) key - offset];
         }
 
-        public Object put(long key, Object newValue )
+        public Object put(long key,
+                          Object newValue)
         {
-            if (this.tables == null)
+            if ( this.tables == null )
             {
-                //initiate tree;
-                this.tables = new Object[ this.tableSize ][ this.tableSize ];
+                // initiate tree;
+                this.tables = new Object[this.tableSize][this.tableSize];
             }
 
-            //normalise key
+            // normalise key
             key = key - (this.pageSize * this.pageId);
 
-            //determine page
+            // determine page
             int table = (int) key >> this.shifts;
 
-            //determine offset
+            // determine offset
             int offset = table << this.shifts;
 
-            //determine slot
+            // determine slot
             int slot = (int) key - offset;
 
-            //get old value
-            Object oldValue = this.tables[ table ][ slot ];                                                                    
-            this.tables[ table ][ slot ] = newValue;
+            // get old value
+            Object oldValue = this.tables[table][slot];
+            this.tables[table][slot] = newValue;
 
-            //update number of empty cells for TopNode
-            if ((oldValue == null)&&(newValue != null))
+            // update number of empty cells for TopNode
+            if ( (oldValue == null) && (newValue != null) )
             {
                 this.filledSlots++;
-            } 
-            else if ((oldValue != null)&&(newValue == null))
+            }
+            else if ( (oldValue != null) && (newValue == null) )
             {
                 this.filledSlots--;
             }
 
-            //if this page contains no values then null the array
-            //to allow it to be garbage collected
-            if (this.filledSlots == 0)
+            // if this page contains no values then null the array
+            // to allow it to be garbage collected
+            if ( this.filledSlots == 0 )
             {
                 this.tables = null;
             }
@@ -408,21 +441,26 @@ public class PrimitiveLongMap implements Serializable
             Object[] values = new Object[this.filledSlots];
             int x = 0;
             Object value;
-            for (int i = 0; i < this.tableSize; i++)
+            for ( int i = 0; i < this.tableSize; i++ )
             {
-                for (int j = 0; j < this.tableSize; j++)
+                for ( int j = 0; j < this.tableSize; j++ )
                 {
                     value = this.tables[i][j];
-                    if (value != null)
+                    if ( value != null )
                     {
-	                    values[x] = value;
-	                    x++;
+                        // swap NULL out placeholder
+                        if ( value == NULL )
+                        {
+                            value = null;
+                        }
+                        values[x] = value;
+                        x++;
                     }
-                }                
+                }
             }
             return values;
-        }        
-        
+        }
+
         public boolean isEmpty()
         {
             return (this.filledSlots != 0) ? false : true;
