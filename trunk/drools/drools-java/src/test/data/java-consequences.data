@@ -24,6 +24,12 @@ map.put("key", "value");
 
 cheeses.put("favourite cheese", camembert);
 cheeses.put("bites", bites);
+<!--drools-test--!>
+camembert.eatCheese();
+String trimmed = favouriteCheese.trim();
+<!--drools-test--!>
+camembert.eatCheese();
+String trimmed = favouriteCheese.trim();
 
 
 

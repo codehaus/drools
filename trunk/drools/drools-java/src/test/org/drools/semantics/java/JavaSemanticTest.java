@@ -1,18 +1,12 @@
-/*
- * Created on Jul 17, 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package org.drools.semantics.java;
 
 import org.drools.smf.SMFTestFrameWork;
 
 /**
- * @author mproctor
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Extends SMFTestFrameWork specifying the java Semantic Module.
+ * The SMFTestFramework base class then loads the java test data files,
+ * extracts the tests for condition, extractors and consequences and
+ * executes them
  */
 public class JavaSemanticTest extends SMFTestFrameWork
 {
@@ -23,6 +17,6 @@ public class JavaSemanticTest extends SMFTestFrameWork
 
     public void setUp() throws Exception
     {
-        super.setUp("java");        
-    }    
+        super.setUp("java");
+    }
 }
