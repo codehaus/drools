@@ -172,7 +172,7 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                               ),
                               "get",                  // methodName
                               new Java.Rvalue[] {     // arguments
-                                  new Java.Literal(scanner.new LiteralToken(key))
+                                  new Java.Literal(scanner.new StringLiteralToken(key))
                               }
                           )
                       )
