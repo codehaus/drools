@@ -2,7 +2,7 @@ package org.drools.semantics.annotation.examples.helloworld;
 
 import org.drools.semantics.annotation.*;
 
-@DroolsRule
+@Drools.Rule
 class GoodbyeRule {
     private MessagePrinter messagePrinter;
     
@@ -10,13 +10,13 @@ class GoodbyeRule {
         this.messagePrinter = messagePrinter;
     }
     
-    @DroolsCondition
-    public boolean condition(@DroolsParameter("goodbye") String goodbye) {
+    @Drools.Condition
+    public boolean condition(@Drools.Parameter("goodbye") String goodbye) {
         return goodbye.equals("Goodbye");
     }
     
-    @DroolsConsequence
-    public void consequence(@DroolsParameter("goodbye") String goodbye) {
+    @Drools.Consequence
+    public void consequence(@Drools.Parameter("goodbye") String goodbye) {
         messagePrinter.goodbyeWorld(goodbye);
     }
 }

@@ -19,7 +19,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testInvalidConsequenceReturnType() throws Exception {
         class Pojo {
-            @DroolsConsequence
+            @Drools.Consequence
             public int consequence() {
                 return 1;
             }
@@ -36,7 +36,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testInvalidConditionReturnType() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Drools.Condition
             public void condition() {}
         }
         Pojo pojo = new Pojo();
@@ -51,10 +51,10 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     
     public void testMultipleConsequences() throws Exception {
         class Pojo {
-            @DroolsConsequence
+            @Drools.Consequence
             public void consequenceOne() {}
 
-            @DroolsConsequence
+            @Drools.Consequence
             public void consequenceTwo() {}
         }
         Pojo pojo = new Pojo();
@@ -85,8 +85,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     
     public void testConflictingConsequenceParameterAnnotation() throws Exception {
         class Pojo1 {
-            @DroolsConsequence
-            public void consequence(@DroolsParameter("p1") @DroolsApplicationData("a2") String p) {}
+            @Drools.Consequence
+            public void consequence(@Drools.Parameter("p1") @Drools.ApplicationData("a2") String p) {}
         }
         Pojo1 pojo1 = new Pojo1();
 
@@ -98,8 +98,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         }
 
         class Pojo2 {
-            @DroolsConsequence
-            public void consequence(@DroolsApplicationData("a1") @DroolsParameter("p1") String p) {}
+            @Drools.Consequence
+            public void consequence(@Drools.ApplicationData("a1") @Drools.Parameter("p1") String p) {}
         }
         Pojo2 pojo2 = new Pojo2();
 
@@ -113,8 +113,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testNonConflictingConsequenceParameterAnnotation() throws Exception {
         class Pojo1 {
-            @DroolsConsequence
-            public void consequence(@Deprecated @DroolsApplicationData("a2") String p) {}
+            @Drools.Consequence
+            public void consequence(@Deprecated @Drools.ApplicationData("a2") String p) {}
         }
         Pojo1 pojo1 = new Pojo1();
 
@@ -125,8 +125,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConflictingConditionParameterAnnotation() throws Exception {
         class Pojo {
-            @DroolsCondition
-            public boolean condition(@DroolsParameter("p1") @DroolsApplicationData("p2") String p) {
+            @Drools.Condition
+            public boolean condition(@Drools.Parameter("p1") @Drools.ApplicationData("p2") String p) {
                 return false;
             }
         }
@@ -142,11 +142,11 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testNonConflictingConditionParameterAnnotation() throws Exception {
         class Pojo {
-            @DroolsCondition
-            public boolean condition(@DroolsParameter("p1") @Deprecated String p) {
+            @Drools.Condition
+            public boolean condition(@Drools.Parameter("p1") @Deprecated String p) {
                 return false;
             }
-            @DroolsConsequence
+            @Drools.Consequence
             public void consequence() {}
         }
         Pojo pojo = new Pojo();
@@ -159,9 +159,9 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testUnannoatedConsequenceParameter() throws Exception {
         class Pojo {
-            @DroolsConsequence
+            @Drools.Consequence
             public void consequence(String parameter,
-                                    @DroolsParameter("object") Object object) {
+                                    @Drools.Parameter("object") Object object) {
             }
         }
         Pojo pojo = new Pojo();
@@ -176,9 +176,9 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     
     public void testUnannoatedConditionParameter() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Drools.Condition
             public boolean condition(String parameter,
-                                     @DroolsParameter("object") Object object) {
+                                     @Drools.Parameter("object") Object object) {
                 return true;
             }
         }
@@ -194,8 +194,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testMultipleConsequenceDroolsParameters() throws Exception {
         class Pojo {
-            @DroolsConsequence
-            public void consequence(Drools drools1, Drools drools2) {}
+            @Drools.Consequence
+            public void consequence(DroolsContext drools1, DroolsContext drools2) {}
         }
         Pojo pojo = new Pojo();
 
@@ -209,12 +209,12 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConditionDroolsParameter() throws Exception {
         class Pojo {
-            @DroolsCondition
-            public boolean condition(Drools drools) {
+            @Drools.Condition
+            public boolean condition(DroolsContext drools) {
                 return true;
             }
 
-            @DroolsConsequence
+            @Drools.Consequence
             public void consequence() {}
         }
         Pojo pojo = new Pojo();
@@ -229,25 +229,25 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testBuild() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Drools.Condition
             public boolean conditionOne(
-                    @DroolsParameter("p1") String p1) {
+                    @Drools.Parameter("p1") String p1) {
                 return true;
             }
             
-            @DroolsCondition
+            @Drools.Condition
             public boolean conditionTwo(
-                    @DroolsParameter("p1") String p1,
-                    @DroolsParameter("p2") Integer p2,
-                    @DroolsApplicationData("a1") Object a1) {
+                    @Drools.Parameter("p1") String p1,
+                    @Drools.Parameter("p2") Integer p2,
+                    @Drools.ApplicationData("a1") Object a1) {
                 return true;
             }
             
-            @DroolsConsequence
+            @Drools.Consequence
             public void consequence(
-                    Drools drools,
-                    @DroolsParameter("p1") String p1,
-                    @DroolsApplicationData("a1") Object a1) {}
+                    DroolsContext drools,
+                    @Drools.Parameter("p1") String p1,
+                    @Drools.ApplicationData("a1") Object a1) {}
         }
         Pojo pojo = new Pojo();
         
