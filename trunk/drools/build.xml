@@ -150,7 +150,7 @@
     <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
     <property name="xerces.jar" value="xerces-2.3.0.jar"/>
     <property name="xml-apis.jar" value="xml-apis-2.0.2.jar"/>
-    <property name="bsh.jar" value="bsh-2.0b1.jar"/>
+    <property name="janino.jar" value="janino-2.0.5.jar"/>
     <property name="clover.jar" value="clover-1.2.3.jar"/>
     <property name="groovy.jar" value="groovy-1.0-beta-6.jar"/>
     <property name="asm.jar" value="asm-1.4.3.jar"/>
@@ -194,8 +194,6 @@
             src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
         <get dest="${lib.dir}/${xml-apis.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/xml-apis/jars/${xml-apis.jar}"/>
-        <get dest="${lib.dir}/${bsh.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="http://www.ibiblio.org/maven/bsh/jars/${bsh.jar}"/>
         <get dest="${lib.dir}/${clover.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/clover/jars/${clover.jar}"/>
         <get dest="${lib.dir}/${groovy.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
@@ -204,6 +202,10 @@
             src="http://www.ibiblio.org/maven/asm/jars/${asm.jar}"/>
         <get dest="${lib.dir}/${asm-util.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/asm/jars/${asm-util.jar}"/>
+
+        <!-- Janino JAR on ibiblio is corrupt, so using one from CodeHaus -->
+        <get dest="${lib.dir}/${janino.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://dist.codehaus.org/janino/jars/${janino.jar}"/>
 
         <!-- Local JARs not found at ibiblio -->
         <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
@@ -230,6 +232,7 @@
             <fileset dir="drools-core/src/main"/>
             <fileset dir="drools-io/src/main"/>
             <fileset dir="drools-smf/src/main"/>
+            <fileset dir="drools-smftest/src/main"/>
             <fileset dir="drools-java/src/main"/>
             <fileset dir="drools-jsr94/src/main"/>
             <fileset dir="drools-groovy/src/main"/>
@@ -243,6 +246,7 @@
             <fileset dir="drools-core/src/test"/>
             <fileset dir="drools-io/src/test"/>
             <fileset dir="drools-smf/src/test"/>
+       <!-- <fileset dir="drools-smftest/src/test"/> -->
             <fileset dir="drools-java/src/test"/>
             <fileset dir="drools-jsr94/src/test"/>
             <fileset dir="drools-groovy/src/test"/>
@@ -257,7 +261,7 @@
         <javac destdir="${classes.dir}" debug="true" debuglevel="source,lines">
             <src path="${src.dir}"/>
             <src path="${test-src.dir}"/>
-            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${jca.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${jython.jar}"/>
@@ -272,6 +276,7 @@
             <fileset dir="drools-core/src/main" excludes="**/*.java"/>
             <fileset dir="drools-io/src/main" excludes="**/*.java"/>
             <fileset dir="drools-smf/src/main" excludes="**/*.java"/>
+            <fileset dir="drools-smftest/src/main" excludes="**/*.java"/>
             <fileset dir="drools-java/src/main" excludes="**/*.java"/>
             <fileset dir="drools-jsr94/src/main" excludes="**/*.java"/>
             <fileset dir="drools-groovy/src/main" excludes="**/*.java"/>
@@ -284,6 +289,7 @@
             <fileset dir="drools-core/src/test" excludes="**/*.java"/>
             <fileset dir="drools-io/src/test" excludes="**/*.java"/>
             <fileset dir="drools-smf/src/test" excludes="**/*.java"/>
+       <!-- <fileset dir="drools-smftest/src/test" excludes="**/*.java"/> -->
             <fileset dir="drools-java/src/test" excludes="**/*.java"/>
             <fileset dir="drools-jsr94/src/test" excludes="**/*.java"/>
             <fileset dir="drools-groovy/src/test" excludes="**/*.java"/>
@@ -321,13 +327,14 @@
         <junit haltonfailure="yes">
             <formatter type="brief" usefile="no"/>
             <classpath path="${classes.dir}"/>
+            <classpath path="${classes.dir}/data"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
             <classpath path="${meta-inf-groovy.dir}"/>
             <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
             <classpath location="${lib.dir}/${xml-apis.jar}"/>
@@ -335,9 +342,6 @@
                 <fileset dir="${test-src.dir}">
                     <include name="**/*Test.java"/>
                     <include name="**/jsr94/**/*TestCase.java"/>
-
-                    <!-- http://jira.codehaus.org/browse/DROOLS-84 -->
-                    <exclude name="**/DroolsBenchmarkTestCase.java"/>
                 </fileset>
             </batchtest>
         </junit>
@@ -362,7 +366,7 @@
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
         </java>
     </target>
 
@@ -391,7 +395,7 @@
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
         </java>
     </target>
 
@@ -420,7 +424,7 @@
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
         </java>
     </target>
 
@@ -449,7 +453,7 @@
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
         </java>
     </target>
 
