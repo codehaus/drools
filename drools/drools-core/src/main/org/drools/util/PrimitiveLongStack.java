@@ -1,6 +1,6 @@
 package org.drools.util;
 /*
-* $Id: PrimitiveLongStack.java,v 1.1 2004-11-14 04:40:51 mproctor Exp $
+* $Id: PrimitiveLongStack.java,v 1.2 2004-11-16 13:52:01 simon Exp $
 *
 * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 *
@@ -61,7 +61,7 @@ public class PrimitiveLongStack
         this.currentNode = new HeapNode( null, this.currentNodeId, this.bucketSize );
     }
 
-    public boolean push(long value )
+    public void push( long value )
     {
         if (this.currentNode.getPosition() == this.bucketSize-1)
         {
@@ -70,7 +70,7 @@ public class PrimitiveLongStack
             this.currentNode = node;
         }
 
-        return this.currentNode.push(value);
+        this.currentNode.push(value);
     }
 
 
@@ -95,11 +95,10 @@ public class PrimitiveLongStack
 
     public boolean isEmpty()
     {
-        return ((this.currentNodeId == 0)&&(this.currentNode.getPosition() == -1)) ? true : false;
+        return this.currentNodeId == 0 && this.currentNode.getPosition( ) == -1;
     }
 
-
-    static class HeapNode
+    private static final class HeapNode
     {
         private final int nodeId;
         private HeapNode nextSibling;
