@@ -13,7 +13,11 @@
 	</bean>
 
 	<bean id="workingMemoryListenerProcessor"
-		class="org.drools.spring.event.WorkingMemoryEventListenerProcessor" />
+		class="org.drools.spring.event.WorkingMemoryEventListenerProcessor">
+		<property name="workingMemory">
+			<ref local="workingMemory"/>
+		</property>
+	</bean>
 
 	<bean id="listener_A" class="org.drools.spring.event.WorkingMemoryEventListenerProcessorTestCase$Listener_A" />
 	<bean id="listener_B" class="org.drools.spring.event.WorkingMemoryEventListenerProcessorTestCase$Listener_B" />
