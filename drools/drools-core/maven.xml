@@ -111,7 +111,7 @@
         </java>
     </goal>
 
-    <goal name="drools:rar" prereqs="drools:get-deps, jar:jar">
+    <goal name="drools:rar" prereqs="drools:get-deps">
         <jar jarfile="${maven.build.dir}/${maven.final.name}.rar">
             <fileset dir="${maven.build.dir}">
                 <include name="${maven.final.name}.jar"/>
