@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.9 2004-04-02 22:23:40 n_alex Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.10 2004-04-07 19:40:03 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,7 @@ package org.drools.jsr94.rules.admin;
 
 import org.drools.io.RuleSetReader;
 import org.drools.RuleBase;
+import org.xml.sax.InputSource;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
@@ -82,8 +83,20 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
             throws IOException,
             RuleExecutionSetCreateException
     {
-        Reader reader = new InputStreamReader( inputStream );
-        return createRuleExecutionSet( reader, properties );
+        RuleBase ruleBase = null;
+        try
+        {
+            RuleSetReader ruleSetReader = new RuleSetReader();
+            org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
+            builder.addRuleSet( ruleSetReader.read(inputStream ) );
+            ruleBase = builder.build();
+        }
+        catch (Exception ex)
+        {
+            throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
+        }
+
+        return createRuleExecutionSet( ruleBase, properties );
     }
 
     /**

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.9 2004-04-05 19:49:07 n_alex Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.10 2004-04-07 19:40:03 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,14 +46,18 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.jsr94.rules.NotImplementedException;
 import org.drools.RuleBase;
-import org.w3c.dom.Document;
+import org.drools.RuleIntegrationException;
+import org.drools.smf.DefaultSemanticsRepository;
+import org.drools.io.RuleSetReader;
 import org.w3c.dom.Element;
 
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetProvider;
+import javax.xml.transform.*;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.dom.DOMSource;
 import java.io.*;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -77,10 +81,59 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Element, Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( Element element, Map properties ) throws RuleExecutionSetCreateException, RemoteException
+    public RuleExecutionSet createRuleExecutionSet(
+            Element element,
+            Map properties )
+            throws RuleExecutionSetCreateException,
+            RemoteException
     {
-        // [TODO]
-        throw new NotImplementedException();
+
+        // Prepare the DOM source
+        Source source = new DOMSource(element);
+
+        RuleSetReader reader = null;
+        try
+        {
+            // Create a reader to handle the SAX events
+            reader = new RuleSetReader(DefaultSemanticsRepository.getInstance());
+        }
+        catch (Exception e)
+        {
+            throw new RuleExecutionSetCreateException("Couldn't get an instance of the DefaultSemanticsRepository: " + e);
+        }
+
+        try
+        {
+            // Prepare the result
+            SAXResult result = new SAXResult(reader);
+
+            // Create a transformer
+            Transformer xformer = TransformerFactory.newInstance().newTransformer();
+
+            // Traverse the DOM tree
+            xformer.transform(source, result);
+            System.out.println(result.toString());
+
+        }
+        catch (TransformerException e)
+        {
+            throw new RuleExecutionSetCreateException( "could not create RuleExecutionSet: " + e );
+        }
+
+        RuleBase ruleBase = null;
+
+        try
+        {
+            org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
+            builder.addRuleSet( reader.getRuleSet() );
+            ruleBase = builder.build();
+            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
+            return localRuleExecutionSetProvider.createRuleExecutionSet( ruleBase, properties );
+        }
+        catch (RuleIntegrationException e)
+        {
+            throw new RuleExecutionSetCreateException("could not create RuleExecutionSet: " + e);
+        }
     }
 
     /**
