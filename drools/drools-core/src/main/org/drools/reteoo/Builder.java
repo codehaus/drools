@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.67 2004-12-06 15:36:14 simon Exp $
+ * $Id: Builder.java,v 1.68 2004-12-06 15:44:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -80,6 +80,9 @@ public class Builder
 
     /** Rule-sets added. */
     private List ruleSets;
+
+    /** Nodes that have been attached. */
+    private Map attachedNodes;
 
     private Map applicationData;
 
@@ -264,15 +267,29 @@ public class Builder
         {
             eachDecl = (Declaration) declIter.next( );
 
-            ParameterNode parameterNode = new ParameterNode( this.rete.getOrCreateObjectTypeNode( eachDecl.getObjectType( ) ),
-                                                             eachDecl );
-
-            parameterNode.attach( );
-
-            leafNodes.add( parameterNode );
+            attachNode( new ParameterNode( this.rete.getOrCreateObjectTypeNode( eachDecl.getObjectType( ) ),
+                                           eachDecl ),
+                        leafNodes );
         }
 
         return leafNodes;
+    }
+
+    private void attachNode( ParameterNode candidate, List leafNodes )
+    {
+        ParameterNode node = ( ParameterNode ) this.attachedNodes.get( candidate );
+
+        if ( node == null )
+        {
+            candidate.attach( );
+
+            this.attachedNodes.put( candidate,
+                                    candidate );
+
+            node = candidate;
+        }
+
+        leafNodes.add( node );
     }
 
     /**
@@ -534,6 +551,7 @@ public class Builder
     {
         this.rete = new Rete( );
         this.ruleSets = new ArrayList( );
+        this.attachedNodes = new HashMap( );
         this.applicationData = new HashMap( );
         this.factHandleFactory = new DefaultFactHandleFactory( );
         this.conflictResolver = DefaultConflictResolver.getInstance( );
