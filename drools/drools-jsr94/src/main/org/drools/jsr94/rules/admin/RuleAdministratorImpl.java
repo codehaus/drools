@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorImpl.java,v 1.6 2004-04-02 22:24:26 n_alex Exp $
+ $Id: RuleAdministratorImpl.java,v 1.7 2004-04-04 02:54:55 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -103,14 +103,14 @@ public class RuleAdministratorImpl implements RuleAdministrator
     /**
      * Unregisters a previously registers <code>RuleExecutionSet</code> from a URI.
      *
-     * @see RuleAdministrator#unregisterRuleExecutionSet
+     * @see RuleAdministrator#deregisterRuleExecutionSet
      */
-    public void unregisterRuleExecutionSet( String bindUri, Map properties ) throws RuleExecutionSetUnregisterException
+    public void deregisterRuleExecutionSet( String bindUri, Map properties ) throws RuleExecutionSetDeregistrationException
     {
         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
 
         if ( repository.getRuleExecutionSet( bindUri ) == null )
-            throw new RuleExecutionSetUnregisterException( "no execution set bound to: " + bindUri );
+            throw new RuleExecutionSetDeregistrationException( "no execution set bound to: " + bindUri );
 
         try
         {
@@ -118,7 +118,7 @@ public class RuleAdministratorImpl implements RuleAdministrator
         }
         catch ( Exception ex )
         {
-            throw new RuleExecutionSetUnregisterException( "cannot unregister rule set", ex );
+            throw new RuleExecutionSetDeregistrationException( "cannot unregister rule set", ex );
         }
     }
 }

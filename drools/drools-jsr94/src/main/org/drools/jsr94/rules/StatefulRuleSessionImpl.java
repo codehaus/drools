@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionImpl.java,v 1.9 2004-04-02 22:37:48 n_alex Exp $
+ $Id: StatefulRuleSessionImpl.java,v 1.10 2004-04-04 02:54:55 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -67,6 +67,7 @@ import java.util.Iterator;
  *
  * @see StatefulRuleSession
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 public class StatefulRuleSessionImpl
@@ -274,5 +275,10 @@ public class StatefulRuleSessionImpl
         {
             throw new InvalidHandleException( "invalid handle" );
         }
+    }
+
+    public List getHandles()
+    {
+        throw new NotImplementedException();
     }
 }

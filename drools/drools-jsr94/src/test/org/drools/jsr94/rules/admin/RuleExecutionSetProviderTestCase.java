@@ -1,5 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
+import org.drools.jsr94.rules.RuleEngineTestBase;
+
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetProvider;

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleRuntimeImpl.java,v 1.7 2004-04-02 22:37:48 n_alex Exp $
+ $Id: RuleRuntimeImpl.java,v 1.8 2004-04-04 02:54:55 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,6 +59,7 @@ import java.util.Map;
  * <code>RuleRuntime</code> interface.
  *
  * @see RuleRuntime
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  */
 public class RuleRuntimeImpl implements RuleRuntime
 {

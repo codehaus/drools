@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
+ $Id: RuleExecutionSetTestCase.java,v 1.3 2004-04-04 02:54:56 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -45,6 +45,8 @@ package org.drools.jsr94.rules.admin;
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
  */
+
+import org.drools.jsr94.rules.RuleEngineTestBase;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
