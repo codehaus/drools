@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: DuplicateRuleNameException.java,v 1.3 2002-07-27 01:50:17 bob Exp $
+ $Id: DuplicateRuleNameException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,11 @@ package org.drools.spi;
  
  */
 
-/** Indicates an attempt to add a {@link Rule} to a {@link RuleSet}
+/** Indicates an attempt to add a <code>Rule</code> to a <code>RuleSet</code>
  *  that already contains a <code>Rule</code> with the same name.
+ *
+ *  @see Rule
+ *  @see RuleSet
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */

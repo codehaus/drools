@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinMemory.java,v 1.11 2002-07-27 02:37:12 bob Exp $
+ $Id: JoinMemory.java,v 1.12 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -55,7 +55,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Collections;
 
-/** Memory for left and right inputs of a {@link JoinNode}.
+/** Memory for left and right inputs of a <code>JoinNode</code>.
  *
  *  @see JoinNode
  *  @see org.drools.spi.Tuple
@@ -354,10 +354,13 @@ public class JoinMemory
         
     }
 
-    /** Add a {@link ReteTuple} received from the <code>JoinNode's</code>
+    /** Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
      *  left input to the left side of this memory, and attempt
      *  to join to existing <code>Tuples</code> in the right
      *  side.
+     *
+     *  @see JoinNode
+     *  @see ReteTuple
      *
      *  @param tuple The <code>Tuple</code> to add to the left
      *         side memory.
@@ -400,10 +403,13 @@ public class JoinMemory
         return this.leftTuples.iterator();
     }
 
-    /** Add a {@link ReteTuple} received from the <code>JoinNode's</code>
+    /** Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
      *  right input to the right side of this memory, and attempt
      *  to join to existing <code>Tuples</code> in the left
      *  side.
+     *
+     *  @see JoinNode
+     *  @see ReteTuple
      *
      *  @param tuple The <code>Tuple</code> to add to the right
      *         side memory.

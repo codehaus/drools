@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.9 2002-07-26 19:41:05 bob Exp $
+ $Id: RuleBase.java,v 1.10 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,10 @@ import org.drools.spi.RuleSet;
 
 import java.util.Iterator;
 
-/** Collection of {@link Rule}s.
+/** Collection of <code>Rule</code>s.
+ *
+ *  @see Rule
+ *  @see RuleSet
  *
  *  @author <a href="bob@werken.com">bob mcwhirter</a>
  */
@@ -139,8 +142,10 @@ public class RuleBase
         getBuilder().addRule( rule );
     }
 
-    /** Create a {@link WorkingMemory} session for
+    /** Create a <code>WorkingMemory</code> session for
      *  this <code>RuleBase</code>.
+     *
+     *  @see WorkingMemory
      *
      *  @return A newly initialized <code>WorkingMemory</code>.
      */
@@ -149,8 +154,10 @@ public class RuleBase
         return new WorkingMemory( this );
     }
 
-    /** Create a {@link TransactionalWorkingMemory} session for
+    /** Create a <code>TransactionalWorkingMemory</code> session for
      *  this <code>RuleBase</code>.
+     *
+     *  @see TransactionalWorkingMemory
      *
      *  @return A newly initialized <code>TransactionalWorkingMemory</code>.
      */
@@ -159,7 +166,7 @@ public class RuleBase
         return new TransactionalWorkingMemory( this );
     }
 
-    /** Retrieve the Rete-OO {@link RootNode} for this
+    /** Retrieve the Rete-OO <code>RootNode</code> for this
      *  <code>RuleBase</code>.
      *
      *  @return The root node in the RETE-OO graph. 

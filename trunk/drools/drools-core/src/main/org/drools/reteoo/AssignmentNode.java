@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: AssignmentNode.java,v 1.10 2002-07-26 20:55:10 bob Exp $
+ $Id: AssignmentNode.java,v 1.11 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -106,8 +106,10 @@ public class AssignmentNode extends TupleSource implements TupleSink
     //     Instance methods 
     // ------------------------------------------------------------
 
-    /** Retrieve the {@link Declaration} which is the target of
+    /** Retrieve the <code>Declaration</code> which is the target of
      *  the assignment.
+     *
+     *  @see Declaration
      *
      *  @return The target <code>Declaration</code>.
      */
@@ -116,8 +118,10 @@ public class AssignmentNode extends TupleSource implements TupleSink
         return this.targetDeclaration;
     }
 
-    /** Retrieve the {@link FactExtractor} used to generate the
+    /** Retrieve the <code>FactExtractor</code> used to generate the
      *  right-hand-side value for the assignment.
+     *
+     *  @see FactExtractor
      *
      *  @return The <code>FactExtrator</code>.
      */
@@ -130,8 +134,10 @@ public class AssignmentNode extends TupleSource implements TupleSink
     //     org.drools.reteoo.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the <code>Set</code> of {@link Declaration}s
+    /** Retrieve the <code>Set</code> of <code>Declaration</code>s
      *  in the propagated <code>Tuples</code>.
+     *
+     *  @see Declaration
      *
      *  @return The <code>Set</code> of <code>Declarations</code>
      *          in progated <code>Tuples</code>.

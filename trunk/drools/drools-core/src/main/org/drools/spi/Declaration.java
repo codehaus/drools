@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Declaration.java,v 1.4 2002-07-27 01:50:17 bob Exp $
+ $Id: Declaration.java,v 1.5 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,10 @@ package org.drools.spi;
  
  */
 
-/** A typed, named variable for {@link Condition} evaluation.
+/** A typed, named variable for <code>Condition</code> evaluation.
  *
  *  @see ObjectType
+ *  @see Condition
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteConstructionException.java,v 1.2 2002-07-26 20:55:10 bob Exp $
+ $Id: ReteConstructionException.java,v 1.3 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,10 @@ package org.drools.reteoo;
  
  */
 
-/** Indicates an error while integrating a
- *  {@link org.drools.spi.Rule} into the Rete-OO network.
+/** Indicates an error while integrating a <code>Rule</code>
+ *  into the Rete-OO network.
+ *
+ *  @see org.drools.spi.Rule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

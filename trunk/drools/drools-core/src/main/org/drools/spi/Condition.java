@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Condition.java,v 1.2 2002-07-26 21:10:43 bob Exp $
+ $Id: Condition.java,v 1.3 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,20 +46,21 @@ package org.drools.spi;
  
  */
 
-/** A test of facts for a {@link Rule}.
+/** A test of facts for a <code>Rule</code>.
  *
  *  @see Tuple
  *  @see Declaration
+ *  @see Rule
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
 public interface Condition
 {
-    /** Retrieve the array of {@link Declaration}s required
+    /** Retrieve the array of <code>Declaration</code>s required
      *  by this condition to perform its duties.
      *
      *  @return The array of <code>Declarations</code> expected
-     *          on incoming {@link Tuple}s.
+     *          on incoming <code>Tuples</code>.
      */
     Declaration[] getRequiredTupleMembers();
 }

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Action.java,v 1.3 2002-07-26 21:10:43 bob Exp $
+ $Id: Action.java,v 1.4 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,14 +48,16 @@ package org.drools.spi;
 
 import org.drools.WorkingMemory;
 
-/** Action to be executed upon successful  match of a {@link Rule}.
+/** Action to be executed upon successful  match of a <code>Rule</code>.
+ *
+ *  @see Rule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public interface Action
 {
     /** Execute the action for the supplied
-     *  matching {@link Tuple}.
+     *  matching <code>Tuple</code>.
      *
      *  @param tuple The matching tuple.
      *  @param workingMemory The working memory session.

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.7 2002-07-26 20:55:10 bob Exp $
+ $Id: ParameterNode.java,v 1.8 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,8 +56,8 @@ import org.drools.spi.Declaration;
 import java.util.Set;
 import java.util.Collections;
 
-/** Receives <code>Objects</code> from an {@link ObjectTypeNode},
- *  and creates a {@link ReteTuple}, passing the result to the following node.
+/** Receives <code>Objects</code> from an <code>ObjectTypeNode</code>,
+ *  and creates a <code>ReteTuple</code>, passing the result to the following node.
  *
  *  <p>
  *  The <code>ParameterNode</code> is the first node that works in
@@ -86,7 +86,7 @@ public class ParameterNode extends TupleSource
     /** Construct.
      *
      *  @param inputNode The <code>ObjectTypeNode</code> input to this.
-     *  @param declaration The root fact object {@link Declaration}.
+     *  @param declaration The root fact object <code>Declaration</code>.
      */
     public ParameterNode(ObjectTypeNode inputNode,
                          Declaration declaration)
@@ -177,7 +177,7 @@ public class ParameterNode extends TupleSource
     //     org.drools.reteoo.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the <code>Set</code> of {@link Declaration}s
+    /** Retrieve the <code>Set</code> of <code>Declaration</code>s
      *  in the propagated <code>Tuples</code>.
      *
      *  @return The <code>Set</code> of <code>Declarations</code>

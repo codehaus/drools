@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RootNode.java,v 1.5 2002-07-26 20:55:10 bob Exp $
+ $Id: RootNode.java,v 1.6 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -61,8 +61,10 @@ import java.util.Iterator;
 /** The root node in the Rete-OO network.
  *
  *  This node accepts an <code>Object</code>, and simply
- *  propagates it to all {@link ObjectTypeNode}s for
+ *  propagates it to all <code>ObjectTypeNode</code>s for
  *  type testings.
+ *
+ *  @see ObjectTypeNode
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -200,7 +202,7 @@ public class RootNode
         return this.objectTypeNodes.values().iterator();
     }
 
-    /** Retrieve an {@link ObjectTypeNode} keyed by {@link ObjectType}.
+    /** Retrieve an <code>ObjectTypeNode</code> keyed by <code>ObjectType</code>.
      *
      *  @param objectType The <code>ObjectType</code> key.
      *
@@ -212,7 +214,7 @@ public class RootNode
         return (ObjectTypeNode) this.objectTypeNodes.get( objectType );
     }
 
-    /** Retrieve an {@link ObjectTypeNode} keyed by {@link ObjectType},
+    /** Retrieve an <code>ObjectTypeNode</code> keyed by <code>ObjectType</code>,
      *  creating one, if necessary.
      *
      *  @param objectType The <code>ObjectType</code> key.

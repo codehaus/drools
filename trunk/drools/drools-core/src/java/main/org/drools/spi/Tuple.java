@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Tuple.java,v 1.3 2002-07-27 01:50:17 bob Exp $
+ $Id: Tuple.java,v 1.4 2002-07-27 05:52:18 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,9 @@ package org.drools.spi;
 
 import java.util.Set;
 
-/** A mapping of {@link Declaration}s to current fact values.
+/** A mapping of <code>Declaration</code>s to current fact values.
+ *
+ *  @see Declaration
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

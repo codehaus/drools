@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FilterCondition.java,v 1.2 2002-07-26 21:10:43 bob Exp $
+ $Id: FilterCondition.java,v 1.3 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.spi;
  
  */
 
-/** A {@link Condition} that filters facts.
+/** A <code>Condition</code> that filters facts.
  *
  *  @see Tuple
  *  
@@ -54,7 +54,7 @@ package org.drools.spi;
  */
 public interface FilterCondition extends Condition
 {
-    /** Determine if the supplied {@link Tuple} is allowed
+    /** Determine if the supplied <code>Tuple</code> is allowed
      *  by this filter.
      *
      *  @param tuple The <code>Tuple</code> to test.

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: NoParameterDeclarationException.java,v 1.2 2002-07-27 01:50:17 bob Exp $
+ $Id: NoParameterDeclarationException.java,v 1.3 2002-07-27 05:52:18 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,8 +45,8 @@ package org.drools.spi;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-/** Validity exception indicating that a {@link Rule} does not
- *  contain any root object parameter {@link Declaration}s.
+/** Validity exception indicating that a <code>Rule</code> does not
+ *  contain any root object parameter <code>Declaration</code>s.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

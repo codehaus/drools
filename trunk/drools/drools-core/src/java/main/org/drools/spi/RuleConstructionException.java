@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: RuleConstructionException.java,v 1.4 2002-07-27 01:50:17 bob Exp $
+ $Id: RuleConstructionException.java,v 1.5 2002-07-27 05:52:18 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package org.drools.spi;
  */
 import org.drools.DroolsException;
 
-/** Base exception for errors during {@link Rule} construction.
+/** Base exception for errors during <code>Rule</code> construction.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
