@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: BlockConsequence.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
+ $Id: BlockConsequence.java,v 1.5 2004-09-13 08:36:14 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import java.util.Iterator;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
+ *  @version $Id: BlockConsequence.java,v 1.5 2004-09-13 08:36:14 mproctor Exp $
  */
 public class BlockConsequence extends Exec implements Consequence {
     // ------------------------------------------------------------
@@ -116,7 +116,7 @@ public class BlockConsequence extends Exec implements Consequence {
             execute(dict);
         }
         catch (Exception e) {
-            throw new ConsequenceException(e);
+            throw new ConsequenceException( e, tuple.getRule());
         }
     }
 }

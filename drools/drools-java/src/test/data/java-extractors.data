@@ -11,3 +11,6 @@ new Integer(camembert.getBitesLeft() + stilton.getBitesLeft())
 (camembert.getBitesLeft() + stilton.getBitesLeft() == 6) ? new SMFTestFrameWork.Cheese("cheddar") : new SMFTestFrameWork.Cheese("mozzerella")
 <!--drools-test--!> // 6
 (camembert.getBitesLeft() + stilton.getBitesLeft() == 6) ? new SMFTestFrameWork.Cheese("cheddar") : new SMFTestFrameWork.Cheese("mozzerella")
+<!--drools-test--!> // 7
+SMFTestFrameWork.extractionExceptionTest()
+

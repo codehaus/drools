@@ -12,7 +12,7 @@ brie.eatCheese();
 drools.modifyObject(brie);
 stilton.eatCheese();
 stilton.eatCheese();
-<!--drools-test--!>
+<!--drools-test--!> // 1
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,12 +25,14 @@ map.put("key", "value");
 
 cheeses.put("favourite cheese", camembert);
 cheeses.put("bites", bites);
-<!--drools-test--!>
+<!--drools-test--!> // 2
 camembert.eatCheese();
 String trimmed = favouriteCheese.trim();
-<!--drools-test--!>
+<!--drools-test--!> // 3
 camembert.eatCheese();
 String trimmed = favouriteCheese.trim();
+<!--drools-test--!> // 4
+SMFTestFrameWork.consequenceExceptionTest()
 
 
 

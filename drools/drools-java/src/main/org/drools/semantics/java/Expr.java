@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.21 2004-08-26 16:55:59 mproctor Exp $
+ $Id: Expr.java,v 1.22 2004-09-13 08:31:31 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,7 +66,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.21 2004-08-26 16:55:59 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.22 2004-09-13 08:31:31 mproctor Exp $
  */
 public class Expr implements Serializable
 {
@@ -87,6 +87,7 @@ public class Expr implements Serializable
     private transient ConditionScript conditionScript;
     private transient ExtractorScript extractorScript;
     private String expr;
+    private String originalExpression;
 
     private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
 
@@ -121,6 +122,7 @@ public class Expr implements Serializable
 	      {
 	        this.expr = "return (" + expr + ");";
 	      }
+          this.originalExpression = expr;
         this.requiredDecls = analyze( expr,
                                       availDecls );
     }
@@ -135,7 +137,7 @@ public class Expr implements Serializable
      */
     public String getExpression()
     {
-        return this.expr;
+        return this.originalExpression;
     }
 
    public boolean evaluateCondition(Tuple tuple) throws Exception

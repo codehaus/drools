@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.26 2004-08-26 16:55:59 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.27 2004-09-13 08:31:30 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -86,7 +86,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.26 2004-08-26 16:55:59 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.27 2004-09-13 08:31:30 mproctor Exp $
  */
 public class BlockConsequence
     implements Consequence, Serializable
@@ -170,7 +170,7 @@ public class BlockConsequence
         }
         catch (Exception e)
         {
-            throw new ConsequenceException( e );
+            throw new ConsequenceException( e, tuple.getRule());
         }
     }
 

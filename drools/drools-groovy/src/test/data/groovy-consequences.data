@@ -33,6 +33,8 @@ String trimmed = favouriteCheese.trim();
 <!--drools-test--!>
 camembert.eatCheese();
 String trimmed = favouriteCheese.trim();
+<!--drools-test--!> // 4
+SMFTestFrameWork.consequenceExceptionTest()
 
 
 

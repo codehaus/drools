@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprCondition.java,v 1.3 2004-07-16 19:03:34 dbarnett Exp $
+ $Id: ExprCondition.java,v 1.4 2004-09-13 08:36:15 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.spi.Tuple;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  *
- *  @version $Id: ExprCondition.java,v 1.3 2004-07-16 19:03:34 dbarnett Exp $
+ *  @version $Id: ExprCondition.java,v 1.4 2004-09-13 08:36:15 mproctor Exp $
  */
 public class ExprCondition extends Eval implements Condition {
     // ------------------------------------------------------------
@@ -107,7 +107,7 @@ public class ExprCondition extends Eval implements Condition {
             return ((Boolean) answer).booleanValue();
         }
         catch (RuntimeException e) {
-            throw new ConditionException(e);
+            throw new ConditionException( e, tuple.getRule(), this.getText() );
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.19 2004-08-26 17:02:05 mproctor Exp $
+ $Id: ExprCondition.java,v 1.20 2004-09-13 08:31:31 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,7 +56,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.19 2004-08-26 17:02:05 mproctor Exp $
+ *  @version $Id: ExprCondition.java,v 1.20 2004-09-13 08:31:31 mproctor Exp $
  */
 public class ExprCondition
     extends Expr
@@ -114,11 +114,11 @@ public class ExprCondition
         }
         catch (net.janino.Scanner.LocatedException e)
         {
-          throw new ConditionException( e );
+          throw new ConditionException( e, tuple.getRule(), this.getExpression() );
         }
         catch (Exception e)
         {
-            throw new ConditionException( e );
+            throw new ConditionException( e, tuple.getRule(), this.getExpression() );
         }
     }
 }

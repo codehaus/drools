@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.9 2004-08-15 16:09:38 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.10 2004-09-13 08:34:26 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -61,7 +61,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.9 2004-08-15 16:09:38 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.10 2004-09-13 08:34:26 mproctor Exp $
  */
 public class BlockConsequence
     extends Exec
@@ -107,7 +107,7 @@ public class BlockConsequence
         }
         catch (Exception e)
         {
-            throw new ConsequenceException( e );
+            throw new ConsequenceException( e, tuple.getRule());
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.13 2004-09-01 20:23:39 dbarnett Exp $
+ $Id: Interp.java,v 1.14 2004-09-13 08:34:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -76,7 +76,7 @@ import org.python.util.PythonInterpreter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.13 2004-09-01 20:23:39 dbarnett Exp $
+ *  @version $Id: Interp.java,v 1.14 2004-09-13 08:34:27 mproctor Exp $
  */
 public class Interp
 {
@@ -103,6 +103,9 @@ public class Interp
 
     /** Text. */
     private String text;
+    
+    /** Original Text */
+    private String origininalText;
 
     /** The code. */
     private PyCode code;
@@ -122,6 +125,8 @@ public class Interp
     protected Interp(String text,
                      String type)
     {
+        this.origininalText = text;
+        
         this.text = stripOuterIndention(text);
 
         this.node = (modType) parser.parse( this.text,
@@ -279,7 +284,7 @@ public class Interp
      */
     public String getText()
     {
-        return this.text;
+        return this.origininalText;
     }
 
     /** Retrieve the AST node.
