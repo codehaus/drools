@@ -18,11 +18,24 @@ public class RuleBase
     /** The root Rete-OO node of this <code>RuleBase</code>. */
     private RootNode rootNode;
 
+    /** Rete-OO Network builder. */
+    private Builder  builder;
+
     /** Construct.
      */
     public RuleBase()
     {
         this.rootNode = new RootNode();
+        this.builder  = new Builder( this.rootNode );
+    }
+
+    /** Retrieve this <code>RuleBase's</code> <code>Builder</code>.
+     *
+     *  @return The <code>Builder</code>.
+     */
+    private Builder getBuilder()
+    {
+        return this.builder;
     }
 
     /** Add a <code>RuleSet</code> of <code>Rules</code> to this <code>RuleBase</code>.
@@ -66,9 +79,7 @@ public class RuleBase
      */
     public void addRule(Rule rule) throws ReteConstructionException
     {
-        Builder builder = new Builder( getRootNode() );
-
-        builder.addRule( rule );
+        getBuilder().addRule( rule );
     }
 
     /** Create a {@link WorkingMemory} session for

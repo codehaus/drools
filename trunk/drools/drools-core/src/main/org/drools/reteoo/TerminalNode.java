@@ -18,6 +18,10 @@ import org.drools.spi.Action;
  */
 public class TerminalNode implements TupleSink
 {
+    /** Total-ordering priority of this terminal node
+     *  for rule-firings. */
+    private int priority;
+
     /** The action to invoke upon match. */
     private Action action;
 
@@ -26,14 +30,22 @@ public class TerminalNode implements TupleSink
      *  @param action The <code>Action</code> to invoke upon match.
      */
     public TerminalNode(TupleSource tupleSource,
-                        Action action)
+                        Action action,
+                        int priority)
     {
         this.action = action;
+
+        this.priority = priority;
 
         if ( tupleSource != null )
         {
             tupleSource.setTupleSink( this );
         }
+    }
+
+    public int getPriority()
+    {
+        return this.priority;
     }
 
     /** Retrieve the <code>Action</code> associated with
