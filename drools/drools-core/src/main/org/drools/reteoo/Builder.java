@@ -5,6 +5,7 @@ import org.drools.RuleIntegrationException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ObjectType;
 
@@ -35,6 +36,8 @@ public class Builder
     /** Rete network to build against. */
     private Rete rete;
 
+    private List ruleSets;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -46,7 +49,8 @@ public class Builder
      */
     public Builder()
     {
-        this.rete = new Rete();
+        this.rete     = new Rete();
+        this.ruleSets = new ArrayList();
     }
 
     // ------------------------------------------------------------
@@ -65,11 +69,27 @@ public class Builder
 
     public RuleBase buildRuleBase()
     {
-        RuleBase ruleBase = new RuleBaseImpl( getRete() );
+        RuleBase ruleBase = new RuleBaseImpl( getRete(),
+                                              (RuleSet[]) this.ruleSets.toArray( RuleSet.EMPTY_ARRAY ) );
 
         this.rete = null;
+        this.ruleSets.clear();
 
         return ruleBase;
+    }
+
+    public void addRuleSet(RuleSet ruleSet)
+        throws RuleIntegrationException
+    {
+        this.ruleSets.add( ruleSet );
+
+        Rule[] rules = ruleSet.getRules();
+
+        for ( int i = 0 ; i < rules.length ; ++i )
+        {
+            addRule( ruleSet,
+                     rules[ i ] );
+        }
     }
 
     /** Add a <code>Rule</code> to the network.
@@ -79,7 +99,9 @@ public class Builder
      *  @throws RuleIntegrationException if an error prevents complete
      *          construction of the network for the <code>Rule</code>.
      */
-    public void addRule(Rule rule) throws RuleIntegrationException
+    protected void addRule(RuleSet ruleSet,
+                           Rule rule)
+        throws RuleIntegrationException
     {
         Set factExtracts  = new HashSet( Arrays.asList( rule.getExtractions() ) );
         List conds        = new ArrayList( Arrays.asList( rule.getConditions() ) );

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.22 2003-10-28 18:57:15 bob Exp $
+ $Id: RuleBase.java,v 1.23 2003-10-30 15:08:59 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools;
  */
 
 import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.rule.RuleSet;
 
 import java.io.Serializable;
 
@@ -78,4 +79,6 @@ public interface RuleBase
      *  @return A newly initialized <code>WorkingMemory</code>.
      */
     WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy);
+
+    RuleSet[] getRuleSets();
 }

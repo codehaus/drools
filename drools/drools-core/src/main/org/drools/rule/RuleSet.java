@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.4 2003-10-28 05:00:39 bob Exp $
+ $Id: RuleSet.java,v 1.5 2003-10-30 15:08:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,6 +60,12 @@ import java.util.Iterator;
  */
 public class RuleSet
 {
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    public static final RuleSet[] EMPTY_ARRAY = new RuleSet[0];
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------

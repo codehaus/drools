@@ -20,15 +20,19 @@ class RuleBaseImpl
     /** The root Rete-OO for this <code>RuleBase</code>. */
     private Rete rete;
 
+    private RuleSet[] ruleSets;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      */
-    public RuleBaseImpl(Rete rete)
+    RuleBaseImpl(Rete rete,
+                 RuleSet[] ruleSets)
     {
         this.rete = rete;
+        this.ruleSets = ruleSets;
     }
 
     // ------------------------------------------------------------
@@ -46,6 +50,11 @@ class RuleBaseImpl
     {
         return new WorkingMemoryImpl( this,
                                       strategy );
+    }
+
+    public RuleSet[] getRuleSets()
+    {
+        return this.ruleSets;
     }
 
     /** Retrieve the Rete-OO network for this <code>RuleBase</code>.
