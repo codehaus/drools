@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprExtractor.java,v 1.15 2004-09-17 00:27:34 mproctor Exp $
+ * $Id: ExprExtractor.java,v 1.16 2004-10-17 00:01:39 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -54,7 +54,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  * 
- * @version $Id: ExprExtractor.java,v 1.15 2004-09-17 00:27:34 mproctor Exp $
+ * @version $Id: ExprExtractor.java,v 1.16 2004-10-17 00:01:39 mproctor Exp $
  */
 public class ExprExtractor extends Expr implements Extractor
 {
@@ -112,4 +112,9 @@ public class ExprExtractor extends Expr implements Extractor
                                            this.getExpression( ) );
         }
     }
+
+    public String toString()
+    {
+        return "[Extraction: " + this.getExpression() + "]"; 
+    }      
 }
