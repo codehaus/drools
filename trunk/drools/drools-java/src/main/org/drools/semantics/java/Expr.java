@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.14 2004-07-20 21:23:29 mproctor Exp $
+ $Id: Expr.java,v 1.15 2004-07-26 19:56:15 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -60,7 +60,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.14 2004-07-20 21:23:29 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.15 2004-07-26 19:56:15 bob Exp $
  */
 public class Expr
     extends Interp
@@ -131,13 +131,22 @@ public class Expr
         Class[] paramTypes = new Class[this.requiredDecls.length + 2];
         String expr = getPreparedText(tuple, this.requiredDecls, paramNames, paramTypes);
 
-        //try
-        //{
-        code = new ScriptEvaluator( expr,
-                                    returnType,
-                                    paramNames,
-                                    paramTypes );
-        //}
+        //System.err.println( "expr-----" );
+        //System.err.println( expr );
+        //System.err.println( "---------" );
+
+        try
+        {
+            code = new ScriptEvaluator( expr,
+                                        returnType,
+                                        paramNames,
+                                        paramTypes );
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
         /*
         catch (net.janino.Java.CompileException e)
         {

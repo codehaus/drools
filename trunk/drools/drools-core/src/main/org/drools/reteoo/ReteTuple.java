@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.24 2004-06-26 15:10:56 mproctor Exp $
+ $Id: ReteTuple.java,v 1.25 2004-07-26 19:56:15 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import java.util.Set;
  *  
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.24 2004-06-26 15:10:56 mproctor Exp $ 
+ *  @version $Id: ReteTuple.java,v 1.25 2004-07-26 19:56:15 bob Exp $ 
  */
 class ReteTuple
     implements Tuple
@@ -194,7 +194,7 @@ class ReteTuple
                           Object value)
     {
         this.columns.put( declaration,
-                               value );
+                          value );
     }
 
     /** Retrieve the key for this tuple.
