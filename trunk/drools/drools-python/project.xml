@@ -8,6 +8,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
             <groupId>jython</groupId>
             <artifactId>jython</artifactId>
             <version>20020827-no-oro</version>
