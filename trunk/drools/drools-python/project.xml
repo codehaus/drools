@@ -39,12 +39,12 @@
 
   <mailingLists>
     <mailingList>
-      <name>blissed interest</name>
-      <archive>http://lists.werken.com/pipermail/blissed-interest/</archive>
+      <name>drools interest</name>
+      <archive>http://lists.werken.com/pipermail/drools-interest/</archive>
     </mailingList>
     <mailingList>
-      <name>blissed cvs messages</name>
-      <archive>http://lists.werken.com/pipermail/blissed-cvs/</archive>
+      <name>drools cvs messages</name>
+      <archive>http://lists.werken.com/pipermail/drools-cvs/</archive>
     </mailingList>
   </mailingLists>
 
