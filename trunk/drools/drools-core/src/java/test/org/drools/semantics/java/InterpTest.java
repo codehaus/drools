@@ -1,5 +1,10 @@
 package org.drools.semantics.java;
 
+import org.drools.rule.Declaration;
+import org.drools.spi.MockTuple;
+
+import bsh.EvalError;
+
 import junit.framework.TestCase;
 
 public class InterpTest extends TestCase
@@ -41,5 +46,35 @@ public class InterpTest extends TestCase
 
         assertEquals( new Integer(54),
                       this.interp.evaluate() );
+    }
+
+    public void testEvaluate_Tuple() throws Exception
+    {
+        MockTuple tuple = new MockTuple();
+
+        tuple.put( new Declaration( new ClassObjectType( java.lang.Number.class ),
+                                    "a" ),
+                   new Integer(42) );
+
+        tuple.put( new Declaration( new ClassObjectType( java.lang.Number.class ),
+                                    "b" ),
+                   new Integer(12) );
+
+        this.interp.setText( "a + b" );
+
+        assertEquals( new Integer(54),
+                      this.interp.evaluate( tuple ) );
+
+        tuple = new MockTuple();
+
+        try
+        {
+            this.interp.evaluate( tuple );
+            fail( "Should have thrown EvalError.  No variables set." );
+        }
+        catch (EvalError e)
+        {
+            // expected and correct
+        }
     }
 }
