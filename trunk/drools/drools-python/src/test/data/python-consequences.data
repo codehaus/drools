@@ -1,0 +1,38 @@
+i = 0
+i += 1
+<!--drools-test--!>
+from org.drools.smf import SMFTestFrameWork
+from org.drools.smf.SMFTestFrameWork import Cheese
+
+brie = Cheese("brie")
+drools.assertObject(brie)
+<!--drools-test--!>
+from org.drools.smf import SMFTestFrameWork
+from org.drools.smf.SMFTestFrameWork import Cheese
+
+camembert.eatCheese()
+brie = Cheese("brie")
+drools.assertObject(brie)
+brie.eatCheese()
+drools.modifyObject(brie)
+stilton.eatCheese()
+stilton.eatCheese()
+<!--drools-test--!>
+from java.util import HashMap
+
+camembert.eatCheese()
+stilton.eatCheese()
+drools.retractObject(camembert)
+
+map = HashMap()
+map.put("key", "value")
+
+cheeses.put("favourite cheese", camembert)
+cheeses.put("bites", bites)
+<!--drools-test--!>
+camembert.eatCheese()
+trimmed = favouriteCheese.strip()
+<!--drools-test--!>
+camembert.eatCheese()
+trimmed = favouriteCheese.strip()
+
