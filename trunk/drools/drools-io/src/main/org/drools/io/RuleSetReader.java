@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.15 2004-09-14 19:29:48 mproctor Exp $
+ $Id: RuleSetReader.java,v 1.16 2004-09-14 21:19:02 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -96,7 +96,7 @@ import java.text.MessageFormat;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.15 2004-09-14 19:29:48 mproctor Exp $
+ *  @version $Id: RuleSetReader.java,v 1.16 2004-09-14 21:19:02 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -369,7 +369,10 @@ public class RuleSetReader
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
-            factory.setValidating(true);
+            if (!System.getProperty("drools.schema.validating").equals("false"))
+            {
+              factory.setValidating(true);
+            }
             parser = factory.newSAXParser();
             try
             {
