@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: RandomConflictResolverTest.java,v 1.4 2004-09-17 00:14:15 mproctor Exp $
+ * $Id: RandomConflictResolverTest.java,v 1.5 2004-10-06 13:44:12 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,21 +40,18 @@ package org.drools.conflict;
  *  
  */
 
+import junit.framework.TestCase;
+import org.drools.rule.InstrumentedRule;
+import org.drools.spi.ConflictResolver;
+import org.drools.spi.MockTuple;
+import org.drools.PriorityQueue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.util.LinkedList;
-import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.drools.rule.InstrumentedRule;
-import org.drools.rule.RuleSet;
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.MockTuple;
 
 public class RandomConflictResolverTest extends TestCase
 {
@@ -68,13 +65,7 @@ public class RandomConflictResolverTest extends TestCase
 
     private MockAgendaItem   brie;
 
-    private MockAgendaItem   camembert;
-
-    private MockAgendaItem   stilton;
-
-    private LinkedList       items;
-
-    private List             conflictItems;
+    private PriorityQueue    items;
 
     public RandomConflictResolverTest(String name)
     {
@@ -83,8 +74,8 @@ public class RandomConflictResolverTest extends TestCase
 
     public void setUp()
     {
-        this.conflictResolver = RandomConflictResolver.getInstance( );
-        items = new LinkedList( );
+        conflictResolver = RandomConflictResolver.getInstance( );
+        items = new PriorityQueue( conflictResolver );
 
         brieRule = new InstrumentedRule( "brie" );
         brieRule.isValid( true );
@@ -96,65 +87,27 @@ public class RandomConflictResolverTest extends TestCase
         stiltonRule.isValid( true );
 
         brie = new MockAgendaItem( new MockTuple( ), brieRule );
-        camembert = new MockAgendaItem( new MockTuple( ), camembertRule );
-        stilton = new MockAgendaItem( new MockTuple( ), stiltonRule );
     }
 
     public void tearDown()
     {
+        conflictResolver = null;
+        items = null;
+
+        brieRule = null;
+        camembertRule = null;
+        stiltonRule = null;
+
+        brie = null;
     }
 
     public void testSingleInsert() throws Exception
     {
-        items.clear( );
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
-        MockAgendaItem item = ( MockAgendaItem ) items.get( 0 );
-        assertEquals( "brie", item.getRule( ).getName( ) );
-    }
+        this.items.add( brie );
 
-    public void testInsertsNoConflicts() throws Exception
-    {
-        MockAgendaItem item;
-        RuleSet ruleSet;
-        items.clear( );
-        ruleSet = new RuleSet( "cheese board" );
+        assertEquals( 1, this.items.size( ) );
 
-        ruleSet.addRule( brieRule );
-        ruleSet.addRule( camembertRule );
-        ruleSet.addRule( stiltonRule );
-
-        //try ascending
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( camembert, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( stilton, items );
-        assertNull( conflictItems );
-
-        assertEquals( 3, items.size( ) );
-
-        //try descending
-        items.clear( );
-        conflictItems = this.conflictResolver.insert( stilton, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( camembert, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
-
-        assertEquals( 3, items.size( ) );
-
-        //try mixed order
-        items.clear( );
-        conflictItems = this.conflictResolver.insert( camembert, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( stilton, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
-
-        assertEquals( 3, items.size( ) );
+        assertSame( brie, items.remove( ) );
     }
 
     public void testSerialize() throws Exception

@@ -1,8 +1,8 @@
 package org.drools.conflict;
 
 /*
- * $Id: BreadthActivationConflictResolverTest.java,v 1.2 2004/09/16 23:43:08
- * mproctor Exp $
+ * $Id: ComplexityConflictResolverTest.java,v 1.3 2004/09/16 23:43:08 mproctor
+ * Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,22 +41,20 @@ package org.drools.conflict;
  *  
  */
 
+import org.drools.DroolsTestCase;
+import org.drools.PriorityQueue;
+import org.drools.rule.InstrumentedRule;
+import org.drools.spi.ConflictResolver;
+import org.drools.spi.MockTuple;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.util.LinkedList;
-import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.drools.rule.InstrumentedRule;
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.MockTuple;
-
-public class BreadthActivationConflictResolverTest extends TestCase
+public class LifoConflictResolverTest extends DroolsTestCase
 {
     private ConflictResolver conflictResolver;
 
@@ -66,127 +64,93 @@ public class BreadthActivationConflictResolverTest extends TestCase
 
     private InstrumentedRule stiltonRule;
 
-    private InstrumentedRule cheddarRule;
-
-    private InstrumentedRule fetaRule;
-
-    private InstrumentedRule mozzarellaRule;
-
     private MockAgendaItem   brie;
 
     private MockAgendaItem   camembert;
 
     private MockAgendaItem   stilton;
 
-    private MockAgendaItem   cheddar;
+    private PriorityQueue    items;
 
-    private MockAgendaItem   feta;
-
-    private MockAgendaItem   mozzarella;
-
-    private LinkedList       items;
-
-    private List             conflictItems;
-
-    public BreadthActivationConflictResolverTest(String name)
+    public LifoConflictResolverTest(String name)
     {
         super( name );
     }
 
     public void setUp()
     {
-        this.conflictResolver = BreadthActivationConflictResolver.getInstance( );
-        items = new LinkedList( );
+        conflictResolver = LifoConflictResolver.getInstance( );
+        items = new PriorityQueue( conflictResolver );
 
         brieRule = new InstrumentedRule( "brie" );
         camembertRule = new InstrumentedRule( "camembert" );
         stiltonRule = new InstrumentedRule( "stilton" );
-        cheddarRule = new InstrumentedRule( "cheddar" );
-        fetaRule = new InstrumentedRule( "feta" );
-        mozzarellaRule = new InstrumentedRule( "mozzarella" );
 
         brie = new MockAgendaItem( new MockTuple( ), brieRule );
         camembert = new MockAgendaItem( new MockTuple( ), camembertRule );
         stilton = new MockAgendaItem( new MockTuple( ), stiltonRule );
-        cheddar = new MockAgendaItem( new MockTuple( ), cheddarRule );
-        feta = new MockAgendaItem( new MockTuple( ), fetaRule );
-        mozzarella = new MockAgendaItem( new MockTuple( ), mozzarellaRule );
     }
 
     public void tearDown()
     {
-        this.conflictResolver = null;
+        conflictResolver = null;
         items = null;
 
         brieRule = null;
         camembertRule = null;
         stiltonRule = null;
-        cheddarRule = null;
-        fetaRule = null;
-        mozzarellaRule = null;
 
         brie = null;
         camembert = null;
         stilton = null;
-        cheddar = null;
-        feta = null;
-        mozzarella = null;
     }
 
-    public void testSingleInsert() throws Exception
+    public void testSingleInsert()
     {
-        items.clear( );
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
-        MockAgendaItem item = ( MockAgendaItem ) items.get( 0 );
-        assertEquals( "brie", item.getRule( ).getName( ) );
+        this.items.add( brie );
+
+        assertEquals( 1, this.items.size( ) );
+
+        assertSame( brie, this.items.remove( ) );
     }
 
-    public void testInsertsNoConflicts()
+    public void testAscendingOrderInsert()
     {
-        MockAgendaItem item;
-        items.clear( );
+        this.items.add( brie );
+        this.items.add( camembert );
+        this.items.add( stilton );
 
-        //try ascending
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( camembert, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( stilton, items );
-        assertNull( conflictItems );
+        assertEquals( 3, this.items.size( ) );
 
-        assertEquals( 3, items.size( ) );
-        assertEquals( brie, items.get( 0 ) );
-        assertEquals( stilton, items.get( 2 ) );
-        assertEquals( camembert, items.get( 1 ) );
+        assertSame( stilton, items.remove( ) );
+        assertSame( camembert, items.remove( ) );
+        assertSame( brie, items.remove( ) );
+    }
 
-        //try descending
-        items.clear( );
-        conflictItems = this.conflictResolver.insert( stilton, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( camembert, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
+    public void testDescendingOrderInsert()
+    {
+        this.items.add( stilton );
+        this.items.add( camembert );
+        this.items.add( brie );
 
-        assertEquals( 3, items.size( ) );
-        assertEquals( brie, items.get( 0 ) );
-        assertEquals( stilton, items.get( 2 ) );
-        assertEquals( camembert, items.get( 1 ) );
+        assertEquals( 3, this.items.size( ) );
 
-        //try mixed order
-        items.clear( );
-        conflictItems = this.conflictResolver.insert( camembert, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( stilton, items );
-        assertNull( conflictItems );
-        conflictItems = this.conflictResolver.insert( brie, items );
-        assertNull( conflictItems );
+        assertSame( stilton, items.remove( ) );
+        assertSame( camembert, items.remove( ) );
+        assertSame( brie, items.remove( ) );
+    }
 
-        assertEquals( 3, items.size( ) );
-        assertEquals( brie, items.get( 0 ) );
-        assertEquals( stilton, items.get( 2 ) );
-        assertEquals( camembert, items.get( 1 ) );
+    public void testMixedOrderInsert()
+    {
+        this.items.add( camembert );
+        this.items.add( stilton );
+        this.items.add( brie );
+
+        assertEquals( 3, this.items.size( ) );
+
+        assertSame( stilton, items.remove( ) );
+        assertSame( camembert, items.remove( ) );
+        assertSame( brie, items.remove( ) );
     }
 
     public void testSerialize() throws Exception

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: LoadOrderConflictResolverTest.java,v 1.4 2004/09/16 23:43:08 mproctor
+ * $Id: BreadthFactConflictResolverTest.java,v 1.2 2004/09/16 23:43:08 mproctor
  * Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
@@ -44,7 +44,6 @@ package org.drools.conflict;
 import junit.framework.TestCase;
 import org.drools.PriorityQueue;
 import org.drools.rule.InstrumentedRule;
-import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.MockTuple;
 
@@ -55,7 +54,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
-public class LoadOrderConflictResolverTest extends TestCase
+public class PrimacyConflictResolverTest extends TestCase
 {
     private ConflictResolver conflictResolver;
 
@@ -73,35 +72,30 @@ public class LoadOrderConflictResolverTest extends TestCase
 
     private PriorityQueue    items;
 
-    public LoadOrderConflictResolverTest(String name)
+    public PrimacyConflictResolverTest(String name)
     {
         super( name );
     }
 
-    public void setUp() throws Exception
+    public void setUp()
     {
-        conflictResolver = LoadOrderConflictResolver.getInstance( );
+        this.conflictResolver = PrimacyConflictResolver.getInstance( );
         items = new PriorityQueue( conflictResolver );
 
         brieRule = new InstrumentedRule( "brie" );
-        brieRule.isValid( true );
-
         camembertRule = new InstrumentedRule( "camembert" );
-        camembertRule.isValid( true );
-
         stiltonRule = new InstrumentedRule( "stilton" );
-        stiltonRule.isValid( true );
 
         brie = new MockAgendaItem( new MockTuple( ), brieRule );
         camembert = new MockAgendaItem( new MockTuple( ), camembertRule );
         stilton = new MockAgendaItem( new MockTuple( ), stiltonRule );
 
-        RuleSet ruleSet;
-        ruleSet = new RuleSet( "cheese board" );
-
-        ruleSet.addRule( brieRule );
-        ruleSet.addRule( camembertRule );
-        ruleSet.addRule( stiltonRule );
+        MockTuple tuple = ( MockTuple ) brie.getTuple( );
+        tuple.setLeastRecentFactTimeStamp( 1 );
+        tuple = ( MockTuple ) camembert.getTuple( );
+        tuple.setLeastRecentFactTimeStamp( 2 );
+        tuple = ( MockTuple ) stilton.getTuple( );
+        tuple.setLeastRecentFactTimeStamp( 3 );
     }
 
     public void tearDown()
@@ -124,7 +118,7 @@ public class LoadOrderConflictResolverTest extends TestCase
 
         assertEquals( 1, this.items.size( ) );
 
-        assertSame( brie, items.remove( ) );
+        assertSame( brie, this.items.remove( ) );
     }
 
     public void testAscendingOrderInsert()
@@ -133,20 +127,20 @@ public class LoadOrderConflictResolverTest extends TestCase
         this.items.add( camembert );
         this.items.add( stilton );
 
-        assertEquals( 3, this.items.size( ) );
+        assertEquals( 3, items.size( ) );
 
         assertSame( brie, items.remove( ) );
         assertSame( camembert, items.remove( ) );
         assertSame( stilton, items.remove( ) );
     }
 
-    public void testDescendingInsert()
+    public void testDescendingOrderInsert()
     {
         this.items.add( stilton );
         this.items.add( camembert );
         this.items.add( brie );
 
-        assertEquals( 3, this.items.size( ) );
+        assertEquals( 3, items.size( ) );
 
         assertSame( brie, items.remove( ) );
         assertSame( camembert, items.remove( ) );
@@ -159,7 +153,7 @@ public class LoadOrderConflictResolverTest extends TestCase
         this.items.add( stilton );
         this.items.add( brie );
 
-        assertEquals( 3, this.items.size( ) );
+        assertEquals( 3, items.size( ) );
 
         assertSame( brie, items.remove( ) );
         assertSame( camembert, items.remove( ) );
@@ -183,4 +177,5 @@ public class LoadOrderConflictResolverTest extends TestCase
         conflictResolver = ( ConflictResolver ) in.readObject( );
         in.close( );
     }
+
 }
