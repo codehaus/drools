@@ -16,10 +16,7 @@ public class JoinTuple extends ReteTuple
                      ReteTuple right)
     {
 
-        this.putAllKeyColumns( left.getKeyColumns() );
-        this.putAllKeyColumns( right.getKeyColumns() );
-
-        this.putAllOtherColumns( left.getOtherColumns() );
-        this.putAllOtherColumns( right.getOtherColumns() );
+        putAll( left );
+        putAll( right );
     }
 }
