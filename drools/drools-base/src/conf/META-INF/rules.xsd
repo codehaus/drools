@@ -14,7 +14,7 @@
   <xs:element name="rule-set">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="1" maxOccurs="unbounded" ref="rules:rule"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule"/>
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:string"/>
     </xs:complexType>
