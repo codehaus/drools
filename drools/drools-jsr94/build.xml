@@ -120,7 +120,7 @@
              fork="true" 
              haltonerror="false">
         
-        <sysproperty key="basedir" value="/home/bob/workspaces/drools"></sysproperty>
+        <sysproperty key="basedir" value="${basedir}"/>
         <formatter type="xml"></formatter>
         <formatter usefile="true" type="plain"></formatter>
         <classpath>
