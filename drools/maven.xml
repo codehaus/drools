@@ -185,7 +185,7 @@
       temp directory deleted.
     -->
 
-    <goal name="drools:jar-all" prereqs="jar-all">
+  <goal name="drools:jar-all" prereqs="jar-all">
     <mkdir dir="${basedir}/target/all-stage/"/>
       <ant:unjar dest="${basedir}/target/all-stage/drools-all">
         <patternset>
@@ -230,15 +230,6 @@
         </patternset>
         <fileset dir="${basedir}">
             <include name="target/drools-python-${pom.currentVersion}.jar"/>
-        </fileset>
-      </ant:unjar>
-
-      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/annotation">
-        <patternset>
-            <include name="**/drools.conf"/>
-        </patternset>
-        <fileset dir="${basedir}">
-            <include name="target/drools-base-${pom.currentVersion}.jar"/>
         </fileset>
       </ant:unjar>
 
