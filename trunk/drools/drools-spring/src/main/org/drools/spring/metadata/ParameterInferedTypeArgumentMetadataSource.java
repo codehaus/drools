@@ -46,16 +46,7 @@ public class ParameterInferedTypeArgumentMetadataSource implements ArgumentMetad
         this.fallbackMetadataFactory = defaultFactory;
     }
 
-    public ArgumentMetadata[] getArgumentMetadata(Method method) {
-        Class[] parameterTypes = method.getParameterTypes();
-        ArgumentMetadata[] metadata = new ArgumentMetadata[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; i++) {
-            metadata[i] = getParameterArgumentMetadata(parameterTypes[i]);
-        }
-        return metadata;
-    }
-
-    private ArgumentMetadata getParameterArgumentMetadata(Class parameterType) {
+    public ArgumentMetadata getArgumentMetadata(Method method, Class parameterType, int parameterIndex) {
         ParameterTypeArgumentMetadataFactory metadataFactory = (ParameterTypeArgumentMetadataFactory) typeToMetadataMap.get(parameterType);
         if (metadataFactory != null) {
             return metadataFactory.createMetadata(parameterType);

@@ -135,7 +135,7 @@ public class RuleBuilderTest extends TestCase {
                         new ApplicationDataArgumentMetadata("value", int.class),
                         new KnowledgeHelperArgumentMetadata()
                 };
-                // Object.class is not added as consequences do not add to the declarations.
+                expectedDeclarationObjectTypes.add(new ClassObjectType(Object.class));
                 expectedDeclarationObjectTypes.add(new ClassObjectType(long.class));
                 expectedConsequenceMethodNames.add(consequenceTwoMethod.getName());
 
@@ -155,9 +155,11 @@ public class RuleBuilderTest extends TestCase {
     }
 
     private void argumentMetadataSourceExpectAndReturn(Method method, ArgumentMetadata[] metadata) {
-        controlArgumentMetadataSource.expectAndReturn(
-                mockArgumentMetadataSource.getArgumentMetadata(method),
-                metadata);
+        for (int i = 0; i < metadata.length; i++) {
+            controlArgumentMetadataSource.expectAndReturn(
+                    mockArgumentMetadataSource.getArgumentMetadata(method, metadata[i].getParameterClass(), i),
+                    metadata[i]);
+        }
     }
 
     private ArgumentMetadata[] argumentMetadataExpectAndReturnCreateArgument(int argCount) throws DroolsException {
@@ -172,11 +174,6 @@ public class RuleBuilderTest extends TestCase {
 
     public void testBuildRule() throws Exception {
 
-//        controlMethodMetadataSource.expectAndDefaultReturn(
-//                mockMethodMetadataSource.getMethodMetadata(null),
-//                IMPLEMENTATION_METADATA);
-
-
         methodMetadataSourceExpectAndReturn(conditionOneMethod, CONDITION_METADATA);
         argumentMetadataSourceExpectAndReturn(conditionOneMethod, conditionOneArgumentMetadata);
 
@@ -187,7 +184,7 @@ public class RuleBuilderTest extends TestCase {
         argumentMetadataSourceExpectAndReturn(consequenceOneMethod, consequenceOneArgumentMetadata);
 
         methodMetadataSourceExpectAndReturn(consequenceTwoMethod, CONSEQUENCE_METADATA);
-        argumentMetadataSourceExpectAndReturn(consequenceTwoMethod, conditionTwoArgumentMetadata);
+        argumentMetadataSourceExpectAndReturn(consequenceTwoMethod, consequenceTwoArgumentMetadata);
 
         mocks.replay();
 

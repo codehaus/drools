@@ -1,25 +1,28 @@
 package org.drools.spring.factory;
 
 import org.drools.spring.metadata.ArgumentMetadataSource;
+import org.drools.spring.metadata.ChainedArgumentMetadataSource;
+import org.drools.spring.metadata.ChainedMethodMetadataSource;
+import org.drools.spring.metadata.ChainedRuleMetadataSource;
 import org.drools.spring.metadata.MethodMetadataSource;
 import org.drools.spring.metadata.RuleMetadataSource;
 
 public class BasicRuleFactoryBean extends AbstractRuleFactoryBean {
 
-    private RuleMetadataSource ruleMetadataSource;
-    private MethodMetadataSource methodMetadataSource;
-    private ArgumentMetadataSource argumentMetadataSource;
+    private ChainedRuleMetadataSource ruleMetadataSource;
+    private ChainedMethodMetadataSource methodMetadataSource;
+    private ChainedArgumentMetadataSource argumentMetadataSource;
 
-    public void setRuleMetadataSource(RuleMetadataSource ruleMetadataSource) {
-        this.ruleMetadataSource = ruleMetadataSource;
+    public void setRuleMetadataSourceChain(RuleMetadataSource[] chain) {
+        this.ruleMetadataSource = new ChainedRuleMetadataSource(chain);
     }
 
-    public void setMethodMetadataSource(MethodMetadataSource methodMetadataSource) {
-        this.methodMetadataSource = methodMetadataSource;
+    public void setMethodMetadataSourceChain(MethodMetadataSource[] chain) {
+        this.methodMetadataSource = new ChainedMethodMetadataSource(chain);
     }
 
-    public void setArgumentMetadataSource(ArgumentMetadataSource argumentMetadataSource) {
-        this.argumentMetadataSource = argumentMetadataSource;
+    public void setArgumentMetadataSourceChain(ArgumentMetadataSource[] chain) {
+        this.argumentMetadataSource = new ChainedArgumentMetadataSource(chain);
     }
 
     public void afterPropertiesSet() throws Exception {

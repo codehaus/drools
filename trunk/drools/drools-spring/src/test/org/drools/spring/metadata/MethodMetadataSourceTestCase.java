@@ -24,6 +24,10 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
         public void publicVoidMethodWithParameters(String fact, String data, KnowledgeHelper kh) { }
     }
 
+    protected Class getPojoRuleClass() {
+        return PojoRule.class;
+    }
+
     protected static Method privateBooleanMethod;
     protected static Method privateVoidMethod;
     protected static Method publicNonVoidAndNonBooleanMethod;
@@ -47,13 +51,14 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
     protected void staticSetUp() throws Exception {
         if (!isStaticSetUp) {
             try {
-                privateBooleanMethod = PojoRule.class.getDeclaredMethod("privateBooleanMethod", new Class[0]);
-                privateVoidMethod = PojoRule.class.getDeclaredMethod("privateVoidMethod", new Class[0]);
-                publicNonVoidAndNonBooleanMethod = PojoRule.class.getDeclaredMethod("publicNonVoidAndNonBooleanMethod", new Class[0]);
-                publicBooleanMethodWithNoParameters = PojoRule.class.getDeclaredMethod("publicBooleanMethodWithNoParameters", new Class[0]);
-                publicBooleanMethodWithParameters = PojoRule.class.getDeclaredMethod("publicBooleanMethodWithParameters", new Class[]{String.class, String.class});
-                publicVoidMethodWithNoParameters = PojoRule.class.getDeclaredMethod("publicVoidMethodWithNoParameters", new Class[0]);
-                publicVoidMethodWithParameters = PojoRule.class.getDeclaredMethod("publicVoidMethodWithParameters", new Class[]{String.class, String.class, KnowledgeHelper.class});
+                Class pojoRuleClass = getPojoRuleClass();
+                privateBooleanMethod = pojoRuleClass.getDeclaredMethod("privateBooleanMethod", new Class[0]);
+                privateVoidMethod = pojoRuleClass.getDeclaredMethod("privateVoidMethod", new Class[0]);
+                publicNonVoidAndNonBooleanMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonBooleanMethod", new Class[0]);
+                publicBooleanMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithNoParameters", new Class[0]);
+                publicBooleanMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithParameters", new Class[]{String.class, String.class});
+                publicVoidMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithNoParameters", new Class[0]);
+                publicVoidMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithParameters", new Class[]{String.class, String.class, KnowledgeHelper.class});
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

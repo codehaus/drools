@@ -1,5 +1,6 @@
 package org.drools.spring.metadata;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,9 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
         }
     }
     private static class ArgumentMetadataForTest implements ArgumentMetadata {
+        public Class getParameterClass() {
+            return String.class;
+        }
         public Argument createArgument(Rule rule) {
             return new ArgumentForTest();
         }
@@ -41,11 +45,12 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
             public void consequence(KnowledgeHelper knowledgeHelper) {}
         }
 
-        ArgumentMetadata[] metadata = source.getArgumentMetadata(
-                Pojo.class.getDeclaredMethod("consequence", new Class[]{KnowledgeHelper.class}));
+        ArgumentMetadata metadata = source.getArgumentMetadata(
+                Pojo.class.getDeclaredMethod("consequence", new Class[]{KnowledgeHelper.class}),
+                KnowledgeHelper.class, 0);
 
-        assertEquals(1, metadata.length);
-        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata[0].getClass()));
+        assertNotNull(metadata);
+        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata.getClass()));
     }
 
     public void testDefaultFallback() throws Exception {
@@ -53,11 +58,12 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
             public void consequence(String fact) {}
         }
 
-        ArgumentMetadata[] metadata = source.getArgumentMetadata(
-                Pojo.class.getDeclaredMethod("consequence", new Class[]{String.class}));
+        ArgumentMetadata metadata = source.getArgumentMetadata(
+                Pojo.class.getDeclaredMethod("consequence", new Class[]{String.class}),
+                String.class, 1);
 
-        assertEquals(1, metadata.length);
-        assertTrue(FactArgumentMetadata.class.isAssignableFrom(metadata[0].getClass()));
+        assertNotNull(metadata);
+        assertTrue(FactArgumentMetadata.class.isAssignableFrom(metadata.getClass()));
     }
 
     public void testSetFallback() throws Exception {
@@ -67,12 +73,15 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
 
         source.setFallbackParameterTypeArgumentMetadataFactory(parameterTypeArgumentMetadataFactoryForTest);
 
-        ArgumentMetadata[] metadata = source.getArgumentMetadata(
-                Pojo.class.getDeclaredMethod("consequence", new Class[]{KnowledgeHelper.class, String.class}));
+        Method pojoMethod = Pojo.class.getDeclaredMethod(
+                "consequence", new Class[]{KnowledgeHelper.class, String.class});
+        ArgumentMetadata metadata_0 = source.getArgumentMetadata(pojoMethod, KnowledgeHelper.class, 0);
+        ArgumentMetadata metadata_1 = source.getArgumentMetadata(pojoMethod, String.class, 1);
 
-        assertEquals(2, metadata.length);
-        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata[0].getClass()));
-        assertTrue(ArgumentMetadataForTest.class.isAssignableFrom(metadata[1].getClass()));
+        assertNotNull(metadata_0);
+        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata_0.getClass()));
+        assertNotNull(metadata_1);
+        assertTrue(ArgumentMetadataForTest.class.isAssignableFrom(metadata_1.getClass()));
     }
 
     public void testSetArgumentMetadataFactories() throws Exception {
@@ -84,13 +93,18 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
         factories.put(String.class, parameterTypeArgumentMetadataFactoryForTest);
         source.setArgumentMetadataFactories(factories);
 
-        ArgumentMetadata[] metadata = source.getArgumentMetadata(
-                Pojo.class.getDeclaredMethod("consequence", new Class[]{KnowledgeHelper.class, String.class, Integer.class}));
+        Method pojoMethod = Pojo.class.getDeclaredMethod(
+                "consequence", new Class[]{KnowledgeHelper.class, String.class, Integer.class});
+        ArgumentMetadata metadata_0 = source.getArgumentMetadata(pojoMethod, KnowledgeHelper.class, 0);
+        ArgumentMetadata metadata_1 = source.getArgumentMetadata(pojoMethod, String.class, 1);
+        ArgumentMetadata metadata_2 = source.getArgumentMetadata(pojoMethod, Integer.class, 2);
 
-        assertEquals(3, metadata.length);
-        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata[0].getClass()));
-        assertTrue(ArgumentMetadataForTest.class.isAssignableFrom(metadata[1].getClass()));
-        assertTrue(FactArgumentMetadata.class.isAssignableFrom(metadata[2].getClass()));
+        assertNotNull(metadata_0);
+        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata_0.getClass()));
+        assertNotNull(metadata_1);
+        assertTrue(ArgumentMetadataForTest.class.isAssignableFrom(metadata_1.getClass()));
+        assertNotNull(metadata_2);
+        assertTrue(FactArgumentMetadata.class.isAssignableFrom(metadata_2.getClass()));
     }
 
     public void testAddArgumentMetadataFactory() throws Exception {
@@ -100,12 +114,17 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
 
         source.addArgumentMetadataFactory(Integer.class, parameterTypeArgumentMetadataFactoryForTest);
 
-        ArgumentMetadata[] metadata = source.getArgumentMetadata(
-                Pojo.class.getDeclaredMethod("consequence", new Class[]{KnowledgeHelper.class, String.class, Integer.class}));
+        Method pojoMethod = Pojo.class.getDeclaredMethod(
+                "consequence", new Class[]{KnowledgeHelper.class, String.class, Integer.class});
+        ArgumentMetadata metadata_0 = source.getArgumentMetadata(pojoMethod, KnowledgeHelper.class, 0);
+        ArgumentMetadata metadata_1 = source.getArgumentMetadata(pojoMethod, String.class, 1);
+        ArgumentMetadata metadata_2 = source.getArgumentMetadata(pojoMethod, Integer.class, 2);
 
-        assertEquals(3, metadata.length);
-        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata[0].getClass()));
-        assertTrue(FactArgumentMetadata.class.isAssignableFrom(metadata[1].getClass()));
-        assertTrue(ArgumentMetadataForTest.class.isAssignableFrom(metadata[2].getClass()));
+        assertNotNull(metadata_0);
+        assertTrue(KnowledgeHelperArgumentMetadata.class.isAssignableFrom(metadata_0.getClass()));
+        assertNotNull(metadata_1);
+        assertTrue(FactArgumentMetadata.class.isAssignableFrom(metadata_1.getClass()));
+        assertNotNull(metadata_2);
+        assertTrue(ArgumentMetadataForTest.class.isAssignableFrom(metadata_2.getClass()));
     }
 }
