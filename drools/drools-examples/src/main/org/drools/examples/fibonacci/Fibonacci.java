@@ -3,7 +3,7 @@ package org.drools.examples.fibonacci;
 public class Fibonacci
 {
     private int sequence;
-    private int value;
+    private long value;
 
     public Fibonacci(int sequence)
     {
@@ -16,12 +16,12 @@ public class Fibonacci
         return this.sequence;
     }
 
-    public void setValue(int value)
+    public void setValue(long value)
     {
         this.value = value;
     }
 
-    public int getValue()
+    public long getValue()
     {
         return this.value;
     }
