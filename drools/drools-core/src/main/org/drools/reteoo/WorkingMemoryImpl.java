@@ -4,7 +4,6 @@ import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.RuleBase;
-import org.drools.RuleBaseImpl;
 import org.drools.NoSuchFactObjectException;
 import org.drools.spi.ConflictResolutionStrategy;
 import org.drools.conflict.SalienceConflictResolutionStrategy;
