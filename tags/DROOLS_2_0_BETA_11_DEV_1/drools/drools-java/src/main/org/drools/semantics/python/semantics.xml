@@ -1,0 +1,13 @@
+<s:module xmlns:s="http://drools.org/semantic-module"
+          uri="http://drools.org/semantics/python">
+
+    <s:condition name="condition"
+                 classname="org.drools.semantics.python.ExprCondition"/>
+
+    <s:extractor name="extractor"
+                 classname="org.drools.semantics.python.ExprExtractor"/>
+
+    <s:consequence name="consequence"
+                   classname="org.drools.semantics.python.BlockConsequence"/>
+
+</s:module>

@@ -1,0 +1,100 @@
+
+<project default="jar:jar" xmlns:jxr="jxr" xmlns:j="jelly:core">
+
+    <goal name="ant:generate-build">
+      <echo>ant build not supported</echo>
+    </goal>
+
+    <postGoal name="clover">
+      <copy tofile="${basedir}/target/docs/clover/style.css"
+            file="${basedir}/xdocs/stylesheets/clover-style.css"
+            overwrite="true"/>
+      <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
+            file="${basedir}/target/docs/clover/pkgs-summary.html"/>
+    </postGoal>
+
+    <preGoal name="site:generate">
+      <attainGoal name="clover"/>
+    </preGoal>
+
+    <preGoal name="test:test">
+      <copy toDir="${maven.test.dest}">
+        <fileset dir="${basedir}/src/java/main/">
+          <include name="**/*.xml"/>
+        </fileset>
+      </copy>
+    </preGoal>
+
+    <goal name="drools:get-deps">
+      <mkdir dir="${basedir}/lib"/>
+
+      <copy todir="${basedir}/lib"
+            flatten="true">
+        <fileset dir="${maven.repo.local}">
+          <j:forEach var="dep" items="${pom.dependencies}">
+            <include name="${dep.projectId}/jars/${dep.jar}"/>  
+          </j:forEach>
+        </fileset>
+      </copy>
+    </goal>
+
+    <goal name="drools:examples">
+      <attainGoal name="drools:example-escalation"/>
+      <attainGoal name="drools:example-fishmonger"/>
+      <attainGoal name="drools:example-sisters"/>
+    </goal>
+
+    <goal name="drools:compile-examples">
+      <echo>compiling examples</echo>
+      <mkdir dir="${drools.examples.dest.dir}"/>
+      <javac srcdir="${drools.examples.src.dir}"
+             destdir="${drools.examples.dest.dir}">
+        <classpath>
+          <path refid="maven.dependency.classpath"/>
+          <path location="target/${maven.final.name}.jar"/>
+        </classpath>
+      </javac>
+      <copy toDir="${drools.examples.dest.dir}">
+        <fileset dir="${drools.examples.src.dir}">
+          <include name="**/*.drl"/>
+        </fileset>
+      </copy>
+    </goal>
+
+    <goal name="drools:example-escalation"
+          prereqs="drools:compile-examples">
+      <echo>running escalation example</echo>
+      <java classname="escalation.Escalation" fork="true"> 
+        <classpath>
+          <path refid="maven.dependency.classpath"/>
+          <path location="target/${maven.final.name}.jar"/>
+          <path location="${drools.examples.dest.dir}"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="drools:example-sisters"
+          prereqs="drools:compile-examples">
+      <echo>running sisters example</echo>
+      <java classname="sisters.Sisters" fork="true"> 
+        <classpath>
+          <path refid="maven.dependency.classpath"/>
+          <path location="target/${maven.final.name}.jar"/>
+          <path location="${drools.examples.dest.dir}"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="drools:example-fishmonger"
+          prereqs="drools:compile-examples">
+      <echo>running fishmonger example</echo>
+      <java classname="fishmonger.FishMonger" fork="true"> 
+        <classpath>
+          <path refid="maven.dependency.classpath"/>
+          <path location="target/${maven.final.name}.jar"/>
+          <path location="${drools.examples.dest.dir}"/>
+        </classpath>
+      </java>
+    </goal>
+
+</project>
