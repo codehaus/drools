@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.6 2003-11-30 03:28:51 bob Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.7 2004-03-27 16:00:30 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -64,6 +64,7 @@ import java.util.Map;
  * @see RuleExecutionSet
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  */
 public class RuleExecutionSetImpl implements RuleExecutionSet
 {
@@ -84,6 +85,14 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     RuleExecutionSetImpl()
     {
         this.props = new HashMap();
+
+        /**
+         * Without the following ruleBase, the execution set will never contain
+         * any rules.  It'll skip over the rule elements altogether.  We need to
+         * figure out a way to get a rulebase into this object, either through the
+         * constructor or by some other method.
+         */
+
         //this.ruleBase = new RuleBase();
         this.ruleList = new ArrayList();
     }
@@ -94,6 +103,15 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     public RuleBase getRuleBase()
     {
         return ruleBase;
+    }
+
+    /**
+     * Set the drool <code>RuleBase</code> for this <code>RuleExecutionSet</code>.
+     * @param ruleBase
+     */
+    public void setRuleBase(RuleBase ruleBase)
+    {
+        this.ruleBase = ruleBase;
     }
 
     /**
@@ -112,9 +130,24 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         this.description = description;
     }
 
+    /**
+     * Add an array of <code>Rule</code> objects to this <code>RuleExecutionSet</code>.
+     * @param rules
+     */
     void addRules(Rule[] rules)
     {
-        // FIXME
+        for(int i=0; i < rules.length; i++) {
+            addRule(rules[i]);
+        }
+    }
+
+    /**
+     * Add a single <code>Rule</code> object to this <code>RuleExecutionSet</code>.
+     * @param rule
+     */
+    void addRule(Rule rule)
+    {
+        this.ruleList.add(rule);
     }
 
     /**
