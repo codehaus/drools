@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: IntegerSemaphore.java,v 1.1 2004-12-21 00:24:37 mproctor Exp $
+ * $Id: IntegerSemaphore.java,v 1.2 2005-02-02 01:23:49 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,6 +55,13 @@ public class IntegerSemaphore
     {
         this.identifier = identifier;
     }
+    
+    
+    public IntegerSemaphore(String identifier, int value)
+    {
+        this.identifier = identifier;
+        this.value = value;
+    }    
     
     /* (non-Javadoc)
      * @see org.drools.spi.Semaphore#getIdentifier()
