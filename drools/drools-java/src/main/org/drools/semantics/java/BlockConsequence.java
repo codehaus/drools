@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.34 2004-11-13 13:27:16 simon Exp $
+ * $Id: BlockConsequence.java,v 1.35 2004-11-14 01:02:54 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,7 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -62,17 +63,21 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: BlockConsequence.java,v 1.34 2004-11-13 13:27:16 simon Exp $
+ * @version $Id: BlockConsequence.java,v 1.35 2004-11-14 01:02:54 simon Exp $
  */
 public class BlockConsequence implements Consequence, Serializable
 {
+    private static final String[] SCRIPT_PARAM_NAMES = new String[]
+    {
+        "tuple", "decls", "drools", "applicationData"
+    };
+
     private transient Script        script;
 
     private transient Declaration[] params;
 
     private String                  block;
 
-    private static final String[]   scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
 
     // ------------------------------------------------------------
     //     Constructors
@@ -112,42 +117,9 @@ public class BlockConsequence implements Consequence, Serializable
         {
             Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
 
-            if ( script == null )
+            if ( this.script == null )
             {
-                Set decls = tuple.getDeclarations();
-                this.params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size() ] );
-                Arrays.sort( this.params );
-
-                Set imports = new HashSet();
-                if (tuple.getRule().getImports() != null)
-                {
-
-                    Iterator it = tuple.getRule().getImports().iterator();
-                    ImportEntry importEntry;
-                    while (it.hasNext())
-                    {
-                        importEntry = (ImportEntry) it.next();
-                        if (importEntry instanceof JavaImportEntry)
-                        {
-                            imports.add(importEntry.getImportEntry());
-                        }
-                    }
-                }
-                try
-                {
-                	script = ( Script ) DroolsScriptEvaluator
-                        .compile(
-                            this.block,
-                            Script.class,
-                            scriptParamNames,
-                            params,
-                            applicationData,
-                            imports);
-                }
-                catch (Scanner.LocatedException e)
-                {
-                    throw new ConsequenceException( e.getMessage(), tuple.getRule() );
-                }
+                compileScript( tuple, applicationData );
             }
 
             script.invoke( tuple, this.params, new KnowledgeHelper( tuple ), applicationData );
@@ -170,10 +142,43 @@ public class BlockConsequence implements Consequence, Serializable
 
     public interface Script extends Serializable
     {
-        public void invoke(Tuple tuple,
-                           Declaration[] decls,
-                           KnowledgeHelper drools,
-                           Map applicationData) throws Exception;
+        public void invoke( Tuple tuple,
+                            Declaration[] decls,
+                            KnowledgeHelper drools,
+                            Map applicationData )
+                throws Exception;
     }
 
+    private void compileScript( Tuple tuple, Map applicationData ) throws IOException, ConsequenceException
+    {
+        Set decls = tuple.getDeclarations( );
+        this.params = ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
+        Arrays.sort( this.params );
+
+        Set imports = new HashSet( );
+        Iterator it = tuple.getRule( ).getImports( ).iterator( );
+        ImportEntry importEntry;
+        while ( it.hasNext( ) )
+        {
+            importEntry = ( ImportEntry ) it.next();
+            if ( importEntry instanceof JavaImportEntry )
+            {
+                imports.add( importEntry.getImportEntry( ) );
+            }
+        }
+
+        try
+        {
+            this.script = ( Script ) DroolsScriptEvaluator.compile( this.block,
+                                                                    Script.class,
+                                                                    SCRIPT_PARAM_NAMES,
+                                                                    this.params,
+                                                                    applicationData,
+                                                                    imports );
+        }
+        catch ( Scanner.LocatedException e )
+        {
+            throw new ConsequenceException( e.getMessage( ), tuple.getRule( ) );
+        }
+    }
 }
