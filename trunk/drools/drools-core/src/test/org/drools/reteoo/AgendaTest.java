@@ -23,7 +23,7 @@ public class AgendaTest extends DroolsTestCase
 
         final Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
@@ -73,7 +73,7 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         final Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
@@ -147,7 +147,7 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         final Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )

@@ -19,16 +19,21 @@ public class MockFactHandle implements FactHandle
         return id;
     }
 
-    public boolean equals(Object thatObj)
+    public boolean equals( Object object )
     {
-        if ( thatObj instanceof MockFactHandle )
+        if ( this == object )
         {
-            return ( ( MockFactHandle ) thatObj ).id == this.id;
+            return true;
         }
 
-        return false;
+        if ( object == null || getClass( ) != object.getClass( ) )
+        {
+            return false;
+        }
+
+        return ( ( MockFactHandle ) object ).id == this.id;
     }
-    
+
     public long getId()
     {
         return this.id;

@@ -31,8 +31,8 @@ public class BuilderTest extends TestCase
     {
         this.builder = new Builder( );
 
-        this.stringType = new MockObjectType( true );
-        this.objectType = new MockObjectType( true );
+        this.stringType = new MockObjectType();
+        this.objectType = new MockObjectType();
 
         this.rule1 = new Rule( "cheese" );
 

@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: ClassObjectType.java,v 1.1 2004-11-07 16:49:00 mproctor Exp $
+ * $Id: ClassObjectType.java,v 1.2 2004-12-07 15:03:15 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,7 +48,7 @@ import org.drools.spi.ObjectType;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassObjectType.java,v 1.1 2004-11-07 16:49:00 mproctor Exp $
+ * @version $Id: ClassObjectType.java,v 1.2 2004-12-07 15:03:15 simon Exp $
  */
 public class ClassObjectType implements ObjectType
 {
@@ -112,24 +112,24 @@ public class ClassObjectType implements ObjectType
     /**
      * Determine if another object is equal to this.
      *
-     * @param thatObj The object to test.
+     * @param object The object to test.
      *
-     * @return <code>true</code> if <code>thatObj</code> is equal to this,
+     * @return <code>true</code> if <code>object</code> is equal to this,
      *         otherwise <code>false</code>.
      */
-    public boolean equals(Object thatObj)
+    public boolean equals(Object object)
     {
-        if (this == thatObj)
+        if ( this == object )
         {
             return true;
         }
 
-        if ( thatObj instanceof ClassObjectType )
+        if ( object == null || getClass() != object.getClass() )
         {
-            return getType( ) == ( ( ClassObjectType ) thatObj ).getType( );
+            return false;
         }
 
-        return false;
+        return this.objectTypeClass == ( ( ClassObjectType ) object ).objectTypeClass;
     }
 
     /**

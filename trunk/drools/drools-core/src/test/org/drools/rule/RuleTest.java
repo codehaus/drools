@@ -45,7 +45,7 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         List paramDecls = rule.getParameterDeclarations( );
 
@@ -62,7 +62,7 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         List paramDecls = rule.getParameterDeclarations( );
         assertLength( 1, paramDecls );
@@ -109,8 +109,8 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getIndex( ) );
-        assertEquals( 1, rule.addParameterDeclaration( "paramVar1", new MockObjectType( true ) ).getIndex( ) );
+        assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType() ).getIndex( ) );
+        assertEquals( 1, rule.addParameterDeclaration( "paramVar1", new MockObjectType() ).getIndex( ) );
     }
 
     public void testDuration_SimpleLong() throws Exception
@@ -163,7 +163,7 @@ public class RuleTest extends DroolsTestCase
 
         Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );

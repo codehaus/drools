@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseTest.java,v 1.11 2004-11-28 14:44:28 simon Exp $
+ * $Id: RuleBaseTest.java,v 1.12 2004-12-07 15:03:15 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ public class RuleBaseTest extends DroolsTestCase
     public void testSerialize() throws Exception
     {
         Rule rule1 = new Rule( "test-rule 1" );
-        rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule1.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -74,7 +74,7 @@ public class RuleBaseTest extends DroolsTestCase
 
         Rule rule2 = new Rule( "test-rule 2" );
 
-        rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule2.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
