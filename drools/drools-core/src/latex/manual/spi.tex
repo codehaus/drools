@@ -25,7 +25,7 @@ left open for definition by an implementation.
         & \footnotesize{Tests tuples}\\
     \hline
       \footnotesize{fact extraction} %
-        & \texttt{\footnotesize{org.drools.spi.FactExtractor}} %
+        & \texttt{\footnotesize{org.drools.spi.Extractor}} %
         & \footnotesize{Extracts attributes from objects} \\
     \hline
       \footnotesize{action} %
@@ -169,7 +169,7 @@ public interface Tuple
 \caption{\texttt{org.drools.spi.Tuple} interface}
 \end{figure}
 
-\subsection{org.drools.spi.FactExtractor}
+\subsection{org.drools.spi.Extractor}
 
 Fact extration is the process of performing an operation upon a
 \verb|Tuple| to create additional columns or attribute on the
@@ -186,8 +186,8 @@ to evaluate expressions against documents.  The extracted values are
 associated with a \verb|Declaration| and inserted into the
 \verb|Tuple|.
 
-Semantics modules provide implementations of the \verb|FactExtractor|
-interface to perform fact extraction. A \verb|FactExtractor| may
+Semantics modules provide implementations of the \verb|Extractor|
+interface to perform fact extraction. A \verb|Extractor| may
 require more than a single column to perform extraction.  To specify
 which columns are required, the \verb|getRequiredTupleMembers()| 
 method should return an array of \verb|Declarations| which must 
@@ -195,10 +195,10 @@ be present in any tuple presented for extraction.
 
 \begin{figure}
 \begin{codelisting}
-public interface FactExtractor
+public interface Extractor
 \{
     /** Retrieve the array of Declarations required by this 
-     *  FactExtractor to perform extraction.
+     *  Extractor to perform extraction.
      *
      *  @return The array of Declarations expected 
      *          on incoming Tuples.
@@ -211,14 +211,14 @@ public interface FactExtractor
      *
      *  @return The newly extract fact object.
      *
-     *  @throws FactExtractionException if an error occurs during
+     *  @throws ExtractionException if an error occurs during
      *          fact extraction activities.
      */
-    Object extractFact(Tuple tuple) throws FactExtractionException;
+    Object extractFact(Tuple tuple) throws ExtractionException;
 \}
 \end{codelisting}
-\label{code.FactExtractor}
-\caption{\texttt{org.drools.spi.FactExtractor} interface}
+\label{code.Extractor}
+\caption{\texttt{org.drools.spi.Extractor} interface}
 \end{figure}
 
 \subsection{org.drools.spi.Condition}
@@ -231,7 +231,7 @@ If the \verb|Tuple| passes the filter, then the method should
 return \verb|true| otherwise \verb|false| indicates that
 the \verb|Tuple| does not pass.
 
-Like the \verb|FactExtractor|, a
+Like the \verb|Extractor|, a
 \verb|Condition| may only be applicable to \verb|Tuple|
 objects that contain some minimal set of columns.  
 \verb|Condition| implementations must also supply
