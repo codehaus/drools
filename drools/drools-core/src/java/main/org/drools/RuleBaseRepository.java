@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBaseRepository.java,v 1.1 2002-07-31 20:51:03 bob Exp $
+ $Id: RuleBaseRepository.java,v 1.2 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,22 @@ package org.drools;
  
  */
 
+/** Interface for repository of <code>RuleBase</code>s.
+ *
+ *  @see RuleBase
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public interface RuleBaseRepository
 {
+    /** Retrieve a <code>RuleBase</code> by URI.
+     *
+     *  @param uri The identifying URI of the <code>RuleBase</code>.
+     *
+     *  @return The located <code>RuleBase</code>.
+     *
+     *  @throws NoSuchRuleBaseException If no <code>RuleBase</code>
+     *          can be located.
+     */
     RuleBase lookupRuleBase(String uri) throws NoSuchRuleBaseException;
 }

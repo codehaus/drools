@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.1 2002-07-30 19:52:55 bob Exp $
+ $Id: Rete.java,v 1.2 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,8 +50,6 @@ import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.RetractionException;
 import org.drools.WorkingMemory;
-
-import java.util.Collection;
 
 /** A Rete-OO network.
  *
