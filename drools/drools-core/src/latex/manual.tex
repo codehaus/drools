@@ -2,10 +2,14 @@
 \documentclass[10pt,oneside,letterpaper,colorhighlight]{book}
 
 
-\def\pdfBorderAttrs{/Border [0 0 0] } % No border around Links
-%\usepackage{thumbpdf}
-%\pdfcompresslevel=9
 
+% are we in pdftex ????
+\ifx\pdfoutput\undefined % We're not running pdftex
+\else
+    \pdfcompresslevel=9
+    \usepackage{thumbpdf}
+    \def\pdfBorderAttrs{/Border [0 0 0] } % No border around Links
+\fi
 
 
 \usepackage{alltt}
