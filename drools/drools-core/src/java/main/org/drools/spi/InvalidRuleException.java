@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: InvalidRuleException.java,v 1.4 2002-07-27 01:50:17 bob Exp $
+ $Id: InvalidRuleException.java,v 1.5 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools.spi;
 
 /** Indicates an error regarding the semantic validity of a rule.
  *
- *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class InvalidRuleException extends RuleConstructionException
 {

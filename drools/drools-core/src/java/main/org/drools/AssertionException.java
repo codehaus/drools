@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: AssertionException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
+ $Id: AssertionException.java,v 1.5 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,7 @@ package org.drools;
  *
  *  @see WorkingMemory#assertObject
  *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class AssertionException extends FactException
 {

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: TransactionalWorkingMemory.java,v 1.5 2002-07-27 05:52:17 bob Exp $
+ $Id: TransactionalWorkingMemory.java,v 1.6 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -61,7 +61,7 @@ import java.util.Iterator;
  *  @see WorkingMemory
  *  @see RuleBase
  *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class TransactionalWorkingMemory extends WorkingMemory
 {

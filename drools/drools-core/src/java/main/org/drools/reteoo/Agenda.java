@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.12 2002-07-26 20:55:10 bob Exp $
+ $Id: Agenda.java,v 1.13 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -69,7 +69,7 @@ import java.util.Iterator;
  *  and are executed in turn.
  *  </p>
  *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class Agenda
 {

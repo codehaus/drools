@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: DroolsException.java,v 1.4 2002-07-26 19:41:05 bob Exp $
+ $Id: DroolsException.java,v 1.5 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import java.util.Locale;
 
 /** Base <code>drools Logic Engine</code> exception.
  *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class DroolsException extends Exception
 {

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.10 2002-07-27 05:52:17 bob Exp $
+ $Id: WorkingMemory.java,v 1.11 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -55,7 +55,7 @@ import java.util.HashMap;
 
 /** A knowledge session for a <code>RuleBase</code>.
  *
- *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class WorkingMemory
 {
