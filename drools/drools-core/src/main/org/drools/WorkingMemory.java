@@ -1,10 +1,10 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.24 2004-07-06 20:16:40 dbarnett Exp $
+ $Id: WorkingMemory.java,v 1.25 2004-08-05 11:10:34 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,11 +43,13 @@ package org.drools;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import java.util.List;
 import java.util.Map;
+
+import java.io.Serializable;
 
 import org.drools.event.WorkingMemoryEventListener;
 
@@ -55,9 +57,9 @@ import org.drools.event.WorkingMemoryEventListener;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface WorkingMemory
+public interface WorkingMemory extends Serializable
 {
-    
+
     /**
      * add event listener to listeners ArrayList
      * @param listener
@@ -69,13 +71,13 @@ public interface WorkingMemory
      * @param listener
      */
     public void removeEventListener(WorkingMemoryEventListener listener);
-    
+
     /**
      * Returns a list of listeners
      * @return listeners
      */
     public List getListeners();
-    
+
     /** Retrieve the application data that is associated with
      *  this memory.
      *
@@ -87,20 +89,20 @@ public interface WorkingMemory
     Object getApplicationData();
 
     /** Retrieve all of the set application data in this memory
-     * 
+     *
      *  @return the application data as a Map
      */
     public Map getApplicationDataMap();
 
     /** Set a specific piece of application data in this working memory
-     *  
+     *
      *  @param name the name under which to populate the data
      *  @param value the application data
      */
     public void setApplicationData(String name, Object value);
 
     /** Retrieve a specific piece of application data by name
-     *  
+     *
      *  @return application data or null if nothing is set under this name
      */
     public Object getApplicationData(String name);
