@@ -25,17 +25,22 @@ public class TerminalNode implements TupleSink
     /** The action to invoke upon match. */
     private Action action;
 
+    private long duration;
+
     /** Construct.
      *
      *  @param action The <code>Action</code> to invoke upon match.
      */
     public TerminalNode(TupleSource tupleSource,
                         Action action,
+                        long duration,
                         int priority)
     {
         this.action = action;
 
         this.priority = priority;
+
+        this.duration = duration;
 
         if ( tupleSource != null )
         {
@@ -46,6 +51,11 @@ public class TerminalNode implements TupleSink
     public int getPriority()
     {
         return this.priority;
+    }
+
+    public long getDuration()
+    {
+        return this.duration;
     }
 
     /** Retrieve the <code>Action</code> associated with
@@ -78,7 +88,8 @@ public class TerminalNode implements TupleSink
         Agenda agenda = workingMemory.getAgenda();
 
         agenda.addToAgenda( tuple,
-                            action );
+                            action,
+                            getDuration() );
     }
 
     public void retractTuples(TupleKey key,
@@ -98,6 +109,7 @@ public class TerminalNode implements TupleSink
         Agenda agenda = workingMemory.getAgenda();
 
         agenda.modifyAgenda( newTuples,
-                             getAction() );
+                             getAction(),
+                             getDuration() );
     }
 }

@@ -11,6 +11,8 @@ import org.drools.spi.Declaration;
 import org.drools.spi.FilterCondition;
 
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /** Node which filters {@link ReteTuple}s.
  *
@@ -87,8 +89,35 @@ public class FilterNode extends TupleSource implements TupleSink
                              TupleSet newTuples,
                              WorkingMemory workingMemory) throws FactException
     {
+        Set retractedKeys = new HashSet();
+
+        Iterator  tupleIter = newTuples.iterator();
+        ReteTuple eachTuple = null;
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            if ( ! getFilterCondition().isAllowed( eachTuple ) )
+            {
+                tupleIter.remove();
+                retractedKeys.add( eachTuple.getKey() );
+            }
+        }
+
         propagateModifyTuples( trigger,
                                newTuples,
                                workingMemory );
+
+        Iterator keyIter = retractedKeys.iterator();
+        TupleKey eachKey = null;
+
+        while ( keyIter.hasNext() )
+        {
+            eachKey = (TupleKey) keyIter.next();
+
+            propagateRetractTuples( eachKey,
+                                    workingMemory );
+        }
     }
 }

@@ -569,6 +569,19 @@
     </java>
   </target>
 
+  <target name="examples.escalate" depends="compile.examples">
+    <java classname="Escalation" fork="true">
+      <arg value="example_data/escalation.xml"/>
+      <classpath>
+        <pathelement location="${build.dest.main}"/>
+        <pathelement location="${build.dest.examples}"/>
+        <pathelement location="${lib.dir}/drools.jar"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+    </java>
+  </target>
+
+
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
@@ -617,7 +630,7 @@
           depends="test.all"/>
 
   <target name="examples"
-          depends="examples.supply, examples.fish"/>
+          depends="examples.supply, examples.fish, examples.escalate"/>
 
 </project>
 

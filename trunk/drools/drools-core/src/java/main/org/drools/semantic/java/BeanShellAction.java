@@ -78,4 +78,9 @@ public class BeanShellAction implements Action
             throw new ActionInvokationException( e );
         }
     }
+
+    public String toString()
+    {
+        return "[" + this.script + "]";
+    }
 }

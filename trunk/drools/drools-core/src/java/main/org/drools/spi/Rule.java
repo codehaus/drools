@@ -30,6 +30,8 @@ public class Rule
 
     private Action action;
 
+    private long   duration;
+
     /** Construct.
      *
      *  @param name The name of this rule.
@@ -57,6 +59,16 @@ public class Rule
             + "; filterConds=" + this.filterConditions
             + "; assignConds=" + this.assignmentConditions
             + "]";
+    }
+
+    public void setDuration(long seconds)
+    {
+        this.duration = seconds;
+    }
+
+    public long getDuration()
+    {
+        return this.duration;
     }
 
     /** Get current state for validity checking.

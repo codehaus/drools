@@ -69,7 +69,7 @@ public class WorkingMemory
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public void assertObject(Object object) throws AssertionException
+    synchronized public void assertObject(Object object) throws AssertionException
     {
         getRuleBase().assertObject( object,
                                     this );
@@ -110,7 +110,7 @@ public class WorkingMemory
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public void retractObject(Object object) throws RetractionException
+    synchronized public void retractObject(Object object) throws RetractionException
     {
         getRuleBase().retractObject( object,
                                      this );
@@ -126,7 +126,7 @@ public class WorkingMemory
      *
      *  @throws FactException if an error occurs during modification.
      */
-    public void modifyObject(Object object) throws FactException
+    synchronized public void modifyObject(Object object) throws FactException
     {
         getRuleBase().modifyObject( object,
                                     this );
