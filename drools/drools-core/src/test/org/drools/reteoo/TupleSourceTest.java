@@ -31,7 +31,7 @@ public class TupleSourceTest
 
         source.setTupleSink( sink );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
     	WorkingMemory workingMemory = ruleBase.newWorkingMemory();
         ReteTuple tuple = new ReteTuple(workingMemory, null);
 

@@ -89,7 +89,7 @@ public class AgendaItemTest
         throws Exception
     {
 
-        RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+        RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
 
 
         Declaration decl = new Declaration( new MockObjectType(),

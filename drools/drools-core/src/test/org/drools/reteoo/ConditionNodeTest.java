@@ -26,7 +26,7 @@ public class ConditionNodeTest
 
     public void setUp()
     {
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
         this.tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
     }
 
@@ -49,7 +49,7 @@ public class ConditionNodeTest
 
         try
         {
-        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
             node.assertTuple( this.tuple,
             		(WorkingMemoryImpl) ruleBase.newWorkingMemory() );
 
@@ -83,7 +83,7 @@ public class ConditionNodeTest
 
         try
         {
-        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
             node.assertTuple( this.tuple,
                               (WorkingMemoryImpl) ruleBase.newWorkingMemory() );
 

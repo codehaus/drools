@@ -39,7 +39,7 @@ public class TerminalNodeTest
         TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
         ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
 
         node.assertTuple( tuple,
