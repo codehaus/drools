@@ -69,24 +69,38 @@
       <id>jstrachan</id>
       <email>james_strachan@yahoo.co.uk</email>
       <organization>Spiritsoft</organization>
+      <roles>
+        <role>Pontificator</role>
+      </roles>
     </developer>
 
     <developer>
       <name>David Cramer</name>
       <id>dcramer</id>
       <email>davec@fastcrypt.com</email>
-      <organization></organization>
+      <roles>
+        <role>Instigator</role>
+      </roles>
     </developer>
 
     <developer>
       <name>Martin Hald</name>
       <id>mhald</id>
       <email>martin.hald@bigfoot.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>James Roome</name>
+      <email>refux@hotmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
     </developer>
 
   </developers>
-
-
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
