@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: LoadRulesTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
+ $Id: LoadRulesTag.java,v 1.4 2002-08-22 19:59:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -55,6 +55,7 @@ import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Iterator;
@@ -64,7 +65,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: LoadRulesTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
+ *  @version $Id: LoadRulesTag.java,v 1.4 2002-08-22 19:59:51 bob Exp $
  */
 public class LoadRulesTag extends TagSupport
 {
@@ -74,6 +75,9 @@ public class LoadRulesTag extends TagSupport
 
     /** The uri. */
     private String uri;
+
+    /** The file. */
+    private String file;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -99,13 +103,31 @@ public class LoadRulesTag extends TagSupport
         this.uri = uri;
     }
 
+    /** Set the file to load.
+     *
+     *  @param file The file to load.
+     */
+    public void setFile(String file)
+    {
+        this.file = file;
+    }
+
     /** Retrieve the URI to load.
      *
-     *  @return uri The URI to load.
+     *  @return The URI to load.
      */
     public String getUri()
     {
         return this.uri;
+    }
+
+    /** Retrieve the file to load.
+     *
+     *  @return The file to load.
+     */
+    public String getFile()
+    {
+        return this.file;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -121,13 +143,26 @@ public class LoadRulesTag extends TagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        if ( getUri() == null )
+        if ( getUri() == null
+             &&
+             getFile() == null )
         {
-            throw new MissingAttributeException( "uri" );
+            throw new MissingAttributeException( "uri or file" );
         }
 
-        URL uri = new URL( getUri() );
+        URL url = null;
 
+        if ( getUri() != null )
+        {
+            url = new URL( getUri() );
+        }
+        else
+        {
+            File file = new File( getFile() );
+
+            url = file.toURL();
+        }
+        
         RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
 
         if ( tag == null )
@@ -139,7 +174,7 @@ public class LoadRulesTag extends TagSupport
         { 
             RuleSetLoader loader = new RuleSetLoader();
             
-            List ruleSets = loader.load( getUri() );
+            List ruleSets = loader.load( url );
             
             RuleBase ruleBase = tag.getRuleBase();
 
