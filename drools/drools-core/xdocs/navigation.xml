@@ -6,13 +6,15 @@
   <organizationLogo href="/images/logo.gif">drools: dynamic rules for java</organizationLogo>
 
   <body>
+    <links>
+      <item name="The Werken Company" href="http://www.werken.com/"/>
+    </links>
     <menu name="drools">
       <item name="FAQ"                href="/faq.html"/>
       <item name="Releases"           href="/releases.html"/> 
       <item name="CVS Access"         href="/cvs.html"/>
       <item name="Papers"             href="/papers.html"/>
       <item name="Status"             href="/status.html"/>
-      <item name="The Werken Company" href="http://www.werken.com/"/>
     </menu>
   </body>
 
