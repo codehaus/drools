@@ -52,33 +52,35 @@ The rule execution should produce the following output:
 
 -->
 <rule-set name="RuleExecutionSet1"
-	  description="Stateless RuleExecutionSet for the TCK for Drools"
+          description="Stateless RuleExecutionSet for the TCK for Drools"
           xmlns="http://drools.org/rules"
           xmlns:java="http://drools.org/semantics/java"
           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/java java.xsd">
 
+    <java:import>org.jcp.jsr94.tck.model.Customer</java:import>
+    <java:import>org.jcp.jsr94.tck.model.Invoice</java:import>
+
     <rule name="Rule1" description="Rule #1">
         <parameter identifier="customer">
-            <java:class>org.jcp.jsr94.tck.model.Customer</java:class>
+            <class>Customer</class>
         </parameter>
         <parameter identifier="invoice">
-            <java:class>org.jcp.jsr94.tck.model.Invoice</java:class>
+            <class-field field="status" value="unpaid">Invoice</class-field>
         </parameter>
 
         <java:condition><![CDATA[
             customer.getCreditLimit() > invoice.getAmount()
         ]]></java:condition>
-        <java:condition><![CDATA[
-            "unpaid".equals(invoice.getStatus())
-        ]]></java:condition>
 
         <java:consequence>
             customer.setCreditLimit(customer.getCreditLimit() - invoice.getAmount());
             invoice.setStatus("paid");
-	    System.out.println("The credit limit of the customer is " + customer.getCreditLimit());
-	    System.out.println("The status of the invoice is " + invoice.getStatus());
+            System.out.println("The credit limit of the customer is " + customer.getCreditLimit());
+            System.out.println("The status of the invoice is " + invoice.getStatus());
         </java:consequence>
     </rule>
+
 </rule-set>
+
