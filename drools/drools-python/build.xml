@@ -8,10 +8,10 @@
     <!-- Allow any user specific values to override the defaults -->  
     <property file="${user.home}/build.properties" />
   
-    <!-- Allow user defaults for this project -->
+    <!-- Set default values for the build -->
     <property file="build.properties" />
   
-    <!-- Set default values for the build -->
+    <!-- Allow user defaults for this project -->
     <property file="project.properties" />
 
     <taskdef name="latex" classname="de.prima.shire.anttex.LaTeX">
@@ -213,6 +213,17 @@
             <fileset dir="${maven.build.dir}/latex" includes="*.pdf"/>
         </copy>
     </target>
+
+    <target name="nightly">
+        <property name="maven.final.name" value="drools-nightly"/>
+        <ant antfile="build.xml" target="maven:dist-build"/>
+    </target>
+<!--
+    <target name="deploy-nightly">
+        <property name="maven.final.name" value="drools-nightly"/>
+        <ant antfile="build.xml" target="maven:deploy-dist"/>
+    </target>
+-->
 
     <target name="clean" depends="maven:clean"/>
 

@@ -26,7 +26,7 @@
   <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;amp;atid=418734</issueTrackingUrl>
   <siteAddress>drools.org</siteAddress>
   <siteDirectory>/home/groups/d/dr/drools/htdocs</siteDirectory>
-  <distributionDirectory></distributionDirectory>
+  <distributionDirectory>/home/groups/d/dr/drools/htdocs/dist</distributionDirectory>
   
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools:drools-2</connection>
@@ -90,21 +90,25 @@
     <dependency>
       <id>antlr</id>
       <version>2.7.1</version>
+      <url>http://antlr.org/</url>
     </dependency>
 
     <dependency>
       <id>bsh</id>
       <version>1.2-b3</version>
+      <url>http://beanshell.org/</url>
     </dependency>
 
     <dependency>
       <id>dom4j</id>
       <version>1.4-dev</version>
+      <url>http://dom4j.org/</url>
     </dependency>
 
     <dependency>
       <id>jaxen</id>
       <version>1.0-FCS-full</version>
+      <url>http://jaxen.org/</url>
     </dependency>
 
     <dependency>
@@ -115,6 +119,7 @@
     <dependency>
       <id>saxpath</id>
       <version>1.0-FCS</version>
+      <url>http://saxpath.org/</url>
     </dependency>
 
   </dependencies>
