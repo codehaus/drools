@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandleFactory.java,v 1.9 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: Jsr94FactHandleFactory.java,v 1.10 2004-11-16 23:05:38 mproctor Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,7 +53,9 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
     private static Jsr94FactHandleFactory INSTANCE;
 
     /** Counter for generating unique <code>Handle</code> ids. */
-    private long counter;
+    private long idCounter;
+    
+    private long recencyCounter;
 
     /** Private constructor; use <code>getInstance</code> instead. */
     private Jsr94FactHandleFactory( )
@@ -82,6 +84,17 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
      */
     public synchronized FactHandle newFactHandle( )
     {
-        return new Jsr94FactHandle( ++counter );
+        return new Jsr94FactHandle( ++idCounter,  ++recencyCounter);
     }
+
+    /**
+     * Returns a new <code>Handle</code>.
+     *
+     * @return a new <code>Handle</code>.
+     */    
+    public synchronized FactHandle newFactHandle( long id)
+    {
+        return new Jsr94FactHandle( id, ++recencyCounter );
+    }    
+    
 }
