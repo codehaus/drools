@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.5 2004-04-07 19:41:59 n_alex Exp $
+ $Id: RuleSetReader.java,v 1.6 2004-06-23 06:45:46 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -90,7 +90,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.5 2004-04-07 19:41:59 n_alex Exp $
+ *  @version $Id: RuleSetReader.java,v 1.6 2004-06-23 06:45:46 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -915,6 +915,7 @@ public class RuleSetReader
         }
         catch (FactoryException e)
         {
+            e.printStackTrace();
             throw new SAXParseException( "error constructing condition",
                                          getLocator(),
                                          e );
