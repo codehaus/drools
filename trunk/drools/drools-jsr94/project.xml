@@ -96,18 +96,27 @@
       <jar>antlrall-2.7.1</jar>
     </dependency>
 
-<!--
-    <dependency>
-      <id>antlr</id>
-      <version>2.7.1</version>
-      <url>http://antlr.org/</url>
-    </dependency>
--->
-
     <dependency>
       <id>bsh</id>
       <version>1.2-b3</version>
       <url>http://beanshell.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-beanutils</id>
+      <version>1.4-dev</version>
+    </dependency>
+
+    <dependency>
+      <id>commons-jelly</id>
+      <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/sandbox/jelly/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-logging</id>
+      <version>1.1-dev</version>
+      <url>http://jakarta.apache.org/commons/logging/</url>
     </dependency>
 
     <dependency>
