@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprExtractor.java,v 1.1 2002-08-27 20:10:23 bob Exp $
+ $Id: ExprExtractor.java,v 1.2 2002-08-28 01:18:29 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import org.drools.spi.Tuple;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.1 2002-08-27 20:10:23 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.2 2002-08-28 01:18:29 bob Exp $
  */
 public class ExprExtractor extends Eval implements ConfigurableExtractor
 {
@@ -68,7 +68,7 @@ public class ExprExtractor extends Eval implements ConfigurableExtractor
      */
     public ExprExtractor(String expr)
     {
-        setText( expr );
+        setExpression( expr );
     }
 
     /** Construct, partially.

@@ -33,14 +33,14 @@ public class EvalTest extends TestCase
 
     public void testSetText()
     {
-        this.eval.setText( "42 + 42" );
+        this.eval.setExpression( "42 + 42" );
 
         assertNotNull( this.eval.getCode() );
     }
 
     public void testEvaluate_NoArg()
     {
-        this.eval.setText( "42 + 12" );
+        this.eval.setExpression( "42 + 12" );
 
         assertEquals( new Integer( 54 ),
                       this.eval.evaluate() );
@@ -48,7 +48,7 @@ public class EvalTest extends TestCase
 
     public void testEvaluate_WithTuple()
     {
-        this.eval.setText( "a + b" );
+        this.eval.setExpression( "a + b" );
 
         MockTuple tuple = new MockTuple();
 

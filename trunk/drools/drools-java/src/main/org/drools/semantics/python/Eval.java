@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.3 2002-08-27 06:46:44 bob Exp $
+ $Id: Eval.java,v 1.4 2002-08-28 01:18:29 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Hashtable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Eval.java,v 1.3 2002-08-27 06:46:44 bob Exp $
+ *  @version $Id: Eval.java,v 1.4 2002-08-28 01:18:29 bob Exp $
  */
 public class Eval extends Interp
 {
@@ -143,7 +143,7 @@ public class Eval extends Interp
      *
      *  @param expr The expression.
      */
-    public void setText(String expr)
+    public void setExpression(String expr)
     {
         setText( expr,
                  "eval" );
@@ -182,7 +182,7 @@ public class Eval extends Interp
     {
         try
         {
-            setText( text );
+            setExpression( text );
             
             ExprAnalyzer analyzer = new ExprAnalyzer();
             
