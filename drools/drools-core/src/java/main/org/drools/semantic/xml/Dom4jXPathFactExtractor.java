@@ -9,11 +9,22 @@ import org.drools.spi.FactExtractionException;
 import org.jaxen.JaxenException;
 import org.jaxen.dom4j.XPath;
 
+/** Extracts new fact objects from a Dom4j <code>Document</code>
+ *  object using the results of XPath expressions.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class Dom4jXPathFactExtractor implements FactExtractor
 {
     private Declaration declaration;
     private XPath       xpath;
 
+    /** Construct.
+     *
+     * @param declaration The variable in which this extractor
+     *        expects the context <code>Document</code> to be bound to.
+     * @param xpath The fact-extracting XPath expression object.
+     */
     public Dom4jXPathFactExtractor(Declaration declaration,
                                    XPath xpath)
     {
@@ -21,11 +32,20 @@ public class Dom4jXPathFactExtractor implements FactExtractor
         this.xpath       = xpath;
     }
     
+    /** Retrieve the <code>Declaration</code> expected to hold
+     *  the <code>Document</code>.
+     *
+     *  @return The Declaration of the expected Document.
+     */
     public Declaration getDocumentDeclaration()
     {
         return this.declaration;
     }
 
+    /** Retrieve the XPath expression object.
+     *
+     *  @return The XPath expression object.
+     */
     public XPath getXPath()
     {
         return this.xpath;

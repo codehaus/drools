@@ -23,6 +23,19 @@ public class RuleBase
         this.rootNode = new RootNode();
     }
 
+    /** Add a <code>Rule</code> to this <code>RuleBase</code>.
+     *
+     *  <p>
+     *  A <code>Rule</code> may be added to multiple <code>RuleBases</code>.
+     *  Any changes to a <code>Rule</code> once it has been added are ignored.
+     *  </p>
+     *
+     *  @param rule The rule to add.
+     *
+     *  @throws ReteConstructionException If the rule does not allow for
+     *          complete and correct integration into the underlying Rete
+     *          network.
+     */
     public void addRule(Rule rule) throws ReteConstructionException
     {
         Builder builder = new Builder( getRootNode() );

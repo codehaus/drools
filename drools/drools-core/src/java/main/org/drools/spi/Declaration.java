@@ -9,9 +9,17 @@ package org.drools.spi;
  */
 public class Declaration
 {
+    /** The type of the variable. */
     private ObjectType objectType;
+
+    /** The identifier for the variable. */
     private String     identifier;
 
+    /** Construct.
+     *
+     *  @param objectType The type of this variable declaration.
+     *  @param identifier The name of the variable.
+     */
     public Declaration(ObjectType objectType,
                        String identifier)
     {
@@ -19,16 +27,27 @@ public class Declaration
         this.identifier = identifier;
     }
 
+    /** Retrieve the <code>ObjectType</code> of this <code>Declaration</code>.
+     *
+     *  @return The <code>ObjectType</code> of this <code>Declaration</code>.
+     */
     public ObjectType getObjectType()
     {
         return this.objectType;
     }
 
+    /** Retrieve the variable's identifier.
+     *
+     *  @return The variable's identifier.
+     */
     public String getIdentifier()
     {
         return this.identifier;
     }
 
+    /** Determine if another <code>Declaration</code> is
+     *  <b>semantically</b> equivelent to this one.
+     */
     public boolean equals(Object thatObj)
     {
         Declaration that = (Declaration) thatObj;
