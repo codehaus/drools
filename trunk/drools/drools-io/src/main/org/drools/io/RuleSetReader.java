@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.40 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.41 2004-12-16 18:48:14 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -77,7 +77,7 @@ import java.util.Set;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.40 2004-12-14 21:00:28 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.41 2004-12-16 18:48:14 dbarnett Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -300,7 +300,8 @@ public class RuleSetReader extends DefaultHandler
      * @throws Exception
      *             If an error occurs during the parse.
      */
-    public RuleSet read(URL url) throws Exception
+    public RuleSet read(URL url) throws SAXException,
+                                        IOException
     {
         return read( new InputSource( url.toExternalForm( ) ) );
     }
@@ -317,8 +318,7 @@ public class RuleSetReader extends DefaultHandler
      * @throws IOException
      */
     public RuleSet read(Reader reader) throws SAXException,
-                                      ParserConfigurationException,
-                                      IOException
+                                              IOException
     {
         return read( new InputSource( reader ) );
     }
@@ -335,8 +335,7 @@ public class RuleSetReader extends DefaultHandler
      * @throws IOException
      */
     public RuleSet read(InputStream inputStream) throws SAXException,
-                                                ParserConfigurationException,
-                                                IOException
+                                                        IOException
     {
         return read( new InputSource( inputStream ) );
     }
@@ -353,8 +352,7 @@ public class RuleSetReader extends DefaultHandler
      * @throws IOException
      */
     public RuleSet read(String url) throws SAXException,
-                                   ParserConfigurationException,
-                                   IOException
+                                           IOException
     {
         return read( new InputSource( url ) );
     }
@@ -370,9 +368,8 @@ public class RuleSetReader extends DefaultHandler
      * @throws ParserConfigurationException
      * @throws IOException
      */
-    public RuleSet read(InputSource in) throws SAXException,
-                                       ParserConfigurationException,
-                                       IOException
+    public RuleSet read( InputSource in ) throws SAXException,
+                                                 IOException
     {
         SAXParser parser;
 
@@ -387,7 +384,14 @@ public class RuleSetReader extends DefaultHandler
             }
 
             factory.setValidating( Boolean.valueOf( isValidating ).booleanValue( ) );
-            parser = factory.newSAXParser( );
+            try
+            {
+                parser = factory.newSAXParser( );
+            }
+            catch ( ParserConfigurationException e )
+            {
+                throw new RuntimeException( e.getMessage( ) );
+            }
             try
             {
                 parser.setProperty( JAXP_SCHEMA_LANGUAGE,
@@ -405,7 +409,7 @@ public class RuleSetReader extends DefaultHandler
 
         if ( !parser.isNamespaceAware( ) )
         {
-            throw new ParserConfigurationException( "parser must be namespace-aware" );
+            throw new RuntimeException( "parser must be namespace-aware" );
         }
 
         if ( this.repo == null )
@@ -676,12 +680,11 @@ public class RuleSetReader extends DefaultHandler
      * @param chars
      * @param start
      * @param len
-     * @throws SAXException
      * @see org.xml.sax.ContentHandler
      */
-    public void characters(char[] chars,
-                           int start,
-                           int len) throws SAXException
+    public void characters( char[] chars,
+                            int start,
+                            int len )
     {
         if ( this.characters2 != null )
         {
