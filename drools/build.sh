@@ -39,8 +39,11 @@ target_all()
 
 target_site()
 {
-  build javadoc pdf
+  build javadoc pdf quicksite
+}
 
+target_quicksite()
+{
   echo "building site"
 
   local path
