@@ -18,8 +18,7 @@
       <ant:delete includeEmptyDirs="true" verbose="true">
 	<ant:fileset dir="." includes="drools-*/target"/>
       </ant:delete>
-      <j:set var="goal" value="jar:jar"/>
-      <attainGoal name="multiproject:goal"/>
+      <attainGoal name="multiproject:install"/>
     </goal>
 
     <goal name="default">
