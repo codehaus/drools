@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: RandomConflictResolver.java,v 1.4 2004-09-17 00:14:07 mproctor Exp $
+ * $Id: RandomConflictResolver.java,v 1.5 2004-10-06 13:38:05 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,28 +40,23 @@ package org.drools.conflict;
  *  
  */
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
-import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
 
 /**
- * <code>ConflictResolver</code> that uses the loadOrder of rules to resolve
- * conflict.
+ * <code>ConflictResolver</code> that uses the semi-random order of rules to
+ * resolve conflict.
  * 
  * @see #getInstance
- * @see Rule#setSalience
- * @see Rule#getSalience
+ * @see System#identityHashCode(Object)
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
  * @version $Id: RandomConflictResolver.java,v 1.1 2004/06/25 01:55:16 mproctor
  *          Exp $
  */
-public class RandomConflictResolver implements ConflictResolver
+public class RandomConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
     //     Class members
@@ -101,14 +96,9 @@ public class RandomConflictResolver implements ConflictResolver
     /**
      * @see ConflictResolver
      */
-    public List insert(Activation activation, List list)
+    public int compare(Activation existing, Activation adding)
     {
-        Random generator = new Random( );
-
-        LinkedList linkedList = ( LinkedList ) list;
-        linkedList.add( generator.nextInt( list.size( ) + 1 ), activation );
-        return null;
+        return System.identityHashCode( existing )
+               - System.identityHashCode( adding );
     }
-
 }
-

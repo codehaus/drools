@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: SimplicityConflictResolver.java,v 1.6 2004-09-17 00:14:07 mproctor Exp $
+ * $Id: SimplicityConflictResolver.java,v 1.7 2004-10-06 13:38:05 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,9 +40,6 @@ package org.drools.conflict;
  *  
  */
 
-import java.util.List;
-import java.util.ListIterator;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -52,15 +49,14 @@ import org.drools.spi.ConflictResolver;
  * resolve conflict.
  * 
  * @see #getInstance
- * @see Rule#setSalience
- * @see Rule#getSalience
+ * @see Rule#getConditionSize
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
- * @version $Id: SalienceConflictResolver.java,v 1.3 2004/06/25 02:46:39
- *          mproctor Exp $
+ * @version $Id: SimplicityConflictResolver.java,v 1.7 2004-10-06 13:38:05 mproctor Exp $
  */
-public class SimplicityConflictResolver implements ConflictResolver
+public class SimplicityConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
     //     Class members
@@ -100,84 +96,9 @@ public class SimplicityConflictResolver implements ConflictResolver
     /**
      * @see ConflictResolver
      */
-    public List insert(Activation activation, List list)
+    public int compare(Activation existing, Activation adding)
     {
-        ListIterator listIter;
-        Activation eachActivation;
-        int numConditions = activation.getRule( ).getConditions( ).length;
-
-        //quick optimisation, check if should just add to end
-        if ( !list.isEmpty( ) )
-        {
-            eachActivation = ( Activation ) list.get( list.size( ) - 1 );
-            if ( eachActivation.getRule( ).getConditions( ).length < numConditions )
-            {
-                list.add( activation );
-                return null;
-            }
-            //else get and return the conflicting items as a sublist
-            else if ( eachActivation.getRule( ).getConditions( ).length == numConditions )
-            {
-                //list.add( activation );
-                int endIndex = list.size( );
-                int startIndex = list.size( ) - 1;
-                while ( ( eachActivation != null )
-                        && eachActivation.getRule( ).getConditions( ).length == numConditions )
-                {
-                    --startIndex;
-                    if ( startIndex >= 0 )
-                    {
-                        eachActivation = ( Activation ) list.get( startIndex );
-                    }
-                    else
-                    {
-                        eachActivation = null;
-                    }
-                }
-                return list.subList( startIndex + 1, endIndex );
-            }
-
-        }
-        else
-        {
-            list.add( activation );
-            return null;
-        }
-
-        // Traverse the list. If an activation is found
-        // that has a lower numConditions than the item to be inserted,
-        // insert the item *before* it by backing up and adding
-        // to the list. Then return a list of any conflicts
-        for ( listIter = list.listIterator( ); listIter.hasNext( ); )
-        {
-            eachActivation = ( Activation ) listIter.next( );
-            if ( eachActivation.getRule( ).getConditions( ).length >= numConditions )
-            {
-                //do we still have any conflicts
-                int startIndex = listIter.previousIndex( );
-                while ( eachActivation.getRule( ).getConditions( ).length == numConditions )
-                {
-                    eachActivation = ( Activation ) listIter.next( );
-                }
-                int endIndex = listIter.previousIndex( );
-                if ( startIndex == endIndex )
-                {
-                    listIter.previous( );
-                    listIter.add( activation );
-                    return null;
-                }
-                //if conflicts exist return a sublist of the conflicting items
-                else
-                {
-                    return list.subList( startIndex, endIndex );
-                }
-            }
-        }
-
-        // If not inserted by now, simply tack it onto the end.
-        list.add( activation );
-        return null;
+        return existing.getRule( ).getConditions( ).length
+               - adding.getRule( ).getConditions( ).length;
     }
-
 }
-

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: DefaultConflictResolver.java,v 1.9 2004-10-06 13:38:05 mproctor Exp $
+ * $Id: LifoConflictResolver.java,v 1.1 2004-10-06 13:38:05 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,38 +42,26 @@ package org.drools.conflict;
 
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
-import org.drools.spi.Tuple;
-
-import java.util.List;
 
 /**
- * Strategy for resolving conflicts amongst multiple rules.
+ * <code>ConflictResolver</code> that orders rules on a Last-In-First-Out
+ * basis.
  * 
- * <p>
- * Since a fact or set of facts may activate multiple rules, a
- * <code>ConflictResolutionStrategy</code> is used to provide priority
- * ordering of conflicting rules.
- * </p>
+ * @see #getInstance
  * 
- * @see Activation
- * @see Tuple
- * @see org.drools.rule.Rule
- * 
- * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
- * @version $Id: DefaultConflictResolver.java,v 1.9 2004-10-06 13:38:05 mproctor Exp $
+ * @version $Id: RandomConflictResolver.java,v 1.1 2004/06/25 01:55:16 mproctor
+ *          Exp $
  */
-public class DefaultConflictResolver extends CompositeConflictResolver
+public class LifoConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
     //     Class members
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
-    private static final DefaultConflictResolver INSTANCE = new DefaultConflictResolver( );
-
-    private static List                          conflictResolvers;
+    private static final LifoConflictResolver INSTANCE = new LifoConflictResolver( );
 
     // ----------------------------------------------------------------------
     //     Class methods
@@ -89,14 +77,26 @@ public class DefaultConflictResolver extends CompositeConflictResolver
         return INSTANCE;
     }
 
+    // ----------------------------------------------------------------------
+    //     Constructors
+    // ----------------------------------------------------------------------
+
     /**
-     * Setup a default ConflictResolver configuration
+     * Construct.
      */
-    public DefaultConflictResolver()
+    public LifoConflictResolver()
     {
-        super( new ConflictResolver[]{SalienceConflictResolver.getInstance( ),
-        RecencyConflictResolver.getInstance( ),
-        ComplexityConflictResolver.getInstance( ),
-        LoadOrderConflictResolver.getInstance( )} );
+        // intentionally left blank
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * @see ConflictResolver
+     */
+    public int compare(Activation existing, Activation adding)
+    {
+        return ( int ) ( adding.getActivationNumber( ) - existing
+                                                                 .getActivationNumber( ) );
     }
 }
