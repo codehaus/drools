@@ -21,4 +21,19 @@ public class DefaultWorkingMemoryEventListener
     {
         // intentionally left blank
     }
+
+    public void conditionTested(ConditionTestedEvent event)
+    {
+        // intentionally left blank
+    }
+
+    public void activationCreated(ActivationCreatedEvent event)
+    {
+        // intentionally left blank
+    }
+
+    public void activationFired(ActivationFiredEvent event)
+    {
+        // intentionally left blank
+    }
 }

@@ -1,23 +1,39 @@
 package org.drools.event;
 
 import org.drools.WorkingMemory;
-import org.drools.spi.Activation;
+import org.drools.spi.Consequence;
+import org.drools.spi.Tuple;
 
 public class ActivationCreatedEvent
     extends WorkingMemoryEvent
 {
-    private Activation activation;
+    private WorkingMemory workingMemory;
+    private Consequence consequence;
+    private Tuple tuple;
 
     public ActivationCreatedEvent(WorkingMemory workingMemory,
-                                  Activation activation)
+                                  Consequence consequence,
+                                   Tuple tuple)
     {
         super( workingMemory );
 
-        this.activation = activation;
+        this.workingMemory = workingMemory;
+        this.consequence = consequence;
+        this.tuple = tuple;
     }
 
-    public Activation getActivation()
+    public WorkingMemory getWorkingMemory()
     {
-        return this.activation;
+        return this.workingMemory;
+    }
+
+    public Consequence getConsequence()
+    {
+        return this.consequence;
+    }
+
+    public Tuple getTuple()
+    {
+        return this.tuple;
     }
 }

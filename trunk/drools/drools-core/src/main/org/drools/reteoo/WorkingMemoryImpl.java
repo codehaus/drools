@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.12 2004-04-02 23:07:15 n_alex Exp $
+ $Id: WorkingMemoryImpl.java,v 1.13 2004-06-05 10:55:45 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -53,17 +53,19 @@ import org.drools.RuleBase;
 import org.drools.NoSuchFactObjectException;
 import org.drools.spi.ConflictResolver;
 import org.drools.conflict.SalienceConflictResolver;
+import org.drools.event.WorkingMemoryEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /** Implementation of <code>WorkingMemory</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.12 2004-04-02 23:07:15 n_alex Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.13 2004-06-05 10:55:45 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -93,6 +95,9 @@ class WorkingMemoryImpl
     private Map objects;
 
     private FactHandleFactory factHandleFactory;
+    
+    /** Array of listeners */
+    private ArrayList listeners = new ArrayList();
 
     // ------------------------------------------------------------
     //     Constructors
@@ -130,6 +135,33 @@ class WorkingMemoryImpl
     //     Instance methods
     // ------------------------------------------------------------
 
+    /**
+     * add event listener to listeners ArrayList
+     * @param listener
+     */
+    public void addEventListener(WorkingMemoryEventListener listener) {
+        listeners.add(listener);
+    }    
+
+    /**
+     * remove event listener from listeners ArrayList
+     * @param listener
+     */
+    public void removeEventListener(WorkingMemoryEventListener listener) {
+        while(listeners.contains(listener))
+        {
+            listeners.remove(listener);
+        }
+    }
+
+    /**
+     * Returns a read-only list of listeners
+     * @return listeners
+     */
+    public List getListeners() {
+      return Collections.unmodifiableList(listeners);   
+    }
+    
     protected void initializeFactHandleFactory()
     {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
