@@ -1,7 +1,7 @@
-package org.drools.semantics.java;
+package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.6 2002-08-26 23:04:34 bob Exp $
+ $Id: Interp.java,v 1.1 2002-08-26 23:04:34 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,14 +50,18 @@ import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
 import org.drools.spi.ObjectType;
 
-import bsh.Interpreter;
-import bsh.NameSpace;
-import bsh.EvalError;
+import org.python.core.Py;
+import org.python.core.PyCode;
+import org.python.core.PyDictionary;
+import org.python.core.PyObject;
+import org.python.core.__builtin__;
+import org.python.util.PythonInterpreter;
 
+import java.util.Hashtable;
 import java.util.Set;
 import java.util.Iterator;
 
-/** Base class for BeanShell interpreter-based Java semantic components.
+/** Base class for Jython interpreter-based Python semantic components.
  *
  *  @see ExprCondition
  *  @see ExprExtractor
@@ -65,7 +69,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.6 2002-08-26 23:04:34 bob Exp $
+ *  @version $Id: Interp.java,v 1.1 2002-08-26 23:04:34 bob Exp $
  */
 public class Interp
 {
@@ -77,7 +81,10 @@ public class Interp
     private String text;
 
     /** BeanShell interpreter. */
-    private Interpreter interp;
+    private PythonInterpreter interp;
+
+    /** The code. */
+    private PyCode code;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -87,7 +94,7 @@ public class Interp
      */
     protected Interp()
     {
-        this.interp = new Interpreter();
+        this.interp = new PythonInterpreter();
         this.text = null;
     }
 
@@ -100,30 +107,41 @@ public class Interp
      *  @param tuple Tuple containing variable bindings.
      *
      *  @return The result of evaluation.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to evaluate.
      */
-    public Object evaluate(Tuple tuple) throws EvalError
+    public Object evaluate(Tuple tuple) 
     {
-        NameSpace ns = setUpNameSpace( tuple );
+        PyDictionary dict = setUpDictionary( tuple );
         
-        return evaluate( ns );
+        return evaluate( dict );
     }
 
     /** Evaluate.
      *
-     *  @param ns The evaluation namespace.
+     *  @param dict The evaluation dictionary.
      *
      *  @return The result of evaluation.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to evaluate.
      */
-    protected Object evaluate(NameSpace ns) throws EvalError
+    protected Object evaluate(PyDictionary locals) 
     {
-        return this.interp.eval( getText(),
-                                 ns );
+        PyDictionary globals = new PyDictionary( new Hashtable() );
+
+        PyObject result =  __builtin__.eval( this.code,
+                                             locals,
+                                             globals );
+
+        return Py.tojava( result,
+                          Object.class );
+    }
+
+    /** Evaluate.
+     *
+     *  @return The result of evaluation.
+     */
+    protected Object evaluate()
+    {
+        PyDictionary locals = new PyDictionary( new Hashtable() );
+
+        return evaluate( locals );
     }
 
     /** Retrieve the text to evaluate.
@@ -142,21 +160,20 @@ public class Interp
     protected void setText(String text)
     {
         this.text = text;
+
+        this.code = __builtin__.compile( text, "<text>", "eval");
     }
 
-    /** Configure a <code>NameSpace</code> using a <code>Tuple</code>
+    /** Configure a <code>PyDictionary</code> using a <code>Tuple</code>
      *  for variable bindings.
      *
      *  @param tuple Tuple containing variable bindings.
      *
-     *  @return The namespace
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to bind variables.
+     *  @return The dictionary
      */
-    protected NameSpace setUpNameSpace(Tuple tuple) throws EvalError
+    protected PyDictionary setUpDictionary(Tuple tuple) 
     {
-        NameSpace ns = new NameSpace( "" );
+        Hashtable table = new Hashtable();
 
         Set         decls    = tuple.getDeclarations();
 
@@ -169,17 +186,10 @@ public class Interp
         {
             eachDecl = (Declaration) declIter.next();
             
-            ns.setVariable( eachDecl.getIdentifier(),
-                            tuple.get( eachDecl ) );
-
-            objectType = eachDecl.getObjectType();
-
-            if ( objectType instanceof ClassObjectType )
-            {
-                ns.importClass( ((ClassObjectType)objectType).getType().getName() );
-            }
+            table.put( eachDecl.getIdentifier(),
+                       tuple.get( eachDecl ) );
         }
 
-        return ns;
+        return new PyDictionary( table );
     }
 }
