@@ -66,6 +66,14 @@
             </properties>
         </dependency>
         <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-jsr94</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
             <groupId>jython</groupId>
             <artifactId>jython</artifactId>
             <version>20020827-no-oro</version>
@@ -106,6 +114,11 @@
             <id>simple-jndi</id>
             <version>0.9</version>
         </dependency>
+        <dependency>
+            <groupId>jsr94</groupId>
+            <artifactId>jsr94</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -116,8 +129,6 @@
             <resource>
                 <directory>src/main</directory>
                 <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
                     <include>**/*.drl</include>
                 </includes>
             </resource>
