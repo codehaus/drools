@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleRuntimeImpl.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
+ $Id: RuleRuntimeImpl.java,v 1.5 2003-05-26 16:10:36 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -62,20 +62,6 @@ import java.util.Map;
  */
 public class RuleRuntimeImpl implements RuleRuntime
 {
-
-    private static RuleRuntimeImpl ruleRuntime;
-
-    /** Hide the constructor. */
-    private RuleRuntimeImpl()
-    {
-    }
-
-    /** Get the class instance of a <code>RuleRuntime</code>. */
-    public static RuleRuntime getInstance()
-    {
-        if (ruleRuntime != null) return ruleRuntime;
-        return ruleRuntime = new RuleRuntimeImpl();
-    }
 
     /**
      * Creates a <code>RuleSession</code> implementation using the supplied
