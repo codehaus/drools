@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+
+<test:suite xmlns:j="jelly:core" 
+            xmlns:test="jelly:junit"
+            xmlns="jelly:org.drools.tags.semantics.SemanticsTagLibrary">
+
+  <!-- 
+    ||
+    ||    <module>
+    ||
+    -->
+
+  <test:case name="module_NoUri">
+
+    <j:catch var="e">
+      <module>
+      </module>
+    </j:catch>
+    <test:assert test="${e != null}"> Should have thrown MissingArgumentException: uri</test:assert> 
+
+  </test:case>
+
+  <test:case name="module_Empty_WithUri">
+    <module uri="http://drools.org/semantics/test"/>
+  </test:case>
+
+  <test:case name="consequence_NoModule">
+    <j:catch var="e">
+      <consequence/>
+    </j:catch>
+    <test:assert test="${e != null}"> Should have thrown JellyException: not within module</test:assert> 
+  </test:case>
+
+  <!-- 
+    ||
+    ||    <type>
+    ||
+    -->
+
+  <test:case name="objectType_NoName">
+    <module uri="http://drools.org/semantics/test">
+      <j:catch var="e">
+
+        <type classname="org.drools.spi.ObjectType"/>
+
+      </j:catch>
+      <test:assert test="${e != null}"> Should have thrown MissingAttributeException: name</test:assert> 
+    </module>
+  </test:case>
+
+  <test:case name="objectType_NoClassname">
+    <module uri="http://drools.org/semantics/test">
+      <j:catch var="e">
+
+        <type name="testType"/>
+
+      </j:catch>
+      <test:assert test="${e != null}"> Should have thrown MissingAttributeException: classname</test:assert> 
+    </module>
+  </test:case>
+
+  <test:case name="objectType_Valid">
+    <module uri="http://drools.org/semantics/test" var="semantic_module">
+
+      <type name="testType"
+            classname="org.drools.semantics.java.ClassObjectType"/>
+
+     <test:assert test="${semantic_module.getObjectTypeNames().contains('testType')}"/>
+
+    </module> 
+  </test:case>
+
+  <!-- 
+    ||
+    ||    <extractor>
+    ||
+    -->
+  <test:case name="extractor_NoName">
+    <module uri="http://drools.org/semantics/test">
+      <j:catch var="e">
+
+        <extractor classname="org.drools.spi.FactExtractor"/>
+
+      </j:catch>
+      <test:assert test="${e != null}"> Should have thrown MissingAttributeException: name</test:assert> 
+    </module>
+  </test:case>
+
+  <test:case name="extractor_NoClassname">
+    <module uri="http://drools.org/semantics/test">
+      <j:catch var="e">
+
+        <extractor name="testExtractor"/>
+
+      </j:catch>
+      <test:assert test="${e != null}"> Should have thrown MissingAttributeException: classname</test:assert> 
+    </module>
+  </test:case>
+
+  <test:case name="extractor_Valid">
+    <module uri="http://drools.org/semantics/test" var="semantic_module">
+
+      <extractor name="testExtractor"
+                 classname="org.drools.semantics.java.ExprExtractor"/>
+
+     <test:assert test="${semantic_module.getFactExtractorNames().contains('testExtractor')}"/>
+
+    </module> 
+  </test:case>
+
+  <!-- 
+    ||
+    ||    <consequence>
+    ||
+    -->
+
+  <test:case name="consequence_NoName">
+    <module uri="http://drools.org/semantics/test">
+      <j:catch var="e">
+
+        <consequence classname="org.drools.spi.Consequence"/>
+
+      </j:catch>
+      <test:assert test="${e != null}"> Should have thrown MissingAttributeException: name</test:assert> 
+    </module>
+  </test:case>
+
+  <test:case name="consequence_NoClassname">
+    <module uri="http://drools.org/semantics/test">
+      <j:catch var="e">
+
+        <consequence name="testConsequence"/>
+
+      </j:catch>
+      <test:assert test="${e != null}"> Should have thrown MissingAttributeException: classname</test:assert> 
+    </module>
+  </test:case>
+
+  <test:case name="consequence_Valid">
+    <module uri="http://drools.org/semantics/test" var="semantic_module">
+
+      <consequence name="testConsequence"
+            classname="org.drools.spi.Consequence"/>
+
+     <test:assert test="${semantic_module.getConsequenceNames().contains('testConsequence')}"/>
+
+    </module> 
+  </test:case>
+</test:suite>

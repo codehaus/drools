@@ -1,0 +1,16 @@
+<s:module xmlns:s="http://drools.org/semantic-module"
+          uri="http://drools.org/semantics/java">
+
+    <s:type name="class"
+            classname="org.drools.semantics.java.ClassObjectType"/>
+
+    <s:condition name="condition"
+                 classname="org.drools.semantics.java.ExprCondition"/>
+
+    <s:extractor name="extract"
+                 classname="org.drools.semantics.java.ExprExtractor"/>
+
+    <s:consequence name="action"
+                   classname="org.drools.semantics.java.BlockConsequence"/>
+
+</s:module>

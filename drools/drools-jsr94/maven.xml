@@ -1,4 +1,12 @@
 
 <project default="java:jar">
 
+    <preGoal name="test:test">
+      <copy toDir="${maven.test.dest}">
+        <fileset dir="${basedir}/src/java/main/">
+          <include name="**/*.xml"/>
+        </fileset>
+      </copy>
+    </preGoal>
+
 </project>

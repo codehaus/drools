@@ -1,6 +1,7 @@
 package org.drools.tags.ruleset;
 
 import org.drools.smf.SemanticModule;
+import org.drools.io.SemanticsLoader;
 
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
@@ -26,9 +27,11 @@ public class SemanticsTag extends TagSupport
         return this.module;
     }
 
-    protected SemanticModule getSemanticModule() throws JellyException
+    protected SemanticModule getSemanticModule() throws Exception
     {
-        return null;
+        SemanticsLoader loader = new SemanticsLoader();
+
+        return loader.load( getModule() );
     }
 
     public void doTag(XMLOutput output) throws Exception
