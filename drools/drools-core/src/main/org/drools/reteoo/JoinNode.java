@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.42 2004-12-06 16:11:40 simon Exp $
+ * $Id: JoinNode.java,v 1.43 2004-12-06 16:15:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -94,8 +94,6 @@ class JoinNode extends TupleSource
         this.rightInput = rightInput;
         this.tupleDeclarations = determineTupleDeclarations( );
         this.commonDeclarations = determineCommonDeclarations( );
-
-        attach( );
     }
 
     // ------------------------------------------------------------
@@ -314,25 +312,25 @@ class JoinNode extends TupleSource
         return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + this.tupleDeclarations + "]";
     }
 
-    //    public int hashCode()
-    //    {
-    //        return this.leftInput.hashCode( ) ^ this.rightInput.hashCode( );
-    //    }
-    //
-    //    public boolean equals( Object object )
-    //    {
-    //        if ( this == object )
-    //        {
-    //            return true;
-    //        }
-    //
-    //        if ( object == null || getClass( ) != object.getClass( ) )
-    //        {
-    //            return false;
-    //        }
-    //
-    //        JoinNode other = ( JoinNode ) object;
-    //
-    //        return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
-    //    }
+    public int hashCode()
+    {
+        return this.leftInput.hashCode( ) ^ this.rightInput.hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object == null || getClass( ) != object.getClass( ) )
+        {
+            return false;
+        }
+
+        JoinNode other = ( JoinNode ) object;
+
+        return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
+    }
 }
