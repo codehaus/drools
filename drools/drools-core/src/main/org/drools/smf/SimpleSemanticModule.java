@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.5 2002-08-18 19:17:51 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.6 2002-08-18 23:24:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -163,6 +163,14 @@ public class SimpleSemanticModule implements SemanticModule
         return this.objectTypes.keySet();
     }
 
+    /** Add a semantic condition.
+     *
+     *  @param name The condition name.
+     *  @param condition The condition implementation.
+     *
+     *  @throws InvalidConditionException If a class that is not a
+     *          condition is added.
+     */
     public void addCondition(String name,
                              Class condition) throws InvalidConditionException
     {
@@ -175,23 +183,34 @@ public class SimpleSemanticModule implements SemanticModule
                              condition );
     }
 
+    /** Retrieve a semantic condition by name.
+     *
+     *  @param name the name.
+     *
+     *  @return The condition implementation or <code>null</code>
+     *          if none is bound to the name.
+     */   
     public Class getCondition(String name)
     {
         return (Class) this.conditions.get( name );
     }
 
+    /** Retrieve the set of all condition names.
+     *
+     *  @return The set of names.
+     */
     public Set getConditionNames()
     {
         return this.conditions.keySet();
     }
 
-    /** Add a semantic object type.
+    /** Add a semantic extractor.
      *
-     *  @param name The object type name.
-     *  @param extractor The object type implementation.
+     *  @param name The extractor name.
+     *  @param extractor The extractor implementation.
      *
      *  @throws InvalidExtractorException If a class that is not a
-     *          object type is added.
+     *          extractor is added.
      */
     public void addExtractor(String name,
                              Class extractor) throws InvalidExtractorException

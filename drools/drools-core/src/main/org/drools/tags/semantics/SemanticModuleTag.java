@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: SemanticModuleTag.java,v 1.1 2002-08-18 16:42:58 bob Exp $
+ $Id: SemanticModuleTag.java,v 1.2 2002-08-18 23:24:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -112,11 +112,27 @@ public class SemanticModuleTag extends SemanticsTagSupport
         return this.uri;
     }
 
+    /** Set the variable in which to store the resulting
+     *  <code>SemanticModule</code>.
+     *
+     *  <p>
+     *  In addition to any variable specified using
+     *  this method, the variable <code>org.drools.semantic-module</code>
+     *  will also hold the new <code>SemanticModule</code>.
+     *  </p>
+     *
+     *  @param var The variable in which to store the new semantic module.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable in which to store the
+     *  resulting <code>SemanticModule</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;

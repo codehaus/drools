@@ -1,5 +1,51 @@
 package org.drools.tags.ruleset;
 
+/*
+ $Id: SemanticsTagLibrary.java,v 1.4 2002-08-18 23:24:48 bob Exp $
+
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ 
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+    statements and notices.  Redistributions must also contain a
+    copy of this document.
+ 
+ 2. Redistributions in binary form must reproduce the
+    above copyright notice, this list of conditions and the
+    following disclaimer in the documentation and/or other
+    materials provided with the distribution.
+ 
+ 3. The name "drools" must not be used to endorse or promote
+    products derived from this Software without prior written
+    permission of The Werken Company.  For written permission,
+    please contact bob@werken.com.
+ 
+ 4. Products derived from this Software may not be called "drools"
+    nor may "drools" appear in their names without prior written
+    permission of The Werken Company. "drools" is a registered
+    trademark of The Werken Company.
+ 
+ 5. Due credit should be given to The Werken Company.
+    (http://drools.werken.com/).
+ 
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ */
+
 import org.drools.smf.SemanticModule;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
@@ -15,14 +61,34 @@ import org.apache.commons.jelly.impl.DynamicTagLibrary;
 import org.apache.commons.jelly.impl.TagFactory;
 
 import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Iterator;
 
+/** Dyanmic tag library for loading <code>SemanticModule</code>s.
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: SemanticsTagLibrary.java,v 1.4 2002-08-18 23:24:48 bob Exp $
+ */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The module. */
     private SemanticModule module;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param module The module to make available as a taglib.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to initialize the module as a tag library.
+     */
     SemanticsTagLibrary(SemanticModule module) throws Exception
     {
         super( module.getUri() );
@@ -30,15 +96,28 @@ class SemanticsTagLibrary extends DynamicTagLibrary
 
         registerObjectTypes();
         registerConditions();
-        registerExtractions();
+        registerExtractors();
         registerConsequences();
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the <code>SemanticModule</code>.
+     *
+     *  @return The semantic module.
+     */
     protected SemanticModule getSemanticModule()
     {
         return this.module;
     }
 
+    /** Register <code>ObjectType</code>s.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register this module's object-types.
+     */
     protected void registerObjectTypes() throws Exception
     {
         Set names = getSemanticModule().getObjectTypeNames();
@@ -57,6 +136,14 @@ class SemanticsTagLibrary extends DynamicTagLibrary
         }
     }
 
+    /** Register an <code>ObjectType</code>.
+     *
+     *  @param name The name.
+     *  @param beanClass The class.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register the object-type.
+     */
     protected void registerObjectType(final String name,
                                       final Class beanClass) throws Exception
     {
@@ -102,6 +189,11 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                          );
     }
 
+    /** Register <code>Condition</code>s.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register this module's conditions.
+     */
     protected void registerConditions() throws Exception
     {
         Set names = getSemanticModule().getConditionNames();
@@ -120,6 +212,14 @@ class SemanticsTagLibrary extends DynamicTagLibrary
         }
     }
 
+    /** Register an <code>Condition</code>.
+     *
+     *  @param name The name.
+     *  @param beanClass The class.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register the condition.
+     */
     protected void registerCondition(final String name,
                                      final Class beanClass) throws Exception
     {
@@ -165,7 +265,12 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                          );
     }
 
-    protected void registerExtractions() throws Exception
+    /** Register <code>Extractors</code>s.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register this module's extractors.
+     */
+    protected void registerExtractors() throws Exception
     {
         Set names = getSemanticModule().getExtractorNames();
 
@@ -178,13 +283,21 @@ class SemanticsTagLibrary extends DynamicTagLibrary
             eachName = (String) nameIter.next();
             eachClass = getSemanticModule().getExtractor( eachName );
 
-            registerExtraction( eachName,
-                                eachClass );
+            registerExtractor( eachName,
+                               eachClass );
         }
     }
 
-    protected void registerExtraction(final String name,
-                                      final Class beanClass) throws Exception
+    /** Register an <code>Extractor</code>.
+     *
+     *  @param name The name.
+     *  @param beanClass The class.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register the extractor.
+     */
+    protected void registerExtractor(final String name,
+                                     final Class beanClass) throws Exception
     {
         registerBeanTag( name,
                          new TagFactory()
@@ -228,6 +341,11 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                          );
     }
 
+    /** Register <code>Consequence</code>s.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register this module's consequences.
+     */
     protected void registerConsequences() throws Exception
     {
         Set names = getSemanticModule().getConsequenceNames();
@@ -246,6 +364,14 @@ class SemanticsTagLibrary extends DynamicTagLibrary
         }
     }
 
+    /** Register an <code>Consequence</code>.
+     *
+     *  @param name The name.
+     *  @param beanClass The class.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to register the consequence.
+     */
     protected void registerConsequence(final String name,
                                        final Class beanClass) throws Exception
     {
