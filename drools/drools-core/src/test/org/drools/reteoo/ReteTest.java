@@ -3,14 +3,14 @@ package org.drools.reteoo;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.MockObjectType;
-
-import junit.framework.TestCase;
+import org.drools.MockFactHandle;
+import org.drools.DroolsTestCase;
 
 import java.util.List;
 import java.util.Collection;
 
 public class ReteTest
-    extends TestCase
+    extends DroolsTestCase
 {
     private Rete rete;
 
@@ -21,8 +21,8 @@ public class ReteTest
     {
         this.rete = new Rete();
 
-        this.objectTypeNode = new InstrumentedObjectTypeNode( new MockObjectType() );
-        this.stringTypeNode = new InstrumentedObjectTypeNode( new MockObjectType() );
+        this.objectTypeNode = new InstrumentedObjectTypeNode( new MockObjectType( Object.class ) );
+        this.stringTypeNode = new InstrumentedObjectTypeNode( new MockObjectType( String.class ) );
 
         this.rete.addObjectTypeNode( this.objectTypeNode );
         this.rete.addObjectTypeNode( this.stringTypeNode );
@@ -34,6 +34,7 @@ public class ReteTest
     }
 
     public void testGetObjectTypeNodes()
+        throws Exception
     {
         Collection objectTypeNodes = this.rete.getObjectTypeNodes();
 
@@ -48,105 +49,98 @@ public class ReteTest
      *  to all children ObjectTypeNodes.
      */
     public void testAssertObject()
+        throws Exception
     {
-        /*
         Object object1 = new Object();
         String string1 = "cheese";
 
-        try
-        {
-            this.rete.assertObject( object1,
-                                    null );
-            
-            this.rete.assertObject( string1,
-                                    null );
-            
-            List asserted = null;
-
-            // ----------------------------------------
-
-            asserted = this.objectTypeNode.getAssertedObjects();
-
-            assertEquals( 2,
-                          asserted.size() );
-
-            assertSame( object1,
-                        asserted.get( 0 ) );
-
-            assertSame( string1,
-                        asserted.get( 1 ) );
-
-            // ----------------------------------------
-
-            asserted = this.stringTypeNode.getAssertedObjects();
-
-            assertEquals( 2,
-                          asserted.size() );
-
-            assertSame( object1,
-                        asserted.get( 0 ) );
-
-            assertSame( string1,
-                        asserted.get( 1 ) );
-            
-        }
-        catch (AssertionException e)
-        {
-            fail( e.toString() );
-        }
-        */
+        this.rete.assertObject( new MockFactHandle( 1 ),
+                                object1,
+                                null );
+        
+        this.rete.assertObject( new MockFactHandle( 2 ),
+                                string1,
+                                null );
+        
+        List asserted = null;
+        
+        // ----------------------------------------
+        
+        asserted = this.objectTypeNode.getAssertedObjects();
+        
+        assertEquals( 2,
+                      asserted.size() );
+        
+        assertSame( object1,
+                    asserted.get( 0 ) );
+        
+        assertSame( string1,
+                    asserted.get( 1 ) );
+        
+        // ----------------------------------------
+        
+        asserted = this.stringTypeNode.getAssertedObjects();
+        
+        assertEquals( 2,
+                      asserted.size() );
+        
+        assertSame( object1,
+                    asserted.get( 0 ) );
+        
+        assertSame( string1,
+                    asserted.get( 1 ) );
     }
 
     /** All objects retracted from a RootNode must be propagated
      *  to all children ObjectTypeNodes.
      */
     public void testRetractObject()
+        throws Exception
     {
-        /*
-        Object object1 = new Object();
-        String string1 = "cheese";
 
-        try
-        {
-            this.rete.retractObject( object1,
-                                     null );
-            
-            this.rete.retractObject( string1,
-                                     null );
-            
-            List retracted = null;
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
 
-            // ----------------------------------------
+        MockFactHandle handle1 = new MockFactHandle( 1 );
+        MockFactHandle handle2 = new MockFactHandle( 2 );
 
-            retracted = this.objectTypeNode.getRetractedObjects();
+        memory.putObject( handle1,
+                          "cheese1" );
 
-            assertEquals( 2,
-                          retracted.size() );
+        memory.putObject( handle2,
+                          "cheese2" );
 
-            assertSame( object1,
-                        retracted.get( 0 ) );
-
-            assertSame( string1,
-                        retracted.get( 1 ) );
-
-            // ----------------------------------------
-
-            retracted = this.stringTypeNode.getRetractedObjects();
-
-            assertEquals( 2,
-                          retracted.size() );
-
-            assertSame( object1,
-                        retracted.get( 0 ) );
-
-            assertSame( string1,
-                        retracted.get( 1 ) );
-            
-        }
-        catch (RetractionException e)
-        {
-            fail( e.toString() );
-        }
-        */
+        this.rete.retractObject( handle1,
+                                 memory );
+        
+        this.rete.retractObject( handle2,
+                                 memory );
+        
+        List retracted = null;
+        
+        // ----------------------------------------
+        
+        retracted = this.objectTypeNode.getRetractedHandles();
+        
+        assertLength( 2,
+                      retracted );
+        
+        assertContains( handle1,
+                        retracted );
+        
+        assertContains( handle2,
+                        retracted );
+        
+        // ----------------------------------------
+        
+        retracted = this.stringTypeNode.getRetractedHandles();
+        
+        assertLength( 2,
+                      retracted );
+        
+        assertContains( handle1,
+                        retracted );
+        
+        assertContains( handle2,
+                        retracted );
     }
 }

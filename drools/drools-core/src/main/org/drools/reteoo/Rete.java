@@ -2,8 +2,6 @@ package org.drools.reteoo;
 
 import org.drools.FactHandle;
 import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
@@ -59,7 +57,7 @@ class Rete
     void assertObject(FactHandle handle,
                       Object object,
                       WorkingMemoryImpl workingMemory)
-        throws AssertionException
+        throws FactException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
         ObjectTypeNode eachNode = null;
@@ -83,9 +81,8 @@ class Rete
      *  @throws RetractionException if an error occurs during retraction.
      */
     void retractObject(FactHandle handle,
-                       Object object,
                        WorkingMemoryImpl workingMemory)
-        throws RetractionException
+        throws FactException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
         ObjectTypeNode eachNode = null;
@@ -95,7 +92,6 @@ class Rete
             eachNode = (ObjectTypeNode) nodeIter.next();
 
             eachNode.retractObject( handle,
-                                    object,
                                     workingMemory );
         }
     }

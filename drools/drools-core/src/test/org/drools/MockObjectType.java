@@ -33,8 +33,15 @@ public class MockObjectType
             MockObjectType that = (MockObjectType) thatObj;
 
             if ( this.type == null
-                 ||
+                 &&
                  that.type == null )
+            {
+                return true;
+            }
+
+            if ( this.type == null
+                 ||
+                 that.type == null)
             {
                 return false;
             }
@@ -43,5 +50,15 @@ public class MockObjectType
         }
 
         return false;
+    }
+
+    public int hashCode()
+    {
+        if ( this.type == null )
+        {
+            return 0;
+        }
+
+        return this.type.hashCode();
     }
 }

@@ -77,12 +77,10 @@ class RuleBaseImpl
     }
     
     void retractObject(FactHandle handle,
-                       Object object,
                        WorkingMemoryImpl workingMemory)
         throws FactException
     {
         getRete().retractObject( handle,
-                                 object,
                                  workingMemory );
     }
 

@@ -102,17 +102,4 @@ class AgendaItem
         getRule().getConsequence().invoke( getTuple(),
                                            workingMemory );
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object;
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[" + getTuple() + "; " + getRule().getName() + "]";
-    }
 }

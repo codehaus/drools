@@ -2,8 +2,6 @@ package org.drools.reteoo;
 
 import org.drools.FactHandle;
 import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
@@ -116,7 +114,7 @@ class ObjectTypeNode
     void assertObject(FactHandle handle,
                       Object object,
                       WorkingMemoryImpl workingMemory)
-        throws AssertionException
+        throws FactException
     {
         ObjectType objectType = getObjectType();
 
@@ -147,10 +145,11 @@ class ObjectTypeNode
      *  @throws RetractionException if an error occurs during assertion.
      */
     void retractObject(FactHandle handle,
-                       Object object,
                        WorkingMemoryImpl workingMemory)
-        throws RetractionException
+        throws FactException
     {
+        Object object = workingMemory.getObject( handle );
+
         ObjectType objectType = getObjectType();
 
         if ( ! objectType.matches( object ) )
