@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.13 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.14 2004-10-16 23:59:52 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -160,12 +160,34 @@ class ExtractionNode extends TupleSource implements TupleSink
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Object value = getExtractor( ).extractFact( tuple );
+        if (value == null) return;
 
+        /*
+        Object originalValue = tuple.get( this.targetDeclaration );
+
+        if (tuple.getRule().getName().equals("Calculate"))
+        {
+	        System.err.println(tuple.getRule().getName() + " - before put columns:\n" + this.targetDeclaration.getIdentifier() + ":" + tuple.get( this.targetDeclaration ));
+	        System.err.println(tuple);
+        }
+        
+        if ((originalValue != null)&&(!originalValue.equals(value)))
+        {
+        	return;
+        }
+       */
+        
         ReteTuple newTuple = new ReteTuple( tuple );
 
-        newTuple.putColumn( getTargetDeclaration( ), value );
-
-        propagateAssertTuple( newTuple, workingMemory );
+        newTuple.putTargetDeclarationColumn( getTargetDeclaration( ), value );        
+        /*
+        if (tuple.getRule().getName().equals("Calculate"))
+        {
+	        System.err.println(tuple.getRule().getName() + " - after put columns:\n" + this.targetDeclaration.getIdentifier() + ":" + newTuple.get( this.targetDeclaration ));
+	        System.err.println(newTuple);
+        }
+        */
+        propagateAssertTuple( newTuple, workingMemory );        
     }
 
     /**

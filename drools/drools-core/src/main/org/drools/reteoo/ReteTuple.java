@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.33 2004-10-11 23:24:57 simon Exp $
+ * $Id: ReteTuple.java,v 1.34 2004-10-16 23:59:53 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
@@ -59,7 +60,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.33 2004-10-11 23:24:57 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.34 2004-10-16 23:59:53 mproctor Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -76,6 +77,7 @@ class ReteTuple implements Tuple, Serializable
 
     /** Value columns in this tuple. */
     private Map            columns;
+    private Set            targetDeclarations;
 
     private Map            objectToHandle;
 
@@ -213,7 +215,27 @@ class ReteTuple implements Tuple, Serializable
     {
         this.columns.put( declaration, value );
     }
-
+    
+    public void putTargetDeclarationColumn(Declaration declaration, Object value)
+    {
+        this.columns.put( declaration, value );
+        if (this.targetDeclarations == null)
+        {
+        	targetDeclarations = new HashSet();
+        }
+        this.targetDeclarations.add( declaration );
+        //System.err.println(this.targetDeclarations);
+    }
+    
+    /**
+     * Will return null if there are no target declarations
+     * @return Set
+     */
+    public Set getTargetDeclarations()
+    {
+    	return this.targetDeclarations;
+    }
+    
     /**
      * Retrieve the key for this tuple.
      *
