@@ -296,4 +296,31 @@
     <test:assert test="${rule_testExtraction_Valid.getExtractions().contains( extraction_testExtraction_Valid )}">Extraction didn't get stored in rule</test:assert>
   </test:case>
 
+  <!-- 
+    ||
+    ||    <consequence>
+    ||
+    -->
+
+  <test:case name="testConsequence_NoRule">
+    <semantics module="org.drools.semantics.java"/>
+    <j:catch var="e">
+      <consequence xmlns:java="http://drools.org/semantics/java">
+        <java:consequence>System.err.println("foo");</java:consequence>
+      </consequence>
+    </j:catch>
+    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+  </test:case>
+
+  <test:case name="testConsequence_Valid">
+    <semantics module="org.drools.semantics.java"/>
+    <rule name="rule_testConsequence_Valid" var="rule_testConsequence_Valid">
+      <consequence var="conseq_testConsequence_Valid" xmlns:java="http://drools.org/semantics/java">
+        <java:consequence>System.err.println("foo");</java:consequence>
+      </consequence>
+    </rule>
+    <test:assert test="${org.drools.consequence != null}">Extraction didn't get stored in default var</test:assert>
+    <test:assert test="${consequence_testConsequence_Valid != null}">Extraction didn't get stored in custom var</test:assert>
+    <test:assertEquals expected="${conseq_testConsequence_Valid}" actual="${rule_testConsequence_Valid.getConsequence()}">Consequence not stored in the Rule</test:assertEquals>
+  </test:case>
 </test:suite>

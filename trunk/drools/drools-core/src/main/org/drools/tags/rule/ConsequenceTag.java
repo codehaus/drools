@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConsequenceTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: ConsequenceTag.java,v 1.2 2002-08-19 21:33:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.tags.rule;
  
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 
 import org.apache.commons.jelly.XMLOutput;
@@ -57,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConsequenceTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: ConsequenceTag.java,v 1.2 2002-08-19 21:33:08 bob Exp $
  */
 public class ConsequenceTag extends RuleTagSupport
 {
@@ -67,6 +68,9 @@ public class ConsequenceTag extends RuleTagSupport
 
     /** The consequence. */
     private Consequence consequence;
+
+    /** The variable. */
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -101,6 +105,24 @@ public class ConsequenceTag extends RuleTagSupport
         return this.consequence;
     }
 
+    /** Set the variable in which to store the <code>Consequence</code>.
+     *
+     *  @param var The variable name.
+     */
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    /** Retrieve the variable in which to store the <code>Consequence</code>.
+     *
+     *  @return The variable name.
+     */
+    public String getVar()
+    {
+        return this.var;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -114,6 +136,13 @@ public class ConsequenceTag extends RuleTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        Rule rule = getRule();
+
+        if ( rule == null )
+        {
+            throw new JellyException( "No rule available" );
+        }
+
         invokeBody( output );
 
         if ( this.consequence == null )
@@ -121,6 +150,15 @@ public class ConsequenceTag extends RuleTagSupport
             throw new JellyException( "Condition expected" );
         }
 
-        getRule().setConsequence( this.consequence );
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      this.consequence );
+        }
+
+        getContext().setVariable( "org.drools.consequence",
+                                  this.consequence );
+
+        rule.setConsequence( this.consequence );
     }
 }
