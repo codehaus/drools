@@ -2,7 +2,7 @@
 <project default="jar:jar">
 
   <goal name="fibonacci" prereqs="jar:jar">
-    <java classname="org.drools.examples.fibonacci.FibonacciExample"
+    <java classname="org.drools.examples.java.fibonacci.FibonacciExample"
           fork="true">
       <classpath refid="maven.dependency.classpath"/>
       <classpath>
@@ -11,8 +11,8 @@
     </java>
   </goal>
 
-  <goal name="fishmonger" prereqs="jar:jar">
-    <java classname="org.drools.examples.fishmonger.FishMonger"
+  <goal name="petstore" prereqs="jar:jar">
+    <java classname="org.drools.examples.java.petstore.PetStore"
           fork="true">
       <classpath refid="maven.dependency.classpath"/>
       <classpath>
@@ -21,8 +21,8 @@
     </java>
   </goal>
 
-  <goal name="familyTree" prereqs="jar:jar">
-    <java classname="org.drools.examples.familyTree.Main"
+  <goal name="familytree" prereqs="jar:jar">
+    <java classname="org.drools.examples.java.familytree.FamilyTree"
           fork="true">
       <classpath refid="maven.dependency.classpath"/>
       <classpath>
