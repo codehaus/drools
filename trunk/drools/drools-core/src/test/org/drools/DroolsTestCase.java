@@ -54,4 +54,8 @@ public class DroolsTestCase
         assertTrue( collection + " does not contain " + obj,
                     collection.contains( obj ) );
     }
+
+    public void testDummy() throws Exception {
+        // do nothing
+    }
 }
