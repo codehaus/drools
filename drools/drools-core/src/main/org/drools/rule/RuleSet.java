@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.11 2004-09-17 00:14:11 mproctor Exp $
+ * $Id: RuleSet.java,v 1.12 2004-10-24 00:51:32 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -46,6 +46,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.drools.spi.ImportEntry;
+
 /**
  * Collection of related <code>Rule</code>s.
  * 
@@ -53,7 +55,7 @@ import java.util.Set;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.11 2004-09-17 00:14:11 mproctor Exp $
+ * @version $Id: RuleSet.java,v 1.12 2004-10-24 00:51:32 mproctor Exp $
  */
 public class RuleSet implements Serializable
 {
@@ -79,6 +81,8 @@ public class RuleSet implements Serializable
 
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
     private List                  rules;
+    
+    private Imports               imports;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -154,8 +158,8 @@ public class RuleSet implements Serializable
 
         this.ruleNames.add( name );
         rule.setLoadOrder( rules.size( ) );
-        this.rules.add( rule );
-
+        rule.setImports(this.imports);
+        this.rules.add( rule );                      
     }
 
     /**
@@ -204,5 +208,10 @@ public class RuleSet implements Serializable
     public Rule[] getRules()
     {
         return ( Rule[] ) this.rules.toArray( Rule.EMPTY_ARRAY );
+    }
+    
+    public void setImports(Imports imports)
+    {
+        this.imports = imports;
     }
 }
