@@ -64,12 +64,6 @@
         </dependency>
 
         <dependency>
-            <groupId>jca</groupId>
-            <artifactId>jca</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>janino</groupId>
             <artifactId>janino</artifactId>
             <version>2.0.10</version>
