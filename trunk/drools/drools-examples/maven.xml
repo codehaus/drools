@@ -101,6 +101,18 @@
       </java>
     </goal>
 
+<!-- Escalation -->
+    <goal name="escalation-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.escalation.Escalation"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="escalation.java.drl"/>
+      </java>
+    </goal>
+
 <!-- PetStore Examples -->
     <goal name="petstore-java" prereqs="jar:jar">
       <java classname="org.drools.examples.petstore.PetStore"
