@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=2.0-beta-12
+VERSION=2.0-beta-12a
 JAVADOC=javadoc
 JAVAC=javac
 JAVA=java
