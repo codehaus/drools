@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.14 2002-08-22 19:21:58 bob Exp $
+ $Id: Rule.java,v 1.15 2003-07-10 14:19:49 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,7 +67,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.14 2002-08-22 19:21:58 bob Exp $
+ *  @version $Id: Rule.java,v 1.15 2003-07-10 14:19:49 tdiesler Exp $
  */
 public class Rule
 {
@@ -77,6 +77,9 @@ public class Rule
 
     /** Name of the rule. */
     private String name;
+
+    /** Salience value. */
+    private int salience;
 
     /** All declarations. */
     private Set allDeclarations;
@@ -197,6 +200,24 @@ public class Rule
     public String getName()
     {
         return this.name;
+    }
+
+    /** Retrieve the <code>Rule</code> salience.
+     *
+     *  @return The salience.
+     */
+    public int getSalience()
+    {
+        return salience;
+    }
+
+    /** Set the <code>Rule<code> salience.
+     *
+     *  @param salience The salience.
+     */
+    public void setSalience( int salience )
+    {
+        this.salience = salience;
     }
 
     /** Add a <i>root fact object</i> parameter <code>Declaration</code>

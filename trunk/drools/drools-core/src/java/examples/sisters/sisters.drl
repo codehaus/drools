@@ -9,7 +9,7 @@
            xmlns:java="http://drools.org/semantics/java"
            xmlns:jelly="http://drools.org/semantics/jelly">
 
-    <rule name="Find Sisters">
+    <rule name="Find Sisters" salience="10">
 
       <parameter identifier="person">
         <java:class type="sisters.Person"/>
@@ -43,7 +43,7 @@
 
     </rule>
 
-    <rule name="Message Received">
+    <rule name="Message Received" salience="20">
       <parameter identifier="message">
         <java:class type="java.lang.String"/>
       </parameter>

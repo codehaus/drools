@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: RuleTag.java,v 1.5 2003-07-10 14:19:51 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.drools.tags.knowledge.RuleBaseTag;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: RuleTag.java,v 1.5 2003-07-10 14:19:51 tdiesler Exp $
  */
 public class RuleTag extends RuleTagSupport
 {
@@ -69,6 +69,9 @@ public class RuleTag extends RuleTagSupport
 
     /** Rule name. */
     private String name;
+
+    /** Salience value. */
+    private Integer salience;
 
     /** The rule. */
     private Rule rule;
@@ -107,6 +110,24 @@ public class RuleTag extends RuleTagSupport
     public String getName()
     {
         return this.name;
+    }
+
+    /** Retrieve the <code>Rule</code> salience.
+     *
+     *  @return The salience.
+     */
+    public Integer getSalience()
+    {
+        return salience;
+    }
+
+    /** Set the <code>Rule<code> salience.
+     *
+     *  @param salience The salience.
+     */
+    public void setSalience( Integer salience )
+    {
+        this.salience = salience;
     }
 
     /** Set the variable in which to store the <code>Rule</code>.
@@ -153,6 +174,11 @@ public class RuleTag extends RuleTagSupport
                            this.name );
 
         this.rule = new Rule( this.name );
+
+        if ( this.salience != null )
+        {
+            this.rule.setSalience( this.salience.intValue() );
+        }
 
         if ( this.var != null )
         {
