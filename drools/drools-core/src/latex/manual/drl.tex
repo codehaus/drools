@@ -193,13 +193,13 @@ of the tag is dependent upon the semantic module used for the rule.
 For illustration purposes, the Java Semantic Module has been used.
 
 \begin{codelisting}
-<drl:extraction identifier="customer">
+<drl:extraction target="customer">
 \textcolor{light}{  <java:extractor>account.getCustomer()</java:extractor>}
 </drl:extraction>
-<drl:extraction identifier="custName">
+<drl:extraction target="custName">
 \textcolor{light}{  <java:extractor>customer.getName()</java:extractor>} 
 </drl:extraction>
-<drl:extraction identifier="acctBalance">
+<drl:extraction target="acctBalance">
 \textcolor{light}{  <java:extractor>account.getBalance()</java:extractor>}
 </drl:extraction>
 \end{codelisting}
