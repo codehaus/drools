@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinMemoryImpl.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: JoinMemoryImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,6 @@ package org.drools.reteoo.impl;
 import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.reteoo.JoinMemory;
-import org.drools.reteoo.JoinNode;
 import org.drools.spi.Declaration;
 
 import java.util.Set;
@@ -59,8 +58,9 @@ import java.util.Collections;
 
 /** Memory for left and right inputs of a <code>JoinNode</code>.
  *
- *  @see JoinNode
- *  @see org.drools.spi.Tuple
+ *  @see JoinMemory
+ *  @see JoinNodeImpl
+ *  @see ReteTuple
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -361,7 +361,7 @@ public class JoinMemoryImpl implements JoinMemory
      *  to join to existing <code>Tuples</code> in the right
      *  side.
      *
-     *  @see JoinNode
+     *  @see JoinNodeImpl
      *  @see ReteTuple
      *
      *  @param tuple The <code>Tuple</code> to add to the left
@@ -410,7 +410,7 @@ public class JoinMemoryImpl implements JoinMemory
      *  to join to existing <code>Tuples</code> in the left
      *  side.
      *
-     *  @see JoinNode
+     *  @see JoinNodeImpl
      *  @see ReteTuple
      *
      *  @param tuple The <code>Tuple</code> to add to the right

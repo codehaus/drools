@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RootNode.java,v 1.7 2002-07-28 13:55:47 bob Exp $
+ $Id: RootNode.java,v 1.8 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,17 +46,9 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 
 /** The root node in the Rete-OO network.
  *
@@ -70,7 +62,6 @@ import java.util.Iterator;
  */
 public interface RootNode
 {
-
     /** Retrieve all <code>ObjectTypeNode</code> children
      *  of this node.
      *

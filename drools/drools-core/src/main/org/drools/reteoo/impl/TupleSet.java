@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSet.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: TupleSet.java,v 1.2 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -183,7 +183,7 @@ class TupleSet
 
     /** Retrieve all <code>Tuple</code>s.
      *
-     *  @see Tuple
+     *  @see org.drools.spi.Tuple
      *
      *  @return The set of tuples.
      */
@@ -241,7 +241,7 @@ class TupleSet
 
     /** Retrieve a <code>Tuple</code> by <code>TupleKey</code>.
      *
-     *  @see Tuple
+     *  @see org.drools.spi.Tuple
      *  @see #containsTuple
      *
      *  @param key The tuple key.

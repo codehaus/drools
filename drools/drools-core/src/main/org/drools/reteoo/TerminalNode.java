@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.15 2002-07-28 13:55:47 bob Exp $
+ $Id: TerminalNode.java,v 1.16 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,9 +45,6 @@ package org.drools.reteoo;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-
-import org.drools.WorkingMemory;
-import org.drools.AssertionException;
 
 import org.drools.spi.Rule;
 

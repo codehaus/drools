@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FilterNode.java,v 1.8 2002-07-28 13:55:46 bob Exp $
+ $Id: FilterNode.java,v 1.9 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,16 +46,7 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-
 import org.drools.spi.FilterCondition;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
 /** Node which filters <code>ReteTuple</code>s.
  *
@@ -66,7 +57,6 @@ import java.util.Iterator;
  *  </p>
  *
  *  @see FilterCondition
- *  @see ReteTuple
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

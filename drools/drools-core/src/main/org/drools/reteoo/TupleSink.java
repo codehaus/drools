@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSink.java,v 1.8 2002-07-28 13:55:47 bob Exp $
+ $Id: TupleSink.java,v 1.9 2002-07-28 15:49:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,10 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.FactException;
 
 /** Receiver of propagated <code>ReteTuple</code>s from a <code>TupleSource</code>.
  *
  *  @see TupleSource
- *  @see ReteTuple
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
