@@ -4,7 +4,7 @@
     <pomVersion>3</pomVersion>
     <name>drools</name>
     <id>drools</id>
-    <currentVersion>2.0-beta-11-dev-1</currentVersion>
+    <currentVersion>2.0-beta-11-dev-2</currentVersion>
 
     <organization>
         <name>The Werken Company</name>
