@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.21 2004-10-22 15:20:48 simon Exp $
+ * $Id: RuleBaseImpl.java,v 1.22 2004-10-22 22:21:16 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,7 +52,7 @@ import org.drools.spi.ConflictResolver;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleBaseImpl.java,v 1.21 2004-10-22 15:20:48 simon Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.22 2004-10-22 22:21:16 simon Exp $
  */
 class RuleBaseImpl implements RuleBase
 {
@@ -61,13 +61,14 @@ class RuleBaseImpl implements RuleBase
     // ------------------------------------------------------------
 
     /** The root Rete-OO for this <code>RuleBase</code>. */
-    private final Rete             rete;
+    private final Rete              rete;
+
+    /** Conflict resolution strategy. */
+    private final ConflictResolver  conflictResolver;
+
 
     /** The fact handle factory. */
     private final FactHandleFactory factHandleFactory;
-
-    /** Conflict resolution strategy. */
-    private final ConflictResolver conflictResolver;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -80,7 +81,7 @@ class RuleBaseImpl implements RuleBase
      */
     RuleBaseImpl( Rete rete )
     {
-        this( rete, DefaultConflictResolver.getInstance(), new DefaultFactHandleFactory( ) );
+        this( rete, DefaultConflictResolver.getInstance( ), new DefaultFactHandleFactory( ) );
     }
 
     /**

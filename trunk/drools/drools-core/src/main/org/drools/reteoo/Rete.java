@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.17 2004-09-17 00:14:10 mproctor Exp $
- * 
+ * $Id: Rete.java,v 1.18 2004-10-22 22:21:16 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,28 +37,27 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.spi.ObjectType;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * The Rete-OO network.
- * 
+ *
  * This node accepts an <code>Object</code>, and simply propagates it to all
  * <code>ObjectTypeNode</code> s for type testings.
- * 
+ *
  * @see ObjectTypeNode
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class Rete implements Serializable
@@ -68,7 +67,7 @@ class Rete implements Serializable
     // ------------------------------------------------------------
 
     /** The set of <code>ObjectTypeNodes</code>. */
-    private Map objectTypeNodes;
+    private final Map objectTypeNodes = new HashMap( );
 
     // ------------------------------------------------------------
     //     Constructors
@@ -79,7 +78,6 @@ class Rete implements Serializable
      */
     public Rete()
     {
-        this.objectTypeNodes = Collections.EMPTY_MAP;
     }
 
     // ------------------------------------------------------------
@@ -89,11 +87,11 @@ class Rete implements Serializable
     /**
      * Assert a new fact object into this <code>RuleBase</code> and the
      * specified <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle The fact handle.
      * @param object The object to assert.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during assertion.
      */
     void assertObject(FactHandle handle,
@@ -114,10 +112,10 @@ class Rete implements Serializable
     /**
      * Retract a fact object from this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @param handle The handle of the fact to retract.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during retraction.
      */
     void retractObject(FactHandle handle, WorkingMemoryImpl workingMemory) throws FactException
@@ -136,14 +134,14 @@ class Rete implements Serializable
     /**
      * Modify a fact object in this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
-     * 
+     *
      * With the exception of time-based nodes, modification of a fact object is
      * semantically equivelent to retracting and re-asserting it.
-     * 
+     *
      * @param handle The fact handle.
      * @param object The modified value object.
      * @param workingMemory The working memory session.
-     * 
+     *
      * @throws FactException if an error occurs during modification.
      */
     void modifyObject(FactHandle handle,
@@ -163,22 +161,17 @@ class Rete implements Serializable
 
     /**
      * Add an <code>ObjectTypeNode</code> child to this <code>Rete</code>.
-     * 
+     *
      * @param node The node to add.
      */
     void addObjectTypeNode(ObjectTypeNode node)
     {
-        if ( this.objectTypeNodes == Collections.EMPTY_MAP )
-        {
-            this.objectTypeNodes = new HashMap( );
-        }
-
         this.objectTypeNodes.put( node.getObjectType( ), node );
     }
 
     /**
      * Retrieve all <code>ObjectTypeNode</code> children of this node.
-     * 
+     *
      * @return The <code>Set</code> of <code>ObjectTypeNodes</code>.
      */
     Collection getObjectTypeNodes()
@@ -189,7 +182,7 @@ class Rete implements Serializable
     /**
      * Retrieve an <code>Iterator</code> over the <code>ObjectTypeNode</code>
      * children of this node.
-     * 
+     *
      * @return An <code>Iterator</code> over <code>ObjectTypeNodes</code>.
      */
     Iterator getObjectTypeNodeIterator()
@@ -200,9 +193,9 @@ class Rete implements Serializable
     /**
      * Retrieve an <code>ObjectTypeNode</code> keyed by
      * <code>ObjectType</code>.
-     * 
+     *
      * @param objectType The <code>ObjectType</code> key.
-     * 
+     *
      * @return The matching <code>ObjectTypeNode</code> if one has already
      *         been created, else <code>null</code>.
      */
@@ -214,9 +207,9 @@ class Rete implements Serializable
     /**
      * Retrieve an <code>ObjectTypeNode</code> keyed by
      * <code>ObjectType</code>, creating one, if necessary.
-     * 
+     *
      * @param objectType The <code>ObjectType</code> key.
-     * 
+     *
      * @return The matching <code>ObjectTypeNode</codeb>.
      */
     ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)

@@ -14,7 +14,7 @@ public class TerminalNodeTest extends DroolsTestCase
     {
         final Agenda[] agendas = new Agenda[1];
 
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) )
         {
             public Agenda getAgenda()
             {
@@ -58,7 +58,7 @@ public class TerminalNodeTest extends DroolsTestCase
                                                                   DefaultConflictResolver
                                                                                          .getInstance( ) );
 
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) )
         {
             public Agenda getAgenda()
             {
@@ -90,7 +90,7 @@ public class TerminalNodeTest extends DroolsTestCase
                                                                   DefaultConflictResolver
                                                                                          .getInstance( ) );
 
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) )
         {
             public Agenda getAgenda()
             {
