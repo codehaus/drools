@@ -49,10 +49,14 @@ public class HelloWorldBuilder
                 parameterNode = new ParameterNode( rule, objectTypeNode, declaration );
 
                 List conditions = rule.getConditions( );
-                for ( int k = 0; k < conditions.size( ); k++ )
-                {
-                    conditionNode = new ConditionNode( parameterNode, ( Condition ) conditions.get( k ), k );
-                    TerminalNode terminal = new TerminalNode( conditionNode, rule );
+                if ( 0 == conditions.size() ) {
+                    TerminalNode terminal = new TerminalNode( parameterNode, rule );
+                } else {
+                    for ( int k = 0; k < conditions.size( ); k++ )
+                    {
+                        conditionNode = new ConditionNode( parameterNode, ( Condition ) conditions.get( k ), k );
+                        TerminalNode terminal = new TerminalNode( conditionNode, rule );
+                    }
                 }
             }
         }

@@ -7,9 +7,12 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/groovy groovy.xsd">
 
+  <groovy:import>java.lang.Object</groovy:import>
+  <groovy:import>java.lang.String</groovy:import>
+  
   <rule name="Hello World">
     <parameter identifier="hello">
-      <class>java.lang.String</class>
+      <class>String</class>
     </parameter>
 
     <groovy:condition>hello.equals("Hello")</groovy:condition>
@@ -21,13 +24,23 @@
 
   <rule name="Goodbye Cruel World">
     <parameter identifier="goodbye">
-      <class>java.lang.String</class>
+      <class>String</class>
     </parameter>
 
     <groovy:condition>goodbye.equals("Goodbye")</groovy:condition>
 
     <groovy:consequence>
       println goodbye + " Cruel World" ;
+    </groovy:consequence>
+  </rule>
+
+  <rule name="Debug">
+    <parameter identifier="object">
+      <class>Object</class>
+    </parameter>
+
+    <groovy:consequence>
+      println "Asserted object: " + object ;
     </groovy:consequence>
   </rule>
 
