@@ -71,10 +71,16 @@
       <xs:field xpath="@name" />
     </xs:key>
 
-    <!-- make sure extractor targets are specified
-         after decleration identifiers -->
+    <!-- Extractor targets should be unique -->
+    <xs:key name="extractorTarget">
+      <xs:selector xpath="rules:abstractExtractor" />
+      <xs:field xpath="@target" />
+    </xs:key>    
+
+    <!-- make sure extractor targets are valid
+         local declarations  -->
     <xs:key name="identifierKey">
-      <xs:selector xpath="rules:declaration | rules:parameter" />
+      <xs:selector xpath="rules:declaration" />
       <xs:field xpath="@identifier" />
     </xs:key>
 
