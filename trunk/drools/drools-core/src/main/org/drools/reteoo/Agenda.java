@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.11 2002-07-26 19:41:06 bob Exp $
+ $Id: Agenda.java,v 1.12 2002-07-26 20:55:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,21 +48,12 @@ package org.drools.reteoo;
 
 import org.drools.WorkingMemory;
 
-import org.drools.spi.Action;
 import org.drools.spi.Rule;
-import org.drools.spi.Declaration;
 import org.drools.spi.ActionInvokationException;
 
-import fr.dyade.jdring.AlarmManager;
-import fr.dyade.jdring.AlarmListener;
-import fr.dyade.jdring.AlarmEntry;
-import fr.dyade.jdring.PastDateException;
-
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Date;
 
 /** Rule-firing Agenda.
  *
@@ -78,10 +69,14 @@ import java.util.Date;
  *  and are executed in turn.
  *  </p>
  *
- *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */
 public class Agenda
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
     /** Working memory of this Agenda. */
     private WorkingMemory workingMemory;
 
@@ -90,6 +85,10 @@ public class Agenda
 
     /** Items time-delayed. */
     private Set scheduledItems;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
     /** Construct.
      *
@@ -103,10 +102,15 @@ public class Agenda
         this.scheduledItems = new HashSet();
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
     /** Schedule a rule action invokation on this <code>Agenda</code>.
      *
      *  @param tuple The matching <code>Tuple</code>.
-     *  @param action The <code>Action</code> to fire.
+     *  @param rule The rule to fire.
+     *  @param priority The rule-firing priority.
      */
     void addToAgenda(ReteTuple tuple,
                      Rule rule,
@@ -131,6 +135,11 @@ public class Agenda
         }
     }
 
+    /** Remove a tuple from the agenda.
+     *
+     *  @param key The key to the tuple to be removed.
+     *  @param rule The rule to remove.
+     */
     void removeFromAgenda(TupleKey key,
                           Rule rule)
     {
@@ -173,6 +182,13 @@ public class Agenda
         }
     }
 
+    /** Modify the agenda.
+     *
+     *  @param trigger The triggering root object.
+     *  @param newTuples New tuples from the modification.
+     *  @param rule The rule.
+     *  @param priority Firing priority.
+     */
     void modifyAgenda(Object trigger,
                       TupleSet newTuples,
                       Rule rule,
@@ -223,6 +239,7 @@ public class Agenda
                         cancelItem( eachItem );
                         itemIter.remove();
                     }
+
                     else
                     {
                         eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
@@ -244,12 +261,20 @@ public class Agenda
         }
     }
 
+    /** Schedule an agenda item for delayed firing.
+     *
+     *  @param item The item to schedule.
+     */
     void scheduleItem(AgendaItem item)
     {
         Scheduler.getInstance().scheduleAgendaItem( item,
                                                     this.workingMemory );
     }
 
+    /** Cancel a scheduled agenda item for delayed firing.
+     *
+     *  @param item The item to cancel.
+     */
     void cancelItem(AgendaItem item)
     {
         Scheduler.getInstance().cancelAgendaItem( item );
@@ -257,6 +282,9 @@ public class Agenda
     
     /** Determine if this <code>Agenda</code> has any
      *  scheduled items.
+     *
+     *  @return <code>true<code> if the agenda is empty, otherwise
+     *          <code>false</code>.
      */
     public boolean isEmpty()
     {
@@ -264,6 +292,9 @@ public class Agenda
     }
 
     /** Fire the next scheduled <code>Agenda</code> item.
+     *
+     *  @throws ActionInvokationException If an error occurs while
+     *          firing an agenda item.
      */
     public void fireNextItem() throws ActionInvokationException
     {

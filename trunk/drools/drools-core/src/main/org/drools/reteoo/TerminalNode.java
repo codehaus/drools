@@ -4,7 +4,6 @@ package org.drools.reteoo;
 import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
-import org.drools.ModificationException;
 
 import org.drools.spi.Rule;
 
