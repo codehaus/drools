@@ -3,6 +3,8 @@ package org.drools.semantics.base;
 import org.drools.rule.Declaration;
 import org.drools.smf.DurationFactory;
 import org.drools.smf.Configuration;
+import org.drools.smf.FactoryException;
+import org.drools.spi.Duration;
 
 public class BaseDurationFactory
     implements DurationFactory
@@ -27,28 +29,28 @@ public class BaseDurationFactory
              &&
              ! daysStr.trim().equals( "" ) )
         {
-            seconds += Integer.parseInt( daysStr.trim() )
+            seconds += Integer.parseInt( daysStr.trim() );
         }
 
         if ( hoursStr != null
              &&
              ! hoursStr.trim().equals( "" ) )
         {
-            seconds += Integer.parseInt( hoursStr.trim() )
+            seconds += Integer.parseInt( hoursStr.trim() );
         }
 
         if ( minutesStr != null
              &&
              ! minutesStr.trim().equals( "" ) )
         {
-            seconds += Integer.parseInt( minutesStr.trim() )
+            seconds += Integer.parseInt( minutesStr.trim() );
         }
 
         if ( secondsStr != null
              &&
              ! secondsStr.trim().equals( "" ) )
         {
-            seconds += Integer.parseInt( secondsStr.trim() )
+            seconds += Integer.parseInt( secondsStr.trim() );
         }
 
         return new BaseDuration( seconds );

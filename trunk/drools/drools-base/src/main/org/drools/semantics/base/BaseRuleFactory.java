@@ -1,8 +1,10 @@
 package org.drools.semantics.base;
 
-import org.drools.semantics.rule.Rule;
-import org.drools.semantics.smf.RuleFactory;
-import org.drools.semantics.smf.Configuration;
+import org.drools.rule.Rule;
+import org.drools.smf.RuleFactory;
+import org.drools.smf.Configuration;
+import org.drools.smf.FactoryException;
+import org.drools.smf.MissingAttributeException;
 
 public class BaseRuleFactory
     implements RuleFactory
