@@ -2,8 +2,8 @@
 <project>
     <extend>../project.xml</extend>
     <pomVersion>3</pomVersion>
-    <name>Drools :: Example Library - JDK5</name>
-    <artifactId>drools-examples-jdk5</artifactId>
+    <name>Drools :: Spring Integraton - JDK5</name>
+    <artifactId>drools-spring-jdk5</artifactId>
     <groupId>drools</groupId>
 
     <dependencies>
@@ -13,6 +13,7 @@
             <version>${pom.currentVersion}</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
+                <scope>compile, run, test</scope>
             </properties>
         </dependency>
         <dependency>
@@ -21,6 +22,7 @@
             <version>${pom.currentVersion}</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
+                <scope>compile, run, test</scope>
             </properties>
         </dependency>
         <dependency>
@@ -29,6 +31,7 @@
             <version>${pom.currentVersion}</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
+                <scope>compile, run, test</scope>
             </properties>
         </dependency>
         <dependency>
@@ -37,38 +40,7 @@
             <version>${pom.currentVersion}</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>drools</groupId>
-            <artifactId>drools-annotation</artifactId>
-            <version>${pom.currentVersion}</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>drools</groupId>
-            <artifactId>drools-java</artifactId>
-            <version>${pom.currentVersion}</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>drools</groupId>
-            <artifactId>drools-python</artifactId>
-            <version>${pom.currentVersion}</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>drools</groupId>
-            <artifactId>drools-groovy</artifactId>
-            <version>${pom.currentVersion}</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
+                <scope>compile, run, test</scope>
             </properties>
         </dependency>
         <dependency>
@@ -82,54 +54,20 @@
         </dependency>
 
         <dependency>
-            <id>janino</id>
-            <version>2.1.0</version>
-            <artifactId>janino</artifactId>
+            <groupId>springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>1.1.3</version>
             <properties>
-                <requiredBy>drools:drools-smf</requiredBy>
-                <scope>compile, run, test</scope>
+                <scope>compile, run(optional), test</scope>
             </properties>
         </dependency>
-        <dependency>
-            <groupId>antlr</groupId>
-            <artifactId>antlr</artifactId>
-            <version>2.7.2</version>
-            <properties>
-                <requiredBy>??</requiredBy>
-                <scope>??</scope>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>jython</groupId>
-            <artifactId>jython</artifactId>
-            <version>20020827-no-oro</version>
-            <properties>
-                <requiredBy>drools:drools-jython</requiredBy>
-                <scope>compile, run, test</scope>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.0-beta-9</version>
-            <properties>
-                <requiredBy>drools:drools-groovy</requiredBy>
-                <scope>compile, run, test</scope>
-            </properties>
-        </dependency>
-
-		<dependency>
-			<groupId>springframework</groupId>
-			<artifactId>spring</artifactId>
-			<version>1.1.3</version>
-		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.0.4</version>
             <properties>
                 <requiredBy>springframework:spring</requiredBy>
-                <scope>compile, run, test</scope>
+                <scope>compile, run(optional), test</scope>
             </properties>
 		</dependency>
 
@@ -144,7 +82,7 @@
 		<dependency>
 			<groupId>easymock</groupId>
 			<artifactId>easymockclassextension</artifactId>
-			<version>1.1</version>
+            <version>1.1</version>
             <properties>
                 <scope>compile, test</scope>
             </properties>
@@ -166,10 +104,10 @@
                 <scope>compile, test</scope>
             </properties>
 		</dependency>
-
     </dependencies>
 
     <build>
+
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
@@ -195,11 +133,10 @@
         <!-- Resources that are packaged up inside the JAR file -->
         <resources>
             <resource>
-                <directory>src/main</directory>
+                <directory>src/conf</directory>
                 <includes>
-                    <include>**/*.drl</include>
-                    <include>**/*.xml</include>
-                    <include>**/primes.txt.gz</include>
+                    <include>**/*.conf</include>
+                    <include>**/*.xsd</include>
                 </includes>
             </resource>
         </resources>
