@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModuleTag.java,v 1.2 2002-08-02 22:35:27 bob Exp $
+ $Id: SemanticModuleTag.java,v 1.3 2002-08-02 23:13:06 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -127,6 +127,9 @@ public class SemanticModuleTag extends SmfTagSupport
 
         this.module = new SimpleSemanticModule( this.uri );
 
+        getContext().setVariable( "semantic_module",
+                                  this. module );
+
         invokeBody( output );
 
         SemanticsLoader loader = getSemanticsLoader();
@@ -136,6 +139,8 @@ public class SemanticModuleTag extends SmfTagSupport
             getSemanticsLoader().loadSemanticModule( this.module );
         }
 
+        getContext().setVariable( "semantic_module",
+                                  null );
         this.module = null;
         this.uri    = null;
     }
