@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.2 2004-11-17 14:58:41 dbarnett Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.3 2004-11-18 23:11:57 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,5 +54,16 @@ public class PrimitiveLongMapTest extends TestCase
         Collection values = map.values();
         assertNotNull("ValuesNotNullTest ", values);
         assertEquals("ValuesZeroSizeTest ", 0, values.size());
+    }
+    
+    public void testPaging()
+    {
+        PrimitiveLongMap map = new PrimitiveLongMap(2, 1);
+        
+        for (int i = 0; i < 128; i++) {
+            Object oldValue = map.put(i, new Integer(i));
+            assertNull("OldValueNullTest ", oldValue);
+            assertEquals("OldValueNullTest ", new Integer(i), map.get(i));
+        }
     }
 }
