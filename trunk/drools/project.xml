@@ -17,28 +17,40 @@
         allow natural expression of rules within an object-oriented language.
     </description>
     <shortDescription>Rete Based Rules Engine</shortDescription>
-    <url>http://drools.org</url>
+    <url>http://drools.codehaus.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
     <siteAddress>drools.codehaus.org</siteAddress>
     <siteDirectory>/www/drools.codehaus.org</siteDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-core</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
     <versions/>
     <branches/>
     <mailingLists>
         <mailingList>
-            <name>drools interest</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/drools-interest/</archive>
+            <name>announce</name>
+            <subscribe>announce-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>announce-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/announce/</archive>
+        </mailingList>
+        <mailingList>
+            <name>user</name>
+            <subscribe>user-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>user-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/user/</archive>
+        </mailingList>
+        <mailingList>
+            <name>dev</name>
+            <subscribe>dev-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>dev-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/dev/</archive>
         </mailingList>
         <mailingList>
             <name>drools cvs messages</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/drools-cvs/</archive>
+            <subscribe>scm-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>scm-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/scm/</archive>
         </mailingList>
     </mailingLists>
     <developers>
@@ -150,11 +162,22 @@
                 <role>XML Schema Lead</role>
             </roles>
         </contributor>
+        <contributor>
+            <name>Brian Topping</name>
+            <id>topping</id>
+            <email>topping@bill2.com</email>
+            <roles>
+                <role>JSR-94 Contributor</role>
+            </roles>
+        </contributor>
     </contributors>
     <build>
-        <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
+        <nagEmailAddress>scm@drools.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/main</sourceDirectory>
         <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+        <!-- Unit test classes -->
+
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
@@ -169,6 +192,10 @@
                 </resource>
             </resources>
         </unitTest>
+
+        <!-- J A R  R E S O U R C E S -->
+        <!-- Resources that are packaged up inside the JAR file -->
+
         <resources>
             <resource>
                 <directory>src/main</directory>
