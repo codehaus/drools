@@ -37,7 +37,7 @@ public class MockWorkingMemory implements WorkingMemory
      *
      * @return listeners
      */
-    public List getListeners()
+    public List getEventListeners()
     {
         return null;
     }

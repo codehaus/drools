@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.4 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.5 2004-11-09 13:52:39 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,12 +40,12 @@ package org.drools.examples;
  *
  */
 
+import junit.framework.TestCase;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
-import org.drools.reteoo.Dumper;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -60,10 +60,6 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-import junit.framework.TestCase;
-
 import java.io.Serializable;
 /**
  * This Fibonacci example demonstrates how to build a native RuleSet without
@@ -487,7 +483,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         assertEquals(50, total.getTotal());
 
         //test listener
-        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getListeners().get(0);
+        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners().get(0);
         assertEquals(50, listener.asserted);
         assertEquals(48, listener.retracted);
         assertEquals(50, listener.modified);

@@ -95,7 +95,7 @@ public class AgendaItemTest extends DroolsTestCase
 
         AgendaItem item = new AgendaItem( tuple, rule );
 
-        item.fire( tuple.getWorkingMemory( ) );
+        item.fire( ( WorkingMemoryImpl ) tuple.getWorkingMemory( ) );
 
         assertEquals( 1, consequence.getInvokedTuples( ).size( ) );
 

@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.5 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: MannersNativeTest.java,v 1.6 2004-11-09 13:52:39 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,10 +40,7 @@ package org.drools.examples;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import junit.framework.TestCase;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
@@ -64,16 +61,16 @@ import org.drools.spi.Tuple;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,10 +78,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
-
-import junit.framework.TestCase;
-
-import java.io.Serializable;
 
 /**
  * @author Andy Barnett
@@ -701,7 +694,7 @@ public class MannersNativeTest extends TestCase implements Serializable
 
         assertEquals(numGuests, actualGuests);
 
-        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getListeners().get(0);
+        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners().get(0);
         assertEquals(50, listener.asserted);
         assertEquals(0, listener.retracted);
         assertEquals(17, listener.modified);

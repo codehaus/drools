@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.43 2004-11-09 09:03:35 simon Exp $
+ * $Id: Agenda.java,v 1.44 2004-11-09 13:52:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,10 +40,6 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.WorkingMemory;
-import org.drools.event.ActivationCancelledEvent;
-import org.drools.event.ActivationCreatedEvent;
-import org.drools.event.WorkingMemoryEventListener;
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.ConflictResolver;
@@ -55,7 +51,6 @@ import org.drools.util.PriorityQueue;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -82,7 +77,7 @@ class Agenda implements Serializable
     // ------------------------------------------------------------
 
     /** Working memory of this Agenda. */
-    private final WorkingMemory workingMemory;
+    private final WorkingMemoryImpl workingMemory;
 
     /** Items in the agenda. */
     private final PriorityQueue items;
@@ -103,7 +98,7 @@ class Agenda implements Serializable
      * @param workingMemory The <code>WorkingMemory</code> of this agenda.
      * @param conflictResolver The conflict resolver.
      */
-    public Agenda(WorkingMemory workingMemory, ConflictResolver conflictResolver)
+    public Agenda(WorkingMemoryImpl workingMemory, ConflictResolver conflictResolver)
     {
         this.workingMemory = workingMemory;
         this.items = new PriorityQueue( conflictResolver );
@@ -154,20 +149,7 @@ class Agenda implements Serializable
             this.items.add( item );
         }
 
-        List listeners = workingMemory.getListeners( );
-        if ( !listeners.isEmpty( ) )
-        {
-            ActivationCreatedEvent activationCreatedEvent =  new ActivationCreatedEvent(workingMemory,
-                                                                                        tuple.getRule( ).getConsequence( ),
-                                                                                        tuple);
-            Iterator iter = listeners.iterator( );
-            WorkingMemoryEventListener listener;
-            while ( iter.hasNext() )
-            {
-                listener = ( WorkingMemoryEventListener ) iter.next( );
-                listener.activationCreated( activationCreatedEvent );
-            }
-        }
+        workingMemory.getEventSupport( ).fireActivationCreated(rule.getConsequence( ), tuple );
     }
 
     /**
@@ -183,37 +165,21 @@ class Agenda implements Serializable
             return;
         }
 
-        Iterator itemIter = this.items.iterator( );
         AgendaItem eachItem;
         Tuple tuple;
-        ActivationCancelledEvent activationCancelledEvent;
-        List listeners = workingMemory.getListeners();
-        WorkingMemoryEventListener listener;
-        Iterator iter;
+        Iterator itemIter = this.items.iterator( );
+
         while ( itemIter.hasNext( ) )
         {
             eachItem = ( AgendaItem ) itemIter.next( );
 
-            if ( eachItem.getRule( ) == rule )
+            if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                if ( eachItem.getKey( ).containsAll( key ) )
-                {
-                    itemIter.remove( );
-                    if ( !listeners.isEmpty( ) )
-                    {
-                        tuple = eachItem.getTuple( );
-                        activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
-                                                                                 tuple.getRule( ).getConsequence( ),
-                                                                                 tuple);
+                tuple = eachItem.getTuple();
 
-                        iter = workingMemory.getListeners().iterator();
-                        while ( iter.hasNext( ) )
-                        {
-                            listener = (WorkingMemoryEventListener) iter.next( );
-                            listener.activationCancelled( activationCancelledEvent );
-                        }
-                    }
-                }
+                itemIter.remove( );
+
+                this.workingMemory.getEventSupport().fireActivationCancelled( rule.getConsequence(), tuple );
             }
         }
 
@@ -223,28 +189,51 @@ class Agenda implements Serializable
         {
             eachItem = ( AgendaItem ) itemIter.next( );
 
-            if ( eachItem.getRule( ) == rule )
+            if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                if ( eachItem.getKey( ).containsAll( key ) )
-                {
-                    cancelItem( eachItem );
-                    itemIter.remove( );
-                    if ( !listeners.isEmpty( ) )
-                    {
-                        tuple = eachItem.getTuple( );
-                        activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
-                                                                                 tuple.getRule( ).getConsequence( ),
-                                                                                 tuple);
+                tuple = eachItem.getTuple();
 
-                        iter = workingMemory.getListeners().iterator();
-                        while ( iter.hasNext( ) )
-                        {
-                            listener = ( WorkingMemoryEventListener ) iter.next( );
-                            listener.activationCancelled( activationCancelledEvent );
-                        }
-                    }
-                }
+                cancelItem( eachItem );
+
+                itemIter.remove( );
+
+                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule.getConsequence(), tuple );
             }
+        }
+    }
+
+    void clearAgenda()
+    {
+        AgendaItem eachItem;
+        Tuple tuple;
+        Iterator iter = this.items.iterator( );
+
+        while ( iter.hasNext( ) )
+        {
+            eachItem = ( AgendaItem ) iter.next( );
+
+            tuple = eachItem.getTuple();
+
+            cancelItem( eachItem );
+
+            iter.remove( );
+
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
+                                                                           tuple);
+        }
+
+        iter = this.scheduledItems.iterator( );
+
+        while ( iter.hasNext( ) )
+        {
+            eachItem = ( AgendaItem ) iter.next( );
+
+            tuple = eachItem.getTuple();
+
+            iter.remove( );
+
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
+                                                                           tuple);
         }
     }
 
@@ -253,9 +242,9 @@ class Agenda implements Serializable
      *
      * @param item The item to schedule.
      */
-    void scheduleItem(AgendaItem item)
+    void scheduleItem( AgendaItem item )
     {
-        Scheduler.getInstance( ).scheduleAgendaItem( item, this.workingMemory );
+        Scheduler.getInstance().scheduleAgendaItem( item, this.workingMemory );
     }
 
     /**
@@ -263,60 +252,9 @@ class Agenda implements Serializable
      *
      * @param item The item to cancel.
      */
-    void cancelItem(AgendaItem item)
+    void cancelItem( AgendaItem item )
     {
-        Scheduler.getInstance( ).cancelAgendaItem( item );
-    }
-
-    void clearAgenda()
-    {
-        AgendaItem item;
-        Tuple tuple;
-        ActivationCancelledEvent activationCancelledEvent;
-        List listeners = workingMemory.getListeners();
-        WorkingMemoryEventListener listener;
-        Iterator iter;
-        while ( !this.items.isEmpty( ) )
-        {
-            item = ( AgendaItem ) this.items.remove( );
-            if (!listeners.isEmpty( ))
-            {
-                tuple = item.getTuple();
-                activationCancelledEvent =  new ActivationCancelledEvent( workingMemory,
-                                                                          tuple.getRule( ).getConsequence( ),
-                                                                          tuple);
-
-                iter = workingMemory.getListeners().iterator();
-                while ( iter.hasNext( ) )
-                {
-                    listener = ( WorkingMemoryEventListener ) iter.next( );
-                    listener.activationCancelled( activationCancelledEvent );
-                }
-            }
-        }
-
-        Iterator it = scheduledItems.iterator( );
-        while (it.hasNext())
-        {
-            item = (AgendaItem) it.next( );
-            cancelItem(item);
-            it.remove( );
-            if ( !listeners.isEmpty() )
-            {
-                tuple = item.getTuple( );
-                activationCancelledEvent =  new ActivationCancelledEvent( workingMemory,
-                                                                          tuple.getRule( ).getConsequence( ),
-                                                                          tuple );
-
-                iter = workingMemory.getListeners().iterator( );
-                while ( iter.hasNext( ) )
-                {
-                    listener = ( WorkingMemoryEventListener ) iter.next( );
-                    listener.activationCancelled( activationCancelledEvent );
-                }
-            }
-
-        }
+        Scheduler.getInstance().cancelAgendaItem( item );
     }
 
     /**

@@ -7,13 +7,13 @@ import org.drools.spi.Tuple;
 
 public class ConditionTestedEvent extends WorkingMemoryEvent
 {
-    private Rule      rule;
+    private final Rule      rule;
 
-    private Condition condition;
+    private final Condition condition;
 
-    private Tuple     tuple;
+    private final Tuple     tuple;
 
-    private boolean   passed;
+    private final boolean   passed;
 
     public ConditionTestedEvent(WorkingMemory workingMemory,
                                 Rule rule,

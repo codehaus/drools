@@ -1,8 +1,8 @@
 package org.drools.event;
 
-import java.util.EventObject;
-
 import org.drools.WorkingMemory;
+
+import java.util.EventObject;
 
 public class WorkingMemoryEvent extends EventObject
 {
@@ -11,7 +11,7 @@ public class WorkingMemoryEvent extends EventObject
         super( workingMemory );
     }
 
-    public WorkingMemory getWorkingMemory()
+    public final WorkingMemory getWorkingMemory()
     {
         return ( WorkingMemory ) getSource( );
     }

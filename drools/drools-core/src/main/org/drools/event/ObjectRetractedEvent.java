@@ -5,7 +5,7 @@ import org.drools.WorkingMemory;
 
 public class ObjectRetractedEvent extends WorkingMemoryEvent
 {
-    private FactHandle handle;
+    private final FactHandle handle;
 
     public ObjectRetractedEvent(WorkingMemory workingMemory, FactHandle handle)
     {

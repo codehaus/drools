@@ -34,8 +34,6 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * Clear the Agenda
-     *
-     * @return The <code>Agenda</code>.
      */
     public void clearAgenda()
     {
@@ -47,7 +45,7 @@ public class MockWorkingMemory implements WorkingMemory
      *
      * @return listeners
      */
-    public List getListeners()
+    public List getEventListeners()
     {
         return null;
     }

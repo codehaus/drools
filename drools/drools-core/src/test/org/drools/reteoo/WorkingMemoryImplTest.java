@@ -1,6 +1,8 @@
+package org.drools.reteoo;
+
 /*
- * $Id: WorkingMemoryImplTest.java,v 1.3 2004/09/16 23:43:08 mproctor
- * Exp $
+ * $Id: WorkingMemoryImplTest.java,v 1.4 2004-11-09 13:52:39 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -37,7 +39,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package org.drools.reteoo;
 
 import junit.framework.TestCase;
 import org.drools.FactHandle;
@@ -56,7 +57,6 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
- * @version $Id: WorkingMemoryImplTest.java,v 1.3 2004-11-07 13:12:16 simon Exp $
  */
 public class WorkingMemoryImplTest extends TestCase
 {
