@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ $Id: ClassObjectType.java,v 1.2 2002-08-18 19:59:31 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import org.drools.spi.ObjectType;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.1 2002-08-18 05:27:09 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.2 2002-08-18 19:59:31 bob Exp $
  */
 public class ClassObjectType implements ObjectType
 {
@@ -60,7 +60,7 @@ public class ClassObjectType implements ObjectType
 
     public ClassObjectType()
     {
-        // intentionally left blank
+        this.objectTypeClass = java.lang.Object.class;
     }
 
     public ClassObjectType(Class objectTypeClass)

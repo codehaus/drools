@@ -17,6 +17,7 @@ public class Interp
 
     protected Interp()
     {
+        this.interp = new Interpreter();
         this.text = null;
     }
 
@@ -26,12 +27,17 @@ public class Interp
         {
             setUpInterpreter( tuple );
 
-            return this.interp.eval( getText() );
+            return evaluate();
         }
         finally
         {
             cleanUpInterpreter( tuple );
         }
+    }
+
+    protected Object evaluate() throws EvalError
+    {
+        return this.interp.eval( getText() );
     }
 
     public String getText()
