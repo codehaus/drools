@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xml:lang="en"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://drools.org/rules"
+           xmlns="http://drools.org/rules"
+           xmlns:drl="http://drools.org/rules"
+           elementFormDefault="qualified"
+           version="ALPHA 1.0">
+
+<xs:annotation>
+ <xs:documentation>
+  Title: DRL.xsd DRL-Schema version ALPHA 1.0
+ </xs:documentation>
+ <xs:documentation>
+  Author: Roger F. Gay 
+  Contact: roger.f.gay@picslt.org 
+  Date: August 18, 2003
+ </xs:documentation>
+</xs:annotation>
+
+<xs:annotation>
+ <xs:documentation>
+  Imports the schemata that support use of specific semantic modules
+    this version: java, python, and jelly. Namespace qualified.
+ </xs:documentation>
+</xs:annotation>
+
+<xs:import namespace="http://drools.org/semantics/java"   schemaLocation="java.xsd" />
+<xs:import namespace="http://drools.org/semantics/python" schemaLocation="python.xsd" />
+<xs:import namespace="http://drools.org/semantics/jelly"  schemaLocation="jelly.xsd" />
+
+<xs:annotation>
+ <xs:documentation>
+  Define the head element "rules" with 0 to unbounded "RulesChildren"
+   The name (attribute) of a rule in the rules context (rules.rule outside
+    a rule-set) must be unique.
+   The name (attribute) for any rule-set (rules.rule-set) must be unique.
+ </xs:documentation>
+</xs:annotation>
+<xs:element name="rules">
+  <xs:complexType>
+   <xs:group ref="RulesChildren" minOccurs="0" maxOccurs="unbounded" />
+  </xs:complexType>
+  <xs:unique name="unique1">
+   <xs:selector xpath="drl:rule" />
+   <xs:field xpath="@name" />
+  </xs:unique>
+  <xs:unique name="unique2">
+   <xs:selector xpath="drl:rule-set" />
+   <xs:field xpath="@name" />
+  </xs:unique>
+</xs:element>
+
+<xs:annotation>
+ <xs:documentation>
+   The "rules" children (RulesChildren) are semantics, rule, and rule-set
+   These children may appear any number of times (see 0 to unbounded in "rules"),
+    and by "choice" (in this group) they may appear in any order.
+   The identifier (attribute) of a parameter within the context of a rule must be unique.
+   The identifier (attribute) of a declaration within the context of a rule must be unique.
+   The target (attribute) of an extraction within the context of a rule must be unique.
+   The name (attribute) of a rule within a rules.rule-set context must be unique.
+ </xs:documentation>
+</xs:annotation>
+<xs:group name="RulesChildren">
+ <xs:choice>
+  <xs:element name="semantics" type="drl-semantics" />
+  <xs:element name="rule"      type="drl-rule">
+   <xs:unique name="unique3">
+    <xs:selector xpath="drl:parameter" />
+    <xs:field xpath="@identifier" />
+   </xs:unique>
+   <xs:unique name="unique4">
+    <xs:selector xpath="drl:declaration" />
+    <xs:field xpath="@identifier" />
+   </xs:unique>
+   <xs:unique name="unique5">
+    <xs:selector xpath="drl:extraction" />
+    <xs:field xpath="@target" />
+   </xs:unique>
+  </xs:element>
+  <xs:element name="rule-set"  type="drl-rule-set">
+   <xs:unique name="unique6">
+    <xs:selector xpath="drl:rule" />
+    <xs:field xpath="@name" />
+   </xs:unique>
+  </xs:element>
+ </xs:choice>
+</xs:group>
+
+<xs:annotation>
+ <xs:documentation>
+  The semantics tag has one attibute, "value." The value of "value" is
+    restricted to reference one of the existing semantics support modules;
+    java, python, or jelly. In this version of the schema, semantics tags can 
+    appear any number of times (allows repetition), and in any order in 
+    relation to rule-set tags and rule tags that are outside of rule-set tags.
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-semantics">
+  <xs:attribute name="module" use="required">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="org.drools.semantics.java" />
+        <xs:enumeration value="org.drools.semantics.python" />
+        <xs:enumeration value="org.drools.semantics.jelly" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+   "rule-set" is a container for "rule"s. It may contain any number 
+      of "rule"s (including 0). 
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-rule-set">
+  <xs:sequence>
+   <xs:element name="rule" type="drl-rule" minOccurs="0" maxOccurs="unbounded" />
+  </xs:sequence>
+  <xs:attribute name="name" use="required" type="xs:string" />
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+   "rule" The schema defines an order in which the children of rule must occur, 
+    and number of occurrences of each.
+      parameter (at least one)
+      declaration, extraction, and condition (any number in any order)
+      duration (at most one)
+      consequence (1 occurrence)
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-rule">
+ <xs:sequence>
+  <xs:element name="parameter"   type="drl-parameter" maxOccurs="unbounded" />
+  <xs:group ref="OptionalRuleChildren" minOccurs="0" maxOccurs="unbounded" />
+  <xs:element name="duration"    type="drl-duration" minOccurs="0" />
+  <xs:element name="consequence" type="drl-consequence" />
+ </xs:sequence>
+ <xs:attribute name="name" use="required" type="xs:string" />
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+   "parameter" is currently supported by the java semantics module only.
+     The "any" tag allows externally defined tags, in this case for 
+     the java:class tag that wraps parameter information. Use of externally
+     defined tags for "parameter"is restricted to the drools ... java namespace.
+     By definition in drl-rule, parameter tag(s) must appear as the first 
+      element(s) in a rule, and there must be at least one.
+     The "declaration" tag also uses the drl-parameter definition.
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-parameter">
+ <xs:sequence>
+  <xs:any namespace="http://drools.org/semantics/java" />
+ </xs:sequence>
+ <xs:attribute name="identifier" use="required" type="xs:string" />
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+  "declaration", "extraction", and "condition" are the OptionalRuleChildren
+     of the "rule" element. By definition in the "rule" element, they may 
+     appear any number of times, and in any order (choice) in relation to 
+     one another. 
+      Note that the "declaration" element uses the drl-parameter definition.
+ </xs:documentation>
+</xs:annotation>
+<xs:group name="OptionalRuleChildren">
+ <xs:choice>
+  <xs:element name="declaration" type="drl-parameter" />
+  <xs:element name="extraction"  type="drl-extraction" />
+  <xs:element name="condition"   type="drl-condition" />
+ </xs:choice>
+</xs:group>
+
+<xs:annotation>
+ <xs:documentation>
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-extraction">
+ <xs:sequence>
+  <xs:any namespace="http://drools.org/semantics/java
+                     http://drools.org/semantics/python" />
+  </xs:sequence>
+  <xs:attribute name="target" use="required" type="xs:string" />
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-condition">
+ <xs:sequence>
+  <xs:any namespace="http://drools.org/semantics/java
+                     http://drools.org/semantics/python" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+  The "duration" tag is currently a wrapper for the "fixed-duration" tag.
+   By definition in drl-rule, the duration tag may appear only once within
+   the context of any rule, following OptionalRuleChildren and before consequence.
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-duration">
+ <xs:choice>
+  <xs:element name="fixed-duration" type="drl-fixed-duration" />
+ </xs:choice>
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+   The "fixed-duration" tag may only appear within a "duration" tag, 
+    and by definition in drl-rule at most once.
+    By the definition of the "duration" tag, it may appear only once.
+    It has attributes defined in FixedDurationAttributes (below).
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-fixed-duration">
+  <xs:attributeGroup ref="FixedDurationAttributes" />
+</xs:complexType>
+
+<xs:annotation>
+ <xs:documentation>
+  The attributes of a "fixed-duration" tag may appear in any order, 
+   and may each appear 0 or 1 times.
+ </xs:documentation>
+</xs:annotation>
+<xs:attributeGroup name="FixedDurationAttributes">
+  <xs:attribute name="seconds" type="xs:integer" use="optional" />
+  <xs:attribute name="minutes" type="xs:integer" use="optional" />
+  <xs:attribute name="hours"   type="xs:integer" use="optional" />
+  <xs:attribute name="days"    type="xs:integer" use="optional" />
+  <xs:attribute name="weeks"   type="xs:integer" use="optional" />
+</xs:attributeGroup>
+
+<xs:annotation>
+ <xs:documentation>
+   "consequence" must appear once and only once in the context of a rule,
+      by definition in drl-rule. "consequence" is a wrapper for externally
+      defined consequence tags. It is namespace restricted to 
+       drools ... java, python, and jelly.
+ </xs:documentation>
+</xs:annotation>
+<xs:complexType name="drl-consequence">
+ <xs:sequence>
+  <xs:any namespace="http://drools.org/semantics/java
+                     http://drools.org/semantics/python
+                     http://drools.org/semantics/jelly" />
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>
