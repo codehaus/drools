@@ -1,69 +1,108 @@
 package org.drools.conflict;
 
-import org.drools.rule.Rule;
-import org.drools.spi.Activation;
-import org.drools.spi.ConflictResolver;
+/*
+$Id: SimplicityConflictResolver.java,v 1.3 2004-06-26 15:10:56 mproctor Exp $
+
+Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+
+Redistribution and use of this software and associated documentation
+("Software"), with or without modification, are permitted provided
+that the following conditions are met:
+
+1. Redistributions of source code must retain copyright
+statements and notices.  Redistributions must also contain a
+copy of this document.
+
+2. Redistributions in binary form must reproduce the
+above copyright notice, this list of conditions and the
+following disclaimer in the documentation and/or other
+materials provided with the distribution.
+
+3. The name "drools" must not be used to endorse or promote
+products derived from this Software without prior written
+permission of The Werken Company.  For written permission,
+please contact bob@werken.com.
+
+4. Products derived from this Software may not be called "drools"
+nor may "drools" appear in their names without prior written
+permission of The Werken Company. "drools" is a trademark of
+The Werken Company.
+
+5. Due credit should be given to The Werken Company.
+(http://werken.com/)
+
+THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
 
 import java.util.List;
 import java.util.ListIterator;
 
-public class SimplicityConflictResolver
-    extends SalienceConflictResolver
+import org.drools.spi.Activation;
+import org.drools.spi.ConflictResolver;
+
+public class SimplicityConflictResolver extends SalienceConflictResolver
 {
-    private static final ConflictResolver INSTANCE = new SimplicityConflictResolver();
+	private static final ConflictResolver INSTANCE = new SimplicityConflictResolver( );
 
-    public static ConflictResolver getInstance()
-    {
-        return INSTANCE;
-    }
+	public static ConflictResolver getInstance()
+	{
+		return INSTANCE;
+	}
 
-    public SimplicityConflictResolver()
-    {
+	public SimplicityConflictResolver()
+	{
 
-    }
+	}
 
-    public List insert(Activation activation,
-                       List list)
-    {
-        int numConditions = activation.getRule().getConditions().length;
+	public List insert( Activation activation, List list )
+	{
+		int numConditions = activation.getRule( ).getConditions( ).length;
 
-        for ( ListIterator listIter = list.listIterator();
-              listIter.hasNext(); )
-        {
-            Activation eachActivation = (Activation) listIter.next();
+		for ( ListIterator listIter = list.listIterator( ); listIter.hasNext( ); )
+		{
+			Activation eachActivation = (Activation) listIter.next( );
 
-            int eachNumConditions = eachActivation.getRule().getConditions().length;
+			int eachNumConditions = eachActivation.getRule( ).getConditions( ).length;
 
-            if ( numConditions < eachNumConditions )
-            {
-                listIter.previous();
-                listIter.add( activation );
-            }
-            else if ( numConditions == eachNumConditions )
-            {
-                int startIndex = listIter.previousIndex();
+			if ( numConditions < eachNumConditions )
+			{
+				listIter.previous( );
+				listIter.add( activation );
+			}
+			else if ( numConditions == eachNumConditions )
+			{
+				int startIndex = listIter.previousIndex( );
 
-              FIND_SUB_LIST:
-                while ( listIter.hasNext() )
-                {
-                    eachActivation = (Activation) listIter.next();
+				FIND_SUB_LIST : while ( listIter.hasNext( ) )
+				{
+					eachActivation = (Activation) listIter.next( );
 
-                    if ( eachActivation.getRule().getConditions().length != numConditions )
-                    {
-                        break FIND_SUB_LIST;
-                    }
-                }
+					if ( eachActivation.getRule( ).getConditions( ).length != numConditions )
+					{
+						break FIND_SUB_LIST;
+					}
+				}
 
-                int endIndex = listIter.previousIndex();
+				int endIndex = listIter.previousIndex( );
 
-                super.insert( activation,
-                              list.subList( startIndex,
-                                            endIndex ) );
-                return list;
-            }
-        }
+				super.insert( activation, list.subList( startIndex, endIndex ) );
+				return list;
+			}
+		}
 
-        list.add( activation );
-        return list;
-    }
+		list.add( activation );
+		return list;
+	}
 }

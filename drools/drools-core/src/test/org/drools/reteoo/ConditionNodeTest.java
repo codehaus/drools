@@ -5,7 +5,6 @@ import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.RuleSet;
-import org.drools.spi.Condition;
 import org.drools.spi.TrueCondition;
 import org.drools.spi.FalseCondition;
 import org.drools.MockObjectType;

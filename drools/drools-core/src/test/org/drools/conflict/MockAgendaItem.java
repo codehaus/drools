@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: MockAgendaItem.java,v 1.1 2004-06-25 01:53:15 mproctor Exp $
+ $Id: MockAgendaItem.java,v 1.2 2004-06-26 15:10:56 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -10,26 +10,26 @@ package org.drools.conflict;
  that the following conditions are met:
 
  1. Redistributions of source code must retain copyright
-    statements and notices.  Redistributions must also contain a
-    copy of this document.
+ statements and notices.  Redistributions must also contain a
+ copy of this document.
 
  2. Redistributions in binary form must reproduce the
-    above copyright notice, this list of conditions and the
-    following disclaimer in the documentation and/or other
-    materials provided with the distribution.
+ above copyright notice, this list of conditions and the
+ following disclaimer in the documentation and/or other
+ materials provided with the distribution.
 
  3. The name "drools" must not be used to endorse or promote
-    products derived from this Software without prior written
-    permission of The Werken Company.  For written permission,
-    please contact bob@werken.com.
+ products derived from this Software without prior written
+ permission of The Werken Company.  For written permission,
+ please contact bob@werken.com.
 
  4. Products derived from this Software may not be called "drools"
-    nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of
-    The Werken Company.
+ nor may "drools" appear in their names without prior written
+ permission of The Werken Company. "drools" is a trademark of
+ The Werken Company.
 
  5. Due credit should be given to The Werken Company.
-    (http://werken.com/)
+ (http://werken.com/)
 
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
@@ -46,80 +46,83 @@ package org.drools.conflict;
 
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactHandle;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
+import org.drools.spi.MockTuple;
 import org.drools.spi.Tuple;
-import org.drools.spi.ConsequenceException;
 
-/** Item entry in the <code>Agenda</code>.
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+/**
+ * Item entry in the <code>Agenda</code>.
+ * 
+ * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-class MockAgendaItem
-    implements Activation
+class MockAgendaItem implements Activation
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
+	// ------------------------------------------------------------
+	//     Instance members
+	// ------------------------------------------------------------
 
-    /** The tuple. */
-    private MockTuple tuple;
+	/** The tuple. */
+	private MockTuple tuple;
 
-    /** The rule. */
-    private Rule      rule;
+	/** The rule. */
+	private Rule rule;
 
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
+	// ------------------------------------------------------------
+	//     Constructors
+	// ------------------------------------------------------------
 
-    /** Construct.
-     *
-     *  @param tuple The tuple.
-     *  @param rule The rule.
-     */
-    MockAgendaItem(MockTuple tuple,
-               Rule rule)
-    {
-        this.tuple    = tuple;
-        this.rule     = rule;
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param tuple
+	 *            The tuple.
+	 * @param rule
+	 *            The rule.
+	 */
+	MockAgendaItem( MockTuple tuple, Rule rule )
+	{
+		this.tuple = tuple;
+		this.rule = rule;
+	}
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
+	// ------------------------------------------------------------
+	//     Instance methods
+	// ------------------------------------------------------------
 
-    /** Retrieve the rule.
-     *
-     *  @return The rule.
-     */
-    public Rule getRule()
-    {
-        return this.rule;
-    }
+	/**
+	 * Retrieve the rule.
+	 * 
+	 * @return The rule.
+	 */
+	public Rule getRule()
+	{
+		return this.rule;
+	}
 
-    /** Set the tuple.
-     *
-     *  @param tuple The tuple.
-     */
-    void setTuple(MockTuple tuple)
-    {
-        this.tuple = tuple;
-    }
+	/**
+	 * Set the tuple.
+	 * 
+	 * @param tuple
+	 *            The tuple.
+	 */
+	void setTuple( MockTuple tuple )
+	{
+		this.tuple = tuple;
+	}
 
-    /** Retrieve the tuple.
-     *
-     *  @return The tuple.
-     */
-    public Tuple getTuple()
-    {
-        return this.tuple;
-    }
+	/**
+	 * Retrieve the tuple.
+	 * 
+	 * @return The tuple.
+	 */
+	public Tuple getTuple()
+	{
+		return this.tuple;
+	}
 
-    public String toString()
-    {
-        return "[" + this.rule.getName() + " " + this.tuple + "]";
-    }
+	public String toString()
+	{
+		return "[" + this.rule.getName( ) + " " + this.tuple + "]";
+	}
 }

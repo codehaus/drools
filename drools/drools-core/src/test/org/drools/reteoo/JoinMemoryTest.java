@@ -1,12 +1,6 @@
 package org.drools.reteoo;
 
-import org.drools.reteoo.MockTupleSource;
-import org.drools.rule.Declaration;
-import org.drools.MockObjectType;
-
 import junit.framework.TestCase;
-
-import java.util.Set;
 
 public class JoinMemoryTest
     extends TestCase
