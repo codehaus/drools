@@ -80,7 +80,7 @@
       <goal name="ydoc-all" description="Generates Javadoc including cool UMLdiagrams">
          <attainGoal name="tweak-compile.src.set"/>
          <javadoc
-           destdir="target/docs"
+           destdir="target/docs/apidocs"
            author="true"
            additionalparam="-J-Djava.awt.headless=true">
 
@@ -234,20 +234,8 @@
       </ant:delete>
     </goal>
 
-    <goal name="drools:deploy" prereqs="drools:dist-javadoc">
-      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
-        <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
-      </exec>
-      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
-        <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
-      </exec>
+    <goal name="drools:deploy" >
 
-      <exec dir="." executable="${maven.ssh.executable}">
-        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
-      </exec>
-
-      <j:set var="goal" value="jar:deploy"/>
-      <attainGoal name="multiproject:goal"/>
 
       <exec dir="${basedir}/target" executable="${maven.scp.executable}">
         <arg line="${maven.scp.args} drools-all-${pom.currentVersion}.jar ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/jars/"/>
