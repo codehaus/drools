@@ -41,6 +41,38 @@ public class BuilderTest extends TestCase
         this.objectDecl = this.rule1.addParameterDeclaration( "object", this.objectType );
     }
 
+    public void testCreateParameterNodesSameIdDifferentRules() throws Exception
+    { 
+        Rule rule_1 = new Rule( "rule-1" );
+        rule_1.addParameterDeclaration("p1", stringType);
+        
+        Rule rule_2 = new Rule( "rule-2" );
+        rule_2.addParameterDeclaration("p1", stringType);
+
+        List nodes_1 = this.builder.createParameterNodes( rule_1 );
+        List nodes_2 = this.builder.createParameterNodes( rule_1 );
+        
+        assertEquals(1, nodes_1.size());
+        assertEquals(1, nodes_2.size());
+        assertSame(nodes_1.get(0), nodes_2.get(0));
+    }
+    
+    public void testCreateParameterNodesDifferentIdsSameTypes() throws Exception
+    { 
+        Rule rule_1 = new Rule( "rule-1" );
+        rule_1.addParameterDeclaration("p1", stringType);
+        
+        Rule rule_2 = new Rule( "rule-2" );
+        rule_2.addParameterDeclaration("p2", stringType);
+
+        List nodes_1 = this.builder.createParameterNodes( rule_1 );
+        List nodes_2 = this.builder.createParameterNodes( rule_2 );
+        
+        assertEquals(1, nodes_1.size());
+        assertEquals(1, nodes_2.size());
+        assertNotSame(nodes_1.get(0), nodes_2.get(0));
+    }
+    
     public void testCreateParameterNodes()
     {
         List nodes = this.builder.createParameterNodes( this.rule1 );

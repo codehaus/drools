@@ -17,10 +17,16 @@
       <j:set var="goal" value="jar:jar"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
+    
+    <goal name="jar-install-all">
+      <mkdir dir="${basedir}/target"/>
+      <j:set var="goal" value="jar:install"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
 
     <goal name="damagecontrol">
       <ant:delete includeEmptyDirs="true" verbose="true">
-	<ant:fileset dir="." includes="drools-*/target"/>
+	  <ant:fileset dir="." includes="drools-*/target"/>
       </ant:delete>
       <attainGoal name="multiproject:install"/>
     </goal>
@@ -29,7 +35,12 @@
       <attainGoal name="multiproject:install"/>
     </goal>
 
-    <goal name="clean-all">
+    <goal name="clean-all" prereqs="clean-all:prepare">
+      <attainGoal name="multiproject:clean"/>
+      <attainGoal name="clean"/>
+    </goal>
+    
+    <goal name="clean-all:prepare">
       <mkdir dir="${maven.build.dir}"/>
       <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-core-${pom.currentVersion}.jar"/>
@@ -41,8 +52,6 @@
       <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smf-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
-      <attainGoal name="multiproject:clean"/>
-      <attainGoal name="clean"/>
     </goal>
 
     <goal name="tweak-compile.src.set">
@@ -55,6 +64,7 @@
         <ant:pathelement path="drools-jsr94/src/main"/>
         <ant:pathelement path="drools-groovy/src/main"/>
         <ant:pathelement path="drools-python/src/main"/>
+        <ant:pathelement path="drools-annotation/src/main"/>
         <ant:pathelement path="drools-smftest/src/main"/>
       </ant:path>
 
@@ -406,6 +416,87 @@
       <mkdir dir="${basedir}/target/dependencies/"/>
       <j:set var="goal" value="get-deps"/>
       <attainGoal name="multiproject:goal"/>
+    </goal>
+    
+    
+    <!-- Hacks to support building with multiple JDKs. See also project.properties. -->
+    <!--  - TODO Optimize postGoals that do not need to fork a new maven. -->
+    <!--  - TODO Check if the 'goal' variable is available to postGoals. -->
+    <!--  - TODO How to handle 'drools:jar-all'? -->
+    <!--  - TODO How to handle 'damagecontrol'? -->
+    
+    <postGoal name="jar-all">
+      <j:set var="goal" value="jar:jar"/>
+      <attainGoal name="drools-jdk5-maven"/>
+    </postGoal>
+    
+    <postGoal name="jar-install-all">
+      <j:set var="goal" value="jar:install"/>      
+      <attainGoal name="drools-jdk5-maven"/>
+    </postGoal>
+    
+    <postGoal name="checkstyle-all">
+      <j:set var="goal" value="checkstyle:report,maven-jxr-plugin:report,xdoc"/>      
+      <attainGoal name="drools-jdk5-maven"/>
+    </postGoal>
+    
+    <postGoal name="deploy-snapshot-all">
+      <j:set var="goal" value="jar:deploy-snapshot"/>
+      <attainGoal name="drools-jdk5-maven"/>
+    </postGoal>
+    
+    <postGoal name="eclipse-all">
+      <j:set var="goal" value="eclipse"/>
+      <attainGoal name="drools-jdk5-maven"/>
+    </postGoal>
+
+    <postGoal name="crlf-all">
+      <j:set var="goal" value="crlf"/>
+      <attainGoal name="drools-jdk5-mavenl"/>
+    </postGoal>
+
+    <postGoal name="clean-all:prepare">
+      <touch file="${maven.build.dir}/drools-annotation-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-annotation-examples-${pom.currentVersion}.jar"/>
+    </postGoal>
+    
+    <preGoal name="clean-all">
+      <j:set var="goal" value="clean:clean"/>
+      <attainGoal name="drools-jdk5-maven"/>
+    </preGoal>
+    
+    <!-- TODO Can ydoc handle java5? -->
+    
+    <goal name="drools-jdk5-maven">
+      <j:choose>
+        <j:when test="${context.getVariable('drools.jdk5.home') == null}">
+          <ant:echo message="Skipping ${goal} for ${drools.jdk5.projects}: 'drools.jdk5.home' not defined"/>
+        </j:when>
+        
+        <j:otherwise>
+          <u:tokenize var="projects" delim=",">${drools.jdk5.projects}</u:tokenize>
+          <j:forEach var="jdk5.project.file" items="${projects}">
+              <ant:java
+                classname="com.werken.forehead.Forehead"
+                jvm="${drools.jdk5.home}/bin/java"
+                fork="yes">
+                <jvmarg value="-Djava.home=${drools.jdk5.home}"/>
+                <jvmarg value="-Dmaven.home=${maven.home}"/>
+                <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=${javax.xml.parsers.SAXParserFactory}"/>
+                <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=${javax.xml.parsers.DocumentBuilderFactory}"/>
+                <jvmarg value="-Djava.endorsed.dirs=${drools.jdk5.home}/lib/endorsed${path.separator}${maven.home}/lib/endorsed"/>
+                <jvmarg value="-Dtools.jar=${drools.jdk5.home}/lib/tools.jar"/>
+                <jvmarg value="-Dforehead.conf.file=${forehead.conf.file}"/>
+                <arg value="-b"/>
+                <arg value="-p${jdk5.project.file}"/>
+                <arg value="${goal}"/>
+                <classpath>
+                  <pathelement path="${java.class.path}"/>
+                </classpath>
+              </ant:java>
+          </j:forEach>
+        </j:otherwise>
+      </j:choose>
     </goal>
 </project>
 

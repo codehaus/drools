@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: DroolsException.java,v 1.17 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: DroolsException.java,v 1.18 2005-01-09 23:49:24 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,7 @@ import java.io.PrintWriter;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: DroolsException.java,v 1.17 2004-12-06 04:51:36 dbarnett Exp $
+ * @version $Id: DroolsException.java,v 1.18 2005-01-09 23:49:24 memelet Exp $
  */
 public class DroolsException extends Exception
 {
@@ -95,6 +95,17 @@ public class DroolsException extends Exception
         this.rootCause = rootCause;
     }
 
+    /**
+     * Construct with a message and root cause.
+     *
+     * @param rootCause
+     *            The root cause of this exception.
+     */
+    public DroolsException( String msg, Throwable rootCause )
+    {
+        super( msg );
+        this.rootCause = rootCause;
+    }
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
