@@ -183,7 +183,7 @@
         <get dest="${lib.dir}/${janino.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/janino/jars/${janino.jar}"/>
         <get dest="${lib.dir}/${xerces.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-	    src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
+            src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
 
         <!-- Local JARs not found at ibiblio -->
         <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
@@ -325,9 +325,14 @@
                 <fileset dir="${test-src.dir}">
                     <include name="**/*Test.java"/>
                     <include name="**/jsr94/**/*TestCase.java"/>
-
-                    <!-- TODO: Need to figure out why PythonSemanticTest fails!  -->
                     <exclude name="**/PythonSemanticTest.java"/>
+                </fileset>
+            </batchtest>
+            <batchtest fork="yes">
+                <fileset dir="${test-src.dir}">
+                    <!-- TODO: Need to figure out why PythonSemanticTest fails unless it is forked!
+                               (see http://jira.codehaus.org/browse/DROOLS-198) -->
+                    <include name="**/PythonSemanticTest.java"/>
                 </fileset>
             </batchtest>
         </junit>
