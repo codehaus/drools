@@ -41,22 +41,22 @@
       </p>
       <div class="code">
 <pre>
-<a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a> workingMemory = ruleBase.<a href="TOP/api/org/drools/RuleBase.html#newWorkingMemory()">newWorkingMemory()</a>;  
+<a href="TOP/api/org/drools/WorkingMemory.html">WorkingMemory</a> workingMemory = ruleBase.<a href="TOP/api/org/drools/RuleBase.html#newWorkingMemory()">newWorkingMemory</a>();  
 
 Person person = new Person();
 
-<a href="TOP/api/org/drools/FactHandle.html">FactHandle</a> handle = workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#assertObject(java.lang.Object)">assertObject( person )</a>;
+<a href="TOP/api/org/drools/FactHandle.html">FactHandle</a> handle = workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#assertObject(java.lang.Object)">assertObject</a>( person );
 
 person.setAge( 52 );
 
-workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#modifyObject(org.drools.FactHandle,java.lang.Object)">modifyObject( handle, 
-                            person )</a>;
+workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#modifyObject(org.drools.FactHandle,java.lang.Object)">modifyObject</a>( handle, 
+                            person );
 
-workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules()</a>;
+workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules</a>();
 
-workingMemory.<A href="TOP/api/org/drools/WorkingMemory.html#retractObject(org.drools.FactHandle)">retractObject( handle )</a>;
+workingMemory.<A href="TOP/api/org/drools/WorkingMemory.html#retractObject(org.drools.FactHandle)">retractObject</a>( handle );
 
-workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules()</a>;
+workingMemory.<a href="TOP/api/org/drools/WorkingMemory.html#fireAllRules()">fireAllRules</a>();
 </pre>
       </div>
     </div>
