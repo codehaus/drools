@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: SalienceConflictResolver.java,v 1.7 2004-09-17 00:14:07 mproctor Exp $
+ * $Id: SalienceConflictResolver.java,v 1.8 2004-10-05 12:33:17 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,6 +42,7 @@ package org.drools.conflict;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.LinkedList;
 
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
@@ -104,40 +105,9 @@ public class SalienceConflictResolver implements ConflictResolver
     {
         ListIterator listIter;
         Activation eachActivation;
-        int salience = activation.getRule( ).getSalience( );
-
-        //quick optimisation, check if should just add to end
-        if ( !list.isEmpty( ) )
-        {
-            eachActivation = ( Activation ) list.get( list.size( ) - 1 );
-            if ( eachActivation.getRule( ).getSalience( ) > salience )
-            {
-                list.add( activation );
-                return null;
-            }
-            //else get and return the conflicting items as a sublist
-            else if ( eachActivation.getRule( ).getSalience( ) == salience )
-            {
-                int endIndex = list.size( );
-                int startIndex = list.size( ) - 1;
-                while ( ( eachActivation != null )
-                        && eachActivation.getRule( ).getSalience( ) == salience )
-                {
-                    --startIndex;
-                    if ( startIndex >= 0 )
-                    {
-                        eachActivation = ( Activation ) list.get( startIndex );
-                    }
-                    else
-                    {
-                        eachActivation = null;
-                    }
-                }
-                return list.subList( startIndex + 1, endIndex );
-            }
-
-        }
-        else
+        
+        //quick optimisation, check if should just add
+        if ( list.isEmpty( ) )
         {
             list.add( activation );
             return null;
@@ -147,6 +117,7 @@ public class SalienceConflictResolver implements ConflictResolver
         // that has a lower salience than the item to be inserted,
         // insert the item *before* it by backing up and adding
         // to the list. Then return a list of any conflicts
+        int salience = activation.getRule( ).getSalience( );        
         for ( listIter = list.listIterator( ); listIter.hasNext( ); )
         {
             eachActivation = ( Activation ) listIter.next( );
@@ -154,11 +125,14 @@ public class SalienceConflictResolver implements ConflictResolver
             {
                 //do we still have any conflicts
                 int startIndex = listIter.previousIndex( );
-                while ( eachActivation.getRule( ).getSalience( ) == salience )
+                while ( listIter.hasNext()
+                        &&
+                        eachActivation.getRule( ).getSalience( ) == salience )
                 {
                     eachActivation = ( Activation ) listIter.next( );
                 }
                 int endIndex = listIter.previousIndex( );
+                endIndex = endIndex - ((listIter.hasNext()) ? 0 : 1);
                 if ( startIndex == endIndex )
                 {
                     listIter.previous( );
@@ -176,7 +150,6 @@ public class SalienceConflictResolver implements ConflictResolver
         // If not inserted by now, simply tack it onto the end.
         list.add( activation );
         return null;
-    }
-
+    }  
 }
 
