@@ -20,27 +20,19 @@ public class StateExample
     {
 		    URL url = StateExample.class.getResource( "state.drl" );
 		    RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
-        // Create working memory
-        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-        // Add application data map
-        //HashMap map = new HashMap();
-        //workingMemory.setApplicationData(map);
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
         State a = new State("A");
         State b = new State("B");
         State c = new State("C");
         State d = new State("D");
-        State e = new State("E");
 
         FactHandle factA = workingMemory.assertObject(a);
         FactHandle factB = workingMemory.assertObject(b);
         FactHandle factC = workingMemory.assertObject(c);
         FactHandle factD = workingMemory.assertObject(d);
-        FactHandle factE = workingMemory.assertObject(e);
 
-        a.setState("FINISHED");
-        System.err.println("A finished" );
         workingMemory.modifyObject(factA, a);
         workingMemory.fireAllRules();
     }
