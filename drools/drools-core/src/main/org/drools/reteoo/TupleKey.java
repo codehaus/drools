@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.21 2004-11-03 13:31:23 simon Exp $
+ * $Id: TupleKey.java,v 1.22 2004-11-14 00:40:45 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -135,17 +135,14 @@ class TupleKey implements Serializable
      */
     public boolean containsAll(TupleKey that)
     {
-        Iterator declIter = that.handles.keySet().iterator();
-        Declaration eachDecl;
+        Iterator entryIter = that.handles.entrySet().iterator();
+        Map.Entry eachEntry;
 
-        while (  declIter.hasNext( ) )
+        while ( entryIter.hasNext() )
         {
-            eachDecl = ( Declaration ) declIter.next( );
+            eachEntry = ( Map.Entry ) entryIter.next( );
 
-            FactHandle thatHandle = that.get( eachDecl );
-            FactHandle thisHandle = this.get( eachDecl );
-
-            if ( !thatHandle.equals( thisHandle ) )
+            if ( !eachEntry.getValue( ).equals( this.handles.get( eachEntry.getKey( ) ) ) )
             {
                 return false;
             }
