@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.11 2004-09-10 01:55:47 mproctor Exp $
+ $Id: RuleSetReader.java,v 1.12 2004-09-14 16:57:09 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -74,6 +74,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.Reader;
@@ -87,11 +88,15 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+
+import java.text.MessageFormat;
+
+
 /** <code>RuleSet</code> loader.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.11 2004-09-10 01:55:47 mproctor Exp $
+ *  @version $Id: RuleSetReader.java,v 1.12 2004-09-14 16:57:09 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -103,12 +108,19 @@ public class RuleSetReader
     /** Namespace URI for the general tags. */
     public static final String RULES_NAMESPACE_URI = "http://drools.org/rules";
 
+    public static String SCHEMA_LANGUAGE =
+        "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+    public static String XML_SCHEMA = 
+        "http://www.w3.org/2001/XMLSchema";
+    public static String SCHEMA_SOURCE =
+        "http://java.sun.com/xml/jaxp/properties/schemaSource";    
+
     private static final int STATE_NONE        = 0;
     private static final int STATE_OBJECT_TYPE = 2;
     private static final int STATE_CONDITION   = 3;
     private static final int STATE_EXTRACTION  = 4;
     private static final int STATE_CONSEQUENCE = 5;
-    private static final int STATE_DURATION    = 6;
+    private static final int STATE_DURATION    = 6;    
 
     // ----------------------------------------------------------------------
     //     Instance members
@@ -346,14 +358,37 @@ public class RuleSetReader
         throws Exception
     {
         SAXParser parser = null;
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        if ( cl == null )
+        {
+            cl = RuleSetReader.class.getClassLoader();
+        }        
 
         if ( this.parser == null )
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
-
-            factory.setNamespaceAware( true );
-
+            factory.setNamespaceAware(true);
+            factory.setValidating(true);
             parser = factory.newSAXParser();
+            try
+            {
+               parser.setProperty(SCHEMA_LANGUAGE,XML_SCHEMA);
+               parser.setProperty(SCHEMA_SOURCE,
+                 new InputStream[]
+                 {
+                   cl.getResourceAsStream("java.xsd"),
+                   cl.getResourceAsStream("groovy.xsd"),
+                   cl.getResourceAsStream("python.xsd"),
+                   cl.getResourceAsStream("rules.xsd")                   
+                 }
+              );
+            }
+            catch(SAXNotRecognizedException e)
+            {
+               e.printStackTrace();
+               System.err.println("Your SAX parser is not JAXP 1.2 compliant.");
+            }
         }
         else
         {
@@ -1167,7 +1202,38 @@ public class RuleSetReader
         this.enders.put( uri + ">" + name,
                          ender );
     }
+    private MessageFormat message =
+        new MessageFormat("({0}: {1}, {2}): {3}");
 
+     private void print(SAXParseException x)
+     {
+        String msg = message.format(new Object[]
+                                    {
+                                       x.getSystemId(),
+                                       new Integer(x.getLineNumber()),
+                                       new Integer(x.getColumnNumber()),
+                                       x.getMessage()
+                                    });
+        System.out.println(msg);
+     }
+
+     public void warning(SAXParseException x)
+     {
+        print(x);
+     }
+
+     public void error(SAXParseException x)
+     {
+        print(x);
+     }
+
+     public void fatalError(SAXParseException x)
+        throws SAXParseException
+     {
+        print(x);
+        throw x;
+     }
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /** Starter functor.
@@ -1195,4 +1261,6 @@ public class RuleSetReader
         abstract void end()
             throws SAXException;
     }
+
+  
 }
