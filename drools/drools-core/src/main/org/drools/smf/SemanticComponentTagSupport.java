@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticComponentTagSupport.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,107 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
- *
- *  @see SimpleSemanticModule#addFactExtractor
+import org.apache.commons.jelly.MissingAttributeException;
+
+/** Support for semantic components.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public abstract class SemanticComponentTagSupport extends SmfTagSupport 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The invalid fact extractor. */
-    private Class cls;
+    /** The component name. */
+    private String name;
+
+    /** The component class name. */
+    private String classname;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param cls The invalid fact extractor.
      */
-    public InvalidFactExtractorException(Class cls)
+    public SemanticComponentTagSupport()
     {
-        this.cls = cls;
+        // intentionally left blank.
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the invalid class.
+    /** Set the component name.
      *
-     *  @return The invalid class.
+     *  @param name The name.
      */
-    public Class getInvalidClass()
+    public void setName(String name)
     {
-        return this.cls;
+        this.name = name;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the error message.
+    /** Retrieve the component name.
      *
-     *  @return The error message.
+     *  @return The component name.
      */
-    public String getMessage()
+    public String getName()
     {
-        return this.cls.getName() + " is not a valid fact extractor";
+        return this.name;
+    }
+
+    /** Set the component class name.
+     *
+     *  @param classname The component class name.
+     */
+    public void setClassname(String classname)
+    {
+        this.classname = classname;
+    }
+
+    /** Retrieve the component class name.
+     *
+     *  @return The component class name.
+     */
+    public String getClassname()
+    {
+        return this.classname;
+    }
+
+    /** Check if the attributes have been set.
+     *
+     *  @throws MissingAttributeException If the attributes have not been set.
+     */
+    public void checkAttributes() throws MissingAttributeException
+    {
+        if ( this.classname == null )
+        {
+            throw new MissingAttributeException( "classname" );
+        }
+
+        if ( this.name == null )
+        {
+            throw new MissingAttributeException( "name" );
+        }
+    }
+
+    /** Retrieve the current <code>SemanticModule</code>.
+     *
+     *  @return The current <code>SemanticModule</code> or
+     *          <code>null</code> if none found.
+     */
+    public SimpleSemanticModule getCurrentSemanticModule()
+    {
+        SemanticModuleTag tag = (SemanticModuleTag) findAncestorWithClass( SemanticModuleTag.class );
+
+        if ( tag == null )
+        {
+            return null;
+        }
+
+        return tag.getSemanticModule();
     }
 }
+

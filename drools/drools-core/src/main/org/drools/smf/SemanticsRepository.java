@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticsRepository.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,26 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
- *
- *  @see SimpleSemanticModule#addFactExtractor
+/** Interface for a repository of semantic modules.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public interface SemanticsRepository
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The invalid fact extractor. */
-    private Class cls;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
+    /** Lookup a <code>SemanticModule</code> by URI.
      *
-     *  @param cls The invalid fact extractor.
-     */
-    public InvalidFactExtractorException(Class cls)
-    {
-        this.cls = cls;
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the invalid class.
+     *  @param uri The URI.
      *
-     *  @return The invalid class.
-     */
-    public Class getInvalidClass()
-    {
-        return this.cls;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the error message.
+     *  @return The bound <code>SemanticModule</code>.
      *
-     *  @return The error message.
+     *  @throws NoSuchSemanticModuleException If no module is
+     *          bound to the URI.
      */
-    public String getMessage()
-    {
-        return this.cls.getName() + " is not a valid fact extractor";
-    }
+    SemanticModule lookupSemanticModule(String uri) throws NoSuchSemanticModuleException;
+
+    /** Register a <code>SemanticModule</code> by a URI.
+     *
+     *  @param module The module.
+     */
+    void registerSemanticModule(SemanticModule module);
 }

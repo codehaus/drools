@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.2 2002-08-02 14:10:33 bob Exp $
+ $Id: SemanticModule.java,v 1.3 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,12 +46,6 @@ package org.drools.smf;
  
  */
 
-import org.drools.spi.ObjectType;
-import org.drools.spi.FactExtractor;
-import org.drools.spi.Action;
-
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 
 /** Collection of entities forming a semantic module.

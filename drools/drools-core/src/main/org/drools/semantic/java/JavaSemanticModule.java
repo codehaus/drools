@@ -1,7 +1,7 @@
-package org.drools.smf;
+package org.drools.semantic.java;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: JavaSemanticModule.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,62 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
+import org.drools.smf.SemanticModule;
+import org.drools.smf.SimpleSemanticModule;
+import org.drools.smf.SemanticModuleException;
+
+/** Java semantic module.
  *
- *  @see SimpleSemanticModule#addFactExtractor
+ *  @see SemanticModule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public class JavaSemanticModule extends SimpleSemanticModule
 {
     // ------------------------------------------------------------
-    //     Instance members
+    //     Class members
     // ------------------------------------------------------------
 
-    /** The invalid fact extractor. */
-    private Class cls;
+    /** Singleton instance. */
+    private static final JavaSemanticModule INSTANCE = new JavaSemanticModule();
+
+    // ------------------------------------------------------------
+    //     Class methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the singleton instance.
+     *
+     *  @return The singleton Java semantic module.
+     */
+    public static SemanticModule getInstance()
+    {
+        return INSTANCE;
+    }
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param cls The invalid fact extractor.
      */
-    public InvalidFactExtractorException(Class cls)
+    public JavaSemanticModule()
     {
-        this.cls = cls;
-    }
+        super( "http://drools.org/semantics/java/" );
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the invalid class.
-     *
-     *  @return The invalid class.
-     */
-    public Class getInvalidClass()
-    {
-        return this.cls;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the error message.
-     *
-     *  @return The error message.
-     */
-    public String getMessage()
-    {
-        return this.cls.getName() + " is not a valid fact extractor";
+        try
+        {
+            addObjectType( "java",
+                           JavaObjectType.class );
+            
+            addFactExtractor( "expr",
+                              BeanShellFactExtractor.class );
+            
+            addAction( "action",
+                       BeanShellAction.class );
+        }
+        catch (SemanticModuleException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: NoSuchSemanticModuleException.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,21 +46,20 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
+/** Indicates an attempt to lookup a non-existant <code>SemanticModule</code>.
  *
- *  @see SimpleSemanticModule#addFactExtractor
+ *  @see SemanticsRepository
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public class NoSuchSemanticModuleException extends SemanticModuleException 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The invalid fact extractor. */
-    private Class cls;
+    /** The uri. */
+    private String uri;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -68,24 +67,24 @@ public class InvalidFactExtractorException extends SemanticModuleException
 
     /** Construct.
      *
-     *  @param cls The invalid fact extractor.
+     *  @param uri The invalid URI.
      */
-    public InvalidFactExtractorException(Class cls)
+    public NoSuchSemanticModuleException(String uri)
     {
-        this.cls = cls;
+        this.uri = uri;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the invalid class.
+    /** Retrieve the URI.
      *
-     *  @return The invalid class.
+     *  @return The URI;
      */
-    public Class getInvalidClass()
+    public String getUri()
     {
-        return this.cls;
+        return this.uri;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -98,6 +97,6 @@ public class InvalidFactExtractorException extends SemanticModuleException
      */
     public String getMessage()
     {
-        return this.cls.getName() + " is not a valid fact extractor";
+        return "No such semantic module: " + getUri();
     }
 }

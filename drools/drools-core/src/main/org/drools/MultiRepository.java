@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: MultiRepository.java,v 1.2 2002-08-01 21:00:21 bob Exp $
+ $Id: MultiRepository.java,v 1.3 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -120,5 +120,16 @@ public class MultiRepository implements RuleBaseRepository
         }
 
         throw new NoSuchRuleBaseException( uri );
+    }
+
+    /** Register a <code>RuleBase</code> by URI.
+     *
+     *  @param uri The uri.
+     *  @param ruleBase The rule base.
+     */
+    public void registerRuleBase(String uri,
+                                 RuleBase ruleBase)
+    {
+        throw new UnsupportedOperationException( "MultiRepository.regusterRuleBase(..)" );
     }
 }
