@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.52 2004-11-13 01:43:07 simon Exp $
+ * $Id: Builder.java,v 1.53 2004-11-13 13:46:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -170,15 +170,11 @@ public class Builder
     {
         Set factExtracts = new HashSet( rule.getExtractions( ) );
         List conds = new LinkedList( rule.getConditions( ) );
-
-        Set leafNodes;
+        Set leafNodes = createParameterNodes( rule );
 
         boolean performedJoin;
         boolean attachedExtract;
         boolean joinedForCondition;
-
-        leafNodes = createParameterNodes( rule );
-
 
         while ( true )
         {
