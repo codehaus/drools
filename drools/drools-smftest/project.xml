@@ -27,6 +27,9 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>            
         </dependency>
     </dependencies>
 
