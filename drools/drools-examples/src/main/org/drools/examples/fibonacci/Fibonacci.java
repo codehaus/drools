@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: Fibonacci.java,v 1.4 2004-07-07 04:45:21 dbarnett Exp $
+$Id: Fibonacci.java,v 1.5 2004-08-07 16:30:29 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,7 +46,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-public class Fibonacci
+import java.io.Serializable;
+
+public class Fibonacci implements Serializable
 {
     private int sequence;
     private long value;
