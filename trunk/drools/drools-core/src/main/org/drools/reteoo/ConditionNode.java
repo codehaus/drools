@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.15 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: ConditionNode.java,v 1.16 2004-09-23 23:13:00 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -144,7 +144,7 @@ class ConditionNode extends TupleSource implements TupleSink
      * @throws AssertionException If an error occurs while asserting.
      */
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
-    {
+    {        
         if ( getCondition( ).isAllowed( tuple ) )
         {
             tuple
