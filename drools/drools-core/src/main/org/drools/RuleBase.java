@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.13 2002-08-01 18:47:33 bob Exp $
+ $Id: RuleBase.java,v 1.14 2002-08-20 18:33:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,6 @@ package org.drools;
 
 import org.drools.reteoo.Builder;
 import org.drools.reteoo.Rete;
-import org.drools.reteoo.ReteConstructionException;
 import org.drools.reteoo.impl.ReteImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -109,10 +108,10 @@ public class RuleBase
      *
      *  @param ruleSet The <code>RuleSet</code> to add.
      *
-     *  @throws ReteConstructionException If a member rule does not allow for
+     *  @throws RuleIntegrationException If a member rule does not allow for
      *          complete and correct integration into the underlying Rete network.
      */
-    public void addRuleSet(RuleSet ruleSet) throws ReteConstructionException
+    public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException
     {
         Iterator ruleIter = ruleSet.getRuleIterator();
         Rule     eachRule = null;
@@ -134,11 +133,11 @@ public class RuleBase
      *
      *  @param rule The rule to add.
      *
-     *  @throws ReteConstructionException If the rule does not allow for
+     *  @throws RuleIntegrationException If the rule does not allow for
      *          complete and correct integration into the underlying Rete
      *          network.
      */
-    public void addRule(Rule rule) throws ReteConstructionException
+    public void addRule(Rule rule) throws RuleIntegrationException
     {
         getBuilder().addRule( rule );
     }

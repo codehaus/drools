@@ -1,7 +1,7 @@
-package org.drools.reteoo;
+package org.drools.tags.knowledge;
 
 /*
- $Id: ReteConstructionException.java,v 1.4 2002-08-01 18:47:33 bob Exp $
+ $Id: ModifyTag.java,v 1.1 2002-08-20 18:33:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,18 @@ package org.drools.reteoo;
  
  */
 
-/** Indicates an error while integrating a <code>Rule</code>
- *  into the Rete-OO network.
- *
- *  @see org.drools.rule.Rule
+import org.drools.FactException;
+
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
+
+/** Modify an object in the working memory.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ModifyTag.java,v 1.1 2002-08-20 18:33:17 bob Exp $
  */
-public class ReteConstructionException extends ReteException
+public class ModifyTag extends FactTagSupport
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -61,17 +65,37 @@ public class ReteConstructionException extends ReteException
 
     /** Construct.
      */
-    public ReteConstructionException()
+    public ModifyTag()
     {
         // intentionally left blank
     }
 
-    /** Construct with a root cause.
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    
+    /** Perform this tag.
      *
-     *  @param rootCause The root cause of this exception.
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
      */
-    public ReteConstructionException(Throwable rootCause)
+    public void doTag(XMLOutput output) throws Exception
     {
-        super( rootCause );
+        validateAttributes();
+
+        try
+        {
+            getWorkingMemory().modifyObject( getFact() );
+        }
+        catch (FactException e)
+        {
+            throw new JellyException( e );
+        }
     }
 }
