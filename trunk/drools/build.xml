@@ -136,7 +136,6 @@
     <property name="groovy.jar" value="groovy-1.0-beta-7.jar"/>
     <property name="asm.jar" value="asm-1.4.3.jar"/>
     <property name="asm-util.jar" value="asm-util-1.4.3.jar"/>
-    <property name="jca.jar" value="jca-1.0.jar"/>
     <property name="jsr94.jar" value="jsr94-1.0.jar"/>
     <property name="xerces.jar" value="xercesImpl-2.6.2.jar"/>
 
@@ -186,8 +185,6 @@
             src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
 
         <!-- Local JARs not found at ibiblio -->
-        <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="file://${basedir}/lib/${jca.jar}"/>
         <get dest="${lib.dir}/${jsr94.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="file://${basedir}/lib/${jsr94.jar}"/>
     </target>
@@ -240,7 +237,6 @@
             <src path="${src.dir}"/>
             <src path="${test-src.dir}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
-            <classpath location="${lib.dir}/${jca.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${jython.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
