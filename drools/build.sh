@@ -77,7 +77,7 @@ build_unified_drl_reference()
   cat $BASE/lib/site/first.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
   generate_root_nav $page $out
   cat $BASE/lib/site/middle.html >> $out
-  cat ./drools-io/site/drl.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
+  #cat ./drools-io/site/drl.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
   for module in $MODULES ; do 
     if [ -f ./drools-$module/site/drl.html ] ; then 
       cat ./drools-$module/site/drl.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g -e s/NOW_DAY/$NOW_DAY/g -e s/NOW_MONTH/$NOW_MONTH/g >> $out
