@@ -32,7 +32,6 @@ public class State
     public boolean inState(String name, String state)
     {
         boolean b = this.name.equals(name) && this.state.equals(state);
-        System.err.println("Testing " + this.name + "=" + name + "," + this.state + "=" + state + ":" + b);
         return b;
     }
 
