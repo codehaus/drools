@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.61 2004-11-28 07:40:23 simon Exp $
+ * $Id: ReteTuple.java,v 1.62 2004-11-28 09:45:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -95,18 +95,6 @@ class ReteTuple
         this.rule = left.rule;
         this.key = new TupleKey( left.key,
                                  right.key );
-    }
-
-    ReteTuple(ReteTuple that,
-              FactHandle handle,
-              Declaration declaration)
-    {
-        this.workingMemory = that.workingMemory;
-        this.rule = that.rule;
-
-        this.key = new TupleKey( that.key,
-                                 new TupleKey( declaration,
-                                               handle ) );
     }
 
     ReteTuple(WorkingMemoryImpl workingMemory,
