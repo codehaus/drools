@@ -29,7 +29,30 @@ be accessible through a URL:
 		classes.
 \end{itemize}
 
-\clearpage
+\section{Loading DRL Files}
+
+A \verb|RuleSetLoader| is provided for loading DRL files into a
+\verb|RuleBase|.  Given a URL, the \verb|RuleSetLoader| will retrieve
+the DRL file and load all rules and rule-sets into the specified
+\verb|RuleBase| which can then immediately be use for knowledge
+manipulation.
+
+\begin{codelisting}
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.io.RuleSetLoader;
+...
+
+    RuleBase ruleBase = new RuleBase();
+
+    RuleSetLoader loader = new RuleSetLoader();
+
+    loader.load( rulesUrl, ruleBase );
+
+    WorkingMemory memory = ruleBase.createWorkingMemory();
+
+    memory.assertObject( account );
+\end{codelisting}
 
 \section{Base DRL Syntax}
 
@@ -61,7 +84,7 @@ These tags are defined for the XML namespace URI of
 		Load a semantic module.
 \end{itemize}
 
-\subsection{\texttt{rules}}
+\subsection{\texttt{drl:rules}}
 
 The outtermost tag in each DRL file is the \verb|<rules>| tag.  It has
 no attributes and serves only to aggregate \verb|<rule-set>|s and
@@ -69,30 +92,30 @@ no attributes and serves only to aggregate \verb|<rule-set>|s and
 be affixed to this element.
 
 \begin{codelisting}
-<rules xmlns="http://drools.org/rules">
-\textcolor{light}{  <rule-set ...>
+<rules xmlns:drl="http://drools.org/rules">
+\textcolor{light}{  <drl:rule-set ...>
     ...
-  </rule-set>
-  <rule ...>
+  </drl:rule-set>
+  <drl:rule ...>
     ...
-  </rule>}
-</rules>
+  </drl:rule>}
+</drl:rules>
 \end{codelisting}
 
-\subsection{\texttt{rule-set}}
+\subsection{\texttt{drl:rule-set}}
 
 The \verb|<rule-set>| is a named container for \verb|<rules>|.  Its
 only attribute is \verb|name| to provide for a name.  
 
 \begin{codelisting}
-<rule-set name="Gold-Level Member Rules">
-\textcolor{light}{  <rule ...>
+<drl:rule-set name="Gold-Level Member Rules">
+\textcolor{light}{  <drl:rule ...>
     ...
-  </rule>}
-</rule-set>
+  </drl:rule>}
+</drl:rule-set>
 \end{codelisting}
 
-\subsection{\texttt{rule}}
+\subsection{\texttt{drl:rule}}
 
 The \verb|<rule>| tag is the most complex.  It \emph{must} contain
 at least one \verb|<parameter>| and a \verb|<consequence>| tag.  It
@@ -102,29 +125,29 @@ attribute must be present. A \verb|<rule>| may exist inside either
 a \verb|<rules>| or \verb|<rule-set>| tag.
 
 \begin{codelisting}
-<rule name="Over Credit Limit">
-\textcolor{light}{  <parameter ..>
+<drl:rule name="Over Credit Limit">
+\textcolor{light}{  <drl:parameter ..>
     ...
-  </parameter>
-  <declaration ..>
+  </drl:parameter>
+  <drl:declaration ..>
     ...
-  </declaration>
-  <extraction ..>
+  </drl:declaration>
+  <drl:extraction ..>
     ...
-  </extraction>
-  <condition ..>
+  </drl:extraction>
+  <drl:condition ..>
     ...
-  </condition>
-  <duration ..>
+  </drl:condition>
+  <drl:duration ..>
     ...
-  </duration>
-  <consequence ..>
+  </drl:duration>
+  <drl:consequence ..>
     ...
-  </consequence>}
-</rule>
+  </drl:consequence>}
+</drl:rule>
 \end{codelisting}
 
-\subsection{\texttt{parameter}}
+\subsection{\texttt{drl:parameter}}
 
 The \verb|<parameter>| tag defines a root fact object that the
 rule expects to be provided from external resources.  The only
@@ -142,26 +165,26 @@ For illustration purposes, the Java Semantic Module has been used.
 </parameter>
 \end{codelisting}
 
-\subsection{\texttt{declaration}}
+\subsection{\texttt{drl:declaration}}
 
 A \verb|<declaration>| tag is similar to a \verb|<parameter>| in
 that it defines a typed and named object.  It must contain an
 \verb|identifier| attribute to specify the name that may be used
 to refer to the declared object elsewhere in the rule.  This tag
 declares a variable that must be populated internally using an
-\verb|extraction|.  For illustration purposes, the Java Semantic
+\verb|<extraction>|.  For illustration purposes, the Java Semantic
 Module has been used.
 
 \begin{codelisting}
-<declaration identifier="custName">
+<drl:declaration identifier="custName">
 \textcolor{light}{  <java:class type="java.lang.String"/>}
-</declaration>
-<declaration identifier="acctBalance">
+</drl:declaration>
+<drl:declaration identifier="acctBalance">
 \textcolor{light}{  <java:class type="java.math.BigInteger"/>}
-</declaration>
+</drl:declaration>
 \end{codelisting}
 
-\subsection{\texttt{extraction}}
+\subsection{\texttt{drl:extraction}}
 
 An \verb|<extraction>| defines a fact extraction.  Its only
 attribute is \verb|target| which names the parameter or declaration
@@ -170,18 +193,18 @@ of the tag is dependent upon the semantic module used for the rule.
 For illustration purposes, the Java Semantic Module has been used.
 
 \begin{codelisting}
-<extraction identifier="customer">
+<drl:extraction identifier="customer">
 \textcolor{light}{  <java:extractor>account.getCustomer()</java:extractor>}
-</extraction>
-<extraction identifier="custName">
+</drl:extraction>
+<drl:extraction identifier="custName">
 \textcolor{light}{  <java:extractor>customer.getName()</java:extractor>} 
-</extraction>
-<extraction identifier="acctBalance">
+</drl:extraction>
+<drl:extraction identifier="acctBalance">
 \textcolor{light}{  <java:extractor>account.getBalance()</java:extractor>}
-</extraction>
+</drl:extraction>
 \end{codelisting}
 
-\subsection{\texttt{condition}}
+\subsection{\texttt{drl:condition}}
 
 The \verb|<condition>| defines a condition that must be met in
 order for the rule to match. It contains the main logic of the rule.
@@ -189,17 +212,15 @@ The content of the tag is dependent upon the semantic module used for the rule.
 For illustration purposes, the Java Semantic Module has been used.
 
 \begin{codelisting}
-<condition>
+<drl:condition>
 \textcolor{light}{  <java:condition>custName.equals( "McWhirter" )</java:condition>}
-</condition>
-<condition>
+</drl:condition>
+<drl:condition>
 \textcolor{light}{  <java:condition>acctBalance.signum() == 0</java:condition>}
-</condition>>
+</drl:condition>>
 \end{codelisting}
 
-\clearpage
-
-\subsection{\texttt{duration}}
+\subsection{\texttt{drl:duration}}
 
 The \verb|<duration>| tag is used to specify a temporal condition.
 The truth duration of a rule is the amount of time that all other
@@ -210,37 +231,37 @@ part of the base DRL syntax in order to specify static durations
 that are not dependent upon rule data.
 
 \begin{codelisting}
-<duration>
-  <fixed-duration seconds=".."
-                  minutes=".."
-                  hours=".."
-                  days=".."
-                  weeks=".."/>
-</duration>
+<drl:duration>
+  <drl:fixed-duration seconds=".."
+                      minutes=".."
+                      hours=".."
+                      days=".."
+                      weeks=".."/>
+</drl:duration>
 \end{codelisting}
 
-\subsection{\texttt{consequence}}
+\subsection{\texttt{drl:consequence}}
 
-The \verb|consequence| tag defines the action to be taken
+The \verb|<consequence>| tag defines the action to be taken
 once a rule matches for a set of root fact objects.  The content
 of the tag is dependent upon the semantic module used for the rule.
 For illustration purposes, the Java Semantic Module has been used.
 
 \begin{codelisting}
-<consequence>
+<drl:consequence>
 \textcolor{light}{  <java:consequence>
     account.addMoney( new BigInteger( "1000000" ) );
   </java:consequence>}
-</consequence>
+</drl:consequence>
 \end{codelisting}
 
 
-\subsection{\texttt{semantics}}
+\subsection{\texttt{drl:semantics}}
 
-The \verb|semantics| tag is used to load a semantic module.
+The \verb|<semantics>| tag is used to load a semantic module.
 It has no content and the \verb|module| attribute is required
 in order to identify a semantic module to load.
 
 \begin{codelisting}
-<semantics module="org.drools.semantics.java"/>
+<drl:semantics module="org.drools.semantics.java"/>
 \end{codelisting}
