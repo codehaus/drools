@@ -1,9 +1,8 @@
 package org.drools.jsr94.rules.admin;
 
 import org.drools.jsr94.rules.RuleEngineTestBase;
-import org.drools.RuleBase;
 import org.drools.io.RuleSetReader;
-import org.drools.RuleBaseBuilder;
+import org.drools.rule.RuleSet;
 import org.apache.xerces.parsers.DOMParser;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -30,7 +29,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
 {
     private RuleAdministrator ruleAdministrator;
     private RuleExecutionSetProvider ruleSetProvider;
-    private RuleBase ruleBase = null;
+    private RuleSet ruleSet;
 
     /**
      * Setup the test case.
@@ -41,29 +40,27 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
         ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
         ruleSetProvider = ruleAdministrator.getRuleExecutionSetProvider( null );
 
-        initRuleBase();
+        initRuleSet();
     }
 
-    private void initRuleBase()
+    private void initRuleSet()
     {
         InputStream resourceAsStream = null;
         try {
             resourceAsStream = RuleEngineTestBase.class.getResourceAsStream(bindUri);
             Reader reader = new InputStreamReader( resourceAsStream );
             RuleSetReader ruleSetReader = new RuleSetReader();
-            RuleBaseBuilder builder = new RuleBaseBuilder();
-            builder.addRuleSet( ruleSetReader.read( reader ) );
-            ruleBase = builder.build();
+            this.ruleSet = ruleSetReader.read( reader );
         }
         catch (IOException e)
         {
             throw new ExceptionInInitializerError("setUp() could not init the " +
-                   "RuleBase due to an IOException in the InputStream: " + e);
+                   "RuleSet due to an IOException in the InputStream: " + e);
         }
         catch (Exception e)
         {
            throw new ExceptionInInitializerError("setUp() could not init the " +
-                   "RuleBase, " + e);
+                   "RuleSet, " + e);
         }
         finally
         {
@@ -83,7 +80,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
 
     protected void tearDown()
     {
-        ruleBase = null;
+        ruleSet = null;
     }
 
     /**
@@ -122,7 +119,6 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
 
         if (element != null)
         {
-            String name = element.getNodeName();
             RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(element, null);
             assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
             assertEquals("number of rules", 2, ruleSet.getRules().size());
@@ -138,9 +134,9 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
      */
     public void testCreateFromSerializable() throws Exception
     {
-        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleBase, null);
-        assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-        assertEquals("number of rules", 2, ruleSet.getRules().size());
+        RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(this.ruleSet, null);
+        assertEquals("rule set name", "Sisters Rules", ruleExecutionSet.getName());
+        assertEquals("number of rules", 2, ruleExecutionSet.getRules().size());
     }
 
     /**

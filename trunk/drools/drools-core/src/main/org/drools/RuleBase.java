@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.27 2004-06-25 02:10:36 mproctor Exp $
+ $Id: RuleBase.java,v 1.28 2004-06-29 15:44:22 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -63,7 +63,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBase.java,v 1.27 2004-06-25 02:10:36 mproctor Exp $
+ *  @version $Id: RuleBase.java,v 1.28 2004-06-29 15:44:22 n_alex Exp $
  */
 public interface RuleBase
     extends Serializable
@@ -81,12 +81,6 @@ public interface RuleBase
      *  @return A newly initialized <code>WorkingMemory</code>.
      */
     WorkingMemory newWorkingMemory();
-
-    /** Retrieve the contained <code>RuleSet</code>s.
-     *
-     *  @return The rule sets.
-     */
-    RuleSet[] getRuleSets();
 
     /** Retrieve the <code>ConflictResolver</code>.
      *
