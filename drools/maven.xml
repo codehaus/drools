@@ -239,6 +239,10 @@
       <j:set var="goal" value="jar:deploy"/>
       <attainGoal name="multiproject:goal"/>
 
+      <exec dir="${basedir}/target" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-all-${pom.currentVersion}.jar ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/jars/"/>
+      </exec>
+
       <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
         <arg line="${maven.scp.args} drools-${pom.currentVersion}-src.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
       </exec>
