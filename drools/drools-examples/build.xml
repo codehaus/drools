@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project default="get-deps" name="drools" basedir=".">
+<project default="note" name="drools" basedir=".">
+  
+  <target name="note">
+
+    <echo>
+--------------------------------------------------------
+The jakarta-ant build.xml is only capable of downloading
+the required dependencies.  If you desire to actually
+build drools from source, jakarta-maven is required:
+
+  http://jakarta.apache.org/turbine/maven/
+
+To retrieve dependencies, type:
+
+  and get-deps
+--------------------------------------------------------
+    </echo>
+
+  </target>
   
   <property name="defaulttargetdir" value="target"></property> 
   <property name="classesdir" value="target/classes"></property>
