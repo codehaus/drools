@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FilterCondition.java,v 1.3 2002-07-27 05:52:17 bob Exp $
+ $Id: FilterCondition.java,v 1.4 2002-07-31 20:51:03 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,6 +54,14 @@ package org.drools.spi;
  */
 public interface FilterCondition extends Condition
 {
+    /** Retrieve the array of <code>Declaration</code>s required
+     *  by this condition to perform its duties.
+     *
+     *  @return The array of <code>Declarations</code> expected
+     *          on incoming <code>Tuples</code>.
+     */
+    Declaration[] getRequiredTupleMembers();
+
     /** Determine if the supplied <code>Tuple</code> is allowed
      *  by this filter.
      *

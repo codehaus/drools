@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools;
 
 /*
- $Id: FilterCondition.java,v 1.4 2002-07-31 20:51:03 bob Exp $
+ $Id: NoSuchRuleBaseException.java,v 1.1 2002-07-31 20:51:03 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,32 +46,51 @@ package org.drools.spi;
  
  */
 
-/** A <code>Condition</code> that filters facts.
+/** Indicates an attempt to retrieve an unknowwn rule base.
  *
- *  @see Tuple
- *  
+ *  @see RuleBaseRepository#getRuleBase
+ *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface FilterCondition extends Condition
+public class NoSuchRuleBaseException extends DroolsException
 {
-    /** Retrieve the array of <code>Declaration</code>s required
-     *  by this condition to perform its duties.
-     *
-     *  @return The array of <code>Declarations</code> expected
-     *          on incoming <code>Tuples</code>.
-     */
-    Declaration[] getRequiredTupleMembers();
+    /** The attempted rulebase URI. */
+    private String uri;
 
-    /** Determine if the supplied <code>Tuple</code> is allowed
-     *  by this filter.
-     *
-     *  @param tuple The <code>Tuple</code> to test.
-     *
-     *  @return <code>true</code> if the <code>Tuple</code>
-     *          passes this filter, else <code>false</code>.
-     *
-     *  @throws FilterException if an error occurs during filtering.
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
      */
-    boolean isAllowed(Tuple tuple) throws FilterException;
+    public NoSuchRuleBaseException(String uri)
+    {
+        // intentionally left blank.
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /* Retrieve the unknown rule-base URI.
+     *
+     *  @return The uri.
+     */
+    public String getUri()
+    {
+        return this.uri;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Throwable
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the error message.
+     *
+     *  @return The error message.
+     */
+    public String getMessage()
+    {
+        return "No rule base associated with " + getUri();
+    }
 }
-
