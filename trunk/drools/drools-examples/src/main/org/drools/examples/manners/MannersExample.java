@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersExample.java,v 1.3 2004-11-13 14:51:01 simon Exp $
+ * $Id: MannersExample.java,v 1.4 2004-11-25 17:34:24 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,43 +49,43 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * An example of executing a rulebase with Drools without all the JSR-94 cruft
- * to solve the Miss Manners problem.
+ * An example of executing a rulebase with Drools without
+ * all the JSR-94 cruft to solve the Miss Manners problem.
  */
 public class MannersExample extends MannersBase
 {
     /** Drools working memory. */
     private WorkingMemory workingMemory = null;
 
-    public static void main(String[] args) throws Exception
+    public static void main( String[] args ) throws Exception
     {
         new MannersExample( args ).run( );
     }
 
-    public MannersExample(String[] args)
+    public MannersExample( String[] args )
     {
         super( args );
     }
 
-    protected void setUp() throws Exception
+    protected void setUp( ) throws Exception
     {
-        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( MannersExample.class.getResource( ruleUri ) );
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl(
+            MannersExample.class.getResource( ruleUri ) );
 
         workingMemory = ruleBase.newWorkingMemory( );
     }
 
-    protected void tearDown()
+    protected void tearDown( )
     {
         workingMemory = null;
     }
 
-    protected List test(List inList) throws FactException
+    protected List test( List inList ) throws FactException
     {
         for ( Iterator i = inList.iterator( ); i.hasNext( ); )
         {
             workingMemory.assertObject( i.next( ) );
         }
-
         workingMemory.fireAllRules( );
 
         return workingMemory.getObjects( );
