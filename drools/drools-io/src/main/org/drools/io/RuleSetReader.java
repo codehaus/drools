@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.46 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.47 2005-03-29 00:16:58 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.46 2005-02-04 02:13:38 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.47 2005-03-29 00:16:58 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -913,6 +913,44 @@ public class RuleSetReader extends DefaultHandler
         catch ( Exception e )
         {
         }
+        
+        cl = ClassLoader.getSystemClassLoader();
+
+        // Try looking in META-INF
+        try
+        {
+            return new InputSource( cl.getResourceAsStream( "META-INF/" + xsd ) );
+        }
+        catch ( Exception e )
+        {
+        }
+
+        // Try looking in /META-INF
+        try
+        {
+            return new InputSource( cl.getResourceAsStream( "/META-INF/" + xsd ) );
+        }
+        catch ( Exception e )
+        {
+        }
+
+        // Try looking at root of classpath
+        try
+        {
+            return new InputSource( cl.getResourceAsStream( "/" + xsd ) );
+        }
+        catch ( Exception e )
+        {
+        }
+
+        // Try current working directory
+        try
+        {
+            return new InputSource( new BufferedInputStream( new FileInputStream( xsd ) ) );
+        }
+        catch ( Exception e )
+        {
+        }        
         return null;
     }
 

@@ -1,5 +1,7 @@
 package org.drools.smf;
 
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Set;
 
 import org.drools.DroolsTestCase;
@@ -108,8 +110,8 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
         assertEquals( module.getDurationFactoryNames( ).size( ),
                       1 );
 
-    }
-
+    } 
+    
     private class MockRuleFactory
         implements
         RuleFactory
