@@ -88,7 +88,14 @@
   <!-- =================================================================== -->
 
   <target name="usage">
-    <echo message=" not implemented yet "/>
+    <echo message="Available targets:"/>
+    <echo message="    &lt;none&gt;         -- The implicit target is 'dev'"/>
+    <echo message="    dev            -- Do the least amount of compiling necessary"/>
+    <echo message="    all            -- Build everything"/>
+    <echo message="    test           -- Build and run the tests"/>
+    <echo message="    examples       -- Build and run the examples"/>
+    <echo message="    clean          -- Remove all built item"/>
+    <echo message="    dist           -- Produce .zip and .tar.gz distributions"/>
   </target>
 
   <!-- =================================================================== -->
@@ -478,7 +485,7 @@
     </antcall>
   </target>
 
-  <target name="examples.supply" depends="examples">
+  <target name="examples.supply" depends="compile.examples">
     <java classname="SupplyAndDemand" fork="true">
       <arg value="example_data/supply_and_demand.xml"/>
       <classpath>
@@ -534,7 +541,7 @@
           depends="test.all"/>
 
   <target name="examples"
-          depends="compile.examples"/>
+          depends="examples.supply"/>
 
 </project>
 
