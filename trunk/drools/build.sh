@@ -4,6 +4,8 @@ JAVADOC=javadoc
 JAVAC=javac
 JAVA=java
 JAR=jar
+
+#IFS=""
 MODULES="core smf io base java python groovy jsr94"
 
 export JAVA JAVAC JAR
@@ -32,13 +34,19 @@ target_all()
 
 target_site()
 {
-  #build javadoc
+  build javadoc
+
+  echo "building site"
+
+  for path in $(cd $BASE/site; find . -name '*.html') ; do
+    generate_root_page $path 
+  done
 
   for module in $MODULES ; do
     module_site $module
   done
 
-  copy_tree $BASE/build/docs/api $BASE/build/site/api 
+  #copy_tree $BASE/build/docs/api $BASE/build/site/api 
 }
 
 module_site()
@@ -49,10 +57,6 @@ module_site()
     return
   fi
   
-  for path in $(cd $BASE/site; find . -name '*.html') ; do
-    generate_root_page $path 
-  done
-
   for path in $(cd drools-$module/site; find . -name '*.html') ; do
     generate_module_page $path $module
   done
@@ -64,16 +68,32 @@ generate_root_page()
   local page=$(basename $path)
   local out=$BASE/build/site/$page
 
-  echo "page $page"
-
   mkdir -p $(dirname $out)
 
-  cat $BASE/lib/site/first.html > $out
+  local TOP="."
+
+  echo "<!--foo-->" > $out
+
+  #cat $BASE/lib/site/first.html > $out
+  old_IFS=$IFS
+  IFS=""
+  while read line ; do
+    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
+    line="$(echo "$line" | sed s/TOP/$TOP/g)"
+    echo "$line" >> $out
+  done < $BASE/lib/site/first.html 
+  IFS=$old_IFS
   generate_root_nav $page $out
   cat $BASE/lib/site/middle.html >> $out
+  
+  old_IFS=$IFS
+  IFS=""
   while read line ; do
+    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
+    line="$(echo "$line" | sed s/TOP/$TOP/g)"
     echo "$line" >> $out
   done < ./site/$page
+  IFS=$old_IFS
   cat $BASE/lib/site/last.html >> $out
 }
 
@@ -84,17 +104,35 @@ generate_module_page()
   local page=$(basename $path)
   local out=$BASE/build/site/$module/$page
 
-  echo "module $module"
-  echo "page $page"
-
   mkdir -p $(dirname $out)
 
-  cat $BASE/lib/site/first.html > $out
-  generate_module_nav $page $module $out
-  cat $BASE/lib/site/middle.html >> $out
+  local TOP=".."
+ 
+  echo "" > $out
+
+  #cat $BASE/lib/site/first.html > $out
+  old_IFS=$IFS
+  IFS=""
   while read line ; do
+    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
+    line="$(echo "$line" | sed s/TOP/$TOP/g)"
+    echo "$line" >> $out
+  done < $BASE/lib/site/first.html 
+  IFS=$old_IFS
+
+  generate_module_nav $page $module $out
+
+  cat $BASE/lib/site/middle.html >> $out
+
+  old_IFS=$IFS
+  IFS=""
+  while read line ; do
+    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
+    line="$(echo "$line" | sed s/TOP/$TOP/g)"
     echo "$line" >> $out
   done < ./drools-$module/site/$page
+  IFS=$old_IFS
+
   cat $BASE/lib/site/last.html >> $out
 }
 
@@ -160,10 +198,16 @@ generate_local_nav()
     else
       local url=$(echo $line | cut -f 1 -d \|)
       local desc=$(echo $line | cut -f 2 -d \|)
-      if [ "$url" == "$page" ] ; then
-        echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold\">$desc</a></small></div>" >> $out
+      echo "$url" | grep '^+' 2>&1 > /dev/null
+      if [ $? -eq 0 ] ; then
+          local url=$(echo $url | cut -f 2 -d +)
+          echo "    <div class=\"navLink\"><small><i><a href=\"$url\">$desc</a></i></small></div>" >> $out
       else
-        echo "    <div class=\"navLink\"><small><a href=\"$url\">$desc</a></small></div>" >> $out
+        if [ "$url" == "$page" ] ; then
+          echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold; color: #770000\">$desc</a></small></div>" >> $out
+        else
+          echo "    <div class=\"navLink\"><small><a href=\"$url\">$desc</a></small></div>" >> $out
+        fi
       fi
     fi
   done < "$nav"
@@ -196,7 +240,13 @@ generate_nonlocal_nav()
     else
       local url=$(echo $line | cut -f 1 -d \|)
       local desc=$(echo $line | cut -f 2 -d \|)
-      echo "    <div class=\"navLink\"><small><a href=\"$prefix$navmodule/$url\">$desc</a></small></div>" >> $out
+      echo "$url" | grep '^+' 2>&1 > /dev/null
+      if [ $? -eq 0 ] ; then
+        local url=$(echo $url | cut -f 2 -d +)
+        echo "    <div class=\"navLink\"><i><small><a href=\"$url\">$desc</a></i></small></div>" >> $out
+      else
+        echo "    <div class=\"navLink\"><small><a href=\"$prefix$navmodule/$url\">$desc</a></small></div>" >> $out
+      fi
     fi
   done < "$nav"
 
@@ -423,7 +473,7 @@ copy_tree()
 
   cd $source
 
-  if [ -z $exts ] ; then
+  if [ -z "$exts" ] ; then
     find ./ -depth -print | cpio -pudm --quiet $dest
   else
     for ext in $exts ; do

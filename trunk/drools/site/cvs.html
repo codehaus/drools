@@ -1,0 +1,33 @@
+<div class="section">
+
+  <div class="sectionTitle">CVS Access</div>
+    <div class="subsection">
+      <div class="subsectionTitle">Anonymous CVS</div>
+
+  <p>
+  For anonymous pserver access:
+  <p>
+  <div class="code">
+    <pre>
+cvs -d :pserver:anonymous@cvs.codehaus.org:/scm/cvspublic co drools
+    </pre>
+  </div>
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle">Developer CVS</div>
+      
+  <p>
+  Developers access CVS through ssh.  Something along the lines
+  of this should suffice:
+  </p>
+
+  <div class="code">
+    <pre>
+export CVS_RSH=ssh
+cvs -d <b>developer_name</b>@cvs.codehaus.org/scm/cvs co drools
+    </pre>
+  </div>
+
+      </div>
+  </div>
+</div>

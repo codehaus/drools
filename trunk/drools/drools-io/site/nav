@@ -1,4 +1,4 @@
 =I/O Subsystem
-rulesets.html|Defining Rules
-rulebases.html|Loading Rules
-drl-reference.html|Language Reference
+defining.html|Defining Rules
+loading.html|Loading Rules
+drl-reference.html|Drools Rule Language Reference
