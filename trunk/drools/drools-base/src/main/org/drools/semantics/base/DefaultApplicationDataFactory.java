@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: DefaultApplicationDataFactory.java,v 1.2 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: DefaultApplicationDataFactory.java,v 1.3 2004-12-13 20:54:51 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,33 +41,111 @@ package org.drools.semantics.base;
  *
  */
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.drools.rule.ApplicationData;
 import org.drools.smf.Configuration;
 import org.drools.smf.ApplicationDataFactory;
 import org.drools.smf.FactoryException;
 
+import org.drools.spi.ImportEntry;
+
 public class DefaultApplicationDataFactory
     implements
     ApplicationDataFactory
 {
-    public ApplicationData newApplicationData( Configuration config ) throws FactoryException
+    public ApplicationData newApplicationData(Configuration config, Set imports) throws FactoryException
     {
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
-        Class clazz = null;
-        /* first try loading className */
-        try
-        {
-            clazz = cl.loadClass( config.getText( ) );
-        }
-        catch ( ClassNotFoundException e )
-        {
-            throw new FactoryException(
-                "Cannot find class [" + config.getText( ) + "] for application "
-                + "data identifier [" + config.getAttribute( "identifier" ) + "]" );
-        }
+          Class clazz = null;
+          /* first try loading className */
+          String className = config.getText( ).trim( );
+          try
+          {
+              clazz = cl.loadClass( className );
+          }
+          catch ( Exception e )
+          {
+              // ignore for now
+          }
 
-        return new ApplicationData( config.getAttribute( "identifier" ),
-                                           clazz );
+          if ( null == clazz ) {
+             //get imports
+             Set importSet = new HashSet();
+             if ( imports != null )
+             {
+
+                 Iterator it = imports.iterator();
+                 ImportEntry importEntry;
+                 while ( it.hasNext( ) )
+                 {
+                     importEntry = ( ImportEntry ) it.next( );
+                     importSet.add( importEntry.getImportEntry( ) );
+                 }
+             }
+
+             /* Now try the className with each of the given imports */
+             if ( clazz == null )
+             {
+                 Iterator it = importSet.iterator();
+                 while ( it.hasNext( ) && clazz == null )
+                 {
+                     clazz = importClass( cl, ( String ) it.next( ), className ) ;
+                 }
+             }
+          }
+
+         if ( null == clazz )
+         {
+             throw new FactoryException( "Cannot find class [" + className + "] for application data identifier [" + config.getAttribute("identifier") + "]" );
+         }
+         else
+         {
+             return new ApplicationData( config.getAttribute( "identifier" ),
+                                         clazz );
+         }
     }
+
+     private Class importClass(ClassLoader cl, String importText, String className)
+     {
+         String qualifiedClass = null;
+         Class clazz = null;
+         if (importText.startsWith("from "))
+         {
+             importText = converPythonImport(importText);
+         }
+         //not python
+         if (importText.endsWith("*"))
+         {
+             qualifiedClass = importText.substring(0, importText.indexOf('*'))  + className;
+         }
+         else if (importText.endsWith(className))
+         {
+             qualifiedClass = importText;
+         }
+
+         if (qualifiedClass != null)
+         {
+             try
+             {
+                 clazz = cl.loadClass( qualifiedClass );
+             }
+             catch ( Exception e )
+             {
+                 //swallow
+             }
+         }
+         return clazz;
+     }
+
+     private String converPythonImport(String packageText)
+     {
+         int fromIndex = packageText.indexOf("from ");
+         int importIndex = packageText.indexOf("import ");
+         return packageText.substring(fromIndex  + 5, importIndex).trim()  + "." +
+                packageText.substring(importIndex + 7).trim();
+     }
 }
