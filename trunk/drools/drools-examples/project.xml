@@ -64,33 +64,13 @@
             <artifactId>aspectjrt</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <id>simple-jndi</id>
+            <version>0.9</version>
+        </dependency>
     </dependencies>
 
     <build>
-
-        <!-- Unit test classes -->
-
-        <unitTest>
-            <includes>
-                <include>**/*Test.java</include>
-                <include>**/*TestCase.java</include>
-            </includes>
-            <excludes>
-                <exclude>**/DroolsBenchmarkTestCase.java</exclude>
-                <exclude>**/jsr94/**</exclude>
-            </excludes>
-            <resources>
-                <resource>
-                    <directory>src/test</directory>
-                    <includes>
-                        <include>**/*.drl</include>
-                        <include>**/*.jelly</include>
-                    </includes>
-                </resource>
-            </resources>
-        </unitTest>
-
-
         <!-- J A R  R E S O U R C E S -->
         <!-- Resources that are packaged up inside the JAR file -->
 
