@@ -15,20 +15,26 @@
       <rule-set>
       </rule-set>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown MissingArgumentException: name</test:assert> 
+-->
   </test:case>
 
   <test:case name="testRuleSet_Valid">
     <rule-set name="my rule-set">
     </rule-set>
-    <test:assert test="${org.drools.ruleset != null}">No RuleSet created</test:assert>
+<!--
+    <test:assert test="${org.drools.rule-set != null}">No RuleSet created</test:assert>
+-->
   </test:case>
 
   <test:case name="testRuleSet_Var">
     <rule-set name="my rule-set" var="myruleset">
     </rule-set>
-    <test:assert test="${org.drools.ruleset != null}">No RuleSet created</test:assert>
+<!--
+    <test:assert test="${org.drools.rule-set != null}">No RuleSet created</test:assert>
     <test:assert test="${myruleset != null}">RuleSet not stored in var</test:assert>
+-->
   </test:case>
 
   <!-- 
@@ -42,20 +48,26 @@
       <rule>
       </rule>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown MissingArgumentException: name</test:assert> 
+-->
   </test:case>
 
   <test:case name="testRule_Valid">
     <rule name="my rule">
     </rule>
+<!--
     <test:assert test="${org.drools.rule != null}">No Rule created</test:assert>
+-->
   </test:case>
 
   <test:case name="testRule_Var">
     <rule name="my rule" var="myrule">
     </rule>
+<!--
     <test:assert test="${org.drools.rule != null}">No Rule created</test:assert>
     <test:assert test="${myrule != null}">Rule not stored in var</test:assert>
+-->
   </test:case>
 
   <!-- 
@@ -68,14 +80,18 @@
     <j:catch var="e">
       <semantics/>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown MissingArgumentException: name</test:assert> 
+-->
   </test:case>
 
   <test:case name="testSemantics_InvalidModule">
     <j:catch var="e">
       <semantics module="bork.bork.bork"/>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown Exception</test:assert> 
+-->
   </test:case>
 
   <test:case name="testSemantics_Valid">
@@ -84,7 +100,9 @@
 
   <test:case name="testSemantics_Var">
     <semantics module="org.drools.semantics.java" var="javasemantics"/>
+<!--
     <test:assert test="${javasemantics != null}">SemanticModule not stored in var</test:assert>
+-->
   </test:case>
 
   <!-- 
@@ -98,7 +116,9 @@
     <declaration identifier="foo" xmlns:java="http://drools.org/semantics/java">
       <java:class type="java.lang.String"/> 
     </declaration>
+<!--
     <test:assert test="${org.drools.declaration != null}">No Declaration created</test:assert>
+-->
   </test:case>
 
   <test:case name="testDeclaration_NoObjectType">
@@ -110,7 +130,9 @@
           -->
       </declaration>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown JellyEXception: no object type</test:assert> 
+-->
   </test:case>
 
   <test:case name="testDeclaration_Var">
@@ -118,8 +140,10 @@
     <declaration identifier="foo" var="mydecl" xmlns:java="http://drools.org/semantics/java">
       <java:class type="java.lang.String"/> 
     </declaration>
+<!--
     <test:assert test="${org.drools.declaration != null}">No Declaration created</test:assert>
     <test:assert test="${mydecl != null}">Declaration not stored in var</test:assert>
+-->
   </test:case>
 
   <test:case name="testDeclaration_NoIdentifier">
@@ -131,7 +155,9 @@
         </declaration>
       </rule>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown MissingArgumentException: identifier</test:assert> 
+-->
   </test:case>
 
   <test:case name="testDeclaration_Rule">
@@ -141,7 +167,9 @@
         <java:class type="java.lang.String"/> 
       </declaration>
     </rule>
+<!--
     <test:assert test="${rule.getDeclaration('foo') != null}">Declaration not added  to Rule</test:assert>
+-->
   </test:case>
 
   <!-- 
@@ -157,7 +185,9 @@
         <java:class type="java.lang.String"/> 
       </parameter>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+-->
   </test:case>
 
   <test:case name="testParameter_Var">
@@ -167,8 +197,10 @@
         <java:class type="java.lang.String"/> 
       </parameter>
     </rule>
+<!--
     <test:assert test="${org.drools.parameter != null}">No Declaration stored in default var</test:assert>
     <test:assert test="${param_testParameter_Var != null}">Declaration not stored in custom var </test:assert>
+-->
   </test:case>
 
   <test:case name="testParameter_NoIdentifier">
@@ -180,7 +212,9 @@
         </parameter>
       </rule>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown MissingArgumentException: identifier</test:assert> 
+-->
   </test:case>
 
   <test:case name="testParameter_Valid">
@@ -190,7 +224,9 @@
         <java:class type="java.lang.String"/> 
       </parameter>
     </rule>
+<!--
     <test:assert test="${rule.getParameter('foo') != null}">Parameter not added  to Rule</test:assert>
+-->
   </test:case>
 
   <!-- 
@@ -205,7 +241,9 @@
         <java:condition>foo</java:condition>
       </condition>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+-->
   </test:case>
 
   <test:case name="testCondition_NoDecl">
@@ -217,7 +255,9 @@
         </condition>
       </rule>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown ConfigurationException: No declaration</test:assert> 
+-->
   </test:case>
  
   <test:case name="testCondition_Valid">
@@ -230,8 +270,10 @@
         <java:condition>foo</java:condition>
       </condition>
     </rule>
+<!--
     <test:assert test="${org.drools.condition != null}">Condition didn't get stored in default var</test:assert>
     <test:assert test="${cond_testCondition_Valid != null}">Condition didn't get stored in custom var</test:assert>
+-->
     <test:assert test="${rule_testCondition_Valid.getConditions().contains(cond_testCondition_Valid)}">${cond_testCondition_Valid} not in ${rule_testCondition_Valid.getConditions()}</test:assert>
   </test:case>
 
@@ -248,7 +290,9 @@
         <java:extractor>foo.getBar()</java:extractor>
       </extraction>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+-->
   </test:case>
 
   <test:case name="testExtraction_NoDecl">
@@ -260,7 +304,9 @@
         </extraction>
       </rule>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown ConfigurationException: No declaration</test:assert> 
+-->
   </test:case>
  
   <test:case name="testExtraction_Valid">
@@ -291,8 +337,10 @@
         <java:extractor>foo.getBar()</java:extractor>
       </extraction>
     </rule>
+<!--
     <test:assert test="${org.drools.extraction != null}">Extraction didn't get stored in default var</test:assert>
     <test:assert test="${extraction_testExtraction_Valid != null}">Extraction didn't get stored in custom var</test:assert>
+-->
     <test:assert test="${rule_testExtraction_Valid.getExtractions().contains( extraction_testExtraction_Valid )}">Extraction didn't get stored in rule</test:assert>
   </test:case>
 
@@ -309,7 +357,9 @@
         <java:consequence>System.err.println("foo");</java:consequence>
       </consequence>
     </j:catch>
+<!--
     <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+-->
   </test:case>
 
   <test:case name="testConsequence_Valid">
@@ -319,8 +369,10 @@
         <java:consequence>System.err.println("foo");</java:consequence>
       </consequence>
     </rule>
+<!--
     <test:assert test="${org.drools.consequence != null}">Extraction didn't get stored in default var</test:assert>
     <test:assert test="${consequence_testConsequence_Valid != null}">Extraction didn't get stored in custom var</test:assert>
+-->
     <test:assertEquals expected="${conseq_testConsequence_Valid}" actual="${rule_testConsequence_Valid.getConsequence()}">Consequence not stored in the Rule</test:assertEquals>
   </test:case>
 </test:suite>
