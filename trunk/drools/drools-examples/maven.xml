@@ -6,7 +6,9 @@
 <!-- Convenience goals to help regression test all examples quickly -->
     <goal name="run-all">
         <attainGoal name="fibonacci-java"/>
+        <!--
         <attainGoal name="fibonacci-java-extract"/>
+        -->
         <attainGoal name="fibonacci-python"/>
         <attainGoal name="fibonacci-groovy"/>
         <attainGoal name="fibonacci-java-jndi"/>
@@ -20,7 +22,9 @@
         <attainGoal name="state-python"/>
         <attainGoal name="helloworld-native"/>
         <attainGoal name="helloworld-java"/>
+        <!--
         <attainGoal name="helloworld-java-extract"/>
+        -->
         <attainGoal name="helloworld-groovy"/>
         <attainGoal name="helloworld-python"/>
         <attainGoal name="manners-jsr94"/>
@@ -35,13 +39,17 @@
 
     <goal name="run-all-java">
 	<attainGoal name="fibonacci-java"/>
+	<!--
 	<attainGoal name="fibonacci-java-extract"/>
+	-->
 	<attainGoal name="fibonacci-java-jndi"/>
 	<attainGoal name="fibonacci-java-serialized"/>
         <attainGoal name="escalation-java"/>
 	<attainGoal name="state-java"/>
 	<attainGoal name="helloworld-java"/>
+	<!--
 	<attainGoal name="helloworld-java-extract"/>
+	-->
 	<attainGoal name="manners-java"/>
 	<attainGoal name="primefactors-java"/>
 	<attainGoal name="primefactors-java-verbose"/>
@@ -80,10 +88,12 @@
 	<attainGoal name="fibonacci-groovy-serialized"/>
     </goal>
 
+    <!--
     <goal name="run-all-extract">
 	<attainGoal name="fibonacci-java-extract"/>
 	<attainGoal name="helloworld-java-extract"/>
     </goal>
+    -->
 
 <!-- Fibonacci Examples -->
     <goal name="fibonacci-java" prereqs="jar:jar">
@@ -96,7 +106,8 @@
           <arg value="fibonacci.java.drl"/>
       </java>
     </goal>
-
+    
+<!--
     <goal name="fibonacci-java-extract" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciExample"
             fork="true">
@@ -107,6 +118,7 @@
         <arg value="fibonacci.java.extract.drl"/>
       </java>
     </goal>
+-->
 
     <goal name="fibonacci-python" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciExample"
@@ -277,6 +289,7 @@
       </java>
     </goal>
 
+<!--
     <goal name="helloworld-java-extract" prereqs="jar:jar">
       <java classname="org.drools.examples.helloworld.HelloWorldExample"
             fork="true">
@@ -287,6 +300,7 @@
         <arg value="helloworld.java.extract.drl"/>
       </java>
     </goal>
+-->
 
     <goal name="helloworld-groovy" prereqs="jar:jar">
       <java classname="org.drools.examples.helloworld.HelloWorldExample"
