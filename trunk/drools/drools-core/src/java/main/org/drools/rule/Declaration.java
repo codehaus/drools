@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.2 2002-08-13 04:12:26 bob Exp $
+ $Id: Declaration.java,v 1.3 2002-11-22 03:08:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,6 +57,13 @@ import org.drools.spi.ObjectType;
  */
 public class Declaration
 {
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    /** Empty array. */
+    public static final Declaration[] EMPTY_ARRAY = new Declaration[0];
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
