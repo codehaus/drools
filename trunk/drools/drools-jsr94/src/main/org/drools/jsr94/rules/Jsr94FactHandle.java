@@ -11,6 +11,10 @@ public class Jsr94FactHandle
     implements Handle, Serializable
 
 {
+    Jsr94FactHandle()
+    {
+    }
+
     Jsr94FactHandle(long id)
     {
         super( id );
