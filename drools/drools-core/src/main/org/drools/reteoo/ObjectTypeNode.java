@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.21 2004-11-09 09:03:35 simon Exp $
+ * $Id: ObjectTypeNode.java,v 1.22 2004-11-16 09:57:26 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -91,7 +91,6 @@ class ObjectTypeNode implements Serializable
     public ObjectTypeNode(ObjectType objectType)
     {
         this.objectType = objectType;
-
         this.parameterNodes = Collections.EMPTY_SET;
     }
 
@@ -158,24 +157,18 @@ class ObjectTypeNode implements Serializable
      *
      * @throws FactException if an error occurs during assertion.
      */
-    void assertObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws FactException
+    void assertObject(FactHandle handle, Object object, WorkingMemoryImpl workingMemory) throws FactException
     {
-        ObjectType objectType = getObjectType( );
-
-        if ( !objectType.matches( object ) )
+        if ( !this.objectType.matches( object ) )
         {
             return;
         }
 
         Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {
-            eachNode = ( ParameterNode ) nodeIter.next( );
-            eachNode.assertObject( handle, object, workingMemory );
+            ( ( ParameterNode ) nodeIter.next( ) ).assertObject( handle, object, workingMemory );
         }
     }
 
@@ -192,21 +185,16 @@ class ObjectTypeNode implements Serializable
     {
         Object object = workingMemory.getObject( handle );
 
-        ObjectType objectType = getObjectType( );
-
-        if ( !objectType.matches( object ) )
+        if ( !this.objectType.matches( object ) )
         {
             return;
         }
 
         Iterator nodeIter = getParameterNodeIterator( );
-        ParameterNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {
-            eachNode = ( ParameterNode ) nodeIter.next( );
-
-            eachNode.retractObject( handle, workingMemory );
+            ( ( ParameterNode ) nodeIter.next( ) ).retractObject( handle, workingMemory );
         }
     }
 }
