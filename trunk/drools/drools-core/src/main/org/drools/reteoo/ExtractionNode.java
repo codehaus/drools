@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.31 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.32 2004-11-21 13:18:04 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,9 +52,9 @@ import java.util.Set;
 
 /**
  * <i>extraction </i> node in the Rete-OO network.
- * 
+ *
  * @see ExtractionNode
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class ExtractionNode extends TupleSource
@@ -80,7 +80,7 @@ class ExtractionNode extends TupleSource
 
     /**
      * Construct.
-     * 
+     *
      * @param tupleSource
      *            Parent tuple source.
      * @param targetDeclaration
@@ -113,9 +113,9 @@ class ExtractionNode extends TupleSource
     /**
      * Retrieve the <code>Declaration</code> which is the target of the
      * extraction.
-     * 
+     *
      * @see Declaration
-     * 
+     *
      * @return The target <code>Declaration</code>.
      */
     public Declaration getTargetDeclaration()
@@ -126,9 +126,9 @@ class ExtractionNode extends TupleSource
     /**
      * Retrieve the <code>Extractor</code> used to generate the
      * right-hand-side value for the extraction.
-     * 
+     *
      * @see Extractor
-     * 
+     *
      * @return The <code>Extrator</code>.
      */
     public Extractor getExtractor()
@@ -143,9 +143,9 @@ class ExtractionNode extends TupleSource
     /**
      * Retrieve the <code>Set</code> of <code>Declaration</code> s in the
      * propagated <code>Tuples</code>.
-     * 
+     *
      * @see Declaration
-     * 
+     *
      * @return The <code>Set</code> of <code>Declarations</code> in progated
      *         <code>Tuples</code>.
      */
@@ -156,12 +156,12 @@ class ExtractionNode extends TupleSource
 
     /**
      * Assert a new <code>Tuple</code>.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> being asserted.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws AssertionException
      *             If an error occurs while asserting.
      */
@@ -188,12 +188,12 @@ class ExtractionNode extends TupleSource
 
     /**
      * Retract tuples.
-     * 
+     *
      * @param key
      *            The tuple key.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws RetractionException
      *             If an error occurs while retracting.
      */
@@ -203,12 +203,12 @@ class ExtractionNode extends TupleSource
         propagateRetractTuples( key,
                                 workingMemory );
     }
-    
+
     /**
      * Modify tuples.
      *
      * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
+     * @param tupleSet Modification replacement tuples.
      * @param workingMemory The working memory session.
      *
      * @throws FactException If an error occurs while modifying.
@@ -217,7 +217,7 @@ class ExtractionNode extends TupleSource
                              TupleSet tupleSet,
                              WorkingMemoryImpl workingMemory) throws FactException
     {
-   
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -226,7 +226,7 @@ class ExtractionNode extends TupleSource
 
     /**
      * Produce a debug string.
-     * 
+     *
      * @return The debug string.
      */
     public String toString()
