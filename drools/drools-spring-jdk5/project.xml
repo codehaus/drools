@@ -36,15 +36,6 @@
         </dependency>
         <dependency>
             <groupId>drools</groupId>
-            <artifactId>drools-smf</artifactId>
-            <version>${pom.currentVersion}</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-                <scope>compile, run, test</scope>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>drools</groupId>
             <artifactId>drools-spring</artifactId>
             <version>${pom.currentVersion}</version>
             <properties>
