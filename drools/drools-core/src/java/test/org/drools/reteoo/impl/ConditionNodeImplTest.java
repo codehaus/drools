@@ -6,7 +6,7 @@ import org.drools.rule.Declaration;
 import org.drools.spi.Condition;
 import org.drools.spi.TrueCondition;
 import org.drools.spi.FalseCondition;
-import org.drools.semantic.java.JavaObjectType;
+import org.drools.semantics.java.ClassObjectType;
 
 import junit.framework.TestCase;
 
@@ -99,7 +99,7 @@ public class ConditionNodeImplTest extends TestCase
      */
     public void testGetTupleDeclarations()
     {
-        Declaration decl = new Declaration( new JavaObjectType( String.class ),
+        Declaration decl = new Declaration( new ClassObjectType( String.class ),
                                             "object" );
 
         ParameterNodeImpl paramNode = new ParameterNodeImpl( null,

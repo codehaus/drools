@@ -8,7 +8,7 @@ import org.drools.rule.FactExtraction;
 import org.drools.spi.ObjectType;
 import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedFactExtractor;
-import org.drools.semantic.java.JavaObjectType;
+import org.drools.semantics.java.ClassObjectType;
 
 import junit.framework.TestCase;
 
@@ -39,8 +39,8 @@ public class BuilderTest extends TestCase
         this.rete     = new ReteImpl();
         this.builder  = new Builder( this.rete );
 
-        this.stringType = new JavaObjectType( String.class );
-        this.objectType = new JavaObjectType( Object.class );
+        this.stringType = new ClassObjectType( String.class );
+        this.objectType = new ClassObjectType( Object.class );
 
         this.rule1 = new Rule( "cheese" );
 

@@ -3,7 +3,7 @@ package org.drools.reteoo.impl;
 
 import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
-import org.drools.semantic.java.JavaObjectType;
+import org.drools.semantics.java.ClassObjectType;
 
 import junit.framework.TestCase;
 
@@ -38,10 +38,10 @@ public class JoinMemoryTest extends TestCase
 
     public void setUp()
     {
-        this.joinDecl1 = new Declaration( new JavaObjectType( Object.class ),
+        this.joinDecl1 = new Declaration( new ClassObjectType( Object.class ),
                                           "one" );
 
-        this.joinDecl2 = new Declaration( new JavaObjectType( Object.class ),
+        this.joinDecl2 = new Declaration( new ClassObjectType( Object.class ),
                                           "two" );
 
         this.tuple1 = new ReteTuple();

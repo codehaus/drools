@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: DroolsException.java,v 1.5 2002-07-27 05:55:59 bob Exp $
+ $Id: DroolsException.java,v 1.6 2002-08-18 05:27:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -71,6 +71,11 @@ public class DroolsException extends Exception
      */
     public DroolsException()
     {
+    }
+
+    public DroolsException(String msg)
+    {
+        super( msg );
     }
 
     /** Construct with a root cause.
