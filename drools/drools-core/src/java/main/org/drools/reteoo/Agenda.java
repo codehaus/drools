@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinTuple.java,v 1.7 2002-07-27 05:52:17 bob Exp $
+ $Id: Agenda.java,v 1.16 2002-07-28 14:15:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,28 +46,45 @@ package org.drools.reteoo;
  
  */
 
-/** A <code>ReteTuple</code> created by joining two other <code>Tuples</code>.
+import org.drools.WorkingMemory;
+
+import org.drools.spi.Rule;
+import org.drools.spi.ActionInvokationException;
+
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
+
+/** Rule-firing Agenda.
  *
- *  @see ReteTuple
+ *  <p>
+ *  Since many rules may be matched by a single assertObject(...)
+ *  all scheduled actions are placed into the <code>Agenda</code>.
+ *  </p>
+ *
+ *  <p>
+ *  While processing a scheduled action, it may modify or retract
+ *  objects in other scheduled actions, which must then be removed
+ *  from the agenda.  Non-invalidated actions are left on the agenda,
+ *  and are executed in turn.
+ *  </p>
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class JoinTuple extends ReteTuple
+public interface Agenda
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
+    /** Determine if this <code>Agenda</code> has any
+     *  scheduled items.
      *
-     *  @param left The left-side <code>Tuple</code>.
-     *  @param right The right-side <code>Tuple</code>.
+     *  @return <code>true<code> if the agenda is empty, otherwise
+     *          <code>false</code>.
      */
-    public JoinTuple(ReteTuple left,
-                     ReteTuple right)
-    {
+    boolean isEmpty();
 
-        putAll( left );
-        putAll( right );
-    }
+    /** Fire the next scheduled <code>Agenda</code> item.
+     *
+     *  @throws ActionInvokationException If an error occurs while
+     *          firing an agenda item.
+     */
+    void fireNextItem() throws ActionInvokationException;
 }

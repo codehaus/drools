@@ -4,7 +4,7 @@ package org.drools.semantic.java;
 import org.drools.spi.FilterException;
 import org.drools.spi.Tuple;
 import org.drools.spi.Declaration;
-import org.drools.reteoo.ReteTuple;
+import org.drools.reteoo.impl.ReteTuple;
 
 import junit.framework.TestCase;
 

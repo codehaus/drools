@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ReteTuple.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: ReteTuple.java,v 1.2 2002-07-28 14:15:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import java.util.HashSet;
  *  
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-class ReteTuple implements Tuple
+public class ReteTuple implements Tuple
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -78,7 +78,7 @@ class ReteTuple implements Tuple
     
     /** Construct.
      */
-    ReteTuple()
+    public ReteTuple()
     {
         this.keyColumns      = new TupleKey();
         this.otherColumns    = new HashMap();
@@ -116,7 +116,7 @@ class ReteTuple implements Tuple
      *  @param declaration The column declaration.
      *  @param value The value.
      */
-    void putKeyColumn(Declaration declaration,
+    public void putKeyColumn(Declaration declaration,
                              Object value)
     {
         this.keyColumns.put( declaration,
@@ -127,7 +127,7 @@ class ReteTuple implements Tuple
      *
      *  @param that The column source tuple.
      */
-    void putAll(ReteTuple that)
+    public void putAll(ReteTuple that)
     {
         this.keyColumns.putAll( that.keyColumns );
         this.otherColumns.putAll( that.otherColumns );
@@ -138,8 +138,8 @@ class ReteTuple implements Tuple
      *  @param declaration The column declaration.
      *  @param value The value.
      */
-    void putOtherColumn(Declaration declaration,
-                        Object value)
+    public void putOtherColumn(Declaration declaration,
+                               Object value)
     {
         this.otherColumns.put( declaration,
                                value );
