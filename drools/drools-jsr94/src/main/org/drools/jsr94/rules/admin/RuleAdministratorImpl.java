@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleAdministratorImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -58,70 +58,83 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleAdministratorImpl implements RuleAdministrator {
+public class RuleAdministratorImpl implements RuleAdministrator
+{
 
-   private static RuleAdministratorImpl ruleAdministrator;
+    private static RuleAdministratorImpl ruleAdministrator;
 
-   /** Hide the constructor. */
-   private RuleAdministratorImpl() {
-   }
+    /** Hide the constructor. */
+    private RuleAdministratorImpl()
+    {
+    }
 
-   /** Get the class instance of a <code>RuleAdministrator</code>. */
-   public static RuleAdministrator getInstance() {
-      if (ruleAdministrator != null) return ruleAdministrator;
-      return ruleAdministrator = new RuleAdministratorImpl();
-   }
+    /** Get the class instance of a <code>RuleAdministrator</code>. */
+    public static RuleAdministrator getInstance()
+    {
+        if (ruleAdministrator != null) return ruleAdministrator;
+        return ruleAdministrator = new RuleAdministratorImpl();
+    }
 
-   /**
-    * Returns a <code>RemoteRuleExecutionSetProvider</code> implementation.
-    *
-    * @see RuleAdministrator
-    */
-   public RuleExecutionSetProvider getRuleExecutionSetProvider(Map properties) {
-      return new RuleExecutionSetProviderImpl();
-   }
+    /**
+     * Returns a <code>RemoteRuleExecutionSetProvider</code> implementation.
+     *
+     * @see RuleAdministrator
+     */
+    public RuleExecutionSetProvider getRuleExecutionSetProvider(Map properties)
+    {
+        return new RuleExecutionSetProviderImpl();
+    }
 
-   /**
-    * Returns a <code>LocalRuleExecutionSetProvider</code> implementation.
-    *
-    * @see RuleAdministrator#getLocalRuleExecutionSetProvider
-    */
-   public LocalRuleExecutionSetProvider getLocalRuleExecutionSetProvider(Map properties) {
-      return new LocalRuleExecutionSetProviderImpl();
-   }
+    /**
+     * Returns a <code>LocalRuleExecutionSetProvider</code> implementation.
+     *
+     * @see RuleAdministrator#getLocalRuleExecutionSetProvider
+     */
+    public LocalRuleExecutionSetProvider getLocalRuleExecutionSetProvider(Map properties)
+    {
+        return new LocalRuleExecutionSetProviderImpl();
+    }
 
-   /**
-    * Registers a <code>RuleExecutionSet</code> and associates it with a given URI.
-    *
-    * @see RuleAdministrator#registerRuleExecutionSet
-    */
-   public void registerRuleExecutionSet(String bindUri, RuleExecutionSet ruleExecutionSet, Map properties) throws RuleExecutionSetRegisterException {
+    /**
+     * Registers a <code>RuleExecutionSet</code> and associates it with a given URI.
+     *
+     * @see RuleAdministrator#registerRuleExecutionSet
+     */
+    public void registerRuleExecutionSet(String bindUri, RuleExecutionSet ruleExecutionSet, Map properties) throws RuleExecutionSetRegisterException
+    {
 
-      try {
-         //Note: an existing RuleExecutionSet is simply replaced
-         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-         repository.registerRuleExecutionSet(bindUri, ruleExecutionSet);
-      } catch (Exception ex) {
-         throw new RuleExecutionSetRegisterException("cannot register rule set", ex);
-      }
-   }
+        try
+        {
+            //Note: an existing RuleExecutionSet is simply replaced
+            RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
+            repository.registerRuleExecutionSet(bindUri, ruleExecutionSet);
+        }
+        catch (Exception ex)
+        {
+            throw new RuleExecutionSetRegisterException("cannot register rule set", ex);
+        }
+    }
 
-   /**
-    * Unregisters a previously registers <code>RuleExecutionSet</code> from a URI.
-    *
-    * @see RuleAdministrator#unregisterRuleExecutionSet
-    */
-   public void unregisterRuleExecutionSet(String bindUri, Map properties) throws RuleExecutionSetUnregisterException {
+    /**
+     * Unregisters a previously registers <code>RuleExecutionSet</code> from a URI.
+     *
+     * @see RuleAdministrator#unregisterRuleExecutionSet
+     */
+    public void unregisterRuleExecutionSet(String bindUri, Map properties) throws RuleExecutionSetUnregisterException
+    {
 
-      RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
+        RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
 
-      if (repository.getRuleExecutionSet(bindUri) == null)
-         throw new RuleExecutionSetUnregisterException("no execution set bound to: " + bindUri);
+        if (repository.getRuleExecutionSet(bindUri) == null)
+            throw new RuleExecutionSetUnregisterException("no execution set bound to: " + bindUri);
 
-      try {
-         repository.unregisterRuleExecutionSet(bindUri);
-      } catch (Exception ex) {
-         throw new RuleExecutionSetUnregisterException("cannot unregister rule set", ex);
-      }
-   }
+        try
+        {
+            repository.unregisterRuleExecutionSet(bindUri);
+        }
+        catch (Exception ex)
+        {
+            throw new RuleExecutionSetUnregisterException("cannot unregister rule set", ex);
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleSessionImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleSessionImpl.java,v 1.3 2003-05-23 14:17:47 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -58,35 +58,38 @@ import javax.rules.*;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-abstract class RuleSessionImpl implements RuleSession {
+abstract class RuleSessionImpl implements RuleSession
+{
 
-   /**
-    * Returns the meta data for the rule execution set bound to this rule session.
-    */
-   public RuleExecutionSetMetadata getRuleExecutionSetMetadata() {
-      // [TODO]
-      throw new NotImplementedException();
-   }
+    /**
+     * Returns the meta data for the rule execution set bound to this rule session.
+     */
+    public RuleExecutionSetMetadata getRuleExecutionSetMetadata()
+    {
+        // [TODO]
+        throw new NotImplementedException();
+    }
 
-   /**
-    * Releases all resources used by this rule session.
-    * This method renders this rule session unusable until it is reacquired through the RuleRuntime.
-    */
-   abstract public void release();
+    /**
+     * Releases all resources used by this rule session.
+     * This method renders this rule session unusable until it is reacquired through the RuleRuntime.
+     */
+    abstract public void release();
 
-   /**
-    * Returns the type identifier for this RuleSession.
-    * The type identifiers are defined in the RuleRuntime interface.
-    */
-   public int getType() throws InvalidRuleSessionException {
+    /**
+     * Returns the type identifier for this RuleSession.
+     * The type identifiers are defined in the RuleRuntime interface.
+     */
+    public int getType() throws InvalidRuleSessionException
+    {
 
-      if (this instanceof StatelessRuleSession)
-         return RuleRuntime.STATELESS_SESSION_TYPE;
+        if (this instanceof StatelessRuleSession)
+            return RuleRuntime.STATELESS_SESSION_TYPE;
 
-      if (this instanceof StatefulRuleSession)
-         return RuleRuntime.STATEFUL_SESSION_TYPE;
+        if (this instanceof StatefulRuleSession)
+            return RuleRuntime.STATEFUL_SESSION_TYPE;
 
-      throw new InvalidRuleSessionException("unknown type");
-   }
+        throw new InvalidRuleSessionException("unknown type");
+    }
 
 }

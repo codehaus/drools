@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: JSR94RuleSetLoader.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: JSR94RuleSetLoader.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,43 +66,46 @@ import java.util.List;
  *
  *  @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class JSR94RuleSetLoader extends RuleSetLoader {
+public class JSR94RuleSetLoader extends RuleSetLoader
+{
 
-   /** This is because. */
-   private List ruleSets;
+    /** This is because. */
+    private List ruleSets;
 
-   /**
-    * Add a <code>RuleSet</code> to this loader.
-    *
-    *  @param ruleSet The rule-set to add.
-    */
-   public void addRuleSet(RuleSet ruleSet) {
-      ruleSets.add(ruleSet);
-   }
+    /**
+     * Add a <code>RuleSet</code> to this loader.
+     *
+     *  @param ruleSet The rule-set to add.
+     */
+    public void addRuleSet(RuleSet ruleSet)
+    {
+        ruleSets.add(ruleSet);
+    }
 
-   /** Load <code>RuleSet</code> deifnitions from a URL.
-    *
-    * @see RuleSetLoader#load(URL)
-    */
-   public List load(Reader ruleReader) throws Exception {
+    /** Load <code>RuleSet</code> deifnitions from a URL.
+     *
+     * @see RuleSetLoader#load(URL)
+     */
+    public List load(Reader ruleReader) throws Exception
+    {
 
-      ruleSets = new ArrayList();
+        ruleSets = new ArrayList();
 
-      XMLParser parser = new XMLParser();
-      JellyContext context = new JellyContext();
+        XMLParser parser = new XMLParser();
+        JellyContext context = new JellyContext();
 
-      context.registerTagLibrary("http://drools.org/rules", new RuleTagLibrary());
-      context.setVariable("org.drools.io.RuleSetLoader", this);
-      parser.setContext(context);
+        context.registerTagLibrary("http://drools.org/rules", new RuleTagLibrary());
+        context.setVariable("org.drools.io.RuleSetLoader", this);
+        parser.setContext(context);
 
-      Script script = parser.parse(ruleReader);
-      XMLOutput output = XMLOutput.createXMLOutput(System.err, false);
-      script.run(context, output);
+        Script script = parser.parse(ruleReader);
+        XMLOutput output = XMLOutput.createXMLOutput(System.err, false);
+        script.run(context, output);
 
-      // [TODO] please explain
-      List answer = ruleSets;
-      ruleSets = null;
-      return answer;
-   }
+        // [TODO] please explain
+        List answer = ruleSets;
+        ruleSets = null;
+        return answer;
+    }
 
 }

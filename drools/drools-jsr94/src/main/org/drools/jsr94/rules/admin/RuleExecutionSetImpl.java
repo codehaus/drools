@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -65,103 +65,121 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleExecutionSetImpl implements RuleExecutionSet {
+public class RuleExecutionSetImpl implements RuleExecutionSet
+{
 
-   private String name;
-   private String description;
-   private String filterName;
-   private Map props = new HashMap();
+    private String name;
+    private String description;
+    private String filterName;
+    private Map props = new HashMap();
 
-   private RuleBase ruleBase = new RuleBase();
-   private List ruleList = new ArrayList();
+    private RuleBase ruleBase = new RuleBase();
+    private List ruleList = new ArrayList();
 
-   /**
-    * Hide the constructor.
-    */
-   RuleExecutionSetImpl() {
-   }
+    /**
+     * Hide the constructor.
+     */
+    RuleExecutionSetImpl()
+    {
+    }
 
-   /**
-    * Get the drool <code>RuleBase</code> associated with this <code>RuleExecutionSet</code>.
-    */
-   public RuleBase getRuleBase() {
-      return ruleBase;
-   }
+    /**
+     * Get the drool <code>RuleBase</code> associated with this <code>RuleExecutionSet</code>.
+     */
+    public RuleBase getRuleBase()
+    {
+        return ruleBase;
+    }
 
-   /**
-    * Adds a rule the the drool <code>RuleBase</code>.
-    */
-   void addRule(Rule droolRule) throws RuleIntegrationException {
+    /**
+     * Adds a rule the the drool <code>RuleBase</code>.
+     */
+    void addRule(Rule droolRule) throws RuleIntegrationException
+    {
 
-      ruleBase.addRule(droolRule);
+        ruleBase.addRule(droolRule);
 
-      String name = droolRule.getName();
-      ruleList.add(new RuleImpl(name, null));
-   }
+        String name = droolRule.getName();
+        ruleList.add(new RuleImpl(name, null));
+    }
 
-   /**
-    * Sets the name for this rule set.
-    */
-   void setName(String name) {
-      this.name = name;
-   }
+    /**
+     * Sets the name for this rule set.
+     */
+    void setName(String name)
+    {
+        this.name = name;
+    }
 
-   /**
-    * Sets the description for this rule set.
-    */
-   void setDescription(String description) {
-      this.description = description;
-   }
+    /**
+     * Sets the description for this rule set.
+     */
+    void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-   /**
-    * Get an instance of the default filter, or null.
-    */
-   public ObjectFilter getObjectFilter() {
+    /**
+     * Get an instance of the default filter, or null.
+     */
+    public ObjectFilter getObjectFilter()
+    {
 
-      ObjectFilter objectFilter = null;
+        ObjectFilter objectFilter = null;
 
-      // instanciate the current object filter
-      if (filterName != null) {
-         try {
-            Class filterClass = Class.forName(filterName);
-            return (ObjectFilter)filterClass.newInstance();
-         } catch (Exception ex) {
-            throw new RuntimeException(ex.toString());
-         }
-      }
+        // instanciate the current object filter
+        if (filterName != null)
+        {
+            try
+            {
+                Class filterClass = Class.forName(filterName);
+                return (ObjectFilter) filterClass.newInstance();
+            }
+            catch (Exception ex)
+            {
+                throw new RuntimeException(ex.toString());
+            }
+        }
 
-      return objectFilter;
-   }
+        return objectFilter;
+    }
 
-   // JSR94 interface methods start here ------------------------------------------------------------------------------
-   public String getName() {
-      return name;
-   }
+    // JSR94 interface methods start here ------------------------------------------------------------------------------
+    public String getName()
+    {
+        return name;
+    }
 
-   public String getDescription() {
-      return description;
-   }
+    public String getDescription()
+    {
+        return description;
+    }
 
-   public Object getProperty(Object key) {
-      return props.get(key);
-   }
+    public Object getProperty(Object key)
+    {
+        return props.get(key);
+    }
 
-   public void setProperty(Object key, Object val) {
-      props.put(key, val);
-   }
+    public void setProperty(Object key, Object val)
+    {
+        props.put(key, val);
+    }
 
-   public void setDefaultObjectFilter(String objectFilterClassname) {
-      this.filterName = objectFilterClassname;
-   }
+    public void setDefaultObjectFilter(String objectFilterClassname)
+    {
+        this.filterName = objectFilterClassname;
+    }
 
-   public String getDefaultObjectFilter() {
-      return filterName;
-   }
+    public String getDefaultObjectFilter()
+    {
+        return filterName;
+    }
 
-   public List getRules() {
-      return ruleList;
-   }
-   // JSR94 interface methods end here --------------------------------------------------------------------------------
+    public List getRules()
+    {
+        return ruleList;
+    }
+    // JSR94 interface methods end here --------------------------------------------------------------------------------
 
 
 }

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionImpl.java,v 1.3 2003-03-22 22:03:45 tdiesler Exp $
+ $Id: StatelessRuleSessionImpl.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -67,7 +67,8 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class StatelessRuleSessionImpl extends RuleSessionImpl implements StatelessRuleSession {
+public class StatelessRuleSessionImpl extends RuleSessionImpl implements StatelessRuleSession
+{
 
     /** the rule set from the repository */
     private RuleExecutionSetImpl ruleSet;
@@ -116,7 +117,8 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements Statele
                 Object obj = list.get(i);
                 workingMemory.assertObject(obj);
             }
-        } catch (AssertionException ex)
+        }
+        catch (AssertionException ex)
         {
             throw new InvalidRuleSessionException(ex.getMessage(), ex);
         }
@@ -160,7 +162,8 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements Statele
                 Object obj = list.get(i);
                 workingMemory.assertObject(obj);
             }
-        } catch (AssertionException ex)
+        }
+        catch (AssertionException ex)
         {
             throw new InvalidRuleSessionException(ex.getMessage(), ex);
         }
