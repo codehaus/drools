@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.20 2004-11-02 10:15:36 simon Exp $
+ * $Id: ConditionNode.java,v 1.21 2004-11-06 03:29:24 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,9 +46,15 @@ import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.spi.Condition;
 
+import org.drools.rule.Rule;
+
+import org.drools.event.WorkingMemoryEventListener;
+import org.drools.event.ConditionTestedEvent;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
 
 /**
  * Node which filters <code>ReteTuple</code>s.
@@ -145,11 +151,28 @@ class ConditionNode extends TupleSource implements TupleSink
      */
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        if ( getCondition( ).isAllowed( tuple ) )
+        Condition condition = getCondition( );
+        boolean isAllowed = condition.isAllowed( tuple );
+
+            List listeners = workingMemory.getListeners();
+            if (!listeners.isEmpty())
+            {
+                ConditionTestedEvent conditionTestedEvent =  new ConditionTestedEvent(workingMemory, tuple.getRule(), condition, tuple, isAllowed);
+                Iterator iter = listeners.iterator();
+                WorkingMemoryEventListener listener;
+                while ( iter.hasNext() )
+                {
+                    listener = (WorkingMemoryEventListener) iter.next();
+                    listener.conditionTested(conditionTestedEvent);
+                }
+            }
+
+        if ( isAllowed )
         {
-//            tuple.setConditionTimeStamp( order, workingMemory.getConditionTimeStamp() );
+            //tuple.setConditionTimeStamp( order, workingMemory.getConditionTimeStamp() );
             propagateAssertTuple( tuple, workingMemory );
         }
+
     }
 
     /**
@@ -184,11 +207,32 @@ class ConditionNode extends TupleSource implements TupleSink
         ReteTuple eachTuple;
         TupleKey eachKey;
 
+        Condition condition = getCondition( );
+        ConditionTestedEvent conditionTestedEvent;
+        Iterator iter;
+        WorkingMemoryEventListener listener;
+        boolean isAllowed;
+        List listeners = workingMemory.getListeners();
         while ( tupleIter.hasNext( ) )
         {
             eachTuple = ( ReteTuple ) tupleIter.next( );
 
-            if ( !getCondition( ).isAllowed( eachTuple ) )
+            isAllowed = condition.isAllowed( eachTuple );
+
+
+            if (!listeners.isEmpty())
+            {
+                conditionTestedEvent =  new ConditionTestedEvent(workingMemory, eachTuple.getRule(), condition, eachTuple, isAllowed);
+                iter = listeners.iterator();
+                while ( iter.hasNext() )
+                {
+                    listener = (WorkingMemoryEventListener) iter.next();
+                    listener.conditionTested(conditionTestedEvent);
+                }
+            }
+
+
+            if ( !isAllowed )
             {
                 tupleIter.remove();
 

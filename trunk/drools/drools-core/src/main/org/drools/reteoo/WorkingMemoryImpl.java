@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.31 2004-11-03 03:14:57 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.32 2004-11-06 03:29:24 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,6 +48,12 @@ import org.drools.WorkingMemory;
 import org.drools.NoSuchFactHandleException;
 import org.drools.event.WorkingMemoryEventListener;
 
+
+import org.drools.event.WorkingMemoryEventListener;
+import org.drools.event.ObjectAssertedEvent;
+import org.drools.event.ObjectModifiedEvent;
+import org.drools.event.ObjectRetractedEvent;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,7 +68,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.31 2004-11-03 03:14:57 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.32 2004-11-06 03:29:24 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -335,6 +341,17 @@ class WorkingMemoryImpl implements WorkingMemory
             putObject( handle, object );
 
             this.ruleBase.assertObject( handle, object, this );
+            if (!this.listeners.isEmpty())
+            {
+                ObjectAssertedEvent objectAssertedEvent =  new ObjectAssertedEvent(this, handle, object);
+                Iterator iter = this.listeners.iterator();
+                WorkingMemoryEventListener listener;
+                while ( iter.hasNext() )
+                {
+                    listener = (WorkingMemoryEventListener) iter.next();
+                    listener.objectAsserted(objectAssertedEvent);
+                }
+            }
         }
 
         return handle;
@@ -361,6 +378,17 @@ class WorkingMemoryImpl implements WorkingMemory
         this.ruleBase.retractObject( handle, this );
 
         this.handles.remove( this.objects.remove( handle ) );
+        if (!this.listeners.isEmpty())
+        {
+            ObjectRetractedEvent objectRetractedEvent =  new ObjectRetractedEvent(this, handle);
+            Iterator iter = getListeners().iterator();
+            WorkingMemoryEventListener listener;
+            while ( iter.hasNext() )
+            {
+                listener = (WorkingMemoryEventListener) iter.next();
+                listener.objectRetracted(objectRetractedEvent);
+            }
+        }
     }
 
     /**
@@ -380,7 +408,19 @@ class WorkingMemoryImpl implements WorkingMemory
         this.handles.put( object, handle );
 
         this.ruleBase.modifyObject( handle, object, this );
+        if (!this.listeners.isEmpty())
+        {
+            ObjectModifiedEvent objectModifiedEvent =  new ObjectModifiedEvent(this, handle, object);
+            Iterator iter = getListeners().iterator();
+            WorkingMemoryEventListener listener;
+            while ( iter.hasNext() )
+            {
+                listener = (WorkingMemoryEventListener) iter.next();
+                listener.objectModified(objectModifiedEvent);
+            }
+        }
     }
+
 
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
