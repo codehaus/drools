@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.10 2002-07-27 05:52:17 bob Exp $
+ $Id: RuleBase.java,v 1.11 2002-07-28 13:55:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,9 @@ package org.drools;
  
  */
 
-import org.drools.reteoo.RootNode;
 import org.drools.reteoo.Builder;
 import org.drools.reteoo.ReteConstructionException;
+import org.drools.reteoo.impl.RootNodeImpl;
 import org.drools.spi.Rule;
 import org.drools.spi.RuleSet;
 
@@ -68,7 +68,7 @@ public class RuleBase
     // ------------------------------------------------------------
 
     /** The root Rete-OO node of this <code>RuleBase</code>. */
-    private RootNode rootNode;
+    private RootNodeImpl rootNode;
 
     /** Rete-OO Network builder. */
     private Builder  builder;
@@ -81,7 +81,7 @@ public class RuleBase
      */
     public RuleBase()
     {
-        this.rootNode = new RootNode();
+        this.rootNode = new RootNodeImpl();
         this.builder  = new Builder( this.rootNode );
     }
 
@@ -171,7 +171,7 @@ public class RuleBase
      *
      *  @return The root node in the RETE-OO graph. 
      */
-    protected RootNode getRootNode()
+    RootNodeImpl getRootNode()
     {
         return this.rootNode;
     }
@@ -184,8 +184,8 @@ public class RuleBase
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    protected void assertObject(Object object,
-                                WorkingMemory workingMemory) throws AssertionException
+    void assertObject(Object object,
+                      WorkingMemory workingMemory) throws AssertionException
     {
         getRootNode().assertObject( object,
                                     workingMemory );
@@ -199,8 +199,8 @@ public class RuleBase
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    protected void retractObject(Object object,
-                                 WorkingMemory workingMemory) throws RetractionException
+    void retractObject(Object object,
+                       WorkingMemory workingMemory) throws RetractionException
     {
         getRootNode().retractObject( object,
                                      workingMemory );
@@ -218,8 +218,8 @@ public class RuleBase
      *
      *  @throws FactException if an error occurs during assertion.
      */
-    protected void modifyObject(Object object,
-                                WorkingMemory workingMemory) throws FactException
+    void modifyObject(Object object,
+                      WorkingMemory workingMemory) throws FactException
     {
         getRootNode().modifyObject( object,
                                     workingMemory );

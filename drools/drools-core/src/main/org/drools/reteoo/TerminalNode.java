@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.14 2002-07-27 05:52:17 bob Exp $
+ $Id: TerminalNode.java,v 1.15 2002-07-28 13:55:47 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,50 +59,13 @@ import org.drools.spi.Rule;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class TerminalNode implements TupleSink
+public interface TerminalNode extends TupleSink
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** Total-ordering priority of this terminal node for rule-firings. */
-    private int priority;
-
-    /** The rule to invoke upon match. */
-    private Rule rule;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param inputSource The parent tuple source.
-     *  @param rule The rule.
-     *  @param priority The priority.
-     */
-    public TerminalNode(TupleSource inputSource,
-                        Rule rule,
-                        int priority)
-    {
-        this.rule = rule;
-
-        this.priority = priority;
-
-        if ( inputSource != null )
-        {
-            inputSource.setTupleSink( this );
-        }
-    }
-
     /** Retrieve the priority
      *
      *  @return The priority.
      */
-    public int getPriority()
-    {
-        return this.priority;
-    }
+    int getPriority();
 
     /** Retrieve the <code>Action</code> associated with
      *  this node.
@@ -110,61 +73,5 @@ public class TerminalNode implements TupleSink
      *  @return The <code>Action</code> associated with
      *          this node.
      */
-    public Rule getRule()
-    {
-        return this.rule;
-    }
-
-    /** Assert a new <code>Tuple</code>.
-     *
-     *  @param inputSource The source of the <code>Tuple</code>.
-     *  @param tuple The <code>Tuple</code> being asserted.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws AssertionException If an error occurs while asserting.
-     */
-    public void assertTuple(TupleSource inputSource,
-                            ReteTuple tuple,
-                            WorkingMemory workingMemory) throws AssertionException
-    {
-        Agenda agenda = workingMemory.getAgenda();
-
-        agenda.addToAgenda( tuple,
-                            getRule(),
-                            getPriority() );
-    }
-
-    /** Retract tuples.
-     *
-     *  @param key The tuple key.
-     *  @param workingMemory The working memory seesion.
-     */
-    public void retractTuples(TupleKey key,
-                              WorkingMemory workingMemory) 
-    {
-        Agenda agenda = workingMemory.getAgenda();
-
-        agenda.removeFromAgenda( key,
-                                 getRule() );
-    }
-
-    /** Modify tuples.
-     *
-     *  @param inputSource Source of modifications.
-     *  @param trigger The root fact object.
-     *  @param newTuples Modification replacement tuples.
-     *  @param workingMemory The working memory session.
-     */
-    public void modifyTuples(TupleSource inputSource,
-                             Object trigger,
-                             TupleSet newTuples,
-                             WorkingMemory workingMemory)
-    {
-        Agenda agenda = workingMemory.getAgenda();
-        
-        agenda.modifyAgenda( trigger,
-                             newTuples,
-                             getRule(),
-                             getPriority() );
-    }
+    Rule getRule();
 }

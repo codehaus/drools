@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.5 2002-07-27 05:52:17 bob Exp $
+ $Id: ObjectTypeNode.java,v 1.6 2002-07-28 13:55:47 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -73,167 +73,11 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com</a>
  */
-public class ObjectTypeNode
+public interface ObjectTypeNode
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The <code>ObjectType</code> semantic module. */
-    private ObjectType objectType;
-
-    /** The <code>ParameterNode</code> children. */
-    private Set        parameterNodes;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct given a semantic <code>ObjectType</code>.
-     *
-     *  @param objectType The semantic object-type differentiator.
-     */
-    ObjectTypeNode(ObjectType objectType)
-    {
-        this.objectType = objectType;
-
-        this.parameterNodes = Collections.EMPTY_SET;
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
     /** Retrieve the semantic <code>ObjectType</code> differentiator.
      *
      *  @return The semantic <code>ObjectType</code> differentiator.
      */
-    public ObjectType getObjectType()
-    {
-        return this.objectType;
-    }
-
-    /** Add a <code>ParameterNode</code> child to this node.
-     *
-     *  @param node The <code>ParameterNode</code> child to add.
-     */
-    protected void addParameterNode(ParameterNode node)
-    {
-        if ( this.parameterNodes == Collections.EMPTY_SET )
-        {
-            this.parameterNodes = new HashSet();
-        }
-
-        this.parameterNodes.add( node );
-    }
-
-    /** Retrieve the <code>Set</code> of <code>ParameterNodes/code>
-     *  children of this node.
-     *
-     *  @return The <code>Set</code> of <code>ParameterNode</code>
-     *          children.
-     */
-    protected Set getParameterNodes()
-    {
-        return this.parameterNodes;
-    }
-
-    /** Retreive an <code>Iterator</code> over <code>ParameterNode</code>
-     *  children of this node.
-     *
-     *  @return An <code>Iterator</code> over <code>ParameterNode</code>
-     *          children of this node.
-     */
-    protected Iterator getParameterNodeIterator()
-    {
-        return this.parameterNodes.iterator();
-    }
-
-    /** Assert a new fact object into this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to assert.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws AssertionException if an error occurs during assertion.
-     */
-    public void assertObject(Object object,
-                             WorkingMemory workingMemory) throws AssertionException
-    {
-        ObjectType objectType = getObjectType();
-
-        Iterator      nodeIter = getParameterNodeIterator();
-        ParameterNode eachNode = null;
-
-        while ( nodeIter.hasNext() )
-        {
-            eachNode = (ParameterNode) nodeIter.next();
-
-            if ( objectType.matches( object ) )
-            {
-                eachNode.assertObject( object,
-                                       workingMemory );
-            }
-        }
-    }
-
-    /** Retract a fact object from this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  @param object The object to retract.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws RetractionException if an error occurs during assertion.
-     */
-    public void retractObject(Object object,
-                              WorkingMemory workingMemory) throws RetractionException
-    {
-        ObjectType objectType = getObjectType();
-
-        Iterator      nodeIter = getParameterNodeIterator();
-        ParameterNode eachNode = null;
-
-        while ( nodeIter.hasNext() )
-        {
-            eachNode = (ParameterNode) nodeIter.next();
-
-            if ( objectType.matches( object ) )
-            {
-                eachNode.retractObject( object,
-                                        workingMemory );
-            }
-        }
-    }
-
-    /** Modify a fact object in this <code>RuleBase</code>
-     *  and the specified <code>WorkingMemory</code>.
-     *
-     *  With the exception of time-based nodes, modification of
-     *  a fact object is semantically equivelent to retracting and
-     *  re-asserting it.
-     *
-     *  @param object The object to modify.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException if an error occurs during assertion.
-     */
-    public void modifyObject(Object object,
-                             WorkingMemory workingMemory) throws FactException
-    {
-        ObjectType objectType = getObjectType();
-
-        Iterator      nodeIter = getParameterNodeIterator();
-        ParameterNode eachNode = null;
-
-        while ( nodeIter.hasNext() )
-        {
-            eachNode = (ParameterNode) nodeIter.next();
-
-            if ( objectType.matches( object ) )
-            {
-                eachNode.modifyObject( object,
-                                       workingMemory );
-            }
-        }
-    }
+    ObjectType getObjectType();
 }

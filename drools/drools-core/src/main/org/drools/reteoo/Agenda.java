@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.13 2002-07-27 05:55:59 bob Exp $
+ $Id: Agenda.java,v 1.14 2002-07-28 13:55:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -71,240 +71,20 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Agenda
+public interface Agenda
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** Working memory of this Agenda. */
-    private WorkingMemory workingMemory;
-
-    /** Items in the agenda. */
-    private PriorityQueue items;
-
-    /** Items time-delayed. */
-    private Set scheduledItems;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param workingMemory The <code>WorkingMemory</code> of this agenda.
-     */
-    public Agenda(WorkingMemory workingMemory)
-    {
-        this.workingMemory = workingMemory;
-
-        this.items          = new PriorityQueue();
-        this.scheduledItems = new HashSet();
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Schedule a rule action invokation on this <code>Agenda</code>.
-     *
-     *  @param tuple The matching <code>Tuple</code>.
-     *  @param rule The rule to fire.
-     *  @param priority The rule-firing priority.
-     */
-    void addToAgenda(ReteTuple tuple,
-                     Rule rule,
-                     int priority)
-    {
-        if ( rule == null )
-        {
-            return;
-        }
-
-        AgendaItem item = new AgendaItem( tuple,
-                                          rule );
-        if ( rule.getDuration() > 0 )
-        {
-            this.scheduledItems.add( item );
-            scheduleItem( item );
-        }
-        else
-        {
-            this.items.add( item,
-                            priority );
-        }
-    }
-
-    /** Remove a tuple from the agenda.
-     *
-     *  @param key The key to the tuple to be removed.
-     *  @param rule The rule to remove.
-     */
-    void removeFromAgenda(TupleKey key,
-                          Rule rule)
-    {
-        if ( rule == null )
-        {
-            return;
-        }
-
-        Iterator   itemIter = this.items.iterator();
-        AgendaItem eachItem = null;
-
-        while ( itemIter.hasNext() )
-        {
-            eachItem = (AgendaItem) itemIter.next();
-
-            if ( eachItem.getRule() == rule )
-            {
-                if ( eachItem.getTuple().getKey().containsAll( key ) )
-                {
-                    itemIter.remove();
-                }
-            }
-        }
-
-        itemIter = this.scheduledItems.iterator();
-        eachItem = null;
-
-        while ( itemIter.hasNext() )
-        {
-            eachItem = (AgendaItem) itemIter.next();
-
-            if ( eachItem.getRule() == rule )
-            {
-                if ( eachItem.getTuple().getKey().containsAll( key ) )
-                {
-                    cancelItem( eachItem );
-                    itemIter.remove();
-                }
-            }
-        }
-    }
-
-    /** Modify the agenda.
-     *
-     *  @param trigger The triggering root object.
-     *  @param newTuples New tuples from the modification.
-     *  @param rule The rule.
-     *  @param priority Firing priority.
-     */
-    void modifyAgenda(Object trigger,
-                      TupleSet newTuples,
-                      Rule rule,
-                      int priority)
-    {
-        Iterator   itemIter  = this.items.iterator();
-        AgendaItem eachItem  = null;
-        ReteTuple  eachTuple = null;
-
-        while ( itemIter.hasNext() )
-        {
-            eachItem = (AgendaItem) itemIter.next();
-
-            if ( eachItem.getRule() == rule )
-            {
-                eachTuple = eachItem.getTuple();
-
-                if ( eachTuple.dependsOn( trigger ) )
-                {
-                    if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
-                    {
-                        itemIter.remove();
-                    }
-                    else
-                    {
-                        eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
-                        newTuples.removeTuple( eachTuple.getKey() );
-                    }
-                }
-            }
-        }
-
-        itemIter = this.scheduledItems.iterator();
-        eachItem = null;
-
-        while ( itemIter.hasNext() )
-        {
-            eachItem = (AgendaItem) itemIter.next();
-
-            if ( eachItem.getRule() == rule )
-            {
-                eachTuple = eachItem.getTuple();
-
-                if ( eachTuple.dependsOn( trigger ) )
-                {
-                    if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
-                    {
-                        cancelItem( eachItem );
-                        itemIter.remove();
-                    }
-
-                    else
-                    {
-                        eachItem.setTuple( newTuples.getTuple( eachTuple.getKey() ) );
-                        newTuples.removeTuple( eachTuple.getKey() );
-                    }
-                }
-            }
-        }
-
-        Iterator tupleIter = newTuples.iterator();
-
-        while ( tupleIter.hasNext() )
-        {
-            eachTuple = (ReteTuple) tupleIter.next();
-
-            addToAgenda( eachTuple,
-                         rule,
-                         priority );
-        }
-    }
-
-    /** Schedule an agenda item for delayed firing.
-     *
-     *  @param item The item to schedule.
-     */
-    void scheduleItem(AgendaItem item)
-    {
-        Scheduler.getInstance().scheduleAgendaItem( item,
-                                                    this.workingMemory );
-    }
-
-    /** Cancel a scheduled agenda item for delayed firing.
-     *
-     *  @param item The item to cancel.
-     */
-    void cancelItem(AgendaItem item)
-    {
-        Scheduler.getInstance().cancelAgendaItem( item );
-    }
-    
     /** Determine if this <code>Agenda</code> has any
      *  scheduled items.
      *
      *  @return <code>true<code> if the agenda is empty, otherwise
      *          <code>false</code>.
      */
-    public boolean isEmpty()
-    {
-        return this.items.isEmpty();
-    }
+    boolean isEmpty();
 
     /** Fire the next scheduled <code>Agenda</code> item.
      *
      *  @throws ActionInvokationException If an error occurs while
      *          firing an agenda item.
      */
-    public void fireNextItem() throws ActionInvokationException
-    {
-        if ( isEmpty() )
-        {
-            return;
-        }
-
-        AgendaItem item = (AgendaItem) this.items.removeFirst();
-
-        item.fire( this.workingMemory );
-    }
+    void fireNextItem() throws ActionInvokationException;
 }

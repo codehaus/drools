@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.11 2002-07-27 05:55:59 bob Exp $
+ $Id: WorkingMemory.java,v 1.12 2002-07-28 13:55:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,12 @@ package org.drools;
  
  */
 
-import org.drools.reteoo.JoinMemory;
 import org.drools.reteoo.JoinNode;
+import org.drools.reteoo.JoinMemory;
 import org.drools.reteoo.Agenda;
+import org.drools.reteoo.impl.JoinNodeImpl;
+import org.drools.reteoo.impl.JoinMemoryImpl;
+import org.drools.reteoo.impl.AgendaImpl;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -67,10 +70,10 @@ public class WorkingMemory
     private RuleBase ruleBase;
 
     /** The actual memory for the <code>JoinNode</code>s. */
-    private Map      joinMemories;
+    private Map joinMemories;
 
     /** Rule-firing agenda. */
-    private Agenda   agenda;
+    private AgendaImpl agenda;
 
     /** Flag to determine if a rule is currently being fired. */
     private boolean firing;
@@ -88,7 +91,7 @@ public class WorkingMemory
         this.ruleBase     = ruleBase;
         this.joinMemories = new HashMap();
 
-        this.agenda       = new Agenda( this );
+        this.agenda       = new AgendaImpl( this );
     }
 
     // ------------------------------------------------------------
@@ -202,7 +205,8 @@ public class WorkingMemory
 
         if ( memory == null )
         {
-            memory = new JoinMemory( node );
+            memory = new JoinMemoryImpl( (JoinNodeImpl) node );
+
             this.joinMemories.put( node,
                                    memory );
         }
