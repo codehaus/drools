@@ -33,7 +33,7 @@ public class ConditionNodeTest extends TestCase
 
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-        this.tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule );
+        this.tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), rule );
     }
 
     public void tearDown()

@@ -76,7 +76,7 @@ public class AgendaItemTest extends DroolsTestCase
 
         Declaration decl = rule.addParameterDeclaration( "cheese", new MockObjectType( true ) );
 
-        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule, decl, handle );
+        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), rule, decl, handle );
 
         InstrumentedConsequence consequence = new InstrumentedConsequence( );
 

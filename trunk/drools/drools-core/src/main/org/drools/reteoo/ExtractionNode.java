@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.32 2004-11-21 13:18:04 simon Exp $
+ * $Id: ExtractionNode.java,v 1.33 2004-11-24 14:09:11 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,13 +48,14 @@ import org.drools.rule.Declaration;
 import org.drools.spi.Extractor;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
  * <i>extraction </i> node in the Rete-OO network.
- *
+ * 
  * @see ExtractionNode
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class ExtractionNode extends TupleSource
@@ -71,6 +72,8 @@ class ExtractionNode extends TupleSource
     /** Declaration on LHS. */
     private final Declaration targetDeclaration;
 
+    private boolean isParameter;
+
     /** extrator. */
     private final Extractor extractor;
 
@@ -79,18 +82,19 @@ class ExtractionNode extends TupleSource
     // ------------------------------------------------------------
 
     /**
-     * Construct.
-     *
+     * ExtractionNode.java
+     * 
      * @param tupleSource
      *            Parent tuple source.
      * @param targetDeclaration
      *            Target of extraction.
      * @param extractor
-     *            The fact extractor to use.
+     *            The fact extractor to use. 
      */
     public ExtractionNode(TupleSource tupleSource,
                           Declaration targetDeclaration,
-                          Extractor extractor)
+                          Extractor extractor,
+                          boolean isParameter)
     {
         this.extractor = extractor;
         this.targetDeclaration = targetDeclaration;
@@ -103,6 +107,8 @@ class ExtractionNode extends TupleSource
         this.tupleDeclarations.addAll( sourceDecls );
         this.tupleDeclarations.add( targetDeclaration );
 
+        this.isParameter = isParameter;
+
         tupleSource.setTupleSink( this );
     }
 
@@ -113,9 +119,9 @@ class ExtractionNode extends TupleSource
     /**
      * Retrieve the <code>Declaration</code> which is the target of the
      * extraction.
-     *
+     * 
      * @see Declaration
-     *
+     * 
      * @return The target <code>Declaration</code>.
      */
     public Declaration getTargetDeclaration()
@@ -126,9 +132,9 @@ class ExtractionNode extends TupleSource
     /**
      * Retrieve the <code>Extractor</code> used to generate the
      * right-hand-side value for the extraction.
-     *
+     * 
      * @see Extractor
-     *
+     * 
      * @return The <code>Extrator</code>.
      */
     public Extractor getExtractor()
@@ -143,9 +149,9 @@ class ExtractionNode extends TupleSource
     /**
      * Retrieve the <code>Set</code> of <code>Declaration</code> s in the
      * propagated <code>Tuples</code>.
-     *
+     * 
      * @see Declaration
-     *
+     * 
      * @return The <code>Set</code> of <code>Declarations</code> in progated
      *         <code>Tuples</code>.
      */
@@ -156,12 +162,12 @@ class ExtractionNode extends TupleSource
 
     /**
      * Assert a new <code>Tuple</code>.
-     *
+     * 
      * @param tuple
      *            The <code>Tuple</code> being asserted.
      * @param workingMemory
      *            The working memory seesion.
-     *
+     * 
      * @throws AssertionException
      *             If an error occurs while asserting.
      */
@@ -180,44 +186,143 @@ class ExtractionNode extends TupleSource
             return;
         }
 
-        propagateAssertTuple( new ReteTuple( tuple,
-                                             getTargetDeclaration( ),
-                                             value ),
+        if (!this.isParameter)
+        {
+	        FactHandle handle = workingMemory.newExtractionHandle( );
+	        workingMemory.putExtraction( handle,
+	                                     value );
+	        tuple = new ReteTuple( tuple,
+                                   handle,
+                                   getTargetDeclaration( ));
+        }
+        
+        propagateAssertTuple( tuple,
                               workingMemory );
     }
 
     /**
      * Retract tuples.
-     *
+     * 
      * @param key
      *            The tuple key.
      * @param workingMemory
      *            The working memory seesion.
-     *
+     * 
      * @throws RetractionException
      *             If an error occurs while retracting.
      */
     public void retractTuples(TupleKey key,
                               WorkingMemoryImpl workingMemory) throws RetractionException
     {
+        FactHandle handle = key.get( this.targetDeclaration );
+        if ( handle != null )
+        {
+            workingMemory.removeExtraction( handle );
+        }
         propagateRetractTuples( key,
                                 workingMemory );
     }
 
     /**
      * Modify tuples.
-     *
-     * @param trigger The root fact object handle.
-     * @param tupleSet Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
+     * 
+     * @param trigger
+     *            The root fact object handle.
+     * @param tupleSet
+     *            Modification replacement tuples.
+     * @param workingMemory
+     *            The working memory session.
+     * 
+     * @throws FactException
+     *             If an error occurs while modifying.
      */
     public void modifyTuples(FactHandle trigger,
-                             TupleSet tupleSet,
+                             TupleSet newTuples,
                              WorkingMemoryImpl workingMemory) throws FactException
     {
+        Set retractedKeys = new HashSet( );
+        ReteTuple eachTuple;
+        TupleKey eachKey;
+        boolean retract;
+        Object oldValue;
+        Object newValue;
+        FactHandle handle;
 
+        TupleSet modifiedTuples = null;
+
+        // make sure tuples have updated values
+        Iterator tupleIter = newTuples.iterator( );
+        while ( tupleIter.hasNext( ) )
+        {
+            retract = false;
+            oldValue = null;
+            eachTuple = (ReteTuple) tupleIter.next( );
+
+            handle = eachTuple.getFactHandleForDeclaration( this.targetDeclaration );
+            if ( handle != null )
+            {
+                oldValue = workingMemory.getExtraction( handle );
+            }
+
+            newValue = getExtractor( ).extractFact( eachTuple );
+
+            if ( newValue == null )
+            {
+                retract = true;
+            }
+            else if (isParameter && (oldValue == null))
+            {
+                retract = true;
+            }            
+            else if ((oldValue != null) && (!newValue.equals( oldValue )))
+            {
+                retract = true;
+            }
+            
+            if ( retract == false )
+            {
+                if ( modifiedTuples == null )
+                {
+                    modifiedTuples = new TupleSet( );
+                }
+
+                if (!isParameter)
+                {
+                    if (handle == null)
+                    {
+                        handle = workingMemory.newExtractionHandle( );
+    	                eachTuple = new ReteTuple( eachTuple,
+    	                                           handle,
+    	                                           this.targetDeclaration);                        
+                    }                    
+
+	                workingMemory.putExtraction( handle,
+	                                             newValue );
+                }
+                modifiedTuples.addTuple( eachTuple );
+            }
+            else
+            {
+                eachKey = eachTuple.getKey( );
+
+                if ( retractedKeys.add( eachKey ) )
+                {
+                    if ( handle != null )
+                    {
+                        workingMemory.removeExtraction( handle );
+                    }
+                    propagateRetractTuples( eachKey,
+                                            workingMemory );
+                }
+            }
+        }
+
+        if ( modifiedTuples != null )
+        {
+            propagateModifyTuples( trigger,
+                                   modifiedTuples,
+                                   workingMemory );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -226,7 +331,7 @@ class ExtractionNode extends TupleSource
 
     /**
      * Produce a debug string.
-     *
+     * 
      * @return The debug string.
      */
     public String toString()

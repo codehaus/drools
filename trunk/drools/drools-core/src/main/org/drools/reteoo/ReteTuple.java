@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.55 2004-11-23 00:26:05 simon Exp $
+ * $Id: ReteTuple.java,v 1.56 2004-11-24 14:09:11 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,9 +57,9 @@ import java.util.Set;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
- *
+ * 
  * @see Tuple
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 class ReteTuple
@@ -71,17 +71,16 @@ class ReteTuple
     // Instance members
     // ------------------------------------------------------------
 
-    private final WorkingMemory workingMemory;
+    private final WorkingMemoryImpl workingMemory;
 
     private final Rule rule;
 
     /** Key objects for this tuple. */
     private final TupleKey key;
 
-    private final Set declarations;
+    private final Map extractionHandles;
 
-    /** Extraction value objects in this tuple. */
-    private final Map extractions;
+    private final Set declarations;
 
     private FactHandleImpl mostRecentFact;
 
@@ -91,14 +90,14 @@ class ReteTuple
     // Constructors
     // ------------------------------------------------------------
 
-    public ReteTuple(WorkingMemory workingMemory,
+    public ReteTuple(WorkingMemoryImpl workingMemory,
                      Rule rule)
     {
         this.workingMemory = workingMemory;
         this.rule = rule;
         this.key = TupleKey.EMPTY;
         this.declarations = Collections.EMPTY_SET;
-        this.extractions = Collections.EMPTY_MAP;
+        this.extractionHandles = Collections.EMPTY_MAP;
     }
 
     ReteTuple(ReteTuple left,
@@ -112,14 +111,17 @@ class ReteTuple
                                          1 );
         this.declarations.addAll( left.declarations );
         this.declarations.addAll( right.declarations );
-        if ( left.extractions != Collections.EMPTY_MAP )
+
+        if ( left.extractionHandles != Collections.EMPTY_MAP )
         {
-            this.extractions = left.extractions;
-            this.extractions.putAll( right.extractions );
+            this.extractionHandles = new HashMap( left.extractionHandles.size( ) + right.extractionHandles.size( ),
+                                                  1 );
+            this.extractionHandles.putAll( left.extractionHandles );
+            this.extractionHandles.putAll( right.extractionHandles );
         }
         else
         {
-            this.extractions = right.extractions;
+            this.extractionHandles = right.extractionHandles;
         }
     }
 
@@ -129,55 +131,56 @@ class ReteTuple
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
-        this.key = new TupleKey( that.key,
-                                 new TupleKey( declaration,
-                                               handle ) );
-        this.declarations = new HashSet( that.declarations.size( ) + 1,
-                                         1 );
-        this.declarations.addAll( that.declarations );
-        this.declarations.add( declaration );
-        this.extractions = that.extractions;
-    }
 
-    ReteTuple(ReteTuple that,
-              Declaration declaration,
-              Object value)
-    {
-        this.workingMemory = that.workingMemory;
-        this.rule = that.rule;
-        this.key = that.key;
-        this.declarations = new HashSet( that.declarations.size( ) + 1,
-                                         1 );
-        this.declarations.addAll( that.declarations );
-        this.declarations.add( declaration );
-
-        if ( that.extractions == Collections.EMPTY_MAP )
+        if ( !(handle instanceof ExtractionHandleImpl) )
         {
-            this.extractions = Collections.singletonMap( declaration,
-                                                         value );
+            this.key = new TupleKey( that.key,
+                                     new TupleKey( declaration,
+                                                   handle ) );
+
+            this.declarations = new HashSet( that.declarations.size( ) + 1,
+                                             1 );
+            this.declarations.addAll( that.declarations );
+            this.declarations.add( declaration );
+
+            this.extractionHandles = that.extractionHandles;
         }
         else
         {
-            this.extractions = new HashMap( that.extractions.size( ) + 1,
-                                            1 );
-            this.extractions.putAll( that.extractions );
-            this.extractions.put( declaration,
-                                  value );
+            this.declarations = that.declarations;
+
+            this.extractionHandles = new HashMap( that.extractionHandles.size( ) + 1,
+                                                  1 );
+            this.extractionHandles.putAll( that.extractionHandles );
+            this.extractionHandles.put( declaration,
+                                        handle );
+
+            this.key = that.key;
         }
     }
 
-    ReteTuple(WorkingMemory workingMemory,
+    ReteTuple(WorkingMemoryImpl workingMemory,
               Rule rule,
               Declaration declaration,
               FactHandle handle)
     {
         this.workingMemory = workingMemory;
         this.rule = rule;
-        this.key = new TupleKey( declaration,
-                                 handle );
-        this.declarations = Collections.singleton( declaration );
-        this.extractions = Collections.EMPTY_MAP;
 
+        if ( !(handle instanceof ExtractionHandleImpl) )
+        {
+            this.declarations = Collections.singleton( declaration );
+            this.extractionHandles = Collections.EMPTY_MAP;
+            this.key = new TupleKey( declaration,
+                                     handle );
+        }
+        else
+        {
+            this.declarations = Collections.EMPTY_SET;
+            this.extractionHandles = Collections.singletonMap( declaration,
+                                                               handle );
+            this.key = TupleKey.EMPTY;
+        }
     }
 
     public String toString()
@@ -191,7 +194,7 @@ class ReteTuple
 
     /**
      * Retrieve the key for this tuple.
-     *
+     * 
      * @return The key.
      */
     TupleKey getKey()
@@ -201,10 +204,10 @@ class ReteTuple
 
     /**
      * Determine if this tuple depends upon a specified object.
-     *
+     * 
      * @param handle
      *            The object handle to test.
-     *
+     * 
      * @return <code>true</code> if this tuple depends upon the specified
      *         object, otherwise <code>false</code>.
      */
@@ -221,7 +224,12 @@ class ReteTuple
     public Object get(Declaration declaration)
     {
         FactHandle handle = this.key.get( declaration );
-        if ( handle != null )
+        if ( handle == null )
+        {
+            handle = (FactHandle) this.extractionHandles.get( declaration );
+        }
+
+        if ( (handle != null) && !(handle instanceof ExtractionHandleImpl) )
         {
             try
             {
@@ -231,10 +239,15 @@ class ReteTuple
             {
             }
         }
-        else
-        // could be a extraction value
+        else if ( handle != null )
         {
-            return this.extractions.get( declaration );
+            try
+            {
+                return this.workingMemory.getExtraction( handle );
+            }
+            catch ( NoSuchFactObjectException e )
+            {
+            }
         }
         return null;
     }
@@ -260,6 +273,19 @@ class ReteTuple
         {
             return null;
         }
+    }
+
+    /**
+     * @see Tuple
+     */
+    public FactHandle getFactHandleForDeclaration(Declaration declaration)
+    {
+        FactHandle handle = this.key.get( declaration );
+        if ( handle == null )
+        {
+            handle = (FactHandle) this.extractionHandles.get( declaration );
+        }
+        return handle;
     }
 
     public Rule getRule()
