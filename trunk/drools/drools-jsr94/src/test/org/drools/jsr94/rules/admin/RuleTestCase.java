@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: RuleTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,20 +46,20 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.jsr94.rules.JSR94TestBase;
-
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.Rule;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Test the LocalRuleExecutionSetProvider implementation.
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleTestCase extends JSR94TestBase {
+public class RuleTestCase extends RuleEngineTestBase {
 
    private RuleAdministrator ruleAdministrator;
    private LocalRuleExecutionSetProvider ruleSetProvider;
@@ -77,16 +77,17 @@ public class RuleTestCase extends JSR94TestBase {
     * Test rule name and description.
     */
    public void testRule() throws Exception {
-      InputStream rulesStream = getResourceAsStream(RULES_RESOURCE);
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesStream, null);
-      assertEquals("number of rules", 2, ruleSet.getRules().size());
+       InputStream in = org.drools.jsr94.rules.RuleEngineTestBase.class.getResourceAsStream(bindUri);
+       RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(in, null);
+       List rules = ruleExecutionSet.getRules();
+       assertEquals("number of rules", 2, rules.size());
 
-      Rule rule01 = (Rule)ruleSet.getRules().get(0);
-      assertEquals("rule name", "Find Sisters", rule01.getName());
-      assertNull("rule description", rule01.getDescription());
+       Rule rule01 = (Rule)ruleExecutionSet.getRules().get(0);
+       assertEquals("rule name", "Find Sisters", rule01.getName());
+       assertNull("rule description", rule01.getDescription());
 
-      Rule rule02 = (Rule)ruleSet.getRules().get(1);
-      assertEquals("rule name", "Message Received", rule02.getName());
-      assertNull("rule description", rule02.getDescription());
+       Rule rule02 = (Rule)ruleExecutionSet.getRules().get(1);
+       assertEquals("rule name", "Message Received", rule02.getName());
+       assertNull("rule description", rule02.getDescription());
    }
 }

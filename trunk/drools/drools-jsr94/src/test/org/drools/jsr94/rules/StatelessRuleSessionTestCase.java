@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionTestCase.java,v 1.3 2003-10-16 03:48:32 bob Exp $
+ $Id: StatelessRuleSessionTestCase.java,v 1.4 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,118 +46,108 @@ package org.drools.jsr94.rules;
 
  */
 
+import junit.framework.TestCase;
+
 import javax.rules.ObjectFilter;
-import javax.rules.RuleRuntime;
 import javax.rules.StatelessRuleSession;
-import javax.rules.admin.LocalRuleExecutionSetProvider;
-import javax.rules.admin.RuleAdministrator;
-import javax.rules.admin.RuleExecutionSet;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Test the <code>StatelessRuleSession</code> implementation.
  *
- * @see StatelessRuleSession
- *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
+ * @see StatelessRuleSession
  */
-public class StatelessRuleSessionTestCase extends JSR94TestBase {
+public class StatelessRuleSessionTestCase extends TestCase {
 
-   private StatelessRuleSession statelessSession;
+    private StatelessRuleSession statelessSession;
+    private ExampleRuleEngineFacade sessionBuilder;
+    private String bindUri = "sisters.drl";
 
-   /**
-    * Setup the test case.
-    */
-   protected void setUp() throws Exception {
-      super.setUp();
-      RuleAdministrator ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
-      LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
-      RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+    /**
+     * Setup the test case.
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        sessionBuilder = new ExampleRuleEngineFacade();
+        sessionBuilder.addRuleExecutionSet(bindUri, StatelessRuleSessionTestCase.class.getResourceAsStream(bindUri));
+        this.statelessSession = sessionBuilder.getStatelessRuleSession(bindUri);
+    }
 
-      // read rules and register with administrator
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
-      ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
+    /**
+     * Test executeRules.
+     */
+    public void testExecuteRules() throws Exception {
 
-      // obtain the stateless rule session
-      statelessSession = (StatelessRuleSession)ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATELESS_SESSION_TYPE);
-   }
+        List inObjects = new ArrayList();
 
-   /**
-    * Test executeRules.
-    */
-   public void testExecuteRules() throws Exception {
+        Person bob = new Person("bob");
+        inObjects.add(bob);
 
-      List inObjects = new ArrayList();
+        Person rebecca = new Person("rebecca");
+        rebecca.addSister("jeannie");
+        inObjects.add(rebecca);
 
-      Person bob = new Person("bob");
-      inObjects.add(bob);
+        Person jeannie = new Person("jeannie");
+        jeannie.addSister("rebecca");
+        inObjects.add(jeannie);
 
-      Person rebecca = new Person("rebecca");
-      rebecca.addSister("jeannie");
-      inObjects.add(rebecca);
+        // execute the rules
+        List outList = statelessSession.executeRules(inObjects);
 
-      Person jeannie = new Person("jeannie");
-      jeannie.addSister("rebecca");
-      inObjects.add(jeannie);
+        assertEquals("incorrect size", 7, outList.size());
 
-      // execute the rules
-      List outList = statelessSession.executeRules( inObjects );
+        assertTrue("where is bob", outList.contains(bob));
+        assertTrue("where is rebecca", outList.contains(rebecca));
+        assertTrue("where is jeannie", outList.contains(jeannie));
 
-      assertEquals("incorrect size", 7, outList.size());
+        assertTrue(outList.contains("bob says: rebecca and jeannie are sisters"));
+        assertTrue(outList.contains("bob says: jeannie and rebecca are sisters"));
 
-      assertTrue("where is bob", outList.contains(bob));
-      assertTrue("where is rebecca", outList.contains(rebecca));
-      assertTrue("where is jeannie", outList.contains(jeannie));
+        assertTrue(outList.contains("rebecca: I like cheese"));
+        assertTrue(outList.contains("jeannie: I like cheese"));
 
-      assertTrue(outList.contains("bob says: rebecca and jeannie are sisters"));
-      assertTrue(outList.contains("bob says: jeannie and rebecca are sisters"));
+        statelessSession.release();
+    }
 
-      assertTrue(outList.contains("rebecca: I like cheese"));
-      assertTrue(outList.contains("jeannie: I like cheese"));
+    /**
+     * Test executeRules with ObjectFilter.
+     */
+    public void testExecuteRulesWithFilter() throws Exception {
+        List inObjects = new ArrayList();
 
-      statelessSession.release();
-   }
+        Person bob = new Person("bob");
+        inObjects.add(bob);
 
-   /**
-    * Test executeRules with ObjectFilter.
-    */
-   public void testExecuteRulesWithFilter() throws Exception {
-      List inObjects = new ArrayList();
+        Person rebecca = new Person("rebecca");
+        rebecca.addSister("jeannie");
+        inObjects.add(rebecca);
 
-      Person bob = new Person("bob");
-      inObjects.add(bob);
+        Person jeannie = new Person("jeannie");
+        jeannie.addSister("rebecca");
+        inObjects.add(jeannie);
 
-      Person rebecca = new Person("rebecca");
-      rebecca.addSister("jeannie");
-      inObjects.add(rebecca);
+        // execute the rules
+        List outList = statelessSession.executeRules(inObjects, new PersonFilter());
+        assertEquals("incorrect size", 3, outList.size());
 
-      Person jeannie = new Person("jeannie");
-      jeannie.addSister("rebecca");
-      inObjects.add(jeannie);
+        assertTrue("where is bob", outList.contains(bob));
+        assertTrue("where is rebecca", outList.contains(rebecca));
+        assertTrue("where is jeannie", outList.contains(jeannie));
+    }
 
-      // execute the rules
-      List outList = statelessSession.executeRules(inObjects, new PersonFilter());
-      assertEquals("incorrect size", 3, outList.size());
+    /**
+     * Filter accepts only objects of type Person.
+     */
+    static class PersonFilter implements ObjectFilter {
 
-      assertTrue("where is bob", outList.contains(bob));
-      assertTrue("where is rebecca", outList.contains(rebecca));
-      assertTrue("where is jeannie", outList.contains(jeannie));
-   }
+        public Object filter(Object object) {
+            return (object instanceof Person ? object : null);
+        }
 
-   /**
-    * Filter accepts only objects of type Person.
-    */
-   static class PersonFilter implements ObjectFilter {
-
-      public Object filter(Object object) {
-         return (object instanceof Person ? object : null);
-      }
-
-      public void reset() {
-      }
-   }
+        public void reset() {
+        }
+    }
 }

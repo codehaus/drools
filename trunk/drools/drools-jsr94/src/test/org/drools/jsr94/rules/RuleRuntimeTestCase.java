@@ -12,7 +12,7 @@ import java.io.Reader;
 import java.util.List;
 
 /*
- $Id: RuleRuntimeTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: RuleRuntimeTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -60,92 +60,100 @@ import java.util.List;
 /**
  * Test the RuleRuntime implementation.
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleRuntimeTestCase extends JSR94TestBase {
+public class RuleRuntimeTestCase extends RuleEngineTestBase {
 
-   private LocalRuleExecutionSetProvider ruleSetProvider;
-   private RuleAdministrator ruleAdministrator;
+    private LocalRuleExecutionSetProvider ruleSetProvider;
+    private RuleAdministrator ruleAdministrator;
+    private String RULES_RESOURCE;
 
-   /**
-    * Setup the test case.
-    */
-   protected void setUp() throws Exception {
-      super.setUp();
-      ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
-      ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
-   }
+    /**
+     * Setup the test case.
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        RULES_RESOURCE = bindUri;
+        ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
+        ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
+    }
 
-   /**
-    * Test createRuleSession.
-    */
-   public void testCreateRuleStatelessRuleSession() throws Exception {
+    /**
+     * Test createRuleSession.
+     */
+    public void testCreateRuleStatelessRuleSession() throws Exception {
 
-      RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
-      assertNotNull("cannot obtain RuleRuntime", ruleRuntime);
+        RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+        assertNotNull("cannot obtain RuleRuntime", ruleRuntime);
 
-      // expect RuleExecutionSetNotFoundException
-      StatelessRuleSession statelessRuleSession = null;
-      try {
-         statelessRuleSession = (StatelessRuleSession)ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATELESS_SESSION_TYPE);
-         fail("RuleExecutionSetNotFoundException expected");
-      } catch (RuleExecutionSetNotFoundException ex) {
-      }
+        // expect RuleExecutionSetNotFoundException
+        StatelessRuleSession statelessRuleSession = null;
+        try {
+            statelessRuleSession = (StatelessRuleSession) ruleRuntime.createRuleSession("someUri", null, RuleRuntime.STATELESS_SESSION_TYPE);
+            fail("RuleExecutionSetNotFoundException expected");
+        } catch (RuleExecutionSetNotFoundException ex) {
+        }
 
-      // read rules and register with administrator
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
-      ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
+        // read rules and register with administrator
+        Reader ruleReader = new InputStreamReader(RuleRuntimeTestCase.class.getResourceAsStream(RULES_RESOURCE));
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
+        ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
 
-      statelessRuleSession = (StatelessRuleSession)ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATELESS_SESSION_TYPE);
-      assertNotNull("cannot obtain StatelessRuleSession", statelessRuleSession);
+        statelessRuleSession = (StatelessRuleSession) ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATELESS_SESSION_TYPE);
+        assertNotNull("cannot obtain StatelessRuleSession", statelessRuleSession);
 
-      ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
-   }
+        ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
+    }
 
-   /**
-    * Test createRuleSession.
-    */
-   public void testCreateRuleStatefulRuleSession() throws Exception {
+    /**
+     * Test createRuleSession.
+     */
+    public void testCreateRuleStatefulRuleSession() throws Exception {
 
-      RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
-      assertNotNull("cannot obtain RuleRuntime", ruleRuntime);
+        RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+        assertNotNull("cannot obtain RuleRuntime", ruleRuntime);
 
-      // expect RuleExecutionSetNotFoundException
-      StatefulRuleSession statefulRuleSession = null;
-      try {
-         statefulRuleSession = (StatefulRuleSession)ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATEFUL_SESSION_TYPE);
-         fail("RuleExecutionSetNotFoundException expected");
-      } catch (RuleExecutionSetNotFoundException ex) {
-      }
+        // expect RuleExecutionSetNotFoundException
+        StatefulRuleSession statefulRuleSession = null;
+        try {
+            statefulRuleSession = (StatefulRuleSession) ruleRuntime.createRuleSession("someUri", null, RuleRuntime.STATEFUL_SESSION_TYPE);
+            fail("RuleExecutionSetNotFoundException expected");
+        } catch (RuleExecutionSetNotFoundException ex) {
+        }
 
-      // read rules and register with administrator
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
-      ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
+        // read rules and register with administrator
+        Reader ruleReader = new InputStreamReader(RuleRuntimeTestCase.class.getResourceAsStream(RULES_RESOURCE));
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
+        ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
 
-      statefulRuleSession = (StatefulRuleSession)ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATEFUL_SESSION_TYPE);
-      assertNotNull("cannot obtain StatefulRuleSession", statefulRuleSession);
+        statefulRuleSession = (StatefulRuleSession) ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATEFUL_SESSION_TYPE);
+        assertNotNull("cannot obtain StatefulRuleSession", statefulRuleSession);
 
-      ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
-   }
+        ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
+    }
 
-   /**
-    * Test getRegistrations.
-    */
-   public void testGetRegistrations() throws Exception {
+    /**
+     * Test getRegistrations.
+     */
+    public void testGetRegistrations() throws Exception {
 
-      RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
-      assertNotNull("cannot obtain RuleRuntime", ruleRuntime);
+        RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+        assertNotNull("cannot obtain RuleRuntime", ruleRuntime);
 
-      // read rules and register with administrator
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
-      ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
+        // read rules and register with administrator
+        Reader ruleReader = new InputStreamReader(RuleRuntimeTestCase.class.getResourceAsStream(RULES_RESOURCE));
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
+        ruleAdministrator.registerRuleExecutionSet(RULES_RESOURCE, ruleSet, null);
 
-      List list = ruleRuntime.getRegistrations();
-      assertTrue("no registrations found", list.size() > 0);
+        List list = ruleRuntime.getRegistrations();
+        assertTrue("no registrations found", list.size() > 0);
 
-      ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
-   }
+        ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
+    }
+
+    public static void main(String[] args) {
+        String[] name = {RuleRuntimeTestCase.class.getName()};
+        junit.textui.TestRunner.main(name);
+    }
 }

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: RuleExecutionSetTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,8 +46,6 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.jsr94.rules.JSR94TestBase;
-
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
@@ -56,9 +54,10 @@ import java.io.InputStream;
 /**
  * Test the RuleExecutionSet implementation.
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class RuleExecutionSetTestCase extends JSR94TestBase {
+public class RuleExecutionSetTestCase extends RuleEngineTestBase {
 
    private RuleAdministrator ruleAdministrator;
    private LocalRuleExecutionSetProvider ruleSetProvider;
@@ -76,8 +75,8 @@ public class RuleExecutionSetTestCase extends JSR94TestBase {
     * Test rule set name and description.
     */
    public void testRule() throws Exception {
-      InputStream rulesStream = getResourceAsStream(RULES_RESOURCE);
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesStream, null);
+      InputStream in = org.drools.jsr94.rules.RuleEngineTestBase.class.getResourceAsStream(bindUri);
+      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(in, null);
       assertEquals("number of rules", 2, ruleSet.getRules().size());
 
       assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
