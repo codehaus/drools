@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.53 2004-11-21 13:51:52 simon Exp $
+ * $Id: ReteTuple.java,v 1.54 2004-11-22 21:26:12 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,7 @@ import org.drools.spi.Tuple;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -157,7 +158,9 @@ class ReteTuple
         }
         else
         {
-            this.extractions = that.extractions;
+            this.extractions = new HashMap( that.extractions.size( ) + 1,
+                                            1 );
+            this.extractions.putAll( that.extractions );
             this.extractions.put( declaration,
                                   value );
         }
