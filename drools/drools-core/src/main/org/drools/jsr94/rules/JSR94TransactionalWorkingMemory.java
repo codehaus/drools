@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TransactionalWorkingMemory.java,v 1.1 2003-03-15 01:24:20 bob Exp $
+ $Id: JSR94TransactionalWorkingMemory.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
