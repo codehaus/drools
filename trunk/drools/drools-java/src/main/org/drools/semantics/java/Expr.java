@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.34 2004-12-03 03:26:17 simon Exp $
+ * $Id: Expr.java,v 1.35 2004-12-06 16:21:42 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,10 +84,6 @@ public class Expr
 
     private transient ConditionScript conditionScript;
 
-    // ------------------------------------------------------------
-    // Constants
-    // ------------------------------------------------------------
-
     /**
      * Construct.
      *
@@ -110,7 +106,7 @@ public class Expr
         this.conditionScript = compile( );
     }
 
-    private void readObject(ObjectInputStream s) throws Exception
+    private void readObject( ObjectInputStream s ) throws Exception
     {
         s.defaultReadObject();
 
@@ -127,7 +123,7 @@ public class Expr
         return this.originalExpression;
     }
 
-    public boolean evaluateCondition(Tuple tuple) throws Exception
+    public boolean evaluateCondition( Tuple tuple ) throws Exception
     {
         return conditionScript.invoke( tuple,
                                        this.requiredDecls,
@@ -137,8 +133,8 @@ public class Expr
 
     }
 
-    protected List analyze(String expr,
-                           List available) throws Exception
+    protected List analyze( String expr,
+                            List available ) throws Exception
     {
         ExprAnalyzer analyzer = new ExprAnalyzer( );
 
@@ -186,10 +182,10 @@ public class Expr
 
     public interface ConditionScript
     {
-        public boolean invoke(Tuple tuple,
-                              Declaration[] decls,
-                              KnowledgeHelper drools,
-                              Map applicationData) throws Exception;
+        public boolean invoke( Tuple tuple,
+                               Declaration[] decls,
+                               KnowledgeHelper drools,
+                               Map applicationData ) throws Exception;
     }
 
     protected Rule getRule()
@@ -199,7 +195,7 @@ public class Expr
 
     public int hashCode()
     {
-        return this.expr.hashCode();
+        return this.expr.hashCode( );
     }
 
     public boolean equals( Object object )
@@ -209,11 +205,11 @@ public class Expr
             return true;
         }
 
-        if ( object instanceof Expr )
+        if ( object == null || getClass( ) != object.getClass( ) )
         {
-            return this.expr.equals( ( ( Expr ) object ).expr );
+            return false;
         }
 
-        return false;
+        return this.expr.equals( ( ( Expr ) object ).expr );
     }
 }
