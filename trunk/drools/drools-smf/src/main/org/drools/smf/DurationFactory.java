@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DurationFactory.java,v 1.6 2004-11-28 20:01:13 mproctor Exp $
+ * $Id: DurationFactory.java,v 1.7 2004-12-14 21:00:29 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,15 @@ package org.drools.smf;
  *
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.Duration;
+import org.drools.spi.RuleBaseContext;
 
 import java.util.List;
 
 public interface DurationFactory
 {
-    Duration newDuration( Configuration config ) throws FactoryException;    
+    Duration newDuration(Rule rule,
+                         RuleBaseContext context,
+                         Configuration config) throws FactoryException;
 }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: ApplicationData.java,v 1.2 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: ApplicationData.java,v 1.3 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,17 +43,23 @@ package org.drools.rule;
 
 import java.io.Serializable;
 
-public class ApplicationData implements Serializable
+public class ApplicationData
+    implements
+    Serializable
 {
     private String  identifier;
-    private Class type;
+    private Class   type;
+    private RuleSet ruleSet;
 
-    public ApplicationData(String identifier, Class type)
+    public ApplicationData(RuleSet ruleSet,
+                           String identifier,
+                           Class type)
     {
         this.identifier = identifier;
         this.type = type;
+        this.ruleSet = ruleSet;
     }
-    
+
     public String getIdentifier()
     {
         return this.identifier;

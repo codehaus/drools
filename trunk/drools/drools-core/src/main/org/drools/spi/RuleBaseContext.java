@@ -1,9 +1,7 @@
-package org.drools;
-
 /*
- * $Id: RuleBase.java,v 1.36 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: RuleBaseContext.java,v 1.1 2004-12-14 21:00:27 mproctor Exp $
  *
- * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -22,10 +20,9 @@ package org.drools;
  *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a registered trademark of The Werken Company.
+ * Company. "drools" is a trademark of The Werken Company.
  *
- * 5. Due credit should be given to The Werken Company.
- * (http://drools.werken.com/).
+ * 5. Due credit should be given to The Werken Company. (http://werken.com/)
  *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -40,64 +37,33 @@ package org.drools;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package org.drools.spi;
 
-import org.drools.reteoo.FactHandleFactory;
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.RuleBaseContext;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.List;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-/**
- * Active collection of <code>Rule</code>s.
- *
- * <p>
- * From a <code>RuleBase</code> many <code>WorkingMemory</code> rule
- * sessions may be instantiated. Additionally, it may be inspected to determine
- * which <code>RuleSet</code> s it contains.
- * </p>
- *
- * @see WorkingMemory
- *
- * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleBase.java,v 1.36 2004-12-14 21:00:27 mproctor Exp $
- */
-public interface RuleBase
-    extends
-    Serializable
+public class RuleBaseContext implements Serializable
 {
-    /**
-     * Create a new <code>WorkingMemory</code> session for this
-     * <code>RuleBase</code>.
-     *
-     * <p>
-     * The created <code>WorkingMemory</code> uses the default conflict
-     * resolution strategy.
-     * </p>
-     *
-     * @see WorkingMemory
-     * @see org.drools.conflict.DefaultConflictResolver
-     *
-     * @return A newly initialized <code>WorkingMemory</code>.
-     */
-    WorkingMemory newWorkingMemory( );
+    private transient Map map = new HashMap( );
 
-    /**
-     * Retrieve the <code>ConflictResolver</code>.
-     *
-     * @return The conflict resolution strategy.
-     */
-    ConflictResolver getConflictResolver( );
+    private void readObject(ObjectInputStream stream) throws Exception
+    {
+        map = new HashMap( );
+    }    
 
-    /**
-     * Retrieve the <code>FactHandleFactor</code>.
-     *
-     * @return The fact handle factory.
-     */
-    FactHandleFactory getFactHandleFactory( );
+    public Object get(Object key)
+    {
+        Object object = this.map.get( key );
+        return object;
+    }
 
-    List getRuleSets( );
-    
-    RuleBaseContext getRuleBaseContext( );
+    public void put(Object key,
+                    Object value)
+    {
+        this.map.put( key,
+                      value );
+    }
 }

@@ -2,18 +2,20 @@ package org.drools.smf;
 
 import org.drools.DroolsTestCase;
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.ObjectType;
+import org.drools.spi.RuleBaseContext;
 
 import java.util.List;
 import java.util.Set;
 
 /**
- *
- *
- *
+ * 
+ * 
+ * 
  */
 
 public class SimpleSemanticModuleTest extends DroolsTestCase
@@ -22,87 +24,101 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
     public void testAddGetRuleFactory()
     {
 
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org" );
+        SimpleSemanticModule module = new SimpleSemanticModule( "http://cheese.org" );
 
         RuleFactory factory = new MockRuleFactory( );
 
-        module.addRuleFactory( "mockCheese", factory );
+        module.addRuleFactory( "mockCheese",
+                               factory );
 
-        assertSame( module.getRuleFactory( "mockCheese" ), factory );
+        assertSame( module.getRuleFactory( "mockCheese" ),
+                    factory );
 
-        assertEquals( module.getRuleFactoryNames( ).size( ), 1 );
+        assertEquals( module.getRuleFactoryNames( ).size( ),
+                      1 );
 
     }
 
     public void testAddGetObjectTypeFactory()
     {
 
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org" );
+        SimpleSemanticModule module = new SimpleSemanticModule( "http://cheese.org" );
 
         ObjectTypeFactory factory = new MockObjectTypeFactory( );
 
-        module.addObjectTypeFactory( "mockCheese", factory );
+        module.addObjectTypeFactory( "mockCheese",
+                                     factory );
 
-        assertSame( module.getObjectTypeFactory( "mockCheese" ), factory );
+        assertSame( module.getObjectTypeFactory( "mockCheese" ),
+                    factory );
 
-        assertEquals( module.getObjectTypeFactoryNames( ).size( ), 1 );
+        assertEquals( module.getObjectTypeFactoryNames( ).size( ),
+                      1 );
 
     }
 
     public void testAddGetConditionFactory()
     {
 
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org" );
+        SimpleSemanticModule module = new SimpleSemanticModule( "http://cheese.org" );
 
         ConditionFactory factory = new MockConditionFactory( );
 
-        module.addConditionFactory( "mockCheese", factory );
+        module.addConditionFactory( "mockCheese",
+                                    factory );
 
-        assertSame( module.getConditionFactory( "mockCheese" ), factory );
+        assertSame( module.getConditionFactory( "mockCheese" ),
+                    factory );
 
-        assertEquals( module.getConditionFactoryNames( ).size( ), 1 );
+        assertEquals( module.getConditionFactoryNames( ).size( ),
+                      1 );
 
     }
 
     public void testAddGetConsequenceFactory()
     {
 
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org" );
+        SimpleSemanticModule module = new SimpleSemanticModule( "http://cheese.org" );
 
         ConsequenceFactory factory = new MockConsequenceFactory( );
 
-        module.addConsequenceFactory( "mockCheese", factory );
+        module.addConsequenceFactory( "mockCheese",
+                                      factory );
 
-        assertSame( module.getConsequenceFactory( "mockCheese" ), factory );
+        assertSame( module.getConsequenceFactory( "mockCheese" ),
+                    factory );
 
-        assertEquals( module.getConsequenceFactoryNames( ).size( ), 1 );
+        assertEquals( module.getConsequenceFactoryNames( ).size( ),
+                      1 );
 
     }
 
     public void testAddGetDurationFactory()
     {
 
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org" );
+        SimpleSemanticModule module = new SimpleSemanticModule( "http://cheese.org" );
 
         DurationFactory factory = new MockDurationFactory( );
 
-        module.addDurationFactory( "mockCheese", factory );
+        module.addDurationFactory( "mockCheese",
+                                   factory );
 
-        assertSame( module.getDurationFactory( "mockCheese" ), factory );
+        assertSame( module.getDurationFactory( "mockCheese" ),
+                    factory );
 
-        assertEquals( module.getDurationFactoryNames( ).size( ), 1 );
+        assertEquals( module.getDurationFactoryNames( ).size( ),
+                      1 );
 
     }
 
-    private class MockRuleFactory implements RuleFactory
+    private class MockRuleFactory
+        implements
+        RuleFactory
     {
 
-        public Rule newRule(Configuration config) throws FactoryException
+        public Rule newRule(RuleSet ruleSet,
+                            RuleBaseContext context,
+                            Configuration config) throws FactoryException
         {
 
             return null;
@@ -111,10 +127,14 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
 
     }
 
-    private class MockObjectTypeFactory implements ObjectTypeFactory
+    private class MockObjectTypeFactory
+        implements
+        ObjectTypeFactory
     {
 
-        public ObjectType newObjectType(Configuration config, Set imports)
+        public ObjectType newObjectType(RuleBaseContext context,
+                                        Configuration config,
+                                        Set imports)
         {
 
             return null;
@@ -123,10 +143,14 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
 
     }
 
-    private class MockConditionFactory implements ConditionFactory
+    private class MockConditionFactory
+        implements
+        ConditionFactory
     {
 
-        public Condition newCondition(Configuration c, Rule rule)
+        public Condition newCondition(Rule rule,
+                                      RuleBaseContext context,
+                                      Configuration c)
         {
 
             return null;
@@ -135,10 +159,14 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
 
     }
 
-    private class MockConsequenceFactory implements ConsequenceFactory
+    private class MockConsequenceFactory
+        implements
+        ConsequenceFactory
     {
 
-        public Consequence newConsequence(Configuration c, Rule rule)
+        public Consequence newConsequence(Rule rule,
+                                          RuleBaseContext context,
+                                          Configuration c)
         {
 
             return null;
@@ -147,10 +175,14 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
 
     }
 
-    private class MockDurationFactory implements DurationFactory
+    private class MockDurationFactory
+        implements
+        DurationFactory
     {
 
-        public Duration newDuration(Configuration c)
+        public Duration newDuration(Rule rule,
+                                    RuleBaseContext context,
+                                    Configuration c)
         {
 
             return null;

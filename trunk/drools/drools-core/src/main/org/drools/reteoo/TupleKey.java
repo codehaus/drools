@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.32 2004-12-07 14:52:00 simon Exp $
+ * $Id: TupleKey.java,v 1.33 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,7 +67,7 @@ class TupleKey
 
     /** Columns. */
     private final FactHandleList handles;
-
+    
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------

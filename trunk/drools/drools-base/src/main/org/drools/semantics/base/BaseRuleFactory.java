@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseRuleFactory.java,v 1.6 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: BaseRuleFactory.java,v 1.7 2004-12-14 21:00:26 mproctor Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,14 +42,18 @@ package org.drools.semantics.base;
  */
 
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.MissingAttributeException;
 import org.drools.smf.RuleFactory;
+import org.drools.spi.RuleBaseContext;
 
 public class BaseRuleFactory implements RuleFactory
 {
-    public Rule newRule( Configuration config ) throws FactoryException
+    public Rule newRule( RuleSet ruleSet,
+                         RuleBaseContext context,
+                         Configuration config ) throws FactoryException
     {
         String name = config.getAttribute( "name" );
 
@@ -58,6 +62,6 @@ public class BaseRuleFactory implements RuleFactory
             throw new MissingAttributeException( "name" );
         }
 
-        return new Rule( name.trim( ) );
+        return new Rule( name.trim( ), ruleSet );
     }
 }

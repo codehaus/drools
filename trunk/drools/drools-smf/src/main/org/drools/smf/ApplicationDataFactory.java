@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ApplicationDataFactory.java,v 1.2 2004-12-13 20:54:51 mproctor Exp $
+ * $Id: ApplicationDataFactory.java,v 1.3 2004-12-14 21:00:29 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,8 +44,14 @@ package org.drools.smf;
 import java.util.Set;
 
 import org.drools.rule.ApplicationData;
+import org.drools.rule.RuleSet;
+import org.drools.spi.RuleBaseContext;
 
 public interface ApplicationDataFactory
 {
-    public ApplicationData newApplicationData(Configuration config, Set imports) throws FactoryException;
+    ApplicationData newApplicationData(RuleSet ruleSet,
+                                       RuleBaseContext context,
+                                       Configuration config, 
+                                       Set imports) throws FactoryException;
+
 }

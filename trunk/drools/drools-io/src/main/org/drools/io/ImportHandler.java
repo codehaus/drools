@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ImportHandler.java,v 1.1 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: ImportHandler.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -93,7 +93,9 @@ class ImportHandler extends BaseAbstractHandler implements Handler
         ImportEntry importEntry;
         try
         {
-            importEntry = factory.newImportEntry( config );
+            importEntry = factory.newImportEntry( this.ruleSetReader.getRuleSet( ),
+                                                  this.ruleSetReader.getFactoryContext( ),
+                                                  config );
             ruleSetReader.getRuleSet( ).addImport( importEntry );
         }
         catch ( FactoryException e )

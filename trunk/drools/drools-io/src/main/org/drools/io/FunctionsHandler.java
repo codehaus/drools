@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConditionHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: FunctionsHandler.java,v 1.1 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,18 +39,19 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.smf.ConditionFactory;
+import java.util.HashSet;
+
+import org.drools.rule.ApplicationData;
+import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
+import org.drools.smf.FunctionsFactory;
 import org.drools.smf.SemanticModule;
-import org.drools.spi.Condition;
+import org.drools.spi.Functions;
+import org.drools.spi.ImportEntry;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import java.util.HashSet;
 
 /**
  * @author mproctor
@@ -58,23 +59,23 @@ import java.util.HashSet;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-class ConditionHandler extends BaseAbstractHandler
+class FunctionsHandler extends BaseAbstractHandler
     implements
     Handler
 {
-    ConditionHandler(RuleSetReader ruleSetReader)
+    FunctionsHandler(RuleSetReader ruleSetReader)
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( (this.validParents == null) && (validPeers == null) )
+        if ( (this.validParents == null) && (this.validPeers == null) )
         {
-            this.ruleSetReader = ruleSetReader;
             this.validParents = new HashSet( );
-            this.validParents.add( Rule.class );
+            this.validParents.add( RuleSet.class );
 
             this.validPeers = new HashSet( );
-            this.validPeers.add( Declaration.class );
-            this.validPeers.add( Condition.class );
+            this.validPeers.add( null );
+            this.validPeers.add( ApplicationData.class );
+            this.validPeers.add( ImportEntry.class );
 
             this.allowNesting = false;
         }
@@ -84,40 +85,39 @@ class ConditionHandler extends BaseAbstractHandler
                         String localName,
                         Attributes attrs) throws SAXException
     {
-        ruleSetReader.startConfiguration( localName,
-                                          attrs );
+        this.ruleSetReader.startConfiguration( localName,
+                                               attrs );
         return null;
     }
 
     public Object end(String uri,
                       String localName) throws SAXException
     {
-        Configuration config = this.ruleSetReader.endConfiguration( );
         SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
                                                                          localName );
 
-        ConditionFactory factory = module.getConditionFactory( localName );
-        Condition condition;
+        FunctionsFactory factory = module.getFunctionsFactory( localName );
+
+        Configuration config = this.ruleSetReader.endConfiguration( );
+        Functions functions;
         try
         {
-            Rule rule = (Rule) this.ruleSetReader.getParent( Rule.class );
-            condition = factory.newCondition( rule,
+            functions = factory.newFunctions( this.ruleSetReader.getRuleSet( ),
                                               this.ruleSetReader.getFactoryContext( ),
                                               config );
-
-            rule.addCondition( condition );
+            this.ruleSetReader.getRuleSet( ).addFunctions( functions );
         }
         catch ( FactoryException e )
         {
-            throw new SAXParseException( "error constructing condition",
+            throw new SAXParseException( "error constructing import",
                                          this.ruleSetReader.getLocator( ),
                                          e );
         }
-        return condition;
+        return functions;
     }
 
     public Class generateNodeFor()
     {
-        return Condition.class;
+        return Functions.class;
     }
 }

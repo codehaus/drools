@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.17 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: RuleSet.java,v 1.18 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,10 @@ package org.drools.rule;
  *
  */
 
+import org.drools.RuleBase;
+import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.RuleBaseContext;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,7 +60,7 @@ import java.util.Set;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.17 2004-12-06 01:30:37 dbarnett Exp $
+ * @version $Id: RuleSet.java,v 1.18 2004-12-14 21:00:27 mproctor Exp $
  */
 public class RuleSet
     implements
@@ -75,20 +78,24 @@ public class RuleSet
     // ------------------------------------------------------------
 
     /** Name of the ruleset. */
-    private String name;
+    private String                name;
 
     /** Documentation. */
-    private String documentation;
+    private String                documentation;
 
     /** Set of all rule-names in this <code>RuleSet</code>. */
-    private Set ruleNames;
+    private Set                   ruleNames;
 
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
-    private List rules;
+    private List                  rules;
 
-    private Set imports;
+    private Set                   imports;
+
+    private Map                   applicationData;
+
+    private Map                   functions;
     
-    private Map applicationData;
+    private RuleBaseContext		  ruleBaseContext;
 
     // ------------------------------------------------------------
     // Constructors
@@ -107,6 +114,27 @@ public class RuleSet
         this.rules = new ArrayList( );
         this.imports = new HashSet( );
         this.applicationData = new HashMap( );
+        this.functions = new HashMap( );
+        this.ruleBaseContext = new RuleBaseContext( );
+    }
+
+    /**
+     * Construct.
+     * 
+     * @param name
+     *            The name of this <code>RuleSet</code>.
+     * @param ruleBaseContext
+     */
+    public RuleSet(String name,
+                   RuleBaseContext ruleBaseContext)
+    {
+        this.name = name;
+        this.ruleNames = new HashSet( );
+        this.rules = new ArrayList( );
+        this.imports = new HashSet( );
+        this.applicationData = new HashMap( );
+        this.functions = new HashMap( );
+        this.ruleBaseContext = ruleBaseContext;
     }
 
     // ------------------------------------------------------------
@@ -237,11 +265,28 @@ public class RuleSet
 
     public void addApplicationData(ApplicationData applicationData)
     {
-        this.applicationData.put( applicationData.getIdentifier(), applicationData.getType() );
+        this.applicationData.put( applicationData.getIdentifier( ),
+                                  applicationData.getType( ) );
     }
 
     public Map getApplicationData()
     {
         return this.applicationData;
-    }    
+    }
+
+    public void addFunctions(Functions functions)
+    {
+        this.functions.put( functions.getSemantic( ),
+                            functions );
+    }
+
+    public Functions getFunctions(String semantic)
+    {
+        return (Functions) this.functions.get( semantic );
+    }
+    
+    public RuleBaseContext getRuleBaseContext()
+    {
+        return this.ruleBaseContext;        
+    }
 }

@@ -11,6 +11,8 @@
         
         <xs:element ref="rules:application-data" minOccurs="0" maxOccurs="unbounded"/>
 
+        <xs:element ref="rules:abstractFunctions" minOccurs="0" maxOccurs="unbounded"/>        
+
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule" />
       </xs:sequence>
 
@@ -86,6 +88,8 @@
   <!-- Abstract Definitions for sementic to create concrete implementations -->
 
   <xs:element name="abstractImport"      type="xs:anyType"           abstract="true"/>
+
+  <xs:element name="abstractFunctions"   type="xs:anyType"           abstract="true"/>  
 
   <xs:element name="abstractClass"       type="xs:anyType"           abstract="true"/>
 

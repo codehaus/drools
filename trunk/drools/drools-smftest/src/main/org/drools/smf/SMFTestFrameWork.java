@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.26 2004-12-07 14:52:00 simon Exp $
+ * $Id: SMFTestFrameWork.java,v 1.27 2004-12-14 21:00:29 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,12 +45,14 @@ import org.drools.MockWorkingMemory;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.MockTuple;
 import org.drools.spi.ObjectType;
+import org.drools.spi.RuleBaseContext;
 import org.drools.spi.Tuple;
 
 import java.io.BufferedReader;
@@ -99,6 +101,8 @@ public abstract class SMFTestFrameWork extends TestCase
     private String newline = System.getProperty( "line.separator" );
 
     private Set imports;
+    
+    private RuleBaseContext ruleBaseContext;
 
     public SMFTestFrameWork(String name)
     {
@@ -145,6 +149,8 @@ public abstract class SMFTestFrameWork extends TestCase
         module = this.repository.lookupSemanticModule( "http://drools.org/semantics/" + semantic );
 
         this.imports = imports;
+        
+        this.ruleBaseContext = new RuleBaseContext( );
 
     }
 
@@ -160,11 +166,14 @@ public abstract class SMFTestFrameWork extends TestCase
         MockConfiguration cheeseConfiguration = new MockConfiguration( "test1" );
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory( "class" );
-        ObjectType cheeseType = objectTypeFactory.newObjectType( cheeseConfiguration,
+        
+        final RuleSet ruleSet = new RuleSet("test RuleSet", this.ruleBaseContext);
+        final Rule rule = new Rule( "Test Rule 1", ruleSet );
+        ObjectType cheeseType = objectTypeFactory.newObjectType( this.ruleBaseContext,
+                                                                 cheeseConfiguration,                                                                 
                                                                  new HashSet( ) );
 
-        tuple = new MockTuple( );
-        final Rule rule = new Rule( "Test Rule 1" );
+        tuple = new MockTuple( );        
         rule.setImports( new HashSet( ) );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
@@ -273,7 +282,8 @@ public abstract class SMFTestFrameWork extends TestCase
 
         MockConfiguration stringConfiguration = new MockConfiguration( "test2" );
         stringConfiguration.setText( String.class.getName( ) );
-        ObjectType stringType = objectTypeFactory.newObjectType( stringConfiguration,
+        ObjectType stringType = objectTypeFactory.newObjectType( this.ruleBaseContext,
+                                                                 stringConfiguration,
                                                                  new HashSet( ) );
         Declaration favouriteCheeseDecl = rule.addParameterDeclaration( "favouriteCheese",
                                                                         stringType );
@@ -337,8 +347,9 @@ public abstract class SMFTestFrameWork extends TestCase
         ConditionFactory conditionFactory = module.getConditionFactory( "condition" );
         MockConfiguration conditionConfiguration = new MockConfiguration( "test" + testNumber );
         conditionConfiguration.setText( (String) tests.get( testNumber ) );
-        Condition condition = conditionFactory.newCondition( conditionConfiguration,
-                                                             rule );
+        Condition condition = conditionFactory.newCondition( rule,
+                                                             this.ruleBaseContext,
+                                                             conditionConfiguration );
         return condition.isAllowed( tuple );
     }
 
@@ -352,11 +363,14 @@ public abstract class SMFTestFrameWork extends TestCase
         MockConfiguration cheeseConfiguration = new MockConfiguration( "test1" );
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory( "class" );
-        ObjectType cheeseType = objectTypeFactory.newObjectType( cheeseConfiguration,
+
+        final RuleSet ruleSet = new RuleSet("test RuleSet", this.ruleBaseContext);        
+        Rule rule = new Rule( "Test Rule 1", ruleSet  );        
+        ObjectType cheeseType = objectTypeFactory.newObjectType( this.ruleBaseContext,
+                                                                 cheeseConfiguration,
                                                                  null );
 
         tuple = new MockTuple( );
-        Rule rule = new Rule( "Test Rule 1" );
         rule.setImports( this.imports );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
@@ -432,8 +446,8 @@ public abstract class SMFTestFrameWork extends TestCase
                       ((Integer) map.get( "bites" )).intValue( ) );
 
         // 4
-        // test exceptions
-        rule = new Rule( "Test Rule 1" );
+        // test exceptions        
+        rule = new Rule( "Test Rule 1", ruleSet );
         rule.setImports( this.imports );
         tuple.setRule( rule );
         try
@@ -452,7 +466,7 @@ public abstract class SMFTestFrameWork extends TestCase
         // 7
         // test imports
         tuple = new MockTuple( );
-        rule = new Rule( "Test Rule 1" );
+        rule = new Rule( "Test Rule 1", ruleSet );
         rule.setImports( this.imports );
         tuple.setRule( rule );
         workingMemory = new MockWorkingMemory( );
@@ -479,8 +493,9 @@ public abstract class SMFTestFrameWork extends TestCase
         ConsequenceFactory consequenceFactory = module.getConsequenceFactory( "consequence" );
         MockConfiguration consequenceConfiguration = new MockConfiguration( "test" + testNumber );
         consequenceConfiguration.setText( (String) tests.get( testNumber ) );
-        Consequence consequence = consequenceFactory.newConsequence( consequenceConfiguration,
-                                                                     rule );
+        Consequence consequence = consequenceFactory.newConsequence( rule,
+                                                                     this.ruleBaseContext,
+                                                                     consequenceConfiguration );
         consequence.invoke( tuple,
                             tuple.getWorkingMemory( ) );
     }

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ObjectTypeHandler.java,v 1.2 2004-11-12 17:11:15 simon Exp $
+ * $Id: ObjectTypeHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,7 @@ package org.drools.io;
  *
  */
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
@@ -55,13 +56,15 @@ import java.util.HashSet;
 /**
  * @author mproctor
  */
-class ObjectTypeHandler extends BaseAbstractHandler implements Handler
+class ObjectTypeHandler extends BaseAbstractHandler
+    implements
+    Handler
 {
-    ObjectTypeHandler( RuleSetReader ruleSetReader )
+    ObjectTypeHandler(RuleSetReader ruleSetReader)
     {
         this.ruleSetReader = ruleSetReader;
 
-        if ( this.validParents == null && validPeers == null )
+        if ( this.validParents == null && this.validPeers == null )
         {
             this.validParents = new HashSet( );
             this.validParents.add( Declaration.class );
@@ -73,34 +76,39 @@ class ObjectTypeHandler extends BaseAbstractHandler implements Handler
         }
     }
 
-    public Object start( String uri, String localName, Attributes attrs ) throws SAXException
+    public Object start(String uri,
+                        String localName,
+                        Attributes attrs) throws SAXException
     {
-        ruleSetReader.startConfiguration( localName, attrs );
+        this.ruleSetReader.startConfiguration( localName,
+                                          attrs );
         return null;
     }
 
-    public Object end( String uri, String localName ) throws SAXException
+    public Object end(String uri,
+                      String localName) throws SAXException
     {
-        Configuration config = ruleSetReader.endConfiguration( );
+        Configuration config = this.ruleSetReader.endConfiguration( );
 
-        SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
+        SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
                                                                     localName );
 
         ObjectTypeFactory factory = module.getObjectTypeFactory( localName );
 
         try
         {
-            ObjectType objectType = factory
-                    .newObjectType( config, ruleSetReader.getRuleSet( )
-                            .getImports( ) );
-            Declaration declaration = (Declaration) ruleSetReader
-                    .getParent( Declaration.class );
+            Rule rule = (Rule) this.ruleSetReader.getParent( Rule.class );
+            ObjectType objectType = factory.newObjectType( this.ruleSetReader.getFactoryContext( ),
+                                                           config,
+                                                           this.ruleSetReader.getRuleSet( ).getImports( ) );
+            Declaration declaration = (Declaration) this.ruleSetReader.getParent( Declaration.class );
             declaration.setObjectType( objectType );
         }
         catch ( FactoryException e )
         {
             throw new SAXParseException( "error constructing object type",
-                    ruleSetReader.getLocator( ), e );
+                                         this.ruleSetReader.getLocator( ),
+                                         e );
         }
         return null;
     }

@@ -9,7 +9,20 @@
 
   <java:import>java.lang.Object</java:import>
   <java:import>java.lang.String</java:import>
-  
+
+  <java:functions>
+  	public void helloWorld(String hello)
+  	{
+  		System.err.println(hello + " World");
+  	}
+
+  	public void goodbyeWorld(String goodbye)
+  	{
+  		System.out.println(goodbye + " Cruel World");
+  	}
+  </java:functions>
+
+
   <rule name="Hello World">
     <parameter identifier="hello">
       <class>String</class>
@@ -18,7 +31,7 @@
     <java:condition>hello.equals("Hello")</java:condition>
 
     <java:consequence>
-      System.out.println(hello + " World");
+      helloWorld( hello );
     </java:consequence>
   </rule>
 
@@ -30,7 +43,7 @@
     <java:condition>goodbye.equals("Goodbye")</java:condition>
 
     <java:consequence>
-      System.out.println(goodbye + " Cruel World");
+      goodbyeWorld( goodbye );
     </java:consequence>
   </rule>
 

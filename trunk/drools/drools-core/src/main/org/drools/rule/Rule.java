@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.54 2004-12-07 14:52:00 simon Exp $
+ * $Id: Rule.java,v 1.55 2004-12-14 21:00:27 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -135,7 +135,7 @@ public class Rule
      */
     public Rule(String name)
     {
-        this(name, null);
+        this( name, null );
     }
 
     /**
@@ -243,7 +243,7 @@ public class Rule
         }
     }
 
-    public RuleSet getRule()
+    public RuleSet getRuleSet()
     {
         return this.ruleSet;
     }

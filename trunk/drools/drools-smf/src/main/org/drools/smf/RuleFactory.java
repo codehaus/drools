@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: RuleFactory.java,v 1.4 2004-11-28 20:01:13 mproctor Exp $
+ * $Id: RuleFactory.java,v 1.5 2004-12-14 21:00:29 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,8 +42,12 @@ package org.drools.smf;
  */
 
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
+import org.drools.spi.RuleBaseContext;
 
 public interface RuleFactory
 {
-    Rule newRule(Configuration config) throws FactoryException;    
+    Rule newRule(RuleSet ruleSet,
+                 RuleBaseContext context,
+                 Configuration config) throws FactoryException;    
 }

@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldExample.java,v 1.6 2004-12-04 14:59:45 simon Exp $
+ * $Id: HelloWorldExample.java,v 1.7 2004-12-14 21:00:28 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,11 +61,13 @@ public class HelloWorldExample
         RuleBase ruleBase = RuleBaseLoader.loadFromUrl(
             HelloWorldExample.class.getResource( args[0] ) );
 
+        /*
         System.out.println( "DUMP RETE" );
         System.out.println( "---------" );
         Dumper dumper = new Dumper( ruleBase );
         dumper.dumpRete( System.out );
-
+        */
+        
         System.out.println( "FIRE RULES(Hello)" );
         System.out.println( "----------" );
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );

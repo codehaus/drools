@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.5 2004-12-07 14:52:00 simon Exp $
+ * $Id: ClassFieldObjectType.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.semantics.base;
  *
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;
 
 import java.lang.reflect.InvocationTargetException;
@@ -51,7 +52,7 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.5 2004-12-07 14:52:00 simon Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
