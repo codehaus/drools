@@ -15,8 +15,8 @@
       </p>
 
       <ul>
-        <li><a href="rete-oo.pdf">The RETE-OO Algorithm</a></li>
-        <li><a href="drools-impl.pdf">The Design and Implementation of Drools</a></li>
+        <li><a href="/pdf/rete-oo.pdf">The RETE-OO Algorithm</a></li>
+        <li><a href="/pdf/drools-impl.pdf">The Design and Implementation of Drools</a></li>
       </ul>
 
     </section>
