@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.7 2004-03-27 16:00:30 n_alex Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.8 2004-03-28 03:00:06 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -136,7 +136,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     void addRules(Rule[] rules)
     {
-        for(int i=0; i < rules.length; i++) {
+        for(int i=0; i <= rules.length; i++) {
             addRule(rules[i]);
         }
     }
