@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetLoader.java,v 1.1 2002-08-20 05:06:24 bob Exp $
+ $Id: RuleSetLoader.java,v 1.2 2002-08-22 05:15:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.io;
  
  */
 
+import org.drools.RuleBase;
 import org.drools.rule.RuleSet;
 import org.drools.tags.rule.RuleTagLibrary;
 
@@ -58,12 +59,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 /** Loads <code>RuleSet</code> definitions from XML descriptor.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetLoader.java,v 1.1 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: RuleSetLoader.java,v 1.2 2002-08-22 05:15:26 bob Exp $
  */
 public class RuleSetLoader
 {
@@ -120,9 +122,9 @@ public class RuleSetLoader
         
         context.setVariable( "org.drools.io.RuleSetLoader",
                              this );
-
-        parser.setContext( context );
         
+        parser.setContext( context );
+
         Script script = parser.parse( url.toExternalForm() );
 
         XMLOutput output = XMLOutput.createXMLOutput( System.err,
@@ -136,6 +138,31 @@ public class RuleSetLoader
         this.ruleSets = null;
 
         return answer;
+    }
+
+    /** Load <code>RuleSet</code> deifnitions from a URL
+     *  into a <code>RuleBase</code>.
+     *
+     *  @param url The URL of the rule-set definitions.
+     *  @param ruleBase The rule-base to populate.
+     *
+     *  @throws IOException If an IO errors occurs.
+     *  @throws Exception If an error occurs evaluating the definition.
+     */
+    public void load(URL url,
+                     RuleBase ruleBase) throws IOException, Exception
+    {
+        List ruleSets = load( url );
+
+        Iterator ruleSetIter = ruleSets.iterator();
+        RuleSet  eachRuleSet = null;
+
+        while ( ruleSetIter.hasNext() )
+        {
+            eachRuleSet = (RuleSet) ruleSetIter.next();
+
+            ruleBase.addRuleSet( eachRuleSet );
+        }
     }
 
     /** Load <code>RuleSet</code> deifnitions from a URL.

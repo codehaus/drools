@@ -11,7 +11,7 @@
 
   <section name="drools">
     <p>
-    <code>drools</code> is an augmented implementation of Forgy's Rete algorithm,
+    <code>drools</code> is an augmented implementation of Forgy's Rete algorithm
     tailored for the object-oriented language of Java.  Adapting
     Rete to an object-oriented interface allows for more natural
     expression of business rules with regards to business objects.
@@ -21,8 +21,8 @@
 
       <p>
       The <code>drools</code> engine uses a modified form of the Rete algorithm
-      called the Rete-OO algorithm.  Internally, it operates using the same
-      concepts and methods as Forgy's original, but adds some node types
+      called the Rete-OO algorithm.  Internally it operates using the same
+      concepts and methods as Forgy's original but adds some node types
       required for seemless integration with an object-oriented language.
       </p>
 
@@ -34,9 +34,9 @@
       At the core <code>drools</code> is purely an Rete-OO algorithmic
       engine.  The engine works in terms of very abstracted concepts,
       such as <code>FilterCondition</code>s, <code>Declaration</code>s and
-      <code>FactExtractor</code>s.  Though the usage of concrete 
-      <i>semantics modules</i> the algorithmic engine can be given any
-      interface desired.
+      <code>FactExtractor</code>s.  Concrete <i>semantic modules</i>
+      are used to tightly bind application-specific semantics to 
+      the core of the algorithmic engine.
       </p>
     </subsection>
   </section>
