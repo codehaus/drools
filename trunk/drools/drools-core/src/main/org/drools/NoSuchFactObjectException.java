@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: NoSuchFactObjectException.java,v 1.4 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: NoSuchFactObjectException.java,v 1.5 2004-10-20 13:41:25 bob Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -67,6 +67,11 @@ public class NoSuchFactObjectException extends FactException
     //     Constructors
     // ----------------------------------------------------------------------
 
+    public NoSuchFactObjectException()
+    {
+        this.handle = null;
+    }
+
     /**
      * Construct.
      * 
@@ -98,8 +103,12 @@ public class NoSuchFactObjectException extends FactException
      */
     public String getMessage()
     {
-        return "no such fact object for handle: "
-               + getFactHandle( ).toExternalForm( );
+        if ( this.handle == null )
+        {
+            return "invalid (null) fact handle";
+        }
+
+        return "no such fact object for handle: " + getFactHandle( ).toExternalForm( );
     }
 }
 
