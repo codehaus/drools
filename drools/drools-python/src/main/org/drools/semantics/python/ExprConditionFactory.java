@@ -16,8 +16,8 @@ public class ExprConditionFactory
         return INSTANCE;
     }
 
-    public Condition newCondition(Declaration[] availDecls,
-                                  Configuration config)
+    public Condition newCondition(Configuration config,
+                                  Declaration[] availDecls)
         throws FactoryException
     {
         try

@@ -17,8 +17,8 @@ public class ExprExtractorFactory
         return INSTANCE;
     }
 
-    public Extractor newExtractor(Declaration[] availDecls,
-                                  Configuration config)
+    public Extractor newExtractor(Configuration config,
+                                  Declaration[] availDecls)
         throws FactoryException
     {
         try
