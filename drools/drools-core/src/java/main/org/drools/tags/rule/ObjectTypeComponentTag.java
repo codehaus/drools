@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ObjectTypeComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ $Id: ObjectTypeComponentTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,18 +46,18 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.spi.ObjectType;
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.smf.ConfigurableObjectType;
 import org.drools.smf.ConfigurationException;
-
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.spi.ObjectType;
 
 /** Dynamic <code>ObjectType</code> component tag.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ObjectTypeComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ObjectTypeComponentTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class ObjectTypeComponentTag extends ComponentTag
 {
@@ -84,16 +84,16 @@ public class ObjectTypeComponentTag extends ComponentTag
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output)  throws Exception
+    public void doTag(XMLOutput output)  throws MissingAttributeException, JellyTagException
     {
         ObjectTypeReceptor receptor = (ObjectTypeReceptor) findAncestorWithClass( ObjectTypeReceptor.class );
         
         if ( receptor == null )
         {
-            throw new JellyException( "No receptor for object type" );
+            throw new JellyTagException( "No receptor for object type" );
         }
         
         if ( getComponent() instanceof ConfigurableObjectType)
@@ -104,7 +104,7 @@ public class ObjectTypeComponentTag extends ComponentTag
             }
             catch (ConfigurationException e)
             {
-                throw new JellyException( e );
+                throw new JellyTagException( e );
             }
         }
         

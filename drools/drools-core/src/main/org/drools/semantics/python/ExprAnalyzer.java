@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprAnalyzer.java,v 1.1 2002-08-27 06:46:44 bob Exp $
+ $Id: ExprAnalyzer.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,18 +47,17 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
-
 import org.python.parser.ast.modType;
 
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Analyzes python expressions for all mentioned variables.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprAnalyzer.java,v 1.1 2002-08-27 06:46:44 bob Exp $
+ *  @version $Id: ExprAnalyzer.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class ExprAnalyzer
 {

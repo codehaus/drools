@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConditionReceptor.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ $Id: ConditionReceptor.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,16 +46,15 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
 import org.drools.rule.Declaration;
 import org.drools.spi.Condition;
-
-import org.apache.commons.jelly.JellyException;
 
 /** Object that can receive a configured <code>Condition</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConditionReceptor.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ConditionReceptor.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public interface ConditionReceptor
 {
@@ -69,8 +68,8 @@ public interface ConditionReceptor
      *
      *  @return The array of declarations.
      * 
-     *  @throws JellyException If no declarations are currently
+     *  @throws JellyTagException If no declarations are currently
      *          available in scope.
      */
-    Declaration[] getAvailableDeclarations() throws JellyException;
+    Declaration[] getAvailableDeclarations() throws JellyTagException;
 }

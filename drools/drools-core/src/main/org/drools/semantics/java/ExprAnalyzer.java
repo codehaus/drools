@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprAnalyzer.java,v 1.5 2002-09-19 06:58:00 bob Exp $
+ $Id: ExprAnalyzer.java,v 1.6 2003-03-25 19:47:29 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,26 +46,25 @@ package org.drools.semantics.java;
  
  */
 
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+import antlr.collections.AST;
 import org.drools.rule.Declaration;
 import org.drools.semantics.java.parser.JavaLexer;
 import org.drools.semantics.java.parser.JavaRecognizer;
-import org.drools.semantics.java.parser.JavaTreeParser;
 import org.drools.semantics.java.parser.JavaTokenTypes;
-
-import antlr.TokenStreamException;
-import antlr.RecognitionException;
-import antlr.collections.AST;
+import org.drools.semantics.java.parser.JavaTreeParser;
 
 import java.io.StringReader;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Expression analyzer.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprAnalyzer.java,v 1.5 2002-09-19 06:58:00 bob Exp $
+ *  @version $Id: ExprAnalyzer.java,v 1.6 2003-03-25 19:47:29 tdiesler Exp $
  */
 public class ExprAnalyzer
 {

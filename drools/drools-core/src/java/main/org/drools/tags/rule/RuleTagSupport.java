@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.6 2002-09-27 20:55:32 bob Exp $
+ $Id: RuleTagSupport.java,v 1.7 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,19 +46,18 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.TagSupport;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-
-import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
 
 /** Support for rule tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.6 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: RuleTagSupport.java,v 1.7 2003-03-25 19:47:32 tdiesler Exp $
  */
 public abstract class RuleTagSupport extends TagSupport
 {
@@ -114,16 +113,16 @@ public abstract class RuleTagSupport extends TagSupport
      *
      *  @return The array of declarations.
      * 
-     *  @throws JellyException If no declarations are currently
+     *  @throws JellyTagException If no declarations are currently
      *          available in scope.
      */
-    public Declaration[] getAvailableDeclarations() throws JellyException
+    public Declaration[] getAvailableDeclarations() throws JellyTagException
     {
         Rule rule = getRule();
 
         if ( rule == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyTagException( "No rule available" );
         }
 
         return rule.getDeclarationsArray();

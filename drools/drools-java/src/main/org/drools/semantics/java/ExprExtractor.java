@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.7 2002-08-21 05:46:13 bob Exp $
+ $Id: ExprExtractor.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,14 +49,14 @@ package org.drools.semantics.java;
 import org.drools.rule.Declaration;
 import org.drools.smf.ConfigurableExtractor;
 import org.drools.smf.ConfigurationException;
-import org.drools.spi.Tuple;
 import org.drools.spi.ExtractionException;
+import org.drools.spi.Tuple;
 
 /** Java expression semantics <code>Extractor</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.7 2002-08-21 05:46:13 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
  */
 public class ExprExtractor extends Expr implements ConfigurableExtractor
 {

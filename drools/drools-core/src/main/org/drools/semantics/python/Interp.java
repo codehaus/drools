@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.4 2002-08-27 06:46:44 bob Exp $
+ $Id: Interp.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,20 +47,15 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.spi.Tuple;
 import org.drools.spi.ObjectType;
-
-import org.python.core.Py;
-import org.python.core.PyCode;
-import org.python.core.PyDictionary;
-import org.python.core.PyString;
-import org.python.core.parser;
-import org.python.util.PythonInterpreter;
+import org.drools.spi.Tuple;
+import org.python.core.*;
 import org.python.parser.ast.modType;
+import org.python.util.PythonInterpreter;
 
 import java.util.Hashtable;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Base class for Jython interpreter-based Python semantic components.
  *
@@ -69,7 +64,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.4 2002-08-27 06:46:44 bob Exp $
+ *  @version $Id: Interp.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class Interp
 {

@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.5 2003-01-01 22:15:31 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,9 @@ package org.drools.semantics.jelly;
  
  */
 
-import org.apache.commons.jelly.impl.DynamicTagLibrary;
+import org.apache.commons.jelly.JellyTagException;
 import org.apache.commons.jelly.Tag;
-
+import org.apache.commons.jelly.impl.DynamicTagLibrary;
 import org.xml.sax.Attributes;
 
 import java.util.Map;
@@ -57,7 +57,7 @@ import java.util.Map;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.5 2003-01-01 22:15:31 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -72,23 +72,30 @@ public class SemanticsTagLibrary extends DynamicTagLibrary
     /** Creates a new script to execute the given tag name and attributes.
      *
      *  @param name Tag name.
-     *  @param attributes Tag attributes.
+     *  @param attrs Tag attributes.
      *
      *  @return The new tag.
      *
-     *  @throws Exception If an error occurs while attempting to
+     *  @throws JellyTagException If an error occurs while attempting to
      *          create the tag for the specified name.
      */
     public Tag createTag(String name,
-                         Attributes attrs) throws Exception
+                         Attributes attrs) throws JellyTagException
     {
         Map tags = getTagClasses();
 
         Class type = (Class) tags.get( name );
 
-        if ( type != null )
+        try
         {
-            return (Tag) type.newInstance();
+            if ( type != null )
+            {
+                return (Tag) type.newInstance();
+            }
+        }
+        catch (Exception e)
+        {
+            throw new JellyTagException( e );
         }
 
         return null;

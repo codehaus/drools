@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: DurationTag.java,v 1.1 2002-08-22 07:42:39 bob Exp $
+ $Id: DurationTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,17 +46,17 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.spi.Duration;
-import org.drools.rule.Rule;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.rule.Rule;
+import org.drools.spi.Duration;
 
 /** Construct a <code>Duration</code> for a <code>Rule</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DurationTag.java,v 1.1 2002-08-22 07:42:39 bob Exp $
+ *  @version $Id: DurationTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class DurationTag extends RuleTagSupport
 {
@@ -129,23 +129,23 @@ public class DurationTag extends RuleTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         Rule rule = getRule();
 
         if ( rule == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyTagException( "No rule available" );
         }
 
         invokeBody( output );
         
         if ( this.duration == null )
         {
-            throw new JellyException( "Duration expected" );
+            throw new JellyTagException( "Duration expected" );
         }
 
         if ( this.var != null )

@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: SemanticModuleTag.java,v 1.3 2002-09-19 06:58:01 bob Exp $
+ $Id: SemanticModuleTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,10 +46,10 @@ package org.drools.tags.semantics;
  
  */
 
-import org.drools.smf.SimpleSemanticModule;
-
-import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyTagException;
 import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.XMLOutput;
+import org.drools.smf.SimpleSemanticModule;
 
 /** Defines a <code>SemanticModule</code>.
  *
@@ -146,10 +146,10 @@ public class SemanticModuleTag extends SemanticsTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         if ( getUri() == null )
         {

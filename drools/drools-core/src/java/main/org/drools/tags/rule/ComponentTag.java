@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ $Id: ComponentTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools.tags.rule;
 
 import org.apache.commons.beanutils.ConvertingWrapDynaBean;
 import org.apache.commons.jelly.DynaBeanTagSupport;
-import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.JellyTagException;
 
 /** Base for dynamic semantic component tags.
  *
@@ -56,7 +56,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ComponentTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 abstract class ComponentTag extends DynaBeanTagSupport
 {
@@ -117,11 +117,11 @@ abstract class ComponentTag extends DynaBeanTagSupport
      *  @param name The attribute name.
      *  @param value The value.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to set the attribute value.
      */
     public void setAttribute(String name,
-                             Object value) throws Exception
+                             Object value) throws JellyTagException
     {
         super.setAttribute( name,
                             value );
@@ -129,9 +129,9 @@ abstract class ComponentTag extends DynaBeanTagSupport
 
     /** Hook before attributes are set for initialization.
      *
-     *  @throws Exception If an error occurs.
+     *  @throws JellyTagException If an error occurs.
      */
-    public void beforeSetAttributes() throws Exception
+    public void beforeSetAttributes() throws JellyTagException
     {
         try
         {
@@ -140,7 +140,7 @@ abstract class ComponentTag extends DynaBeanTagSupport
         }
         catch (Exception e)
         {
-            throw new JellyException( "Unable to instantiate: " + getComponentClass().getName() );
+            throw new JellyTagException( "Unable to instantiate: " + getComponentClass().getName() );
         }
     }
 }

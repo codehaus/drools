@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: ConditionTag.java,v 1.2 2002-09-19 06:58:01 bob Exp $
+ $Id: ConditionTag.java,v 1.3 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,10 +46,10 @@ package org.drools.tags.semantics;
  
  */
 
-import org.drools.smf.SimpleSemanticModule;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.smf.SimpleSemanticModule;
 
 /** Defines a <code>Condition</code>.
  *
@@ -82,10 +82,10 @@ public class ConditionTag extends SemanticComponentTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         checkAttributes();
 
@@ -93,13 +93,20 @@ public class ConditionTag extends SemanticComponentTagSupport
 
         if ( module == null )
         {
-            throw new JellyException( "Only allowed within a module" );
+            throw new JellyTagException( "Only allowed within a module" );
         }
 
-        Class conditionClass = Class.forName( getClassname() );
+        try
+        {
+            Class conditionClass = Class.forName( getClassname() );
 
-        module.addCondition( getName(),
-                             conditionClass );
+            module.addCondition( getName(),
+                                 conditionClass );
+        }
+        catch (Exception ex)
+        {
+            throw new JellyTagException( ex );
+        }
     }
 }
 

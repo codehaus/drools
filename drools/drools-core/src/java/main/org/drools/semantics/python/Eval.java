@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.5 2002-10-11 14:57:59 ckl Exp $
+ $Id: Eval.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,14 +47,11 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.spi.Tuple;
 import org.drools.smf.ConfigurationException;
-
-import org.python.core.Py;
+import org.drools.spi.Tuple;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
 import org.python.core.__builtin__;
-import org.python.util.PythonInterpreter;
 
 import java.util.Hashtable;
 
@@ -66,7 +63,7 @@ import java.util.Hashtable;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>  
  *
- *  @version $Id: Eval.java,v 1.5 2002-10-11 14:57:59 ckl Exp $
+ *  @version $Id: Eval.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class Eval extends Interp
 {

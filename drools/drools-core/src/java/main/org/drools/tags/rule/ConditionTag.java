@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConditionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ $Id: ConditionTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,11 +46,11 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.spi.Condition;
-import org.drools.rule.Rule;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.rule.Rule;
+import org.drools.spi.Condition;
 
 /** Construct a <code>Condition</code> for a <code>Rule</code>.
  *
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConditionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ConditionTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class ConditionTag extends RuleTagSupport implements ConditionReceptor
 {
@@ -144,23 +144,23 @@ public class ConditionTag extends RuleTagSupport implements ConditionReceptor
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         Rule rule = getRule();
 
         if ( rule == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyTagException( "No rule available" );
         }
 
         invokeBody( output );
         
         if ( this.condition == null )
         {
-            throw new JellyException( "Condition expected" );
+            throw new JellyTagException( "Condition expected" );
         }
 
         if ( this.var != null )

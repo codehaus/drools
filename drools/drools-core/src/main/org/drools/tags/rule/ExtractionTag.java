@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ExtractionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ $Id: ExtractionTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,13 +46,13 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.spi.Extractor;
-
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 
 /** Construct an <code>Extraction</code> for a <code>Rule</code>.
  *
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExtractionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ExtractionTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class ExtractionTag extends RuleTagSupport implements ExtractorReceptor
 {
@@ -168,10 +168,10 @@ public class ExtractionTag extends RuleTagSupport implements ExtractorReceptor
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         requiredAttribute( "target",
                            this.target );
@@ -180,21 +180,21 @@ public class ExtractionTag extends RuleTagSupport implements ExtractorReceptor
 
         if ( rule == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyTagException( "No rule available" );
         }
 
         Declaration decl = rule.getDeclaration( this.target );
 
         if ( decl == null )
         {
-            throw new JellyException( "Unknown declaration: " + this.target );
+            throw new JellyTagException( "Unknown declaration: " + this.target );
         }
 
         invokeBody( output );
 
         if ( this.extractor == null )
         {
-            throw new JellyException( "Extractor expected" );
+            throw new JellyTagException( "Extractor expected" );
         }
 
         Extraction extraction = new Extraction( decl,

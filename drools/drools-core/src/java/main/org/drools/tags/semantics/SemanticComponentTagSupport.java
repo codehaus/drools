@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: SemanticComponentTagSupport.java,v 1.1 2002-08-18 16:42:58 bob Exp $
+ $Id: SemanticComponentTagSupport.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,8 @@ package org.drools.tags.semantics;
  
  */
 
-import org.drools.smf.SimpleSemanticModule;
-
 import org.apache.commons.jelly.MissingAttributeException;
+import org.drools.smf.SimpleSemanticModule;
 
 /** Support for semantic components.
  *

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Exec.java,v 1.4 2002-10-11 15:01:10 ckl Exp $
+ $Id: Exec.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,11 @@ package org.drools.semantics.python;
  
  */
 
-import org.drools.spi.Tuple;
-
 import org.drools.rule.Declaration;
 import org.drools.smf.ConfigurationException;
-
+import org.drools.spi.Tuple;
 import org.python.core.Py;
 import org.python.core.PyDictionary;
-import org.python.util.PythonInterpreter;
 
 import java.util.Hashtable;
 
@@ -64,7 +61,7 @@ import java.util.Hashtable;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Exec.java,v 1.4 2002-10-11 15:01:10 ckl Exp $
+ *  @version $Id: Exec.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class Exec extends Interp
 {

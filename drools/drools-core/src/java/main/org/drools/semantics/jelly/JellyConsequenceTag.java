@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequenceTag.java,v 1.4 2002-11-19 16:21:07 bob Exp $
+ $Id: JellyConsequenceTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,18 +46,14 @@ package org.drools.semantics.jelly;
  
  */
 
+import org.apache.commons.jelly.*;
 import org.drools.tags.rule.ConsequenceTag;
-
-import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.DynaTag;
-import org.apache.commons.jelly.JellyException;
 
 /** Jelly semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyConsequenceTag.java,v 1.4 2002-11-19 16:21:07 bob Exp $
+ *  @version $Id: JellyConsequenceTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class JellyConsequenceTag extends TagSupport implements DynaTag
 {
@@ -84,16 +80,16 @@ public class JellyConsequenceTag extends TagSupport implements DynaTag
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         ConsequenceTag tag = (ConsequenceTag) findAncestorWithClass( ConsequenceTag.class );
 
         if ( tag == null )
         {
-            throw new JellyException( "No consequence wrapper available" );
+            throw new JellyTagException( "No consequence wrapper available" );
         }
 
         JellyConsequence consequence = new JellyConsequence( getBody(),
