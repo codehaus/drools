@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.48 2003-08-21 00:57:12 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.49 2003-10-09 18:42:18 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
@@ -19,6 +19,7 @@
     <property name="testclassesdir" value="target/test-classes"/>
     <property name="examplesclassesdir" value="target/examples-classes"/>
     <property name="testreportdir" value="target/test-reports"/>
+    <property name="testlogsdir" value="target/logs"/>
 
     <property name="examplesdir" value="src/java/examples"/>
     <property name="resourcedir" value="src/java/main"/>
@@ -128,6 +129,8 @@
         depends="compile-tests">
 
         <mkdir dir="${testreportdir}"/>
+        <mkdir dir="${testlogsdir}"/>
+
         <junit dir="./"
             failureproperty="test.failure"
             printSummary="yes"
@@ -158,6 +161,7 @@
         depends="compile-tests">
 
         <mkdir dir="${testreportdir}"/>
+        <mkdir dir="${testlogsdir}"/>
 
         <junit dir="./"
             failureproperty="test.failure"
