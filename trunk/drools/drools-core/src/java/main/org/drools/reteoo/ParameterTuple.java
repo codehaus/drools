@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterTuple.java,v 1.6 2002-07-27 05:52:17 bob Exp $
+ $Id: ParameterTuple.java,v 1.7 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import java.util.HashSet;
  *  @see ReteTuple
  *  @see ParameterNode
  *
- *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class ParameterTuple extends ReteTuple
 {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.9 2002-07-27 05:52:17 bob Exp $
+ $Id: Builder.java,v 1.10 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import java.util.Iterator;
  *
  *  @see org.drools.spi.RuleSet
  *
- *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class Builder
 {

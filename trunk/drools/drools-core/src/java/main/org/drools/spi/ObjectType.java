@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ObjectType.java,v 1.2 2002-07-27 01:50:17 bob Exp $
+ $Id: ObjectType.java,v 1.3 2002-07-27 05:55:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ package org.drools.spi;
  *
  *  @see Declaration
  *
- *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public interface ObjectType
 {
