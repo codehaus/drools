@@ -31,7 +31,7 @@
 
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
-    <url>http://cvs.werken.com/viewcvs.cgi/drools/drools/</url>
+    <url>http://cvs.werken.com/viewcvs.cgi/drools/?cvsroot=drools</url>
   </repository>
 
   <versions/>
