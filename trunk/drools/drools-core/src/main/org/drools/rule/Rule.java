@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.52 2004-12-07 13:58:50 simon Exp $
+ * $Id: Rule.java,v 1.53 2004-12-07 14:27:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -124,6 +124,7 @@ public class Rule
         this.name = name;
         this.ruleSet = ruleSet;
         this.imports = Collections.EMPTY_SET;
+        this.applicationData = Collections.EMPTY_MAP;
     }
 
     /**

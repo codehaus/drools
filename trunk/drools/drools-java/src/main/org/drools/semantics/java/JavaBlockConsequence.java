@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.41 2004-11-29 12:14:44 simon Exp $
+ * $Id: JavaBlockConsequence.java,v 1.1 2004-12-07 14:27:55 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,37 +46,31 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Java block semantics <code>Consequence</code>.
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
-public class BlockConsequence
+public class JavaBlockConsequence
     implements
     Consequence,
     Serializable
 {
-    private static final String[] SCRIPT_PARAM_NAMES = new String[]{"tuple", "decls", "drools", "applicationData"};
+    private final String        block;
 
-    private final String block;
-
-    private final Rule rule;
+    private final Rule          rule;
 
     private final Declaration[] declarations;
 
-    private transient Script script;
+    private transient Script    script;
 
     // ------------------------------------------------------------
     // Constructors
@@ -88,22 +82,15 @@ public class BlockConsequence
      * @param block The statement block.
      * @param rule The rule.
      */
-    public BlockConsequence(String block,
-                            Rule rule) throws Exception
+    public JavaBlockConsequence( String block,
+                                 Rule rule ) throws Exception
     {
         this.block = block;
 
         this.rule = rule;
 
         List declarations = rule.getParameterDeclarations( );
-        this.declarations = (Declaration[]) declarations.toArray( new Declaration[declarations.size( )] );
-
-        this.script = compile( rule );
-    }
-
-    private void readObject(ObjectInputStream s) throws Exception
-    {
-        s.defaultReadObject( );
+        this.declarations = ( Declaration[] ) declarations.toArray( new Declaration[declarations.size( )] );
 
         this.script = compile( rule );
     }
@@ -119,27 +106,23 @@ public class BlockConsequence
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
      *
-     * @param tuple
-     *            The matching tuple.
-     * @param workingMemory
-     *            The working memory session.
+     * @param tuple The matching tuple.
+     * @param workingMemory The working memory session.
      *
      * @throws ConsequenceException
      *             If an error occurs while attempting to invoke the
      *             consequence.
      */
-    public void invoke(Tuple tuple,
-                       WorkingMemory workingMemory) throws ConsequenceException
+    public void invoke( Tuple tuple,
+                        WorkingMemory workingMemory) throws ConsequenceException
     {
         try
         {
-            Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
-
             script.invoke( tuple,
                            this.declarations,
                            new KnowledgeHelper( this.rule,
                                                 tuple ),
-                           applicationData );
+                           tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }
         catch ( Exception e )
         {
@@ -148,49 +131,27 @@ public class BlockConsequence
         }
     }
 
-    /**
-     * Retrieve the expression.
-     *
-     * @return The expression.
-     */
-    public String getBlock()
-    {
-        return this.block;
-    }
-
     private Script compile(Rule rule) throws Exception
     {
-        Set imports = new HashSet( );
-        if ( rule.getImports( ) != null )
-        {
-            Iterator it = rule.getImports( ).iterator( );
-            ImportEntry importEntry;
-            while ( it.hasNext( ) )
-            {
-                importEntry = (ImportEntry) it.next( );
-                if ( importEntry instanceof JavaImportEntry )
-                {
-                    imports.add( importEntry.getImportEntry( ) );
-                }
-            }
-        }
-
-        return (Script) Interp.compile( rule,
-                                        Script.class,
-                                        this.block,
-                                        this.block,
-                                        SCRIPT_PARAM_NAMES,
-                                        this.declarations,
-                                        imports,
-                                        rule.getApplicationData( ) );
+        return (Script) JavaCompiler.compile( rule,
+                                              Script.class,
+                                              this.block,
+                                              this.block,
+                                              this.declarations );
     }
 
-    public interface Script
+    private void readObject( ObjectInputStream s ) throws Exception
     {
-        public void invoke(Tuple tuple,
-                           Declaration[] decls,
-                           KnowledgeHelper drools,
-                           Map applicationData) throws Exception;
+        s.defaultReadObject( );
+
+        this.script = compile( rule );
     }
 
+    public static interface Script
+    {
+        public void invoke( Tuple tuple,
+                            Declaration[] decls,
+                            KnowledgeHelper drools,
+                            Map applicationData ) throws Exception;
+    }
 }
