@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.33 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: Declaration.java,v 1.34 2005-02-14 15:05:45 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,9 +84,9 @@ public class Declaration
      * @param objectType The type of this variable declaration.
      * @param order The index within a rule.
      */
-    Declaration( String identifier,
-                 ObjectType objectType,
-                 int order )
+    public Declaration( String identifier,
+                        ObjectType objectType,
+                        int order )
     {
         this.objectType = objectType;
         this.identifier = identifier;

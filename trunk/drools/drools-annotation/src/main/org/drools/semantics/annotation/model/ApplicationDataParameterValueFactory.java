@@ -5,8 +5,10 @@ import java.lang.annotation.Annotation;
 import org.drools.semantics.annotation.DroolsApplicationData;
 import org.drools.rule.Rule;
 
-class ApplicationDataParameterValueFactory extends AnnotationParameterValueFactory
-{
+class ApplicationDataParameterValueFactory extends AnnotationParameterValueFactory {
+
+    static final String DEFAULT_IDENTIFIER = "ApplicationData$defaultIdentifier";
+
     public ApplicationDataParameterValueFactory() {
         super(DroolsApplicationData.class);
     }
@@ -15,9 +17,8 @@ class ApplicationDataParameterValueFactory extends AnnotationParameterValueFacto
         return ApplicationDataParameterValue.class;
     }
 
-    @Override
-    public ParameterValue doCreate ( Rule rule, Class< ? > parameterClass,
-                                     Annotation annotation) {
+    protected ParameterValue doCreate(Rule rule, Class< ? > parameterClass,
+                                      Annotation annotation) {
         String parameterId = ((DroolsApplicationData) annotation).value( );
         return new ApplicationDataParameterValue( parameterId, parameterClass );
     }

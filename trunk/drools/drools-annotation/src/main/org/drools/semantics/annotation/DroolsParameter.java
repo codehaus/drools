@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 @Inherited @Target({ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME) 
-public @interface DroolsParameter 
-{ 
-    String value(); // identifier
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DroolsParameter
+{
+    String value() default ""; // identifier
 }
 

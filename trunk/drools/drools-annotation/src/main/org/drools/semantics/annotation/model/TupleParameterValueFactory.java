@@ -7,8 +7,10 @@ import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
 
-class TupleParameterValueFactory extends AnnotationParameterValueFactory
-{
+class TupleParameterValueFactory extends AnnotationParameterValueFactory {
+
+    static final String BASE_DEFAULT_IDENTIFIER = "DroolsParameter$";
+
     public TupleParameterValueFactory() {
         super(DroolsParameter.class);
     }
@@ -17,16 +19,21 @@ class TupleParameterValueFactory extends AnnotationParameterValueFactory
         return TupleParameterValue.class;
     }
 
-    @Override
-    public ParameterValue doCreate ( Rule rule, Class< ? > parameterClass,
-                                     Annotation annotation) throws InvalidRuleException {
-        String parameterId = ((DroolsParameter) annotation).value( );
-        Declaration declaration = rule.getParameterDeclaration( parameterId );
-        if (declaration == null)
-        {
-            ClassObjectType objectType = new ClassObjectType( parameterClass );
-            declaration = rule.addParameterDeclaration( parameterId, objectType );
+    protected ParameterValue doCreate(Rule rule, Class<?> parameterClass,
+                                      Annotation annotation) throws InvalidRuleException {
+        String parameterId = ((DroolsParameter) annotation).value();
+        if (parameterId == null || parameterId.trim().length() == 0) {
+            parameterId = getDefaultIdentifier(parameterClass);
         }
-        return new TupleParameterValue( declaration );
+        Declaration declaration = rule.getParameterDeclaration(parameterId);
+        if (declaration == null) {
+            ClassObjectType objectType = new ClassObjectType(parameterClass);
+            declaration = rule.addParameterDeclaration(parameterId, objectType);
+        }
+        return new TupleParameterValue(declaration);
+    }
+
+    private String getDefaultIdentifier(Class<?> parameterClass) {
+        return BASE_DEFAULT_IDENTIFIER + parameterClass.getName();
     }
 }

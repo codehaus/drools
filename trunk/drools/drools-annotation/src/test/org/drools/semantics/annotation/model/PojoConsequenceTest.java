@@ -58,4 +58,23 @@ public class PojoConsequenceTest extends TestCase
 
         mocks.verify();
     }
+
+    public void testInvokeMulti() throws Exception {
+        Mock<Tuple> mockTuple = mocks.createMock(Tuple.class);
+        Mock<RuleReflectMethod> mockRuleMethod_1 = newMockRuleMethod();
+        mockRuleMethod_1.control.expectAndReturn(
+                mockRuleMethod_1.object.invokeMethod(mockTuple.object), null);
+        Mock<RuleReflectMethod> mockRuleMethod_2 = newMockRuleMethod();
+        mockRuleMethod_2.control.expectAndReturn(
+                mockRuleMethod_2.object.invokeMethod(mockTuple.object), null);
+        RuleReflectMethod[] mockRuleMethods = new RuleReflectMethod[]{
+                mockRuleMethod_1.object, mockRuleMethod_2.object};
+
+        mocks.replay();
+
+        PojoConsequence pojoConsequence = new PojoConsequence(mockRuleMethods);
+        pojoConsequence.invoke(mockTuple.object);
+
+        mocks.verify();
+    }
 }
