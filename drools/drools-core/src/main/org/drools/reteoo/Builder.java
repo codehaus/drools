@@ -99,6 +99,7 @@ public class Builder
 
         TerminalNode terminal = new TerminalNode( lastNode,
                                                   rule.getAction(),
+                                                  rule.getDuration(),
                                                   ++this.priorityCounter);
     }
 

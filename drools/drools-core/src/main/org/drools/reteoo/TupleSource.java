@@ -97,6 +97,7 @@ public abstract class TupleSource
                                          TupleSet newTuples,
                                          WorkingMemory workingMemory) throws FactException
     {
+        // System.err.println( this + " modifyTuples(" + newTuples + ")" );
         TupleSink sink = getTupleSink();
 
         if ( sink != null )

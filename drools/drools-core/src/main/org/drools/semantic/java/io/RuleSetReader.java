@@ -61,6 +61,9 @@ public class RuleSetReader
         this.reader.addHandler( "/ruleset/rule/when/cond",
                                 new CondHandler( this ) );
 
+        this.reader.addHandler( "/ruleset/rule/when/duration",
+                                new DurationHandler( this ) );
+
         this.reader.addHandler( "/ruleset/rule/then",
                                 new ThenHandler( this ) );
 
