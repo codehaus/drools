@@ -3,7 +3,7 @@
 
     <pomVersion>3</pomVersion>
     <name>drools-smf</name>
-    <id>drools-smf</id>
+    <artifactId>drools-smf</artifactId>
     <groupId>drools</groupId>
     <currentVersion>2.0-beta-12-dev</currentVersion>
 
@@ -92,6 +92,7 @@
         <!-- J A R  R E S O U R C E S -->
         <!-- Resources that are packaged up inside the JAR file -->
 
+<!--
         <resources>
             <resource>
                 <directory>src/conf</directory>
@@ -101,6 +102,7 @@
                 </includes>
             </resource>
         </resources>
+-->
 
     </build>
 
