@@ -5,7 +5,7 @@ import org.drools.MockFactHandle;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 import org.drools.spi.InstrumentedConsequence;
-import org.drools.MockObjectType;
+import org.drools.spi.MockObjectType;
 import org.drools.rule.RuleSet;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.RuleBase;
@@ -16,18 +16,25 @@ public class AgendaItemTest
     public void testConstruct()
         throws Exception
     {
-        Declaration decl = new Declaration( new MockObjectType(),
+        Declaration decl = new Declaration( new MockObjectType(true),
                                             "cheese" );
 
         MockFactHandle handle = new MockFactHandle( 1 );
 
+        Rule rule = new Rule( "test-rule" );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+                                                 "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );         
+
         ReteTuple tuple = new ReteTuple( null,
-                                         null,
+                                         rule,
                                          decl,
                                          handle,
                                          new Object() );
-
-        Rule rule = new Rule( "test-rule" );
 
         AgendaItem item = new AgendaItem( tuple,
                                           rule );
@@ -48,18 +55,24 @@ public class AgendaItemTest
     public void testSetTuple()
         throws Exception
     {
-        Declaration decl = new Declaration( new MockObjectType(),
+        Declaration decl = new Declaration( new MockObjectType(true),
                                             "cheese" );
 
         MockFactHandle handle = new MockFactHandle( 1 );
-
+        Rule rule = new Rule( "test-rule" );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+                                                 "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() ); 
+        
         ReteTuple tuple = new ReteTuple( null,
-                                         null,
+                                         rule,
                                          decl,
                                          handle,
                                          new Object() );
-
-        Rule rule = new Rule( "test-rule" );
 
         AgendaItem item = new AgendaItem( tuple,
                                           rule );
@@ -68,10 +81,10 @@ public class AgendaItemTest
                     item.getTuple() );
 
         assertTrue( item.dependsOn( handle ) );
-        assertFalse( item.dependsOn( new MockFactHandle( 2 ) ) );
-
+        assertFalse( item.dependsOn( new MockFactHandle( 2 ) ) );      
+        
         ReteTuple newTuple = new ReteTuple( null,
-                                            null,
+                                            rule,
                                             decl,
                                             handle,
                                             new Object() );
@@ -92,7 +105,7 @@ public class AgendaItemTest
         RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
 
 
-        Declaration decl = new Declaration( new MockObjectType(),
+        Declaration decl = new Declaration( new MockObjectType(true),
                                             "cheese" );
 
         MockFactHandle handle = new MockFactHandle( 1 );
