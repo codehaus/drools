@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersExample.java,v 1.6 2004-12-04 14:08:54 simon Exp $
+ * $Id: MannersExample.java,v 1.7 2004-12-04 14:59:45 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,7 +43,7 @@ package org.drools.examples.manners;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseFactory;
+import org.drools.io.RuleBaseLoader;
 
 import java.util.Iterator;
 import java.util.List;
@@ -69,7 +69,7 @@ public class MannersExample extends MannersBase
 
     protected void setUp( ) throws Exception
     {
-        RuleBase ruleBase = RuleBaseFactory.createFromUrl(
+        RuleBase ruleBase = RuleBaseLoader.loadFromUrl(
             MannersExample.class.getResource( ruleUri ) );
 
         workingMemory = ruleBase.newWorkingMemory( );

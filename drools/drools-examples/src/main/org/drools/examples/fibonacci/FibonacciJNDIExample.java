@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciJNDIExample.java,v 1.4 2004-12-04 14:08:54 simon Exp $
+ * $Id: FibonacciJNDIExample.java,v 1.5 2004-12-04 14:59:45 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,7 @@ package org.drools.examples.fibonacci;
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseFactory;
+import org.drools.io.RuleBaseLoader;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -55,11 +55,9 @@ public class FibonacciJNDIExample
 
         System.setProperty( "org.osjava.jndi.shared", "true" );
 
-        RuleBase ruleBase = RuleBaseFactory
-                                           .createFromUrl( FibonacciJNDIExample.class
-                                                                                    .getResource( drl ) );
+        RuleBase ruleBase = RuleBaseLoader.loadFromUrl( FibonacciJNDIExample.class.getResource( drl ) );
 
-        Context context = new InitialContext( );
+        Context context = new InitialContext();
         context.bind( "fibonacci", ruleBase );
     }
 

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseFactory.java,v 1.1 2004-12-04 14:08:54 simon Exp $
+ * $Id: RuleBaseLoader.java,v 1.1 2004-12-04 14:59:45 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,11 +51,11 @@ import java.io.Reader;
 import java.net.URL;
 
 /**
- * Convenience factory methods for constructing a <code>RuleBase</code>.
+ * Convenience methods for loading a <code>RuleBase</code>.
  *
  * <p>
- * The <code>RuleBaseFactory</code> provides convenience methods for creating
- * <code>RuleBase</code> s from streams. <code>RuleBaseFactory</code> is
+ * The <code>RuleBaseLoader</code> provides convenience methods for loading
+ * <code>RuleBase</code> s from streams. <code>RuleBaseLoader</code> is
  * thread-safe and as such may be used to build multiple <code>RuleBase</code> s
  * simultaneously by multiple threads.
  * </p>
@@ -68,63 +68,63 @@ import java.net.URL;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * TODO: Would rather this wasn't a bunch of static methods.
  */
-public final class RuleBaseFactory
+public final class RuleBaseLoader
 {
     /**
      * Default constructor - marked private to prevent instantiation.
      */
-    private RuleBaseFactory( )
+    private RuleBaseLoader( )
     {
         throw new UnsupportedOperationException( );
     }
 
     /**
-     * Creates a RuleBase from a URL using the default ConflictResolver
+     * Loads a RuleBase from a URL using the default ConflictResolver
      *
      * This is a convenience method and calls public static RuleBase
-     * createFromUrl(URL url, ConflictResolver resolver) passing the
+     * loadFromUrl(URL url, ConflictResolver resolver) passing the
      * DefaultConflictResolver
      *
      * @param url
      * @return RuleBase
      * @throws Exception
      */
-    public static RuleBase createFromUrl( URL url ) throws Exception
+    public static RuleBase loadFromUrl( URL url ) throws Exception
     {
-        return createFromUrl( url, DefaultConflictResolver.getInstance( ) );
+        return loadFromUrl( url, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Creates a RuleBase from a URL using the given ConflictResolver
+     * Loads a RuleBase from a URL using the given ConflictResolver
      *
      * @param url
      * @param resolver
      * @return RuleBase
      * @throws Exception
      */
-    public static RuleBase createFromUrl( URL url, ConflictResolver resolver ) throws Exception
+    public static RuleBase loadFromUrl( URL url, ConflictResolver resolver ) throws Exception
     {
-        return createFromUrl( new URL[]{url}, resolver );
+        return loadFromUrl( new URL[]{url}, resolver );
     }
 
     /**
-     * Creates a RuleBase using several URLs, using the DefaultConflictResolver.
+     * Loads a RuleBase using several URLs, using the DefaultConflictResolver.
      *
      * This is a convenience method and calls public static RuleBase
-     * createFromUrl(URL[] url, ConflictResolver resolver) passing the
+     * loadFromUrl(URL[] url, ConflictResolver resolver) passing the
      * DefaultConflictResolver
      *
      * @param urls
      * @return RuleBase
      * @throws Exception
      */
-    public static RuleBase createFromUrl( URL[] urls ) throws Exception
+    public static RuleBase loadFromUrl( URL[] urls ) throws Exception
     {
-        return createFromUrl( urls, DefaultConflictResolver.getInstance( ) );
+        return loadFromUrl( urls, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Creates a RuleBase from several URLS, merging them and using the specified
+     * Loads a RuleBase from several URLS, merging them and using the specified
      * ConflictResolver
      *
      * @param urls
@@ -132,7 +132,7 @@ public final class RuleBaseFactory
      * @return RuleBase
      * @throws Exception
      */
-    public static RuleBase createFromUrl( URL[] urls, ConflictResolver resolver ) throws Exception
+    public static RuleBase loadFromUrl( URL[] urls, ConflictResolver resolver ) throws Exception
     {
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setConflictResolver( resolver );
@@ -148,60 +148,60 @@ public final class RuleBaseFactory
     }
 
     /**
-     * Creates a RuleBase from an InputStream using the default ConflictResolver
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
      *
      * This is a convenience method and calls public static RuleBase
-     * createFromInputStream(InputStream in, ConflictResolver resolver) passing
+     * loadFromInputStream(InputStream in, ConflictResolver resolver) passing
      * the DefaultConflictResolver
      *
      * @param in
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromInputStream( InputStream in ) throws Exception
+    public static RuleBase loadFromInputStream( InputStream in ) throws Exception
     {
-        return createFromInputStream( in, DefaultConflictResolver.getInstance( ) );
+        return loadFromInputStream( in, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Creates a RuleBase from an InputStream using the default ConflictResolver
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
      *
      * @param in
      * @param resolver
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromInputStream( InputStream in,
+    public static RuleBase loadFromInputStream( InputStream in,
                                                   ConflictResolver resolver ) throws Exception
     {
-        return createFromInputStream( new InputStream[]{in}, resolver );
+        return loadFromInputStream( new InputStream[]{in}, resolver );
     }
 
     /**
-     * Creates a RuleBase from an InputStream using the default ConflictResolver
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
      *
      * This is a convenience method and calls public static RuleBase
-     * createFromInputStream(InputStream[] ins, ConflictResolver resolver)
+     * loadFromInputStream(InputStream[] ins, ConflictResolver resolver)
      * passing the DefaultConflictResolver
      *
      * @param ins
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromInputStream( InputStream[] ins ) throws Exception
+    public static RuleBase loadFromInputStream( InputStream[] ins ) throws Exception
     {
-        return createFromInputStream( ins, DefaultConflictResolver.getInstance( ) );
+        return loadFromInputStream( ins, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Creates a RuleBase from an InputStream using the default ConflictResolver
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
      *
      * @param ins
      * @param resolver
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromInputStream( InputStream[] ins,
+    public static RuleBase loadFromInputStream( InputStream[] ins,
                                                   ConflictResolver resolver ) throws Exception
     {
         RuleBaseBuilder builder = new RuleBaseBuilder( );
@@ -218,59 +218,59 @@ public final class RuleBaseFactory
     }
 
     /**
-     * Creates a RuleBase from a Reader using the default ConflictResolver
+     * Loads a RuleBase from a Reader using the default ConflictResolver
      *
      * This is a convenience method and calls public static RuleBase
-     * createFromReader(Reader in, ConflictResolver resolver) passing the
+     * loadFromReader(Reader in, ConflictResolver resolver) passing the
      * DefaultConflictResolver
      *
      * @param in
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromReader( Reader in ) throws Exception
+    public static RuleBase loadFromReader( Reader in ) throws Exception
     {
-        return createFromReader( in, DefaultConflictResolver.getInstance( ) );
+        return loadFromReader( in, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Creates a RuleBase from a Reader using the given ConflictResolver
+     * Loads a RuleBase from a Reader using the given ConflictResolver
      *
      * @param in
      * @param resolver
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromReader( Reader in, ConflictResolver resolver ) throws Exception
+    public static RuleBase loadFromReader( Reader in, ConflictResolver resolver ) throws Exception
     {
-        return createFromReader( new Reader[]{in}, resolver );
+        return loadFromReader( new Reader[]{in}, resolver );
     }
 
     /**
-     * Creates a RuleBase from a Reader using the default ConflictResolver
+     * Loads a RuleBase from a Reader using the default ConflictResolver
      *
      * This is a convenience method and calls public static RuleBase
-     * createFromReader(Reader[] ins, ConflictResolver resolver) passing the
+     * loadFromReader(Reader[] ins, ConflictResolver resolver) passing the
      * DefaultConflictResolver
      *
      * @param ins
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromReader( Reader[] ins ) throws Exception
+    public static RuleBase loadFromReader( Reader[] ins ) throws Exception
     {
-        return createFromReader( ins, DefaultConflictResolver.getInstance( ) );
+        return loadFromReader( ins, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Creates a RuleBase from a Reader using the given ConflictResolver
+     * Loads a RuleBase from a Reader using the given ConflictResolver
      *
      * @param ins
      * @param resolver
      * @return ruleBase
      * @throws Exception
      */
-    public static RuleBase createFromReader( Reader[] ins,
+    public static RuleBase loadFromReader( Reader[] ins,
                                              ConflictResolver resolver ) throws Exception
     {
         RuleBaseBuilder builder = new RuleBaseBuilder( );
