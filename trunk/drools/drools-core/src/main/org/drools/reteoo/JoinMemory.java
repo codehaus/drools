@@ -167,7 +167,7 @@ public class JoinMemory
         while ( tupleIter.hasNext() )
         {
             eachTuple = (Tuple) tupleIter.next();
-
+            
             joinedTuple = attemptJoin( tuple,
                                        eachTuple );
 
@@ -198,6 +198,7 @@ public class JoinMemory
 
         while ( declIter.hasNext() )
         {
+
             eachDecl = (Declaration) declIter.next();
 
             leftValue  = left.get( eachDecl );

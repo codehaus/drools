@@ -9,9 +9,9 @@ import org.drools.spi.DeclarationAlreadyCompleteException;
 import org.dom4j.Element;
 import org.dom4j.ElementPath;
 
-class ParamHandler extends BaseRuleSetHandler
+class DeclHandler extends BaseRuleSetHandler
 {
-    ParamHandler(RuleSetReader reader)
+    DeclHandler(RuleSetReader reader)
     {
         super( reader );
     }
@@ -30,15 +30,7 @@ class ParamHandler extends BaseRuleSetHandler
             Declaration decl = new Declaration( new JavaObjectType( typeClass ),
                                                 identifier );
             
-            try
-            {
-                getReader().getCurrentRule().addParameterDeclaration( decl );
-                getReader().addDeclaration( decl );
-            }
-            catch (DeclarationAlreadyCompleteException e)
-            {
-                e.printStackTrace();
-            }
+            getReader().addDeclaration( decl );
         }
         catch (ClassNotFoundException e)
         {

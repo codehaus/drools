@@ -38,6 +38,8 @@ class RuleHandler extends BaseRuleSetHandler
         catch (InvalidRuleException e)
         {
             e.printStackTrace();
+
+            System.err.println( e.getRule() );
         }
         catch (DuplicateRuleNameException e)
         {

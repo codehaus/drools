@@ -62,7 +62,7 @@ public class BeanShellFactExtractor implements FactExtractor
             BeanShellUtil.setUpInterpreter( this.interp,
                                             tuple );
             
-            this.interp.eval( getExpression() );
+            result = this.interp.eval( getExpression() );
 
             BeanShellUtil.cleanUpInterpreter( this.interp,
                                               tuple );

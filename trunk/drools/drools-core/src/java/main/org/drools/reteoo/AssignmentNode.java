@@ -53,6 +53,8 @@ public class AssignmentNode extends TupleSource implements TupleSink
                             Tuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
+
+
         Object value = getFactExtractor().extractFact( tuple );
 
         ReteTuple newTuple = new ReteTuple();
