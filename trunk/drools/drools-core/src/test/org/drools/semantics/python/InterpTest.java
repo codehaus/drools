@@ -21,11 +21,10 @@ public class InterpTest extends TestCase
         this.interp = null;
     }
 
-    public void testNothing()
+    public void testSetText()
     {
-        this.interp.setText( "42 + 12" );
+        this.interp.setText( "42 + 42", "eval" );
 
-        assertEquals( new Integer( 54 ),
-                      this.interp.evaluate() );
+        assertNotNull( this.interp.getCode() );
     }
 }

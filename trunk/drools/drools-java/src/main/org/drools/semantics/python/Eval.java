@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
+ $Id: Eval.java,v 1.1 2002-08-27 04:27:07 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,6 @@ import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
-import org.python.core.PyString;
 import org.python.core.__builtin__;
 import org.python.util.PythonInterpreter;
 
@@ -62,42 +61,26 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Iterator;
 
-/** Base class for Jython interpreter-based Python semantic components.
+/** Base class for Jython expression-based Python semantic components.
  *
- *  @see Eval
- *  @see Exec
+ *  @see ExprCondition
+ *  @see ExprExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
+ *  @version $Id: Eval.java,v 1.1 2002-08-27 04:27:07 bob Exp $
  */
-public class Interp
+public class Eval extends Interp
 {
-    // ------------------------------------------------------------
-    //     Class Initialization
-    // ------------------------------------------------------------
-
-    /** Ensure jpython gets initialized.
-     */
-    static
-    {
-        // throw it away.  we only need it for setting up
-        // system state.
-        new PythonInterpreter();
-    }
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Interp. */
-    // private PythonInterpreter interp;
-
     /** Interpreted text. */
     private String text;
 
-    /** The code. */
-    private PyCode code;
+    /** BeanShell interpreter. */
+    private PythonInterpreter interp;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -105,69 +88,60 @@ public class Interp
 
     /** Construct.
      */
-    protected Interp()
+    protected Eval()
     {
-        this.text = null;
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the text to evaluate.
-     *
-     *  @return The text to evaluate.
-     */
-    public String getText()
-    {
-        return this.text;
-    }
-
-    /** Set the text to evaluate.
-     *
-     *  @param text The text.
-     */
-    protected void setText(String text,
-                           String type)
-    {
-        this.text = text;
-
-        this.code = __builtin__.compile( text, "<text>", type );
-    }
-
-    protected PyCode getCode()
-    {
-        return this.code;
-    }
-
-    /** Configure a <code>PyDictionary</code> using a <code>Tuple</code>
-     *  for variable bindings.
+    /** Evaluate.
      *
      *  @param tuple Tuple containing variable bindings.
      *
-     *  @return The dictionary
+     *  @return The result of evaluation.
      */
-    protected PyDictionary setUpDictionary(Tuple tuple) 
+    public Object evaluate(Tuple tuple) 
     {
-        Hashtable table = new Hashtable();
+        PyDictionary dict = setUpDictionary( tuple );
+        
+        return evaluate( dict );
+    }
 
-        Set         decls    = tuple.getDeclarations();
+    /** Evaluate.
+     *
+     *  @param dict The evaluation dictionary.
+     *
+     *  @return The result of evaluation.
+     */
+    protected Object evaluate(PyDictionary locals) 
+    {
+        PyDictionary globals = new PyDictionary( new Hashtable() );
 
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
+        PyObject result =  __builtin__.eval( getCode(),
+                                             locals,
+                                             globals );
 
-        ObjectType objectType = null;
+        return Py.tojava( result,
+                          Object.class );
+    }
 
-        PyDictionary dict = new PyDictionary();
+    /** Evaluate.
+     *
+     *  @return The result of evaluation.
+     */
+    protected Object evaluate()
+    {
+        PyDictionary locals = new PyDictionary( new Hashtable() );
 
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-            
-            dict.setdefault( new PyString( eachDecl.getIdentifier().intern() ),
-                             Py.java2py( tuple.get( eachDecl ) ) );
-        }
+        return evaluate( locals );
+    }
 
-        return dict;
+    public void setText(String expr)
+    {
+        setText( expr,
+                 "eval" );
     }
 }
