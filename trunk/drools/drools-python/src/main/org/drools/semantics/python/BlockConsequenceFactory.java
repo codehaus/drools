@@ -1,5 +1,6 @@
 package org.drools.semantics.python;
 
+import org.drools.rule.Declaration;
 import org.drools.spi.Consequence;
 import org.drools.smf.ConsequenceFactory;
 import org.drools.smf.Configuration;
@@ -16,7 +17,8 @@ public class BlockConsequenceFactory
         return INSTANCE;
     }
 
-    public Consequence newConsequence(Configuration config)
+    public Consequence newConsequence(Configuration config,
+                                      Declaration[] availDecls)
         throws FactoryException
     {
         return new BlockConsequence( config.getText() );
