@@ -31,7 +31,7 @@
       Yes, folks want objects, but Rete works in terms of
       tables and tuples.  Thus, I've modified the algorithm,
       named my adapatation <b>Rete-OO</b>, which is described
-      in <a href="rete-oo.pdf">this PDF document</a>.
+      in <a href="/pdf/rete-oo.pdf">this PDF document</a>.
       </p>
     </section>
 
@@ -50,7 +50,7 @@
     <section name="How is drools designed?">
       <p>
       Information regarding the design and implementation of
-      drools may be found in <a href="drools-impl.pdf">this
+      drools may be found in <a href="/pdf/drools-impl.pdf">this
       PDF document</a>.
       </p>
     </section>

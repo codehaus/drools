@@ -574,6 +574,7 @@
     <java classname="SupplyAndDemand" fork="true">
       <arg value="example_data/supply_and_demand.xml"/>
       <classpath>
+        <path refid="lib.jars"/>
         <pathelement location="${build.dest.main}"/>
         <pathelement location="${build.dest.examples}"/>
         <pathelement location="${lib.dir}/drools.jar"/>
@@ -586,6 +587,7 @@
     <java classname="FishMonger" fork="true">
       <arg value="example_data/fish_monger.xml"/>
       <classpath>
+        <path refid="lib.jars"/>
         <pathelement location="${build.dest.main}"/>
         <pathelement location="${build.dest.examples}"/>
         <pathelement location="${lib.dir}/drools.jar"/>
@@ -598,6 +600,7 @@
     <java classname="Escalation" fork="true">
       <arg value="example_data/escalation.xml"/>
       <classpath>
+        <path refid="lib.jars"/>
         <pathelement location="${build.dest.main}"/>
         <pathelement location="${build.dest.examples}"/>
         <pathelement location="${lib.dir}/drools.jar"/>
@@ -617,6 +620,7 @@
         <pathelement location="${build.dest.examples}"/>
         <pathelement location="${lib.dir}/drools.jar"/>
         <pathelement path="${java.class.path}"/>
+        <pathelement path="${lib.jars}"/>
       </classpath>
     </java>
   </target>

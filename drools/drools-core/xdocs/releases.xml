@@ -10,17 +10,27 @@
   <body>
     <section name="Official Builds">
       <p>
-      Official builds can be found <a href="http://unc.dl.sourceforge.net/sourceforge/drools/">here</a>.
+      Official builds can be found <a href="/dist/">in the drools distribution directory</a>.
       </p>
 
       <p>
-      The latest official build is <b>2.0-beta-1</b>.
+      The latest official build is <b>2.0-beta-2</b>.
       </p>
 
-      <ul>
-        <li><a href="http://unc.dl.sourceforge.net/sourceforge/drools/drools-2.0-beta-1.zip">2.0-beta-1 in zip format.</a></li>
-        <li><a href="http://unc.dl.sourceforge.net/sourceforge/drools/drools-2.0-beta-1.tar.gz">2.0-beta-1 in tar/gz format.</a></li>
-      </ul>
+      <subsection name="Binary Distributions">
+        <ul>
+          <li><a href="/dist/drools-2.0-beta-2.zip">2.0-beta-1 in zip format.</a></li>
+          <li><a href="/dist/drools-2.0-beta-2.tar.gz">2.0-beta-1 in tar/gz format.</a></li>
+        </ul>
+      </subsection>
+
+      <subsection name="Source Distributions">
+        <ul>
+          <li><a href="/dist/drools-2.0-beta-2-src.zip">2.0-beta-1 in zip format.</a></li>
+          <li><a href="/dist/drools-2.0-beta-2-src.tar.gz">2.0-beta-1 in tar/gz format.</a></li>
+        </ul>
+      </subsection>
+
     </section>
 
     <section name="Nighly Builds">

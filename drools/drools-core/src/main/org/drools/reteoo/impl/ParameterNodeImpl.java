@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ParameterNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: ParameterNodeImpl.java,v 1.3 2002-07-30 19:52:56 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -190,5 +190,10 @@ public class ParameterNodeImpl extends TupleSourceImpl implements ParameterNode
     public Set getTupleDeclarations()
     {
         return Collections.singleton( this.declaration );
+    }
+
+    public String toString()
+    {
+        return "[ParameterNodeImpl: decl=" + this.declaration + "]";
     }
 }

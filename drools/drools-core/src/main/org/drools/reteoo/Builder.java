@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.11 2002-07-28 13:55:46 bob Exp $
+ $Id: Builder.java,v 1.12 2002-07-30 19:52:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.reteoo.impl.RootNodeImpl;
+import org.drools.reteoo.impl.ReteImpl;
 import org.drools.reteoo.impl.ObjectTypeNodeImpl;
 import org.drools.reteoo.impl.ParameterNodeImpl;
 import org.drools.reteoo.impl.FilterNodeImpl;
@@ -77,8 +77,8 @@ public class Builder
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Root node to build against. */
-    private RootNodeImpl rootNode;
+    /** Rete network to build against. */
+    private ReteImpl rete;
 
     /** Total-ordering priority counter. */
     private int priorityCounter;
@@ -88,27 +88,27 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Construct a <code>Builder</code> against an existing
-     *  <code>RootNode</code> in the network.
+     *  <code>Rete</code> network.
      *
      *  @param rootNode The network to add on to.
      */
-    public Builder(RootNodeImpl rootNode)
+    public Builder(Rete rete)
     {
-        this.rootNode = rootNode;
+        this.rete = (ReteImpl) rete;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>RootNode</code> this <code>Builder</code>
+    /** Retrieve the <code>Rete</code> this <code>Builder</code>
      *  appends to.
      *
      *  @return The <code>RootNode</code>.
      */
-    public RootNode getRootNode()
+    public Rete getRete()
     {
-        return this.rootNode;
+        return this.rete;
     }
 
     /** Add a <code>Rule</code> to the network.
@@ -123,15 +123,13 @@ public class Builder
         Set assignmentConds = new HashSet( rule.getAssignmentConditions() );
         Set filterConds     = new HashSet( rule.getFilterConditions() );
 
-        Set attachableNodes = null;
+        Set leafNodes = null;
 
         boolean performedJoin     = false;
         boolean attachAssign      = false;
         boolean cycleAttachAssign = false;
         
-        attachableNodes = createParameterNodes( rule );
-
-        // System.err.println( " 1->" + attachableNodes );
+        leafNodes = createParameterNodes( rule );
 
         do 
         {
@@ -141,28 +139,32 @@ public class Builder
             if ( ! filterConds.isEmpty() )
             {
                 attachFilterConditions( filterConds,
-                                        attachableNodes );
+                                        leafNodes );
             }
 
-            // System.err.println( " 2->" + attachableNodes );
-
             attachAssign = attachAssignmentConditions( assignmentConds,
-                                                       attachableNodes );
+                                                       leafNodes );
 
-            // System.err.println( " 3->" + attachableNodes );
+            performedJoin = createJoinNodes( leafNodes );
 
-            performedJoin = createJoinNodes( attachableNodes );
-
-            // System.err.println( " 4->" + attachableNodes );
+            if ( ! performedJoin
+                 &&
+                 ! attachAssign
+                 &&
+                 ! filterConds.isEmpty())
+            {
+                joinForFilter( filterConds,
+                               leafNodes );
+            }
         }
-        while ( ! attachableNodes.isEmpty() 
+        while ( ! leafNodes.isEmpty() 
                 &&
                 ( performedJoin
                   ||
                   attachAssign
                   ) );
 
-        TupleSource lastNode = (TupleSource) attachableNodes.iterator().next();
+        TupleSource lastNode = (TupleSource) leafNodes.iterator().next();
 
         TerminalNode terminal = new TerminalNodeImpl( lastNode,
                                                       rule,
@@ -179,7 +181,7 @@ public class Builder
      */
     protected Set createParameterNodes(Rule rule)
     {
-        Set attachableNodes = new HashSet();
+        Set leafNodes = new HashSet();
 
         Set      parameterDecls  = rule.getParameterDeclarations();
 
@@ -196,16 +198,16 @@ public class Builder
 
             objectType = eachDecl.getObjectType();
 
-            objectTypeNode = ((RootNodeImpl)getRootNode()).getOrCreateObjectTypeNode( objectType );
+            objectTypeNode = ((ReteImpl)getRete()).getOrCreateObjectTypeNode( objectType );
 
             paramNode = new ParameterNodeImpl( objectTypeNode,
                                                eachDecl );
 
-            attachableNodes.add( paramNode );
+            leafNodes.add( paramNode );
             
         }
 
-        return attachableNodes;
+        return leafNodes;
     }
     
 
@@ -220,11 +222,11 @@ public class Builder
      *
      *  @param filterConds Set of <code>FilterConditions</code>
      *         to attempt attaching.
-     *  @param attachableNodes The current attachable leaf nodes
+     *  @param leafNodes The current attachable leaf nodes
      *         of the network.
      */
     protected void attachFilterConditions(Set filterConds,
-                                          Set attachableNodes)
+                                          Set leafNodes)
     {
         Iterator        condIter    = filterConds.iterator();
         FilterCondition eachCond    = null;
@@ -237,7 +239,7 @@ public class Builder
             eachCond = (FilterCondition) condIter.next();
 
             tupleSource = findMatchingTupleSourceForFiltering( eachCond,
-                                                               attachableNodes );
+                                                               leafNodes );
 
             if ( tupleSource == null )
             {
@@ -249,37 +251,56 @@ public class Builder
             filterNode = new FilterNodeImpl( tupleSource,
                                              eachCond );
 
-            attachableNodes.remove( tupleSource );
-
-            attachableNodes.add( filterNode );
+            leafNodes.remove( tupleSource );
+            leafNodes.add( filterNode );
         }
+    }
+
+    protected boolean joinForFilter(Set filterConds,
+                                    Set leafNodes)
+    {
+        Iterator leafIter = leafNodes.iterator();
+
+        TupleSourceImpl left = (TupleSourceImpl) leafIter.next();
+
+        leafIter.remove();
+
+        TupleSourceImpl right = (TupleSourceImpl) leafIter.next();
+
+        leafIter.remove();
+
+        JoinNode joinNode = new JoinNodeImpl( left,
+                                              right );
+
+        leafNodes.add( joinNode );
+
+        return true;
     }
 
     /** Create and attach <code>JoinNode</code>s to the network.
      *
      *  <p>
-     *  It may not be possible to join all <code>attachableNodes</code>.
+     *  It may not be possible to join all <code>leafNodes</code>.
      *  </p>
      *
      *  <p>
-     *  Any <code>attachabeNodes</code> member that particiates
-     *  in a <i>join</i> is removed from the <code>attachableNodes</code>
+     *  Any <code>leafNodes</code> member that particiates
+     *  in a <i>join</i> is removed from the <code>leafNodes</code>
      *  collection, and replaced by the joining <code>JoinNode</code>.
      *  </p>
      *
-     *  @param attachableNodes The current attachable leaf nodes of
+     *  @param leafNodes The current attachable leaf nodes of
      *         the network.
      *
      *  @return <code>true</code> if at least one <code>JoinNode</code>
      *          was created, else <code>false</code>.
      */
-    protected boolean createJoinNodes(Set attachableNodes)
+    protected boolean createJoinNodes(Set leafNodes)
     {
-        // System.err.println( "ENTER joinNodes" );
         boolean performedJoin = false;
 
-        Object[] leftNodes  = attachableNodes.toArray();
-        Object[] rightNodes = attachableNodes.toArray();
+        Object[] leftNodes  = leafNodes.toArray();
+        Object[] rightNodes = leafNodes.toArray();
 
         TupleSourceImpl left  = null;
         TupleSourceImpl right = null;
@@ -291,7 +312,7 @@ public class Builder
         {
             left = (TupleSourceImpl) leftNodes[i];
 
-            if ( ! attachableNodes.contains( left ) )
+            if ( ! leafNodes.contains( left ) )
             {
                 continue OUTTER;
             }
@@ -301,7 +322,7 @@ public class Builder
             {
                 right = (TupleSourceImpl) rightNodes[j];
 
-                if ( ! attachableNodes.contains( right ) )
+                if ( ! leafNodes.contains( right ) )
                 {
                     continue INNER;
                 }
@@ -313,10 +334,10 @@ public class Builder
                     joinNode = new JoinNodeImpl( left,
                                                  right );
 
-                    attachableNodes.remove( left );
-                    attachableNodes.remove( right );
+                    leafNodes.remove( left );
+                    leafNodes.remove( right );
 
-                    attachableNodes.add( joinNode );
+                    leafNodes.add( joinNode );
 
                     performedJoin = true;
 
@@ -364,14 +385,14 @@ public class Builder
      *
      *  @param assignmentConds Set of <code>AssignmentConditions</code> to
      *         attach to the network.
-     *  @param attachableNodes The current attachable leaf nodes of
+     *  @param leafNodes The current attachable leaf nodes of
      *         the network.
      *
      *  @return <code>true</code> if assignment conditions have been
      *          attached, otherwise <code>false</code>.
      */
     protected boolean attachAssignmentConditions(Set assignmentConds,
-                                                 Set attachableNodes)
+                                                 Set leafNodes)
     {
         boolean attached      = false;
         boolean cycleAttached = false;
@@ -391,7 +412,7 @@ public class Builder
                 eachCond = (AssignmentCondition) condIter.next();
                 
                 tupleSource = findMatchingTupleSourceForAssignment( eachCond,
-                                                                    attachableNodes );
+                                                                    leafNodes );
                 
                 if ( tupleSource == null )
                 {
@@ -404,8 +425,8 @@ public class Builder
                                                      eachCond.getTargetDeclaration(),
                                                      eachCond.getFactExtractor() );
                 
-                attachableNodes.remove( tupleSource );
-                attachableNodes.add( assignNode );
+                leafNodes.remove( tupleSource );
+                leafNodes.add( assignNode );
                 
                 cycleAttached = true;
             }
@@ -477,7 +498,6 @@ public class Builder
             eachSource = (TupleSourceImpl) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
-            // System.err.println( "decls -> " + decls );
 
             if ( decls.contains( targetDecl ) )
             {

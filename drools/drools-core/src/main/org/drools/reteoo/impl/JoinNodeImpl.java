@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: JoinNodeImpl.java,v 1.3 2002-07-30 19:52:56 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -203,6 +203,7 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode, TupleSink
                             ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
+        System.err.println( "JoinNode.ASSERT(" + tuple + ")" );
         JoinMemoryImpl memory = (JoinMemoryImpl) workingMemory.getJoinMemory( this );
 
         Set joinedTuples = null;

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: RootNodeImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: ReteImpl.java,v 1.1 2002-07-30 19:52:56 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
-import org.drools.reteoo.RootNode;
+import org.drools.reteoo.Rete;
 import org.drools.reteoo.ObjectTypeNode;
 import org.drools.spi.ObjectType;
 
@@ -70,7 +70,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class RootNodeImpl implements RootNode
+public class ReteImpl implements Rete
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -85,7 +85,7 @@ public class RootNodeImpl implements RootNode
 
     /** Construct.
      */
-    public RootNodeImpl()
+    public ReteImpl()
     {
         this.objectTypeNodes = Collections.EMPTY_MAP;
     }
