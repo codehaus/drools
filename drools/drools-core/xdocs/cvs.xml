@@ -16,9 +16,9 @@
       </p>
 
 <pre>
-    cvs -d:pserver:anonymous@cvs.codehaus.org:/scm/cvs login
+    cvs -d:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm login
  
-    cvs -z3 -d:pserver:anonymous@cvs.codehaus.org:/scm/cvs co drools
+    cvs -z3 -d:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm co drools
 </pre>
 
     <p>
@@ -37,7 +37,7 @@
 <pre>
     export CVS_RSH=ssh
  
-    cvs -z3 -d:ext:<b>developername</b>@cvs.codehaus.org:/scm/cvs co drools
+    cvs -z3 -d:ext:<b>developername</b>@cvs.drools.codehaus.org:/home/projects/drools/scm co drools
 </pre>
 
     </section>
