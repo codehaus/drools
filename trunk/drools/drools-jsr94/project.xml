@@ -37,6 +37,7 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
+
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-io</artifactId>
@@ -52,12 +53,6 @@
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
-        </dependency>
-
-        <dependency>
-            <groupId>jaas</groupId>
-            <artifactId>jaas</artifactId>
-            <version>1.0</version>
         </dependency>
 
         <dependency>
