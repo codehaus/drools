@@ -6,7 +6,7 @@ package org.drools;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
-public class RetractionException extends DroolsException
+public class RetractionException extends FactException
 {
     /** Construct.
      */
