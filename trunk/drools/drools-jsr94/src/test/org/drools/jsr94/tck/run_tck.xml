@@ -15,9 +15,9 @@
 <!-- Properties -->
 
   <property name="name"            value="JSR 94 API"/>
-  <property name="version"         value="1.0"/>
+  <property name="version"         value="1.1"/>
   <property name="copyright.owner"  value="Java Community Process"/>
-  <property name="copyright.year"   value="2002"/>
+  <property name="copyright.year"   value="2004"/>
 
   <property name="lib.dir" value="lib"/>
   <property name="doc.dir" value="doc"/>
@@ -50,24 +50,14 @@
         <pathelement location="${lib.dir}/xerces.jar"/>
         <pathelement location="${lib.dir}/sigtest.jar"/>
    <!-- <pathelement location="${lib.dir}/jess.jar"/> -->
-
-        <pathelement location="${lib.dir}/drools-base-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-core-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-io-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-java-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-jsr94-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-smf-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/bsh-2.0b1.jar"/>
+        <pathelement location="${lib.dir}/drools-base-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-core-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-io-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-java-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-jsr94-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-smf-2.0-beta-17.jar"/>
         <pathelement location="${lib.dir}/janino-2.0.5.jar"/>
         <pathelement location="${lib.dir}/antlr-2.7.2.jar"/>
-
-        <pathelement location="${lib.dir}/"/>
-        <pathelement location="${lib.dir}/"/>
-        <pathelement location="${lib.dir}/"/>
-        <pathelement location="${lib.dir}/"/>
-        <pathelement location="${lib.dir}/"/>
-        <pathelement location="${lib.dir}/"/>
-
         <pathelement path="${java.class.path}"/>
       </classpath>
       <batchtest fork="yes" todir="${report.dir}">
@@ -84,17 +74,14 @@
         <pathelement location="${lib.dir}/xerces.jar"/>
         <pathelement location="${lib.dir}/sigtest.jar"/>
    <!-- <pathelement location="${lib.dir}/jess.jar"/> -->
-
-        <pathelement location="${lib.dir}/drools-base-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-core-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-io-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-java-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-jsr94-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/drools-smf-2.0-beta-16.jar"/>
-        <pathelement location="${lib.dir}/bsh-2.0b1.jar"/>
+        <pathelement location="${lib.dir}/drools-base-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-core-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-io-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-java-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-jsr94-2.0-beta-17.jar"/>
+        <pathelement location="${lib.dir}/drools-smf-2.0-beta-17.jar"/>
         <pathelement location="${lib.dir}/janino-2.0.5.jar"/>
         <pathelement location="${lib.dir}/antlr-2.7.2.jar"/>
-
       </classpath>
       <batchtest fork="yes" todir="${report.dir}">
         <fileset dir="${src.dir}">
