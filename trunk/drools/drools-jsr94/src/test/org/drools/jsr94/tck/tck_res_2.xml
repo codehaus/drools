@@ -72,10 +72,10 @@ The rule execution should produce the following output:
 
     <rule name="Rule1" description="Rule #1">
         <parameter identifier="customer">
-            <java:class>org.jcp.jsr94.tck.model.CustomerImpl</java:class>
+            <java:class>org.jcp.jsr94.tck.model.Customer</java:class>
         </parameter>
         <parameter identifier="invoice">
-            <java:class>org.jcp.jsr94.tck.model.InvoiceImpl</java:class>
+            <java:class>org.jcp.jsr94.tck.model.Invoice</java:class>
         </parameter>
 
         <java:condition><![CDATA[
