@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DefaultSemanticsRepository.java,v 1.7 2004-11-28 03:34:05 simon Exp $
+ * $Id: DefaultSemanticsRepository.java,v 1.8 2004-12-05 20:30:55 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.smf;
  */
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -89,7 +90,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
      * @throws Exception If an error occurs while performing discovery and
      *         loading of the semantic modules.
      */
-    public static synchronized SemanticsRepository getInstance() throws Exception
+    public static synchronized SemanticsRepository getInstance() throws IOException, SemanticsReaderException
     {
         if ( INSTANCE == null )
         {
@@ -118,7 +119,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
      * @throws Exception If an error occurs while performing discovery and
      *         loading of the semantic modules.
      */
-    private DefaultSemanticsRepository() throws Exception
+    private DefaultSemanticsRepository() throws IOException, SemanticsReaderException
     {
         this.loadedSemantics = new HashSet( );
         this.repository = new SimpleSemanticsRepository( );
@@ -135,7 +136,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
      * @throws Exception If an error occurs while performing discovery and
      *         loading of the semantic modules.
      */
-    protected void init() throws Exception
+    protected void init() throws IOException, SemanticsReaderException
     {
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
@@ -161,7 +162,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         }
     }
 
-    protected void loadConfig(String path) throws Exception
+    protected void loadConfig(String path) throws IOException, SemanticsReaderException
     {
 
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
@@ -182,7 +183,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         loadConfig( url );
     }
 
-    protected void loadConfig(URL url) throws Exception
+    protected void loadConfig(URL url) throws IOException, SemanticsReaderException
     {
         InputStream config = url.openStream( );
 
@@ -210,7 +211,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         }
     }
 
-    protected void loadSemantics(String semanticsName) throws Exception
+    protected void loadSemantics(String semanticsName) throws IOException, SemanticsReaderException
     {
         if ( this.loadedSemantics.contains( semanticsName ) )
         {
