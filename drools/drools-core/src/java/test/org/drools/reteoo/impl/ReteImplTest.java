@@ -8,6 +8,7 @@ import org.drools.semantics.java.ClassObjectType;
 import junit.framework.TestCase;
 
 import java.util.List;
+import java.util.Collection;
 
 public class ReteImplTest extends TestCase
 {
@@ -35,6 +36,17 @@ public class ReteImplTest extends TestCase
     public void tearDown()
     {
         this.rete = null;
+    }
+
+    public void testGetObjectTypeNodes()
+    {
+        Collection objectTypeNodes = this.rete.getObjectTypeNodes();
+
+        assertEquals( 2,
+                      objectTypeNodes.size() );
+
+        assertTrue( objectTypeNodes.contains( this.objectTypeNode ) );
+        assertTrue( objectTypeNodes.contains( this.stringTypeNode ) );
     }
 
     /** All objects asserted to a RootNode must be propagated

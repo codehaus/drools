@@ -172,6 +172,11 @@
     </dependency>
 
     <dependency>
+      <id>jsr94</id>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
       <id>saxpath</id>
       <version>1.0-FCS</version>
       <url>http://saxpath.org/</url>

@@ -9,6 +9,7 @@ import org.drools.semantics.java.ClassObjectType;
 import junit.framework.TestCase;
 
 import java.util.List;
+import java.util.Set;
 
 public class ObjectTypeNodeImplTest extends TestCase
 {
@@ -57,6 +58,13 @@ public class ObjectTypeNodeImplTest extends TestCase
 
             assertSame( string1,
                         asserted.get( 0 ) );
+
+            Set paramNodes = objectTypeNode.getParameterNodes();
+
+            assertEquals( 1,
+                          paramNodes.size() );
+
+            assertTrue( paramNodes.contains( paramNode ) );
         }
         catch (AssertionException e)
         {
