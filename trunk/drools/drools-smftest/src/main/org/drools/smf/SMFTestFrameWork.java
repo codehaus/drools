@@ -121,6 +121,8 @@ public abstract class SMFTestFrameWork  extends TestCase
      */
     public void testConditions() throws Exception
     {
+        // Setup
+        int testNumber = 0;
         MockTuple tuple;
 
         MockConfiguration cheeseConfiguration = new MockConfiguration("test1");
@@ -132,26 +134,26 @@ public abstract class SMFTestFrameWork  extends TestCase
         tuple.setWorkingMemory(new MockWorkingMemory());
 
         //simple condition checks
-        assertTrue(testCondition(0, tuple, new Declaration[] {}));
-        assertFalse(testCondition(1, tuple, new Declaration[] {}));
-        assertTrue(testCondition(2, tuple, new Declaration[] {}));
-        assertTrue(testCondition(3, tuple, new Declaration[] {}));
-        assertTrue(testCondition(4, tuple, new Declaration[] {}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
 
         Declaration camembertDecl = new Declaration(cheeseType, "camembert");
         Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
 
         //condition check with a single declaration
         tuple.put(camembertDecl, new Cheese("camembert"));
-        assertTrue(testCondition(5, tuple, new Declaration[] {camembertDecl}));
-        assertFalse(testCondition(6, tuple, new Declaration[] {camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl}));
 
         //condition check with a single declaration
         tuple = new MockTuple();
         tuple.setWorkingMemory(new MockWorkingMemory());
         tuple.put(stiltonDecl, new Cheese("stilton"));
-        assertTrue(testCondition(7, tuple, new Declaration[] {stiltonDecl}));
-        assertFalse(testCondition(8, tuple, new Declaration[] {stiltonDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl}));
 
 
         //condition check with two declarations
@@ -159,10 +161,10 @@ public abstract class SMFTestFrameWork  extends TestCase
         tuple.setWorkingMemory(new MockWorkingMemory());
         tuple.put(stiltonDecl, new Cheese("stilton"));
         tuple.put(camembertDecl, new Cheese("camembert"));
-        assertFalse(testCondition(9, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertTrue(testCondition(10, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertTrue(testCondition(11, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertFalse(testCondition(12, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
 
         //condition check with 2 declarations and application data
         WorkingMemory workingMemory = new MockWorkingMemory();
@@ -170,9 +172,9 @@ public abstract class SMFTestFrameWork  extends TestCase
         workingMemory.setApplicationData("favouriteCheese", new Cheese("camembert"));
         tuple.setWorkingMemory(workingMemory);
 
-        assertTrue(testCondition(13, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertFalse(testCondition(14, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertTrue(testCondition(15, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
 
         //test code works no matter what the order of decl are
         tuple = new MockTuple();
@@ -186,8 +188,11 @@ public abstract class SMFTestFrameWork  extends TestCase
 
         tuple.put(favouriteCheeseDecl, "camembert");
         tuple.put(camembertDecl, new Cheese("camembert"));
-        assertTrue(testCondition(16, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl}));
-        assertTrue(testCondition(17, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl}));
+
+        // test condition syntax with commas - Drools Issue #77
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
     }
 
     /**
@@ -238,51 +243,58 @@ public abstract class SMFTestFrameWork  extends TestCase
 
         // 0
         assertEquals("camembert",
-            (String) testExtractor(
-                testNumber++, "java.lang.String", tuple, new Declaration[] {}));
+                     (String) testExtractor(testNumber++,
+                                            "java.lang.String",
+                                            tuple, new Declaration[] {}));
 
         // 1
         Cheese camembert = new Cheese("camembert");
         tuple.put(camembertDecl, camembert);
         assertEquals("I have 3 bites of camembert left",
-            (String) testExtractor(
-                testNumber++, "java.lang.String", tuple,
-                new Declaration[] {camembertDecl}));
+                     (String) testExtractor(testNumber++,
+                                            "java.lang.String",
+                                            tuple,
+                                            new Declaration[] {camembertDecl}));
 
         // 2
         Cheese stilton = new Cheese("stilton");
         tuple.put(stiltonDecl, stilton);
         assertEquals("I have 3 bites of stilton left",
-            (String) testExtractor(
-                testNumber++, "java.lang.String", tuple,
-                new Declaration[] {camembertDecl, stiltonDecl}));
+                     (String) testExtractor(testNumber++,
+                                            "java.lang.String",
+                                            tuple,
+                                            new Declaration[] {camembertDecl, stiltonDecl}));
 
         // 3
         tuple.put(integerDecl, new Integer(camembert.getBitesLeft()));
         assertEquals(new Integer(3),
-            testExtractor(
-                testNumber++, "java.lang.Integer", tuple,
-                new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
+                     testExtractor(testNumber++,
+                                   "java.lang.Integer",
+                                   tuple,
+                                   new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
 
         // 4
         tuple.put(integerDecl, new Integer(stilton.getBitesLeft()));
         assertEquals(new Integer(6),
-            testExtractor(
-                testNumber++, "java.lang.Integer", tuple,
-                new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
+                     testExtractor(testNumber++,
+                                   "java.lang.Integer",
+                                   tuple,
+                                   new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
 
         // 5
         assertEquals(new Cheese("cheddar"),
-            testExtractor(
-                testNumber++, "org.drools.smf.SMFTestFrameWork$Cheese", tuple,
-                new Declaration[] {camembertDecl, stiltonDecl}));
+                     testExtractor(testNumber++,
+                                   "org.drools.smf.SMFTestFrameWork$Cheese",
+                                   tuple,
+                                   new Declaration[] {camembertDecl, stiltonDecl}));
 
        // 6
        camembert.eatCheese();
        assertEquals(new Cheese("mozzerella"),
-            testExtractor(
-                testNumber++, "org.drools.smf.SMFTestFrameWork$Cheese", tuple,
-                new Declaration[] {camembertDecl, stiltonDecl}));
+                    testExtractor(testNumber++,
+                                  "org.drools.smf.SMFTestFrameWork$Cheese",
+                                  tuple,
+                                  new Declaration[] {camembertDecl, stiltonDecl}));
     }
 
     /**
