@@ -414,6 +414,10 @@
       <fileset dir="./test_data"/>
     </copy>
 
+    <copy todir="${dist.dir}/example_data">
+      <fileset dir="./example_data"/>
+    </copy>
+
     <copy todir="${dist.dir}">
       <fileset dir="." includes="build.pl, *.xml, *.html, *.txt, INSTALL, LICENSE" />
     </copy>
