@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>drools-groovy</name>
-	<comment>Drools :: Groovy Semantics Module</comment>
+	<name>drools-python</name>
+	<comment>Drools :: Python Semantics Module</comment>
 	<projects>
 	</projects>
 	<buildSpec>
