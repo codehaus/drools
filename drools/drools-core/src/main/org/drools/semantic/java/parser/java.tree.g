@@ -1,6 +1,9 @@
 header 
 {
-		package org.drools.semantic.java.parser;
+	package org.drools.semantic.java.parser;
+
+	import java.util.List;	
+	import java.util.ArrayList;	
 }
 
 /** Java 1.3 AST Recognizer Grammar
@@ -13,6 +16,20 @@ class JavaTreeParser extends TreeParser;
 
 options {
 	importVocab = Java;
+}
+
+{
+	private List variableRefs;
+
+	public void init()
+	{
+		this.variableRefs = new ArrayList();
+	}
+
+	public List getVariableReferences()
+	{
+		return this.variableRefs;
+	}
 }
 
 compilationUnit
@@ -251,6 +268,21 @@ expression
 	:	#(EXPR expr)
 	;
 
+assignmentCondition
+	:
+		#(ASSIGN
+			i:IDENT
+			{
+				this.variableRefs.add( i.getText() );
+			}
+			expr)
+	;	
+
+filterCondition
+	:
+		expr
+	;
+
 expr:	#(QUESTION expr expr expr)	// trinary operator
 	|	#(ASSIGN expr expr)			// binary operators...
 	|	#(PLUS_ASSIGN expr expr)
@@ -296,7 +328,10 @@ expr:	#(QUESTION expr expr expr)	// trinary operator
 	;
 
 primaryExpression
-    :   IDENT
+    :   i:IDENT
+		{
+			this.variableRefs.add( i.getText() );
+		}
     |   #(	DOT
 			(	expr
 				(	IDENT

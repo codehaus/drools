@@ -10,6 +10,14 @@ public class InvalidRuleException extends RuleConstructionException
         this.rule = rule;
     }
 
+    public InvalidRuleException(Rule rule,
+                                String msg)
+    {
+        super( msg );
+
+        this.rule = rule;
+    }
+
     public Rule getRule()
     {
         return this.rule;

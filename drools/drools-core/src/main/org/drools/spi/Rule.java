@@ -47,6 +47,16 @@ public class Rule
         this.assignmentConditions  = Collections.EMPTY_SET;
     }
 
+    public String toString()
+    {
+        return "[Rule: name='" + this.name
+            + "'; paramDecls=" + this.parameterDeclarations
+            + "; localDecls=" + this.localDeclarations
+            + "; filterConds=" + this.filterConditions
+            + "; assignConds=" + this.assignmentConditions
+            + "]";
+    }
+
     /** Get current state for validity checking.
      *
      *  @return The current state.
@@ -76,6 +86,23 @@ public class Rule
                  ( ! ( getFilterConditions().isEmpty()
                        &&
                        getAssignmentConditions().isEmpty() ) ) );
+    }
+
+    public void checkValidity() throws InvalidRuleException
+    {
+        if ( getParameterDeclarations().isEmpty() )
+        {
+            throw new InvalidRuleException( this,
+                                            "No parameter declarations." );
+        }
+
+        if ( getFilterConditions().isEmpty()
+             &&
+             getAssignmentConditions().isEmpty() )
+        {
+            throw new InvalidRuleException( this,
+                                            "No conditions." );
+        }
     }
 
     /** Retrieve the name of this rule.

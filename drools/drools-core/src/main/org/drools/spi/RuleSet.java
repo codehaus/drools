@@ -53,10 +53,14 @@ public class RuleSet
      */
     public void addRule(Rule rule) throws DuplicateRuleNameException, InvalidRuleException
     {
+        /*
         if ( ! rule.isValid() )
         {
             throw new InvalidRuleException( rule );
         }
+        */
+
+        rule.checkValidity();
 
         if ( this.rules == Collections.EMPTY_MAP )
         {

@@ -33,6 +33,7 @@ class ParamHandler extends BaseRuleSetHandler
             try
             {
                 getReader().getCurrentRule().addParameterDeclaration( decl );
+                getReader().addDeclaration( decl );
             }
             catch (DeclarationAlreadyCompleteException e)
             {

@@ -30,6 +30,11 @@ public class DroolsException extends Exception
         this.rootCause = rootCause;
     }
 
+    public DroolsException(String msg)
+    {
+        super( msg );
+    }
+
     /** Get the root cause, if any.
      *
      *  @return The root cause of this exception, as a
@@ -110,12 +115,30 @@ public class DroolsException extends Exception
 
     public String getMyMessage()
     {
-        return getClass().getName();
+        String msg = super.getMessage();
+
+        if ( msg == null
+             ||
+             msg.equals( "" ) )
+        {
+            msg = getClass().getName();
+        }
+
+        return msg;
     }
 
     public String getMyLocalizedMessage()
     {
-        return getClass().getName();
+        String msg = super.getLocalizedMessage();
+
+        if ( msg == null
+             ||
+             msg.equals( "" ) )
+        {
+            msg = getClass().getName();
+        }
+
+        return msg;
     }
 
     public String getMyLocalizedMessage(Locale locale)

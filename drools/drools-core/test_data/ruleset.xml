@@ -1,0 +1,28 @@
+
+<ruleset name="My Rule Set">
+
+	<import>org.dom4j.Document</import>
+
+	<rule name="My Rule">
+
+		<param type="Document">doc1</param>
+		<param type="Document">doc2</param>
+
+		<decl type="String">id</decl>
+
+		<when>
+			<cond>doc1.getRootElement().getName().equals( "a" )</cond>
+			<cond>id = doc1.selectObject( "string(/a/@id)" )</cond>
+			<cond>id = doc2.selectObject( "string(/b/@id)" )</cond>
+		</when>
+
+		<then>
+			System.err.println( " ********** START " );
+			System.err.println( "doc1: " + doc1 );
+			System.err.println( "doc2: " + doc2 );
+			System.err.println( " ********** END " );
+		</then>
+	</rule>
+
+</ruleset>
+

@@ -1,7 +1,7 @@
 
-<import>org.dom4j.Document</import>
-
 <ruleset name="My Rule Set">
+
+	<import>org.dom4j.Document</import>
 
 	<rule name="My Rule">
 

@@ -197,6 +197,11 @@ consistentAssignmentExpression
 		IDENT ASSIGN^ inclusiveOrExpression
 	;
 
+ruleCondition
+	:
+			consistentAssignmentExpression
+		|	inclusiveOrExpression
+	;
 
 
 // Package statement: "package" followed by an identifier.
