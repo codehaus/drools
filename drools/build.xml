@@ -131,7 +131,7 @@
     <!-- Configure JAR versions here. -->
     <property name="antlr.jar" value="antlr-2.7.2.jar"/>
     <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
-    <property name="janino.jar" value="janino-2.0.10.jar"/>
+    <property name="janino.jar" value="janino-2.0.16.jar"/>
     <property name="clover.jar" value="clover-1.2.3.jar"/>
     <property name="groovy.jar" value="groovy-1.0-beta-7.jar"/>
     <property name="asm.jar" value="asm-1.4.3.jar"/>
