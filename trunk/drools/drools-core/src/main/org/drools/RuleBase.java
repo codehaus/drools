@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.33 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: RuleBase.java,v 1.34 2004-12-06 01:23:02 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ import java.io.Serializable;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBase.java,v 1.33 2004-11-28 20:01:12 mproctor Exp $
+ * @version $Id: RuleBase.java,v 1.34 2004-12-06 01:23:02 dbarnett Exp $
  */
 public interface RuleBase
     extends

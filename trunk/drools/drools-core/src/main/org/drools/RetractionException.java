@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RetractionException.java,v 1.9 2004-11-19 02:12:12 mproctor Exp $
+ * $Id: RetractionException.java,v 1.10 2004-12-06 01:23:02 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

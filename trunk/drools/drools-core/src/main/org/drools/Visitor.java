@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: Visitor.java,v 1.3 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: Visitor.java,v 1.4 2004-12-06 01:23:02 dbarnett Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 

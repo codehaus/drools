@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: RuleBaseBuilder.java,v 1.17 2004-12-06 01:23:02 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.ConflictResolver;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseBuilder.java,v 1.16 2004-11-28 20:01:12 mproctor Exp $
+ * @version $Id: RuleBaseBuilder.java,v 1.17 2004-12-06 01:23:02 dbarnett Exp $
  */
 public class RuleBaseBuilder
 {

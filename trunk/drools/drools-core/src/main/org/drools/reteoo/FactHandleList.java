@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
-* $Id: FactHandleList.java,v 1.2 2004-12-01 14:19:33 simon Exp $
+* $Id: FactHandleList.java,v 1.3 2004-12-06 01:23:02 dbarnett Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: CompositeConflictResolver.java,v 1.4 2004-11-19 02:12:42 mproctor Exp $
+ * $Id: CompositeConflictResolver.java,v 1.5 2004-12-06 01:23:02 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

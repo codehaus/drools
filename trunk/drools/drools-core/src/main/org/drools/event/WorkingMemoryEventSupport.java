@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.6 2004-12-05 01:38:45 dbarnett Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.7 2004-12-06 01:23:02 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
