@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.14 2004-06-30 21:46:32 bob Exp $
+ $Id: Interp.java,v 1.15 2004-07-04 11:59:56 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,6 +59,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map;
 
+import java.io.Serializable;
+
 /** Base class for BeanShell interpreter-based Java semantic components.
  *
  *  @see ExprCondition
@@ -67,9 +69,9 @@ import java.util.Map;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.14 2004-06-30 21:46:32 bob Exp $
+ *  @version $Id: Interp.java,v 1.15 2004-07-04 11:59:56 mproctor Exp $
  */
-public class Interp
+public class Interp implements Serializable
 {
     // ------------------------------------------------------------
     //     Instance members
