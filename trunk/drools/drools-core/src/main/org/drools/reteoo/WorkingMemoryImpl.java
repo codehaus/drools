@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.9 2003-12-03 20:57:25 bob Exp $
+ $Id: WorkingMemoryImpl.java,v 1.10 2003-12-03 22:07:53 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -63,11 +63,13 @@ import java.util.ArrayList;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.9 2003-12-03 20:57:25 bob Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.10 2003-12-03 22:07:53 bob Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
 {
+    private static final String JSR_FACT_HANDLE_FACTORY_NAME = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -130,7 +132,41 @@ class WorkingMemoryImpl
 
     protected void initializeFactHandleFactory()
     {
-        this.factHandleFactory = new DefaultFactHandleFactory();
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        Class jsrHandleFactoryClass = null;
+
+        try
+        {
+            jsrHandleFactoryClass = cl.loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
+        }
+        catch (ClassNotFoundException e)
+        {
+            cl = getClass().getClassLoader();
+
+            try
+            {
+                jsrHandleFactoryClass = cl.loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
+            }
+            catch (ClassNotFoundException e2)
+            {
+                // swallow
+            }
+
+            try
+            {
+                this.factHandleFactory = (FactHandleFactory) jsrHandleFactoryClass.newInstance();
+            }
+            catch (Exception e2)
+            {
+                this.factHandleFactory = null;
+            }
+        }
+
+        if ( this.factHandleFactory == null )
+        {
+            this.factHandleFactory = new DefaultFactHandleFactory();
+        }
     }
 
     /** Create a new <code>FactHandle</code>.
