@@ -80,6 +80,11 @@
 	<attainGoal name="fibonacci-groovy-serialized"/>
     </goal>
 
+    <goal name="run-all-extract">
+	<attainGoal name="fibonacci-java-extract"/>
+	<attainGoal name="helloworld-java-extract"/>
+    </goal>
+
 <!-- Fibonacci Examples -->
     <goal name="fibonacci-java" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciExample"
