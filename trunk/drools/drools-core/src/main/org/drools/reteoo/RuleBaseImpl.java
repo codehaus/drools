@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.13 2004-06-29 15:44:22 n_alex Exp $
+ $Id: RuleBaseImpl.java,v 1.14 2004-06-29 16:01:31 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -51,16 +51,12 @@ import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.FactException;
 import org.drools.spi.ConflictResolver;
-import org.drools.rule.RuleSet;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.13 2004-06-29 15:44:22 n_alex Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.14 2004-06-29 16:01:31 n_alex Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -72,9 +68,6 @@ class RuleBaseImpl
     /** The root Rete-OO for this <code>RuleBase</code>. */
     private Rete rete;
 
-    /** Integrated rule-sets. */
-    private RuleSet[] ruleSets;
-
     /** Conflict resolution strategy. */
     private ConflictResolver conflictResolver;
 
@@ -85,15 +78,12 @@ class RuleBaseImpl
     /** Construct.
      *
      *  @param rete The rete network.
-     *  @param ruleSets The rule-sets integrated into the rete.
      *  @param conflictResolver The conflict resolver.
      */
     RuleBaseImpl(Rete rete,
-                 RuleSet[] ruleSets,
                  ConflictResolver conflictResolver)
     {
         this.rete             = rete;
-        this.ruleSets         = ruleSets;
         this.conflictResolver = conflictResolver;
     }
 

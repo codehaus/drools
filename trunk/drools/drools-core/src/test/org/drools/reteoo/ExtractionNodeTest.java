@@ -68,7 +68,7 @@ public class ExtractionNodeTest
 
         extractNode.setTupleSink( sink );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
         ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
 
         try

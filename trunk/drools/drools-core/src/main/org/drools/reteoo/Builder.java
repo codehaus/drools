@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.40 2004-06-25 11:46:58 mproctor Exp $
+ $Id: Builder.java,v 1.41 2004-06-29 16:01:31 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -123,9 +123,7 @@ public class Builder
      */
     public RuleBase buildRuleBase()
     {
-        RuleBase ruleBase = new RuleBaseImpl( getRete(),
-                                              (RuleSet[]) this.ruleSets.toArray( RuleSet.EMPTY_ARRAY ),
-                                              this.conflictResolver );
+        RuleBase ruleBase = new RuleBaseImpl( getRete(), this.conflictResolver );
 
         this.rete = null;
         this.ruleSets.clear();
