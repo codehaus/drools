@@ -80,6 +80,12 @@ public class ReteTuple implements Tuple
         return this.keyColumns.containsRootFactObject( object );
     }
 
+    /** Retrieve the value of a particular declaration column.
+     *
+     *  @param declaration The declaration.
+     *
+     *  @return The value.
+     */
     public Object get(Declaration declaration)
     {
         if ( this.keyColumns.containsDeclaration( declaration ) )
