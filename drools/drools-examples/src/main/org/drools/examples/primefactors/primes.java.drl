@@ -7,10 +7,10 @@
 <!--
   <rule name="Duplicates Found">
     <parameter identifier="number1">
-      <java:class>org.drools.examples.primefactors.Number</java:class>
+      <class>org.drools.examples.primefactors.Number</class>
     </parameter>
     <parameter identifier="number2">
-      <java:class>org.drools.examples.primefactors.Number</java:class>
+      <class>org.drools.examples.primefactors.Number</class>
     </parameter>
 
     <java:condition>number1 != number2</java:condition>
@@ -24,14 +24,14 @@
 
   <rule name="Duplicates Found[2]">
     <parameter identifier="number1">
-      <java:class>org.drools.examples.primefactors.Number</java:class>
+      <class>org.drools.examples.primefactors.Number</class>
     </parameter>
     <parameter identifier="number2">
-      <java:class>org.drools.examples.primefactors.Number</java:class>
+      <class>org.drools.examples.primefactors.Number</class>
     </parameter>
 
     <declaration identifier="value">
-      <java:class>java.lang.Integer</java:class>
+      <class>java.lang.Integer</class>
     </declaration>
     <java:extractor target="value">new Integer(number1.getValue())</java:extractor>
     <java:extractor target="value">new Integer(number2.getValue())</java:extractor>

@@ -5,7 +5,6 @@ SMFTestFrameWork.Cheese brie = new SMFTestFrameWork.Cheese("brie");
 drools.assertObject(brie);
 <!--drools-test--!> 2
 camembert.eatCheese();
-System.err.println(camembert);
 SMFTestFrameWork.Cheese brie = new SMFTestFrameWork.Cheese("brie");
 drools.assertObject(brie);
 brie.eatCheese();

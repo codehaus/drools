@@ -28,10 +28,10 @@ employs a depth-first search approach to the problem.
        -->
         <rule name="find first seat" salience="40">
            <parameter identifier="context">
-               <java:class>org.drools.examples.manners.model.Context</java:class>
+               <class>org.drools.examples.manners.model.Context</class>
            </parameter>
            <parameter identifier="guest">
-               <java:class>org.drools.examples.manners.model.Guest</java:class>
+               <class>org.drools.examples.manners.model.Guest</class>
            </parameter>
 
            <java:condition>
@@ -53,13 +53,13 @@ employs a depth-first search approach to the problem.
        -->
        <rule name="find seating" salience="30">
           <parameter identifier="context">
-              <java:class>org.drools.examples.manners.model.Context</java:class>
+              <class>org.drools.examples.manners.model.Context</class>
           </parameter>
           <parameter identifier="guest">
-              <java:class>org.drools.examples.manners.model.Guest</java:class>
+              <class>org.drools.examples.manners.model.Guest</class>
           </parameter>
           <parameter identifier="seating">
-              <java:class>org.drools.examples.manners.model.Seating</java:class>
+              <class>org.drools.examples.manners.model.Seating</class>
           </parameter>
 
           <java:condition>
@@ -100,13 +100,13 @@ employs a depth-first search approach to the problem.
        -->
        <rule name="try another path" salience="20">
           <parameter identifier="context">
-              <java:class>org.drools.examples.manners.model.Context</java:class>
+              <class>org.drools.examples.manners.model.Context</class>
           </parameter>
           <parameter identifier="lastSeat">
-              <java:class>org.drools.examples.manners.model.LastSeat</java:class>
+              <class>org.drools.examples.manners.model.LastSeat</class>
           </parameter>
           <parameter identifier="seating">
-              <java:class>org.drools.examples.manners.model.Seating</java:class>
+              <class>org.drools.examples.manners.model.Seating</class>
           </parameter>
 
           <java:condition>
@@ -137,13 +137,13 @@ employs a depth-first search approach to the problem.
        -->
        <rule name="we are done" salience="10">
           <parameter identifier="context">
-              <java:class>org.drools.examples.manners.model.Context</java:class>
+              <class>org.drools.examples.manners.model.Context</class>
           </parameter>
           <parameter identifier="lastSeat">
-              <java:class>org.drools.examples.manners.model.LastSeat</java:class>
+              <class>org.drools.examples.manners.model.LastSeat</class>
           </parameter>
           <parameter identifier="seating">
-              <java:class>org.drools.examples.manners.model.Seating</java:class>
+              <class>org.drools.examples.manners.model.Seating</class>
           </parameter>
 
           <java:condition>

@@ -6,7 +6,7 @@
 
     <rule name="Bootstrap">
         <parameter identifier="a">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
 
         <groovy:condition>a.getName().equals("A")</groovy:condition>
@@ -21,10 +21,10 @@
 
     <rule name="AtoB" salience="30">
         <parameter identifier="a">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
         <parameter identifier="b">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
 
         <groovy:condition>a.getName().equals("A")</groovy:condition>
@@ -41,10 +41,10 @@
 
     <rule name="BtoC" salience="20">
         <parameter identifier="b">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
         <parameter identifier="c">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
 
         <groovy:condition>b.getName().equals("B")</groovy:condition>
@@ -63,10 +63,10 @@
 
     <rule name="BtoD" salience="10">
         <parameter identifier="b">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
         <parameter identifier="d">
-            <groovy:class>org.drools.examples.state.State</groovy:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
 
         <groovy:condition>b.getName().equals("B")</groovy:condition>

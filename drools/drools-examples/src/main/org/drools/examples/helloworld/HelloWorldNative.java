@@ -8,7 +8,7 @@ import org.drools.reteoo.HelloWorldBuilder;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;

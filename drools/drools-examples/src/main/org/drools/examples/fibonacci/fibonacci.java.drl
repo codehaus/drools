@@ -6,7 +6,7 @@
 
   <rule name="Bootstrap 1" salience="20">
     <parameter identifier="f">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <java:condition>f.getSequence() == 1</java:condition>
     <java:condition>f.getValue() == -1</java:condition>
@@ -19,7 +19,7 @@
 
   <rule name="Bootstrap 2">
     <parameter identifier="f">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <java:condition>f.getSequence() == 2</java:condition>
     <java:condition>f.getValue() == -1</java:condition>
@@ -32,7 +32,7 @@
 
   <rule name="Recurse" salience="10">
     <parameter identifier="f">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>
@@ -43,13 +43,13 @@
 
   <rule name="Calculate">
     <parameter identifier="f1">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <parameter identifier="f2">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <parameter identifier="f3">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <java:condition>f2.getSequence() == (f1.getSequence() + 1)</java:condition>
     <java:condition>f3.getSequence() == (f2.getSequence() + 1)</java:condition>

@@ -6,17 +6,17 @@
 
   <rule name="Bootstrap 1"   salience="20">
     <parameter identifier="f">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
 
     <declaration identifier="sequence">
-      <java:class>java.lang.Integer</java:class>
+      <class>java.lang.Integer</class>
     </declaration>
 
     <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>
 
     <declaration identifier="value" >
-      <java:class>java.lang.Long</java:class>
+      <class>java.lang.Long</class>
     </declaration>
 
     <java:extractor target="value">new Long(f.getValue())</java:extractor>
@@ -32,17 +32,17 @@
 
   <rule name="Bootstrap 2">
     <parameter identifier="f">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
 
     <declaration identifier="sequence">
-      <java:class>java.lang.Integer</java:class>
+      <class>java.lang.Integer</class>
     </declaration>
 
     <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>
 
     <declaration identifier="value">
-      <java:class>java.lang.Long</java:class>
+      <class>java.lang.Long</class>
     </declaration>
 
     <java:extractor target="value">new Long(f.getValue())</java:extractor>
@@ -58,11 +58,11 @@
 
   <rule name="Recurse" salience="10">
     <parameter identifier="f">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
 
     <declaration identifier="value">
-      <java:class>java.lang.Long</java:class>
+      <class>java.lang.Long</class>
     </declaration>
 
     <java:extractor target="value">new Long(f.getValue())</java:extractor>
@@ -77,25 +77,25 @@
 
   <rule name="Calculate">
     <parameter identifier="f1">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <parameter identifier="f2">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <parameter identifier="f3">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
 
     <!-- <java:condition>f2.getSequence() == f1.getSequence() + 1</java:condition> -->
     <declaration identifier="sequence1">
-      <java:class>java.lang.Integer</java:class>
+      <class>java.lang.Integer</class>
     </declaration>
     <java:extractor target="sequence1">new Integer(f2.getSequence())</java:extractor>
     <java:extractor target="sequence1">new Integer(f1.getSequence() + 1)</java:extractor>
 
     <!-- <java:condition>f3.getSequence() == f2.getSequence() + 1</java:condition> -->
     <declaration identifier="sequence2">
-      <java:class>java.lang.Integer</java:class>
+      <class>java.lang.Integer</class>
     </declaration>
     <java:extractor target="sequence2">new Integer(f3.getSequence())</java:extractor>
     <java:extractor target="sequence2">new Integer(f2.getSequence() + 1)</java:extractor>

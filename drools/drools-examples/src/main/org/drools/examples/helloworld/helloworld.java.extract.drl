@@ -6,11 +6,11 @@
 
   <rule name="Hello World">
     <parameter identifier="hello">
-      <java:class>java.lang.String</java:class>
+      <class>java.lang.String</class>
     </parameter>
     
     <declaration identifier="helloString">
-      <java:class>java.lang.String</java:class>
+      <class>java.lang.String</class>
     </declaration>
     <java:extractor target="helloString">hello.toString()</java:extractor>
 
@@ -24,11 +24,11 @@
 
   <rule name="Goodbye Cruel World">
     <parameter identifier="goodbye">
-      <java:class>java.lang.String</java:class>
+      <class>java.lang.String</class>
     </parameter>
     
     <declaration identifier="goodbyeString">
-      <java:class>java.lang.String</java:class>
+      <class>java.lang.String</class>
     </declaration>
     <java:extractor target="goodbyeString">goodbye.toString()</java:extractor>
 

@@ -6,7 +6,7 @@
 
   <rule name="Hello World">
     <parameter identifier="hello">
-      <java:class>java.lang.String</java:class>
+      <class>java.lang.String</class>
     </parameter>
     
     <java:condition>hello.equals("Hello")</java:condition>
@@ -18,7 +18,7 @@
 
   <rule name="Goodbye Cruel World">
     <parameter identifier="goodbye">
-      <java:class>java.lang.String</java:class>
+      <class>java.lang.String</class>
     </parameter>
     
     <java:condition>goodbye.equals("Goodbye")</java:condition>

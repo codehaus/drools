@@ -1,7 +1,7 @@
-package org.drools.semantics.python;
+package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectType.java,v 1.4 2004-10-09 06:58:59 simon Exp $
+ * $Id: ClassFieldObjectType.java,v 1.1 2004-10-25 21:34:41 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,23 +42,31 @@ package org.drools.semantics.python;
  */
 
 import org.drools.spi.ObjectType;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Java class semantics <code>ObjectType</code>.
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassObjectType.java,v 1.4 2004-10-09 06:58:59 simon Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.1 2004-10-25 21:34:41 mproctor Exp $
  */
-public class ClassObjectType implements ObjectType
+public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
+    /** Java object field. */
+    private String objectFieldName;
+    
+    private String objectFieldValue;  
+    
+    /** Java getter method. */
+    private Method getterMethod;    
 
-    /** Java object class. */
-    private Class objectTypeClass;
-
+    /** cached hashCode */
+    private int hashCode;
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -68,24 +76,32 @@ public class ClassObjectType implements ObjectType
      *
      * @param objectTypeClass Java object class.
      */
-    public ClassObjectType(Class objectTypeClass)
+    public ClassFieldObjectType(Class objectTypeClass, String fieldName, String fieldValue)
     {
-        this.objectTypeClass = objectTypeClass;
+        super(objectTypeClass);
+        this.objectFieldName = fieldName;
+        this.objectFieldValue = fieldValue;
     }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
 
     /**
      * Return the Java object class.
      *
      * @return The Java object class.
      */
-    public Class getType()
+    public String getFieldName()
     {
-        return this.objectTypeClass;
-    }
+        return this.objectFieldName;
+    }    
+
+    /**
+     * Return the Java object class.
+     *
+     * @return The Java object class.
+     */
+    public String getFieldValue()
+    {
+        return this.objectFieldValue;
+    }       
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.drools.spi.ObjectType
@@ -101,8 +117,34 @@ public class ClassObjectType implements ObjectType
      *         object type, else <code>false</code>.
      */
     public boolean matches(Object object)
-    {
-        return getType( ).isInstance( object );
+    {        
+        if (!getType( ).isInstance( object )) return false;
+        
+        if (this.getterMethod == null )
+        {
+            String fieldName = getFieldName( );
+            String fieldGetter = "get" + fieldName.toUpperCase().charAt(0) 
+                                 + fieldName.substring(1);                   
+            try
+            {
+                getterMethod = getType( ).getMethod(fieldGetter, null);
+            }
+            catch (Exception e)
+            {                
+                // shouldn't happen, this is checked in factory
+            }
+        }
+        try
+        {
+            return getterMethod.invoke(object, null).equals( getFieldValue() );
+        }
+        catch (Exception e)
+        {
+               // shouldn't happen, this is checked in factory     
+        }
+        
+        return false;
+        
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -123,10 +165,15 @@ public class ClassObjectType implements ObjectType
         {
             return true;
         }
-
-        if ( thatObj instanceof ClassObjectType )
+        ClassFieldObjectType thatClassField = ( ClassFieldObjectType ) thatObj;
+        boolean equal = false;
+        if ( thatObj instanceof ClassFieldObjectType )
         {
-            return getType( ) == ( ( ClassObjectType ) thatObj ).getType( );
+            equal = (getType( ) == thatClassField.getType( ));
+            equal = (equal && (getFieldName( ) == thatClassField.getFieldName( )));
+            equal = (equal && (getFieldValue( ) == thatClassField.getFieldValue( )));
+            return equal;
+            
         }
 
         return false;
@@ -139,6 +186,21 @@ public class ClassObjectType implements ObjectType
      */
     public int hashCode()
     {
-        return getType( ).hashCode( );
+        if (hashCode == 0)
+        {
+            int iConstant = 37;
+            int iTotal = 17;
+            iTotal = iTotal * iConstant + getType( ).hashCode();
+            iTotal = iTotal * iConstant + getFieldName( ).hashCode();
+            this.hashCode = iTotal * iConstant + getFieldValue( ).hashCode();
+        }
+        return this.hashCode;                
+    }
+
+    public String toString()
+    {
+        String fieldName = getFieldName( );
+        return getType( ).getName( ) + ".get" + fieldName.toUpperCase().charAt(0) 
+               + fieldName.substring(1) + "(\"" + getFieldValue( ) + "\")";
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.23 2004-10-25 13:46:28 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.24 2004-10-25 21:34:45 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -91,7 +91,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.23 2004-10-25 13:46:28 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.24 2004-10-25 21:34:45 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -1013,8 +1013,7 @@ public class RuleSetReader extends DefaultHandler
                                    String localName,
                                    Attributes attrs) throws SAXException
     {
-        this.state = STATE_OBJECT_TYPE;
-
+        this.state = STATE_OBJECT_TYPE;        
         startConfiguration( localName, attrs );
     }
 
@@ -1026,7 +1025,7 @@ public class RuleSetReader extends DefaultHandler
     protected void endObjectType(SemanticModule module, String localName) throws SAXException
     {
         Configuration config = endConfiguration( );
-
+        
         ObjectTypeFactory factory = module.getObjectTypeFactory( localName );
 
         try
