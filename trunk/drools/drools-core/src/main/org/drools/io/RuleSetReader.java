@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.10 2003-12-05 04:26:23 bob Exp $
+ $Id: RuleSetReader.java,v 1.11 2003-12-11 14:47:55 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -88,7 +88,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.10 2003-12-05 04:26:23 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.11 2003-12-11 14:47:55 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -433,7 +433,21 @@ public class RuleSetReader
             {
                 SemanticModule module = this.repo.lookupSemanticModule( uri );
                 
-                if ( this.declaration != null )
+                if ( this.rule == null )
+                {
+                    if ( module.getRuleFactoryNames().contains( localName ) )
+                    {
+                        startRule( module,
+                                   localName,
+                                   attrs );
+                    }
+                    else
+                    {
+                        throw new SAXParseException( "unknown tag '" + localName + "' in namespace '" + uri + "'",
+                                                     getLocator() );
+                    }
+                }
+                else if ( this.declaration != null )
                 {
                     if ( module.getObjectTypeFactoryNames().contains( localName ) )
                     {
@@ -532,8 +546,7 @@ public class RuleSetReader
                         }
                         default:
                         {
-                            throw new SAXParseException( "no clue",
-                                                         getLocator() );
+                            endRule();
                         }
                     }
                 }
@@ -621,6 +634,41 @@ public class RuleSetReader
 
         this.rule = new Rule( ruleName.trim() );
 
+        startRule( rule,
+                   attrs );
+    }
+
+    protected void startRule(SemanticModule module,
+                             String localName,
+                             Attributes attrs)
+        throws SAXException
+    {
+        RuleFactory factory = module.getRuleFactory( localName );
+
+        startConfiguration( localName,
+                            attrs );
+
+        Configuration config = endConfiguration();
+
+        try
+        {
+            this.rule = factory.newRule( config );
+
+            startRule( rule,
+                       attrs );
+        }
+        catch (FactoryException e)
+        {
+            throw new SAXParseException( "error constructing rule",
+                                         getLocator(),
+                                         e );
+        }
+    }
+
+    protected void startRule(Rule rule,
+                             Attributes attrs )
+        throws SAXException
+    {
         String salienceStr = attrs.getValue( "salience" );
 
         if ( ! ( salienceStr == null
