@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameEqualsAgendaFilter.java,v 1.4 2004-12-07 20:41:10 mproctor Exp $
+ * $Id: RuleNameEqualsAgendaFilter.java,v 1.5 2004-12-07 20:44:05 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ public class RuleNameEqualsAgendaFilter
 {
     private final String name;
 
-    private final String accept;
+    private final boolean accept;
 
     public RuleNameEqualsAgendaFilter(String name)
     {
