@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.1 2002-08-02 12:31:41 bob Exp $
+ $Id: SemanticModule.java,v 1.2 2002-08-02 14:10:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,82 +60,13 @@ import java.util.Set;
 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class SemanticModule
+public interface SemanticModule
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** URI of this module. */
-    private String uri;
-
-    /** Object type implementations. */
-    private Map objectTypes;
-
-    /** Fact extractor implementations. */
-    private Map factExtractors;
-
-    /** Action implementations. */
-    private Map actions;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct with a URI.
-     *
-     *  @param uri The URI the identifies this semantic module.
-     */
-    public SemanticModule(String uri)
-    {
-        this.uri = uri;
-
-        this.objectTypes    = new HashMap();
-        this.factExtractors = new HashMap();
-        this.actions        = new HashMap();
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
     /** Retrieve the URI that identifies this semantic module.
      *
      *  @return The URI.
      */
-    public String getUri()
-    {
-        return this.uri;
-    }
-
-    /** Set the URI.
-     *
-     *  @param uri The URI.
-     */
-    void setUri(String uri)
-    {
-        this.uri = uri;
-    }
-
-    /** Add a semantic object type.
-     *
-     *  @param name The object type name.
-     *  @param objectType The object type implementation.
-     *
-     *  @throws InvalidObjectTypeException If a class that is not a
-     *          object type is added.
-     */
-    public void addObjectType(String name,
-                              Class objectType) throws InvalidObjectTypeException
-    {
-        if ( ! ObjectType.class.isAssignableFrom( objectType ) )
-        {
-            throw new InvalidObjectTypeException( objectType );
-        }
-
-        this.objectTypes.put( name,
-                              objectType );
-    }
+    String getUri();
 
     /** Retrieve a semantic object type by name.
      *
@@ -144,39 +75,13 @@ public class SemanticModule
      *  @return The object type implementation or <code>null</code>
      *          if none is bound to the name.
      */   
-    public Class getObjectType(String name)
-    {
-        return (Class) this.objectTypes.get( name );
-    }
+    Class getObjectType(String name);
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    public Set getObjectTypeNames()
-    {
-        return this.objectTypes.keySet();
-    }
-
-    /** Add a semantic object type.
-     *
-     *  @param name The object type name.
-     *  @param factExtractor The object type implementation.
-     *
-     *  @throws InvalidFactExtractorException If a class that is not a
-     *          object type is added.
-     */
-    public void addFactExtrator(String name,
-                                Class factExtractor) throws InvalidFactExtractorException
-    {
-        if ( ! FactExtractor.class.isAssignableFrom( factExtractor ) )
-        {
-            throw new InvalidFactExtractorException( factExtractor );
-        }
-
-        this.factExtractors.put( name,
-                                 factExtractor );
-    }
+    Set getObjectTypeNames();
 
     /** Retrieve a semantic fact extractor by name.
      *
@@ -185,39 +90,13 @@ public class SemanticModule
      *  @return The fact extractor implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    public Class getFactExtractor(String name)
-    {
-        return (Class) this.factExtractors.get( name );
-    }
+    Class getFactExtractor(String name);
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    public Set getFactExtractorNames()
-    {
-        return this.factExtractors.keySet();
-    }
-
-    /** Add a semantic action.
-     *
-     *  @param name The action name.
-     *  @param action The action implementation.
-     *
-     *  @throws InvalidActionException If a class that is not a
-     *          action is added.
-     */
-    public void addAction(String name,
-                          Class action) throws InvalidActionException
-    {
-        if ( ! Action.class.isAssignableFrom( action ) )
-        {
-            throw new InvalidActionException( action );
-        }
-
-        this.actions.put( name,
-                          action );
-    }
+    Set getFactExtractorNames();
 
     /** Retrieve a semantic action by name.
      *
@@ -226,17 +105,11 @@ public class SemanticModule
      *  @return The action implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    public Class getAction(String name)
-    {
-        return (Class) this.actions.get( name );
-    }
+    Class getAction(String name);
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    public Set getActionNames()
-    {
-        return this.actions.keySet();
-    }
+    Set getActionNames();
 }
