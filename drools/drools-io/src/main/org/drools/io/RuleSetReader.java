@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.29 2004-11-05 10:10:38 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.30 2004-11-05 15:26:14 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,25 +40,6 @@ package org.drools.io;
  *
  */
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.net.URL;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.DefaultSemanticsRepository;
@@ -73,12 +54,28 @@ import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * <code>RuleSet</code> loader.
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.29 2004-11-05 10:10:38 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.30 2004-11-05 15:26:14 simon Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -652,7 +649,7 @@ public class RuleSetReader extends DefaultHandler
       throws SAXException
     {
         //Schema files must end with xsd
-        if (!systemId.endsWithIgnoreCase("xsd")))
+        if (!systemId.toLowerCase( ).endsWith("xsd"))
         {
             return null;
         }
