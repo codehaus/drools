@@ -1,5 +1,51 @@
 package org.drools.examples.java.petstore;
 
+/*
+ $Id: PetStoreUI.java,v 1.2 2004-06-26 15:45:16 mproctor Exp $
+
+ Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+ statements and notices.  Redistributions must also contain a
+ copy of this document.
+
+ 2. Redistributions in binary form must reproduce the
+ above copyright notice, this list of conditions and the
+ following disclaimer in the documentation and/or other
+ materials provided with the distribution.
+
+ 3. The name "drools" must not be used to endorse or promote
+ products derived from this Software without prior written
+ permission of The Werken Company.  For written permission,
+ please contact bob@werken.com.
+
+ 4. Products derived from this Software may not be called "drools"
+ nor may "drools" appear in their names without prior written
+ permission of The Werken Company. "drools" is a trademark of
+ The Werken Company.
+
+ 5. Due credit should be given to The Werken Company.
+ (http://werken.com/)
+
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -28,7 +74,7 @@ import javax.swing.table.TableColumnModel;
 
 /**
  * @author mproctor
- *
+ * 
  * This swing UI is used to create a simple shopping cart to allow a user to add
  * and remove items from a shopping cart before doign a checkout upon doing a
  * checkout a callback is used to allow drools interaction with the shopping
@@ -45,13 +91,13 @@ public class PetStoreUI extends JPanel
 	/**
 	 * Build UI using specified items and using the given callback to pass the
 	 * items and jframe reference to the drools application
-	 *
+	 * 
 	 * @param listData
 	 * @param callback
 	 */
 	public PetStoreUI( Vector items, CheckoutCallback callback )
 	{
-		super( new BorderLayout() );
+		super( new BorderLayout( ) );
 		this.callback = callback;
 
 		//Create main vertical split panel
@@ -59,7 +105,7 @@ public class PetStoreUI extends JPanel
 		add( splitPane, BorderLayout.CENTER );
 
 		//create top half of split panel and add to parent
-		JPanel topHalf = new JPanel();
+		JPanel topHalf = new JPanel( );
 		topHalf.setLayout( new BoxLayout( topHalf, BoxLayout.LINE_AXIS ) );
 		topHalf.setBorder( BorderFactory.createEmptyBorder( 5, 5, 0, 5 ) );
 		topHalf.setMinimumSize( new Dimension( 400, 50 ) );
@@ -67,7 +113,7 @@ public class PetStoreUI extends JPanel
 		splitPane.add( topHalf );
 
 		//create bottom top half of split panel and add to parent
-		JPanel bottomHalf = new JPanel( new BorderLayout() );
+		JPanel bottomHalf = new JPanel( new BorderLayout( ) );
 		bottomHalf.setMinimumSize( new Dimension( 400, 50 ) );
 		bottomHalf.setPreferredSize( new Dimension( 450, 300 ) );
 		splitPane.add( bottomHalf );
@@ -80,11 +126,11 @@ public class PetStoreUI extends JPanel
 		//Create JList for items, add to scroll pane and then add to parent
 		// container
 		JList list = new JList( items );
-		ListSelectionModel listSelectionModel = list.getSelectionModel();
+		ListSelectionModel listSelectionModel = list.getSelectionModel( );
 		listSelectionModel
 				.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 		//handler adds item to shopping cart
-		list.addMouseListener( new ListSelectionHandler() );
+		list.addMouseListener( new ListSelectionHandler( ) );
 		JScrollPane listPane = new JScrollPane( list );
 		listContainer.add( listPane );
 
@@ -93,18 +139,18 @@ public class PetStoreUI extends JPanel
 		topHalf.add( tableContainer );
 
 		//Container that displays table showing items in cart
-		tableModel = new TableModel();
+		tableModel = new TableModel( );
 		JTable table = new JTable( tableModel );
 		//handler removes item to shopping cart
-		table.addMouseListener( new TableSelectionHandler() );
-		ListSelectionModel tableSelectionModel = table.getSelectionModel();
+		table.addMouseListener( new TableSelectionHandler( ) );
+		ListSelectionModel tableSelectionModel = table.getSelectionModel( );
 		tableSelectionModel
 				.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
-		TableColumnModel tableColumnModel = table.getColumnModel();
+		TableColumnModel tableColumnModel = table.getColumnModel( );
 		//notice we have a custom renderer for each column as both columns
 		// point to the same underlying object
-		tableColumnModel.getColumn( 0 ).setCellRenderer( new NameRenderer() );
-		tableColumnModel.getColumn( 1 ).setCellRenderer( new PriceRenderer() );
+		tableColumnModel.getColumn( 0 ).setCellRenderer( new NameRenderer( ) );
+		tableColumnModel.getColumn( 1 ).setCellRenderer( new PriceRenderer( ) );
 		tableColumnModel.getColumn( 1 ).setMaxWidth( 50 );
 
 		JScrollPane tablePane = new JScrollPane( table );
@@ -112,12 +158,12 @@ public class PetStoreUI extends JPanel
 		tableContainer.add( tablePane );
 
 		//Create panel for checkout button and add to bottomHalf parent
-		JPanel checkoutPane = new JPanel();
+		JPanel checkoutPane = new JPanel( );
 		JButton button = new JButton( "Checkout" );
 		button.setVerticalTextPosition( AbstractButton.CENTER );
 		button.setHorizontalTextPosition( AbstractButton.LEADING );
 		//attach handler to assert items into working memory
-		button.addMouseListener( new CheckoutButtonHandler() );
+		button.addMouseListener( new CheckoutButtonHandler( ) );
 		button.setActionCommand( "checkout" );
 		checkoutPane.add( button );
 		bottomHalf.add( checkoutPane, BorderLayout.PAGE_START );
@@ -126,11 +172,10 @@ public class PetStoreUI extends JPanel
 		button.setVerticalTextPosition( AbstractButton.CENTER );
 		button.setHorizontalTextPosition( AbstractButton.TRAILING );
 		//attach handler to assert items into working memory
-		button.addMouseListener( new ResetButtonHandler() );
+		button.addMouseListener( new ResetButtonHandler( ) );
 		button.setActionCommand( "reset" );
 		checkoutPane.add( button );
 		bottomHalf.add( checkoutPane, BorderLayout.PAGE_START );
-
 
 		//Create output area, imbed in scroll area an add to bottomHalf parent
 		//Scope is at instance level so it can be easily referenced from other
@@ -145,7 +190,7 @@ public class PetStoreUI extends JPanel
 
 	/**
 	 * Create and show the GUI
-	 *
+	 *  
 	 */
 	public void createAndShowGUI()
 	{
@@ -160,7 +205,7 @@ public class PetStoreUI extends JPanel
 		frame.setContentPane( this );
 
 		//Display the window.
-		frame.pack();
+		frame.pack( );
 		frame.setVisible( true );
 	}
 
@@ -171,8 +216,8 @@ public class PetStoreUI extends JPanel
 	{
 		public void mouseReleased( MouseEvent e )
 		{
-			JList jlist = (JList) e.getSource();
-			tableModel.addItem( (CartItem) jlist.getSelectedValue() );
+			JList jlist = (JList) e.getSource( );
+			tableModel.addItem( (CartItem) jlist.getSelectedValue( ) );
 		}
 	}
 
@@ -183,45 +228,45 @@ public class PetStoreUI extends JPanel
 	{
 		public void mouseReleased( MouseEvent e )
 		{
-			JTable jtable = (JTable) e.getSource();
-			TableModel tableModel = (TableModel) jtable.getModel();
-			tableModel.removeItem( jtable.getSelectedRow() );
+			JTable jtable = (JTable) e.getSource( );
+			TableModel tableModel = (TableModel) jtable.getModel( );
+			tableModel.removeItem( jtable.getSelectedRow( ) );
 		}
 	}
 
 	/**
 	 * Calls the referenced callback, passing a the jrame and selected items.
-	 *
+	 *  
 	 */
 	private class CheckoutButtonHandler extends MouseAdapter
 	{
 		public void mouseReleased( MouseEvent e )
 		{
-			JButton button = (JButton) e.getComponent();
+			JButton button = (JButton) e.getComponent( );
 			try
 			{
 				output.append( callback.checkout( (JFrame) button
-						.getTopLevelAncestor(), tableModel.getItems() ) );
+						.getTopLevelAncestor( ), tableModel.getItems( ) ) );
 			}
 			catch ( org.drools.FactException fe )
 			{
-				fe.printStackTrace();
+				fe.printStackTrace( );
 			}
 		}
 	}
 
 	/**
 	 * Resets the shopping cart, allowing the user to begin again.
-	 *
+	 *  
 	 */
 	private class ResetButtonHandler extends MouseAdapter
 	{
 		public void mouseReleased( MouseEvent e )
 		{
-			JButton button = (JButton) e.getComponent();
-			output.setText(null);
-			tableModel.clear();
-			System.out.println("------ Reset ------");
+			JButton button = (JButton) e.getComponent( );
+			output.setText( null );
+			tableModel.clear( );
+			System.out.println( "------ Reset ------" );
 		}
 	}
 
@@ -232,13 +277,13 @@ public class PetStoreUI extends JPanel
 	{
 		public NameRenderer()
 		{
-			super();
+			super( );
 		}
 
 		public void setValue( Object object )
 		{
 			CartItem item = (CartItem) object;
-			setText( item.getName() );
+			setText( item.getName( ) );
 		}
 	}
 
@@ -249,13 +294,13 @@ public class PetStoreUI extends JPanel
 	{
 		public PriceRenderer()
 		{
-			super();
+			super( );
 		}
 
 		public void setValue( Object object )
 		{
 			CartItem item = (CartItem) object;
-			setText( Double.toString( item.getCost() ) );
+			setText( Double.toString( item.getCost( ) ) );
 		}
 	}
 
@@ -272,8 +317,8 @@ public class PetStoreUI extends JPanel
 
 		public TableModel()
 		{
-			super();
-			items = new ArrayList();
+			super( );
+			items = new ArrayList( );
 		}
 
 		public int getColumnCount()
@@ -283,7 +328,7 @@ public class PetStoreUI extends JPanel
 
 		public int getRowCount()
 		{
-			return items.size();
+			return items.size( );
 		}
 
 		public String getColumnName( int col )
@@ -304,7 +349,7 @@ public class PetStoreUI extends JPanel
 		public void addItem( CartItem item )
 		{
 			items.add( item );
-			fireTableRowsInserted( items.size(), items.size() );
+			fireTableRowsInserted( items.size( ), items.size( ) );
 		}
 
 		public void removeItem( int row )
@@ -318,9 +363,10 @@ public class PetStoreUI extends JPanel
 			return items;
 		}
 
-		public void clear() {
-			int lastRow = items.size();
-			items.clear();
+		public void clear()
+		{
+			int lastRow = items.size( );
+			items.clear( );
 			fireTableRowsDeleted( 0, lastRow );
 		}
 	}
