@@ -11,6 +11,27 @@
     </java>
   </goal>
 
+  <goal name="fibonacciJNDI" prereqs="jar:jar">
+    <java classname="org.drools.examples.java.fibonacci.FibonacciJNDIExample"
+          fork="true">
+      <arg value="org.osjava.jndi.PropertiesFactory"/>
+      <classpath refid="maven.dependency.classpath"/>
+      <classpath>
+        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+      </classpath>
+    </java>
+  </goal>
+
+  <goal name="fibonacciSerialized" prereqs="jar:jar">
+    <java classname="org.drools.examples.java.fibonacci.FibonacciSerializedExample"
+          fork="true">
+      <classpath refid="maven.dependency.classpath"/>
+      <classpath>
+        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+      </classpath>
+    </java>
+  </goal>
+
   <goal name="petstore" prereqs="jar:jar">
     <java classname="org.drools.examples.java.petstore.PetStore"
           fork="true">
