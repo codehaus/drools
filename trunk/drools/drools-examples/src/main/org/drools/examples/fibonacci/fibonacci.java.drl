@@ -37,7 +37,7 @@
     <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>
       System.err.println( "recurse for " + f.getSequence() );
-      drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
+      drools.assertObject( new org.drools.examples.fibonacci.Fibonacci( f.getSequence() - 1 ) );
     </java:consequence>
   </rule>
 
