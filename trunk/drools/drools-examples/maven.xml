@@ -179,4 +179,26 @@
       </java>
     </goal>
 
+<!-- Miss Manners Examples -->
+    <goal name="manners-jsr94" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersJSR94"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="manners-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
 </project>
+
