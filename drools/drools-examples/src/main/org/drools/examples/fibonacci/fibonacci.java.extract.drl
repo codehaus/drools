@@ -26,7 +26,6 @@
 
     <java:consequence>
       f.setValue( 1 );
-      System.err.println( f.getSequence() + " == " + f.getValue() );
       drools.modifyObject( f );
     </java:consequence>
   </rule>
@@ -53,7 +52,6 @@
 
     <java:consequence>
       f.setValue( 1 );
-      System.err.println( f.getSequence() + " == " + f.getValue() );
       drools.modifyObject( f );
     </java:consequence>
   </rule>
@@ -89,21 +87,17 @@
     </parameter>
 
     <!-- <java:condition>f2.getSequence() == f1.getSequence() + 1</java:condition> -->
-    <declaration identifier="sequence">
+    <declaration identifier="sequence1">
       <java:class>java.lang.Integer</java:class>
     </declaration>
-
-    <java:extractor target="sequence">new Integer(f2.getSequence())</java:extractor>
-
-    <java:extractor target="sequence">new Integer(f1.getSequence() + 1)</java:extractor>
+    <java:extractor target="sequence1">new Integer(f2.getSequence())</java:extractor>
+    <java:extractor target="sequence1">new Integer(f1.getSequence() + 1)</java:extractor>
 
     <!-- <java:condition>f3.getSequence() == f2.getSequence() + 1</java:condition> -->
     <declaration identifier="sequence2">
       <java:class>java.lang.Integer</java:class>
     </declaration>
-
     <java:extractor target="sequence2">new Integer(f3.getSequence())</java:extractor>
-
     <java:extractor target="sequence2">new Integer(f2.getSequence() + 1)</java:extractor>
 
     <java:condition>f1.getValue() != -1</java:condition>
@@ -112,7 +106,9 @@
 
     <java:consequence>
       f3.setValue( f1.getValue() + f2.getValue() );
+
       System.err.println( f3.getSequence() + " == " + f3.getValue() );
+
       drools.modifyObject( f3 );
       drools.retractObject( f1 );
     </java:consequence>
