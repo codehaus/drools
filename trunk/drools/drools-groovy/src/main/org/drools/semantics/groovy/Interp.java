@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
+ * $Id: Interp.java,v 1.3 2004-06-30 21:46:32 bob Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,9 +48,12 @@ import groovy.lang.Script;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map;
 
+import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelper;
 
 /**
  * Base class for Groovy based semantic components.
@@ -61,7 +64,7 @@ import org.drools.spi.Tuple;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Interp.java,v 1.2 2004-06-11 07:34:32 ckl Exp $
+ * @version $Id: Interp.java,v 1.3 2004-06-30 21:46:32 bob Exp $
  */
 public class Interp {
 
@@ -81,19 +84,20 @@ public class Interp {
     /**
      * Construct.
      */
-    protected Interp(String text, String type) {
+    protected Interp(String text,
+                     String type) {
         this.text = text;
-
+        
         try {
-            GroovyCodeSource codeSource = new GroovyCodeSource(text,
-                    "groovy.script", "groovy.script");
-
-            GroovyClassLoader loader = new GroovyClassLoader(Thread
-                    .currentThread().getContextClassLoader());
+            GroovyCodeSource codeSource = new GroovyCodeSource( text,
+                                                                "groovy.script",
+                                                                "groovy.script" );
+            
+            GroovyClassLoader loader = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
 
             Class class1 = loader.parseClass(codeSource);
-
-            code = (Script) class1.newInstance();
+            
+            this.code = (Script) class1.newInstance();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,15 +118,14 @@ public class Interp {
     }
 
     protected Script getCode() {
-        return code;
+        return this.code;
     }
 
     /**
      * Configure a <code>ScriptContext</code> using a <code>Tuple</code> for
      * variable bindings.
      * 
-     * @param tuple
-     *            Tuple containing variable bindings.
+     * @param tuple Tuple containing variable bindings.
      * 
      * @return The dictionary
      */
@@ -130,12 +133,32 @@ public class Interp {
         Set decls = tuple.getDeclarations();
         Binding dict = new Binding();
 
-        for (Iterator declIter = decls.iterator(); declIter.hasNext();) {
+        for ( Iterator declIter = decls.iterator();
+              declIter.hasNext(); )
+        {
             Declaration eachDecl = (Declaration) declIter.next();
 
-            dict.setVariable(eachDecl.getIdentifier().intern(), tuple
-                    .get(eachDecl));
+            dict.setVariable( eachDecl.getIdentifier().intern(),
+                              tuple.get(eachDecl) );
         }
+
+        WorkingMemory workingMemory = tuple.getWorkingMemory();
+
+        dict.setVariable( "drools".intern(),
+                          new KnowledgeHelper( tuple ) );
+
+        Map appDataMap = workingMemory.getApplicationDataMap();
+
+        for ( Iterator keyIter = appDataMap.keySet().iterator();
+              keyIter.hasNext(); )
+        {
+            String key   = (String) keyIter.next();
+            Object value = appDataMap.get( key );
+
+            dict.setVariable( key,
+                              value );
+        }
+
         return dict;
     }
 }

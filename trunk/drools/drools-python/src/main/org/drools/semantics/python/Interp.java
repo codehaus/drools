@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.6 2003-11-29 02:50:50 bob Exp $
+ $Id: Interp.java,v 1.7 2004-06-30 21:46:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,12 @@ package org.drools.semantics.python;
  
  */
 
+import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelper;
+
 import org.python.core.*;
 import org.python.parser.ast.modType;
 import org.python.util.PythonInterpreter;
@@ -56,6 +59,7 @@ import org.python.util.PythonInterpreter;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map;
 
 /** Base class for Jython interpreter-based Python semantic components.
  *
@@ -64,7 +68,7 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.6 2003-11-29 02:50:50 bob Exp $
+ *  @version $Id: Interp.java,v 1.7 2004-06-30 21:46:33 bob Exp $
  */
 public class Interp
 {
@@ -167,6 +171,23 @@ public class Interp
             
             dict.setdefault( new PyString( eachDecl.getIdentifier().intern() ),
                              Py.java2py( tuple.get( eachDecl ) ) );
+        }
+
+        WorkingMemory workingMemory = tuple.getWorkingMemory();
+        
+        dict.setdefault( new PyString( "drools".intern() ),
+                         Py.java2py( new KnowledgeHelper( tuple ) ) );
+        
+        Map appDataMap = workingMemory.getApplicationDataMap();
+
+        for ( Iterator keyIter = appDataMap.keySet().iterator();
+              keyIter.hasNext(); )
+        {
+            String key   = (String) keyIter.next();
+            Object value = appDataMap.get( key );
+
+            dict.setdefault( new PyString( key.intern() ),
+                             Py.java2py( value ) );
         }
 
         return dict;

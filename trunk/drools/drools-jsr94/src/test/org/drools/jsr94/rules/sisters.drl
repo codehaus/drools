@@ -15,8 +15,8 @@
         <java:condition> person.hasSister( sister ) </java:condition>
 
         <java:consequence>
-            assertObject( person + ": I like cheese" );
-            assertObject( "bob says: " + person + " and " + sister + " are sisters" );
+            drools.assertObject( person + ": I like cheese" );
+            drools.assertObject( "bob says: " + person + " and " + sister + " are sisters" );
         </java:consequence>
     </rule>
 

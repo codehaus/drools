@@ -11,7 +11,7 @@
     <java:consequence>
       f.setValue( 1 );
       System.err.println( f.getSequence() + " == " + f.getValue() );
-      modifyObject( f );
+      drools.modifyObject( f );
     </java:consequence>
   </rule>
 
@@ -24,7 +24,7 @@
     <java:consequence>
       f.setValue( 1 );
       System.err.println( f.getSequence() + " == " + f.getValue() );
-      modifyObject( f );
+      drools.modifyObject( f );
     </java:consequence>
   </rule>
 
@@ -35,7 +35,7 @@
     <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>
       System.err.println( "recurse for " + f.getSequence() );
-      assertObject( new Fibonacci( f.getSequence() - 1 ) );
+      drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
     </java:consequence>
   </rule>
 
@@ -57,8 +57,8 @@
     <java:consequence>
       f3.setValue( f1.getValue() + f2.getValue() );
       System.err.println( f3.getSequence() + " == " + f3.getValue() );
-      modifyObject( f3 );
-      retractObject( f1 );
+      drools.modifyObject( f3 );
+      drools.retractObject( f1 );
     </java:consequence>
   </rule>
 
