@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.9 2003-11-28 06:43:01 bob Exp $
+ $Id: ExprExtractor.java,v 1.10 2004-06-22 17:24:45 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,10 @@ package org.drools.semantics.java;
  
  */
 
+import bsh.Interpreter;
+import bsh.NameSpace;
+import bsh.Primitive;
+
 import org.drools.rule.Declaration;
 import org.drools.spi.Extractor;
 import org.drools.spi.ExtractionException;
@@ -55,7 +59,7 @@ import org.drools.spi.Tuple;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.9 2003-11-28 06:43:01 bob Exp $
+ *  @version $Id: ExprExtractor.java,v 1.10 2004-06-22 17:24:45 bob Exp $
  */
 public class ExprExtractor
     extends Expr
@@ -102,7 +106,26 @@ public class ExprExtractor
     {
         try
         {
-            return evaluate( tuple );
+            NameSpace ns = setUpNameSpace( tuple, getNameSpace() );
+
+            Declaration[] params = getRequiredTupleMembers();
+
+            Object[] paramValues = new Object[ params.length ];
+
+            for ( int i = 0 ; i < params.length ; ++i ) {
+                paramValues[i] = tuple.get( params[i] );
+            }
+
+            Object result = ns.invokeMethod( getMethodName(),
+                                             paramValues,
+                                             getInterpreter() );
+
+            if ( result instanceof Primitive )
+            {
+                result = Primitive.unwrap( result );
+            }
+
+            return result;
         }
         catch (Exception e)
         {
