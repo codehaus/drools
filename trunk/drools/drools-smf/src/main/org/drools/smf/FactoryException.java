@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: FactoryException.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ $Id: FactoryException.java,v 1.2 2003-12-30 21:40:55 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.drools.DroolsException;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: FactoryException.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ *  @version $Id: FactoryException.java,v 1.2 2003-12-30 21:40:55 bob Exp $
  */
 public class FactoryException
     extends DroolsException
@@ -83,5 +83,9 @@ public class FactoryException
     public FactoryException(Throwable rootCause)
     {
         super( rootCause );
+    }
+
+    public FactoryException()
+    {
     }
 }
