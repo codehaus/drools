@@ -43,6 +43,22 @@
     </subsection>
   </section>
 
+  <section name="News">
+    <subsection name="26 august 2002">
+    <p>
+    I'm killing off the drools-specific blog.  Check my
+    <a href="http://blogs.werken.com/people/bob/">personal blog</a>
+    for drools news you can use.
+    </p>
+    </subsection>
+
+    <subsection name="24 august 2002">
+    <p>
+    <a href="releases.html">2.0-beta-5 was released</a>.  
+    </p>
+    </subsection>
+  </section>
+
 </body>
 </document>
 
