@@ -387,6 +387,31 @@ target_javadoc()
       bsh.commands 
 }
 
+target_pdf()
+{
+  echo "building PDFs from LaTeX"
+
+  mkdir -p $BASE/build/latex
+
+  #local module
+  #for module in $MODULES ; do
+  # if [ -d drools-$module/src/latex ] ; then
+  #   copy_tree drools-$module/src/latex $BASE/build/latex/$module/ tex 
+  # fi 
+  #done
+
+  copy_tree $BASE/src/latex/ $BASE/build/latex/ tex 
+
+  local doc
+ 
+  for doc in $BASE/build/latex/* ; do
+    echo "test $doc"
+    if [ -d doc ] ; then 
+      echo "generating $doc"
+    fi
+  done
+}
+
 target_dists()
 {
   build source_dist binary_dist
@@ -528,7 +553,7 @@ copy_tree()
     find ./ -depth -print | cpio -pudm --quiet $dest
   else
     for ext in $exts ; do
-      find ./ -depth \( -name *.$ext \) -print | cpio -pudm --quiet $dest
+      find ./ -depth -name \*.$ext -print | cpio -pudm --quiet $dest
     done
   fi
 
