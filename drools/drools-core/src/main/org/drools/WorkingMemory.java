@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
-  $Id: WorkingMemory.java,v 1.18 2003-10-16 03:48:32 bob Exp $
+  $Id: WorkingMemory.java,v 1.19 2003-10-26 22:06:49 bob Exp $
 
   Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,8 +46,6 @@ package org.drools;
 
 */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.drools.reteoo.Agenda;
 import org.drools.reteoo.JoinMemory;
 import org.drools.reteoo.JoinNode;
@@ -71,9 +69,6 @@ import java.util.Iterator;
  */
 public class WorkingMemory
 {
-    /** Log. */
-    private static Log log = LogFactory.getLog( WorkingMemory.class );
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -233,8 +228,6 @@ public class WorkingMemory
     public synchronized FactHandle assertObject(Object object)
         throws FactException
     {
-        log.debug( "assertObject: " + object );
-
         FactHandle handle = newFactHandle();
 
         getRuleBase().assertObject( handle,

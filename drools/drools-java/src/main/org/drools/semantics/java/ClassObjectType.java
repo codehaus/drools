@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
+ $Id: ClassObjectType.java,v 1.9 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,62 +46,19 @@ package org.drools.semantics.java;
  
  */
 
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
-import org.drools.spi.ObjectType;
+import org.drools.smf.Configuration;
+import org.drools.smf.ConfigurableObjectType;
+import org.drools.smf.ConfigurationException;
 
 /** Java class semantics <code>ObjectType</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
+ *  @version $Id: ClassObjectType.java,v 1.9 2003-10-26 22:06:49 bob Exp $
  */
-public class ClassObjectType implements ObjectType
+public class ClassObjectType
+    implements ConfigurableObjectType
 {
-
-    // ------------------------------------------------------------
-    //     Class initialization
-    // ------------------------------------------------------------
-    
-    /** Register conversions for jakarta-beanutils.
-     */
-    static
-    {
-        ConvertUtils.register(
-            new Converter()
-            {
-                public Object convert(Class type, Object value)
-                {
-                    if ( value instanceof Class )
-                    {
-                        return (Class) value;
-                    }
-                    else if ( value instanceof String )
-                    {
-                        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-                        
-                        if ( cl == null )
-                        {
-                            cl = getClass().getClassLoader();
-                        }
-                        try
-                        {
-                            return cl.loadClass( (String) value );
-                        }
-                        catch (Exception e)
-                        {
-                            throw new ConversionException( "Cannot convert " + value + " to a java.lang.Class",
-                                                           e );
-                        }
-                    }
-                    throw new ConversionException( "Cannot convert " + value + " to a java.lang.Class" );
-                }
-            },
-            Class.class
-            );
-    }
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -169,6 +126,35 @@ public class ClassObjectType implements ObjectType
     public boolean matches(Object object)
     {
         return getType().isInstance( object );
+    }
+
+    public void configure(Configuration config)
+        throws ConfigurationException
+    {
+        String typeName = config.getAttribute( "type" );
+
+        if ( typeName == null
+             ||
+             typeName.trim().equals( "" ) )
+        {
+            throw new ConfigurationException( "attribute 'type' required" );
+        }
+
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        if ( cl == null )
+        {
+            cl = ClassObjectType.class.getClassLoader();
+        }
+
+        try
+        {
+            setType( cl.loadClass( typeName.trim() ) );
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new ConfigurationException( e );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

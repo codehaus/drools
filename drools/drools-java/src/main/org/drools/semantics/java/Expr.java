@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.6 2002-08-19 04:30:49 bob Exp $
+ $Id: Expr.java,v 1.7 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.semantics.java;
  */
 
 import org.drools.rule.Declaration;
+import org.drools.smf.Configuration;
 import org.drools.smf.ConfigurationException;
 
 /** Base class for expression-based Java semantic components.
@@ -56,7 +57,7 @@ import org.drools.smf.ConfigurationException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.6 2002-08-19 04:30:49 bob Exp $
+ *  @version $Id: Expr.java,v 1.7 2003-10-26 22:06:49 bob Exp $
  */
 public class Expr extends Interp
 {
@@ -122,16 +123,17 @@ public class Expr extends Interp
         setText( expr );
     }
 
-    /** Configure/parse the expression.
-     *
-     *  @param expr The expression.
-     *  @param decls All available declarations.
-     *
-     *  @throws ConfigurationException If an error occurs while
-     *          attempting to configure/parse the expression.
-     */
+    public void configure(Configuration config,
+                          Declaration[] decls)
+        throws ConfigurationException
+    {
+        configure( config.getText(),
+                   decls );
+    }
+
     public void configure(String expr,
-                          Declaration[] decls) throws ConfigurationException
+                          Declaration[] decls)
+        throws ConfigurationException
     {
         ExprAnalyzer analyzer = new ExprAnalyzer();
         

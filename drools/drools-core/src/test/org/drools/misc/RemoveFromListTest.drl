@@ -1,11 +1,8 @@
+<rule-set name="Inactive User" 
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
 
-<rules xmlns="http://drools.org/rules">
-
-   <semantics module="org.drools.semantics.java"/>
-
-   <rule-set name="Inactive User" xmlns:java="http://drools.org/semantics/java">
-      <rule name="Invalid Participant">
-
+    <rule name="Invalid Participant">
          <parameter identifier="participantList">
             <java:class type="java.util.ArrayList"/>
          </parameter>
@@ -14,18 +11,11 @@
             <java:class type="org.drools.misc.Participant"/>
          </parameter>
 
-         <condition>
-            <java:condition> pt.isActive() </java:condition>
-         </condition>
+         <java:condition> pt.isActive() </java:condition>
 
-         <consequence>
-            <java:consequence>
-               System.out.println("remove: " + pt);
-               participantList.remove(pt);
-            </java:consequence>
-         </consequence>
+          <java:consequence>
+              System.out.println("remove: " + pt);
+              participantList.remove(pt);
+          </java:consequence>
       </rule>
-   </rule-set>
-
-</rules>
-
+</rule-set>

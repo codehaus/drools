@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.5 2003-08-20 23:48:36 tdiesler Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.6 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,7 +46,9 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.io.RuleSetLoader;
+import org.drools.io.RuleSetReader;
+import org.drools.rule.RuleSet;
+import org.drools.smf.SimpleSemanticsRepository;
 import org.drools.jsr94.rules.NotImplementedException;
 import org.w3c.dom.Document;
 
@@ -104,14 +106,16 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( String ruleExecutionSetUri, Map properties ) throws RuleExecutionSetCreateException, IOException, RemoteException
+    public RuleExecutionSet createRuleExecutionSet(String ruleExecutionSetUri,
+                                                   Map properties)
+        throws RuleExecutionSetCreateException, IOException, RemoteException
     {
         try
         {
             LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
-            RuleSetLoader ruleSetLoader = new RuleSetLoader();
-            List droolRules = ruleSetLoader.load( new URL( ruleExecutionSetUri ) );
-            return localRuleExecutionSetProvider.createRuleExecutionSet( droolRules, properties );
+            RuleSetReader reader = new RuleSetReader( new SimpleSemanticsRepository() );
+            RuleSet ruleSet = reader.read( new URL( ruleExecutionSetUri ) );
+            return localRuleExecutionSetProvider.createRuleExecutionSet( ruleSet, properties );
 
         }
         catch ( IOException ex )

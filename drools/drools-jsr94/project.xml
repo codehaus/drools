@@ -182,86 +182,23 @@
                 <war_bundle>true</war_bundle>
             </properties>
         </dependency>
-        <dependency>
-            <id>commons-beanutils</id>
-            <version>1.6</version>
-            <url>http://jakarta.apache.org/commons/beanutils</url>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
-        </dependency>
-        <dependency>
-            <id>commons-collections</id>
-            <version>2.1</version>
-            <url>http://jakarta.apache.org/commons/collections</url>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>commons-jelly</groupId>
-            <artifactId>commons-jelly</artifactId>
-            <version>20030609.133047</version>
-            <url>http://jakarta.apache.org/commons/jelly</url>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
-        </dependency>
-        <dependency>
-            <groupId>commons-jelly</groupId>
-            <artifactId>commons-jelly-tags-junit</artifactId>
-            <version>20030211.141731</version>
-            <url>http://jakarta.apache.org/commons/jelly</url>
-        </dependency>
-        <dependency>
-            <id>commons-jexl</id>
-            <version>1.0-beta-2</version>
-            <url>http://jakarta.apache.org/commons/sandbox/jexl</url>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
-        </dependency>
-        <dependency>
-            <id>commons-logging</id>
-            <version>1.0.3</version>
-            <url>http://jakarta.apache.org/commons/logging</url>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
-        </dependency>
-        <dependency>
-            <id>dom4j</id>
-            <version>1.4</version>
-            <url>http://dom4j.org</url>
-            <properties>
-                <bin_dist>true</bin_dist>
-                <rar_bundle>true</rar_bundle>
-                <war_bundle>true</war_bundle>
-            </properties>
-        </dependency>
+
         <dependency>
             <id>jaas</id>
             <version>1.0</version>
         </dependency>
+
         <dependency>
             <id>jca</id>
             <version>1.0</version>
         </dependency>
+
         <dependency>
             <id>junit</id>
             <version>3.8.1</version>
             <url>http://www.junit.org</url>
         </dependency>
+
         <dependency>
             <id>jsr94</id>
             <version>1.0-pr</version>
@@ -271,6 +208,7 @@
                 <war_bundle>true</war_bundle>
             </properties>
         </dependency>
+
         <dependency>
             <id>jython</id>
             <version>20020827-no-oro</version>
@@ -281,16 +219,7 @@
                 <war_bundle>true</war_bundle>
             </properties>
         </dependency>
-        <dependency>
-            <id>log4j</id>
-            <version>1.2.8</version>
-            <url>http://jakarta.apache.org/log4j</url>
-            <properties>
-                <bin_dist>false</bin_dist>
-                <rar_bundle>false</rar_bundle>
-                <war_bundle>false</war_bundle>
-            </properties>
-        </dependency>
+
         <dependency>
             <!-- Some of the oro classes were part of the jython-SNAPSHOT.jar, which breaks the maven build -->
             <id>oro</id>
@@ -302,6 +231,8 @@
                 <war_bundle>true</war_bundle>
             </properties>
         </dependency>
+
+<!--
         <dependency>
             <id>xerces</id>
             <version>2.3.0</version>
@@ -312,6 +243,7 @@
                 <war_bundle>true</war_bundle>
             </properties>
         </dependency>
+
         <dependency>
             <id>xml-apis</id>
             <version>2.0.2</version>
@@ -321,6 +253,8 @@
                 <war_bundle>true</war_bundle>
             </properties>
         </dependency>
+-->
+
     </dependencies>
 
     <build>
@@ -339,6 +273,7 @@
             </includes>
             <excludes>
                 <exclude>**/DroolsBenchmarkTestCase.java</exclude>
+                <exclude>**/jsr94/**</exclude>
             </excludes>
             <resources>
                 <resource>

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.2 2003-08-21 00:57:46 tdiesler Exp $
+ $Id: RuleSet.java,v 1.3 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,6 +67,8 @@ public class RuleSet
     /** The name of the ruleset. */
     private String name;
 
+    private String documentation;
+
     /** Set of all rule-names in this <code>RuleSet</code>. */
     private Set ruleNames;
 
@@ -92,15 +94,6 @@ public class RuleSet
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the name of this <code>RuleSet</code>
-     *
-     *  @param name The name of this <code>RuleSet</code>
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
     /** Retrieve the name of this <code>RuleSet</code>.
      *
      *  @return The name of this <code>RuleSet</code>.
@@ -108,6 +101,16 @@ public class RuleSet
     public String getName()
     {
         return this.name;
+    }
+
+    public void setDocumentation(String documentation)
+    {
+        this.documentation = documentation;
+    }
+
+    public String getDocumentation()
+    {
+        return this.documentation;
     }
 
     /** Add a <code>Rule</code> to this <code>RuleSet</code>.

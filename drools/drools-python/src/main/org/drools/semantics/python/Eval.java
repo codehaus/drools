@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: Eval.java,v 1.7 2003-10-26 22:06:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Declaration;
+import org.drools.smf.Configuration;
 import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.python.core.PyDictionary;
@@ -63,7 +64,7 @@ import java.util.Hashtable;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>  
  *
- *  @version $Id: Eval.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: Eval.java,v 1.7 2003-10-26 22:06:49 bob Exp $
  */
 public class Eval extends Interp
 {
@@ -164,20 +165,12 @@ public class Eval extends Interp
         return this.decls;
     }
 
-    /** Configure.
-     *
-     *  @param text Configuration text.
-     *  @param availDecls Available declarations.
-     *
-     *  @throws ConfigurationException If an error occurs while
-     *          attempting to perform configuration.
-     */
-    public void configure(String text,
+    public void configure(Configuration config,
                           Declaration[] availDecls) throws ConfigurationException
     {
         try
         {
-            setExpression( text );
+            setExpression( config.getText() );
             
             ExprAnalyzer analyzer = new ExprAnalyzer();
             

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.2 2003-06-19 09:28:36 tdiesler Exp $
+ $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.3 2003-10-26 22:06:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,7 +48,10 @@ package org.drools.jsr94.rules.admin;
 
 import org.drools.rule.RuleSet;
 import org.drools.jsr94.rules.JSR94TestBase;
-import org.drools.io.RuleSetLoader;
+import org.drools.io.RuleSetReader;
+import org.drools.io.SemanticsReader;
+import org.drools.smf.SimpleSemanticsRepository;
+//import org.drools.io.RuleSetLoader;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
@@ -63,51 +66,55 @@ import java.io.Reader;
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 public class LocalRuleExecutionSetProviderTestCase extends JSR94TestBase {
+    
+    private RuleAdministrator ruleAdministrator;
+    private LocalRuleExecutionSetProvider ruleSetProvider;
+    
+    protected void setUp()
+       throws Exception
+    {
+        super.setUp();
+        ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
+        ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
+    }
 
-   private RuleAdministrator ruleAdministrator;
-   private LocalRuleExecutionSetProvider ruleSetProvider;
+   public void testCreateFromInputStream()
+       throws Exception
+    {
+        InputStream rulesStream = getResourceAsStream(RULES_RESOURCE);
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesStream, null);
+        assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
+        assertEquals("number of rules", 2, ruleSet.getRules().size());
+    }
+    
+    public void testCreateFromObject()
+        throws Exception
+    {
+        
+        SimpleSemanticsRepository repo = new SimpleSemanticsRepository();
+        
+        SemanticsReader semanticsReader = new SemanticsReader();
+        
+        repo.registerSemanticModule( semanticsReader.read( getClass().getResource( "/org/drools/semantics/java/semantics.properties" ) ) );
 
-   /**
-    * Setup the test case.
-    */
-   protected void setUp() throws Exception {
-      super.setUp();
-      ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
-      ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
-   }
+        RuleSetReader ruleSetReader = new RuleSetReader( repo);
 
-   /**
-    * Test createRuleExecutionSet from InputStream.
-    */
-   public void testCreateFromInputStream() throws Exception {
-      InputStream rulesStream = getResourceAsStream(RULES_RESOURCE);
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesStream, null);
-      assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-      assertEquals("number of rules", 2, ruleSet.getRules().size());
-   }
-
-
-   /**
-    * Test createRuleExecutionSet from Object.
-    */
-   public void testCreateFromObject() throws Exception {
-
-      RuleSetLoader ruleSetLoader = new RuleSetLoader();
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleSet droolRuleSet = (RuleSet)ruleSetLoader.load(ruleReader).get(0);
-
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(droolRuleSet, null);
-      assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-      assertEquals("number of rules", 2, ruleSet.getRules().size());
+        RuleSet droolRuleSet = ruleSetReader.read( RULES_RESOURCE );
+        
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(droolRuleSet, null);
+        assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
+        assertEquals("number of rules", 2, ruleSet.getRules().size());
    }
 
    /**
     * Test createRuleExecutionSet from Reader.
     */
-   public void testCreateFromReader() throws Exception {
-      Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
-      RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
-      assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-      assertEquals("number of rules", 2, ruleSet.getRules().size());
+   public void testCreateFromReader()
+       throws Exception
+    {
+        Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
+        RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
+        assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
+        assertEquals("number of rules", 2, ruleSet.getRules().size());
    }
 }
