@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.16 2004-06-15 18:24:17 bob Exp $
+ $Id: BlockConsequence.java,v 1.17 2004-06-20 17:38:38 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,7 +59,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.16 2004-06-15 18:24:17 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.17 2004-06-20 17:38:38 mproctor Exp $
  */
 public class BlockConsequence
     extends Interp
@@ -99,7 +99,6 @@ public class BlockConsequence
                        WorkingMemory workingMemory)
         throws ConsequenceException
     {
-        System.err.println( "firing for " + tuple );
         try
         {
             /*
