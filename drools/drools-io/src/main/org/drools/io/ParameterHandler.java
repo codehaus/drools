@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ParameterHandler.java,v 1.4 2004-11-28 02:22:18 simon Exp $
+ * $Id: ParameterHandler.java,v 1.5 2004-12-21 00:24:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -113,11 +113,6 @@ class ParameterHandler extends BaseAbstractHandler implements Handler
         }
 
         return null;
-    }
-
-    public boolean popParent()
-    {
-        return true;
     }
 
     public Class generateNodeFor()
