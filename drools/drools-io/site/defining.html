@@ -2,14 +2,73 @@
 
   <div class="sectionTitle">Defining Rules</div>
     <div class="subsection">
-      <div class="subsectionTitle">SUBSECTION</div> 
-  <p>
-  <p>
+      <div class="subsectionTitle">Overview</div>
+      <p>
+      The I/O subsystem enables the <b>Drools Rule Language</b> (DRL) to be used to
+      construct rules.  Without the I/O subsystem, the only way to define rules is
+      using the <a href="TOP/core/assembly.html">Rule Assembly API</a>.  Note that
+      the I/O subsystem is simply a single possible implementation of a rule language.
+      Different I/O implementations could interact with the same semantic modules
+      and use a completely different rule syntax.
+      <p>
     </div>
     <div class="subsection">
-      <div class="subsectionTitle">SUBSECTION</div>
-  <p>
-  </p>
+      <div class="subsectionTitle">Interaction with the <a href="TOP/smf/overview.html">Semantic Module Framework</a></div> 
+      <p>
+      As the I/O subsystem only <i>enables</i> the Drools Rule Language, it has no directly 
+      usable syntax.  <b>Semantic modules</b> must be loaded, by inclusion of their jars
+      within the applicable classpath.  Semantic modules are created using the 
+      <a href="TOP/smf/overview.html">Semantic Module Framework</a>.  The
+      <a href="TOP/java/drl.html">Java Semantic Module</a> and 
+      <a href="TOP/python/drl.html">Python Semantic Module</a> are two of the
+      low-level modules which are each tied to a language.  The <a href="TOP/base/drl.html">Base Semantic Module</a>
+      provides basic components, such as default <code>Rule</code> and <code>Duration</code>
+      implementations.
+      </p>
+
+      <p>
+      The I/O subsystem therefore enables the usage of modules created with the
+      <a href="TOP/smf/overview.html">Semantic Module Framework</a> with a general XML-based syntax to operate the 
+      <a href="TOP/core/assembly.html">Rule Assembly API</a> to build rules.
+      </p>
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle">General Structure</div>
+      <p>
+      The basic structure is illustrated in the example below.  <span class="highlight">Highlighted</span> 
+      tags represent rule primitives defined within some <a href="TOP/smf/overview.html">semantic module</a>.
+      </p>
+      <div class="code">
+<pre>
+&lt;rule-set xmlns="http://drools.org/rules"&gt;
+  <span class="highlight">&lt;rule ...&gt;</span>
+    &lt;parameter identifier="employee"&gt;
+      <span class="highlight">&lt;object-type ...&gt;</span>
+      <span class="highlight">&lt;/object-type&gt;</span>
+    &lt;/parameter&gt;
+    <span class="highlight">&lt;consequence&gt;
+      ..
+    &lt;/consequence&gt;</span>
+    <span class="highlight">&lt;duration .../&gt;</span>
+  &lt;/rule&gt;
+&lt;rule-set&gt;
+</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsectionTitle">Available Semantic Modules</div>
+      <p>
+      The distribution contains a handful of low-level language-based
+      semantic modules.  Others may be written and added to a Drools-based
+      application at any time.
+      </p>
+      <ul>
+        <li><a href="TOP/base/drl.html">Base</a>: Basic rule and duration primitives.</li>
+        <li><a href="TOP/java/drl.html">Java</a>: Primitives based upon the Java language.</li>
+        <li><a href="TOP/python/drl.html">Python</a>: Primitives based upon the Python language.</li>
+        <li><a href="TOP/groovy/drl.html">Groovy</a>: Primitives based upon the Groovy language.</li>
+      </ul>
     </div>
   </div>
 </div>

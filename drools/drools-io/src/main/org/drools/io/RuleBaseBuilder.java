@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleBaseBuilder.java,v 1.1.1.1 2003-12-30 21:18:55 bob Exp $
+ $Id: RuleBaseBuilder.java,v 1.2 2004-01-02 04:20:30 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,11 +47,8 @@ package org.drools.io;
  */
 
 import org.drools.RuleBase;
-import org.drools.RuleIntegrationException;
 import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
-import org.drools.reteoo.Builder;
-import org.drools.spi.ConflictResolver;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -72,66 +69,10 @@ import java.net.URL;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseBuilder.java,v 1.1.1.1 2003-12-30 21:18:55 bob Exp $
+ *  @version $Id: RuleBaseBuilder.java,v 1.2 2004-01-02 04:20:30 bob Exp $
  */
 public class RuleBaseBuilder
 {
-    // ----------------------------------------------------------------------
-    //     Instance members
-    // ----------------------------------------------------------------------
-
-    /** Underlying Rete builder. */
-    private Builder builder;
-
-    // ----------------------------------------------------------------------
-    //     Constructors
-    // ----------------------------------------------------------------------
-
-    /** Construct.
-     */
-    public RuleBaseBuilder()
-    {
-        this.builder = new Builder();
-    }
-
-    // ----------------------------------------------------------------------
-    //     Instance methods
-    // ----------------------------------------------------------------------
-
-    /** Add a <code>RuleSet</code>.
-     *
-     *  @param ruleSet The rule-set to add.
-     *
-     *  @throws RuleIntegrationException If an error occurs while attempting
-     *          to integrate the rules into the Rete network..
-     */
-    public void addRuleSet(RuleSet ruleSet)
-        throws RuleIntegrationException
-    {
-        this.builder.addRuleSet( ruleSet );
-    }
-
-    /** Build the <code>RuleBase</code>.
-     *
-     *  <p>
-     *  Builds the <code>RuleBase</code> based upon all previously added
-     *  <code>RuleSet</code>s.
-     *  </p>
-     *
-     *  @see #addRuleSet
-     *
-     *  @return The new rule-base.
-     */
-    public RuleBase build()
-    {
-        return this.builder.buildRuleBase();
-    }
-
-    public void setConflictResolver(ConflictResolver conflictResolver)
-    {
-        this.builder.setConflictResolver( conflictResolver );
-    }
-
     public static RuleBase buildFromUrl(URL url)
         throws Exception
     {
@@ -139,7 +80,7 @@ public class RuleBaseBuilder
 
         RuleSet ruleSet = reader.read( url );
 
-        RuleBaseBuilder builder = new RuleBaseBuilder();
+        org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
 
         builder.addRuleSet( ruleSet );
 
@@ -153,7 +94,7 @@ public class RuleBaseBuilder
 
         RuleSet ruleSet = reader.read( in );
 
-        RuleBaseBuilder builder = new RuleBaseBuilder();
+        org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
 
         builder.addRuleSet( ruleSet );
 
@@ -167,7 +108,7 @@ public class RuleBaseBuilder
 
         RuleSet ruleSet = reader.read( in );
 
-        RuleBaseBuilder builder = new RuleBaseBuilder();
+        org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
 
         builder.addRuleSet( ruleSet );
 
