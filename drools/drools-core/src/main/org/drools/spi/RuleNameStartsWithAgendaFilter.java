@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameStartsWithAgendaFilter.java,v 1.4 2004-12-07 20:41:10 mproctor Exp $
+ * $Id: RuleNameStartsWithAgendaFilter.java,v 1.5 2004-12-07 20:44:05 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ public class RuleNameStartsWithAgendaFilter
 {
     private final String prefix;
 
-    private final String accept;
+    private final boolean accept;
 
     public RuleNameStartsWithAgendaFilter(String prefix)
     {
@@ -60,7 +60,7 @@ public class RuleNameStartsWithAgendaFilter
 
     public RuleNameStartsWithAgendaFilter(String prefix, boolean accept)
     {
-        this.name = name;
+        this.prefix = prefix;
         this.accept = accept;
     }
 

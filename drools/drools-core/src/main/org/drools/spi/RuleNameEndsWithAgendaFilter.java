@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameEndsWithAgendaFilter.java,v 1.4 2004-12-07 20:41:10 mproctor Exp $
+ * $Id: RuleNameEndsWithAgendaFilter.java,v 1.5 2004-12-07 20:44:05 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,7 +50,8 @@ public class RuleNameEndsWithAgendaFilter
     AgendaFilter
 {
     private final String suffix;
-    private final String accept;
+
+    private final boolean accept;
 
     public RuleNameEndsWithAgendaFilter(String suffix)
     {
@@ -60,6 +61,7 @@ public class RuleNameEndsWithAgendaFilter
     public RuleNameEndsWithAgendaFilter(String suffix, boolean accept)
     {
         this.suffix = suffix;
+        this.accept = accept;
     }
 
     public boolean accept(Activation activation)
