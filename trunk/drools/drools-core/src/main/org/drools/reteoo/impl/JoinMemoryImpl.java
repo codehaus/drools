@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinMemoryImpl.java,v 1.3 2002-08-01 18:47:33 bob Exp $
+ $Id: JoinMemoryImpl.java,v 1.4 2002-08-27 23:31:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -285,6 +285,8 @@ public class JoinMemoryImpl implements JoinMemory
             }
         }
 
+        newModified.addAll( newTuples.getTuples() );
+
         ReteTuple eachTuple = null;
 
         TupleSet origJoined = new TupleSet();
@@ -296,7 +298,7 @@ public class JoinMemoryImpl implements JoinMemory
             eachTuple = (ReteTuple) tupleIter.next();
 
             origJoined.addAllTuples( attemptJoin( eachTuple,
-                                                  getRightTupleIterator() ) );
+                                                  thatSideTuples.iterator() ) );
         }
 
         TupleSet newJoined = new TupleSet();
@@ -308,7 +310,7 @@ public class JoinMemoryImpl implements JoinMemory
             eachTuple = (ReteTuple) tupleIter.next();
 
             newJoined.addAllTuples( attemptJoin( eachTuple,
-                                                 getRightTupleIterator() ) );
+                                                 thatSideTuples.iterator() ) );
         }
 
         tupleIter = origJoined.iterator();
@@ -323,10 +325,16 @@ public class JoinMemoryImpl implements JoinMemory
             }
         }
 
+        thisSideTuples.addAllTuples( newTuples );
+
         propagateRetractTuples( trigger,
                                 retractedKeys,
                                 joinNode,
                                 workingMemory );
+
+        joinNode.propagateModifyTuples( trigger,
+                                        newJoined,
+                                        workingMemory );
     }
 
     /** Propagate retractions.

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ConditionNodeImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
+ $Id: ConditionNodeImpl.java,v 1.4 2002-08-27 23:31:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -196,10 +196,6 @@ public class ConditionNodeImpl extends TupleSourceImpl implements ConditionNode,
             }
         }
 
-        propagateModifyTuples( trigger,
-                               newTuples,
-                               workingMemory );
-
         Iterator keyIter = retractedKeys.iterator();
         TupleKey eachKey = null;
 
@@ -210,6 +206,10 @@ public class ConditionNodeImpl extends TupleSourceImpl implements ConditionNode,
             propagateRetractTuples( eachKey,
                                     workingMemory );
         }
+
+        propagateModifyTuples( trigger,
+                               newTuples,
+                               workingMemory );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
