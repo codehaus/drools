@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.25 2004-10-27 07:15:54 simon Exp $
+ * $Id: JoinMemory.java,v 1.26 2004-10-28 22:07:47 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -270,6 +270,10 @@ class JoinMemory implements Serializable
 
         newModified.addAll( newTuples.getTuples( ) );
 
+/*
+ * I'm sure this is redundant, comment out for now will delete later
+ * @todo: delete commented code
+ *
         TupleSet origJoined = new TupleSet( );
 
         for ( Iterator tupleIter = origModified.iterator( ); tupleIter
@@ -280,7 +284,7 @@ class JoinMemory implements Serializable
             origJoined.addAllTuples( attemptJoin( eachTuple,
                                                   thatSideTuples.iterator( ) ) );
         }
-
+*/
         TupleSet newJoined = new TupleSet( );
 
         for ( Iterator tupleIter = newModified.iterator( ); tupleIter.hasNext( ); )
