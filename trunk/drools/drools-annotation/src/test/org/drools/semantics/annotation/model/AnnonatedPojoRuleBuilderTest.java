@@ -5,6 +5,7 @@ import java.util.List;
 import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.spi.KnowledgeHelper;
 import org.drools.semantics.annotation.*;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
@@ -14,10 +15,10 @@ import org.drools.semantics.annotation.DroolsCondition;
 
 import junit.framework.TestCase;
 
-public class AnnonatedPojoRuleBuilderTest extends TestCase 
+public class AnnonatedPojoRuleBuilderTest extends TestCase
 {
     private Rule rule = new Rule("test");
-    
+
     private AnnonatedPojoRuleBuilder builder = new AnnonatedPojoRuleBuilder();
 
     public void testInvalidConsequenceReturnType() throws Exception {
@@ -51,7 +52,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             // expected
         }
     }
-    
+
     public void testMultipleConsequences() throws Exception {
         class Pojo {
             @DroolsConsequence
@@ -69,7 +70,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             // expected
         }
     }
-    
+
     public void testMissingConsequence() throws Exception {
         class Pojo {
             public void consequence() {
@@ -85,7 +86,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             // expected
         }
     }
-    
+
     public void testConsequenceParameterAnnotation() throws Exception {
         class Pojo1 {
             @DroolsConsequence
@@ -108,9 +109,9 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             public void consequence() {}
         }
         Pojo pojo = new Pojo();
-        
+
         builder.buildRule(rule, pojo);
-        
+
         List<Declaration> declarations = getRuleParameterDeclarations(rule);
         assertEquals(1, declarations.size());
     }
@@ -131,7 +132,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             // expected
         }
     }
-    
+
     public void testUnannoatedConditionParameter() throws Exception {
         class Pojo {
             @DroolsCondition
@@ -153,7 +154,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     public void testMultipleConsequenceDroolsParameters() throws Exception {
         class Pojo {
             @DroolsConsequence
-            public void consequence(DroolsContext drools1, DroolsContext drools2) {}
+            public void consequence(KnowledgeHelper kh1, KnowledgeHelper kn2) {}
         }
         Pojo pojo = new Pojo();
 
@@ -164,11 +165,11 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             // expected
         }
     }
-    
+
     public void testConditionDroolsParameter() throws Exception {
         class Pojo {
             @DroolsCondition
-            public boolean condition(DroolsContext drools) {
+            public boolean condition(KnowledgeHelper knowledgeHelper) {
                 return true;
             }
 
@@ -192,7 +193,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
                     @DroolsParameter("p1") String p1) {
                 return true;
             }
-            
+
             @DroolsCondition
             public boolean conditionTwo(
                     @DroolsParameter("p1") String p1,
@@ -200,29 +201,29 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
                     @DroolsApplicationData("a1") Object a1) {
                 return true;
             }
-            
+
             @DroolsConsequence
             public void consequence(
-                    DroolsContext drools,
+                    KnowledgeHelper knowledgeHelper,
                     @DroolsParameter("p1") String p1,
                     @DroolsApplicationData("a1") Object a1) {}
         }
         Pojo pojo = new Pojo();
-        
+
         Rule returnedRule = builder.buildRule(rule, pojo);
-        
+
         assertSame(returnedRule, rule);
-        
+
         List<Declaration> declarations = getRuleParameterDeclarations(rule);
         assertEquals(2, declarations.size());
         assertEquals("p1", declarations.get(0).getIdentifier());
         assertEquals("p2", declarations.get(1).getIdentifier());
-        
+
         List<Condition> conditions = getRuleConditions(rule);
         assertEquals(2, conditions.size());
         assertTrue(conditions.get(0) instanceof PojoCondition);
         assertTrue(conditions.get(1) instanceof PojoCondition);
-        
+
         Consequence consequence = rule.getConsequence();
         assertTrue(consequence instanceof PojoConsequence);
 
