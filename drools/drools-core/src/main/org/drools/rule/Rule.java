@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.46 2004-11-26 13:12:10 mproctor Exp $
+ * $Id: Rule.java,v 1.47 2004-11-26 18:35:18 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,6 @@ import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
-import org.xml.sax.SAXParseException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
