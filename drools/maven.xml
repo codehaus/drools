@@ -233,6 +233,25 @@
         </fileset>
       </ant:unjar>
 
+      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/base">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir="${basedir}">
+            <include name="target/drools-examples-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/base">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir="${basedir}">
+            <include name="target/drools-annotation-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+
       <ant:concat destfile="${basedir}/target/all-stage/drools-all/META-INF/drools.conf" force="yes">
         <fileset dir="target/all-stage/drools-conf" includes="**/drools.conf" />
       </ant:concat>
@@ -244,7 +263,7 @@
       </ant:delete>
     </goal>
 
-    <goal name="drools:deploy" prereqs="drools:dist-javadoc">
+    <goal name="drools:deploy" prereqs="drools:dist">
       <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
         <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
       </exec>
