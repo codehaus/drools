@@ -16,11 +16,19 @@
 \usepackage{listings}
 \usepackage{makeidx}
 
+
+\hypersetup{
+    backref,  
+	colorlinks,
+    pdftitle={Drools Usage Manual},
+    pdfsubject={Drools Usage Manual},
+    pdfkeywords={Drools, Rules, Rete, Java},
+    pdfauthor={The Drools Project}} 
 \makeindex
 
 \fancypagestyle{plain}{
     \fancyhf{}
-    \fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
+    %\fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
     \renewcommand{\footrulewidth}{0pt}
     \renewcommand{\headrulewidth}{0pt}
 }
@@ -28,8 +36,8 @@
 \pagestyle{fancy}
 
 \fancyhf{}
-\fancyhead[L]{ \usefont{OT1}{phv}{b}{n}\selectfont \leftmark}
-\fancyhead[R]{ \usefont{OT1}{phv}{b}{n}\selectfont \rightmark }
+\fancyhead[L]{ \usefont{OT1}{phv}{b}{n}\selectfont \small \leftmark}
+\fancyhead[R]{ \usefont{OT1}{phv}{b}{n}\selectfont \small \rightmark }
 \fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\headrulewidth}{0.5pt}
@@ -46,6 +54,40 @@
 %%%%%%
 
 %\renewcommand{\theFancyVerbLine}{\small\textbf{\arabic{FancyVerbLine}}}
+\newenvironment{basenote}[1]
+        {
+                \begin{flushright}
+                \vline \hspace{1em}
+                \begin{minipage}{0.7\linewidth}
+                \hspace{-1em}\textsf{\textbf{#1}}\\  
+                \rule{0em}{1.4em}
+                \sl
+        } {
+                \end{minipage}
+                \end{flushright}
+        }
+
+\newenvironment{note}
+        {
+                \begin{basenote}{Note}
+        } {
+                \end{basenote}
+        }
+
+\newenvironment{ednote}
+        {
+                \begin{basenote}{Editor's Note}
+        } {
+                \end{basenote}
+        }
+
+\newenvironment{implnote}
+        {
+                \begin{basenote}{Implementor's Note}
+        } {
+                \end{basenote}
+        }
+
 
 \DefineVerbatimEnvironment%
   {javaCodelisting}{Verbatim}
@@ -129,7 +171,7 @@
 \newcommand{\indexClass}[1]{\texttt{#1}\index{#1@\texttt{#1} class}}
 \newcommand{\class}[1]{\texttt{#1}}
 
-\newcommand{\indexTag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
+\newcommand{\indexTag}[1]{\texttt{<#1>}\index{#1@\texttt{<#1>} tag}}
 \newcommand{\tag}[1]{\texttt{#1}}
 
 \newcommand{\indexMethod}[2]{\texttt{#2}\index{#1@\texttt{#1} class!#2@\texttt{#2}}}
@@ -142,6 +184,7 @@
 \begin{document}
 
 \frontmatter
+\pagestyle{empty}
 
 \begin{titlepage}
 \usefont{OT1}{phv}{b}{n}\selectfont
@@ -170,12 +213,17 @@
 \end{flushright}
 \end{titlepage} 
 
-\pagestyle{empty}
 \tableofcontents
 \listoffigures
 
-\pagestyle{fancy}
 \mainmatter
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
+    \renewcommand{\footrulewidth}{0pt}
+    \renewcommand{\headrulewidth}{0pt}
+}
+\pagestyle{fancy}
 
 %\include{introduction}
 \include{functional_overview}
@@ -184,8 +232,11 @@
 \include{java}
 \include{python}
 \include{xml}
+\include{dispatcher}
 \include{client}
 \include{admin}
+\include{conflict}
+\include{jsr94}
 \include{smf}
 \include{rule_assembly}
 \include{examples}
@@ -193,13 +244,14 @@
 
 \appendix
 
+\include{faq}
 \include{project-info}
 \include{license}
 
 \bibliography{manual}
 \bibliographystyle{acm}
 
-{\small
+{\footnotesize
 \pagestyle{plain}
 \printindex
 }
