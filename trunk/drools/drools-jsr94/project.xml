@@ -172,7 +172,7 @@
 
     <dependency>
       <id>jython</id>
-      <version>2.1</version>
+      <version>SNAPSHOT</version>
       <url>http://jython.org/</url>
     </dependency>
 
