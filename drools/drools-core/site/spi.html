@@ -16,7 +16,7 @@
       Each rule operates against some set of objects.  Each object may be categorized in one of many
       ways.  An XML document might be categorized based upon the root element when viewed within
       the semantics of XML.  But with the semantics of the Java language, each would simply be an
-      instance of some <code>Document</code> class, indifferentiable from others.
+      instance of some <code>Document</code> class, indistinguishable from others.
       <p>
       <p>
       An <a href="TOP/api/org/drools/spi/ObjectType.html">ObjectType</a> implementation is required
@@ -91,9 +91,9 @@ public boolean <a href="TOP/api/org/drools/spi/Condition.html#isAllowed(org.droo
 
       <p>
       The Rete-OO algorithm requires knowledge about what declarations are being tested
-      within each condition in order to build efficient datastructures.  Each condition
+      within each condition in order to build efficient data structures.  Each condition
       implementation therefore is required to implement the <a href="TOP/api/org/drools/spi/Condition.html#getRequiredTupleMembers()">getRequiredTupleMembers()</a>
-      method.  In the example above, the entire rule may invole a complex relationship
+      method.  In the example above, the entire rule may involve a complex relationship
       between 12 people, while this particular condition is only relevant to objects
       <code>p1</code> and <code>p2</code>, but has no need for <code>p3</code> through
       <code>p12</code>.  
