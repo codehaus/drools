@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.25 2004-08-26 10:11:32 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.26 2004-08-26 16:55:59 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -86,10 +86,10 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.25 2004-08-26 10:11:32 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.26 2004-08-26 16:55:59 mproctor Exp $
  */
-public class BlockConsequence //extends Interp
-    implements Consequence
+public class BlockConsequence
+    implements Consequence, Serializable
 {
     /** Interpreted text. */
     private String newline = System.getProperty("line.separator");
