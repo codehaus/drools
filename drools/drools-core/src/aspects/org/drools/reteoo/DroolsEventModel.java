@@ -28,36 +28,31 @@ public aspect DroolsEventModel
     pointcut assertObject(WorkingMemory workingMemory, Object object):
         execution(FactHandle WorkingMemory+.assertObject(Object))
         && target(workingMemory)
-        && args(object)
-        && if(workingMemory.getClass() != WorkingMemory.class);
+        && args(object);
 
     /** modifyObject crosspoint */
     pointcut modifyObject(WorkingMemory workingMemory, FactHandle handle, Object object):
         execution(void WorkingMemory+.modifyObject(FactHandle, Object))
         && target(workingMemory)
-        && args(handle, object)
-        && if(workingMemory.getClass() != WorkingMemory.class);
+        && args(handle, object);
 
     /** retractObject crosspoint */
     pointcut retractObject(WorkingMemory workingMemory, FactHandle handle):
         execution(void WorkingMemory+.retractObject(FactHandle))
         && target(workingMemory)
-        && args(handle)
-        && if(workingMemory.getClass() != WorkingMemory.class);
+        && args(handle);
 
     /** condition tested crosspoint */
     pointcut conditionCheck(Condition condition, Tuple tuple):
         call(boolean Condition+.isAllowed(Tuple))
         && target(condition)
-        && args(tuple)
-        && if(condition.getClass() != Condition.class);
+        && args(tuple);
 
     /** activation invoke crosspoint */
     pointcut activation(Consequence consequence, Tuple tuple, WorkingMemory workingMemory):
         call(void Consequence+.invoke(Tuple, WorkingMemory))
         && target(consequence)
-        && args(tuple, workingMemory)
-        && if(consequence.getClass() != Consequence.class);
+        && args(tuple, workingMemory);
 
 
     /** assertObject advice */
