@@ -1,7 +1,7 @@
 package org.drools.semantic.java;
 
 /*
- $Id: JavaSemanticModule.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: JavaSemanticModule.java,v 1.2 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -90,14 +90,14 @@ public class JavaSemanticModule extends SimpleSemanticModule
 
         try
         {
-            addObjectType( "java",
+            addObjectType( "class",
                            JavaObjectType.class );
+
+            addCondition( "expr",
+                          BeanShellExprCondition.class );
             
-            addFactExtractor( "expr",
-                              BeanShellFactExtractor.class );
-            
-            addAction( "action",
-                       BeanShellAction.class );
+            addConsequence( "block",
+                            BeanShellAction.class );
         }
         catch (SemanticModuleException e)
         {

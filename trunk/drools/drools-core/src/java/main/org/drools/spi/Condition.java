@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Condition.java,v 1.6 2002-08-01 20:38:46 bob Exp $
+ $Id: Condition.java,v 1.7 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,8 +53,10 @@ import org.drools.rule.Declaration;
  *  @see Tuple
  *  
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: Condition.java,v 1.7 2002-08-17 05:49:22 bob Exp $
  */
-public interface Condition 
+public interface Condition extends SemanticComponent
 {
     /** Retrieve the array of <code>Declaration</code>s required
      *  by this condition to perform its duties.

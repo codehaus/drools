@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.7 2002-08-13 04:12:26 bob Exp $
+ $Id: Rule.java,v 1.8 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,7 @@ import org.drools.spi.Consequence;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Collections;
 
 /** A set of <code>Condition</code>s and a <code>Consequence</code>.
@@ -207,7 +208,7 @@ public class Rule
      *
      *  @param declaration The declaration.
      */
-    private void addDeclaration(Declaration declaration)
+    public void addDeclaration(Declaration declaration)
     {
         if ( this.allDeclarations == Collections.EMPTY_SET )
         {
@@ -215,6 +216,24 @@ public class Rule
         }
 
         this.allDeclarations.add( declaration );
+    }
+
+    public Declaration getDeclaration(String identifier)
+    {
+        Iterator    declIter = this.allDeclarations.iterator();
+        Declaration eachDecl = null;
+
+        while ( declIter.hasNext() )
+        {
+            eachDecl = (Declaration) declIter.next();
+
+            if ( eachDecl.getIdentifier().equals( identifier ) )
+            {
+                return eachDecl;
+            }
+        }
+
+        return null;
     }
 
     /** Retrieve the set of all <i>root fact object</i> parameter

@@ -1,7 +1,7 @@
 package org.drools.semantic.java;
 
 /*
- $Id: BeanShellExprCondition.java,v 1.2 2002-08-02 14:10:33 bob Exp $
+ $Id: BeanShellExprCondition.java,v 1.3 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.semantic.java;
  */
 
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
@@ -110,6 +111,15 @@ public class BeanShellExprCondition implements Condition
         initializeInterpreter();
     }
 
+    /** Construct, partially.
+     *
+     *  @see #configure
+     */
+    public BeanShellExprCondition()
+    {
+
+    }
+
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
@@ -157,8 +167,6 @@ public class BeanShellExprCondition implements Condition
      */
     public boolean isAllowed(Tuple tuple) throws ConditionException
     {
-        System.err.println( this.condExpr + " --> " + tuple );
-
         boolean result = false;
 
         try
@@ -196,6 +204,12 @@ public class BeanShellExprCondition implements Condition
         }
 
         return result;
+    }
+
+    public void configure(Rule rule,
+                          String configInfo)
+    {
+        
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FactExtractor.java,v 1.5 2002-08-13 04:12:27 bob Exp $
+ $Id: FactExtractor.java,v 1.6 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.rule.Declaration;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface FactExtractor
+public interface FactExtractor extends SemanticComponent
 {
     /** Retrieve the array of <code>Declaration</code>s required
      *  by this <code>FactExtractor</code> to perform its duties.

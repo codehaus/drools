@@ -79,17 +79,17 @@ public class SemanticsLoaderTest extends TestCase
             assertSame( org.drools.spi.FactExtractor.class,
                         extractor );
 
-            Set actions = module.getActionNames();
+            Set consequences = module.getConsequenceNames();
 
             assertEquals( 1,
-                          actions.size() );
+                          consequences.size() );
 
-            assertTrue( actions.contains( "testAction" ) );
+            assertTrue( consequences.contains( "testConsequence" ) );
 
-            Class action = module.getAction( "testAction" );
+            Class consequence = module.getConsequence( "testConsequence" );
 
-            assertSame( org.drools.spi.Action.class,
-                        action );
+            assertSame( org.drools.spi.Consequence.class,
+                        consequence );
         }
         catch (Exception e)
         {

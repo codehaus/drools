@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.3 2002-08-13 04:12:26 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.4 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,8 +47,9 @@ package org.drools.smf;
  */
 
 import org.drools.spi.ObjectType;
+import org.drools.spi.Condition;
 import org.drools.spi.FactExtractor;
-import org.drools.spi.Action;
+import org.drools.spi.Consequence;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -72,11 +73,14 @@ public class SimpleSemanticModule implements SemanticModule
     /** Object type implementations. */
     private Map objectTypes;
 
+    /** Condition implementations. */
+    private Map conditions;
+
     /** Fact extractor implementations. */
     private Map factExtractors;
 
-    /** Action implementations. */
-    private Map actions;
+    /** Consequence implementations. */
+    private Map consequences;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -91,8 +95,9 @@ public class SimpleSemanticModule implements SemanticModule
         this.uri = uri;
 
         this.objectTypes    = new HashMap();
+        this.conditions     = new HashMap();
         this.factExtractors = new HashMap();
-        this.actions        = new HashMap();
+        this.consequences        = new HashMap();
     }
 
     // ------------------------------------------------------------
@@ -158,6 +163,28 @@ public class SimpleSemanticModule implements SemanticModule
         return this.objectTypes.keySet();
     }
 
+    public void addCondition(String name,
+                             Class condition) throws InvalidConditionException
+    {
+        if ( ! Condition.class.isAssignableFrom( condition ) )
+        {
+            throw new InvalidConditionException( condition );
+        }
+
+        this.conditions.put( name,
+                             condition );
+    }
+
+    public Class getCondition(String name)
+    {
+        return (Class) this.conditions.get( name );
+    }
+
+    public Set getConditionNames()
+    {
+        return this.conditions.keySet();
+    }
+
     /** Add a semantic object type.
      *
      *  @param name The object type name.
@@ -199,44 +226,44 @@ public class SimpleSemanticModule implements SemanticModule
         return this.factExtractors.keySet();
     }
 
-    /** Add a semantic action.
+    /** Add a semantic consequence.
      *
-     *  @param name The action name.
-     *  @param action The action implementation.
+     *  @param name The consequence name.
+     *  @param consequence The consequence implementation.
      *
-     *  @throws InvalidActionException If a class that is not a
-     *          action is added.
+     *  @throws InvalidConsequenceException If a class that is not a
+     *          consequence is added.
      */
-    public void addAction(String name,
-                          Class action) throws InvalidActionException
+    public void addConsequence(String name,
+                          Class consequence) throws InvalidConsequenceException
     {
-        if ( ! Action.class.isAssignableFrom( action ) )
+        if ( ! Consequence.class.isAssignableFrom( consequence ) )
         {
-            throw new InvalidActionException( action );
+            throw new InvalidConsequenceException( consequence );
         }
 
-        this.actions.put( name,
-                          action );
+        this.consequences.put( name,
+                          consequence );
     }
 
-    /** Retrieve a semantic action by name.
+    /** Retrieve a semantic consequence by name.
      *
      *  @param name the name.
      *
-     *  @return The action implementation or <code>null</code>
+     *  @return The consequence implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    public Class getAction(String name)
+    public Class getConsequence(String name)
     {
-        return (Class) this.actions.get( name );
+        return (Class) this.consequences.get( name );
     }
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    public Set getActionNames()
+    public Set getConsequenceNames()
     {
-        return this.actions.keySet();
+        return this.consequences.keySet();
     }
 }

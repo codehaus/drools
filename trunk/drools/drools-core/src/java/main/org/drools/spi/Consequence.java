@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Consequence.java,v 1.2 2002-08-13 04:12:27 bob Exp $
+ $Id: Consequence.java,v 1.3 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import org.drools.WorkingMemory;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface Consequence
+public interface Consequence extends SemanticComponent
 {
     /** Execute the consequence for the supplied
      *  matching <code>Tuple</code>.

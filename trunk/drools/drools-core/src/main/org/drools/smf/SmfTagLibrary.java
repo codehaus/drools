@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SmfTagLibrary.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: SmfTagLibrary.java,v 1.2 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -71,7 +71,7 @@ public class SmfTagLibrary extends TagLibrary
         registerTag( "extractor",
                      FactExtractorTag.class );
 
-        registerTag( "action",
-                     ActionTag.class );
+        registerTag( "consequence",
+                     ConsequenceTag.class );
     }
 }
