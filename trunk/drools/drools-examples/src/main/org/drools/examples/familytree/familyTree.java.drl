@@ -7,7 +7,7 @@
   <!-- ================================================================== -->
   <rule name="Explode Tree">
     <parameter identifier="familyHead">
-      <java:class>org.drools.examples.java.familytree.Person</java:class>
+      <java:class>org.drools.examples.familytree.Person</java:class>
     </parameter>
     <java:condition>true</java:condition>
     <java:consequence>
@@ -24,10 +24,10 @@
   <!-- ================================================================== -->
   <rule name="child of">
     <parameter identifier="theParent">
-      <java:class>org.drools.examples.java.familytree.Person</java:class>
+      <java:class>org.drools.examples.familytree.Person</java:class>
     </parameter>
     <parameter identifier="theChild">
-      <java:class>org.drools.examples.java.familytree.Person</java:class>
+      <java:class>org.drools.examples.familytree.Person</java:class>
     </parameter>
     <java:condition>theParent.hasChild(theChild);</java:condition>
     <java:consequence>
@@ -62,7 +62,7 @@
       import java.util.HashSet;
       import java.util.Map;
       import java.util.Set;
-      Map m = org.drools.examples.java.familytree.FamilyTree.tree;
+      Map m = org.drools.examples.familytree.FamilyTree.tree;
       final Object descendent = value.keySet().toArray()[0];
       final Object parent = value.values().toArray()[0];
 

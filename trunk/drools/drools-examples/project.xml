@@ -50,6 +50,31 @@
             </properties>
         </dependency>
         <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-groovy</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.0-beta-5</version>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>1.4.1</version>
+            <url>http://asm.objectweb.org/</url>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>1.4.1</version>
+            <url>http://asm.objectweb.org/</url>
+        </dependency>
+        <dependency>
             <groupId>antlr</groupId>
             <artifactId>antlr</artifactId>
             <version>2.7.2</version>

@@ -1,7 +1,7 @@
-package org.drools.examples.java.familytree;
+package org.drools.examples.familytree;
 
 /*
-$Id: FamilyTree.java,v 1.2 2004-06-26 15:45:16 mproctor Exp $
+$Id: FamilyTree.java,v 1.1 2004-07-07 04:45:21 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -108,20 +108,29 @@ public final class FamilyTree
 		return Balbo;
 	}
 
-	public static void main( String[] args ) throws Exception
+	public static void main( String[] args )
 	{
+        if (args.length != 1) {
+            System.out.println("Usage: " + FamilyTree.class.getName() + " [drl file]");
+            return;
+        }
+        System.out.println("Using drl: " + args[0]);
 		// First, construct an empty RuleBase to be the
 		// container for your rule logic.
-		URL url = FamilyTree.class.getResource( "familyTree.drl" );
-		RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
+        try {
+            URL url = FamilyTree.class.getResource( args[0] );
+            RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
 
-		// Create a [org.drools.WorkingMemory] to be the
-		// container for your facts
-		final WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
+            // Create a [org.drools.WorkingMemory] to be the
+            // container for your facts
+            final WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 
-		// Now, simply assert them into the [org.drools.WorkingMemory]
-		// and let the logic engine do the rest.
-		workingMemory.assertObject( getFamilyTree( workingMemory ) );
-		workingMemory.fireAllRules( );
-	}
+            // Now, simply assert them into the [org.drools.WorkingMemory]
+            // and let the logic engine do the rest.
+            workingMemory.assertObject( getFamilyTree( workingMemory ) );
+            workingMemory.fireAllRules( );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

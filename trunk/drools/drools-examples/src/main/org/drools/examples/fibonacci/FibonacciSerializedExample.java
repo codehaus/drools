@@ -1,7 +1,7 @@
-package org.drools.examples.java.fibonacci;
+package org.drools.examples.fibonacci;
 
 /*
-$Id: Fibonacci.java,v 1.2 2004-06-26 15:45:16 mproctor Exp $
+$Id: FibonacciSerializedExample.java,v 1.1 2004-07-07 04:45:21 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,34 +46,58 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-public class Fibonacci
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.io.RuleBaseBuilder;
+
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+
+
+public class FibonacciSerializedExample
 {
-    private int sequence;
-    private long value;
-
-    public Fibonacci(int sequence)
+    private static RuleBase getSerializedRuleBase(String drl)
+        throws Exception
     {
-        this.sequence = sequence;
-        this.value    = -1;
+        RuleBase ruleBaseIn = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( drl ) );
+
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+        ObjectOutput out = new ObjectOutputStream(bos) ;
+        out.writeObject(ruleBaseIn);
+        out.close();
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray();
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        RuleBase ruleBaseOut = (RuleBase) in.readObject();
+        in.close();
+        return ruleBaseOut;
     }
 
-    public int getSequence()
+    public static void main(String[] args)
+        throws Exception
     {
-        return this.sequence;
-    }
+        RuleBase ruleBase = getSerializedRuleBase("fibonacci.java.drl");
 
-    public void setValue(long value)
-    {
-        this.value = value;
-    }
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-    public long getValue()
-    {
-        return this.value;
-    }
+        Fibonacci fibonacci = new Fibonacci( 50 );
 
-    public String toString()
-    {
-        return "Fibonacci(" + this.sequence + "/" + this.value + ")";
+        long start = System.currentTimeMillis();
+
+        workingMemory.assertObject( fibonacci );
+
+        workingMemory.fireAllRules();
+
+        long stop = System.currentTimeMillis();
+
+        System.out.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
     }
 }

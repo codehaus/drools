@@ -8,7 +8,7 @@
     <!-- assert each item in the shopping cart into the Working Memory -->
     <rule name="Explode Cart">
         <parameter identifier="cart" salience="20">
-            <java:class>org.drools.examples.java.petstore.ShoppingCart</java:class>
+            <java:class>org.drools.examples.petstore.ShoppingCart</java:class>
         </parameter>
 
         <java:condition>cart.getState( "Exploded" ) == false</java:condition>
@@ -32,10 +32,10 @@
     <!-- Free Fish Food sample when we buy a Gold Fish if we haven't already  bought Fish Food and dont already have a Fish Food Sample-->
     <rule name="Free Fish Food Sample">
         <parameter identifier="cart">
-            <java:class>org.drools.examples.java.petstore.ShoppingCart</java:class>
+            <java:class>org.drools.examples.petstore.ShoppingCart</java:class>
         </parameter>
         <parameter identifier="item">
-            <java:class>org.drools.examples.java.petstore.CartItem</java:class>
+            <java:class>org.drools.examples.petstore.CartItem</java:class>
         </parameter>
 
         <java:condition>cart.getItems( "Fish Food Sample" ).size() == 0</java:condition>
@@ -44,7 +44,7 @@
 
         <java:consequence>
             System.out.println( "Adding free Fish Food Sample to cart" );
-            cart.addItem( new org.drools.examples.java.petstore.CartItem( "Fish Food Sample", 0.00 ) );
+            cart.addItem( new org.drools.examples.petstore.CartItem( "Fish Food Sample", 0.00 ) );
             drools.modifyObject( cart );
         </java:consequence>
 
@@ -53,7 +53,7 @@
     <!-- Suggest a tank if we have bought more than 5 tropical fish and dont already have one-->
     <rule name="Suggest Tank" salience="10">
         <parameter identifier="cart">
-            <java:class>org.drools.examples.java.petstore.ShoppingCart</java:class>
+            <java:class>org.drools.examples.petstore.ShoppingCart</java:class>
         </parameter>
 
         <java:condition>cart.getState( "Suggested Fish Tank" ) == false</java:condition>
@@ -76,7 +76,7 @@
             System.out.print( "SUGGESTION: Would you like to buy a tank for your "
                               + cart.getItems( "tropical fish" ).size() + " fish? - " );
             if (n == 0) {
-              cart.addItem( new org.drools.examples.java.petstore.CartItem( "Fish Tank", 25.00 ) );
+              cart.addItem( new org.drools.examples.petstore.CartItem( "Fish Tank", 25.00 ) );
               System.out.println( "Yes" );
             } else {
               System.out.println( "No" );
@@ -90,7 +90,7 @@
     <!-- Give 5% discount if gross cost is more than 20.00 -->
     <rule name="Apply 5% Discount">
         <parameter identifier="cart">
-            <java:class>org.drools.examples.java.petstore.ShoppingCart</java:class>
+            <java:class>org.drools.examples.petstore.ShoppingCart</java:class>
         </parameter>
 
         <java:condition>cart.getGrossCost() &gt;= 10.00</java:condition>
@@ -107,7 +107,7 @@
     <!-- Give 10% discount if gross cost is more than 20.00 -->
     <rule name="Apply 10% Discount">
         <parameter identifier="cart">
-            <java:class>org.drools.examples.java.petstore.ShoppingCart</java:class>
+            <java:class>org.drools.examples.petstore.ShoppingCart</java:class>
         </parameter>
 
         <java:condition>cart.getGrossCost() &gt;= 20.00</java:condition>
