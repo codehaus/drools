@@ -2,9 +2,14 @@
 
 <rule-set name="State Example"
           xmlns="http://drools.org/rules"
-          xmlns:java="http://drools.org/semantics/java">
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
 
     <java:import>org.drools.examples.state.State</java:import>
+
+	<appdata name="foo">Bar</appdata>
 
     <rule name="Bootstrap">
         <parameter identifier="a">

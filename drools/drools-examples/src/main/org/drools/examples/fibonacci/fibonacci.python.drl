@@ -2,7 +2,10 @@
 
 <rule-set name="fibonacci"
           xmlns="http://drools.org/rules"
-          xmlns:python="http://drools.org/semantics/python">
+          xmlns:python="http://drools.org/semantics/python"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/python python.xsd">
 
   <python:import>from org.drools.examples.fibonacci import Fibonacci</python:import>
 
