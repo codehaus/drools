@@ -2,15 +2,56 @@
 
 \section{Introduction}
 
-\section{\indexTag{class}}
+The Java semantic module defines addition tags which may be used
+within a DRL document (Chapter~\vref{drl}).  The tags provided by
+this module allow for semantics based upon the Java programming
+language.  Object types may be determined using Java classes while
+conditions and extractors are formulated in terms of Java expressions.
+A consequence may be an arbitrary block of Java statements.
+
+\section{Java semantic module namespace URI}
+
+That tags for the Java semantic module are defined within the
+XML namespace \texttt{http://drools.org/semantics/java}.  In order
+to use the tags of the Java semantic module, this namespace should
+be bound to a prefix with the DRL document.  Typically this is done
+on the root \tag{rule-set} tag (Figure~\vref{java.uri}).
+
+\begin{figure}
+\begin{tagExample}
+<rule-set xmlns="http://drools.org/rules"
+          {\color{black}xmlns:java="http://drools.org/semantics/java"}>
+    ...
+</rule-set>
+\end{tagExample}
+\caption{Binding of Java semantic module namespace URI to a prefix}
+\label{java.uri}
+\end{figure}
+
+\section{Java Semantic Module tags}
+
+\subsection{\indexTag{class}}
 \label{java.class}
 
-\section{\indexTag{condition}}
+\begin{tagDesc}{class}
+\noattrs
+\tagContent{Name of the java class.}
+\end{tagDesc}
+
+\begin{figure}
+\begin{tagExample}
+<java:class>
+\end{tagExample}
+\caption{Example of the \indexTag{class} tag}
+\label{java.class}
+\end{figure}
+
+\subsection{\indexTag{condition}}
 \label{java.condition}
 
-\section{\indexTag{extractor}}
+\subsection{\indexTag{extractor}}
 \label{java.extractor}
 
-\section{\indexTag{consequence}}
+\subsection{\indexTag{consequence}}
 \label{java.consequence}
 

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsReader.java,v 1.4 2003-11-27 04:32:22 bob Exp $
+ $Id: SemanticsReader.java,v 1.5 2003-11-30 03:05:43 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -77,7 +77,7 @@ import java.util.Enumeration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsReader.java,v 1.4 2003-11-27 04:32:22 bob Exp $
+ *  @version $Id: SemanticsReader.java,v 1.5 2003-11-30 03:05:43 bob Exp $
  */
 public class SemanticsReader
 {
@@ -175,39 +175,52 @@ public class SemanticsReader
         for ( Enumeration propNames = props.propertyNames();
               propNames.hasMoreElements(); )
         {
-            String componentName = (String) propNames.nextElement();
+            String key = (String) propNames.nextElement();
 
-            if ( componentName.equals( "module.uri" ) )
+            if ( key.equals( "module.uri" ) )
             {
                 continue;
             }
 
-            String className     = props.getProperty( componentName );
+            String className     = props.getProperty( key );
 
             Class factoryClass = cl.loadClass( className );
 
-            if ( ObjectTypeFactory.class.isAssignableFrom( factoryClass ) )
+            if ( key.indexOf( "(" ) < 0
+                 ||
+                 key.indexOf( ")" ) < 0 )
+            {
+                throw new Exception( "invalid key: " + key );
+            }
+
+            String type = key.substring( 0,
+                                         key.indexOf( "(" ) );
+
+            String componentName = key.substring( key.indexOf( "(" ) + 1,
+                                                  key.indexOf( ")" ) );
+
+            if ( "ObjectType".equals( type ) )
             {
                 ObjectTypeFactory factory = (ObjectTypeFactory) factoryClass.newInstance();
-
+                
                 module.addObjectTypeFactory( componentName,
                                              factory );
             }
-            else if ( ConditionFactory.class.isAssignableFrom( factoryClass ) )
+            else if ( "Condition".equals( type ) )
             {
                 ConditionFactory factory = (ConditionFactory) factoryClass.newInstance();
 
                 module.addConditionFactory( componentName,
                                             factory );
             }
-            else if ( ExtractorFactory.class.isAssignableFrom( factoryClass ) )
+            else if ( "Extractor".equals( type ) )
             {
                 ExtractorFactory factory = (ExtractorFactory) factoryClass.newInstance();
 
                 module.addExtractorFactory( componentName,
                                             factory );
             }
-            else if ( ConsequenceFactory.class.isAssignableFrom( factoryClass ) )
+            else if ( "Consequence".equals( type ) )
             {
                 ConsequenceFactory factory = (ConsequenceFactory) factoryClass.newInstance();
 
