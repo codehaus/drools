@@ -1,7 +1,7 @@
 package org.drools.jsr94.jca.spi;
 
 /*
- $Id: RuleManagedConnectionFactory.java,v 1.2 2003-03-22 00:41:19 tdiesler Exp $
+ $Id: RuleManagedConnectionFactory.java,v 1.3 2003-03-22 22:06:23 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -64,82 +64,88 @@ import java.util.Set;
  */
 public class RuleManagedConnectionFactory implements ManagedConnectionFactory, Serializable {
 
-   private PrintWriter logWriter;
+    private PrintWriter logWriter;
 
-   /**
-    * Creates a Connection Factory instance.
-    * The Connection Factory instance gets initialized with the passed ConnectionManager.
-    * In the managed scenario, ConnectionManager is provided by the application server.
-    */
-   public Object createConnectionFactory(ConnectionManager cxManager) throws ResourceException {
-      logWriter.println("RuleManagedConnectionFactory.createConnectionFactory");
-      return new RuleConnectionFactory(this, cxManager);
-   }
+    /**
+     * Creates a Connection Factory instance.
+     * The Connection Factory instance gets initialized with the passed ConnectionManager.
+     * In the managed scenario, ConnectionManager is provided by the application server.
+     */
+    public Object createConnectionFactory( ConnectionManager cxManager ) throws ResourceException
+    {
+        logWriter.println( "RuleManagedConnectionFactory.createConnectionFactory" );
+        return new RuleConnectionFactory( this, cxManager );
+    }
 
-   /**
-    * Creates a Connection Factory instance.
-    * The Connection Factory instance gets initialized with a default ConnectionManager provided by the resource adapter.
-    */
-   public Object createConnectionFactory() throws ResourceException {
-      logWriter.println("RuleManagedConnectionFactory.createManagedFactory");
-      return new RuleConnectionFactory(this, null);
-   }
+    /**
+     * Creates a Connection Factory instance.
+     * The Connection Factory instance gets initialized with a default ConnectionManager provided by the resource adapter.
+     */
+    public Object createConnectionFactory() throws ResourceException
+    {
+        logWriter.println( "RuleManagedConnectionFactory.createManagedFactory" );
+        return new RuleConnectionFactory( this, null );
+    }
 
-   /**
-    * Creates a new physical connection to the underlying EIS resource manager.
-    * <p>
-    * ManagedConnectionFactory uses the security information (passed as Subject) and additional
-    * ConnectionRequestInfo (which is specific to ResourceAdapter and opaque to application server) to create this new connection.
-    */
-   public ManagedConnection createManagedConnection(Subject subject, ConnectionRequestInfo info) {
-      logWriter.println("RuleManagedConnectionFactory.createManagedConnection");
-      return null;
-   }
+    /**
+     * Creates a new physical connection to the underlying EIS resource manager.
+     * <p>
+     * ManagedConnectionFactory uses the security information (passed as Subject) and additional
+     * ConnectionRequestInfo (which is specific to ResourceAdapter and opaque to application server) to create this new connection.
+     */
+    public ManagedConnection createManagedConnection( Subject subject, ConnectionRequestInfo info )
+    {
+        logWriter.println( "RuleManagedConnectionFactory.createManagedConnection" );
+        return null;
+    }
 
-   /**
-    * Returns a matched connection from the candidate set of connections.
-    * <p>
-    * ManagedConnectionFactory uses the security info (as in Subject) and information provided through
-    * ConnectionRequestInfo and additional Resource Adapter specific criteria to do matching.
-    * Note that criteria used for matching is specific to a resource adapter and is not prescribed by the Connector specification.
-    * <p>
-    * This method returns a ManagedConnection instance that is the best match for handling the connection allocation request.
-    *
-    */
-   public ManagedConnection matchManagedConnections(Set connectionSet, Subject subject, ConnectionRequestInfo info) throws ResourceException {
-      logWriter.println("RuleManagedConnectionFactory.matchManagedConnections");
-      return null;
-   }
+    /**
+     * Returns a matched connection from the candidate set of connections.
+     * <p>
+     * ManagedConnectionFactory uses the security info (as in Subject) and information provided through
+     * ConnectionRequestInfo and additional Resource Adapter specific criteria to do matching.
+     * Note that criteria used for matching is specific to a resource adapter and is not prescribed by the Connector specification.
+     * <p>
+     * This method returns a ManagedConnection instance that is the best match for handling the connection allocation request.
+     *
+     */
+    public ManagedConnection matchManagedConnections( Set connectionSet, Subject subject, ConnectionRequestInfo info ) throws ResourceException
+    {
+        logWriter.println( "RuleManagedConnectionFactory.matchManagedConnections" );
+        return null;
+    }
 
-   /**
-    * Set the log writer for this ManagedConnectionFactory instance.
-    * <p>
-    * The log writer is a character output stream to which all logging and tracing messages for this
-    * ManagedConnectionfactory instance will be printed.
-    * <p>
-    * ApplicationServer manages the association of output stream with the ManagedConnectionFactory.
-    * When a ManagedConnectionFactory object is created the log writer is initially null, in other words, logging is disabled.
-    * Once a log writer is associated with a ManagedConnectionFactory, logging and tracing for ManagedConnectionFactory
-    * instance is enabled.
-    * <p>
-    * The ManagedConnection instances created by ManagedConnectionFactory "inherits" the log writer,
-    * which can be overridden by ApplicationServer using ManagedConnection.setLogWriter to set ManagedConnection
-    * specific logging and tracing.
-    */
-   public void setLogWriter(PrintWriter logWriter) throws ResourceException {
-      this.logWriter = logWriter;
-   }
+    /**
+     * Set the log writer for this ManagedConnectionFactory instance.
+     * <p>
+     * The log writer is a character output stream to which all logging and tracing messages for this
+     * ManagedConnectionfactory instance will be printed.
+     * <p>
+     * ApplicationServer manages the association of output stream with the ManagedConnectionFactory.
+     * When a ManagedConnectionFactory object is created the log writer is initially null, in other words, logging is disabled.
+     * Once a log writer is associated with a ManagedConnectionFactory, logging and tracing for ManagedConnectionFactory
+     * instance is enabled.
+     * <p>
+     * The ManagedConnection instances created by ManagedConnectionFactory "inherits" the log writer,
+     * which can be overridden by ApplicationServer using ManagedConnection.setLogWriter to set ManagedConnection
+     * specific logging and tracing.
+     */
+    public void setLogWriter( PrintWriter logWriter ) throws ResourceException
+    {
+        this.logWriter = logWriter;
+    }
 
-   /**
-    * Get the log writer for this ManagedConnectionFactory instance.
-    * <p>
-    * The log writer is a character output stream to which all logging and tracing messages for this
-    * ManagedConnectionFactory instance will be printed.
-    * <p>
-    * ApplicationServer manages the association of output stream with the ManagedConnectionFactory.
-    * When a ManagedConnectionFactory object is created the log writer is initially null, in other words, logging is disabled.
-    */
-   public PrintWriter getLogWriter() throws ResourceException {
-      return logWriter;
-   }
+    /**
+     * Get the log writer for this ManagedConnectionFactory instance.
+     * <p>
+     * The log writer is a character output stream to which all logging and tracing messages for this
+     * ManagedConnectionFactory instance will be printed.
+     * <p>
+     * ApplicationServer manages the association of output stream with the ManagedConnectionFactory.
+     * When a ManagedConnectionFactory object is created the log writer is initially null, in other words, logging is disabled.
+     */
+    public PrintWriter getLogWriter() throws ResourceException
+    {
+        return logWriter;
+    }
 }
