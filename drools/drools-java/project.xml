@@ -42,6 +42,13 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
+        <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.2</version>
+            <type>jar</type>
+            <properties/>
+        </dependency>
     </dependencies>
 
     <build>

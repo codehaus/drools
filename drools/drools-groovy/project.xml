@@ -25,6 +25,13 @@
           <url>http://asm.objectweb.org/</url>
         </dependency>
         <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.2</version>
+            <type>jar</type>
+            <properties/>
+        </dependency>
+        <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
             <version>${pom.currentVersion}</version>
