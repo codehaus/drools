@@ -28,6 +28,8 @@ public class Rule
     private Set    filterConditions;
     private Set    assignmentConditions;
 
+    private Action action;
+
     public Rule(String name)
     {
         setState( STATE_DECL );
@@ -143,5 +145,15 @@ public class Rule
     public Set getAssignmentConditions()
     {
         return this.assignmentConditions;
+    }
+
+    public void setAction(Action action)
+    {
+        this.action = action;
+    }
+
+    public Action getAction()
+    {
+        return this.action;
     }
 }

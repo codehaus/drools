@@ -24,6 +24,11 @@ public class JavaObjectType implements ObjectType
 
     public boolean equals(Object thatObj)
     {
+        if ( ! ( thatObj instanceof JavaObjectType ) )
+        {
+            return false;
+        }
+
         JavaObjectType that = (JavaObjectType) thatObj;
 
         return this.objectClass.equals( that.objectClass );

@@ -26,9 +26,15 @@ public class TerminalNode implements TupleSink
      *
      *  @param action The <code>Action</code> to invoke upon match.
      */
-    public TerminalNode(Action action)
+    public TerminalNode(TupleSource tupleSource,
+                        Action action)
     {
         this.action = action;
+
+        if ( tupleSource != null )
+        {
+            tupleSource.setTupleSink( this );
+        }
     }
 
     /** Retrieve the <code>Action</code> associated with

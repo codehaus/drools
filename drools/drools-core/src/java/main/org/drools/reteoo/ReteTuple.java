@@ -68,4 +68,9 @@ public class ReteTuple implements Tuple
     {
         return tuple.keySet();
     }
+
+    public String toString()
+    {
+        return "[ReteTuple: tuple=" + this.tuple + "]";
+    }
 }
