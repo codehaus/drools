@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.28 2004-12-06 06:54:48 simon Exp $
+ * $Id: TupleSet.java,v 1.29 2004-12-14 19:45:05 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ class TupleSet
     // ------------------------------------------------------------
 
     /** Tuples, indexed by TupleKey. */
-    private final Map tuples;
+    private Map tuples;
 
     // ------------------------------------------------------------
     // Constructors
@@ -169,7 +169,14 @@ class TupleSet
      */
     public void removeTuple(TupleKey key)
     {
-        this.tuples.remove( key );
+        if ( 1 == this.tuples.size( ) )
+        {
+            this.tuples = new HashMap( );
+        }
+        else
+        {
+            this.tuples.remove( key );
+        }
     }
 
     /**
