@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.16 2004-10-17 02:25:22 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.17 2004-10-25 15:38:43 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -162,8 +162,8 @@ class ExtractionNode extends TupleSource implements TupleSink
         Object value = getExtractor( ).extractFact( tuple );
         
         // Extractions should never evaluate to null
-        // if null do not propogate
-        if (value == null)
+        // Extractions with same target should be of same type and value
+        if ((value == null)||(!checkExtractorOk(value, tuple)))
         {
             return;
         }
@@ -233,6 +233,33 @@ class ExtractionNode extends TupleSource implements TupleSink
         }
     }
 
+    /**
+     * For targets shared by extractors the
+     * extracted fact should be the same.
+     * If the given declaration is a targetDeclaration
+     * for one it must be for the other, as its a common
+     * declaration. 
+     * 
+     * @param decl
+     * @param left
+     * @param right
+     * @return
+     */
+    boolean checkExtractorOk(Object value, ReteTuple tuple)
+    {
+        Set otherTargetDecls = tuple.getTargetDeclarations();
+        Declaration decl = this.targetDeclaration;
+                      
+        if ((otherTargetDecls != null)&&otherTargetDecls.contains(decl))
+        {
+            if (!otherTargetDecls.contains(decl) || !value.equals(tuple.get(decl))) 
+            {
+                return false;
+            }
+        }
+        return true;        
+    }    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     java.lang.Object
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -248,11 +275,4 @@ class ExtractionNode extends TupleSource implements TupleSink
                + "; extractor=" + getExtractor( ) + "]";
     }
 
-    public String dump(String indent)
-    {
-        StringBuffer buffer = new StringBuffer( );
-        buffer.append( indent + "ExtractionNode\n" );
-        buffer.append( indent + "-------------\n" );
-        return buffer.toString( );
-    }
 }
