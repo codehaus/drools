@@ -1,7 +1,12 @@
 body {
  background: #fff;
  color: #000;
+ max-width: 8in;
  }
+
+a {
+	font-weight: normal;
+}
 
 table {
 	border: none;
@@ -16,7 +21,7 @@ table {
 	border-left: solid 1px #000000;
 	border-right: solid 1px #000000;
         padding:6px;
-        background-color:#cccccc;
+        background-color:#eeeeee;
 	color:#990000;
 	font-size:14pt;
 	margin: 1pt;
@@ -24,7 +29,6 @@ table {
 }
 
 .app h3 a {
-	font-weight:800;
 	font-size:9pt;
 	font-stretch:expanded;
 }
@@ -32,19 +36,20 @@ table {
 .app h4 {
         font-family: sans-serif;
         border:#bbbbbb solid 1px;
-        padding:5px;
+        padding:2px;
         background-color:#eeeeee;
 	color:#990000;
 	padding-left: 24px;
+	margin-left:.25in;
+	margin-right:.25in;
 }
 
 .app h4 a {
-	font-weight:100;
-	font-size:10pt;
+	font-size:8pt;
 }
 
 .app th {
-	background-color: #bbbbbb;
+	background-color: #cccccc;
 	color: #990000;
         font-family: sans-serif;
         font-size: 9pt;
@@ -69,7 +74,7 @@ code {
 }
 
 .b td { 
- background: #cccccc;
+ background: #dddddd;
  color: #000;
  border: solid #555555 1px;
  font-family: sans-serif;
@@ -89,10 +94,11 @@ div#banner {
  }
 
 #bodycol div.h3 p {
-	max-width: 5in;
+	max-width: 4.5in;
 	margin-left: 36pt;
 	line-height: 1.6em;
-	font-size: 10pt;
+	font-size: 8pt;
+	color:#777777;
 }
 
 #banner, #banner td { 
@@ -123,7 +129,7 @@ div#banner {
   color:#990000;
   padding: 4px;
   line-height:20pt;
-  border: 1px solid #bbbbbb;
+  border-bottom: 1px solid #bbbbbb;
 }
 
 #navcolumn div {
@@ -173,7 +179,7 @@ div#banner {
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 1em;
-  color:#990000;
+  color:#777777;
 }
 
 #footer table {
