@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.6 2002-08-21 05:46:13 bob Exp $
+ $Id: ClassObjectType.java,v 1.7 2002-08-25 20:30:06 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.apache.commons.beanutils.ConversionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.6 2002-08-21 05:46:13 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.7 2002-08-25 20:30:06 bob Exp $
  */
 public class ClassObjectType implements ObjectType
 {
@@ -204,5 +204,14 @@ public class ClassObjectType implements ObjectType
     public String toString()
     {
         return "[ClassObjectType: type=" + getType().getName() + "]";
+    }
+
+    /** Produce the hash of this object.
+     *
+     *  @return The hash.
+     */
+    public int hashCode()
+    {
+        return getType().hashCode();
     }
 }
