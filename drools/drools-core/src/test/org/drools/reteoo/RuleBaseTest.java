@@ -86,7 +86,6 @@ public class RuleBaseTest extends DroolsTestCase
         RuleBase ruleBase = builder.buildRuleBase( );
 
         // Serialize to a byte array
-        System.out.println( "Serialise out" );
         ByteArrayOutputStream bos = new ByteArrayOutputStream( );
         ObjectOutput out = new ObjectOutputStream( bos );
         out.writeObject( ruleBase );
@@ -96,7 +95,6 @@ public class RuleBaseTest extends DroolsTestCase
         byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        System.out.println( "Serialise in" );
         ObjectInput in = new ObjectInputStream(
                                                 new ByteArrayInputStream( bytes ) );
         ruleBase = ( RuleBase ) in.readObject( );
