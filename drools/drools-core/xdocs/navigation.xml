@@ -6,7 +6,6 @@
 
   <body>
     <links>
-      <item name="drools@SourceForge" href="http://www.sourceforge.net/projects/drools"/>
       <item name="The Werken Company" href="http://www.werken.com/"/>
     </links>
     <menu name="drools">
@@ -18,7 +17,6 @@
       <item name="Blog"               href="http://blogs.werken.com/projects/drools/"/>
       <item name="Papers"             href="/papers.html"/>
       <item name="Status"             href="/status.html"/>
-      <item name="drools@SourceForge" href="http://www.sourceforge.net/projects/drools"/>
     </menu>
   </body>
 
