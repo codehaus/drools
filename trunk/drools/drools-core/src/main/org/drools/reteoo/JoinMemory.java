@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.46 2004-11-29 06:28:56 simon Exp $
+ * $Id: JoinMemory.java,v 1.47 2004-11-29 06:37:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -104,8 +104,9 @@ class JoinMemory
      */
     boolean retractTuples(TupleKey key)
     {
+        // Single | doesn't short circuit; THIS IS IMPORTANT!
         return this.leftTuples.removeAllTuples( key )
-               || this.rightTuples.removeAllTuples( key );
+               | this.rightTuples.removeAllTuples( key );
     }
 
     /**
