@@ -1,0 +1,32 @@
+
+<rules xmlns="http://drools.org/rules">
+
+  <semantics module="org.drools.semantics.java"/>
+
+  <rule-set name="test rules"
+           xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="test:1">
+      <parameter identifier="string">
+        <java:class type="java.lang.String"/>
+      </parameter>
+
+        <parameter identifier="props">
+          <java:class type="java.util.Properties"/>
+        </parameter>
+
+      <condition>
+        <java:condition>props.getProperty( "test" ) != null</java:condition>
+      </condition>
+
+      <consequence>
+        <java:consequence>
+				System.err.println( "FOOO" );
+            props.setProperty( "test", "success" );
+        </java:consequence>
+      </consequence>
+    </rule>
+  </rule-set>
+
+</rules>
+
