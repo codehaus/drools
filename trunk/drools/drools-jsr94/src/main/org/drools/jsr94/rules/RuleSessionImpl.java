@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleSessionImpl.java,v 1.5 2003-10-16 03:48:32 bob Exp $
+ $Id: RuleSessionImpl.java,v 1.6 2004-04-02 22:36:37 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -63,6 +63,7 @@ import java.util.Iterator;
  *
  * @see RuleSession
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 abstract class RuleSessionImpl
@@ -81,7 +82,7 @@ abstract class RuleSessionImpl
 
     protected WorkingMemory newWorkingMemory()
     {
-        WorkingMemory workingMemory = getRuleExecutionSet().getRuleBase().newWorkingMemory();
+        WorkingMemory workingMemory = getRuleExecutionSet().newWorkingMemory();
 
         workingMemory.setApplicationData( getProperties() );
 
