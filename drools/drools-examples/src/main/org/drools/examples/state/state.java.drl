@@ -19,11 +19,10 @@
         <java:consequence>
             System.out.println(a.getName() + " finished" );
             a.setState("FINISHED");
-            drools.modifyObject(a);
         </java:consequence>
     </rule>
 
-    <rule name="AtoB" salience="30">
+    <rule name="AtoB">
         <parameter identifier="a">
             <class-field field="name" value="A">State</class-field>
         </parameter>
@@ -37,11 +36,10 @@
         <java:consequence>
             System.out.println(b.getName() + " finished" );
             b.setState("FINISHED");
-            drools.modifyObject(b);
         </java:consequence>
     </rule>
 
-    <rule name="BtoC" salience="20">
+    <rule name="BtoC">
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
@@ -55,13 +53,10 @@
         <java:consequence>
             System.out.println(c.getName() + " finished" );
             c.setState("FINISHED");
-            drools.modifyObject(c);
         </java:consequence>
     </rule>
 
-
-
-    <rule name="BtoD" salience="10">
+    <rule name="BtoD">
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
@@ -75,9 +70,7 @@
         <java:consequence>
             System.out.println(d.getName() + " finished" );
             d.setState("FINISHED");
-            drools.modifyObject(d);
         </java:consequence>
     </rule>
-
 
   </rule-set>
