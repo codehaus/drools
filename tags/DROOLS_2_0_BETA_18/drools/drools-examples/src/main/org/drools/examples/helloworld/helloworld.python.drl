@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<rule-set name="HelloWorld"
+          xmlns="http://drools.org/rules"
+          xmlns:python="http://drools.org/semantics/python"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/python python.xsd">
+
+  <python:import>from java.lang import Object</python:import>
+  <python:import>from java.lang import String</python:import>
+  
+  <rule name="Hello World">
+    <parameter identifier="hello">
+      <class>String</class>
+    </parameter>
+
+    <python:condition>hello == 'Hello'</python:condition>
+
+    <python:consequence>
+      print "%s World" % hello
+    </python:consequence>
+  </rule>
+
+  <rule name="Goodbye Cruel World">
+    <parameter identifier="goodbye">
+      <class>String</class>
+    </parameter>
+
+    <python:condition>goodbye == 'Goodbye'</python:condition>
+
+    <python:consequence>
+      print "%s Cruel World" % goodbye
+    </python:consequence>
+  </rule>
+
+  <rule name="Debug">
+    <parameter identifier="object">
+      <class>Object</class>
+    </parameter>
+
+    <python:consequence>
+      print "Asserted object: %s" % object
+    </python:consequence>
+  </rule>
+
+</rule-set>
