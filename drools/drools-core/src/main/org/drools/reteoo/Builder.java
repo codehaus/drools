@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.46 2004-10-22 15:20:48 simon Exp $
+ * $Id: Builder.java,v 1.47 2004-11-03 02:35:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -170,18 +170,16 @@ public class Builder
         Set factExtracts = new HashSet( Arrays.asList( rule.getExtractions( ) ) );
         List conds = new ArrayList( Arrays.asList( rule.getConditions( ) ) );
 
-        Set leafNodes = null;
+        Set leafNodes;
 
-        boolean performedJoin = false;
-        boolean attachedExtract = false;
-        boolean joinedForCondition = false;
+        boolean performedJoin;
+        boolean attachedExtract;
+        boolean joinedForCondition;
 
         leafNodes = createParameterNodes( rule );
 
         while ( true )
         {
-            performedJoin = false;
-            attachedExtract = false;
             joinedForCondition = false;
 
             if ( !conds.isEmpty( ) )
@@ -241,17 +239,14 @@ public class Builder
     {
         Set leafNodes = new HashSet( );
 
-        Set parameterDecls = new HashSet(
-                                          Arrays
-                                                .asList( rule
-                                                             .getParameterDeclarations( ) ) );
+        Set parameterDecls = new HashSet( Arrays.asList( rule.getParameterDeclarations() ) );
 
         Iterator declIter = parameterDecls.iterator( );
-        Declaration eachDecl = null;
+        Declaration eachDecl;
 
-        ObjectType objectType = null;
-        ObjectTypeNode objectTypeNode = null;
-        ParameterNode paramNode = null;
+        ObjectType objectType;
+        ObjectTypeNode objectTypeNode;
+        ParameterNode paramNode;
 
         while ( declIter.hasNext( ) )
         {
@@ -286,10 +281,10 @@ public class Builder
     void attachConditions(List conds, Set leafNodes)
     {
         Iterator condIter = conds.iterator( );
-        Condition eachCond = null;
-        TupleSource tupleSource = null;
+        Condition eachCond;
+        TupleSource tupleSource;
 
-        ConditionNode conditionNode = null;
+        ConditionNode conditionNode;
         int order = 0;
         while ( condIter.hasNext( ) )
         {
@@ -382,45 +377,32 @@ public class Builder
     {
         boolean performedJoin = false;
 
-        Object[] leftNodes = leafNodes.toArray( );
-        Object[] rightNodes = leafNodes.toArray( );
+        Object[] nodesArray = leafNodes.toArray( );
 
-        TupleSource left = null;
-        TupleSource right = null;
+        TupleSource left;
+        TupleSource right;
 
-        JoinNode joinNode = null;
-
-        OUTTER : for ( int i = 0; i < leftNodes.length; ++i )
+        for ( int i = 0; i < nodesArray.length; ++i )
         {
-            left = ( TupleSource ) leftNodes[i];
+            left = ( TupleSource ) nodesArray[i];
 
-            if ( !leafNodes.contains( left ) )
+            if ( leafNodes.contains( left ) )
             {
-                continue OUTTER;
-            }
-
-            INNER : for ( int j = i + 1; j < rightNodes.length; ++j )
-            {
-                right = ( TupleSource ) rightNodes[j];
-
-                if ( !leafNodes.contains( right ) )
+                for ( int j = i + 1; j < nodesArray.length; ++j )
                 {
-                    continue INNER;
-                }
+                    right = ( TupleSource ) nodesArray[j];
 
-                if ( canBeJoined( left, right ) )
+                    if ( leafNodes.contains( right ) && canBeJoined( left, right ) )
+                    {
+                        leafNodes.remove( left );
+                        leafNodes.remove( right );
 
-                {
-                    joinNode = new JoinNode( left, right );
+                        leafNodes.add( new JoinNode( left, right ) );
 
-                    leafNodes.remove( left );
-                    leafNodes.remove( right );
+                        performedJoin = true;
 
-                    leafNodes.add( joinNode );
-
-                    performedJoin = true;
-
-                    continue OUTTER;
+                        break;
+                    }
                 }
             }
         }
@@ -472,17 +454,17 @@ public class Builder
     boolean attachExtractions(Set factExtracts, Set leafNodes)
     {
         boolean attached = false;
-        boolean cycleAttached = false;
+        boolean cycleAttached;
 
         do
         {
             cycleAttached = false;
 
             Iterator extractIter = factExtracts.iterator( );
-            Extraction eachExtract = null;
-            TupleSource tupleSource = null;
+            Extraction eachExtract;
+            TupleSource tupleSource;
 
-            ExtractionNode extractNode = null;
+            ExtractionNode extractNode;
             while ( extractIter.hasNext( ) )
             {
                 eachExtract = ( Extraction ) extractIter.next( );
@@ -534,17 +516,13 @@ public class Builder
                                                     Set sources)
     {
         Iterator sourceIter = sources.iterator( );
-        TupleSource eachSource = null;
-
-        Set decls = null;
+        TupleSource eachSource;
 
         while ( sourceIter.hasNext( ) )
         {
             eachSource = ( TupleSource ) sourceIter.next( );
 
-            decls = eachSource.getTupleDeclarations( );
-
-            if ( matches( condition, decls ) )
+            if ( matches( condition, eachSource.getTupleDeclarations( ) ) )
             {
                 return eachSource;
             }
@@ -569,9 +547,9 @@ public class Builder
         Declaration targetDecl = extract.getTargetDeclaration( );
 
         Iterator sourceIter = sources.iterator( );
-        TupleSource eachSource = null;
+        TupleSource eachSource;
 
-        Set decls = null;
+        Set decls;
 
         while ( sourceIter.hasNext( ) )
         {
