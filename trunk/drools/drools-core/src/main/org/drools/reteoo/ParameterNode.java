@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.34 2004-11-16 11:15:38 mproctor Exp $
+ * $Id: ParameterNode.java,v 1.35 2004-11-16 12:12:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -124,7 +124,7 @@ class ParameterNode extends TupleSource
                       WorkingMemoryImpl workingMemory) throws AssertionException
     {
         ReteTuple tuple = new ReteTuple( workingMemory, this.rule,
-                                         getDeclaration( ), handle, object );
+                                         getDeclaration( ), handle );
 
         propagateAssertTuple( tuple, workingMemory );
     }

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: FactHandle.java,v 1.13 2004-11-16 11:37:18 simon Exp $
+ * $Id: FactHandle.java,v 1.14 2004-11-16 12:13:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,6 +58,4 @@ public interface FactHandle extends Serializable
      * @return The external string form.
      */
     String toExternalForm();
-
-    public long getId();
 }
