@@ -47,9 +47,6 @@ import java.util.Set;
  */
 public abstract class SMFTestFrameWork extends TestCase
 {
-    /** the semantic name being tested */
-    private String              semantic;
-
     /** The List of tests extracted from the data file */
     private List                tests;
 
@@ -79,8 +76,6 @@ public abstract class SMFTestFrameWork extends TestCase
      */
     public void setUp(String semantic, Set imports) throws Exception
     {
-
-        this.semantic = semantic;
         if ( !testType.equals( "conditions" )
              && !testType.equals( "extractors" )
              && !testType.equals( "consequences" ) ) return;
@@ -539,28 +534,17 @@ public abstract class SMFTestFrameWork extends TestCase
 
     public static boolean conditionExceptionTest() throws Exception
     {
-        if ( true )
-        {
-            throw new Exception( "this is a condition exception" );
-        }
-        return true;
+        throw new Exception( "this is a condition exception" );
     }
 
     public static Boolean extractionExceptionTest() throws Exception
     {
-        if ( true )
-        {
-            throw new Exception( "this is an extraction exception" );
-        }
-        return new Boolean( true );
+        throw new Exception( "this is an extraction exception" );
     }
 
     public static void consequenceExceptionTest() throws Exception
     {
-        if ( true )
-        {
-            throw new Exception( "this is a consequence exception" );
-        }
+        throw new Exception( "this is a consequence exception" );
     }
 
     /**
