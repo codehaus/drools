@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project
     default="default"
     xmlns:ant="jelly:ant"
@@ -14,6 +14,16 @@
         <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
             file="${basedir}/target/docs/clover/pkgs-summary.html"/>
     </postGoal>
+
+		<goal name="get-deps">
+    	<mkdir dir="${maven.build.dir}/lib"/>
+      <j:forEach var="dep" items="${pom.artifacts}">
+      	<j:if test="${dep.path.indexOf('drools') &lt;= 0}">
+	        <copy file="${dep.path}"
+	              todir="${basedir}/lib"/>
+        </j:if>
+      </j:forEach>
+    </goal>
 
     <goal name="reports:publish">
         <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-python"/>
