@@ -4,7 +4,7 @@
     <pomVersion>3</pomVersion>
     <name>Drools :: Example Library</name>
     <id>drools-examples</id>
-    <currentVersion>2.0-beta-13-dev</currentVersion>
+    <currentVersion>2.0-beta-15</currentVersion>
 
     <organization>
         <name>The Codehaus</name>
