@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark;
 
 /*
- $Id: BenchmarkTestBase.java,v 1.2 2003-03-27 20:42:02 tdiesler Exp $
+ $Id: BenchmarkTestBase.java,v 1.3 2004-06-30 23:39:53 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -86,11 +86,10 @@ public abstract class BenchmarkTestBase extends TestCase
     /**
      * Convert the facts from the <code>InputStream</code> to a list of objects.
      */
-    protected List getInputObjects( String filename ) throws IOException
+    protected List getInputObjects( InputStream inputStream ) throws IOException
     {
         List list = new ArrayList();
 
-        InputStream inputStream = new FileInputStream( filename );
         BufferedReader br = new BufferedReader( new InputStreamReader( inputStream ) );
 
         Map guests = new HashMap();
