@@ -48,7 +48,21 @@
             </xs:element>     
           
           <xs:element minOccurs="0" maxOccurs="unbounded" ref="java:extractor"/>   
+          
         </xs:choice>
+        
+        <!-- make sure extractor targets are specified 
+             after decleration identifiers -->
+        <xs:key name="identifierKey">
+          <xs:selector xpath="./declaration and ./parameter" />
+          <xs:field xpath="@identifier" />
+        </xs:key>
+        <xs:keyref name="targetToIdentifier" refer="identifierKey">
+          <xs:selector xpath="./java:extractor" />
+          <xs:field xpath="@target" />
+        </xs:keyref>  
+        
+        
         
         <xs:choice maxOccurs="unbounded">
           <xs:element ref="java:condition"/>
