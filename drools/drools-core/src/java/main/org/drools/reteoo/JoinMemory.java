@@ -92,6 +92,31 @@ public class JoinMemory
         }
     }
 
+    protected void retractTuples(TupleKey key)
+    {
+        retractTuples( key,
+                       getLeftTuples().iterator() );
+
+        retractTuples( key,
+                       getRightTuples().iterator() );
+    }
+
+    private void retractTuples(TupleKey key,
+                               Iterator tupleIter)
+    {
+        ReteTuple eachTuple = null;
+        
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+            
+            if ( eachTuple.getKey().containsAll( key ) )
+            {
+                tupleIter.remove();
+            }
+        }
+    }
+
     protected void retractLeft(Set keys)
     {
         Iterator keyIter = keys.iterator();

@@ -74,7 +74,10 @@ public class ParameterNode extends TupleSource
     protected void retractObject(Object object,
                                  WorkingMemory workingMemory) throws RetractionException
     {
-        propagateRetractObject( object,
+        TupleKey key = new TupleKey( getDeclaration(),
+                                     object );
+
+        propagateRetractTuples( key,
                                 workingMemory );
     }
 
@@ -83,8 +86,13 @@ public class ParameterNode extends TupleSource
     {
         try
         {
+            /*
             propagateRetractObject( object,
                                     workingMemory );
+            */
+
+            retractObject( object,
+                           workingMemory );
             
             assertObject( object,
                           workingMemory );

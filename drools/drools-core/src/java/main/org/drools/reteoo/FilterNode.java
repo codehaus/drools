@@ -74,11 +74,10 @@ public class FilterNode extends TupleSource implements TupleSink
         }
     }
 
-    public void retractObject(TupleSource inputSource,
-                              Object object,
+    public void retractTuples(TupleKey key,
                               WorkingMemory workingMemory) throws RetractionException
     {
-        propagateRetractObject( object,
+        propagateRetractTuples( key,
                                 workingMemory );
     }
 }

@@ -80,21 +80,14 @@ public abstract class TupleSource
         }
     }
 
-    /** Propagate the retraction of a <code>Tuple</code>
-     *  to this node's <code>TupleSink</code>.
-     *
-     *  @param tuple The <code>Tuple</code> to propagate.
-     *  @param workingMemory the working memory session.
-     */
-    protected void propagateRetractObject(Object object,
-                                         WorkingMemory workingMemory) throws RetractionException
+    protected void propagateRetractTuples(TupleKey key,
+                                          WorkingMemory workingMemory) throws RetractionException
     {
         TupleSink sink = getTupleSink();
 
         if ( sink != null )
         {
-            sink.retractObject( this,
-                                object,
+            sink.retractTuples( key,
                                 workingMemory );
         }
     }

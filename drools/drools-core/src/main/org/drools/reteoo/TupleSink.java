@@ -24,19 +24,7 @@ public interface TupleSink
                      ReteTuple tuple,
                      WorkingMemory workingMemory) throws AssertionException;
 
-    /** Retract a fact <code>Object</code>.
-     *
-     *  @param inputSource the source of the <code>Object</code>.
-     *  @param object The <code>Object</code> being retracted.
-     *  @param workingMemory the working memory session.
-     */
-    void retractObject(TupleSource inputSource,
-                       Object object,
+    void retractTuples(TupleKey key,
                        WorkingMemory workingMemory) throws RetractionException;
 
-    /*
-    void retractTuples(TupleSource inputSOurce,
-                       Object triggerObject,
-                       TupleSet tuples) throws FactException;
-    */
 }

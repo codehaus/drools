@@ -57,37 +57,4 @@ public class TupleSourceTest extends TestCase
             fail( e.toString() );
         }
     }
-
-    public void testPropagateRetractObject()
-    {
-        TupleSource   source = new MockTupleSource(); 
-        InstrumentedTupleSink sink   = new InstrumentedTupleSink();
-
-        source.setTupleSink( sink );
-
-        Object object = new Object();
-
-        try
-        {
-            source.propagateRetractObject( object,
-                                           null );
-            
-            List objects = sink.getRetractedObjects();
-            
-            assertEquals( 1,
-                          objects.size() );
-            
-            assertSame( object,
-                        objects.get( 0 ) );
-
-            List tuples = sink.getAssertedTuples();
-
-            assertEquals( 0,
-                          tuples.size() );
-        }
-        catch (RetractionException e)
-        {
-            fail( e.toString() );
-        }
-    }
 }

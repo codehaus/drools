@@ -81,9 +81,8 @@ public class TerminalNode implements TupleSink
                             action );
     }
 
-    public void retractObject(TupleSource inputSource,
-                              Object object,
-                              WorkingMemory workingMemory)
+    public void retractTuples(TupleKey key,
+                              WorkingMemory workingMemory) 
     {
 
     }
