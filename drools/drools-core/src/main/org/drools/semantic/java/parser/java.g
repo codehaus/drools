@@ -114,6 +114,8 @@ tokens {
 	IMPORT; UNARY_MINUS; UNARY_PLUS; CASE_GROUP; ELIST; FOR_INIT; FOR_CONDITION; 
 	FOR_ITERATOR; EMPTY_STAT; FINAL="final"; ABSTRACT="abstract";
 	STRICTFP="strictfp"; SUPER_CTOR_CALL; CTOR_CALL;
+
+	RULE_SET="ruleset"; RULE="rule"; WHEN="when"; THEN="then";
 }
 	
 // Compilation Unit: In Java, this is a single file.  This is the start
@@ -133,6 +135,68 @@ compilationUnit
 
 		EOF!
 	;
+
+ruleFile
+	:
+		(	packageDefinition
+		|	/* nothing */
+		)
+
+		( importDefinition )*
+
+		ruleSet
+	;
+
+ruleSet
+	:
+		RULE_SET^ IDENT
+
+		LCURLY!
+			( rule )+
+		RCURLY!
+	;
+
+rule
+	:
+		RULE^ IDENT 
+
+				LPAREN! param:parameterDeclarationList RPAREN!
+
+		LCURLY!
+
+			( parameterDeclaration )*
+
+			whenBlock
+	
+			thenBlock
+
+		RCURLY!
+	;
+
+whenBlock
+	:
+		WHEN^
+
+		LCURLY!
+			(	(	consistentAssignmentExpression 
+				|	inclusiveOrExpression 
+				)	SEMI! 
+			)+
+		RCURLY!
+	;
+
+thenBlock
+	:
+		THEN^
+
+		compoundStatement
+	;
+
+consistentAssignmentExpression
+	:
+		IDENT ASSIGN^ inclusiveOrExpression
+	;
+
 
 
 // Package statement: "package" followed by an identifier.

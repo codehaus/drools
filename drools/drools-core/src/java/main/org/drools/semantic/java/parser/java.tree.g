@@ -21,6 +21,36 @@ compilationUnit
 		(typeDefinition)*
 	;
 
+ruleFile
+	:
+		(importDefinition)*
+		ruleSet
+	;
+
+ruleSet
+	:
+		#( RULE_SET IDENT 
+			( rule )+ )
+	;
+
+rule
+	:
+		#( RULE IDENT 
+			#( PARAMETERS ( #(PARAMETER_DEF typeSpec IDENT ) )+ ) 
+			whenBlock 
+			thenBlock )
+	;
+
+whenBlock
+	:
+		#( WHEN . )
+	;
+
+thenBlock
+	:
+		#( THEN (slist)? )
+	;
+
 packageDefinition
 	:	#( PACKAGE_DEF identifier )
 	;
