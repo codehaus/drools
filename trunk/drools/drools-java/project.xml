@@ -223,10 +223,13 @@
     <!-- Resources that are packaged up inside the JAR file -->
 
     <resources>
-      <includes>
-        <include>**/*.properties</include>
-        <include>**/*.xml</include>
-      </includes>
+      <resource>
+        <directory>src/java/main</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
     </resources>
 
     <testResources>
@@ -234,6 +237,7 @@
         <directory>src/java/test</directory>
         <includes>
           <include>**/*.drl</include>
+          <include>**/*.xml</include>
         </includes>
       </testResource>
     </testResources>
