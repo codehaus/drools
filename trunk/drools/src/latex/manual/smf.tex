@@ -25,7 +25,7 @@ parameter's \emph{identifier} and \emph{object type}.  The
 identifier of a \class{Declaration} is simply a string name that
 uniquely distinguishes one parameter from another.  The object type
 is defined through an \class{ObjectType} component
-(Section~\vref{smf.objectype}).  Various semantic components, notably
+(Section~\vref{smf.objecttype}).  Various semantic components, notably
 \indexClass{Condition} and \indexClass{Consequence} implementations
 must be cognizant of the available declarations of a rule.
 
@@ -235,7 +235,7 @@ String nodeText = config.getText();
 \begin{javaCodelisting}
 Configuration[] allChildren    = config.getChildren();
 Configuration   someFirstChild = config.getChild( someName );
-Configuraiton[] someChildren   = config.getChildren( someName );
+Configuration[] someChildren   = config.getChildren( someName );
 \end{javaCodelisting}
 \caption{Child-related operations of \indexClass{Configuration}}
 \label{configuration.children}
@@ -245,10 +245,10 @@ The tree of \indexClass{Configuration} nodes may be thought of as
 a simplified version of an XML structure.  For configurable semantic
 components used through the DRL (Chapter~\vref{drl}), the root 
 \class{Configuration} is based upon the component's own tag, and
-children tags are represetned by children \class{Configuration}
+children tags are represented by children \class{Configuration}
 nodes.
 
-\section{Semanitc Module Descriptor}
+\section{Semantic Module Descriptor}
 \label{module.descriptor}
 
 Conforming semantic modules are packaged as individual JAR files which
