@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.7 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.8 2004-12-14 20:13:20 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -102,8 +102,9 @@ public class WorkingMemoryEventSupport
         }
     }
 
-    public void fireObjectModified(FactHandle handle,
-                                   Object object)
+    public void fireObjectModified( FactHandle handle,
+                                    Object oldObject,
+                                    Object object )
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -112,6 +113,7 @@ public class WorkingMemoryEventSupport
 
         ObjectModifiedEvent event = new ObjectModifiedEvent( this.workingMemory,
                                                              handle,
+                                                             oldObject,
                                                              object );
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
@@ -120,7 +122,8 @@ public class WorkingMemoryEventSupport
         }
     }
 
-    public void fireObjectRetracted(FactHandle handle)
+    public void fireObjectRetracted( FactHandle handle,
+                                     Object oldObject )
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -128,7 +131,8 @@ public class WorkingMemoryEventSupport
         }
 
         ObjectRetractedEvent event = new ObjectRetractedEvent( this.workingMemory,
-                                                               handle );
+                                                               handle,
+                                                               oldObject );
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
