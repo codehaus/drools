@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: RandomConflictResolverTest.java,v 1.5 2004-10-06 13:44:12 mproctor Exp $
+ * $Id: RandomConflictResolverTest.java,v 1.6 2004-11-07 12:10:18 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -44,7 +44,7 @@ import junit.framework.TestCase;
 import org.drools.rule.InstrumentedRule;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.MockTuple;
-import org.drools.PriorityQueue;
+import org.drools.util.PriorityQueue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: DefaultConflictResolverTest.java,v 1.9 2004-10-06 13:44:12 mproctor Exp $
+ * $Id: DefaultConflictResolverTest.java,v 1.10 2004-11-07 12:10:18 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,7 +41,7 @@ package org.drools.conflict;
  */
 
 import junit.framework.TestCase;
-import org.drools.PriorityQueue;
+import org.drools.util.PriorityQueue;
 import org.drools.rule.InstrumentedRule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;

@@ -1,3 +1,4 @@
+package org.drools.util;
 /*
  * The RedHill Consulting, Pty. Ltd. Software License, Version 1.0
  *
@@ -19,7 +20,6 @@
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-package org.drools;
 
 import junit.framework.TestCase;
 
@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
- * @version $Id: PriorityQueueTest.java,v 1.1 2004-10-25 13:22:35 simon Exp $
+ * @version $Id: PriorityQueueTest.java,v 1.1 2004-11-07 12:10:19 mproctor Exp $
  */
 public class PriorityQueueTest extends TestCase
 {

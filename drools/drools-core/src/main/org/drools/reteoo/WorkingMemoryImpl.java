@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.33 2004-11-06 04:08:42 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.34 2004-11-07 12:10:18 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,10 +54,10 @@ import org.drools.event.ObjectAssertedEvent;
 import org.drools.event.ObjectModifiedEvent;
 import org.drools.event.ObjectRetractedEvent;
 
+import org.drools.util.IdentityMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +68,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.33 2004-11-06 04:08:42 mproctor Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.34 2004-11-07 12:10:18 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -86,7 +86,7 @@ class WorkingMemoryImpl implements WorkingMemory
     private final Map           objects             = new HashMap( );
 
     /** Object-to-handle mapping. */
-    private final Map           handles             = new IdentityHashMap( );
+    private final Map           handles             = new IdentityMap( );
 
     /** Array of listeners */
     private final List          listeners           = new ArrayList( );
