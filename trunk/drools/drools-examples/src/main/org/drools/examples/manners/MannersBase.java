@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersBase.java,v 1.3 2004-11-13 01:43:07 simon Exp $
+ * $Id: MannersBase.java,v 1.4 2004-11-13 14:51:01 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -72,10 +72,10 @@ abstract public class MannersBase
     protected String ruleUri    = "manners.java.drl";
 
     /** Number of guests at the dinner (default: 16). */
-    protected int    numGuests  = 500;
+    protected int    numGuests  = 16;
 
     /** Number of seats at the table (default: 16). */
-    protected int    numSeats   = 500;
+    protected int    numSeats   = 16;
 
     /** Minimum number of hobbies each guest should have (default: 2). */
     protected int    minHobbies = 2;

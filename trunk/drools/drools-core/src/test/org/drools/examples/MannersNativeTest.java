@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
-* $Id: MannersNativeTest.java,v 1.9 2004-11-13 13:19:33 simon Exp $
+* $Id: MannersNativeTest.java,v 1.10 2004-11-13 14:51:01 simon Exp $
 *
 * Copyright 2002 (C) The Werken Company. All Rights Reserved.
 *
@@ -239,7 +239,7 @@ public class MannersNativeTest extends TestCase implements Serializable
             public boolean isAllowed( Tuple tuple )
             {
                 Seating seating = ( Seating ) tuple.get( seatingDeclB );
-                return seating.getGuest2() == null;
+                return seating.getGuest2( ) == null;
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -261,7 +261,7 @@ public class MannersNativeTest extends TestCase implements Serializable
             {
                 Seating seating = ( Seating ) tuple.get( seatingDeclB );
                 Guest guest = ( Guest ) tuple.get( guestDeclB );
-                return !seating.getTabooList().contains( guest );
+                return !seating.getTabooList( ).contains( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -283,7 +283,7 @@ public class MannersNativeTest extends TestCase implements Serializable
             {
                 Seating seating = ( Seating ) tuple.get( seatingDeclB );
                 Guest guest = ( Guest ) tuple.get( guestDeclB );
-                return seating.getGuest1().hasOppositeSex( guest );
+                return seating.getGuest1( ).hasOppositeSex( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -299,13 +299,13 @@ public class MannersNativeTest extends TestCase implements Serializable
         findSeatingRule.addCondition( conditionB4 );
 
         // <java:condition>seating.getGuest1().hasSameHobby(guest)</java:condition>
-        final Condition conditionB5 = new Condition()
+        final Condition conditionB5 = new Condition( )
         {
             public boolean isAllowed( Tuple tuple )
             {
                 Seating seating = ( Seating ) tuple.get( seatingDeclB );
                 Guest guest = ( Guest ) tuple.get( guestDeclB );
-                return seating.getGuest1().hasSameHobby( guest );
+                return seating.getGuest1( ).hasSameHobby( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -338,7 +338,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 Guest guest = ( Guest ) tuple.get( guestDeclB );
                 Seating seating = ( Seating ) tuple.get( seatingDeclB );
 
-                Seating nextSeat = new Seating( seating.getSeat2(), guest, seating );
+                Seating nextSeat = new Seating( seating.getSeat2( ), guest, seating );
                 try
                 {
                     workingMemory.assertObject( nextSeat );
@@ -349,7 +349,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 }
 
                 seating.setGuest2( guest );
-                seating.getTabooList().add( guest );
+                seating.getTabooList( ).add( guest );
 
                 try
                 {
@@ -387,7 +387,7 @@ public class MannersNativeTest extends TestCase implements Serializable
         final Declaration seatingDeclC = tryAnotherPathRule.addParameterDeclaration( "seating", seatingType );
 
         // <java:condition>context.isState("find_seating")</java:condition>
-        final Condition conditionC1 = new Condition()
+        final Condition conditionC1 = new Condition( )
         {
             public boolean isAllowed( Tuple tuple )
             {

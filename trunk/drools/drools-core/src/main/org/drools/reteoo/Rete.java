@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.19 2004-11-09 09:03:35 simon Exp $
+ * $Id: Rete.java,v 1.20 2004-11-13 14:51:01 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -99,7 +99,7 @@ class Rete implements Serializable
                       WorkingMemoryImpl workingMemory) throws FactException
     {
         Iterator nodeIter = getObjectTypeNodeIterator( );
-        ObjectTypeNode eachNode = null;
+        ObjectTypeNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {
@@ -121,7 +121,7 @@ class Rete implements Serializable
     void retractObject(FactHandle handle, WorkingMemoryImpl workingMemory) throws FactException
     {
         Iterator nodeIter = getObjectTypeNodeIterator( );
-        ObjectTypeNode eachNode = null;
+        ObjectTypeNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {

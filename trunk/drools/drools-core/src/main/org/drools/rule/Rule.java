@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.42 2004-11-13 01:43:07 simon Exp $
+ * $Id: Rule.java,v 1.43 2004-11-13 14:51:01 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -68,8 +68,9 @@ import java.util.TreeSet;
  * @see Consequence
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
  *
- * @version $Id: Rule.java,v 1.42 2004-11-13 01:43:07 simon Exp $
+ * TODO: Check for missing/duplicate declarations.
  */
 public class Rule implements Serializable
 {
