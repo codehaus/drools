@@ -8,6 +8,13 @@ import org.drools.smf.FactoryException;
 public class ClassObjectTypeFactory
     implements ObjectTypeFactory
 {
+    private static final ClassObjectTypeFactory INSTANCE = new ClassObjectTypeFactory();
+
+    public static ClassObjectTypeFactory getInstance()
+    {
+        return INSTANCE;
+    }
+
     public ObjectType newObjectType(Configuration config)
         throws FactoryException
     {
