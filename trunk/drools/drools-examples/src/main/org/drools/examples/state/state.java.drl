@@ -9,8 +9,6 @@
 
     <java:import>org.drools.examples.state.State</java:import>
 
-	<appdata name="foo">Bar</appdata>
-
     <rule name="Bootstrap">
         <parameter identifier="a">
             <class-field field="name" value="A">State</class-field>
