@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprCondition.java,v 1.5 2004-08-15 16:09:38 mproctor Exp $
+ $Id: ExprCondition.java,v 1.6 2004-09-13 08:34:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,7 +56,7 @@ import org.python.core.PyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprCondition.java,v 1.5 2004-08-15 16:09:38 mproctor Exp $
+ *  @version $Id: ExprCondition.java,v 1.6 2004-09-13 08:34:27 mproctor Exp $
  */
 public class ExprCondition
     extends Eval
@@ -115,7 +115,7 @@ public class ExprCondition
         }
         catch (Exception e)
         {
-            throw new ConditionException( e );
+            throw new ConditionException( e, tuple.getRule(), this.getText() );
         }
     }
 }

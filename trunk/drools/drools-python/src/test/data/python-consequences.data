@@ -35,4 +35,5 @@ trimmed = favouriteCheese.strip()
 <!--drools-test--!>
 camembert.eatCheese()
 trimmed = favouriteCheese.strip()
-
+<!--drools-test--!> // 4
+SMFTestFrameWork.consequenceExceptionTest()

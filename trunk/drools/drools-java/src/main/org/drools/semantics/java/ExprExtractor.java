@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.13 2004-07-28 13:55:41 mproctor Exp $
+ $Id: ExprExtractor.java,v 1.14 2004-09-13 08:31:31 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,7 +56,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.13 2004-07-28 13:55:41 mproctor Exp $
+ *  @version $Id: ExprExtractor.java,v 1.14 2004-09-13 08:31:31 mproctor Exp $
  */
 public class ExprExtractor
     extends Expr
@@ -114,7 +114,7 @@ public class ExprExtractor
         }
         catch (Exception e)
         {
-            throw new ExtractionException( e );
+            throw new ExtractionException( e, tuple.getRule(), this.getExpression() );
         }
     }
 }
