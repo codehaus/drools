@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.13 2004-12-09 11:23:39 simon Exp $
+ * $Id: PrimitiveLongMap.java,v 1.14 2005-01-09 01:27:33 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,27 +45,28 @@ import java.util.Collection;
  */
 
 /**
- *
+ * 
  * @author Mark Proctor
  */
 public class PrimitiveLongMap
-    implements Serializable
+    implements
+    Serializable
 {
     private final static Object NULL = new Serializable( )
-    {
-    };
+                                     {
+                                     };
 
-    private final int indexIntervals;
-    private final int intervalShifts;
-    private final int midIntervalPoint;
-    private final int tableSize;
-    private final int shifts;
-    private final int doubleShifts;
-    private final Page firstPage;
-    private Page lastPage;
-    private int lastPageId;
-    private long maxKey;
-    private Page[] pageIndex;
+    private final int           indexIntervals;
+    private final int           intervalShifts;
+    private final int           midIntervalPoint;
+    private final int           tableSize;
+    private final int           shifts;
+    private final int           doubleShifts;
+    private final Page          firstPage;
+    private Page                lastPage;
+    private int                 lastPageId;
+    private long                maxKey;
+    private Page[]              pageIndex;
 
     public PrimitiveLongMap()
     {
@@ -198,7 +199,7 @@ public class PrimitiveLongMap
 
     public boolean containsKey(long key)
     {
-        if (key < 0) return false;
+        if ( key < 0 ) return false;
 
         return get( key ) != null;
     }
@@ -226,23 +227,24 @@ public class PrimitiveLongMap
     }
 
     /**
-     * Expand index to accomodate given pageId Create empty TopNodes
+     * Shrink index to accomodate given pageId
      */
     public void shrinkPages(int toPageId)
     {
         for ( int x = this.lastPageId; x >= toPageId; x-- )
         {
+            //last page is on index so shrink index
+            if ( ( this.lastPageId ) % this.indexIntervals == 0 && this.lastPageId != 0 )
+            {
+                resizeIndex( this.pageIndex.length - 1 );
+            }            
+            
             Page page = this.lastPage.getPreviousSibling( );
             page.setNextSibling( null );
             this.lastPage.clear( );
             this.lastPage = page;
             this.lastPageId = page.getPageId( );
-            if ( page.getPageId( ) % this.indexIntervals == 0 && page.getPageId( ) != 0 )
-            {
-                int newSize = this.pageIndex.length - 1;
-                resizeIndex( newSize );
-                this.pageIndex[newSize - 1] = page;
-            }
+
         }
     }
 
@@ -281,9 +283,9 @@ public class PrimitiveLongMap
         else
         {
             // determine offset
-            int offset = pageId >> intervalShifts;
+            int offset = pageId >> this.intervalShifts;
             // are we before or after the halfway point of an index interval
-            if ( (offset != (this.pageIndex.length - 1)) && ((key - (offset << intervalShifts << this.doubleShifts)) > this.midIntervalPoint) )
+            if ( (offset != (this.pageIndex.length - 1)) && ((key - (offset << this.intervalShifts << this.doubleShifts)) > this.midIntervalPoint) )
             {
                 // after so go to next node index and go backwards
                 page = this.pageIndex[offset + 1];
@@ -310,14 +312,14 @@ public class PrimitiveLongMap
         implements
         Serializable
     {
-        private final int pageSize;
-        private final int pageId;
-        private final int shifts;
-        private final int tableSize;
-        private Page nextSibling;
-        private Page previousSibling;
+        private final int  pageSize;
+        private final int  pageId;
+        private final int  shifts;
+        private final int  tableSize;
+        private Page       nextSibling;
+        private Page       previousSibling;
         private Object[][] tables;
-        private int filledSlots;
+        private int        filledSlots;
 
         Page(Page previousSibling,
              int pageId,

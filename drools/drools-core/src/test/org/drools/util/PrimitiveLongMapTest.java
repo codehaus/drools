@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.7 2004-12-09 11:23:39 simon Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.8 2005-01-09 01:27:33 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -114,12 +114,9 @@ public class PrimitiveLongMapTest extends TestCase
     }
 
     /**
-     * this tests maxKey for gets and removes
-     *   if ( key > this.maxKey || key < 0 )
-     *   {
-     *       return null;
-     *   }
-     *
+     * this tests maxKey for gets and removes if ( key > this.maxKey || key < 0 ) {
+     * return null; }
+     * 
      */
     public void testMaxKey()
     {
@@ -127,7 +124,7 @@ public class PrimitiveLongMapTest extends TestCase
         PrimitiveLongMap map = new PrimitiveLongMap( 8,
                                                      4 );
 
-        //Test maxKey for key 0
+        // Test maxKey for key 0
         map.put( 0,
                  new Integer( 0 ) );
 
@@ -139,7 +136,7 @@ public class PrimitiveLongMapTest extends TestCase
         assertNotNull( map.remove( 0 ) );
         assertNull( map.get( 0 ) );
 
-        //Test maxKey for key 1
+        // Test maxKey for key 1
         map.put( 1,
                  new Integer( 1 ) );
         assertEquals( new Integer( 1 ),
@@ -150,7 +147,7 @@ public class PrimitiveLongMapTest extends TestCase
         assertNotNull( map.remove( 1 ) );
         assertNull( map.get( 1 ) );
 
-        //Test maxKey for key 127, an end to a page border
+        // Test maxKey for key 127, an end to a page border
         map.put( 127,
                  new Integer( 127 ) );
         assertEquals( new Integer( 127 ),
@@ -161,7 +158,7 @@ public class PrimitiveLongMapTest extends TestCase
         assertNotNull( map.remove( 127 ) );
         assertNull( map.get( 127 ) );
 
-        //Test maxKey for key 128, a start to a new page
+        // Test maxKey for key 128, a start to a new page
         map.put( 128,
                  new Integer( 128 ) );
         assertEquals( new Integer( 128 ),
@@ -171,5 +168,18 @@ public class PrimitiveLongMapTest extends TestCase
                       map.get( 128 ) );
         assertNotNull( map.remove( 128 ) );
         assertNull( map.get( 128 ) );
+    }
+
+    public void testLastIndexBoundary()
+    {
+        PrimitiveLongMap map = new PrimitiveLongMap( 32,
+                                                     8 );
+        map.put( 8192,
+                 new Object( ) );
+        map.remove( 8192 );
+        map.put( 8192,
+                 new Object( ) );
+        map.put( 8191,
+                 new Object( ) );
     }
 }
