@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Duration.java,v 1.6 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: Duration.java,v 1.7 2005-01-11 15:05:00 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,6 +40,8 @@ package org.drools.spi;
  *  
  */
 
+import java.io.Serializable;
+
 /**
  * Interface for specifying truthness duration.
  * 
@@ -48,7 +50,7 @@ package org.drools.spi;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public interface Duration
+public interface Duration extends Serializable
 {
     /**
      * <p>

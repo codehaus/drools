@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.59 2004-12-14 20:13:20 dbarnett Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.60 2005-01-11 15:04:59 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,6 +49,7 @@ import org.drools.WorkingMemory;
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.spi.AgendaFilter;
+import org.drools.spi.AsyncExceptionHandler;
 import org.drools.util.IdentityMap;
 import org.drools.util.PrimitiveLongMap;
 import org.drools.util.PrimitiveLongStack;
@@ -586,6 +587,16 @@ class WorkingMemoryImpl
         return eventSupport;
     }
 
+    /**
+     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
+     * used for duration rules.
+     * @param handler
+     */
+    public void setAsyncExceptionHandler(AsyncExceptionHandler handler)
+    {
+        this.agenda.setAsyncExceptionHandler(handler);
+    }          
+    
     public void dumpMemory()
     {
         Iterator it = this.joinMemories.keySet( ).iterator( );
