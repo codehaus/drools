@@ -110,35 +110,6 @@ public class Agenda
         }
     }
     
-    /** Receive notification of a modified object.
-     *
-     *  @param object The modified object.
-     */
-    public void modifyObject(Object object)
-    {
-        // retractObject( object );
-    }
-    
-    /** Receive notification of a retracted object.
-     *
-     *  @param object The retracted object.
-     */
-    public void retractObject(Object object)
-    {
-        Iterator   itemIter = this.items.iterator();
-        AgendaItem eachItem = null;
-
-        while ( itemIter.hasNext() )
-        {
-            eachItem = (AgendaItem) itemIter.next();
-
-            if ( eachItem.dependsOn( object ) )
-            {
-                itemIter.remove();
-            }
-        }
-    }
-
     /** Determine if this <code>Agenda</code> has any
      *  scheduled items.
      */
