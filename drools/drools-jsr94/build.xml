@@ -7,6 +7,8 @@
        <include name="**/*"/>
    </patternset>
 
+  <taskdef name="latex" classname="de.prima.shire.anttex.LaTeX"/>
+
   <!-- =================================================================== -->
   <!-- Properties                                                          -->
   <!-- =================================================================== -->
@@ -14,6 +16,7 @@
   <property name="name.marketing"  value="werken drools"/>
   <property name="name"            value="drools"/>
   <property name="version"         value="2.0-beta-1"/>
+  <property name="version.dist"    value="2.0-beta-2-daily"/>
   <property name="year"            value="2001"/>
 
   <property name="copyright.owner"  value="The Werken Company"/>
@@ -31,6 +34,7 @@
   <property name="examples.dir" value="./src/java/examples"/>
   <property name="test.dir"     value="./src/java/test"/>
   <property name="lib.dir"      value="./lib"/>
+  <property name="latex.dir"    value="./src/latex"/>
 
   <property name="packages.all"  value="org.drools.*"/>
 
@@ -39,6 +43,7 @@
   <property name="build.src.main"      value="./build/src/main"/>
   <property name="build.src.test"      value="./build/src/test"/>
   <property name="build.src.examples"  value="./build/src/examples"/>
+  <property name="build.src.latex"     value="./build/src/latex"/>
 
   <property name="build.dest"          value="./build/classes"/>
   <property name="build.dest.main"     value="./build/classes/main"/>
@@ -52,13 +57,11 @@
   <property name="build.generated.src" value="./build/generated"/>
 
   <property name="dist.root"     value="./dist"/>
-  <property name="dist.dir"      value="${dist.root}/tmp/${name}-${version}"/>
+  <property name="dist.dir"      value="${dist.root}/tmp/${name}-${version.dist}"/>
   <property name="dist.jar.dir"  value="${dist.root}/tmp"/>
   <property name="dist.target"   value="${dist.root}"/>
 
-  <property name="web.htdocs"  value="../htdocs"/>
-  <property name="web.dist"    value="${web.htdocs}/dist"/>
-  <property name="web.ftp"     value="./build/ftp"/>
+  <property name="build.deploy"     value="./build/deploy"/>
 
   <property name="javadoc.overview" value="${build.src.main}/org/drools/overview.html"/>
 
@@ -111,6 +114,7 @@
     <mkdir dir="${build.src}"/>
     <mkdir dir="${build.src.main}"/>
     <mkdir dir="${build.src.test}"/>
+    <mkdir dir="${build.src.latex}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -344,7 +348,7 @@
 
   <!-- Build the documentation -->
   <target name="doc" depends="prepare">
-    <mkdir    dir="${doc.dir}/images"/>
+    <!-- <mkdir    dir="${doc.dir}/images"/> -->
 
     <mkdir    dir="${build.doc}"/>
 
@@ -356,9 +360,11 @@
     <copy todir="${build.doc}" overwrite="yes"> 
       <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
     </copy>
+    <!--
     <copy todir="${build.doc}/images" overwrite="yes">
       <fileset dir="${doc.dir}/images"/>
     </copy>
+    -->
     <copy todir="${build.doc}" overwrite="yes">
       <fileset dir="${doc.dir}" includes="*.css"/>
     </copy>
@@ -442,6 +448,61 @@
     <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
   </target>
 
+  
+  <!-- =================================================================== -->
+  <!-- Daily distribution                                                  --> 
+  <!-- =================================================================== -->
+
+  <target name="dist.daily" depends="all,test,examples,docs.latex,dist-jar,dist-zip,dist-tgz"/>
+
+  <target name="prepare.latex" depends="prepare">
+    <copy todir="${build.doc}" filtering="true">
+      <fileset dir="${latex.dir}" includes="*.tex"/>
+    </copy>
+  </target>
+
+  <target name="docs.latex" depends="prepare.latex">
+
+    <latex latexfile="rete-oo.tex"
+           pdftex="on"
+           bibtex="on"
+           verbose="off"
+           directory="${build.doc}"/>
+
+    <latex latexfile="drools-impl.tex"
+           pdftex="on"
+           bibtex="on"
+           verbose="off"
+           directory="${build.doc}"/>
+
+    <delete>
+       <fileset dir="${build.doc}" includes="*.aux,*.log,*.bbl,*.blg,*.toc,*.out"/>
+    </delete>
+
+  </target>
+
+  <target name="web.stage" depends="dist.daily">
+
+    <mkdir dir="${build.deploy}"/>
+    <mkdir dir="${build.deploy}/htdocs"/>
+    <mkdir dir="${build.deploy}/htdocs/dist"/>
+
+    <copy todir="${build.deploy}/htdocs">
+        <fileset dir="${build.doc}"/>
+    </copy>
+
+    <copy todir="${build.deploy}/htdocs/dist">
+      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.gz"/>
+    </copy>
+
+    <tar tarfile="${build.deploy}/drools-web.tar" 
+         basedir="${build.deploy}/"/>
+    <gzip zipfile="${build.deploy}/drools-web.tar.gz" 
+          src="${build.deploy}/drools-web.tar"/>
+
+  </target>
+
+  <target name="pdfdocs" depends="docs.latex"/>
 
   <!-- =================================================================== -->
   <!-- Performs a release on the website                                   -->
@@ -449,11 +510,10 @@
 
   <target name="release" depends="clean,compile.all,javadoc.all,javadoc.api,dist-zip,dist-tgz,dist-jar">
      <copy file="${dist.target}/${name}-daily.tar.gz"
-           tofile="${dist.target}/${name}-${version}.tar.gz"/>
+           tofile="${dist.target}/${name}-${version.dist}.tar.gz"/>
      <copy file="${dist.target}/${name}-daily.zip"
-           tofile="${dist.target}/${name}-${version}.zip"/>
+           tofile="${dist.target}/${name}-${version.dist}.zip"/>
   </target>
-
 
   <!--
   <target name="ftp" depends="dist-zip,dist-tgz,dist-jar">

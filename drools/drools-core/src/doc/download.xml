@@ -19,18 +19,16 @@
       </ul>
     </section>
 
-<!--
     <section title="Download a daily build">
       <ul>
-        <li><a href="../../dist/jaxen-daily.zip">jaxen-daily.zip</a> 
+        <li><a href="dist/drools-daily.zip">drools-daily.zip</a> 
             for Windows platforms (ZIP)
         </li>
-        <li><a href="../../dist/jaxen-daily.tar.gz">jaxen-daily.tar.gz</a>
+        <li><a href="dist/drools-daily.tar.gz">drools-daily.tar.gz</a>
             for all other platforms (Tarball)
         </li>
       </ul>
     </section>
--->
 
     <section title="Obtaining the latest CVS snapshot">
       
