@@ -20,7 +20,7 @@ public class DeclarationTest extends TestCase
     {
     }
 
-    public void testConstruct()
+    public void testConstruct_Complete()
     {
         MockObjectType type = new MockObjectType();
 
@@ -32,6 +32,23 @@ public class DeclarationTest extends TestCase
 
         assertEquals( "cheese",
                       decl.getIdentifier() );
+    }
+
+    public void testConstruct_Incomplete()
+    {
+        Declaration decl = new Declaration( "cheese" );
+
+        assertNull( decl.getObjectType() );
+
+        assertEquals( "cheese",
+                      decl.getIdentifier() );
+
+        MockObjectType type = new MockObjectType();
+
+        decl.setObjectType( type );
+
+        assertSame( type,
+                    decl.getObjectType() );
     }
 
     public void testEquals()
