@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.7 2004-06-23 06:49:51 bob Exp $
+ $Id: RuleSetReader.java,v 1.8 2004-06-30 00:34:14 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -90,7 +90,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.7 2004-06-23 06:49:51 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.8 2004-06-30 00:34:14 n_alex Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -166,8 +166,8 @@ public class RuleSetReader
         this.enders             = new HashMap();
         this.configurationStack = new LinkedList();
 
-        // - - - - - - - - - - - - - - - - - - - - 
-        // - - - - - - - - - - - - - - - - - - - - 
+        // - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - -
 
         bindStarter( RULES_NAMESPACE_URI,
                      "rule-set",
@@ -190,7 +190,7 @@ public class RuleSetReader
                            endRuleSet();
                        }
                    } );
-        
+
         bindStarter( RULES_NAMESPACE_URI,
                      "parameter",
                      new Starter()
@@ -210,7 +210,7 @@ public class RuleSetReader
                            throws SAXException
                        {
                            endParameter();
-                       } 
+                       }
                    } );
 
         bindStarter( RULES_NAMESPACE_URI,
@@ -569,6 +569,7 @@ public class RuleSetReader
         }
 
         String ruleSetName = attrs.getValue( "name" );
+        String ruleSetDesc = attrs.getValue( "description" );
 
         if ( ruleSetName == null
              ||
@@ -579,6 +580,18 @@ public class RuleSetReader
         }
 
         this.ruleSet = new RuleSet( ruleSetName.trim() );
+
+        if ( ruleSetDesc == null
+            ||
+            ruleSetDesc.trim().equals( "" ) )
+        {
+            this.ruleSet.setDocumentation( "" );
+        }
+        else
+        {
+            this.ruleSet.setDocumentation( ruleSetDesc );
+        }
+
     }
 
     /** End a &lt;rule-set&gt;.
@@ -753,8 +766,7 @@ public class RuleSetReader
     }
 
     /** Start an object-type.
-     *
-     *  @param uri Tag URI.
+     *  @param module SemanticModule.
      *  @param localName Tag name.
      *  @param attrs Tag attributes.
      *
