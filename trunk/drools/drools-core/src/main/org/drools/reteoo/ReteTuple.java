@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.52 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.53 2004-11-21 13:51:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,16 +50,15 @@ import org.drools.spi.Tuple;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
- * 
+ *
  * @see Tuple
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 class ReteTuple
@@ -153,15 +152,15 @@ class ReteTuple
 
         if ( that.extractions == Collections.EMPTY_MAP )
         {
-            this.extractions = new HashMap( );
+            this.extractions = Collections.singletonMap( declaration,
+                                                         value );
         }
         else
         {
             this.extractions = that.extractions;
+            this.extractions.put( declaration,
+                                  value );
         }
-
-        this.extractions.put( declaration,
-                              value );
     }
 
     ReteTuple(WorkingMemory workingMemory,
@@ -189,7 +188,7 @@ class ReteTuple
 
     /**
      * Retrieve the key for this tuple.
-     * 
+     *
      * @return The key.
      */
     TupleKey getKey()
@@ -199,10 +198,10 @@ class ReteTuple
 
     /**
      * Determine if this tuple depends upon a specified object.
-     * 
+     *
      * @param handle
      *            The object handle to test.
-     * 
+     *
      * @return <code>true</code> if this tuple depends upon the specified
      *         object, otherwise <code>false</code>.
      */
