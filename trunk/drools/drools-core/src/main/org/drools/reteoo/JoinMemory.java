@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.53 2004-12-06 06:54:48 simon Exp $
+ * $Id: JoinMemory.java,v 1.54 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,12 +40,11 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactHandle;
-import org.drools.rule.Declaration;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.drools.rule.Declaration;
 
 /**
  * Memory for left and right inputs of a <code>JoinNode</code>.
@@ -150,66 +149,7 @@ class JoinMemory
                             this.leftTuples );
     }
 
-    /**
-     * Modify tuples on the left-side.
-     *
-     * @param trigger Triggering object handle.
-     * @return The newly joined tuples.
-     */
-
-    TupleSet modifyLeftTuples( FactHandle trigger )
-    {
-        return modifyTuples( trigger,
-                             this.leftTuples,
-                             this.rightTuples );
-    }
-
-    /**
-     * Modify tuples on the right-side.
-     *
-     * @param trigger Triggering object handle.
-     * @return The newly joined tuples.
-     */
-    TupleSet modifyRightTuples( FactHandle trigger )
-    {
-        return modifyTuples( trigger,
-                             this.rightTuples,
-                             this.leftTuples );
-    }
-
-    /**
-     * Modify tuples
-     *
-     * @param trigger Triggering object handle.
-     * @param thisSideTuples The tuples on the side that's receiving the modifications.
-     * @param thatSideTuples The tuples on the side that's <b>not </b> receiving the modifications.
-     * @return The newly joined tuples.
-     */
-    private TupleSet modifyTuples( FactHandle trigger,
-                                   TupleSet thisSideTuples,
-                                   TupleSet thatSideTuples )
-    {
-        ReteTuple tuple;
-        TupleSet newJoined = new TupleSet( );
-
-        Iterator tupleIter = thisSideTuples.iterator( );
-
-        while ( tupleIter.hasNext( ) )
-        {
-            tuple = (ReteTuple) tupleIter.next( );
-
-            if ( tuple.dependsOn( trigger ) )
-            {
-                attemptJoin( tuple,
-                             thatSideTuples,
-                             newJoined );
-            }
-        }
-
-        return newJoined;
-    }
-
-    /**
+   /**
      * Attempt to join a given <code>tuple</code> against all tuples in a specified <code>TupleSet</code>.
      *
      * @param tuple The <code>Tuple</code> to attempt joining.

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.45 2004-12-06 16:11:40 simon Exp $
+ * $Id: ParameterNode.java,v 1.46 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +40,13 @@ package org.drools.reteoo;
  *
  */
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.drools.AssertionException;
-import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
-
-import java.util.Collections;
-import java.util.Set;
 
 /**
  * Receives <code>Objects</code> from an <code>ObjectTypeNode</code>, and
@@ -145,31 +144,6 @@ class ParameterNode extends TupleSource
 
         propagateRetractTuples( key,
                                 workingMemory );
-    }
-
-    /**
-     * Modify a fact object in this <code>RuleBase</code> and the specified
-     * <code>WorkingMemory</code>.
-     *
-     * With the exception of time-based nodes, modification of a fact object is
-     * semantically equivelent to retracting and re-asserting it.
-     *
-     * @param handle The fact handle.
-     * @param newObject The new fact value object.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException if an error occurs during modification.
-     */
-    void modifyObject( FactHandle handle,
-                       Object newObject,
-                       WorkingMemoryImpl workingMemory ) throws FactException
-    {
-        ReteTuple tuple = new ReteTuple( workingMemory, getDeclaration( ),
-                                         handle );
-
-        propagateModifyTuples( handle,
-                               new TupleSet( tuple ),
-                               workingMemory );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

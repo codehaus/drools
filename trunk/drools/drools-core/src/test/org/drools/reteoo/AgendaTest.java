@@ -18,92 +18,106 @@ public class AgendaTest extends DroolsTestCase
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
         final Agenda agenda = workingMemory.getAgenda( );
 
         final Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
 
-        //add consequence
-        rule.setConsequence( new org.drools.spi.Consequence( )
-        {
-            public void invoke(org.drools.spi.Tuple tuple, WorkingMemory workingMemory )
-            {
-                agenda.addToAgenda( ( ReteTuple ) tuple,
-                                    rule );
-            }
-        } );
-
-        //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-
-        //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-
-        ReteTuple tuple = new ReteTuple( workingMemory );
-
-        assertEquals( 0, agenda.size( ) );
-
-        /*
-         * This is not recursive so a rule should not be able to activate itself
-         */
-        rule.setNoLoop( true );
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( null );
-        assertEquals( 0, agenda.size( ) );
-
-        /*
-         * This is recursive so a rule should be able to activate itself
-         */
-        rule.setNoLoop( false );
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( null );
-        assertEquals( 1, agenda.size( ) );
-        agenda.clearAgenda();
-    }
-
-    public void testFilters() throws Exception
-    {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
-
-        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
-        final Agenda agenda = workingMemory.getAgenda( );
-
-        final Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
-
-        //add consequence
+        // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
             public void invoke(org.drools.spi.Tuple tuple,
                                WorkingMemory workingMemory)
             {
-                agenda.addToAgenda( ( ReteTuple ) tuple,
+                agenda.addToAgenda( (ReteTuple) tuple,
                                     rule );
             }
         } );
-        //add condition
+
+        // add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        //add condition
+        // add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
 
-        assertEquals( 0, agenda.size( ) );
+        assertEquals( 0,
+                      agenda.size( ) );
+
+        /*
+         * This is not recursive so a rule should not be able to activate itself
+         */
+        rule.setNoLoop( true );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
+        agenda.fireNextItem( null );
+        assertEquals( 0,
+                      agenda.size( ) );
+
+        /*
+         * This is recursive so a rule should be able to activate itself
+         */
+        rule.setNoLoop( false );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
+        agenda.fireNextItem( null );
+        assertEquals( 1,
+                      agenda.size( ) );
+        agenda.clearAgenda( );
+    }
+
+    public void testFilters() throws Exception
+    {
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
+
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
+        final Agenda agenda = workingMemory.getAgenda( );
+
+        final Rule rule = new Rule( "test-rule" );
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
+
+        // add consequence
+        rule.setConsequence( new org.drools.spi.Consequence( )
+        {
+            public void invoke(org.drools.spi.Tuple tuple,
+                               WorkingMemory workingMemory)
+            {
+                agenda.addToAgenda( (ReteTuple) tuple,
+                                    rule );
+            }
+        } );
+        // add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
+
+        // add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
+
+        ReteTuple tuple = new ReteTuple( workingMemory );
+
+        assertEquals( 0,
+                      agenda.size( ) );
 
         /*
          * Add to agenda
          */
         rule.setNoLoop( false );
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
         agenda.fireNextItem( null );
-        assertEquals( 1, agenda.size( ) );
-        agenda.clearAgenda();
+        assertEquals( 1,
+                      agenda.size( ) );
+        agenda.clearAgenda( );
 
         /*
          * True filter, activations should always add
@@ -116,11 +130,14 @@ public class AgendaTest extends DroolsTestCase
             }
         };
         rule.setNoLoop( false );
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
         agenda.fireNextItem( filterTrue );
-        assertEquals( 1, agenda.size( ) );
-        agenda.clearAgenda();
+        assertEquals( 1,
+                      agenda.size( ) );
+        agenda.clearAgenda( );
 
         /*
          * False filter, activations should always be denied
@@ -133,52 +150,60 @@ public class AgendaTest extends DroolsTestCase
             }
         };
         rule.setNoLoop( false );
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
         agenda.fireNextItem( filterFalse );
-        assertEquals( 0, agenda.size( ) );
+        assertEquals( 0,
+                      agenda.size( ) );
     }
 
     public void testClearAgenda() throws Exception
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
         final Agenda agenda = workingMemory.getAgenda( );
 
         final Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
 
-        //add consequence
+        // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
             public void invoke(org.drools.spi.Tuple tuple,
                                WorkingMemory workingMemory)
             {
-                agenda.addToAgenda( ( ReteTuple ) tuple,
+                agenda.addToAgenda( (ReteTuple) tuple,
                                     rule );
-                workingMemory.clearAgenda();
+                workingMemory.clearAgenda( );
             }
         } );
-        //add condition
+        // add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        //add condition
+        // add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
 
-        assertEquals( 0, agenda.size( ) );
+        assertEquals( 0,
+                      agenda.size( ) );
 
         /*
-         * This is recursive so a rule should be able to activate itself
-         * But then we clear the agenda afterwards to size should still be 0
+         * This is recursive so a rule should be able to activate itself But
+         * then we clear the agenda afterwards to size should still be 0
          */
         rule.setNoLoop( false );
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
         agenda.fireNextItem( null );
-        assertEquals( 0, agenda.size( ) );
+        assertEquals( 0,
+                      agenda.size( ) );
     }
 
 }

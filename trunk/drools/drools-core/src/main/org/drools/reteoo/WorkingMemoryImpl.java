@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.60 2005-01-11 15:04:59 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.61 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,17 @@ package org.drools.reteoo;
  *
  */
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.NoSuchFactHandleException;
@@ -54,63 +65,54 @@ import org.drools.util.IdentityMap;
 import org.drools.util.PrimitiveLongMap;
 import org.drools.util.PrimitiveLongStack;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Implementation of <code>WorkingMemory</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
 class WorkingMemoryImpl
-        implements WorkingMemory, PropertyChangeListener
+    implements
+    WorkingMemory,
+    PropertyChangeListener
 {
     // ------------------------------------------------------------
     // Constants
     // ------------------------------------------------------------
-    private static final Class[] ADD_REMOVE_PROPERTY_CHANGE_LISTENER_ARG_TYPES = new Class[] { PropertyChangeListener.class };
+    private static final Class[]            ADD_REMOVE_PROPERTY_CHANGE_LISTENER_ARG_TYPES = new Class[]{PropertyChangeListener.class};
 
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
 
     /** The arguments used when adding/removing a property change listener. */
-    private final Object[] addRemovePropertyChangeListenerArgs = new Object[] { this };
+    private final Object[]                  addRemovePropertyChangeListenerArgs           = new Object[]{this};
 
     /** The actual memory for the <code>JoinNode</code>s. */
-    private final Map joinMemories = new HashMap( );
+    private final Map                       joinMemories                                  = new HashMap( );
 
     /** Application data which is associated with this memory. */
-    private final Map applicationData = new HashMap( );
+    private final Map                       applicationData                               = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final PrimitiveLongMap objects = new PrimitiveLongMap( 32,
-                                                                   8 );
+    private final PrimitiveLongMap          objects                                       = new PrimitiveLongMap( 32,
+                                                                                                                  8 );
 
     /** Object-to-handle mapping. */
-    private final Map handles = new IdentityMap( );
-    private final PrimitiveLongStack factHandlePool = new PrimitiveLongStack( );
+    private final Map                       handles                                       = new IdentityMap( );
+    private final PrimitiveLongStack        factHandlePool                                = new PrimitiveLongStack( );
 
     /** The eventSupport */
-    private final WorkingMemoryEventSupport eventSupport = new WorkingMemoryEventSupport( this );
+    private final WorkingMemoryEventSupport eventSupport                                  = new WorkingMemoryEventSupport( this );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
-    private final RuleBaseImpl ruleBase;
+    private final RuleBaseImpl              ruleBase;
 
     /** Rule-firing agenda. */
-    private final Agenda agenda;
+    private final Agenda                    agenda;
 
     /** Flag to determine if a rule is currently being fired. */
-    private boolean firing;
+    private boolean                         firing;
 
     // ------------------------------------------------------------
     // Constructors
@@ -118,7 +120,7 @@ class WorkingMemoryImpl
 
     /**
      * Construct.
-     *
+     * 
      * @param ruleBase
      *            The backing rule-base.
      */
@@ -150,7 +152,7 @@ class WorkingMemoryImpl
 
     /**
      * Create a new <code>FactHandle</code>.
-     *
+     * 
      * @return The new fact handle.
      */
     FactHandle newFactHandle()
@@ -179,12 +181,12 @@ class WorkingMemoryImpl
     public void setApplicationData(String name,
                                    Object value)
     {
-        //Make sure the application data has been declared in the RuleBase
-        Map applicationDataDefintions = this.ruleBase.getApplicationData();
+        // Make sure the application data has been declared in the RuleBase
+        Map applicationDataDefintions = this.ruleBase.getApplicationData( );
         Class type = (Class) applicationDataDefintions.get( name );
-        if ((type == null)||( !type.isInstance(value)))
+        if ( (type == null) || (!type.isInstance( value )) )
         {
-            throw new RuntimeException("Invalid Class for name [" + name + "]");
+            throw new RuntimeException( "Invalid Class for name [" + name + "]" );
         }
 
         this.applicationData.put( name,
@@ -202,7 +204,7 @@ class WorkingMemoryImpl
     /**
      * Retrieve the rule-firing <code>Agenda</code> for this
      * <code>WorkingMemory</code>.
-     *
+     * 
      * @return The <code>Agenda</code>.
      */
     protected Agenda getAgenda()
@@ -331,16 +333,16 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public FactHandle assertObject( Object object ) throws FactException
+    public FactHandle assertObject(Object object) throws FactException
     {
-        return assertObject( object, /*Not-Dynamic*/false );
+        return assertObject( object, /* Not-Dynamic */
+                             false );
     }
 
-    public synchronized FactHandle assertObject( Object object,
-                                                 boolean dynamic )
-        throws FactException
+    public synchronized FactHandle assertObject(Object object,
+                                                boolean dynamic) throws FactException
     {
-        FactHandle handle = ( FactHandle ) handles.get( object );
+        FactHandle handle = (FactHandle) handles.get( object );
 
         if ( handle != null )
         {
@@ -357,23 +359,26 @@ class WorkingMemoryImpl
             addPropertyChangeListener( object );
         }
 
+        this.agenda.setMode( Agenda.ASSERT );
         ruleBase.assertObject( handle,
                                object,
                                this );
 
         eventSupport.fireObjectAsserted( handle,
                                          object );
-
+        this.agenda.setMode( Agenda.NONE );
         return handle;
     }
 
-    private void addPropertyChangeListener( Object object )
+    private void addPropertyChangeListener(Object object)
     {
-        try {
+        try
+        {
             Method method = object.getClass( ).getMethod( "addPropertyChangeListener",
                                                           ADD_REMOVE_PROPERTY_CHANGE_LISTENER_ARG_TYPES );
 
-            method.invoke( object, addRemovePropertyChangeListenerArgs );
+            method.invoke( object,
+                           addRemovePropertyChangeListenerArgs );
         }
         catch ( NoSuchMethodException e )
         {
@@ -383,49 +388,30 @@ class WorkingMemoryImpl
         }
         catch ( IllegalArgumentException e )
         {
-            System.err.println(
-                "Warning: The addPropertyChangeListener method" +
-                " on the class " + object.getClass() +
-                " does not take" +
-                " a simple PropertyChangeListener argument" +
-                " so Drools will be unable to process JavaBean" +
-                " PropertyChangeEvents on the asserted Object" );
+            System.err.println( "Warning: The addPropertyChangeListener method" + " on the class " + object.getClass( ) + " does not take" + " a simple PropertyChangeListener argument" + " so Drools will be unable to process JavaBean"
+                                + " PropertyChangeEvents on the asserted Object" );
         }
         catch ( IllegalAccessException e )
         {
-            System.err.println(
-                "Warning: The addPropertyChangeListener method" +
-                " on the class " + object.getClass() +
-                " is not public" +
-                " so Drools will be unable to process JavaBean" +
-                " PropertyChangeEvents on the asserted Object" );
+            System.err.println( "Warning: The addPropertyChangeListener method" + " on the class " + object.getClass( ) + " is not public" + " so Drools will be unable to process JavaBean" + " PropertyChangeEvents on the asserted Object" );
         }
         catch ( InvocationTargetException e )
         {
-            System.err.println(
-                "Warning: The addPropertyChangeListener method" +
-                " on the class " + object.getClass() +
-                " threw an InvocationTargetException" +
-                " so Drools will be unable to process JavaBean" +
-                " PropertyChangeEvents on the asserted Object: " +
-                e.getMessage( ) );
+            System.err.println( "Warning: The addPropertyChangeListener method" + " on the class " + object.getClass( ) + " threw an InvocationTargetException" + " so Drools will be unable to process JavaBean"
+                                + " PropertyChangeEvents on the asserted Object: " + e.getMessage( ) );
         }
         catch ( SecurityException e )
         {
-            System.err.println(
-                "Warning: The SecurityManager controlling the class " +
-                object.getClass() + " did not allow the lookup of a" +
-                " addPropertyChangeListener method" +
-                " so Drools will be unable to process JavaBean" +
-                " PropertyChangeEvents on the asserted Object: " +
-                e.getMessage( ) );
+            System.err.println( "Warning: The SecurityManager controlling the class " + object.getClass( ) + " did not allow the lookup of a" + " addPropertyChangeListener method" + " so Drools will be unable to process JavaBean"
+                                + " PropertyChangeEvents on the asserted Object: " + e.getMessage( ) );
         }
     }
 
-    private void removePropertyChangeListener( FactHandle handle ) throws NoSuchFactObjectException
+    private void removePropertyChangeListener(FactHandle handle) throws NoSuchFactObjectException
     {
         Object object = null;
-        try {
+        try
+        {
             object = getObject( handle );
 
             Method mehod = handle.getClass( ).getMethod( "removePropertyChangeListener",
@@ -443,57 +429,37 @@ class WorkingMemoryImpl
         }
         catch ( IllegalArgumentException e )
         {
-            System.err.println(
-                "Warning: The removePropertyChangeListener method" +
-                " on the class " + object.getClass( ) +
-                " does not take" +
-                " a simple PropertyChangeListener argument" +
-                " so Drools will be unable to stop processing JavaBean" +
-                " PropertyChangeEvents on the retracted Object" );
+            System.err.println( "Warning: The removePropertyChangeListener method" + " on the class " + object.getClass( ) + " does not take" + " a simple PropertyChangeListener argument" + " so Drools will be unable to stop processing JavaBean"
+                                + " PropertyChangeEvents on the retracted Object" );
         }
         catch ( IllegalAccessException e )
         {
-            System.err.println(
-                "Warning: The removePropertyChangeListener method" +
-                " on the class " + object.getClass( ) +
-                " is not public" +
-                " so Drools will be unable to stop processing JavaBean" +
-                " PropertyChangeEvents on the retracted Object" );
+            System.err.println( "Warning: The removePropertyChangeListener method" + " on the class " + object.getClass( ) + " is not public" + " so Drools will be unable to stop processing JavaBean" + " PropertyChangeEvents on the retracted Object" );
         }
         catch ( InvocationTargetException e )
         {
-            System.err.println(
-                "Warning: The removePropertyChangeL istener method" +
-                " on the class " + object.getClass() +
-                " threw an InvocationTargetException" +
-                " so Drools will be unable to stop processing JavaBean" +
-                " PropertyChangeEvents on the retracted Object: " +
-                e.getMessage( ) );
+            System.err.println( "Warning: The removePropertyChangeL istener method" + " on the class " + object.getClass( ) + " threw an InvocationTargetException" + " so Drools will be unable to stop processing JavaBean"
+                                + " PropertyChangeEvents on the retracted Object: " + e.getMessage( ) );
         }
         catch ( SecurityException e )
         {
-            System.err.println(
-                "Warning: The SecurityManager controlling the class " +
-                object.getClass() + " did not allow the lookup of a" +
-                " removePropertyChangeListener method" +
-                " so Drools will be unable to stop processing JavaBean" +
-                " PropertyChangeEvents on the retracted Object: " +
-                e.getMessage( ) );
+            System.err.println( "Warning: The SecurityManager controlling the class " + object.getClass( ) + " did not allow the lookup of a" + " removePropertyChangeListener method" + " so Drools will be unable to stop processing JavaBean"
+                                + " PropertyChangeEvents on the retracted Object: " + e.getMessage( ) );
         }
     }
 
     /**
      * Associate an object with its handle.
-     *
+     * 
      * @param handle
      *            The handle.
      * @param object
      *            The object.
      */
-    Object putObject( FactHandle handle,
-                      Object object )
+    Object putObject(FactHandle handle,
+                     Object object)
     {
-        Object oldValue = this.objects.put( ( ( FactHandleImpl ) handle ).getId( ),
+        Object oldValue = this.objects.put( ((FactHandleImpl) handle).getId( ),
                                             object );
 
         this.handles.put( object,
@@ -502,11 +468,11 @@ class WorkingMemoryImpl
         return oldValue;
     }
 
-    Object removeObject( FactHandle handle )
+    Object removeObject(FactHandle handle)
     {
-        Object object = this.objects.remove( ( ( FactHandleImpl ) handle ).getId( ) );
+        Object object = this.objects.remove( ((FactHandleImpl) handle).getId( ) );
 
-        this.handles.remove( object  );
+        this.handles.remove( object );
 
         return object;
     }
@@ -514,30 +480,33 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public synchronized void retractObject( FactHandle handle )
-        throws FactException
+    public synchronized void retractObject(FactHandle handle) throws FactException
     {
         removePropertyChangeListener( handle );
 
-        ruleBase.retractObject( handle, this );
+        this.agenda.setMode( Agenda.RETRACT );
+
+        ruleBase.retractObject( handle,
+                                this );
 
         Object oldObject = removeObject( handle );
 
-        factHandlePool.push( ( ( FactHandleImpl ) handle ).getId( ) );
+        factHandlePool.push( ((FactHandleImpl) handle).getId( ) );
 
         eventSupport.fireObjectRetracted( handle,
                                           oldObject );
+        this.agenda.setMode( Agenda.NONE );
 
-        ( ( FactHandleImpl ) handle ).invalidate( );
+        ((FactHandleImpl) handle).invalidate( );
     }
 
     /**
      * @see WorkingMemory
      */
-    public synchronized void modifyObject( FactHandle handle,
-                                           Object object ) throws FactException
+    public synchronized void modifyObject(FactHandle handle,
+                                          Object object) throws FactException
     {
-        Object originalObject = removeObject(handle);
+        Object originalObject = removeObject( handle );
 
         if ( originalObject == null )
         {
@@ -545,13 +514,24 @@ class WorkingMemoryImpl
         }
 
         putObject( handle,
-                    object );
+                   object );
 
+        this.agenda.setMode( Agenda.MODIFY );
 
-        this.ruleBase.modifyObject( handle,
+        this.ruleBase.retractObject( handle,
+                                     this );
+
+        this.ruleBase.assertObject( handle,
                                     object,
                                     this );
 
+        this.agenda.removeMarkedItemsFromAgenda( );
+
+        this.agenda.setMode( Agenda.NONE );
+
+        /*
+         * this.ruleBase.modifyObject( handle, object, this );
+         */
         this.eventSupport.fireObjectModified( handle,
                                               originalObject,
                                               object );
@@ -560,13 +540,13 @@ class WorkingMemoryImpl
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
      * <code>JoinNode</code>.
-     *
+     * 
      * @param node
      *            The <code>JoinNode</code> key.
-     *
+     * 
      * @return The node's memory.
      */
-    public JoinMemory getJoinMemory( JoinNode node )
+    public JoinMemory getJoinMemory(JoinNode node)
     {
         JoinMemory memory = (JoinMemory) this.joinMemories.get( node );
 
@@ -588,26 +568,27 @@ class WorkingMemoryImpl
     }
 
     /**
-     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
-     * used for duration rules.
+     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
+     * Scheduler used for duration rules.
+     * 
      * @param handler
      */
     public void setAsyncExceptionHandler(AsyncExceptionHandler handler)
     {
-        this.agenda.setAsyncExceptionHandler(handler);
-    }          
-    
+        this.agenda.setAsyncExceptionHandler( handler );
+    }
+
     public void dumpMemory()
     {
         Iterator it = this.joinMemories.keySet( ).iterator( );
         while ( it.hasNext( ) )
         {
-            ( ( JoinMemory ) this.joinMemories.get( it.next( ) ) ).dump( );
+            ((JoinMemory) this.joinMemories.get( it.next( ) )).dump( );
         }
 
     }
 
-    public void propertyChange( PropertyChangeEvent event )
+    public void propertyChange(PropertyChangeEvent event)
     {
         Object object = event.getSource( );
 

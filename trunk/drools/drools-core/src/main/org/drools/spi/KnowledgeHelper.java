@@ -1,8 +1,8 @@
 package org.drools.spi;
 
-import org.drools.FactException;
-
 import java.util.List;
+
+import org.drools.FactException;
 
 public interface KnowledgeHelper
 {

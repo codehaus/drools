@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.18 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: RuleSet.java,v 1.19 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,6 @@ package org.drools.rule;
  *
  */
 
-import org.drools.RuleBase;
-import org.drools.spi.Functions;
-import org.drools.spi.ImportEntry;
-import org.drools.spi.RuleBaseContext;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +48,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.drools.spi.Functions;
+import org.drools.spi.ImportEntry;
+import org.drools.spi.RuleBaseContext;
+
 /**
  * Collection of related <code>Rule</code>s.
  * 
@@ -60,7 +59,7 @@ import java.util.Set;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.18 2004-12-14 21:00:27 mproctor Exp $
+ * @version $Id: RuleSet.java,v 1.19 2005-02-02 00:23:22 mproctor Exp $
  */
 public class RuleSet
     implements

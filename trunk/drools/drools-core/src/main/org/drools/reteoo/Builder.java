@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.71 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: Builder.java,v 1.72 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,14 @@ package org.drools.reteoo;
  *
  */
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
 import org.drools.RuleSetIntegrationException;
@@ -50,14 +58,6 @@ import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.RuleBaseContext;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Builds the Rete-OO network for a <code>RuleSet</code>.

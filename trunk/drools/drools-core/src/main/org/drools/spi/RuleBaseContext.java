@@ -1,5 +1,5 @@
 /*
- * $Id: RuleBaseContext.java,v 1.2 2004-12-16 19:12:38 dbarnett Exp $
+ * $Id: RuleBaseContext.java,v 1.3 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,11 +39,10 @@
  */
 package org.drools.spi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RuleBaseContext implements Serializable
 {

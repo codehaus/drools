@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.34 2004-12-06 16:11:40 simon Exp $
+ * $Id: ConditionNode.java,v 1.35 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,12 @@ package org.drools.reteoo;
  *
  */
 
+import java.util.Set;
+
 import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
-
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Node which filters <code>ReteTuple</code>s.
@@ -182,54 +179,6 @@ class ConditionNode extends TupleSource
     {
         propagateRetractTuples( key,
                                 workingMemory );
-    }
-
-    /**
-     * Modify tuples.
-     *
-     * @param trigger The root fact object handle.
-     * @param modifyTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    public void modifyTuples( FactHandle trigger,
-                              TupleSet modifyTuples,
-                              WorkingMemoryImpl workingMemory ) throws FactException
-    {
-        TupleSet allowedTuples = new TupleSet( );
-        Iterator tupleIter = modifyTuples.iterator( );
-        ReteTuple eachTuple;
-
-        boolean allowed;
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = (ReteTuple) tupleIter.next( );
-
-            allowed = this.condition.isAllowed( eachTuple );
-
-            workingMemory.getEventSupport( ).fireConditionTested( this.rule,
-                                                                  this.condition,
-                                                                  eachTuple,
-                                                                  allowed );
-
-            if ( allowed )
-            {
-                allowedTuples.addTuple( eachTuple );
-            }
-            else
-            {
-                propagateRetractTuples( eachTuple.getKey( ),
-                                        workingMemory );
-            }
-        }
-
-        if ( !allowedTuples.isEmpty( ) )
-        {
-            propagateModifyTuples( trigger,
-                                   allowedTuples,
-                                   workingMemory );
-        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

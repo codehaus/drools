@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.55 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: Rule.java,v 1.56 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,12 +40,6 @@ package org.drools.rule;
  *
  */
 
-import org.drools.spi.Condition;
-import org.drools.spi.Consequence;
-import org.drools.spi.Duration;
-import org.drools.spi.ImportEntry;
-import org.drools.spi.ObjectType;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +48,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.drools.spi.Condition;
+import org.drools.spi.Consequence;
+import org.drools.spi.Duration;
+import org.drools.spi.ImportEntry;
+import org.drools.spi.ObjectType;
 
 /**
  * A set of <code>Condition</code> s and a <code>Consequence</code>.

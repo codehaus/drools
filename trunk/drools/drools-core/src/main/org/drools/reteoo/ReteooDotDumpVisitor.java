@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooDotDumpVisitor.java,v 1.10 2004-12-14 20:08:18 dbarnett Exp $
+ * $Id: ReteooDotDumpVisitor.java,v 1.11 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,8 +40,6 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.rule.Declaration;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -50,6 +48,8 @@ import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.drools.rule.Declaration;
 
 /**
  * Produces a graph in GraphViz DOT format.

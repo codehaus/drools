@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.20 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: AgendaItem.java,v 1.21 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,13 +40,13 @@ package org.drools.reteoo;
  *
  */
 
+import java.io.Serializable;
+
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
-
-import java.io.Serializable;
 
 /**
  * Item entry in the <code>Agenda</code>.
@@ -72,6 +72,8 @@ class AgendaItem
     private static long counter;
 
     private long activationNumber;
+    
+    private boolean retract;
 
     // ------------------------------------------------------------
     // Constructors
@@ -175,4 +177,5 @@ class AgendaItem
     {
         return "[" + this.rule.getName( ) + " " + this.tuple + "]";
     }
+    
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.15 2005-01-11 21:42:37 mproctor Exp $
+ * $Id: Scheduler.java,v 1.16 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +40,14 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.spi.AsyncExceptionHandler;
-import org.drools.spi.ConsequenceException;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.drools.spi.AsyncExceptionHandler;
+import org.drools.spi.ConsequenceException;
 
 /**
  * Scheduler for rules requiring truth duration.
@@ -82,10 +82,10 @@ final class Scheduler
     // ------------------------------------------------------------
 
     /** Alarm manager. */
-    private Timer scheduler;
+    private final Timer scheduler;
 
     /** Scheduled tasks. */
-    private Map   tasks;
+    private final Map   tasks;
 
     private AsyncExceptionHandler exceptionHandler;
     // ------------------------------------------------------------
@@ -135,7 +135,7 @@ final class Scheduler
      */
     void cancelAgendaItem(AgendaItem item)
     {
-        TimerTask task = (TimerTask) this.tasks.get( item );
+        TimerTask task = (TimerTask) this.tasks.remove( item );
 
         if ( task != null )
         {
@@ -157,66 +157,67 @@ final class Scheduler
     {
         return this.tasks.size();
     }
-}
-
-/**
- * Fire listener.
- * 
- * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- */
-
-class AgendaItemFireListener extends TimerTask
-{
-    // ------------------------------------------------------------
-    // Instance members
-    // ------------------------------------------------------------
-
-    /** The agenda item. */
-    private AgendaItem        item;
-
-    /** The working-memory session. */
-    private WorkingMemoryImpl workingMemory;
-
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
+    
     /**
-     * Construct.
+     * Fire listener.
      * 
-     * @param item
-     *            The agenda item.
-     * @param workingMemory
-     *            The working memory session.
+     * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
      */
-    AgendaItemFireListener(AgendaItem item,
-                           WorkingMemoryImpl workingMemory)
+
+    class AgendaItemFireListener extends TimerTask
     {
-        this.item = item;
-        this.workingMemory = workingMemory;
-    }
+        // ------------------------------------------------------------
+        // Instance members
+        // ------------------------------------------------------------
 
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
+        /** The agenda item. */
+        private AgendaItem        item;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // fr.dyade.jdring.AlarmListener
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        /** The working-memory session. */
+        private WorkingMemoryImpl workingMemory;
 
-    /**
-     * Handle the firing of an alarm.
-     */
-    public void run()
-    {
-        try
+        // ------------------------------------------------------------
+        // Constructors
+        // ------------------------------------------------------------
+
+        /**
+         * Construct.
+         * 
+         * @param item
+         *            The agenda item.
+         * @param workingMemory
+         *            The working memory session.
+         */
+        AgendaItemFireListener(AgendaItem item,
+                               WorkingMemoryImpl workingMemory)
         {
-            this.item.fire( this.workingMemory );
+            this.item = item;
+            this.workingMemory = workingMemory;
         }
-        catch ( ConsequenceException e )
+
+        // ------------------------------------------------------------
+        // Instance methods
+        // ------------------------------------------------------------
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // fr.dyade.jdring.AlarmListener
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        /**
+         * Handle the firing of an alarm.
+         */
+        public void run()
         {
-            
-            Scheduler.getInstance().getAsyncExceptionHandler().handleException( this.workingMemory, e);           
+            try
+            {
+                this.item.fire( this.workingMemory );
+                Scheduler.this.tasks.remove( item );
+            }
+            catch ( ConsequenceException e )
+            {
+                
+                Scheduler.getInstance().getAsyncExceptionHandler().handleException( this.workingMemory, e);           
+            }
         }
-    }
+    }    
 }

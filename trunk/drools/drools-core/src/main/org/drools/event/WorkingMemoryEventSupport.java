@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.8 2004-12-14 20:13:20 dbarnett Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.9 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,16 +40,16 @@ package org.drools.event;
  *
  */
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Tuple;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
@@ -58,7 +58,7 @@ public class WorkingMemoryEventSupport
     implements
     Serializable
 {
-    private final List          listeners       = new ArrayList( );
+    private final List          listeners = new ArrayList( );
     private final WorkingMemory workingMemory;
 
     public WorkingMemoryEventSupport(WorkingMemory workingMemory)
@@ -84,6 +84,16 @@ public class WorkingMemoryEventSupport
         return Collections.unmodifiableList( this.listeners );
     }
 
+    public int size()
+    {
+        return this.listeners.size( );
+    }
+
+    public boolean isEmpty()
+    {
+        return this.listeners.isEmpty( );
+    }
+
     public void fireObjectAsserted(FactHandle handle,
                                    Object object)
     {
@@ -98,13 +108,13 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectAsserted( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).objectAsserted( event );
         }
     }
 
-    public void fireObjectModified( FactHandle handle,
-                                    Object oldObject,
-                                    Object object )
+    public void fireObjectModified(FactHandle handle,
+                                   Object oldObject,
+                                   Object object)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -118,12 +128,12 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectModified( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).objectModified( event );
         }
     }
 
-    public void fireObjectRetracted( FactHandle handle,
-                                     Object oldObject )
+    public void fireObjectRetracted(FactHandle handle,
+                                    Object oldObject)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -136,7 +146,7 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectRetracted( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).objectRetracted( event );
         }
     }
 
@@ -158,12 +168,12 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).conditionTested( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).conditionTested( event );
         }
     }
 
-    public void fireActivationCreated( Rule rule,
-                                       Tuple tuple)
+    public void fireActivationCreated(Rule rule,
+                                      Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -176,12 +186,12 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationCreated( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).activationCreated( event );
         }
     }
 
-    public void fireActivationCancelled( Rule rule,
-                                         Tuple tuple)
+    public void fireActivationCancelled(Rule rule,
+                                        Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -194,12 +204,12 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationCancelled( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).activationCancelled( event );
         }
     }
 
-    public void fireActivationFired( Rule rule,
-                                     Tuple tuple)
+    public void fireActivationFired(Rule rule,
+                                    Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -212,7 +222,7 @@ public class WorkingMemoryEventSupport
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationFired( event );
+            ((WorkingMemoryEventListener) this.listeners.get( i )).activationFired( event );
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.27 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.28 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,7 +57,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.27 2004-12-14 21:00:27 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.28 2005-02-02 00:23:22 mproctor Exp $
  */
 class RuleBaseImpl
     implements
@@ -207,28 +207,7 @@ class RuleBaseImpl
                                   workingMemory );
     }
 
-    /**
-     * Modify a fact object.
-     * 
-     * @param handle
-     *            The handle.
-     * @param object
-     *            The fact.
-     * @param workingMemory
-     *            The working-memory.
-     * 
-     * @throws FactException
-     *             If an error occurs while performing the modification.
-     */
-    void modifyObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws FactException
-    {
-        getRete( ).modifyObject( handle,
-                                 object,
-                                 workingMemory );
-    }
-    
+
     public List getRuleSets()
     {
         return this.ruleSets;

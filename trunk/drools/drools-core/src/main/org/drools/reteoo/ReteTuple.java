@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.65 2004-12-01 13:41:57 simon Exp $
+ * $Id: ReteTuple.java,v 1.66 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +40,14 @@ package org.drools.reteoo;
  *
  */
 
+import java.io.Serializable;
+
 import org.drools.FactHandle;
 import org.drools.NoSuchFactHandleException;
 import org.drools.NoSuchFactObjectException;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
-
-import java.io.Serializable;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.43 2004-12-06 16:15:54 simon Exp $
+ * $Id: JoinNode.java,v 1.44 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,16 +40,14 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.RetractionException;
-import org.drools.rule.Declaration;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.drools.AssertionException;
+import org.drools.RetractionException;
+import org.drools.rule.Declaration;
 
 /**
  * A two-input Rete-OO <i>join node </i>.
@@ -198,74 +196,6 @@ class JoinNode extends TupleSource
         {
             propagateRetractTuples( key,
                                     workingMemory );
-        }
-    }
-
-    /**
-     * Modify tuples from the left input.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    void modifyLeftTuples( FactHandle trigger,
-                           TupleSet newTuples,
-                           WorkingMemoryImpl workingMemory ) throws FactException
-    {
-        TupleSet newJoined = workingMemory.getJoinMemory( this ).modifyLeftTuples( trigger );
-
-        if ( !newJoined.isEmpty( ) )
-        {
-            //newJoined is not empty then we need to propogated modified tuples
-            propagateModifyTuples( trigger,
-                                   newJoined,
-                                   workingMemory );
-        }
-        else
-        {
-            //newJoined is empty, must be a new branch assert as normal
-            Iterator tupleIter = newTuples.iterator( );
-            while ( tupleIter.hasNext( ) )
-            {
-                assertLeftTuple( ( ReteTuple ) tupleIter.next( ),
-                                 workingMemory );
-            }
-        }
-    }
-
-    /**
-     * Modify tuples from the right input.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while modifying.
-     */
-    void modifyRightTuples( FactHandle trigger,
-                            TupleSet newTuples,
-                            WorkingMemoryImpl workingMemory ) throws FactException
-    {
-        TupleSet newJoined = workingMemory.getJoinMemory( this ).modifyRightTuples( trigger );
-
-        if ( !newJoined.isEmpty( ) )
-        {
-            //newJoined is not empty then we need to propogated modified tuples
-            propagateModifyTuples( trigger,
-                                   newJoined,
-                                   workingMemory );
-        }
-        else
-        {
-            //newJoined is empty, must be a new branch assert as normal
-            Iterator tupleIter = newTuples.iterator( );
-            while ( tupleIter.hasNext( ) )
-            {
-                assertRightTuple( ( ReteTuple ) tupleIter.next( ),
-                                  workingMemory );
-            }
         }
     }
 

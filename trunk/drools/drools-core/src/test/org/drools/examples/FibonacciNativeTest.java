@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.13 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.14 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -525,7 +525,6 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         assertEquals(100, listener.created);
         assertEquals(99, listener.fired);
         assertEquals(1, listener.cancelled);
-
     }
 
     public static class Fibonacci implements Serializable
