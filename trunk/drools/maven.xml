@@ -185,7 +185,7 @@
       temp directory deleted.
     -->
 
-    <goal name="drools:jar-all" prereqs="jar-all">
+  <goal name="drools:jar-all" prereqs="jar-all">
     <mkdir dir="${basedir}/target/all-stage/"/>
       <ant:unjar dest="${basedir}/target/all-stage/drools-all">
         <patternset>
@@ -194,6 +194,15 @@
         <fileset dir="${basedir}">
             <include name="target/drools-*.jar"/>
             <exclude name="target/drools-smftest.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/base">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir="${basedir}">
+            <include name="target/drools-annotation-${pom.currentVersion}.jar"/>
         </fileset>
       </ant:unjar>
 
@@ -224,7 +233,7 @@
         </fileset>
       </ant:unjar>
 
-      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/base">
+      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/annotation">
         <patternset>
             <include name="**/drools.conf"/>
         </patternset>
@@ -232,25 +241,6 @@
             <include name="target/drools-base-${pom.currentVersion}.jar"/>
         </fileset>
       </ant:unjar>
-
-      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/base">
-        <patternset>
-            <include name="**/drools.conf"/>
-        </patternset>
-        <fileset dir="${basedir}">
-            <include name="target/drools-examples-${pom.currentVersion}.jar"/>
-        </fileset>
-      </ant:unjar>
-
-      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/base">
-        <patternset>
-            <include name="**/drools.conf"/>
-        </patternset>
-        <fileset dir="${basedir}">
-            <include name="target/drools-annotation-${pom.currentVersion}.jar"/>
-        </fileset>
-      </ant:unjar>
-
 
       <ant:concat destfile="${basedir}/target/all-stage/drools-all/META-INF/drools.conf" force="yes">
         <fileset dir="target/all-stage/drools-conf" includes="**/drools.conf" />
