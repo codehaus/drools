@@ -17,6 +17,17 @@
       Rete/Rete-OO algorithm and supported by a pluggable semantics modules.
       </p>
     </subsection>
+
+    <subsection name="What happened to 1.0?">
+      <p>
+      <code>drool</code> 1.x was written before we knew anything about
+      the Rete algorithm.  It was purely a predicate-execution framework
+      and was never truly publically released.  With the massive changes
+      undertaking for the 2.x series, we decided to increase the major
+      version number so as to indicate the size of the change.
+      </p>
+    </subsection>
+
     </section>
 
     <section name="Algorithms">
@@ -98,6 +109,19 @@
       "fact extraction" and "filter condition" that are used by the Rete-OO engine.
       </p>
 
+    </subsection>
+
+    <subsection name="What's a Semantic Componet?">
+      <p> 
+      The Rete-OO algorithm works in terms of abstract interfaces to
+      to various semantic-implying components, such as 
+      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectType</a>,
+      <a href="./apidocs/org/drools/spi/Condition.html">Condition</a> and
+      <a href="./apidocs/org/drools/spi/Extractor.html">Extractor</a>.
+      Each semantic component has a very minimal interface that is 
+      implemented in order to inject application-specific semantics
+      into the core algorithmic engine.
+      </p> 
     </subsection>
 
     </section>
