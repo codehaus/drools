@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
-$Id: DefaultConflictResolverTest.java,v 1.5 2004-06-27 23:09:41 mproctor Exp $
+$Id: DefaultConflictResolverTest.java,v 1.6 2004-09-11 13:02:15 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -162,6 +162,14 @@ public class DefaultConflictResolverTest extends TestCase
     		fetaRule.setSalience( 0 );
     		camembertRule.setSalience( 0 );
 
+            MockTuple tuple = (MockTuple) brie.getTuple();            
+            tuple.setMostRecentFactTimeStamp(1);   
+            tuple = (MockTuple) feta.getTuple();
+            tuple.setMostRecentFactTimeStamp(2);             
+            tuple = (MockTuple) camembert.getTuple();
+            tuple.setMostRecentFactTimeStamp(3);   
+               
+
     		conflictItems = this.conflictResolver.insert( brie, items );
     		assertNull( conflictItems );
     		conflictItems = this.conflictResolver.insert( feta, items );
@@ -169,14 +177,15 @@ public class DefaultConflictResolverTest extends TestCase
     		conflictItems = this.conflictResolver.insert( camembert, items );
     		assertNull( conflictItems );
 
-    		assertEquals( "feta", ((MockAgendaItem) items.get( 0 )).getRule( )
-    				.getName( ) );
-    		assertEquals( "camembert", ((MockAgendaItem) items.get( 1 )).getRule( )
-    				.getName( ) );
-    		assertEquals( "brie", ((MockAgendaItem) items.get( 2 )).getRule( )
-    				.getName( ) );
+    		assertEquals( feta, items.get( 1 ));
+    		assertEquals( camembert, items.get( 0 ) );
+    		assertEquals( brie, items.get( 2) );
 
-    		items.clear( );
+            //tearDown( );
+            //setUp( );
+            items.clear( );
+            ruleSet = new RuleSet( "cheese board" );
+     
 
     		brieRule.setSalience( 1 );
     		fetaRule.setSalience( 1 );

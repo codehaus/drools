@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
-$Id: BreadthConflictResolverTest.java,v 1.2 2004-06-27 23:09:41 mproctor Exp $
+$Id: DepthActivationConflictResolverTest.java,v 1.1 2004-09-11 13:02:15 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -63,7 +63,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectInputStream;
 import java.io.ObjectInput;
 
-public class BreadthConflictResolverTest extends TestCase
+public class DepthActivationConflictResolverTest extends TestCase
 {
   	private ConflictResolver conflictResolver;
 
@@ -84,14 +84,14 @@ public class BreadthConflictResolverTest extends TestCase
   	private LinkedList items;
   	private List conflictItems;
 
-  	public BreadthConflictResolverTest( String name )
+  	public DepthActivationConflictResolverTest( String name )
   	{
   		  super( name );
   	}
 
   	public void setUp()
   	{
-    		this.conflictResolver = BreadthConflictResolver.getInstance( );
+    		this.conflictResolver = DepthActivationConflictResolver.getInstance( );
     		items = new LinkedList( );
 
     		brieRule = new InstrumentedRule( "brie" );
@@ -151,12 +151,10 @@ public class BreadthConflictResolverTest extends TestCase
     		conflictItems = this.conflictResolver.insert( stilton, items );
     		assertNull( conflictItems );
 
-    		item = (MockAgendaItem) items.get( 0 );
-    		assertEquals( "stilton", item.getRule( ).getName( ) );
-    		item = (MockAgendaItem) items.get( 1 );
-    		assertEquals( "camembert", item.getRule( ).getName( ) );
-    		item = (MockAgendaItem) items.get( 2 );
-    		assertEquals( "brie", item.getRule( ).getName( ) );
+            assertEquals( 3, items.size() );
+            assertEquals( brie, items.get( 2 ) );
+            assertEquals( stilton, items.get( 0 ) );
+            assertEquals( camembert, items.get( 1 ) );     
 
     		//try descending
     		items.clear( );
@@ -167,12 +165,10 @@ public class BreadthConflictResolverTest extends TestCase
     		conflictItems = this.conflictResolver.insert( brie, items );
     		assertNull( conflictItems );
 
-    		item = (MockAgendaItem) items.get( 0 );
-    		assertEquals( "stilton", item.getRule( ).getName( ) );
-    		item = (MockAgendaItem) items.get( 1 );
-    		assertEquals( "camembert", item.getRule( ).getName( ) );
-    		item = (MockAgendaItem) items.get( 2 );
-    		assertEquals( "brie", item.getRule( ).getName( ) );
+            assertEquals( 3, items.size() );
+            assertEquals( brie, items.get( 2 ) );
+            assertEquals( stilton, items.get( 0 ) );
+            assertEquals( camembert, items.get( 1 ) ); 
 
     		//try mixed order
     		items.clear( );
@@ -183,12 +179,10 @@ public class BreadthConflictResolverTest extends TestCase
     		conflictItems = this.conflictResolver.insert( brie, items );
     		assertNull( conflictItems );
 
-    		item = (MockAgendaItem) items.get( 0 );
-    		assertEquals( "stilton", item.getRule( ).getName( ) );
-    		item = (MockAgendaItem) items.get( 1 );
-    		assertEquals( "camembert", item.getRule( ).getName( ) );
-    		item = (MockAgendaItem) items.get( 2 );
-    		assertEquals( "brie", item.getRule( ).getName( ) );
+            assertEquals( 3, items.size() );
+            assertEquals( brie, items.get( 2 ) );
+            assertEquals( stilton, items.get( 0 ) );
+            assertEquals( camembert, items.get( 1 ) ); 
   	}
 
     public void testSerialize() throws Exception
