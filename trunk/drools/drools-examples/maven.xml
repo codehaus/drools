@@ -13,6 +13,17 @@
       </java>
     </goal>
 
+    <goal name="fibonacci-java-extract" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+	  <arg value="fibonacci.java.extract.drl"/>
+      </java>
+    </goal>
+
     <goal name="fibonacci-python" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciExample"
             fork="true">
