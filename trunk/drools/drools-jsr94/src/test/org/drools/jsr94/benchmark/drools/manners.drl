@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
 The definition of a RuleExecutionSet is not within the scope of the JSR 94.
@@ -15,7 +15,10 @@ employs a depth-first search approach to the problem.
 -->
 <rule-set name="Miss Manners"
           xmlns="http://drools.org/rules"
-          xmlns:java="http://drools.org/semantics/java">
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
 
        <!--
        Initialize the root seating element.
