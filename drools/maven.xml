@@ -187,16 +187,39 @@
 
     <goal name="drools:deploy" prereqs="drools:dist-javadoc">
       <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
-        <arg line="${maven.scp.args} drools-javadoc-${pom.currentVersion}.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
       </exec>
       <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
-        <arg line="${maven.scp.args} drools-javadoc-${pom.currentVersion}.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
       </exec>
 
-    <exec dir="." executable="${maven.ssh.executable}">
-      <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-javadoc-${pom.currentVersion}.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
-    </exec>
--->
+      <exec dir="." executable="${maven.ssh.executable}">
+        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
+      </exec>
+
+      <j:set var="goal" value="jar:deploy"/>
+      <attainGoal name="multiproject:goal"/>
+
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-src.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin-withdeps.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-src.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin-withdeps.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+
     </goal>
 
 		<!--
@@ -212,11 +235,11 @@
     </goal>
 
     <goal name="drools:dist-javadoc" prereqs="drools:dist-prepare,javadoc-all">
-        <zip destfile="${basedir}/target/drools-javadoc-${pom.currentVersion}.zip" compression="gzip">
+        <zip destfile="${basedir}/target/drools-${pom.currentVersion}-javadoc.zip" compression="gzip">
             <zipfileset dir="${basedir}/target/docs/apidocs"
                         prefix="drools-${pom.currentVersion}/apidocs"/>
         </zip>
-        <tar destfile="${basedir}/target/drools-javadoc-${pom.currentVersion}.tar.gz" compression="gzip">
+        <tar destfile="${basedir}/target/drools-${pom.currentVersion}-javadoc.tar.gz" compression="gzip">
             <tarfileset dir="${basedir}/target/docs/apidocs"
                         prefix="drools-${pom.currentVersion}/apidocs"/>
         </tar>
