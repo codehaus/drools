@@ -1,7 +1,7 @@
 
 package org.drools.reteoo;
 
-import org.drools.reteoo.impl.RootNodeImpl;
+import org.drools.reteoo.impl.ReteImpl;
 import org.drools.spi.Rule;
 import org.drools.spi.Declaration;
 import org.drools.spi.ObjectType;
@@ -19,8 +19,8 @@ import java.util.Iterator;
 
 public class BuilderTest extends TestCase
 {
-    private RootNodeImpl rootNode;
-    private Builder      builder;
+    private ReteImpl rete;
+    private Builder  builder;
 
     private ObjectType stringType;
     private ObjectType objectType;
@@ -28,7 +28,7 @@ public class BuilderTest extends TestCase
     private Declaration stringDecl;
     private Declaration objectDecl;
 
-    private Rule     rule1;
+    private Rule rule1;
 
     public BuilderTest(String name)
     {
@@ -37,8 +37,8 @@ public class BuilderTest extends TestCase
 
     public void setUp()
     {
-        this.rootNode = new RootNodeImpl();
-        this.builder  = new Builder( this.rootNode );
+        this.rete     = new ReteImpl();
+        this.builder  = new Builder( this.rete );
 
         this.stringType = new JavaObjectType( String.class );
         this.objectType = new JavaObjectType( Object.class );
@@ -65,8 +65,8 @@ public class BuilderTest extends TestCase
 
     public void tearDown()
     {
-        this.rootNode = null;
-        this.builder  = null;
+        this.rete    = null;
+        this.builder = null;
 
         this.stringType = null;
         this.objectType = null;

@@ -9,31 +9,32 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
-public class RootNodeTest extends TestCase
+public class ReteImplTest extends TestCase
 {
-    private RootNodeImpl rootNode;
+    private ReteImpl rete;
 
     private InstrumentedObjectTypeNode objectTypeNode;
     private InstrumentedObjectTypeNode stringTypeNode;
 
-    public RootNodeTest(String name)
+    public ReteImplTest(String name)
     {
         super( name );
     }
 
     public void setUp()
     {
-        this.rootNode = new RootNodeImpl();
+        this.rete = new ReteImpl();
 
         this.objectTypeNode = new InstrumentedObjectTypeNode( new JavaObjectType( Object.class ) );
         this.stringTypeNode = new InstrumentedObjectTypeNode( new JavaObjectType( String.class ) );
 
-        this.rootNode.addObjectTypeNode( this.objectTypeNode );
-        this.rootNode.addObjectTypeNode( this.stringTypeNode );
+        this.rete.addObjectTypeNode( this.objectTypeNode );
+        this.rete.addObjectTypeNode( this.stringTypeNode );
     }
 
     public void tearDown()
     {
+        this.rete = null;
     }
 
     /** All objects asserted to a RootNode must be propagated
@@ -46,11 +47,11 @@ public class RootNodeTest extends TestCase
 
         try
         {
-            this.rootNode.assertObject( object1,
-                                        null );
+            this.rete.assertObject( object1,
+                                    null );
             
-            this.rootNode.assertObject( string1,
-                                        null );
+            this.rete.assertObject( string1,
+                                    null );
             
             List asserted = null;
 
@@ -97,11 +98,11 @@ public class RootNodeTest extends TestCase
 
         try
         {
-            this.rootNode.retractObject( object1,
-                                         null );
+            this.rete.retractObject( object1,
+                                     null );
             
-            this.rootNode.retractObject( string1,
-                                         null );
+            this.rete.retractObject( string1,
+                                     null );
             
             List retracted = null;
 

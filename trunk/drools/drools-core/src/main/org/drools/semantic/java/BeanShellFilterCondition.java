@@ -86,6 +86,8 @@ public class BeanShellFilterCondition implements FilterCondition
 
     public boolean isAllowed(Tuple tuple) throws FilterException
     {
+        System.err.println( this.filterExpr + " --> " + tuple );
+
         boolean result = false;
 
         try

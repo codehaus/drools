@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RootNode.java,v 1.8 2002-07-28 15:49:50 bob Exp $
+ $Id: Rete.java,v 1.1 2002-07-30 19:52:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,35 +46,53 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.spi.ObjectType;
+import org.drools.AssertionException;
+import org.drools.FactException;
+import org.drools.RetractionException;
+import org.drools.WorkingMemory;
 
 import java.util.Collection;
 
-/** The root node in the Rete-OO network.
- *
- *  This node accepts an <code>Object</code>, and simply
- *  propagates it to all <code>ObjectTypeNode</code>s for
- *  type testings.
- *
- *  @see ObjectTypeNode
+/** A Rete-OO network.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface RootNode
+public interface Rete
 {
-    /** Retrieve all <code>ObjectTypeNode</code> children
-     *  of this node.
+    /** Assert a new fact object into this <code>RuleBase</code>
+     *  and the specified <code>WorkingMemory</code>.
      *
-     *  @return The <code>Set</code> of <code>ObjectTypeNodes</code>.
+     *  @param object The object to assert.
+     *  @param workingMemory The working memory session.
+     *
+     *  @throws AssertionException if an error occurs during assertion.
      */
-    Collection getObjectTypeNodes();
+    void assertObject(Object object,
+                      WorkingMemory workingMemory) throws AssertionException;
 
-    /** Retrieve an <code>ObjectTypeNode</code> keyed by <code>ObjectType</code>.
+    /** Retract a fact object from this <code>RuleBase</code>
+     *  and the specified <code>WorkingMemory</code>.
      *
-     *  @param objectType The <code>ObjectType</code> key.
+     *  @param object The object to retract.
+     *  @param workingMemory The working memory session.
      *
-     *  @return The matching <code>ObjectTypeNode</code> if one has already
-     *          been created, else <code>null</code>.
+     *  @throws RetractionException if an error occurs during retraction.
      */
-    ObjectTypeNode getObjectTypeNode(ObjectType objectType);
+    void retractObject(Object object,
+                       WorkingMemory workingMemory) throws RetractionException;
+
+    /** Modify a fact object in this <code>RuleBase</code>
+     *  and the specified <code>WorkingMemory</code>.
+     *
+     *  With the exception of time-based nodes, modification of
+     *  a fact object is semantically equivelent to retracting and
+     *  re-asserting it.
+     *
+     *  @param object The object to modify.
+     *  @param workingMemory The working memory session.
+     *
+     *  @throws FactException if an error occurs during modification.
+     */
+    void modifyObject(Object object,
+                      WorkingMemory workingMemory) throws FactException;
 }

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.11 2002-07-28 13:55:46 bob Exp $
+ $Id: RuleBase.java,v 1.12 2002-07-30 19:52:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,8 +47,9 @@ package org.drools;
  */
 
 import org.drools.reteoo.Builder;
+import org.drools.reteoo.Rete;
 import org.drools.reteoo.ReteConstructionException;
-import org.drools.reteoo.impl.RootNodeImpl;
+import org.drools.reteoo.impl.ReteImpl;
 import org.drools.spi.Rule;
 import org.drools.spi.RuleSet;
 
@@ -67,8 +68,8 @@ public class RuleBase
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The root Rete-OO node of this <code>RuleBase</code>. */
-    private RootNodeImpl rootNode;
+    /** The root Rete-OO for this <code>RuleBase</code>. */
+    private ReteImpl rete;
 
     /** Rete-OO Network builder. */
     private Builder  builder;
@@ -81,8 +82,8 @@ public class RuleBase
      */
     public RuleBase()
     {
-        this.rootNode = new RootNodeImpl();
-        this.builder  = new Builder( this.rootNode );
+        this.rete    = new ReteImpl();
+        this.builder = new Builder( this.rete );
     }
 
     // ------------------------------------------------------------
@@ -166,14 +167,13 @@ public class RuleBase
         return new TransactionalWorkingMemory( this );
     }
 
-    /** Retrieve the Rete-OO <code>RootNode</code> for this
-     *  <code>RuleBase</code>.
+    /** Retrieve the Rete-OO network for this <code>RuleBase</code>.
      *
-     *  @return The root node in the RETE-OO graph. 
+     *  @return The RETE-OO network. 
      */
-    RootNodeImpl getRootNode()
+    Rete getRete()
     {
-        return this.rootNode;
+        return this.rete;
     }
 
     /** Assert a new fact object into this <code>RuleBase</code>
@@ -187,10 +187,10 @@ public class RuleBase
     void assertObject(Object object,
                       WorkingMemory workingMemory) throws AssertionException
     {
-        getRootNode().assertObject( object,
-                                    workingMemory );
+        getRete().assertObject( object,
+                                workingMemory );
     }
-
+    
     /** Retract a fact object from this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
@@ -202,10 +202,10 @@ public class RuleBase
     void retractObject(Object object,
                        WorkingMemory workingMemory) throws RetractionException
     {
-        getRootNode().retractObject( object,
-                                     workingMemory );
+        getRete().retractObject( object,
+                                 workingMemory );
     }
-
+    
     /** Modify a fact object in this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
@@ -221,7 +221,7 @@ public class RuleBase
     void modifyObject(Object object,
                       WorkingMemory workingMemory) throws FactException
     {
-        getRootNode().modifyObject( object,
-                                    workingMemory );
+        getRete().modifyObject( object,
+                                workingMemory );
     }
 }
