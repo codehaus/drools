@@ -16,10 +16,6 @@ class TupleParameterValue implements ParameterValue
         this.declaration = declaration;
     }
 
-    /**
-     * @return The fact associated with the parameter declaration. The returned
-     *         value may be null.
-     */
     public Object getValue( Tuple tuple )
     {
         return tuple.get( declaration );
