@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.58 2004-11-25 17:53:54 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.59 2004-11-28 05:02:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,9 +57,9 @@ import java.util.Set;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
- * 
+ *
  * @see Tuple
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 class ReteTuple
@@ -75,14 +75,11 @@ class ReteTuple
 
     private final Rule rule;
 
-    /** Key objects for this tuple. */
     private final TupleKey key;
-    
-    private final Set declarations;    
+
+    private final Set declarations;
 
     private Map extractions;
-    
-
 
     private FactHandleImpl mostRecentFact;
 
@@ -92,7 +89,7 @@ class ReteTuple
     // Constructors
     // ------------------------------------------------------------
 
-    public ReteTuple(WorkingMemoryImpl workingMemory,
+    ReteTuple(WorkingMemoryImpl workingMemory,
                      Rule rule)
     {
         this.workingMemory = workingMemory;
@@ -133,7 +130,7 @@ class ReteTuple
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
-        
+
         this.key = new TupleKey( that.key,
                                  new TupleKey( declaration,
                                                handle ) );
@@ -152,7 +149,7 @@ class ReteTuple
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
-        
+
         this.key = that.key;
 
         this.declarations = new HashSet( that.declarations.size( ) + 1,
@@ -164,8 +161,8 @@ class ReteTuple
                                          1 );
         this.extractions.putAll( that.extractions );
         this.extractions.put( declaration, object );
-        
-    }    
+
+    }
 
     ReteTuple(WorkingMemoryImpl workingMemory,
               Rule rule,
@@ -192,7 +189,7 @@ class ReteTuple
 
     /**
      * Retrieve the key for this tuple.
-     * 
+     *
      * @return The key.
      */
     TupleKey getKey()
@@ -202,10 +199,10 @@ class ReteTuple
 
     /**
      * Determine if this tuple depends upon a specified object.
-     * 
+     *
      * @param handle
      *            The object handle to test.
-     * 
+     *
      * @return <code>true</code> if this tuple depends upon the specified
      *         object, otherwise <code>false</code>.
      */
@@ -230,11 +227,11 @@ class ReteTuple
             }
             catch ( NoSuchFactObjectException e )
             {
-            }            
+            }
         }
         else
         {
-            
+
             return this.extractions.get( declaration );
         }
 
@@ -269,21 +266,6 @@ class ReteTuple
         this.extractions = tuple.extractions;
     }
 
-    
-    /**
-     * @see Tuple
-     */
-/*    
-    public FactHandle getFactHandleForDeclaration(Declaration declaration)
-    {
-        FactHandle handle = this.key.get( declaration );
-        if ( handle == null )
-        {
-            handle = (FactHandle) this.extractions.get( declaration );
-        }
-        return handle;
-    }
-*/
     public Rule getRule()
     {
         return this.rule;
@@ -300,7 +282,7 @@ class ReteTuple
         {
             this.mostRecentFact = this.key.getMostRecentFact( );
         }
-        return this.mostRecentFact != null ? this.mostRecentFact.getRecency( ) : -1;
+        return this.mostRecentFact.getRecency( );
     }
 
     public long getLeastRecentFactTimeStamp()
@@ -309,6 +291,6 @@ class ReteTuple
         {
             this.leastRecentFact = this.key.getLeastRecentFact( );
         }
-        return this.leastRecentFact != null ? this.leastRecentFact.getRecency( ) : -1;
+        return this.leastRecentFact.getRecency( );
     }
 }

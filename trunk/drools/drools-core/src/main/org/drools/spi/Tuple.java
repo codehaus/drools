@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.22 2004-11-22 02:38:38 simon Exp $
+ * $Id: Tuple.java,v 1.23 2004-11-28 05:02:38 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

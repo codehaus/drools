@@ -6,20 +6,20 @@ public class DefaultFactHandleFactory
     implements
     FactHandleFactory
 {
-    private long idCounter;
+    /** The fact id. */
+    private long id;
 
-    private long recencyCounter;
+    /** The number of facts created - used for recency. */
+    private long counter;
 
-    public FactHandle newFactHandle()
+    public final FactHandle newFactHandle()
     {
-        return new FactHandleImpl( ++idCounter,
-                                   ++recencyCounter );
+        return newFactHandle( ++id );
     }
 
-    public FactHandle newFactHandle(long id)
+    public final FactHandle newFactHandle(long id)
     {
         return new FactHandleImpl( id,
-                                   ++recencyCounter );
+                                   ++counter );
     }
-
 }
