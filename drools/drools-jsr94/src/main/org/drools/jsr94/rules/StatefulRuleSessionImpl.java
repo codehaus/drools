@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatefulRuleSessionImpl.java,v 1.15 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: StatefulRuleSessionImpl.java,v 1.16 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -107,7 +107,7 @@ public class StatefulRuleSessionImpl
     StatefulRuleSessionImpl( String bindUri, Map properties )
         throws RuleExecutionSetNotFoundException
     {
-        setProperties( properties );
+        this.setProperties( properties );
 
         RuleExecutionSetRepository repository =
             RuleExecutionSetRepository.getInstance( );
@@ -121,9 +121,9 @@ public class StatefulRuleSessionImpl
                 "no execution set bound to: " + bindUri );
         }
 
-        setRuleExecutionSet( ruleSet );
+        this.setRuleExecutionSet( ruleSet );
 
-        initWorkingMemory( );
+        this.initWorkingMemory( );
     }
 
     // ----------------------------------------------------------------------
@@ -143,7 +143,8 @@ public class StatefulRuleSessionImpl
     {
         if ( objectHandle instanceof FactHandle )
         {
-            return getWorkingMemory( ).containsObject( ( FactHandle ) objectHandle );
+            return this.getWorkingMemory( ).containsObject(
+                ( FactHandle ) objectHandle );
         }
 
         return false;
@@ -164,11 +165,11 @@ public class StatefulRuleSessionImpl
      */
     public Handle addObject( Object object ) throws InvalidRuleSessionException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         try
         {
-            return ( Handle ) getWorkingMemory( ).assertObject( object );
+            return ( Handle ) this.getWorkingMemory( ).assertObject( object );
         }
         catch ( FactException e )
         {
@@ -190,13 +191,13 @@ public class StatefulRuleSessionImpl
      */
     public List addObjects( List objList ) throws InvalidRuleSessionException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         List handles = new ArrayList( );
 
         for ( Iterator objectIter = objList.iterator( ); objectIter.hasNext( ); )
         {
-            handles.add( addObject( objectIter.next( ) ) );
+            handles.add( this.addObject( objectIter.next( ) ) );
         }
         return handles;
     }
@@ -220,13 +221,13 @@ public class StatefulRuleSessionImpl
     public void updateObject( Handle objectHandle, Object newObject )
         throws InvalidRuleSessionException, InvalidHandleException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         if ( objectHandle instanceof FactHandle )
         {
             try
             {
-                getWorkingMemory( ).modifyObject(
+                this.getWorkingMemory( ).modifyObject(
                     ( FactHandle ) objectHandle, newObject );
             }
             catch ( FactException e )
@@ -255,13 +256,14 @@ public class StatefulRuleSessionImpl
     public void removeObject( Handle handleObject )
         throws InvalidRuleSessionException, InvalidHandleException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         if ( handleObject instanceof FactHandle )
         {
             try
             {
-                getWorkingMemory( ).retractObject( ( FactHandle ) handleObject );
+                this.getWorkingMemory( ).retractObject(
+                    ( FactHandle ) handleObject );
             }
             catch ( FactException e )
             {
@@ -294,9 +296,9 @@ public class StatefulRuleSessionImpl
      */
     public List getObjects( ) throws InvalidRuleSessionException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
-        return getObjects( getRuleExecutionSet( ).getObjectFilter( ) );
+        return this.getObjects( this.getRuleExecutionSet( ).getObjectFilter( ) );
     }
 
     /**
@@ -322,13 +324,13 @@ public class StatefulRuleSessionImpl
     public List getObjects( ObjectFilter filter )
         throws InvalidRuleSessionException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         List objects = new ArrayList( );
 
-        objects.addAll( getWorkingMemory( ).getObjects( ) );
+        objects.addAll( this.getWorkingMemory( ).getObjects( ) );
 
-        applyFilter( objects, filter );
+        this.applyFilter( objects, filter );
 
         return objects;
     }
@@ -343,11 +345,11 @@ public class StatefulRuleSessionImpl
      */
     public void executeRules( ) throws InvalidRuleSessionException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         try
         {
-            getWorkingMemory( ).fireAllRules( );
+            this.getWorkingMemory( ).fireAllRules( );
         }
         catch ( DroolsException e )
         {
@@ -361,13 +363,14 @@ public class StatefulRuleSessionImpl
     public Object getObject( Handle handle )
         throws InvalidRuleSessionException, InvalidHandleException
     {
-        checkRuleSessionValidity( );
+        this.checkRuleSessionValidity( );
 
         if ( handle instanceof FactHandle )
         {
             try
             {
-                return getWorkingMemory( ).getObject( ( FactHandle ) handle );
+                return this.getWorkingMemory( ).getObject(
+                    ( FactHandle ) handle );
             }
             catch ( NoSuchFactObjectException e )
             {
@@ -390,7 +393,7 @@ public class StatefulRuleSessionImpl
     public List getHandles( )
     {
         List handles = new LinkedList( );
-        for ( Iterator i = getWorkingMemory( ).getFactHandles( ).iterator( );
+        for ( Iterator i = this.getWorkingMemory( ).getFactHandles( ).iterator( );
               i.hasNext( ); )
         {
             Object object = i.next( );

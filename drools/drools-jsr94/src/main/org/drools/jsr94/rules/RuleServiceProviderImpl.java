@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleServiceProviderImpl.java,v 1.10 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: RuleServiceProviderImpl.java,v 1.11 2004-11-27 00:59:54 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -91,11 +91,11 @@ public class RuleServiceProviderImpl extends RuleServiceProvider
      */
     public synchronized RuleRuntime getRuleRuntime( )
     {
-        if ( ruleRuntime != null )
+        if ( this.ruleRuntime != null )
         {
-            return ruleRuntime;
+            return this.ruleRuntime;
         }
-        return ruleRuntime = new RuleRuntimeImpl( );
+        return this.ruleRuntime = new RuleRuntimeImpl( );
     }
 
     /**
@@ -106,10 +106,10 @@ public class RuleServiceProviderImpl extends RuleServiceProvider
      */
     public synchronized RuleAdministrator getRuleAdministrator( )
     {
-        if ( ruleAdministrator != null )
+        if ( this.ruleAdministrator != null )
         {
-            return ruleAdministrator;
+            return this.ruleAdministrator;
         }
-        return ruleAdministrator = new RuleAdministratorImpl( );
+        return this.ruleAdministrator = new RuleAdministratorImpl( );
     }
 }
