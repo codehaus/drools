@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.16 2004-07-20 21:23:29 mproctor Exp $
+ $Id: Interp.java,v 1.17 2004-07-21 12:08:37 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.16 2004-07-20 21:23:29 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.17 2004-07-21 12:08:37 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -218,9 +218,7 @@ public class Interp implements Serializable
             }
         }
 
-        String returnText = buffer.append(text).toString();
-        System.out.println("prepared" + returnText);
-        return returnText;
+        return buffer.append(text).toString();
     }
      /** Retrieve the text to evaluate.
      *
