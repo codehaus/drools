@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciNative.java,v 1.1 2004-07-09 00:41:35 dbarnett Exp $
+$Id: FibonacciNative.java,v 1.2 2004-07-13 17:24:01 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -103,6 +103,11 @@ public class FibonacciNative
             {
                 return new Declaration[] {fDeclaration};
             }
+            
+            public String toString()
+            {
+                return "f.getSequence() == 1";
+            }
         };
         bootstrap1Rule.addCondition(conditionBootstrap1A);
 
@@ -118,6 +123,11 @@ public class FibonacciNative
             public Declaration[] getRequiredTupleMembers()
             {
                 return new Declaration[] {fDeclaration};
+            }
+            
+            public String toString()
+            {
+                return "f.getValue() == -1";
             }
         };
         bootstrap1Rule.addCondition(conditionBootstrap1B);
@@ -170,6 +180,11 @@ public class FibonacciNative
             {
                 return new Declaration[] {fDeclaration};
             }
+            
+            public String toString()
+            {
+                return "f.getSequence() == 2";
+            }
         };
         bootstrap2Rule.addCondition(conditionBootstrap2A);
 
@@ -185,6 +200,11 @@ public class FibonacciNative
             public Declaration[] getRequiredTupleMembers()
             {
                 return new Declaration[] {fDeclaration};
+            }
+            
+            public String toString()
+            {
+                return "f.getValue() == -1";
             }
         };
         bootstrap2Rule.addCondition(conditionBootstrap2B);
@@ -215,6 +235,11 @@ public class FibonacciNative
             public Declaration[] getRequiredTupleMembers()
             {
                 return new Declaration[] {fDeclaration};
+            }
+            
+            public String toString()
+            {
+                return "f.getValue() == -1";
             }
         };
         recurseRule.addCondition(conditionRecurse);
@@ -275,6 +300,11 @@ public class FibonacciNative
             {
                 return new Declaration[] {fDeclaration1, fDeclaration2};
             }
+            
+            public String toString()
+            {
+                return "f2.getSequence() == (f1.getSequence()+1)";
+            }
         };
         calculateRule.addCondition(conditionCalculateA);
 
@@ -292,6 +322,11 @@ public class FibonacciNative
             {
                 return new Declaration[] {fDeclaration2, fDeclaration3};
             }
+            
+            public String toString()
+            {
+                return "f3.getSequence() == (f2.getSequence()+1)";
+            }
         };
         calculateRule.addCondition(conditionCalculateB);
 
@@ -307,6 +342,11 @@ public class FibonacciNative
             public Declaration[] getRequiredTupleMembers()
             {
                 return new Declaration[] {fDeclaration1};
+            }
+            
+            public String toString()
+            {
+                return "f1.getValue() != -1";
             }
         };
         calculateRule.addCondition(conditionCalculateC);
@@ -324,6 +364,11 @@ public class FibonacciNative
             {
                 return new Declaration[] {fDeclaration2};
             }
+            
+            public String toString()
+            {
+                return "f2.getValue() != -1";
+            }
         };
         calculateRule.addCondition(conditionCalculateD);
 
@@ -339,6 +384,11 @@ public class FibonacciNative
             public Declaration[] getRequiredTupleMembers()
             {
                 return new Declaration[] {fDeclaration3};
+            }
+            
+            public String toString()
+            {
+                return "f3.getValue() == -1";
             }
         };
         calculateRule.addCondition(conditionCalculateE);
@@ -376,6 +426,15 @@ public class FibonacciNative
         builder.addRuleSet(ruleSet);
         RuleBase ruleBase = builder.build();
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+
+        System.out.println("DUMP RETE");
+        System.out.println("---------");
+        Dumper dumper = new Dumper(ruleBase);
+        dumper.dumpRete(System.err);
+
+        System.out.println("DUMP RETE DOT");
+        System.out.println("---------");
+        dumper.dumpReteToDot(System.err);
 
         // Assert the facts, and fire the rules.
         Fibonacci fibonacci = new Fibonacci( 50 );
