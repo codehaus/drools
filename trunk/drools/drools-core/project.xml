@@ -5,11 +5,12 @@
   <name>drools</name>
   <id>drools</id>
   <currentVersion>1.0-dev</currentVersion>
+
   <organization>
-    <name>Werken, Inc.</name>
+    <name>The Werken Company</name>
     <url>http://www.werken.com/</url>
   </organization>
-  <inceptionYear>2002</inceptionYear>
+  <inceptionYear>2001</inceptionYear>
   <package>org.drools</package>
 
   <shortDescription>Rete Based Rules Engine</shortDescription>
@@ -24,7 +25,7 @@
 
   <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;amp;atid=418734</issueTrackingUrl>
   <siteAddress>drools.org</siteAddress>
-  <siteDirectory></siteDirectory>
+  <siteDirectory>/home/groups/d/dr/drools/htdocs</siteDirectory>
   <distributionDirectory></distributionDirectory>
   
   <repository>
@@ -79,11 +80,12 @@
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
-
+<!--
     <dependency>
       <id>antlrall</id>
       <version>2.7.1</version>
     </dependency>
+-->
 
     <dependency>
       <id>antlr</id>

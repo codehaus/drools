@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document url="http://drools.org/status.xml">
+
+  <properties>
+    <title>drools</title>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+  </properties>
+
+
+  <body>
+    <title>Status</title>
+    
+    <section name="To Do List">
+      <ul>
+        <li>Implement 'finders' such as ILOG JRules has.</li>
+      </ul>
+    </section>
+
+    <section name="Known problems">    
+      <ul>
+      </ul>
+    </section>
+
+  </body>
+</document>
