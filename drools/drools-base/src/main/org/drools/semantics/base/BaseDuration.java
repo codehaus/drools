@@ -4,6 +4,7 @@ import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
 
 public class BaseDuration
+    implements Duration
 {
     private long seconds;
 
