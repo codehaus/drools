@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.23 2004-07-28 13:55:41 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.24 2004-08-05 08:28:01 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -70,11 +70,13 @@ import org.drools.spi.ObjectType;
 
 import org.drools.spi.KnowledgeHelper;
 
+import java.io.Serializable;
+
 /** Java block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.23 2004-07-28 13:55:41 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.24 2004-08-05 08:28:01 mproctor Exp $
  */
 public class BlockConsequence extends Interp
     implements Consequence
@@ -82,7 +84,7 @@ public class BlockConsequence extends Interp
     /** Interpreted text. */
     private String newline = System.getProperty("line.separator");
 
-    private Script script;
+    private transient Script script;
 
     private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
     // ------------------------------------------------------------
@@ -167,7 +169,7 @@ public class BlockConsequence extends Interp
        return getText();
    }
 
-    public interface Script
+    public interface Script extends Serializable
     {
         public void invoke(Tuple tuple,
                            Declaration[] decls,
