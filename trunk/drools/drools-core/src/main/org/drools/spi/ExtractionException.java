@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ExtractionException.java,v 1.2 2003-11-19 21:31:12 bob Exp $
+ $Id: ExtractionException.java,v 1.3 2004-09-13 08:28:14 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.spi;
  */
 
 import org.drools.AssertionException;
+import org.drools.rule.Rule;
 
 /** Indicates an error while extracting a fact from
  *  a <i>root fact object</i>.
@@ -56,6 +57,9 @@ import org.drools.AssertionException;
 public class ExtractionException
     extends AssertionException
 {
+    private Rule rule;
+    private String expr;
+    
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -75,4 +79,35 @@ public class ExtractionException
     {
         super( rootCause );
     }
+
+    /** Construct with a root cause.
+    *
+    *  @param rootCause The root cause of this exception.
+    */
+   public ExtractionException(Throwable rootCause, Rule rule, String expr)
+   {
+       super( rootCause );
+       this.rule = rule;       
+       this.expr = expr;
+   }      
+
+   public void setRule(Rule rule)
+   {
+       this.rule = rule;
+   }
+   
+   public Rule getRule()
+   {
+       return this.rule;
+   }
+   
+   public void setExpr(String expr)
+   {
+       this.expr = expr;
+   }
+
+   public String getExpr()
+   {
+       return this.expr;
+   }   
 }
