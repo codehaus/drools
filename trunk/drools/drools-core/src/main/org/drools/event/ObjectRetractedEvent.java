@@ -19,4 +19,9 @@ public class ObjectRetractedEvent
     {
         return this.handle;
     }
+
+    public String toString()
+    {
+        return "[ObjectRetracted: handle=" + this.handle + "]";
+    }
 }

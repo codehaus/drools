@@ -28,4 +28,9 @@ public class ObjectModifiedEvent
     {
         return this.object;
     }
+
+    public String toString()
+    {
+        return "[ObjectModified: handle=" + this.handle + "; new_object=" + this.object + "]";
+    }
 }

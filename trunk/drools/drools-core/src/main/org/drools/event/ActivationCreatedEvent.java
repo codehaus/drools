@@ -36,4 +36,9 @@ public class ActivationCreatedEvent
     {
         return this.tuple;
     }
+
+    public String toString()
+    {
+        return "[ActivationCreated: rule=" + this.tuple.getRule().getName() + "; tuple=" + this.tuple + "]";
+    }
 }
