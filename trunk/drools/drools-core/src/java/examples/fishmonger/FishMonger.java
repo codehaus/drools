@@ -4,24 +4,19 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.DroolsException;
 import org.drools.AssertionException;
+import org.drools.rule.RuleSet;
 
 import org.drools.io.RuleSetLoader;
 
-import java.io.File;
-import java.net.MalformedURLException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Iterator;
 
 public class FishMonger
 {
-    /*
     public static void main(String[] args)
     {
-        if ( args.length != 1 )
-        {
-            System.err.println( "usage: java FishMonger <rule-set.xml>" );
-
-            System.exit( 1 );
-        }
-
         try
         {
             // First, construct an empty RuleBase to be the
@@ -32,8 +27,24 @@ public class FishMonger
             // Then, use the [org.drools.semantic.java.RuleLoader]
             // static method to load a rule-set from a local File.
             
-            RuleLoader.load( ruleBase,
-                             new File( args[0] ) );
+
+            RuleSetLoader loader = new RuleSetLoader();
+
+            URL url = FishMonger.class.getResource( "fishmonger.drl" );
+
+            System.err.println( "loading: " + url );
+
+            List ruleSets = loader.load( url );
+
+            Iterator ruleSetIter = ruleSets.iterator();
+            RuleSet  eachRuleSet = null;
+
+            while ( ruleSetIter.hasNext() )
+            {
+                eachRuleSet = (RuleSet) ruleSetIter.next();
+
+                ruleBase.addRuleSet( eachRuleSet );
+            }
 
             // Create a [org.drools.WorkingMemory] to be the
             // container for your facts
@@ -99,10 +110,13 @@ public class FishMonger
         {
             e.printStackTrace();
         }
-        catch (MalformedURLException e)
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
     }
-    */
 }

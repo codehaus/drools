@@ -33,9 +33,9 @@
       <p>
       At the core, <code>drools</code> is purely an Rete-OO algorithmic
       engine.  The engine works in terms of very abstracted concepts,
-      such as <a href="./apidocs/org/drools/spi/Condition.html">Condition</a>s, 
-      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectType</a>s and
-      <a href="./apidocs/org/drools/spi/Extractor.html">>Extractor</a>s.  
+      such as <a href="./apidocs/org/drools/spi/Condition.html">Conditions</a>, 
+      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectTypes</a> and
+      <a href="./apidocs/org/drools/spi/Extractor.html">Extractors</a>.  
       Concrete <i>semantic modules</i> are used to bind 
       application-specific semantics tightly to the internals of the 
       algorithmic engine.

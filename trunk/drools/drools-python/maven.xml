@@ -38,6 +38,18 @@
       </java>
     </goal>
 
+    <goal name="drools:example-fishmonger"
+          prereqs="drools:compile-examples">
+      <echo>running fishmonger example</echo>
+      <java classname="fishmonger.FishMonger"> 
+        <classpath>
+          <path refid="maven.dependency.classpath"/>
+          <path location="target/${maven.final.name}.jar"/>
+          <path location="${drools.examples.dest.dir}"/>
+        </classpath>
+      </java>
+    </goal>
+
     <postGoal name="jxr:generate">
       <jxr:jxr
         basedir="${basedir}"
