@@ -43,7 +43,7 @@ public class MockTuple implements Tuple
         return this.tuple.keySet( );
     }
 
-    public FactHandle getFactHandleForObject(Object object)
+    public Map getObjectFactMapping( )
     {
         return null;
     }

@@ -1,6 +1,13 @@
 package org.drools.util;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.Serializable;
+
 /*
-* $Id: PrimitiveLongMap.java,v 1.3 2004-11-15 00:17:54 mproctor Exp $
+* $Id: PrimitiveLongMap.java,v 1.4 2004-11-15 23:06:07 mproctor Exp $
 *
 * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 *
@@ -44,7 +51,7 @@ package org.drools.util;
  *
  * @author Mark Proctor
  */
-public class PrimitiveLongMap
+public class PrimitiveLongMap implements Serializable
 {
     private final int indexIntervals;
     private final int intervalShifts;
@@ -169,6 +176,23 @@ public class PrimitiveLongMap
 
         return findPage(pageId, key).get( key );
     }
+    
+    public Collection values( )
+    {
+        CompositeCollection collection = new CompositeCollection();
+        Page page = this.firstPage;
+        while ((page != null) && (page.getPageId() <= this.lastPageId))
+        {
+            collection.addComposited(Arrays.asList(page.getValues()));
+            page = page.getNextSibling() ;
+        }
+        return collection;
+    }
+    
+    public boolean containsKey(long key)
+    {
+        return (get(key) != null) ? true : false;
+    }
 
     /**
      * Expand index to accomodate given pageId
@@ -250,7 +274,7 @@ public class PrimitiveLongMap
     }
 
 
-    private static class Page
+    private static class Page implements Serializable
     {
         private final int pageSize;
         private final int pageId;
@@ -374,6 +398,31 @@ public class PrimitiveLongMap
             return oldValue;
         }
 
+        Object[][] getTables()
+        {
+            return this.tables;
+        }
+
+        Object[] getValues()
+        {
+            Object[] values = new Object[this.filledSlots];
+            int x = 0;
+            Object value;
+            for (int i = 0; i < this.tableSize; i++)
+            {
+                for (int j = 0; j < this.tableSize; j++)
+                {
+                    value = this.tables[i][j];
+                    if (value != null)
+                    {
+	                    values[x] = value;
+	                    x++;
+                    }
+                }                
+            }
+            return values;
+        }        
+        
         public boolean isEmpty()
         {
             return (this.filledSlots != 0) ? false : true;

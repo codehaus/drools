@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.22 2004-11-14 00:40:45 simon Exp $
+ * $Id: TupleKey.java,v 1.23 2004-11-15 23:06:07 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -111,8 +111,8 @@ class TupleKey implements Serializable
     public FactHandle get(Declaration declaration)
     {
         return ( FactHandle ) this.handles.get( declaration );
-    }
-
+    } 
+    
     /**
      * Determine if this key contains the specified root fact object.
      *

@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.7 2004-11-13 01:43:07 simon Exp $
+ * $Id: FibonacciNativeTest.java,v 1.8 2004-11-15 23:06:07 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,6 +42,7 @@ package org.drools.examples;
 
 import junit.framework.TestCase;
 import org.drools.FactException;
+import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.TestWorkingMemoryEventListener;
@@ -61,6 +62,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Map;
 /**
  * This Fibonacci example demonstrates how to build a native RuleSet without
  * using one of the many Semantic Modules.
@@ -143,10 +145,10 @@ public class FibonacciNativeTest extends TestCase implements Serializable
             {
                 Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration1 );
                 f.setValue( 1 );
-
+                Map objects = tuple.getObjectFactMapping();
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                    workingMemory.modifyObject( (FactHandle) objects.get( f ), f );
                 }
                 catch ( FactException e )
                 {
@@ -224,10 +226,10 @@ public class FibonacciNativeTest extends TestCase implements Serializable
             {
                 Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
                 f.setValue( 1 );
-
+                Map objects = tuple.getObjectFactMapping();
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                    workingMemory.modifyObject( (FactHandle) objects.get( f ), f );
                 }
                 catch ( FactException e )
                 {
@@ -435,10 +437,11 @@ public class FibonacciNativeTest extends TestCase implements Serializable
                 Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
 
                 f3.setValue( f1.getValue( ) + f2.getValue( ) );
+                Map objects = tuple.getObjectFactMapping();
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f3 ), f3 );
-                    workingMemory.retractObject( tuple.getFactHandleForObject( f1 ) );
+                    workingMemory.modifyObject( (FactHandle) objects.get( f3 ), f3 );
+                    workingMemory.retractObject( (FactHandle) objects.get( f1 ) );
                 }
                 catch ( FactException e )
                 {
