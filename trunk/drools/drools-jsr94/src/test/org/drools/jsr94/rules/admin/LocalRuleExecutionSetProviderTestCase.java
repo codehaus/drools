@@ -1,33 +1,32 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.8 2004/07/21 15:55:20 bob
- * Exp $
- * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ * $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.10 2004-11-17 03:09:57 dbarnett Exp $
+ *
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -39,7 +38,7 @@ package org.drools.jsr94.rules.admin;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import java.io.IOException;
@@ -57,58 +56,54 @@ import org.drools.rule.RuleSet;
 
 /**
  * Test the LocalRuleExecutionSetProvider implementation.
- * 
+ *
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
 public class LocalRuleExecutionSetProviderTestCase extends RuleEngineTestBase
 {
-
-    private RuleAdministrator             ruleAdministrator;
+    private RuleAdministrator ruleAdministrator;
 
     private LocalRuleExecutionSetProvider ruleSetProvider;
 
-    protected void setUp() throws Exception
+    protected void setUp( ) throws Exception
     {
         super.setUp( );
         ruleAdministrator = ruleServiceProvider.getRuleAdministrator( );
-        ruleSetProvider = ruleAdministrator
-                                           .getLocalRuleExecutionSetProvider( null );
+        ruleSetProvider =
+            ruleAdministrator.getLocalRuleExecutionSetProvider( null );
     }
 
-    public void testCreateFromInputStream() throws Exception
+    public void testCreateFromInputStream( ) throws Exception
     {
-        InputStream rulesStream = org.drools.jsr94.rules.RuleEngineTestBase.class
-                                                                                 .getResourceAsStream( bindUri );
-        RuleExecutionSet ruleSet = ruleSetProvider
-                                                  .createRuleExecutionSet(
-                                                                           rulesStream,
-                                                                           null );
+        InputStream rulesStream =
+            RuleEngineTestBase.class.getResourceAsStream( bindUri );
+        RuleExecutionSet ruleSet =
+            ruleSetProvider.createRuleExecutionSet( rulesStream, null );
         assertEquals( "rule set name", "Sisters Rules", ruleSet.getName( ) );
         assertEquals( "number of rules", 1, ruleSet.getRules( ).size( ) );
     }
 
-    public void testCreateFromObject() throws Exception
+    public void testCreateFromObject( ) throws Exception
     {
         InputStream inputStream = null;
         try
         {
-            inputStream = org.drools.jsr94.rules.RuleEngineTestBase.class
-                                                                         .getResourceAsStream( bindUri );
+            inputStream =
+                RuleEngineTestBase.class.getResourceAsStream( bindUri );
             Reader in = new InputStreamReader( inputStream );
             RuleSet ruleSet = new RuleSetReader( ).read( in );
-            RuleExecutionSet ruleExecutionSet = ruleSetProvider
-                                                               .createRuleExecutionSet(
-                                                                                        ruleSet,
-                                                                                        null );
+            RuleExecutionSet ruleExecutionSet =
+                ruleSetProvider.createRuleExecutionSet( ruleSet, null );
             assertEquals( "rule set name", "Sisters Rules",
                           ruleExecutionSet.getName( ) );
-            assertEquals( "number of rules", 1, ruleExecutionSet.getRules( )
-                                                                .size( ) );
+            assertEquals(
+                "number of rules", 1, ruleExecutionSet.getRules( ).size( ) );
         }
         catch ( IOException e )
         {
-            fail( "Couldn't create the RuleExecutionSet. Test threw an IOException." );
+            fail( "Couldn't create the RuleExecutionSet. " +
+                  "Test threw an IOException." );
         }
         finally
         {
@@ -132,12 +127,9 @@ public class LocalRuleExecutionSetProviderTestCase extends RuleEngineTestBase
     public void testCreateFromReader() throws Exception
     {
         Reader ruleReader = new InputStreamReader(
-                                                   org.drools.jsr94.rules.RuleEngineTestBase.class
-                                                                                                  .getResourceAsStream( bindUri ) );
-        RuleExecutionSet ruleSet = ruleSetProvider
-                                                  .createRuleExecutionSet(
-                                                                           ruleReader,
-                                                                           null );
+            RuleEngineTestBase.class.getResourceAsStream( bindUri ) );
+        RuleExecutionSet ruleSet =
+            ruleSetProvider.createRuleExecutionSet( ruleReader, null );
         assertEquals( "rule set name", "Sisters Rules", ruleSet.getName( ) );
         assertEquals( "number of rules", 1, ruleSet.getRules( ).size( ) );
     }

@@ -1,32 +1,32 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatefulRuleSessionTestCase.java,v 1.5 2004-09-17 00:29:44 mproctor Exp $
- * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ * $Id: StatefulRuleSessionTestCase.java,v 1.6 2004-11-17 03:09:50 dbarnett Exp $
+ *
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,7 +38,7 @@ package org.drools.jsr94.rules;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import java.util.ArrayList;
@@ -50,18 +50,17 @@ import javax.rules.StatefulRuleSession;
 
 /**
  * Test the <code>StatefulRuleSession</code> implementation.
- * 
+ *
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  * @see StatefulRuleSession
  */
 public class StatefulRuleSessionTestCase extends RuleEngineTestBase
 {
-
     /**
      * Setup the test case.
      */
-    protected void setUp() throws Exception
+    protected void setUp( ) throws Exception
     {
         super.setUp( );
     }
@@ -69,7 +68,7 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
     /**
      * Test containsObject.
      */
-    public void testContainsObject() throws Exception
+    public void testContainsObject( ) throws Exception
     {
         Person bob = new Person( "bob" );
         Handle handle = statefulSession.addObject( bob );
@@ -79,23 +78,23 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
     /**
      * Test addObject.
      */
-    public void testAddObject() throws Exception
+    public void testAddObject( ) throws Exception
     {
         // tested in testContainsObject
     }
 
-    public void testJsr94FactHandleFactoryAvailable() throws ClassNotFoundException
+    public void testJsr94FactHandleFactoryAvailable( )
+        throws ClassNotFoundException
     {
-        this.getClass( ).getClassLoader( )
-            .loadClass( "org.drools.jsr94.rules.Jsr94FactHandleFactory" );
+        this.getClass( ).getClassLoader( ).loadClass(
+            "org.drools.jsr94.rules.Jsr94FactHandleFactory" );
     }
 
     /**
      * Test addObjects.
      */
-    public void testAddObjects() throws Exception
+    public void testAddObjects( ) throws Exception
     {
-
         List inObjects = new ArrayList( );
 
         Person bob = new Person( "bob" );
@@ -111,27 +110,18 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
 
         List handleList = statefulSession.addObjects( inObjects );
         assertEquals( "incorrect size", 3, handleList.size( ) );
-        assertEquals(
-                      "where is bob",
-                      bob,
-                      statefulSession
-                                     .getObject( ( Handle ) handleList.get( 0 ) ) );
-        assertEquals(
-                      "where is rebecca",
-                      rebecca,
-                      statefulSession
-                                     .getObject( ( Handle ) handleList.get( 1 ) ) );
-        assertEquals(
-                      "where is jeannie",
-                      jeannie,
-                      statefulSession
-                                     .getObject( ( Handle ) handleList.get( 2 ) ) );
+        assertEquals( "where is bob", bob,
+            statefulSession.getObject( ( Handle ) handleList.get( 0 ) ) );
+        assertEquals( "where is rebecca", rebecca,
+            statefulSession.getObject( ( Handle ) handleList.get( 1 ) ) );
+        assertEquals( "where is jeannie", jeannie,
+            statefulSession.getObject( ( Handle ) handleList.get( 2 ) ) );
     }
 
     /**
      * Test getObject.
      */
-    public void testGetObject() throws Exception
+    public void testGetObject( ) throws Exception
     {
         // tested in testAddObjects
     }
@@ -139,31 +129,33 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
     /**
      * Test updateObject.
      */
-    public void testUpdateObject() throws Exception
+    public void testUpdateObject( ) throws Exception
     {
         Person bob = new Person( "bob" );
         Handle handle = statefulSession.addObject( bob );
         statefulSession.updateObject( handle, bob = new Person( "boby" ) );
-        assertEquals( "where is boby", bob, statefulSession.getObject( handle ) );
+        assertEquals(
+            "where is boby", bob, statefulSession.getObject( handle ) );
     }
 
     /**
      * Test removeObject.
      */
-    public void testRemoveObject() throws Exception
+    public void testRemoveObject( ) throws Exception
     {
         Person bob = new Person( "bob" );
         Handle handle = statefulSession.addObject( bob );
         assertTrue( "where is bob", statefulSession.containsObject( handle ) );
 
         statefulSession.removeObject( handle );
-        assertTrue( "bob still there", !statefulSession.containsObject( handle ) );
+        assertTrue(
+            "bob still there", !statefulSession.containsObject( handle ) );
     }
 
     /**
      * Test getObjects.
      */
-    public void testGetObjects() throws Exception
+    public void testGetObjects( ) throws Exception
     {
 
         Person bob = new Person( "bob" );
@@ -195,7 +187,7 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
     /**
      * Test getObjects with ObjectFilter.
      */
-    public void testGetObjectsWithFilter() throws Exception
+    public void testGetObjectsWithFilter( ) throws Exception
     {
 
         Person bob = new Person( "bob" );
@@ -224,7 +216,7 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
     /**
      * Test executeRules.
      */
-    public void testExecuteRules() throws Exception
+    public void testExecuteRules( ) throws Exception
     {
         // tested in testGetObjects, testGetObjectsWithFilter
     }
@@ -232,14 +224,15 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
     /**
      * Test reset.
      */
-    public void testReset() throws Exception
+    public void testReset( ) throws Exception
     {
         Person bob = new Person( "bob" );
         Handle handle = statefulSession.addObject( bob );
         assertTrue( "where is bob", statefulSession.containsObject( handle ) );
 
         statefulSession.reset( );
-        assertTrue( "bob still there", !statefulSession.containsObject( handle ) );
+        assertTrue(
+            "bob still there", !statefulSession.containsObject( handle ) );
     }
 
     /**
@@ -247,23 +240,14 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase
      */
     static class PersonFilter implements ObjectFilter
     {
-
-        public Object filter(Object object)
+        public Object filter( Object object )
         {
             return ( object instanceof Person ? object : null );
         }
 
-        public void reset()
+        public void reset( )
         {
+            // nothing to reset
         }
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        String[] name = {StatefulRuleSessionTestCase.class.getName( )};
-        junit.textui.TestRunner.main( name );
-
-        //String factoryName = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
-        //StatefulRuleSessionTestCase.class.getClassLoader().loadClass(factoryName);
     }
 }
