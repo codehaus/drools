@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://drools.org/rules"
+           elementFormDefault="qualified"
+           xmlns:rules="http://drools.org/rules">
+
+  <xs:element name="rule-set">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:abstractImport" minOccurs="0" maxOccurs="unbounded"/>
+
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule" />
+      </xs:sequence>
+
+      <xs:attribute name="name" use="required" type="xs:string"/>
+      <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="rule">
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name="parameter" maxOccurs="unbounded" >
+          <xs:complexType>
+            <xs:choice>
+              <xs:element ref="rules:abstractClass" maxOccurs="unbounded"/>
+              <xs:element ref="rules:abstractClassField" maxOccurs="unbounded"/>
+            </xs:choice>
+            <xs:attribute name="identifier" use="required" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element ref="rules:abstractCondition" minOccurs="0" maxOccurs="unbounded" />
+
+        <xs:element name="duration" minOccurs="0" >
+          <xs:complexType>
+            <xs:attribute name="days"    type="xs:nonNegativeInteger"/>
+            <xs:attribute name="hours"   type="xs:nonNegativeInteger"/>
+            <xs:attribute name="minutes" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="seconds" type="xs:nonNegativeInteger"/>
+          </xs:complexType>
+        </xs:element>
+
+      <xs:element ref="rules:abstractConsequence"/>
+
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:string"/>
+      <xs:attribute name="salience"            type="xs:integer"/>
+      <xs:attribute name="no-loop"             type="xs:boolean"/>
+      <xs:attribute name="description"         type="xs:string"/>
+    </xs:complexType>
+
+    <!-- All rules must have unique names -->
+    <xs:key name="ruleName">
+      <xs:selector xpath="rules:rule" />
+      <xs:field xpath="@name" />
+    </xs:key>
+  </xs:element>
+
+  <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
+
+  <xs:element name="class-field"  substitutionGroup="rules:abstractClassField">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="field" type="xs:string" use="required"/>
+          <xs:attribute name="value" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Abstract Definitions for sementic to create concrete implementations -->
+
+  <xs:element name="abstractImport"      type="xs:anyType"           abstract="true"/>
+
+  <xs:element name="abstractClass"       type="xs:anyType"           abstract="true"/>
+
+  <xs:element name="abstractClassField"  type="xs:anyType"           abstract="true"/>
+
+  <xs:element name="abstractCondition"   type="xs:anyType"           abstract="true"/>
+
+  <xs:element name="abstractConsequence" type="xs:anyType"           abstract="true"/>
+
+</xs:schema>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ******************************************************************************
+*
+*  Drools JSR94 Rules Engine Service
+*
+*  $Id: drools-jsr94-ds.xml,v 1.2 2004-11-27 18:54:06 dbarnett Exp $
+*
+****************************************************************************** -->
+
+<connection-factories>
+   <no-tx-connection-factory>
+      <jndi-name>jsr94/drools</jndi-name>
+      <adapter-display-name>Drools Rule Engine Adaptor</adapter-display-name>
+   </no-tx-connection-factory>
+</connection-factories>

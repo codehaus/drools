@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<rule-set name="Find Duplicate Numbers"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+<!--
+  <rule name="Duplicates Found">
+    <parameter identifier="number1">
+      <class>org.drools.examples.primefactors.Number</class>
+    </parameter>
+    <parameter identifier="number2">
+      <class>org.drools.examples.primefactors.Number</class>
+    </parameter>
+
+    <java:condition>number1 != number2</java:condition>
+    <java:condition>number1.getValue() == number2.getValue()</java:condition>
+
+    <java:consequence><![CDATA[
+      System.out.println(
+          "Duplicates found: " + number1 + " & " + number2);
+    ]]></java:consequence>
+  </rule>
+
+  <rule name="Duplicates Found[2]">
+    <parameter identifier="number1">
+      <class>org.drools.examples.primefactors.Number</class>
+    </parameter>
+    <parameter identifier="number2">
+      <class>org.drools.examples.primefactors.Number</class>
+    </parameter>
+
+    <declaration identifier="value">
+      <class>java.lang.Integer</class>
+    </declaration>
+    <java:extractor target="value">new Integer(number1.getValue())</java:extractor>
+    <java:extractor target="value">new Integer(number2.getValue())</java:extractor>
+
+    <java:condition>number1 != number2</java:condition>
+
+    <java:consequence><![CDATA[
+      System.out.println(
+          "[2]Duplicates found: " + number1 + " & " + number2 + " [value=" + value + "]");
+    ]]></java:consequence>
+  </rule>
+-->
+
+</rule-set>
+
