@@ -1,5 +1,5 @@
 
-<project default="java:jar" xmlns:jxr="jxr" xmlns:j="jelly:core">
+<project default="jar:jar" xmlns:jxr="jxr" xmlns:j="jelly:core">
 
     <goal name="ant:generate-build">
       <echo>ant build not supported</echo>
