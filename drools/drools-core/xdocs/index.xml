@@ -40,23 +40,25 @@
       application-specific semantics tightly to the internals of the 
       algorithmic engine.
       </p>
+
+      <p>
+      Currently, <code>drools</code> supports three semantic modules:
+      <a href="/apidocs/org/drools/semantics/java/package-summary.html">Java</a>,
+      <a href="/apidocs/org/drools/semantics/python/package-summary.html">Python</a>, and
+      <a href="/apidocs/org/drools/semantics/jelly/package-summary.html">Jelly</a>.
+      </p>
+
     </subsection>
   </section>
 
   <section name="News">
-    <subsection name="26 august 2002">
+
+    <subsection name="29 august 2002">
     <p>
-    I'm killing off the drools-specific blog.  Check my
-    <a href="http://blogs.werken.com/people/bob/">personal blog</a>
-    for drools news you can use.
+    <a href="releases.html">2.0-beta-6 was released</a>.  
     </p>
     </subsection>
 
-    <subsection name="24 august 2002">
-    <p>
-    <a href="releases.html">2.0-beta-5 was released</a>.  
-    </p>
-    </subsection>
   </section>
 
 </body>

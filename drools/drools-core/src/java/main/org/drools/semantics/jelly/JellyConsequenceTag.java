@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequenceTag.java,v 1.2 2002-08-28 20:24:59 bob Exp $
+ $Id: JellyConsequenceTag.java,v 1.3 2002-08-29 14:49:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyConsequenceTag.java,v 1.2 2002-08-28 20:24:59 bob Exp $
+ *  @version $Id: JellyConsequenceTag.java,v 1.3 2002-08-29 14:49:48 bob Exp $
  */
 public class JellyConsequenceTag extends TagSupport implements DynaTag
 {
@@ -75,6 +75,10 @@ public class JellyConsequenceTag extends TagSupport implements DynaTag
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     /** Perform this tag.
      *
@@ -98,8 +102,18 @@ public class JellyConsequenceTag extends TagSupport implements DynaTag
         tag.setConsequence( consequence );
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.DynaTag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Sets an attribute value of this tag before the tag is invoked.
+     *
+     *  @param name The name.
+     *  @param value The value.
+     */
     public void setAttribute(String name,
                              Object value)
     {
+        // intentionally left blank
     }
 }
