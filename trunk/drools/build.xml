@@ -207,9 +207,9 @@
 
         <!-- Local JARs not found at ibiblio -->
         <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="file://${basedir}/drools-jsr94/lib/${jca.jar}"/>
+            src="file://${basedir}/lib/${jca.jar}"/>
         <get dest="${lib.dir}/${jsr94.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="file://${basedir}/drools-jsr94/lib/${jsr94.jar}"/>
+            src="file://${basedir}/lib/${jsr94.jar}"/>
     </target>
 
     <target name="antlr" depends="get-deps,antlr.check"
