@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.37 2004-11-16 07:26:33 simon Exp $
+ * $Id: WorkingMemory.java,v 1.38 2004-11-16 11:14:36 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -169,7 +169,7 @@ public interface WorkingMemory extends Serializable
      * @return The list of all known fact handles.
      */
     List getFactHandles();
-
+    
     /**
      * Determine if an object is associated with a <code>FactHandle</code>.
      *

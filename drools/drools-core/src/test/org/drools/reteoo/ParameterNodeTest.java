@@ -1,6 +1,7 @@
 package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
+import org.drools.RuleBase;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
@@ -26,6 +27,8 @@ public class ParameterNodeTest extends DroolsTestCase
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
+        
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
         ParameterNode node = new ParameterNode( rule, null, paramDecl );
 
@@ -34,8 +37,10 @@ public class ParameterNodeTest extends DroolsTestCase
         node.setTupleSink( sink );
 
         FactHandleImpl handle = new FactHandleImpl( 1 );
-
-        node.assertObject( handle, object1, null );
+        WorkingMemoryImpl memory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
+        memory.putObject(handle, object1);
+        
+        node.assertObject( handle, object1, memory );
 
         List asserted = sink.getAssertedTuples( );
 

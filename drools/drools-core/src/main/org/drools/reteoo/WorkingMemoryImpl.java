@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.44 2004-11-16 09:57:26 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.45 2004-11-16 11:15:39 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,7 @@ import org.drools.event.WorkingMemoryEventListener;
 import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.spi.AgendaFilter;
 import org.drools.util.IdentityMap;
+import org.drools.util.PrimitiveLongMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +64,8 @@ import java.util.Map;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
+ *
+ * @version $Id: WorkingMemoryImpl.java,v 1.45 2004-11-16 11:15:39 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -77,7 +80,7 @@ class WorkingMemoryImpl implements WorkingMemory
     private final Map           applicationData             = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final Map           objects                     = new HashMap( );
+    private final PrimitiveLongMap  objects                     = new PrimitiveLongMap( 32, 8 );
 
     /** Object-to-handle mapping. */
     private final Map           handles                     = new IdentityMap( );
@@ -135,7 +138,7 @@ class WorkingMemoryImpl implements WorkingMemory
      *
      * @return The new fact handle.
      */
-    protected FactHandle newFactHandle()
+    FactHandle newFactHandle()
     {
         return this.ruleBase.getFactHandleFactory().newFactHandle( );
     }
@@ -249,7 +252,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public Object getObject(FactHandle handle) throws NoSuchFactObjectException
     {
-        Object object = this.objects.get( handle );
+        Object object = this.objects.get( handle.getId() );
 
         if ( object == null )
         {
@@ -273,6 +276,12 @@ class WorkingMemoryImpl implements WorkingMemory
 
         return factHandle;
     }
+    
+    public List getFactHandles()
+    {
+
+      return new ArrayList( this.handles.values() );
+    }    
 
     /**
      * @see WorkingMemory
@@ -303,17 +312,19 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * @see WorkingMemory
      */
+    /*
     public List getFactHandles()
     {
         return new ArrayList( this.objects.keySet( ) );
     }
-
+    */
+    
     /**
      * @see WorkingMemory
      */
     public boolean containsObject(FactHandle handle)
     {
-        return this.objects.containsKey( handle );
+        return this.objects.containsKey( handle.getId() );
     }
 
     /**
@@ -345,10 +356,15 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     void putObject(FactHandle handle, Object object)
     {
-        this.objects.put( handle, object );
+        this.objects.put( handle.getId(), object );
 
         this.handles.put( object, handle );
     }
+
+    void removeObject(FactHandle handle)
+    {
+        this.handles.remove( this.objects.remove( handle.getId() ) );
+    }    
 
     /**
      * @see WorkingMemory
@@ -357,7 +373,7 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         this.ruleBase.retractObject( handle, this );
 
-        this.handles.remove( this.objects.remove( handle ) );
+        removeObject(handle);
 
         this.eventSupport.fireObjectRetracted( handle );
     }
@@ -367,7 +383,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized void modifyObject(FactHandle handle, Object object) throws FactException
     {
-        Object original = this.objects.put( handle, object );
+        Object original = this.objects.put( handle.getId(), object );
 
         if ( object == null )
         {

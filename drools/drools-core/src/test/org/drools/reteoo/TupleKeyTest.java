@@ -28,9 +28,9 @@ public class TupleKeyTest extends TestCase
      * assertSame( this.obj1, otherKey.get( this.decl1 ) ); assertSame(
      * this.obj2, otherKey.get( this.decl2 ) );
      *
-     * assertSame( this.handle1, otherKey.getRootFactHandle( this.obj1 ) );
+     * assertSame( this.handle1, otherKey.getFactHandle( this.obj1 ) );
      *
-     * assertSame( this.handle2, otherKey.getRootFactHandle( this.obj2 ) ); }
+     * assertSame( this.handle2, otherKey.getFactHandle( this.obj2 ) ); }
      *
      * public void testContainsAll_Exact() { TupleKey otherKey = new TupleKey();
      *
