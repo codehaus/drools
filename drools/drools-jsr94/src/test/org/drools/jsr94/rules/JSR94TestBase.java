@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TestBase.java,v 1.2 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: JSR94TestBase.java,v 1.3 2004-04-02 22:44:21 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,28 +47,25 @@ package org.drools.jsr94.rules;
  */
 
 import junit.framework.TestCase;
-import org.drools.jsr94.rules.RuleServiceProviderImpl;
 
 import javax.rules.RuleServiceProvider;
-import javax.rules.RuleServiceProviderManager;
+import javax.rules.StatefulRuleSession;
+import javax.rules.StatelessRuleSession;
 import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Baseclass for all drools JSR94 test cases.
+ * Base class for all drools JSR94 test cases.
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public abstract class JSR94TestBase extends TestCase
+public abstract class Jsr94TestBase extends TestCase
 {
-
-    /** Drools <code>RuleServiceProvider</code> URI. */
-    public static final String RULE_SERVICE_PROVIDER = "http://drools.org/rules";
-
-    /** The sisters test rules adapted for JSR94. */
-    public static final String RULES_RESOURCE = "org/drools/jsr94/sisters.drl";
-
-    /** An instance of <code>RuleServiceProviderImpl</code>. */
+    protected StatefulRuleSession statefulSession;
+    protected StatelessRuleSession statelessSession;
+    protected ExampleEngine engine;
+    protected String bindUri = "sisters.drl";
     protected RuleServiceProvider ruleServiceProvider;
 
     /**
@@ -77,8 +74,12 @@ public abstract class JSR94TestBase extends TestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-        RuleServiceProviderManager.registerRuleServiceProvider( RULE_SERVICE_PROVIDER, RuleServiceProviderImpl.class );
-        ruleServiceProvider = RuleServiceProviderManager.getRuleServiceProvider( RULE_SERVICE_PROVIDER );
+        engine = new ExampleEngine();
+        engine.addRuleExecutionSet(bindUri, StatelessRuleSessionTestCase.class.getResourceAsStream(bindUri));
+
+        this.ruleServiceProvider = engine.getRuleServiceProvider();
+        this.statelessSession = engine.getStatelessRuleSession(bindUri);
+        this.statefulSession = engine.getStatefulRuleSession(bindUri);
     }
 
     /**
