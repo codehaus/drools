@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequence.java,v 1.1 2002-08-25 21:39:47 bob Exp $
+ $Id: JellyConsequence.java,v 1.2 2002-08-25 21:59:08 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirteR</a>
  *
- *  @version $Id: JellyConsequence.java,v 1.1 2002-08-25 21:39:47 bob Exp $
+ *  @version $Id: JellyConsequence.java,v 1.2 2002-08-25 21:59:08 bob Exp $
  */
 public class JellyConsequence implements Consequence
 {
@@ -70,13 +70,15 @@ public class JellyConsequence implements Consequence
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The script. *
+    /** The script. */
     private Script script;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
+    /** Construct.
+    */
     public JellyConsequence(Script script)
     {
         this.script = script;
