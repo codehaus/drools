@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequence.java,v 1.3 2002-08-25 22:22:42 bob Exp $
+ $Id: JellyConsequence.java,v 1.4 2002-08-25 22:27:25 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirteR</a>
  *
- *  @version $Id: JellyConsequence.java,v 1.3 2002-08-25 22:22:42 bob Exp $
+ *  @version $Id: JellyConsequence.java,v 1.4 2002-08-25 22:27:25 bob Exp $
  */
 public class JellyConsequence implements Consequence
 {
@@ -82,7 +82,10 @@ public class JellyConsequence implements Consequence
     // ------------------------------------------------------------
 
     /** Construct.
-    */
+     *
+     *  @param script The script to execute when matched.
+     *  @param output The output sink for the script.
+     */
     public JellyConsequence(Script script,
                             XMLOutput output)
     {
