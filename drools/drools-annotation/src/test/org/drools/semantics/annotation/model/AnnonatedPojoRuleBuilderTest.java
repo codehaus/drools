@@ -6,12 +6,10 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.semantics.annotation.*;
-import org.drools.spi.Condition;
-import org.drools.spi.Consequence;
 import org.drools.spi.Tuple;
-import org.drools.semantics.annotation.DroolsParameter;
-import org.drools.semantics.annotation.DroolsApplicationData;
-import org.drools.semantics.annotation.DroolsCondition;
+import org.drools.semantics.annotation.Parameter;
+import org.drools.semantics.annotation.ApplicationData;
+import org.drools.semantics.annotation.Condition;
 import org.drools.semantics.annotation.model.AnnonatedPojoRuleBuilder.InvalidReturnTypeException;
 import org.drools.semantics.annotation.model.AnnonatedPojoRuleBuilder.InvalidParameterException;
 import org.drools.semantics.annotation.model.AnnonatedPojoRuleBuilder.MissingConsequenceMethodException;
@@ -31,7 +29,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConditionInvalidReturnType() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Condition
             public void condition() {}
         }
         Pojo pojo = new Pojo();
@@ -46,9 +44,9 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConditionUnannoatedParameter() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Condition
             public boolean condition(String parameter,
-                                     @DroolsParameter("object") Object object) {
+                                     @Parameter("object") Object object) {
                 return true;
             }
         }
@@ -64,12 +62,12 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConditionIllegalKnowledgeHelperParameter() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Condition
             public boolean condition(KnowledgeHelper knowledgeHelper) {
                 return true;
             }
 
-            @DroolsConsequence
+            @Consequence
             public void consequence() {}
         }
         Pojo pojo = new Pojo();
@@ -84,18 +82,18 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConditionParameterAnnotation() throws Exception {
         class Pojo {
-            @DroolsCondition
-            public boolean condition(@DroolsParameter("p1") @Deprecated String p) {
+            @Condition
+            public boolean condition(@Parameter("p1") @Deprecated String p) {
                 return false;
             }
-            @DroolsConsequence
+            @Consequence
             public void consequence() {}
         }
         Pojo pojo = new Pojo();
 
         builder.buildRule(rule, pojo);
 
-        List<Declaration> declarations = getRuleParameterDeclarations(rule);
+        List<Declaration> declarations = rule.getParameterDeclarations();
         assertEquals(1, declarations.size());
     }
 
@@ -119,7 +117,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConsequenceInvalidReturnType() throws Exception {
         class Pojo {
-            @DroolsConsequence
+            @Consequence
             public int consequence() {
                 return 1;
             }
@@ -136,9 +134,9 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConsequenceUnannoatedParameter() throws Exception {
         class Pojo {
-            @DroolsConsequence
+            @Consequence
             public void consequence(String parameter,
-                                    @DroolsParameter("object") Object object) {
+                                    @Parameter("object") Object object) {
             }
         }
         Pojo pojo = new Pojo();
@@ -153,7 +151,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConsequenceMultipleKnowledgeHelperParameters() throws Exception {
         class Pojo {
-            @DroolsConsequence
+            @Consequence
             public void consequence(KnowledgeHelper kh1, KnowledgeHelper kn2) {}
         }
         Pojo pojo = new Pojo();
@@ -169,8 +167,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testConsequenceParameterAnnotation() throws Exception {
         class Pojo1 {
-            @DroolsConsequence
-            public void consequence(@Deprecated @DroolsApplicationData("a2") String p) {}
+            @Consequence
+            public void consequence(@Deprecated @ApplicationData("a2") String p) {}
         }
         Pojo1 pojo1 = new Pojo1();
 
@@ -184,12 +182,12 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             public int consequenceOneCallCount;
             public int consequenceTwoCallCount;
 
-            @DroolsConsequence
+            @Consequence
             public void consequenceOne() {
                 consequenceOneCallCount++;
             }
 
-            @DroolsConsequence
+            @Consequence
             public void consequenceTwo() {
                 consequenceTwoCallCount++;
             }
@@ -198,7 +196,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
 
         Rule returnedRule = builder.buildRule(rule, pojo);
-        Consequence compositeConsequence = returnedRule.getConsequence();
+        org.drools.spi.Consequence compositeConsequence = returnedRule.getConsequence();
 
         compositeConsequence.invoke(mockTuple.object);
 
@@ -210,25 +208,25 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
     public void testBuild() throws Exception {
         class Pojo {
-            @DroolsCondition
+            @Condition
             public boolean conditionOne(
-                    @DroolsParameter("p1") String p1) {
+                    @Parameter("p1") String p1) {
                 return true;
             }
 
-            @DroolsCondition
+            @Condition
             public boolean conditionTwo(
-                    @DroolsParameter("p1") String p1,
-                    @DroolsParameter("p2") Integer p2,
-                    @DroolsApplicationData("a1") Object a1) {
+                    @Parameter("p1") String p1,
+                    @Parameter("p2") Integer p2,
+                    @ApplicationData("a1") Object a1) {
                 return true;
             }
 
-            @DroolsConsequence
+            @Consequence
             public void consequence(
                     KnowledgeHelper knowledgeHelper,
-                    @DroolsParameter("p1") String p1,
-                    @DroolsApplicationData("a1") Object a1) {}
+                    @Parameter("p1") String p1,
+                    @ApplicationData("a1") Object a1) {}
         }
         Pojo pojo = new Pojo();
 
@@ -236,18 +234,17 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
         assertSame(returnedRule, rule);
 
-        List<Declaration> declarations = getRuleParameterDeclarations(rule);
+        List<Declaration> declarations = rule.getParameterDeclarations();
         assertEquals(2, declarations.size());
         assertEquals("p1", declarations.get(0).getIdentifier());
         assertEquals("p2", declarations.get(1).getIdentifier());
 
-        List<Condition> conditions = getRuleConditions(rule);
+        List conditions = rule.getConditions();
         assertEquals(2, conditions.size());
         assertTrue(conditions.get(0) instanceof PojoCondition);
         assertTrue(conditions.get(1) instanceof PojoCondition);
 
-        Consequence consequence = rule.getConsequence();
-        assertTrue(consequence instanceof PojoConsequence);
+        assertTrue(rule.getConsequence() instanceof PojoConsequence);
 
         // We really can't test anymore unless we create MethodElementFactory
         // interface,
@@ -260,15 +257,5 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         // will be covered in the functional tests. But we'll see. If defects
         // are found
         // then we'll know I was wrong.
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<Condition> getRuleConditions(Rule rule) {
-        return rule.getConditions();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<Declaration> getRuleParameterDeclarations(Rule rule) {
-        return rule.getParameterDeclarations();
     }
 }

@@ -8,5 +8,5 @@ import java.lang.annotation.Retention;
 
 @Inherited @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME) 
-public @interface DroolsConsequence 
+public @interface Condition 
 {}

@@ -4,40 +4,40 @@ import org.drools.examples.jiahvac.model.HeatPump;
 import org.drools.examples.jiahvac.model.Vent;
 import org.drools.examples.jiahvac.model.TempuratureControl;
 import org.drools.examples.jiahvac.model.Thermometer;
-import org.drools.semantics.annotation.DroolsRule;
-import org.drools.semantics.annotation.DroolsParameter;
-import org.drools.semantics.annotation.DroolsCondition;
-import org.drools.semantics.annotation.DroolsConsequence;
+import org.drools.semantics.annotation.Rule;
+import org.drools.semantics.annotation.Parameter;
+import org.drools.semantics.annotation.Condition;
+import org.drools.semantics.annotation.Consequence;
 
-@DroolsRule
+@Rule
 public class HeatingVentOpenFloorWarmEnough
 {
-    @DroolsCondition
-    public boolean isPumpHeating(@DroolsParameter("pump") HeatPump pump) {
+    @Condition
+    public boolean isPumpHeating(@Parameter("pump") HeatPump pump) {
         return pump.getState() == HeatPump.State.HEATING;
      }
 
-    @DroolsCondition
-    public boolean isVentOpen(@DroolsParameter("vent") Vent vent) {
+    @Condition
+    public boolean isVentOpen(@Parameter("vent") Vent vent) {
         return vent.getState() == Vent.State.OPEN;
      }
 
-    @DroolsCondition
-    public boolean isSameFloor(@DroolsParameter("vent") Vent vent,
-                               @DroolsParameter("thermometer") Thermometer thermometer,
-                               @DroolsParameter("pump") HeatPump pump) {
+    @Condition
+    public boolean isSameFloor(@Parameter("vent") Vent vent,
+                               @Parameter("thermometer") Thermometer thermometer,
+                               @Parameter("pump") HeatPump pump) {
         return vent.getFloor() == thermometer.getFloor()
                 && vent.getFloor().getHeatPump() == pump;
     }
 
-    @DroolsCondition
-    public boolean isWarmEnough(@DroolsParameter("thermometer") Thermometer thermometer,
-                                @DroolsParameter("control") TempuratureControl control) {
+    @Condition
+    public boolean isWarmEnough(@Parameter("thermometer") Thermometer thermometer,
+                                @Parameter("control") TempuratureControl control) {
         return control.isWarmEnough(thermometer.getReading());
     }
 
-    @DroolsConsequence
-    public void consequence(@DroolsParameter("vent") Vent vent) {
+    @Consequence
+    public void consequence(@Parameter("vent") Vent vent) {
         vent.setState(Vent.State.CLOSED);
         System.out.println("HeatingVentOpenFloorWarmEnough: " + vent
                            + ", " + vent.getFloor().getThermometer());

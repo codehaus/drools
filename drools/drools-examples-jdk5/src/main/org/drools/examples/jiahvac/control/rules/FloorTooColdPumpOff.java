@@ -4,33 +4,33 @@ import org.drools.examples.jiahvac.model.HeatPump;
 import org.drools.examples.jiahvac.model.TempuratureControl;
 import org.drools.examples.jiahvac.model.Thermometer;
 import static org.drools.examples.jiahvac.model.HeatPump.State.*;
-import org.drools.semantics.annotation.DroolsRule;
-import org.drools.semantics.annotation.DroolsParameter;
-import org.drools.semantics.annotation.DroolsCondition;
-import org.drools.semantics.annotation.DroolsConsequence;
+import org.drools.semantics.annotation.Rule;
+import org.drools.semantics.annotation.Parameter;
+import org.drools.semantics.annotation.Condition;
+import org.drools.semantics.annotation.Consequence;
 
-@DroolsRule
+@Rule
 public class FloorTooColdPumpOff
 {
-    @DroolsCondition
-    public boolean isPumpOff(@DroolsParameter("pump") HeatPump pump) {
+    @Condition
+    public boolean isPumpOff(@Parameter("pump") HeatPump pump) {
         return pump.getState() == OFF;
      }
 
-    @DroolsCondition
-    public boolean isPumpServicingFloor(@DroolsParameter("pump") HeatPump pump,
-                                        @DroolsParameter("thermometer") Thermometer thermometer) {
+    @Condition
+    public boolean isPumpServicingFloor(@Parameter("pump") HeatPump pump,
+                                        @Parameter("thermometer") Thermometer thermometer) {
         return thermometer.getFloor().getHeatPump() == pump;
     }
 
-    @DroolsCondition
-    public boolean isTooCold(@DroolsParameter("thermometer") Thermometer thermometer,
-                             @DroolsParameter("control") TempuratureControl control) {
+    @Condition
+    public boolean isTooCold(@Parameter("thermometer") Thermometer thermometer,
+                             @Parameter("control") TempuratureControl control) {
         return control.isTooCold(thermometer.getReading());
     }
 
-    @DroolsConsequence
-    public void consequence(@DroolsParameter("pump") HeatPump pump) {
+    @Consequence
+    public void consequence(@Parameter("pump") HeatPump pump) {
         pump.setState(HEATING);
         System.out.println("FloorTooColdPumpOff: " + pump);
     }
