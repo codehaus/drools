@@ -1,6 +1,7 @@
 package org.drools;
 
 import org.drools.event.WorkingMemoryEventListener;
+import org.drools.spi.AgendaFilter;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class MockWorkingMemory implements WorkingMemory
      * Set a specific piece of application data in this working memory
      *
      * @param name the name under which to populate the data
-    * @param value the application data
+     * @param value the application data
      */
     public void setApplicationData(String name, Object value)
     {
@@ -72,12 +73,8 @@ public class MockWorkingMemory implements WorkingMemory
         return appData.get( name );
     }
 
-
-
    /**
      * Clear the Agenda
-     *
-     * @return The <code>Agenda</code>.
      */
     public void clearAgenda()
     {
@@ -90,6 +87,11 @@ public class MockWorkingMemory implements WorkingMemory
     }
 
     public void fireAllRules() throws FactException
+    {
+        //
+    }
+
+    public void fireAllRules( AgendaFilter agendaFilter ) throws FactException
     {
         //
     }
@@ -131,11 +133,11 @@ public class MockWorkingMemory implements WorkingMemory
 
     public void retractObject(FactHandle handle) throws FactException
     {
-
+        //
     }
 
     public void modifyObject(FactHandle handle, Object object) throws FactException
     {
-
+        //
     }
 }

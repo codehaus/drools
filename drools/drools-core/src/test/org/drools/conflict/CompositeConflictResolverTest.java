@@ -3,6 +3,7 @@ package org.drools.conflict;
 import junit.framework.TestCase;
 import org.drools.spi.Activation;
 import org.drools.spi.MockTuple;
+import org.drools.spi.MockAgendaItem;
 import org.drools.rule.Rule;
 
 /*
