@@ -13,12 +13,20 @@
             <version>1.0-beta-5</version>
         </dependency>
         <dependency>
-          <id>commons-logging</id>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
           <version>1.0.3</version>
           <url>http://jakarta.apache.org/commons/logging.html</url>
         </dependency>
         <dependency>
-          <id>asm</id>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+          <version>1.4.1</version>
+          <url>http://asm.objectweb.org/</url>
+        </dependency>
+        <dependency>
+          <groupId>asm</groupId>
+          <artifactId>asm-util</artifactId>
           <version>1.4.1</version>
           <url>http://asm.objectweb.org/</url>
         </dependency>
@@ -45,6 +53,7 @@
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
+                    <include>**/*.conf</include>
                 </includes>
             </resource>
         </resources>
