@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ComponentTagFactory.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ $Id: ComponentTagFactory.java,v 1.2 2002-11-19 16:21:07 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,13 +49,15 @@ package org.drools.tags.rule;
 import org.apache.commons.jelly.Tag;
 import org.apache.commons.jelly.impl.TagFactory;
 
+import org.xml.sax.Attributes;
+
 /** Factory for dynamic semantic component tags.
  *
  *  @see SemanticsTagLibrary
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ComponentTagFactory.java,v 1.1 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ComponentTagFactory.java,v 1.2 2002-11-19 16:21:07 bob Exp $
  */
 class ComponentTagFactory implements TagFactory
 {
@@ -118,7 +120,8 @@ class ComponentTagFactory implements TagFactory
      *  @throws Exception If an error while attempting to
      *          instantiate the tag.
      */
-    public Tag createTag() throws Exception
+    public Tag createTag(String name,
+                         Attributes attrs) throws Exception
     {
         ComponentTag tag = (ComponentTag) getTagClass().newInstance();
 
