@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: FactExtraction.java,v 1.3 2002-08-01 21:00:21 bob Exp $
+ $Id: Extraction.java,v 1.1 2002-08-18 19:17:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.rule;
  
  */
 
-import org.drools.spi.FactExtractor;
+import org.drools.spi.Extractor;
 
 /** A <code>Condition</code> representing a <i>consistent assignment</i>
  *  as defined by the Rete-OO algorithm.
@@ -54,11 +54,11 @@ import org.drools.spi.FactExtractor;
  *  The assignment occurs through the process of extracting a
  *  new fact from existing facts.
  *
- *  @see FactExtractor
+ *  @see Extractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FactExtraction 
+public class Extraction 
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -67,8 +67,8 @@ public class FactExtraction
     /** The target of the assignment. */
     private Declaration targetDeclaration;
 
-    /** FactExtractor to acquire value for assignment. */
-    private FactExtractor factExtractor;
+    /** Extractor to acquire value for assignment. */
+    private Extractor extractor;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -77,13 +77,13 @@ public class FactExtraction
     /** Construct.
      *
      *  @param targetDeclaration The target of this assignment.
-     *  @param factExtractor Value generator for the assignment.
+     *  @param extractor Value generator for the assignment.
      */
-    public FactExtraction(Declaration targetDeclaration,
-                          FactExtractor factExtractor)
+    public Extraction(Declaration targetDeclaration,
+                      Extractor extractor)
     {
         this.targetDeclaration = targetDeclaration;
-        this.factExtractor     = factExtractor;
+        this.extractor         = extractor;
     }
 
     // ------------------------------------------------------------
@@ -100,14 +100,14 @@ public class FactExtraction
         return this.targetDeclaration;
     }
 
-    /** Retrieve the <code>FactExtractor</code> responsible
+    /** Retrieve the <code>Extractor</code> responsible
      *  for generating the assignment value.
      *
-     *  @return The <code>FactExtractor</code>.
+     *  @return The <code>Extractor</code>.
      */
-    public FactExtractor getFactExtractor()
+    public Extractor getExtractor()
     {
-        return this.factExtractor;
+        return this.extractor;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -122,6 +122,6 @@ public class FactExtraction
      */
     public Declaration[] getRequiredTupleMembers()
     {
-        return getFactExtractor().getRequiredTupleMembers();
+        return getExtractor().getRequiredTupleMembers();
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.18 2002-08-13 04:12:26 bob Exp $
+ $Id: Builder.java,v 1.19 2002-08-18 19:17:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,12 +51,12 @@ import org.drools.reteoo.impl.ObjectTypeNodeImpl;
 import org.drools.reteoo.impl.ParameterNodeImpl;
 import org.drools.reteoo.impl.ConditionNodeImpl;
 import org.drools.reteoo.impl.JoinNodeImpl;
-import org.drools.reteoo.impl.FactExtractionNodeImpl;
+import org.drools.reteoo.impl.ExtractionNodeImpl;
 import org.drools.reteoo.impl.TerminalNodeImpl;
 import org.drools.reteoo.impl.TupleSourceImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-import org.drools.rule.FactExtraction;
+import org.drools.rule.Extraction;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
 
@@ -124,7 +124,7 @@ public class Builder
      */
     public void addRule(Rule rule) throws ReteConstructionException
     {
-        Set factExtracts = new HashSet( rule.getFactExtractions() );
+        Set factExtracts = new HashSet( rule.getExtractions() );
         Set conds        = new HashSet( rule.getConditions() );
 
         Set leafNodes = null;
@@ -146,7 +146,7 @@ public class Builder
                                   leafNodes );
             }
 
-            attachedExtract = attachFactExtractions( factExtracts,
+            attachedExtract = attachExtractions( factExtracts,
                                                      leafNodes );
 
             performedJoin = createJoinNodes( leafNodes );
@@ -388,15 +388,15 @@ public class Builder
         return false;
     }
 
-    /** Create and attach <code>FactExtraction</code>s to the network.
+    /** Create and attach <code>Extraction</code>s to the network.
      *
      *  <p>
-     *  It may not be possible to satisfy all <code>FactExtraction</code>,
+     *  It may not be possible to satisfy all <code>Extraction</code>,
      *  in which case, unsatisfied conditions will remain in the <code>Set</code>
-     *  passed in as <code>FactExtraction</code>.
+     *  passed in as <code>Extraction</code>.
      *  </p>
      *
-     *  @param factExtracts Set of <code>FactExtractions</code> to
+     *  @param factExtracts Set of <code>Extractions</code> to
      *         attach to the network.
      *  @param leafNodes The current attachable leaf nodes of
      *         the network.
@@ -404,7 +404,7 @@ public class Builder
      *  @return <code>true</code> if fact extractions have been
      *          attached, otherwise <code>false</code>.
      */
-    protected boolean attachFactExtractions(Set factExtracts,
+    protected boolean attachExtractions(Set factExtracts,
                                             Set leafNodes)
     {
         boolean attached      = false;
@@ -415,14 +415,14 @@ public class Builder
             cycleAttached = false;
             
             Iterator        extractIter = factExtracts.iterator();
-            FactExtraction  eachExtract = null;
+            Extraction  eachExtract = null;
             TupleSourceImpl tupleSource = null;
             
-            FactExtractionNode extractNode = null;
+            ExtractionNode extractNode = null;
             
             while ( extractIter.hasNext() )
             {
-                eachExtract = (FactExtraction) extractIter.next();
+                eachExtract = (Extraction) extractIter.next();
                 
                 tupleSource = findMatchingTupleSourceForExtraction( eachExtract,
                                                                     leafNodes );
@@ -434,9 +434,9 @@ public class Builder
                 
                 extractIter.remove();
                 
-                extractNode = new FactExtractionNodeImpl( tupleSource,
+                extractNode = new ExtractionNodeImpl( tupleSource,
                                                          eachExtract.getTargetDeclaration(),
-                                                         eachExtract.getFactExtractor() );
+                                                         eachExtract.getExtractor() );
                 
                 leafNodes.remove( tupleSource );
                 leafNodes.add( extractNode );
@@ -488,15 +488,15 @@ public class Builder
     }
 
     /** Locate a <code>TupleSource</code> suitable for attaching
-     *  the <code>FactExtraction</code>.
+     *  the <code>Extraction</code>.
      *
-     *  @param extract The <code>FactExtraction</code> to attach.
+     *  @param extract The <code>Extraction</code> to attach.
      *  @param sources Candidate <code>TupleSources</code>.
      *
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSourceImpl findMatchingTupleSourceForExtraction(FactExtraction extract,
+    protected TupleSourceImpl findMatchingTupleSourceForExtraction(Extraction extract,
                                                                    Set sources)
     {
         Declaration targetDecl = extract.getTargetDeclaration();
@@ -545,16 +545,16 @@ public class Builder
     }
 
     /** Determine if a set of <code>Declarations</code> match those
-     *  required by a <code>FactExtraction</code>.
+     *  required by a <code>Extraction</code>.
      *
-     *  @param extract The <code>FactExtraction</code>.
+     *  @param extract The <code>Extraction</code>.
      *  @param declarations The set of <code>Declarations</code> to compare against.
      *
      *  @return <code>true</code> if the set of <code>Declarations</code> is a
      *          super-set of the <code>Declarations</code> required by the
      *          <code>Condition</code>.
      */
-    protected boolean matches(FactExtraction extract,
+    protected boolean matches(Extraction extract,
                               Set declarations)
     {
         return matches( extract.getRequiredTupleMembers(),

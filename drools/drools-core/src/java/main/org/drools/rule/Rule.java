@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.8 2002-08-17 05:49:22 bob Exp $
+ $Id: Rule.java,v 1.9 2002-08-18 19:17:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -83,8 +83,8 @@ public class Rule
     /** Conditions. */
     private Set conditions;
 
-    /** Fact extractions */
-    private Set factExtractions;
+    /** Extractions */
+    private Set extractions;
 
     /** Consequence. */
     private Consequence consequence;
@@ -108,7 +108,7 @@ public class Rule
         this.allDeclarations       = Collections.EMPTY_SET;
 
         this.conditions            = Collections.EMPTY_SET;
-        this.factExtractions       = Collections.EMPTY_SET;
+        this.extractions           = Collections.EMPTY_SET;
     }
 
     /** Set the truthness duration.
@@ -141,7 +141,7 @@ public class Rule
                    ||
                    getConditions().isEmpty()
                    ||
-                   getFactExtractions().isEmpty() );
+                   getExtractions().isEmpty() );
     }
 
 
@@ -173,7 +173,7 @@ public class Rule
 
         if ( getConditions().isEmpty()
              &&
-             getFactExtractions().isEmpty() )
+             getExtractions().isEmpty() )
         {
             throw new NoConditionException( this );
         }
@@ -275,20 +275,20 @@ public class Rule
         this.conditions.add( condition );
     }
 
-    /** Add a consistent <code>FactExtraction</code> to this rule.
+    /** Add a consistent <code>Extraction</code> to this rule.
      *
-     *  @param factExtraction the <code>FactExtraction</code> to add.
+     *  @param extraction the <code>Extraction</code> to add.
      */
-    public void addFactExtraction(FactExtraction factExtraction)
+    public void addExtraction(Extraction extraction)
     {
-        if ( this.factExtractions == Collections.EMPTY_SET )
+        if ( this.extractions == Collections.EMPTY_SET )
         {
-            this.factExtractions = new HashSet();
+            this.extractions = new HashSet();
         }
 
-        this.factExtractions.add( factExtraction );
+        this.extractions.add( extraction );
 
-        Declaration decl = factExtraction.getTargetDeclaration();
+        Declaration decl = extraction.getTargetDeclaration();
 
         addDeclaration( decl );
     }
@@ -303,14 +303,14 @@ public class Rule
         return this.conditions;
     }
 
-    /** Retrieve the <code>Set</code> of <code>FactExtractions</code> for
+    /** Retrieve the <code>Set</code> of <code>Extractions</code> for
      *  this rule.
      *
-     *  @return The <code>Set</code> of <code>FactExtractions</code>.
+     *  @return The <code>Set</code> of <code>Extractions</code>.
      */
-    public Set getFactExtractions()
+    public Set getExtractions()
     {
-        return this.factExtractions;
+        return this.extractions;
     }
 
     /** Set the <code>Consequence</code> that is associated with the
@@ -346,7 +346,7 @@ public class Rule
             + "'; paramDecls=" + this.parameterDeclarations
             + "; localDecls=" + getLocalDeclarations()
             + "; conds=" + this.conditions
-            + "; factExtracts=" + this.factExtractions
+            + "; extractions=" + this.extractions
             + "]";
     }
 

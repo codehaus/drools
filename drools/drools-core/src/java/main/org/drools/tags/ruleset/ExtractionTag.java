@@ -1,8 +1,8 @@
 package org.drools.tags.ruleset;
 
 import org.drools.rule.Declaration;
-import org.drools.rule.FactExtraction;
-import org.drools.spi.FactExtractor;
+import org.drools.rule.Extraction;
+import org.drools.spi.Extractor;
 
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
@@ -10,17 +10,17 @@ import org.apache.commons.jelly.JellyException;
 public class ExtractionTag extends RuleSetTagSupport
 {
     private String target;
-    private FactExtractor factExtractor;
+    private Extractor extractor;
 
     protected ExtractionTag()
     {
         this.target        = null;
-        this.factExtractor = null;
+        this.extractor = null;
     }
 
-    protected void setFactExtractor(FactExtractor factExtractor)
+    protected void setExtractor(Extractor extractor)
     {
-        this.factExtractor = factExtractor;
+        this.extractor = extractor;
     }
 
     public void setTarget(String target)
@@ -47,14 +47,14 @@ public class ExtractionTag extends RuleSetTagSupport
 
         invokeBody( output );
 
-        if ( this.factExtractor == null )
+        if ( this.extractor == null )
         {
-            throw new JellyException( "Fact extractor expected" );
+            throw new JellyException( "Extractor expected" );
         }
 
-        FactExtraction extraction = new FactExtraction( decl,
-                                                        this.factExtractor );
+        Extraction extraction = new Extraction( decl,
+                                                this.extractor );
 
-        getRule().addFactExtraction( extraction );
+        getRule().addExtraction( extraction );
     }
 }

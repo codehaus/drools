@@ -2,7 +2,6 @@ package org.drools.semantics.java;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
-import org.drools.spi.ConfigurationException;
 
 import bsh.Interpreter;
 import bsh.EvalError;

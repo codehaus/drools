@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: ExtractorTag.java,v 1.1 2002-08-18 16:42:58 bob Exp $
+ $Id: ExtractorTag.java,v 1.2 2002-08-18 19:17:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -98,8 +98,8 @@ public class ExtractorTag extends SemanticComponentTagSupport
 
         Class extractClass = Class.forName( getClassname() );
 
-       module.addFactExtractor( getName(),
-                                extractClass );
+       module.addExtractor( getName(),
+                            extractClass );
     }
 }
 

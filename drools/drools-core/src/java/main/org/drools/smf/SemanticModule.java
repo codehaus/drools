@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.5 2002-08-17 05:49:22 bob Exp $
+ $Id: SemanticModule.java,v 1.6 2002-08-18 19:17:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -81,20 +81,20 @@ public interface SemanticModule
 
     Set getConditionNames();
 
-    /** Retrieve a semantic fact extractor by name.
+    /** Retrieve a semantic extractor by name.
      *
      *  @param name the name.
      *
-     *  @return The fact extractor implementation or <code>null</code>
+     *  @return The extractor implementation or <code>null</code>
      *          if none is bound to the name.
      */
-    Class getFactExtractor(String name);
+    Class getExtractor(String name);
 
     /** Retrieve the set of all object type names.
      *
      *  @return The set of names.
      */
-    Set getFactExtractorNames();
+    Set getExtractorNames();
 
     /** Retrieve a semantic consequence by name.
      *

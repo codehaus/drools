@@ -4,10 +4,10 @@ package org.drools.reteoo;
 import org.drools.reteoo.impl.ReteImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-import org.drools.rule.FactExtraction;
+import org.drools.rule.Extraction;
 import org.drools.spi.ObjectType;
 import org.drools.spi.InstrumentedCondition;
-import org.drools.spi.InstrumentedFactExtractor;
+import org.drools.spi.InstrumentedExtractor;
 import org.drools.semantics.java.ClassObjectType;
 
 import junit.framework.TestCase;
@@ -121,9 +121,9 @@ public class BuilderTest extends TestCase
 
         MockTupleSource source = null;
 
-        InstrumentedFactExtractor extractor = null;
+        InstrumentedExtractor extractor = null;
 
-        FactExtraction factExtract = null;
+        Extraction extract = null;
         
         TupleSource found = null;
 
@@ -136,14 +136,14 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        extractor = new InstrumentedFactExtractor();
+        extractor = new InstrumentedExtractor();
 
         extractor.addDeclaration( this.stringDecl );
 
-        factExtract = new FactExtraction( this.objectDecl,
-                                          extractor );
+        extract = new Extraction( this.objectDecl,
+                                  extractor );
 
-        found = this.builder.findMatchingTupleSourceForExtraction( factExtract,
+        found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
 
         assertNull( found );
@@ -161,7 +161,7 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        found = this.builder.findMatchingTupleSourceForExtraction( factExtract,
+        found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
 
         assertNull( found );
@@ -177,7 +177,7 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        found = this.builder.findMatchingTupleSourceForExtraction( factExtract,
+        found = this.builder.findMatchingTupleSourceForExtraction( extract,
                                                                    sources );
 
         assertNotNull( found );

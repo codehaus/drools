@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.2 2002-08-18 05:54:51 bob Exp $
+ $Id: BlockConsequence.java,v 1.3 2002-08-18 19:17:50 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,10 +48,10 @@ package org.drools.semantics.java;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
-import org.drools.spi.ConfigurableConsequence;
+import org.drools.smf.ConfigurableConsequence;
+import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.ConfigurationException;
 
 import bsh.EvalError;
 
@@ -59,7 +59,7 @@ import bsh.EvalError;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.2 2002-08-18 05:54:51 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.3 2002-08-18 19:17:50 bob Exp $
  */
 public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
