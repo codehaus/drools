@@ -2,12 +2,12 @@
 <project>
   
   <pomVersion>3</pomVersion>
-  <name>Drools</name>
+  <name>drools</name>
   <id>drools</id>
   <currentVersion>1.0-dev</currentVersion>
   <organization>
-    <name>Werken</name>
-    <url>http://code.werken.com/</url>
+    <name>Werken, Inc.</name>
+    <url>http://www.werken.com/</url>
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>org.drools</package>
@@ -16,17 +16,20 @@
 
   <description>
     The drools project is a dynamic rules engine for Java.
+    It uses a modified implementation of Forgy's RETE algorithm to
+    allow natural expression of rules within an object-oriented language.
   </description>
 
-  <url>http://www.drools.org/</url>
-  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;atid=418734</issueTrackingUrl>
-  <siteAddress>www.drools.org</siteAddress>
+  <url>http://drools.org/</url>
+
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=37037&amp;amp;atid=418734</issueTrackingUrl>
+  <siteAddress>drools.org</siteAddress>
   <siteDirectory></siteDirectory>
   <distributionDirectory></distributionDirectory>
   
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.drools.sourceforge.net:/cvsroot/drools:drools-2</connection>
-    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/drools/</url>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/drools/drools-2/</url>
   </repository>
 
   <versions/>
@@ -34,16 +37,10 @@
 
   <mailingLists>
     <mailingList>
-      <name>Maven User List</name>
-      <subscribe>turbine-maven-user-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-maven-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://www.mail-archive.com/turbine-maven-user@jakarta.apache.org/</archive>
-    </mailingList>
-    <mailingList>
-      <name>Maven Developer List</name>
-      <subscribe>turbine-maven-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-maven-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://www.mail-archive.com/turbine-maven-dev@jakarta.apache.org/</archive>
+      <name>droolers list</name>
+      <subscribe>drools-interest-subscribe@lists.sourceforge.net</subscribe>
+      <unsubscribe>drools-interest-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <archive>http://www.mail-archive.com/drools-interest%40lists.sourceforge.net/</archive>
     </mailingList>
   </mailingLists>
 
@@ -122,18 +119,24 @@
 
   <build>
 
-    <nagEmailAddress>drools-interest@lists.sourceforge.net</nagEmailAddress>
+    <nagEmailAddress>drools-commits@lists.sourceforge.net</nagEmailAddress>
+
     <sourceDirectory>src/java/main</sourceDirectory>
+
     <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
+
     <integrationUnitTestSourceDirectory/>
+
     <aspectSourceDirectory></aspectSourceDirectory>
 
     <!-- Unit test classes -->
+
     <unitTestPatterns>
       <unitTestPattern>include = **/*Test.java</unitTestPattern>
     </unitTestPatterns>
 
     <!-- Integration unit test classes -->
+
     <integrationUnitTestPatterns>
     </integrationUnitTestPatterns>
 
@@ -145,6 +148,8 @@
 
     <jars>
     </jars>
+
   </build>
+
 </project>
 
