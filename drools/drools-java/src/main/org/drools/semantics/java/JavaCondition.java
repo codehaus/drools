@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.2 2004-12-07 14:27:55 simon Exp $
+ * $Id: JavaCondition.java,v 1.3 2004-12-07 15:44:36 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -187,7 +187,7 @@ public class JavaCondition
 
     public int hashCode()
     {
-        return this.expression.hashCode( );
+        return this.originalExpression.hashCode( );
     }
 
     public boolean equals( Object object )
@@ -202,7 +202,7 @@ public class JavaCondition
             return false;
         }
 
-        return this.expression.equals( ( ( JavaCondition ) object ).expression );
+        return this.originalExpression.equals( ( ( JavaCondition ) object ).originalExpression );
     }
 
     public String toString()
