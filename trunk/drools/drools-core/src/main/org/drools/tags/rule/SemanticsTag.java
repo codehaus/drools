@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: SemanticsTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: SemanticsTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
  */
 public class SemanticsTag extends TagSupport
 {
@@ -71,6 +71,7 @@ public class SemanticsTag extends TagSupport
     /** The module id. */
     private String module;
 
+    /** The variable. */
     private String var;
 
     // ------------------------------------------------------------
@@ -106,11 +107,19 @@ public class SemanticsTag extends TagSupport
         return this.module;
     }
 
+    /** Set the variable in which to store the <code>SemanticModule</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable in which to store the <code>SemanticModule</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.4 2002-08-19 17:24:00 bob Exp $
+ $Id: ClassObjectType.java,v 1.5 2002-08-19 18:05:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.apache.commons.beanutils.ConversionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.4 2002-08-19 17:24:00 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.5 2002-08-19 18:05:10 bob Exp $
  */
 public class ClassObjectType implements ObjectType
 {
@@ -67,7 +67,8 @@ public class ClassObjectType implements ObjectType
     
     /** Register conversions for jakarta-beanutils.
      */
-    static {
+    static
+    {
         ConvertUtils.register(
             new Converter()
             {
@@ -80,7 +81,7 @@ public class ClassObjectType implements ObjectType
                     else if ( value instanceof String )
                     {
                         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-
+                        
                         if ( cl == null )
                         {
                             cl = getClass().getClassLoader();
