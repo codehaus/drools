@@ -84,8 +84,9 @@
   <dependencies>
 
     <dependency>
-      <id>antlrall</id>
+      <id>antlr</id>
       <version>2.7.1</version>
+      <jar>antlrall-2.7.1</jar>
     </dependency>
 
 <!--
@@ -131,7 +132,7 @@
     </dependency>
 
     <dependency>
-      <id>xmlParserAPIs</id>
+      <id>xml-apis</id>
       <version>2.0.0</version>
     </dependency>
 
