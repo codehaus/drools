@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticsRepository.java,v 1.2 2004-09-17 00:32:24 mproctor Exp $
+ * $Id: SimpleSemanticsRepository.java,v 1.2.2.1 2005-03-29 00:04:01 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -105,9 +105,6 @@ public class SimpleSemanticsRepository implements SemanticsRepository
      */
     public SemanticModule[] getSemanticModules()
     {
-        return ( SemanticModule[] ) this.modules
-                                                .values( )
-                                                .toArray(
-                                                          SemanticModule.EMPTY_ARRAY );
+        return ( SemanticModule[] ) this.modules.values( ).toArray(SemanticModule.EMPTY_ARRAY );
     }
 }
