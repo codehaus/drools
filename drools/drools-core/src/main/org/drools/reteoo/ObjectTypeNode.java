@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.26 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: ObjectTypeNode.java,v 1.27 2004-12-06 15:36:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,14 +42,14 @@ package org.drools.reteoo;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
-import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Filters <code>Objects</code> coming from the <code>Rete</code> using a
@@ -77,10 +77,10 @@ class ObjectTypeNode
     // ------------------------------------------------------------
 
     /** The <code>ObjectType</code> semantic module. */
-    private final ObjectType objectType;
+    private final ObjectType    objectType;
 
     /** The <code>ParameterNode</code> children. */
-    private final Map parameterNodes = new HashMap( );
+    private final List          parameterNodes = new ArrayList( 1 );
 
     // ------------------------------------------------------------
     // Constructors
@@ -92,7 +92,7 @@ class ObjectTypeNode
      * @param objectType
      *            The semantic object-type differentiator.
      */
-    public ObjectTypeNode(ObjectType objectType)
+    public ObjectTypeNode( ObjectType objectType )
     {
         this.objectType = objectType;
     }
@@ -116,9 +116,12 @@ class ObjectTypeNode
      *
      * @param node The <code>ParameterNode</code> child to add.
      */
-    void addParameterNode(ParameterNode node)
+    void addParameterNode( ParameterNode node )
     {
-        this.parameterNodes.put( node.getDeclaration( ), node );
+        if ( !this.parameterNodes.contains( node ) )
+        {
+            this.parameterNodes.add( node );
+        }
     }
 
     /**
@@ -131,7 +134,7 @@ class ObjectTypeNode
      */
     Collection getParameterNodes()
     {
-        return this.parameterNodes.values( );
+        return this.parameterNodes;
     }
 
     /**
@@ -143,7 +146,7 @@ class ObjectTypeNode
      */
     Iterator getParameterNodeIterator()
     {
-        return this.parameterNodes.values( ).iterator( );
+        return Collections.unmodifiableList( this.parameterNodes ).iterator( );
     }
 
     /**
@@ -156,22 +159,20 @@ class ObjectTypeNode
      *
      * @throws FactException if an error occurs during assertion.
      */
-    void assertObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws FactException
+    void assertObject( FactHandle handle,
+                       Object object,
+                       WorkingMemoryImpl workingMemory ) throws FactException
     {
         if ( !this.objectType.matches( object ) )
         {
             return;
         }
 
-        Iterator nodeIter = getParameterNodeIterator( );
-
-        while ( nodeIter.hasNext( ) )
+        for ( int i = 0, size = this.parameterNodes.size( ); i < size; i++ )
         {
-            ( ( ParameterNode ) nodeIter.next( ) ).assertObject( handle,
-                                                                 object,
-                                                                 workingMemory );
+            ( ( ParameterNode ) this.parameterNodes.get( i ) ).assertObject( handle,
+                                                                             object,
+                                                                             workingMemory );
         }
     }
 
@@ -184,20 +185,19 @@ class ObjectTypeNode
      *
      * @throws FactException if an error occurs during assertion.
      */
-    void retractObject(FactHandle handle,
-                       WorkingMemoryImpl workingMemory) throws FactException
+    void retractObject( FactHandle handle,
+                        WorkingMemoryImpl workingMemory ) throws FactException
     {
         if ( !this.objectType.matches( workingMemory.getObject( handle ) ) )
         {
             return;
         }
 
-        Iterator nodeIter = getParameterNodeIterator( );
 
-        while ( nodeIter.hasNext( ) )
+        for ( int i = 0, size = this.parameterNodes.size( ); i < size; i++ )
         {
-            ( ( ParameterNode ) nodeIter.next( ) ).retractObject( handle,
-                                                                  workingMemory );
+            ( ( ParameterNode ) this.parameterNodes.get( i ) ).retractObject( handle,
+                                                                              workingMemory );
         }
     }
 
@@ -214,42 +214,26 @@ class ObjectTypeNode
      *
      * @throws FactException if an error occurs during assertion.
      */
-    void modifyObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws FactException
+    void modifyObject( FactHandle handle,
+                       Object object,
+                       WorkingMemoryImpl workingMemory ) throws FactException
     {
-        Iterator nodeIter = getParameterNodeIterator( );
-
         if ( this.objectType.matches( object ) )
         {
-            while ( nodeIter.hasNext( ) )
+            for ( int i = 0, size = this.parameterNodes.size(); i < size; i++ )
             {
-                ( ( ParameterNode ) nodeIter.next( ) ).modifyObject( handle,
-                                                                     object,
-                                                                     workingMemory );
+                ( ( ParameterNode ) this.parameterNodes.get( i ) ).modifyObject( handle,
+                                                                                 object,
+                                                                                 workingMemory );
             }
         }
         else
         {
-            while ( nodeIter.hasNext( ) )
+            for ( int i = 0, size = this.parameterNodes.size( ); i < size; i++ )
             {
-                ( ( ParameterNode ) nodeIter.next( ) ).retractObject( handle,
-                                                                      workingMemory );
+                ( ( ParameterNode ) this.parameterNodes.get( i ) ).retractObject( handle,
+                                                                                  workingMemory );
             }
         }
-    }
-
-    public ParameterNode getOrCreateParameterNode( Declaration declaration )
-    {
-        ParameterNode node = ( ParameterNode ) this.parameterNodes.get( declaration );
-
-        if ( node == null )
-        {
-            node = new ParameterNode( this, declaration );
-
-            addParameterNode( node );
-        }
-
-        return node;
     }
 }

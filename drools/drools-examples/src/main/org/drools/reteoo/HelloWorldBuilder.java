@@ -38,8 +38,11 @@ public class HelloWorldBuilder
             for ( Iterator j = rule.getParameterDeclarations( ).iterator( ); j.hasNext( ); )
             {
                 declaration = ( Declaration ) j.next();
-                ObjectTypeNode objectTypeNode = rete.getOrCreateObjectTypeNode( declaration.getObjectType( ) );
-                parameterNode = objectTypeNode.getOrCreateParameterNode( declaration );
+
+                parameterNode = new ParameterNode( rete.getOrCreateObjectTypeNode( declaration.getObjectType( ) ),
+                                                   declaration );
+
+                parameterNode.attach( );
 
                 List conditions = rule.getConditions( );
                 if ( conditions.isEmpty( ) )

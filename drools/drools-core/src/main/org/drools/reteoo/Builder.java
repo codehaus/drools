@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.66 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: Builder.java,v 1.67 2004-12-06 15:36:14 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -264,9 +264,12 @@ public class Builder
         {
             eachDecl = (Declaration) declIter.next( );
 
-            ObjectTypeNode objectTypeNode = this.rete.getOrCreateObjectTypeNode( eachDecl.getObjectType( ) );
+            ParameterNode parameterNode = new ParameterNode( this.rete.getOrCreateObjectTypeNode( eachDecl.getObjectType( ) ),
+                                                             eachDecl );
 
-            leafNodes.add( objectTypeNode.getOrCreateParameterNode( eachDecl ) );
+            parameterNode.attach( );
+
+            leafNodes.add( parameterNode );
         }
 
         return leafNodes;

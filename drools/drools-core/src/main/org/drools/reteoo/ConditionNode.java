@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.32 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: ConditionNode.java,v 1.33 2004-12-06 15:36:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -92,7 +92,9 @@ class ConditionNode extends TupleSource
      * @param tupleSource The source of incoming <code>Tuples</code>.
      * @param condition
      */
-    ConditionNode( Rule rule, TupleSource tupleSource, Condition condition )
+    ConditionNode( Rule rule,
+                   TupleSource tupleSource,
+                   Condition condition )
     {
         this.rule = rule;
         this.condition = condition;
@@ -146,8 +148,8 @@ class ConditionNode extends TupleSource
      *
      * @throws AssertionException If an error occurs while asserting.
      */
-    public void assertTuple(ReteTuple tuple,
-                            WorkingMemoryImpl workingMemory) throws AssertionException
+    public void assertTuple( ReteTuple tuple,
+                             WorkingMemoryImpl workingMemory ) throws AssertionException
     {
         boolean allowed = this.condition.isAllowed( tuple );
 
@@ -172,8 +174,8 @@ class ConditionNode extends TupleSource
      *
      * @throws RetractionException If an error occurs while retracting.
      */
-    public void retractTuples(TupleKey key,
-                              WorkingMemoryImpl workingMemory) throws RetractionException
+    public void retractTuples( TupleKey key,
+                               WorkingMemoryImpl workingMemory ) throws RetractionException
     {
         propagateRetractTuples( key,
                                 workingMemory );
@@ -188,9 +190,9 @@ class ConditionNode extends TupleSource
      *
      * @throws FactException If an error occurs while modifying.
      */
-    public void modifyTuples(FactHandle trigger,
-                             TupleSet modifyTuples,
-                             WorkingMemoryImpl workingMemory) throws FactException
+    public void modifyTuples( FactHandle trigger,
+                              TupleSet modifyTuples,
+                              WorkingMemoryImpl workingMemory ) throws FactException
     {
         TupleSet allowedTuples = new TupleSet( );
         Iterator tupleIter = modifyTuples.iterator( );
@@ -241,25 +243,25 @@ class ConditionNode extends TupleSource
         return "[ConditionNode: cond=" + this.condition + "]";
     }
 
-    public int hashCode()
-    {
-        return this.tupleSource.hashCode( ) ^ this.condition.hashCode( );
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null || getClass( ) != object.getClass( ) )
-        {
-            return false;
-        }
-
-        ConditionNode other = ( ConditionNode ) object;
-
-        return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
-    }
+//    public int hashCode()
+//    {
+//        return this.tupleSource.hashCode( ) ^ this.condition.hashCode( );
+//    }
+//
+//    public boolean equals( Object object )
+//    {
+//        if ( this == object )
+//        {
+//            return true;
+//        }
+//
+//        if ( object == null || getClass( ) != object.getClass( ) )
+//        {
+//            return false;
+//        }
+//
+//        ConditionNode other = ( ConditionNode ) object;
+//
+//        return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
+//    }
 }
