@@ -21,6 +21,7 @@
         <attainGoal name="helloworld-java"/>
         <attainGoal name="helloworld-groovy"/>
         <attainGoal name="helloworld-python"/>
+        <attainGoal name="house"/>
         <attainGoal name="manners-jsr94"/>
         <attainGoal name="manners-native"/>
         <attainGoal name="manners-java"/>
