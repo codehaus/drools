@@ -1,0 +1,99 @@
+
+<rules	xmlns="http://drools.org/rules"
+    xmlns:know="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary">
+
+  <semantics module="org.drools.semantics.java"/>
+  <semantics module="org.drools.semantics.jelly"/>
+  
+  <rule-set name="Family Tree Rules"
+           xmlns:java="http://drools.org/semantics/java"
+           xmlns:jelly="http://drools.org/semantics/jelly">
+
+
+    <rule name="Explode Tree">
+      <parameter identifier="familyHead">
+        <java:class type="org.drools.examples.familyTree.Person"/>
+      </parameter>
+      <consequence>
+        <java:consequence>
+          import java.util.*;
+          Iterator itemIter = familyHead.getChildren().iterator();
+          while ( itemIter.hasNext() )
+          {
+		final Object o = itemIter.next();
+             	assertObject( o );
+          }
+        </java:consequence>
+      </consequence>
+    </rule>
+  
+    <!-- ================================================================== -->
+    <rule name="child of">
+      <parameter identifier="theParent">
+       	  <java:class type="org.drools.examples.familyTree.Person"/>
+      </parameter>
+      <parameter identifier="theChild">
+          <java:class type="org.drools.examples.familyTree.Person"/>
+      </parameter>
+      <condition>
+          <java:condition>theParent.hasChild(theChild);</java:condition>
+      </condition>
+      <consequence>
+        <java:consequence>
+		java.util.Map theTree = new java.util.Hashtable();
+		theTree.put (theChild, theParent);
+		modifyObject (theTree);
+        </java:consequence>
+
+        <!-- can only have a java or a jelly consequence not both!!!! -->
+        <!-- jelly:consequence>
+           <know:assert fact="Relationship: ${theParent} and ${theChild} are related"/> 
+        </jelly:consequence> --> 
+      </consequence>
+    </rule>
+
+    <!-- ================================================================== -->
+    <rule name="Message Blab" salience="20">
+      <parameter identifier="message">
+        <java:class type="java.lang.String"/>
+      </parameter>
+      <condition>
+        <java:condition>
+          message.startsWith( "Relationship:" );
+        </java:condition>
+      </condition>
+      <consequence>
+        <java:consequence>
+            System.err.println( message );
+        </java:consequence>
+      </consequence>
+    </rule>
+
+    <!-- ================================================================== -->
+    <rule name="Build the family tree" salience="20">
+      <parameter identifier="value">
+        <java:class type="java.util.Map"/>
+      </parameter>
+      <consequence>
+        <java:consequence>
+	    import java.util.Set;
+	    java.util.Map m = org.drools.examples.familyTree.Main.tree;
+	    final Object descendent = value.keySet().toArray()[0];
+	    final Object parent = value.values().toArray()[0];
+
+	    Set s = (Set)m.get(descendent);
+	    if(s ==null) {
+		s=new HashSet();
+		m.put (descendent, s);
+	    }
+	    s.add (parent);
+	    if (m.get(parent) != null)
+		s.addAll ( (Set)m.get(parent) );
+	    System.out.println( );
+	    System.out.println(m);
+	    System.out.println( );
+        </java:consequence>
+      </consequence>
+    </rule> 
+  </rule-set>
+</rules>
