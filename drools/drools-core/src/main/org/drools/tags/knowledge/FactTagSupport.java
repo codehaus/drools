@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: FactTagSupport.java,v 1.2 2002-08-20 21:19:55 bob Exp $
+ $Id: FactTagSupport.java,v 1.3 2002-08-28 20:24:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: FactTagSupport.java,v 1.2 2002-08-20 21:19:55 bob Exp $
+ *  @version $Id: FactTagSupport.java,v 1.3 2002-08-28 20:24:59 bob Exp $
  */
 public abstract class FactTagSupport extends TagSupport
 {
@@ -120,13 +120,20 @@ public abstract class FactTagSupport extends TagSupport
      */
     protected WorkingMemory getWorkingMemory() throws JellyException
     {
-        KnowledgeTag tag = (KnowledgeTag) findAncestorWithClass( KnowledgeTag.class );
+        WorkingMemory memory = (WorkingMemory) getContext().getVariable( "org.drools.working-memory" );
 
-        if ( tag == null )
+        if ( memory == null )
         {
-            throw new JellyException( "No working memory available" );
+            KnowledgeTag tag = (KnowledgeTag) findAncestorWithClass( KnowledgeTag.class );
+            
+            if ( tag == null )
+            {
+                throw new JellyException( "No working memory available" );
+            }
+            
+            return tag.getMemory();
         }
 
-        return tag.getMemory();
+        return memory;
     }
 }

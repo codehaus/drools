@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.2 2002-08-25 22:22:42 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.3 2002-08-28 20:24:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,12 +47,17 @@ package org.drools.semantics.jelly;
  */
 
 import org.apache.commons.jelly.impl.DynamicTagLibrary;
+import org.apache.commons.jelly.Tag;
+
+import org.xml.sax.Attributes;
+
+import java.util.Map;
 
 /** Custom Jelly semantics tag library.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.2 2002-08-25 22:22:42 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.3 2002-08-28 20:24:59 bob Exp $
  */
 public class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -62,5 +67,27 @@ public class SemanticsTagLibrary extends DynamicTagLibrary
     {
         registerTag( "consequence",
                      JellyConsequenceTag.class );
+    }
+
+    /** Creates a new script to execute the given tag name and attributes.
+     *
+     *  @param name Tag name.
+     *  @param attributes The attributes.
+     */
+    public Tag createTag(String name) throws Exception
+    {
+
+        System.err.println( "createTag(" + name + ")" );
+
+        Map tags = getTagClasses();
+
+        Class type = (Class) tags.get( name );
+
+        if ( type != null )
+        {
+            return (Tag) type.newInstance();
+        }
+
+        return null;
     }
 }
