@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.1 2004-11-07 17:55:42 mproctor Exp $
+ * $Id: MannersNativeTest.java,v 1.2 2004-11-07 18:34:44 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -68,6 +68,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -167,8 +173,6 @@ public class MannersNativeTest extends TestCase implements Serializable
             {
                 Context context = ( Context ) tuple.get( contextDecl );
                 Guest guest = ( Guest ) tuple.get( guestDecl );
-
-                System.out.println( "FIRE: find first seat: " + guest );
 
                 try
                 {
@@ -351,9 +355,6 @@ public class MannersNativeTest extends TestCase implements Serializable
                 Guest guest = ( Guest ) tuple.get( guestDecl );
                 Seating seating = ( Seating ) tuple.get( seatingDecl );
 
-                System.out.println( "FIRE: find seating: " + seating + " "
-                                    + guest );
-
                 Seating nextSeat = new Seating( seating.getSeat2( ), guest,
                                                 seating );
                 try
@@ -489,8 +490,6 @@ public class MannersNativeTest extends TestCase implements Serializable
             {
                 Seating seating = ( Seating ) tuple.get( seatingDecl );
 
-                System.out.println( "FIRE: try another path: " + seating );
-
                 Seating prevSeat = seating.getPrevSeat( );
                 prevSeat.setGuest2( null );
 
@@ -616,8 +615,6 @@ public class MannersNativeTest extends TestCase implements Serializable
                 Seating seating = ( Seating ) tuple.get( seatingDecl );
                 Context context = ( Context ) tuple.get( contextDecl );
 
-                System.out.println( "FIRE: we are done" );
-
                 List list = new ArrayList( );
                 while ( seating != null )
                 {
@@ -630,7 +627,6 @@ public class MannersNativeTest extends TestCase implements Serializable
                 for ( int i = list.size( ); i > 0; i-- )
                 {
                     Seat seat = ( Seat ) list.get( i - 1 );
-                    System.out.println( seat );
                     try
                     {
                         workingMemory.assertObject( seat );
@@ -665,7 +661,8 @@ public class MannersNativeTest extends TestCase implements Serializable
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
-        workingMemory = ruleBase.newWorkingMemory( );
+        workingMemory = getWorkingMemory( ruleBase );
+        workingMemory.addEventListener(new TestWorkingMemoryEventListener());
     }
 
     protected void tearDown() throws Exception
@@ -679,24 +676,40 @@ public class MannersNativeTest extends TestCase implements Serializable
 
         long start = System.currentTimeMillis( );
 
+        //test serialization
+        //workingMemory = serializeWorkingMemory( workingMemory );
+        //workingMemory = serializeWorkingMemory( workingMemory );
+
         for ( Iterator i = inList.iterator( ); i.hasNext( ); )
         {
             workingMemory.assertObject( i.next( ) );
         }
 
+        //test serialization
+        //workingMemory = serializeWorkingMemory( workingMemory );
+        //workingMemory = serializeWorkingMemory( workingMemory );
+
         workingMemory.fireAllRules( );
 
-        List outList = workingMemory.getObjects( );;
+        //test serialization
+        //workingMemory = serializeWorkingMemory( workingMemory );
+        //workingMemory = serializeWorkingMemory( workingMemory );
 
-        System.out.println( "Elapsed time: "
-                            + ( System.currentTimeMillis( ) - start ) + "ms" );
+        List outList = workingMemory.getObjects( );
 
         int actualGuests = validateResults( inList, outList );
-        if ( numGuests != actualGuests )
-        {
-            throw new RuntimeException( "seated guests " + actualGuests
-                                        + " didn't match expected " + numGuests );
-        }
+
+        assertEquals(numGuests, actualGuests);
+
+        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getListeners().get(0);
+        assertEquals(50, listener.asserted);
+        assertEquals(0, listener.retracted);
+        assertEquals(17, listener.modified);
+        //can't test this as it changes on each run
+        //assertEquals(2024, listener.tested);
+        assertEquals(96, listener.created);
+        assertEquals(17, listener.fired);
+        assertEquals(79, listener.cancelled);
 
     }
 
@@ -910,5 +923,43 @@ public class MannersNativeTest extends TestCase implements Serializable
 
         return new ByteArrayInputStream( writer.getBuffer( ).toString( )
                                                .getBytes( ) );
+    }
+
+    private static WorkingMemory getWorkingMemory(RuleBase ruleBase) throws Exception
+    {
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
+        ObjectOutput out = new ObjectOutputStream( bos );
+        out.writeObject( ruleBase.newWorkingMemory( ) );
+        out.close( );
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray( );
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream(
+                                                new ByteArrayInputStream( bytes ) );
+        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
+        in.close( );
+        return workingMemoryOut;
+    }
+
+    private static WorkingMemory serializeWorkingMemory(WorkingMemory workingMemoryIn) throws Exception
+    {
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
+        ObjectOutput out = new ObjectOutputStream( bos );
+        out.writeObject( workingMemoryIn );
+        out.close( );
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray( );
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream(
+                                                new ByteArrayInputStream( bytes ) );
+        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
+        in.close( );
+        return workingMemoryOut;
     }
 }
