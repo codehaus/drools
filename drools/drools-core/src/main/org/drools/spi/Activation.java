@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Activation.java,v 1.3 2004-06-18 19:03:37 n_alex Exp $
+ $Id: Activation.java,v 1.4 2004-06-27 12:31:17 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ import org.drools.rule.Rule;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Activation.java,v 1.3 2004-06-18 19:03:37 n_alex Exp $
+ *  @version $Id: Activation.java,v 1.4 2004-06-27 12:31:17 mproctor Exp $
  */
 public interface Activation
 {
@@ -68,4 +68,11 @@ public interface Activation
      *  @return The tuple.
      */
     Tuple getTuple();
+    
+    /** Retrieve the activation number that was assigned by the counter
+     *  to his activation at creation time.
+     *
+     * @return The tuple.
+     */
+    long getActivationNumber();    
 }
