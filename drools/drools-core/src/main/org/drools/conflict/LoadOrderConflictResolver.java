@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: LoadOrderConflictResolver.java,v 1.6 2004-10-05 12:33:17 mproctor Exp $
+ * $Id: LoadOrderConflictResolver.java,v 1.7 2004-10-06 13:38:05 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,10 +40,6 @@ package org.drools.conflict;
  *  
  */
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -53,15 +49,15 @@ import org.drools.spi.ConflictResolver;
  * conflict.
  * 
  * @see #getInstance
- * @see Rule#setSalience
- * @see Rule#getSalience
+ * @see Rule#getLoadOrder
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
  * @version $Id: LoadOrderConflictResolver.java,v 1.1 2004/06/25 01:55:16
  *          mproctor Exp $
  */
-public class LoadOrderConflictResolver implements ConflictResolver
+public class LoadOrderConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
     //     Class members
@@ -101,38 +97,10 @@ public class LoadOrderConflictResolver implements ConflictResolver
     /**
      * @see ConflictResolver
      */
-    public List insert(Activation activation, List list)
+    public int compare(Activation existing, Activation adding)
     {
-        ListIterator listIter;
-        Activation eachActivation;
-
-        //quick optimisation, check if should just add 
-        if ( list.isEmpty( ) )
-        {
-            list.add( activation );
-            return null;
-        }
-
-        // Traverse the list. If an activation is found
-        // that has a lower loadOrder than the item to be inserted,
-        // insert the item *before* it by backing up and adding
-        // to the list. Then return a list of any conflicts
-        long loadOrder = activation.getRule( ).getLoadOrder( );        
-        for ( listIter = list.listIterator( ); listIter.hasNext( ); )
-        {
-            eachActivation = ( Activation ) listIter.next( );
-            if ( eachActivation.getRule( ).getLoadOrder( ) >= loadOrder )
-            {
-                listIter.previous( );
-                listIter.add( activation );
-                return null;
-            }
-        }
-
-        // If not inserted by now, simply tack it onto the end.
-        list.add( activation );
-        return null;
+        return ( int ) ( existing.getRule( ).getLoadOrder( ) - adding
+                                                                     .getRule( )
+                                                                     .getLoadOrder( ) );
     }
-
 }
-

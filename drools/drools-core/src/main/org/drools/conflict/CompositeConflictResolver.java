@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: DefaultConflictResolver.java,v 1.9 2004-10-06 13:38:05 mproctor Exp $
+ * $Id: CompositeConflictResolver.java,v 1.1 2004-10-06 13:38:05 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,10 +41,9 @@ package org.drools.conflict;
  */
 
 import org.drools.spi.Activation;
-import org.drools.spi.ConflictResolver;
 import org.drools.spi.Tuple;
 
-import java.util.List;
+import java.util.Comparator;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
@@ -59,44 +58,32 @@ import java.util.List;
  * @see Tuple
  * @see org.drools.rule.Rule
  * 
- * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
- * @version $Id: DefaultConflictResolver.java,v 1.9 2004-10-06 13:38:05 mproctor Exp $
+ * @version $Id: DefaultConflictResolver.java,v 1.2 2004/06/25 11:46:58 mproctor
+ *          Exp $
  */
-public class DefaultConflictResolver extends CompositeConflictResolver
+public class CompositeConflictResolver extends AbstractConflictResolver
 {
-    // ----------------------------------------------------------------------
-    //     Class members
-    // ----------------------------------------------------------------------
+    private final Comparator[] comparators;
 
-    /** Singleton instance. */
-    private static final DefaultConflictResolver INSTANCE = new DefaultConflictResolver( );
-
-    private static List                          conflictResolvers;
-
-    // ----------------------------------------------------------------------
-    //     Class methods
-    // ----------------------------------------------------------------------
-
-    /**
-     * Retrieve the singleton instance.
-     * 
-     * @return The singleton instance.
-     */
-    public static ConflictResolver getInstance()
+    public CompositeConflictResolver(Comparator[] comparators)
     {
-        return INSTANCE;
+        this.comparators = comparators;
     }
 
     /**
-     * Setup a default ConflictResolver configuration
+     * @see AbstractConflictResolver
      */
-    public DefaultConflictResolver()
+    public final int compare(Activation existing, Activation adding)
     {
-        super( new ConflictResolver[]{SalienceConflictResolver.getInstance( ),
-        RecencyConflictResolver.getInstance( ),
-        ComplexityConflictResolver.getInstance( ),
-        LoadOrderConflictResolver.getInstance( )} );
+        int result = 0;
+
+        for ( int i = 0; result == 0 && i < this.comparators.length; ++i )
+        {
+            result = this.comparators[i].compare( existing, adding );
+        }
+
+        return result;
     }
 }
