@@ -43,11 +43,11 @@
         </j:if>
     </preGoal>
 
-		<goal name="get-deps">
+    <goal name="get-deps">
       <j:forEach var="dep" items="${pom.artifacts}">
       	<j:if test="${dep.path.indexOf('drools') &lt;= 0}">
 	        <copy file="${dep.path}"
-	              todir="${basedir}/../libs"/>
+	              todir="${basedir}/../target/dependencies"/>
         </j:if>
       </j:forEach>
     </goal>

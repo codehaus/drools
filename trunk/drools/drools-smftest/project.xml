@@ -23,11 +23,10 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8</version>
+            <version>3.8.1</version>
         </dependency>
     </dependencies>
 
