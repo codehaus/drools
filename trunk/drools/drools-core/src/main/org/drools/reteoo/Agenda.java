@@ -41,7 +41,7 @@ public class Agenda
     private WorkingMemory workingMemory;
 
     /** Items in the agenda. */
-    private LinkedList items;
+    private PriorityQueue items;
 
     /** Items time-delayed. */
     private Set scheduledItems;
@@ -54,7 +54,7 @@ public class Agenda
     {
         this.workingMemory = workingMemory;
 
-        this.items          = new LinkedList();
+        this.items          = new PriorityQueue();
         this.scheduledItems = new HashSet();
     }
 
@@ -64,7 +64,8 @@ public class Agenda
      *  @param action The <code>Action</code> to fire.
      */
     void addToAgenda(ReteTuple tuple,
-                     Rule rule)
+                     Rule rule,
+                     int priority)
     {
         if ( rule == null )
         {
@@ -80,7 +81,8 @@ public class Agenda
         }
         else
         {
-            this.items.add( item );
+            this.items.add( item,
+                            priority );
         }
     }
 
@@ -128,7 +130,8 @@ public class Agenda
 
     void modifyAgenda(Object trigger,
                       TupleSet newTuples,
-                      Rule rule)
+                      Rule rule,
+                      int priority)
     {
         Iterator   itemIter  = this.items.iterator();
         AgendaItem eachItem  = null;
@@ -191,7 +194,8 @@ public class Agenda
             eachTuple = (ReteTuple) tupleIter.next();
 
             addToAgenda( eachTuple,
-                         rule );
+                         rule,
+                         priority );
         }
     }
 

@@ -66,7 +66,8 @@ public class TerminalNode implements TupleSink
         Agenda agenda = workingMemory.getAgenda();
 
         agenda.addToAgenda( tuple,
-                            getRule() );
+                            getRule(),
+                            getPriority() );
     }
 
     public void retractTuples(TupleKey key,
@@ -87,6 +88,7 @@ public class TerminalNode implements TupleSink
         
         agenda.modifyAgenda( trigger,
                              newTuples,
-                             getRule() );
+                             getRule(),
+                             getPriority() );
     }
 }
