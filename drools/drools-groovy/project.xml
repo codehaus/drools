@@ -10,18 +10,18 @@
         <dependency>
             <groupId>groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>1.0-beta-5</version>
+            <version>1.0-beta-6</version>
         </dependency>
         <dependency>
           <groupId>asm</groupId>
           <artifactId>asm</artifactId>
-          <version>1.4.1</version>
+          <version>1.4.3</version>
           <url>http://asm.objectweb.org/</url>
         </dependency>
         <dependency>
           <groupId>asm</groupId>
           <artifactId>asm-util</artifactId>
-          <version>1.4.1</version>
+          <version>1.4.3</version>
           <url>http://asm.objectweb.org/</url>
         </dependency>
         <dependency>
