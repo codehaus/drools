@@ -7,16 +7,21 @@
   </properties>
 
   <body>
-    <title>Frequently Asked Questions</title>
+    <title>Frequently-Asked Questions</title>
+
+    <section name="Frequenly-Asked Questions">
+      <p>
+      Here, we try to address the most frequently-asked questions.
+      </p>
     
-    <section name="What is drools?">
+    <subsection name="What is drools?">
       <p>
       <b>drools</b> is a dynamic rules engine for Java, based upon the
-      Rete algorithm and supported by a pluggable semantics modules.
+      Rete/Rete-OO algorithm and supported by a pluggable semantics modules.
       </p>
-    </section>
+    </subsection>
 
-    <section name="What's Rete?">
+    <subsection name="What's Rete?">
       <p>
       Rete is an algorithm devised by Charlse Forgy in the early
       1980's to efficiently match conditions of rules when many
@@ -24,19 +29,19 @@
       a structure to allow progressive relational joins across
       tables.
       </p>
-    </section>
+    </subsection>
 
-    <section name="Relational joins?  I want objects!">
+    <subsection name="Relational joins?  I want objects!">
       <p>
       Yes, folks want objects, but Rete works in terms of
-      tables and tuples.  Thus, I've modified the algorithm,
-      named my adapatation <b>Rete-OO</b>, which is described
-      in <a href="/pdf/rete-oo.pdf">this PDF document</a>.
+      tables and tuples.  Thus, we've modified the algorithm and
+      named our adapatation <b>Rete-OO</b>, which is described
+      in <a href="/pdf/drools-guide.pdf">The <code>drools</code> Guide</a>.
       </p>
-    </section>
+    </subsection>
 
-    <section name="What's a Semantic Module?">
-      <p>
+    <subsection name="What's a Semantic Module?">
+      <p width="50%">
       Rules are written against objects, but the concept of
       an 'object' is fairly arbitrary, and completely customizable
       using <b>Semantic Modules</b>.  A Java Semantic Module may
@@ -45,14 +50,8 @@
       may differentiate between documents based upon their
       root element's name and namespace-uri.  It's up to you.
       </p>
-    </section>
+    </subsection>
 
-    <section name="How is drools designed?">
-      <p>
-      Information regarding the design and implementation of
-      drools may be found in <a href="/pdf/drools-impl.pdf">this
-      PDF document</a>.
-      </p>
     </section>
 
   </body>

@@ -13,18 +13,25 @@ table {
         font-family: sans-serif;
         border:dotted 1px;
         padding:10px;
-        background-color:#777777;
-	color:#EEEEEE;
+        background-color:#dddddd;
+	color:black;
 	font-size:14pt;
 	margin: 1pt;
+	font-weight:800;
+}
+
+.app h3 a {
+	font-weight:800;
+	font-size:12pt;
 }
 
 .app h4 {
         font-family: sans-serif;
-        border:dotted 1px;
+        border:black dotted 1px;
         padding:10px;
-        background-color:#DDDDDD;
-	color:black;
+        background-color:#eeeeee;
+	color:#777777;
+	padding-left: 24px;
 }
 
 td {
@@ -62,6 +69,12 @@ div#banner {
 */
  }
 
+#bodycol div.h3 p {
+	max-width: 5in;
+	margin-left: 36pt;
+	line-height: 2em;
+}
+
 #banner, #banner td { 
  background: white;
  color: #fff;
@@ -87,9 +100,20 @@ div#banner {
  }
 
 #navcolumn div strong {
-  color:#990000;
-  text-decoration: underline;
+  color:#555555;
+  padding: 4px;
+  line-height:20pt;
+  border: 1px solid black;
 }
+
+#navcolumn div {
+  margin-top:10px;
+}
+
+#navcolumn div div {
+  margin-bottom:10px;
+}
+
 
 #breadcrumbs {
     border: 1px dotted #777777;
@@ -120,15 +144,25 @@ div#banner {
 #footer {
   background: #eeeeee;
   border: 1px solid #777777;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 1em;
+}
+
+#footer table {
 }
 
 #footer table tr td {
   border: none;
+  padding: 0px;
+  margin: 4px;
 }
 
 a:link, #breadcrumbs a:visited, #navcolumn a:visited, .app a:visited, .tasknav a:visited {
  font-family: sans-serif;
- color:#333333;
+ color:#000099;
  text-decoration: none;
  }
 
