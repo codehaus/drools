@@ -4,11 +4,11 @@
     <pomVersion>3</pomVersion>
     <name>drools</name>
     <id>drools</id>
-    <currentVersion>2.0-beta-11-dev-5</currentVersion>
+    <currentVersion>2.0-beta-11</currentVersion>
 
     <organization>
         <name>The Werken Company</name>
-        <url>http://www.werken.com/</url>
+        <url>http://www.werken.com</url>
         <logo>http://images.werken.com/werken_large.gif</logo>
     </organization>
     <inceptionYear>2001</inceptionYear>
@@ -23,14 +23,14 @@
         allow natural expression of rules within an object-oriented language.
     </description>
 
-    <url>http://drools.org/</url>
+    <url>http://drools.org</url>
 
     <siteAddress>drools.werken.com</siteAddress>
     <siteDirectory>/www/drools.werken.com</siteDirectory>
     <issueTrackingUrl>http://jira.werken.com/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>
-        <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
         <url>http://cvs.werken.com/viewcvs.cgi/drools/?cvsroot=drools</url>
     </repository>
 
@@ -149,114 +149,166 @@
     <!-- Need to mark these as compile-time/run-time -->
 
     <dependencies>
-
         <dependency>
             <id>antlr</id>
             <version>2.7.2</version>
             <jar>antlr-2.7.2.jar</jar>
-            <url>http://antlr.org/</url>
+            <url>http://antlr.org</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <id>bsh</id>
             <version>1.2b7</version>
-            <url>http://beanshell.org/</url>
+            <url>http://beanshell.org</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <!-- is already part of JBoss 3.2.1
+                <rar_bundle>true</rar_bundle>
+                -->
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <id>commons-beanutils</id>
             <version>1.6</version>
-            <url>http://jakarta.apache.org/commons/beanutils/</url>
+            <url>http://jakarta.apache.org/commons/beanutils</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <id>commons-collections</id>
             <version>2.1</version>
+            <url>http://jakarta.apache.org/commons/collections</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <groupId>commons-jelly</groupId>
             <artifactId>commons-jelly</artifactId>
-            <version>1.0-beta-4-SNAPSHOT</version>
-            <url>http://jakarta.apache.org/commons/jelly/</url>
+            <version>20030609.133047</version>
+            <url>http://jakarta.apache.org/commons/jelly</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <groupId>commons-jelly</groupId>
             <artifactId>commons-jelly-tags-junit</artifactId>
-            <version>SNAPSHOT</version>
-            <url>http://jakarta.apache.org/commons/jelly/</url>
+            <version>20030211.141731</version>
+            <url>http://jakarta.apache.org/commons/jelly</url>
         </dependency>
-
         <dependency>
             <id>commons-jexl</id>
             <version>1.0-beta-2</version>
-            <url>http://jakarta.apache.org/commons/sandbox/jexl/</url>
+            <url>http://jakarta.apache.org/commons/sandbox/jexl</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <id>commons-logging</id>
             <version>1.0.3</version>
-            <url>http://jakarta.apache.org/commons/logging/</url>
+            <url>http://jakarta.apache.org/commons/logging</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
             <id>dom4j</id>
             <version>1.4</version>
-            <url>http://dom4j.org/</url>
+            <url>http://dom4j.org</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
-        <dependency>
-            <id>junit</id>
-            <version>3.8.1</version>
-            <url>http://www.junit.org/</url>
-        </dependency>
-
-        <dependency>
-            <id>jython</id>
-            <version>SNAPSHOT</version>
-            <url>http://jython.org/</url>
-        </dependency>
-
         <dependency>
             <id>jaas</id>
             <version>1.0</version>
         </dependency>
-
         <dependency>
             <id>jca</id>
             <version>1.0</version>
         </dependency>
-
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+            <url>http://www.junit.org</url>
+        </dependency>
         <dependency>
             <id>jsr94</id>
             <version>1.0-pr</version>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
         <dependency>
-            <id>xml-apis</id>
-            <version>2.0.2</version>
+            <id>jython</id>
+            <version>20020827-no-oro</version>
+            <url>http://www.jython.org</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
+        <dependency>
+            <!-- Some of the oro classes were part of the jython-SNAPSHOT.jar, which breaks the maven build -->
+            <id>oro</id>
+            <version>2.0.7</version>
+            <url>http://jakarta.apache.org/oro</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
+        </dependency>
         <dependency>
             <id>xerces</id>
             <version>2.3.0</version>
-            <url>http://xml.apache.org/xerces2-j/</url>
+            <url>http://xml.apache.org/xerces2-j</url>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
         </dependency>
-
+        <dependency>
+            <id>xml-apis</id>
+            <version>2.0.2</version>
+            <properties>
+                <bin_dist>true</bin_dist>
+                <rar_bundle>true</rar_bundle>
+                <war_bundle>true</war_bundle>
+            </properties>
+        </dependency>
     </dependencies>
 
     <build>
-
         <nagEmailAddress>drools-cvs@lists.werken.com</nagEmailAddress>
-
         <sourceDirectory>src/java/main</sourceDirectory>
-
         <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
-
         <integrationUnitTestSourceDirectory/>
-
-        <aspectSourceDirectory></aspectSourceDirectory>
+        <aspectSourceDirectory/>
 
         <!-- Unit test classes -->
 
