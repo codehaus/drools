@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.27 2004-11-09 09:03:35 simon Exp $
+ * $Id: JoinNode.java,v 1.28 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,27 +56,23 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-class JoinNode extends TupleSource implements JoinMemoryFactory
+class JoinNode extends TupleSource
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /**
-     * The left input <code>TupleSource</code>.
-     */
-    private final TupleSource leftInput;
+    /** The left input <code>TupleSource</code>. */
+    private final TupleSource   leftInput;
 
-    /**
-     * The right input <code>TupleSource</code>.
-     */
-    private final TupleSource rightInput;
+    /** The right input <code>TupleSource</code>. */
+    private final TupleSource   rightInput;
 
     /**
      * A <code>Set</code> of <code>Declarations</code> common to both left
      * and right input sources.
      */
-    private final Set         commonDeclarations;
+    private final Set           commonDeclarations;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -201,7 +197,7 @@ class JoinNode extends TupleSource implements JoinMemoryFactory
      */
     void assertLeftTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        JoinMemory memory = workingMemory.getJoinMemory( this, this );
+        JoinMemory memory = workingMemory.getJoinMemory( this );
         Set joinedTuples = memory.addLeftTuple( tuple );
 
         if ( joinedTuples.isEmpty( ) )
@@ -222,7 +218,7 @@ class JoinNode extends TupleSource implements JoinMemoryFactory
      */
     void assertRightTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        JoinMemory memory = workingMemory.getJoinMemory( this, this );
+        JoinMemory memory = workingMemory.getJoinMemory( this );
         Set joinedTuples = memory.addRightTuple( tuple );
 
         if ( joinedTuples.isEmpty( ) )
@@ -263,7 +259,7 @@ class JoinNode extends TupleSource implements JoinMemoryFactory
      */
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        JoinMemory memory = workingMemory.getJoinMemory( this, this );
+        JoinMemory memory = workingMemory.getJoinMemory( this );
 
         memory.retractTuples( key );
 
@@ -291,10 +287,5 @@ class JoinNode extends TupleSource implements JoinMemoryFactory
         decls.addAll( getRightInput( ).getTupleDeclarations( ) );
 
         return decls;
-    }
-
-    public JoinMemory createJoinMemory( JoinNode node )
-    {
-        return new JoinMemory( node.getCommonDeclarations() );
     }
 }

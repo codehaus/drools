@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.32 2004-11-09 09:03:35 simon Exp $
+ * $Id: JoinMemory.java,v 1.33 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -335,7 +335,7 @@ class JoinMemory implements Serializable
             }
         }
 
-        return new JoinTuple( left, right );
+        return new ReteTuple( left, right );
 
     }
 
@@ -350,24 +350,15 @@ class JoinMemory implements Serializable
      */
     boolean checkExtractorJoinsOk( Declaration decl, ReteTuple left, ReteTuple right )
     {
-        Set leftTargetDecls = left.getDeclarations();
-        Set rightTargetDecls = right.getDeclarations();
+        Object leftValue = left.get( decl );
+        Object rightValue = right.get( decl );
 
-        if ( leftTargetDecls != null && leftTargetDecls.contains( decl ) )
+        if ( leftValue == null )
         {
-            if ( !rightTargetDecls.contains( decl ) || !left.get( decl ).equals( right.get( decl ) ) )
-            {
-                return false;
-            }
+            return rightValue == null;
         }
-        else if ( rightTargetDecls != null && rightTargetDecls.contains( decl ) )
-        {
-            if ( !leftTargetDecls.contains( decl ) || !right.get( decl ).equals( left.get( decl ) ) )
-            {
-                return false;
-            }
-        }
-        return true;
+
+        return leftValue.equals( rightValue );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -384,5 +375,4 @@ class JoinMemory implements Serializable
         return "[JoinMemory \n\tleft=" + this.leftTuples + "\n\tright="
                 + this.rightTuples + "]";
     }
-
 }

@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersNative.java,v 1.6 2004-11-13 14:51:01 simon Exp $
+ * $Id: MannersNative.java,v 1.7 2004-11-15 07:11:54 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -146,7 +146,7 @@ public class MannersNative extends MannersBase
                 Context context = ( Context ) tuple.get( contextDeclA );
                 Guest guest = ( Guest ) tuple.get( guestDeclA );
 
-                System.out.println( "FIRE: find first seat: " + guest );
+//                System.out.println( "FIRE: find first seat: " + guest );
 
                 try
                 {
@@ -321,7 +321,7 @@ public class MannersNative extends MannersBase
                 Guest guest = ( Guest ) tuple.get( guestDeclB );
                 Seating seating = ( Seating ) tuple.get( seatingDeclB );
 
-                System.out.println( "FIRE: find seating: " + seating + " " + guest );
+//                System.out.println( "FIRE: find seating: " + seating + " " + guest );
 
                 Seating nextSeat = new Seating( seating.getSeat2(), guest, seating );
                 try
@@ -451,7 +451,7 @@ public class MannersNative extends MannersBase
             {
                 Seating seating = ( Seating ) tuple.get( seatingDeclC );
 
-                System.out.println( "FIRE: try another path: " + seating );
+//                System.out.println( "FIRE: try another path: " + seating );
 
                 Seating prevSeat = seating.getPrevSeat();
                 prevSeat.setGuest2( null );
@@ -569,7 +569,7 @@ public class MannersNative extends MannersBase
         {
             public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
             {
-                System.out.println( "FIRE: we are done" );
+//                System.out.println( "FIRE: we are done" );
 
                 Seating seating = ( Seating ) tuple.get( seatingDeclD );
                 Context context = ( Context ) tuple.get( contextDeclD );
