@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.47 2004-11-15 23:06:07 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.48 2004-11-16 07:26:33 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,6 @@ package org.drools.reteoo;
 
 import org.drools.FactHandle;
 import org.drools.NoSuchFactHandleException;
-import org.drools.NoSuchFactObjectException;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -51,8 +50,6 @@ import org.drools.spi.Tuple;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,8 +74,7 @@ class ReteTuple implements Tuple, Serializable
     private final TupleKey      key;
 
     /** Value objects in this tuple. */
-    //private final Map           objects;
-    private final Set           declarations;
+    private final Map           objects;
 
     private FactHandleImpl      mostRecentFact;
 
@@ -93,7 +89,7 @@ class ReteTuple implements Tuple, Serializable
         this.workingMemory = workingMemory;
         this.rule = rule;
         this.key = TupleKey.EMPTY;
-        this.declarations = Collections.EMPTY_SET;
+        this.objects = Collections.EMPTY_MAP;
     }
 
     ReteTuple(ReteTuple left, ReteTuple right)
@@ -101,22 +97,21 @@ class ReteTuple implements Tuple, Serializable
         this.workingMemory = left.workingMemory;
         this.rule = left.rule;
         this.key = new TupleKey( left.key, right.key );
-        this.declarations = new HashSet( left.declarations.size( ) + right.declarations.size( ), 1 );
-        this.declarations.addAll( left.declarations );
-        this.declarations.addAll( right.declarations );
+        this.objects = new HashMap( left.objects.size( ) + right.objects.size( ), 1 );
+        this.objects.putAll( left.objects );
+        this.objects.putAll( right.objects );
     }
 
     ReteTuple(ReteTuple that,
-              FactHandle handle,
               Declaration declaration,
               Object value)
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
-        this.key = new TupleKey( that.key, new TupleKey(declaration, handle) );
-        this.declarations = new HashSet( that.declarations.size( ) + 1, 1 );
-        this.declarations.addAll( that.declarations );
-        this.declarations.add( declaration );
+        this.key = that.key;
+        this.objects = new HashMap( that.objects.size( ) + 1, 1 );
+        this.objects.putAll( that.objects );
+        this.objects.put( declaration, value );
     }
 
     ReteTuple(WorkingMemory workingMemory,
@@ -128,12 +123,12 @@ class ReteTuple implements Tuple, Serializable
         this.workingMemory = workingMemory;
         this.rule = rule;
         this.key = new TupleKey( declaration, handle );
-        this.declarations = Collections.singleton( declaration );
+        this.objects = Collections.singletonMap( declaration, value );
     }
 
     public String toString()
     {
-        return "{" + this.declarations + "}";
+        return "{" + this.objects + "}";
     }
 
     // ------------------------------------------------------------
@@ -170,18 +165,7 @@ class ReteTuple implements Tuple, Serializable
      */
     public Object get(Declaration declaration)
     {
-        try 
-        {
-            FactHandle handle = this.key.get(declaration);
-            if (handle == null)
-            {
-                return null;
-            }
-          return this.workingMemory.getObject(handle);
-        } catch (NoSuchFactObjectException e)
-        {
-            return null;
-        }        
+        return this.objects.get( declaration );
     }
 
     /**
@@ -189,26 +173,12 @@ class ReteTuple implements Tuple, Serializable
      */
     public Set getDeclarations()
     {
-        return this.declarations;
+        return this.objects.keySet( );
     }
-
-    public Map getObjectFactMapping()
-    {
-        Map objects = new HashMap(this.declarations.size(), 1);
-        Iterator it = this.declarations.iterator();
-        Declaration declaration;
-        while (it.hasNext())
-        {
-            declaration = (Declaration) it.next();
-            objects.put(get(declaration), this.key.get(declaration));
-        }
-        return objects;
-    }       
 
     /**
      * @see Tuple
      */
-    /*
     public FactHandle getFactHandleForObject(Object object)
     {
         FactHandle factHandle;
@@ -224,7 +194,6 @@ class ReteTuple implements Tuple, Serializable
 
         return factHandle;
     }
-    */
 
     public Rule getRule()
     {

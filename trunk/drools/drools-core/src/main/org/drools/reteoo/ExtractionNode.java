@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.26 2004-11-15 23:06:07 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.27 2004-11-16 07:26:33 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
-import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.spi.Extractor;
@@ -158,18 +157,15 @@ class ExtractionNode extends TupleSource implements TupleSink
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Object value = getExtractor( ).extractFact( tuple );
-        FactHandle handle = workingMemory.newFactHandle();
-        workingMemory.putObject(handle, value);
-        
+
         // Extractions should never evaluate to null
         // Extractions with same target should be of same type and value
         if ( value == null || !checkExtractorOk( value, tuple ) )
         {
-            workingMemory.removeObject(handle);
             return;
         }
 
-        propagateAssertTuple( new ReteTuple( tuple, handle, getTargetDeclaration( ), value ), workingMemory );
+        propagateAssertTuple( new ReteTuple( tuple, getTargetDeclaration( ), value ), workingMemory );
     }
 
     /**

@@ -1,31 +1,31 @@
 package org.drools;
 
 /*
- * $Id: FactHandle.java,v 1.10 2004-11-15 23:06:07 mproctor Exp $
- * 
+ * $Id: FactHandle.java,v 1.11 2004-11-16 07:26:33 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,17 +37,15 @@ package org.drools;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 /**
  * Persistent handle to an asserted fact.
- * 
+ *
  * @see WorkingMemory#assertObject
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: FactHandle.java,v 1.10 2004-11-15 23:06:07 mproctor Exp $
  */
 
 import java.io.Serializable;
@@ -56,10 +54,8 @@ public interface FactHandle extends Serializable
 {
     /**
      * Convert this handle to an external representation.
-     * 
+     *
      * @return The external string form.
      */
     String toExternalForm();
-    
-    public long getId();
 }
