@@ -163,6 +163,20 @@ public class RuleTest
                       rule.getSalience() );
     }
 
+    public void testLoadOrder()
+        throws Exception
+    {
+        Rule rule = new Rule( "test-rule" );
+
+        assertEquals( 0,
+                      rule.getLoadOrder() );
+
+        rule.setLoadOrder( 42 );
+
+        assertEquals( 42,
+                      rule.getLoadOrder() );
+    }
+
     public void testDuration_SimpleLong()
         throws Exception
     {

@@ -43,11 +43,22 @@ public class RuleSetTest extends TestCase
     public void testAddRule()
         throws Exception
     {
-        InstrumentedRule rule = new InstrumentedRule( "cheese" );
+        InstrumentedRule rule;
 
+        rule = new InstrumentedRule( "cheese" );
         rule.isValid( true );
-
         this.ruleSet.addRule( rule );
+        assertEquals(0, rule.getLoadOrder());
+
+        rule = new InstrumentedRule( "meat" );
+        rule.isValid( true );
+        this.ruleSet.addRule( rule );
+        assertEquals(1, rule.getLoadOrder());
+
+        rule = new InstrumentedRule( "vegetables" );
+        rule.isValid( true );
+        this.ruleSet.addRule( rule );
+        assertEquals(2, rule.getLoadOrder());
     }
 
     public void testGetRule()
@@ -81,21 +92,21 @@ public class RuleSetTest extends TestCase
         rule2.isValid( true );
 
         this.ruleSet.addRule( rule1 );
-        
+
         try
         {
             this.ruleSet.addRule( rule2 );
-            
+
             fail( "Should have thrown DuplicateRuleNameException" );
         }
         catch (DuplicateRuleNameException e)
         {
             assertSame( this.ruleSet,
                         e.getRuleSet() );
-            
+
             assertSame( rule1,
                         e.getOriginalRule() );
-            
+
             assertSame( rule2,
                         e.getConflictingRule() );
         }
