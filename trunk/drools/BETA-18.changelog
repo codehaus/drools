@@ -25,5 +25,5 @@ DROOLS-212 Removed all traces of extractors from codebase. (Simon Harris)
 DROOLS-210 Joins are now deterministic, which should create repeatable deterministic behaviour for Rete networks (Simon Harris)
 DROOLS-211 Application Data should now be predefined so that java can precompile (Mark Proctor)
 DROOLS-175 drools-java compilation exceptions now report the rule name, the text of the condition or consequence, and the compilation error message.
-DROOLS-213 Tuples have been made light-weight, HashMaps have been removed and replaced with array lookups, also they now only contain references to the TupleKey and WorkingMemory. This improves performance and memory useuage.
+DROOLS-213 Tuples have been made light-weight, HashMaps have been removed and replaced with array lookups, also they now only contain references to the TupleKey and WorkingMemory. This improves performance and memory usage.
 DROOLS-214 PrimitiveLongMap created for a fast, lightweight, centralised fact repository customised for Drool's needs. Based on Indexed Pages and Direct Address Tables.
