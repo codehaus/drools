@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: SalienceConflictResolver.java,v 1.2 2004-06-25 01:55:16 mproctor Exp $
+ $Id: SalienceConflictResolver.java,v 1.3 2004-06-25 02:46:39 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -61,7 +61,7 @@ import java.util.ListIterator;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SalienceConflictResolver.java,v 1.2 2004-06-25 01:55:16 mproctor Exp $
+ *  @version $Id: SalienceConflictResolver.java,v 1.3 2004-06-25 02:46:39 mproctor Exp $
  */
 public class SalienceConflictResolver
     implements ConflictResolver
@@ -122,9 +122,17 @@ public class SalienceConflictResolver
                 //list.add( activation );
                 int endIndex = list.size();
                 int startIndex = list.size() - 1;
-                while (eachActivation.getRule().getSalience() == salience)
+                while ((eachActivation != null) && eachActivation.getRule().getSalience() == salience)
                 {
-                  eachActivation = (Activation) list.get(--startIndex);
+                  --startIndex;
+                  if (startIndex >= 0)
+                  {
+                      eachActivation = (Activation) list.get(startIndex);
+                  }
+                  else
+                  {
+                      eachActivation = null;
+                  }
                 }
                 return list.subList( startIndex + 1, endIndex );
             }

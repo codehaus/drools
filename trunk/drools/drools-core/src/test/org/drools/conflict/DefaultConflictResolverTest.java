@@ -93,6 +93,24 @@ public class DefaultConflictResolverTest extends TestCase
         items.clear();
         ruleSet = new RuleSet( "cheese board" );
 
+
+        brieRule.setSalience(0);
+        fetaRule.setSalience(0);
+        camembertRule.setSalience(0);
+
+        conflictItems = this.conflictResolver.insert(brie, items);
+        assertNull(conflictItems);
+        conflictItems = this.conflictResolver.insert(feta, items);
+        assertNull(conflictItems);
+        conflictItems = this.conflictResolver.insert(camembert, items);
+        assertNull(conflictItems);
+
+        assertEquals("brie", ((MockAgendaItem) items.get(0)).getRule().getName());
+        assertEquals("feta", ((MockAgendaItem) items.get(1)).getRule().getName());
+        assertEquals("camembert", ((MockAgendaItem) items.get(2)).getRule().getName());
+
+        items.clear();
+
         brieRule.setSalience(1);
         fetaRule.setSalience(1);
         camembertRule.setSalience(2);
@@ -106,8 +124,6 @@ public class DefaultConflictResolverTest extends TestCase
         ruleSet.addRule(brieRule);
         ruleSet.addRule(stiltonRule);
         ruleSet.addRule(fetaRule);
-
-
 
         conflictItems = this.conflictResolver.insert(stilton, items);
         assertNull(conflictItems);
