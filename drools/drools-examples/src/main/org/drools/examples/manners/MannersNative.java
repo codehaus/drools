@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersNative.java,v 1.8 2004-11-15 07:32:34 simon Exp $
+ * $Id: MannersNative.java,v 1.9 2004-11-19 02:49:55 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -585,6 +585,7 @@ public class MannersNative extends MannersBase
                 for ( int i = list.size(); i > 0; i-- )
                 {
                     Seat seat = ( Seat ) list.get( i - 1 );
+                    System.out.println( seat );
                     try
                     {
                         workingMemory.assertObject( seat );
