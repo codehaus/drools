@@ -4,7 +4,7 @@ import org.drools.AssertionException;
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseFactory;
+import org.drools.io.RuleBaseLoader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +23,7 @@ public class Escalation
         try
         {
             URL url = Escalation.class.getResource( args[0] );
-            RuleBase ruleBase = RuleBaseFactory.createFromUrl( url );
+            RuleBase ruleBase = RuleBaseLoader.loadFromUrl( url );
 
             WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 
