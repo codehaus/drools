@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+     File:       event_queue.xml
+     Purpose:    Sample XML Event Queue
+     Author:     Martin Hald <martin.hald@bigfoot.com>
+     Created:    3/19/2002
+     Desc:       A sample XML event queue; a more likely real life implementation
+                 would be an event table in a database where each event was a row
+                 that contained an XML string.
+     Tested:     Drools 2.0 Beta
+-->
+<queue>
+   <!-- The queue stores a series of events.  If you wish to expriment with
+        the example, feel free to add new email events to the bottom of this
+        file.   
+        
+        The sample events are emails between two fictional budweiser employees 
+        and Spud KcKenzie the party dog.  Needly to say, when Spud gets a party
+        invite he responds and since he's Spud he markes the email with a 
+        high priority flag (X-Priority).
+
+        NOTE: The event XML element contains more information than is actually
+        processed by the event factory.  For instance the CC information is not
+        currently processed, but since it is XML the additional information does
+        not harm the process.  -->
+   <event type="email" date="Sat Mar 18 23:51:17 PST 2002">
+      <action>arrival</action>
+      <from>Jane Doe &lt;jane.doe@budweiser.com&gt;</from>
+      <to>John Doe &lt;john.doe@budweiser.com&gt;</to>
+      <cc>Spud McKenzie &lt;spud.mckenzie@budweiser.com&gt;</cc>
+      <subject>Party Saturday Night!</subject>
+      <body>Anybody want to party at John Doe's place on Saturday?</body>
+      <date>3/18/2002 10:36</date>
+      <!-- A list of user defined headers as allowed per the MIME specification -->
+      <headers>
+         <header name="X-Apparently-To">john.doe@budweiser.com via m21108.budweiser.com; 18 Mar 2002 10:36:49 -0800 (PST)</header>
+         <header name="X-Track">896: 2</header>
+         <header name="X-EmailFilteredBulk">64.15.239.140</header>
+      </headers>
+   </event>
+   <event type="email" date="Sat Mar 18 23:59:23 PST 2002">
+      <action>arrival</action>
+      <from>Spud McKenzie &lt;spud.mckenzie@budweiser.com&gt;</from>
+      <to>John Doe &lt;john.doe@budweiser.com&gt;</to>
+      <subject>Re: Party Saturday Night!</subject>
+      <body>I'm there!</body>
+      <date>3/18/2002 10:40</date>
+      <headers>
+         <header name="X-Apparently-To">john.doe@budweiser.com via m21162.budweiser.com; 18 Mar 2002 10:40:12 -0800 (PST)</header>
+         <header name="X-Track">896: 4</header>
+         <header name="X-EmailFilteredBulk">64.15.239.140</header>
+         <header name="X-Priority">1</header>
+      </headers>
+   </event>
+   <event type="email" date="Sat Mar 19 10:02:33 PST 2002">
+      <action>arrival</action>
+      <from>Jane Doe &lt;jane.doe@budweiser.com&gt;</from>
+      <to>John Doe &lt;john.doe@budweiser.com&gt;</to>
+      <cc>Spud McKenzie &lt;spud.mckenzie@budweiser.com&gt;</cc>
+      <subject>Re: Party Saturday Night!</subject>
+      <body>Excellent see you all there!</body>
+      <date>3/18/2002 10:36</date>
+      <headers>
+         <header name="X-Apparently-To">john.doe@budweiser.com via m21108.budweiser.com; 18 Mar 2002 10:36:49 -0800 (PST)</header>
+         <header name="X-Track">896: 2</header>
+         <header name="X-EmailFilteredBulk">64.15.239.140</header>
+      </headers>
+   </event>
+</queue>
