@@ -166,7 +166,7 @@
     </goal>
 
 		<!--
-			creates .zip and .gz.zip of drools source, also includes compiled drools-*.jar and javadocs
+			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 		-->
     <goal name="drools-dist" >
       <copy todir="./lib" flatten="true">
@@ -186,7 +186,7 @@
 
 
 		<!--
-			creates .zip and .gz.zip of drools source, also includes compiled drools-*.jar and javadocs
+			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 			and all dependencies
 		-->
     <goal name="drools-dist-deps" >
@@ -214,7 +214,7 @@
 
 
 		<!--
-			creates .zip and .gz.zip of drools source
+			creates .zip and .tar.gz of drools source
 		-->
     <goal name="drools-src-dist">
       <zip destfile="target/drools-src-${pom.currentVersion}.zip"
