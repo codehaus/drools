@@ -1,9 +1,9 @@
 
 package org.drools.semantic.java.io;
 
-import org.drools.spi.RuleSet;
-import org.drools.spi.Rule;
-import org.drools.spi.Declaration;
+import org.drools.rule.RuleSet;
+import org.drools.rule.Rule;
+import org.drools.rule.Declaration;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;

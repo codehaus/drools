@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.12 2002-07-30 19:52:55 bob Exp $
+ $Id: RuleBase.java,v 1.13 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,8 +50,8 @@ import org.drools.reteoo.Builder;
 import org.drools.reteoo.Rete;
 import org.drools.reteoo.ReteConstructionException;
 import org.drools.reteoo.impl.ReteImpl;
-import org.drools.spi.Rule;
-import org.drools.spi.RuleSet;
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 
 import java.util.Iterator;
 

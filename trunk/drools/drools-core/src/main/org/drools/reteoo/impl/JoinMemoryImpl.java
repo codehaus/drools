@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinMemoryImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: JoinMemoryImpl.java,v 1.3 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package org.drools.reteoo.impl;
 import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.reteoo.JoinMemory;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 
 import java.util.Set;
 import java.util.HashSet;

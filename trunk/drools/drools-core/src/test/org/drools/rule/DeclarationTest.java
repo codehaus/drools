@@ -1,6 +1,6 @@
+package org.drools.rule;
 
-package org.drools.spi;
-
+import org.drools.spi.ObjectType;
 import org.drools.semantic.java.JavaObjectType;
 
 import junit.framework.TestCase;

@@ -1,7 +1,7 @@
 
 package org.drools.semantic.java.io;
 
-import org.drools.spi.Rule;
+import org.drools.rule.Rule;
 import org.drools.semantic.java.BeanShellAction;
 
 import org.dom4j.Element;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 import org.drools.reteoo.impl.TupleSourceImpl;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 
 import java.util.Set;
 import java.util.HashSet;

@@ -2,7 +2,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.reteoo.MockTupleSource;
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 import org.drools.semantic.java.JavaObjectType;
 
 import junit.framework.TestCase;

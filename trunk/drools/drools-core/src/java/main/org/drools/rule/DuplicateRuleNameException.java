@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: NoConditionException.java,v 1.3 2002-07-27 05:52:18 bob Exp $
+ $Id: DuplicateRuleNameException.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,23 +46,76 @@ package org.drools.spi;
  
  */
 
-/** Validity exception indicating that a <code>Rule</code> does not
- *  contain any <code>Condition</code>s.
+/** Indicates an attempt to add a <code>Rule</code> to a <code>RuleSet</code>
+ *  that already contains a <code>Rule</code> with the same name.
+ *
+ *  @see Rule
+ *  @see RuleSet
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class NoConditionException extends InvalidRuleException
+public class DuplicateRuleNameException extends RuleConstructionException
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The rule-set. */
+    private RuleSet ruleSet;
+
+    /** The member rule. */
+    private Rule originalRule;
+
+    /** The conflicting rule. */
+    private Rule conflictingRule;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
-     *  @param rule The invalid <code>Rule</code>.
+     *  @param ruleSet The <code>RuleSet</code>.
+     *  @param originalRule The <code>Rule</code> already in the <code>RuleSet</code>.
+     *  @param conflictingRule The new, conflicting <code>Rule</code>.
      */
-    public NoConditionException(Rule rule)
+    public DuplicateRuleNameException(RuleSet ruleSet,
+                                      Rule originalRule,
+                                      Rule conflictingRule)
     {
-        super( rule );
+        this.ruleSet         = ruleSet;
+        this.originalRule    = originalRule;
+        this.conflictingRule = conflictingRule;
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the <code>RuleSet</code>.
+     *
+     *  @return The <code>RuleSet</code>.
+     */
+    public RuleSet getRuleSet()
+    {
+        return this.ruleSet;
+    }
+
+    /** Retrieve the original <code>Rule</code> in the <code>RuleSet</code>.
+     *
+     *  @return The <code>Rule</code>.
+     */
+    public Rule getOriginalRule()
+    {
+        return this.originalRule;
+    }
+
+    /** Retrieve the new conflicting <code>Rule</code>.
+     *
+     *  @return The <code>Rule</code>.
+     */
+    public Rule getConflictingRule()
+    {
+        return this.conflictingRule;
     }
 }

@@ -3,7 +3,7 @@ package org.drools.semantic.java;
 
 import org.drools.reteoo.impl.ReteTuple;
 
-import org.drools.spi.Declaration;
+import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
 import org.drools.spi.ActionInvokationException;
 

@@ -1,8 +1,8 @@
 
 package org.drools.semantic.xml;
 
+import org.drools.rule.Declaration;
 import org.drools.spi.FactExtractor;
-import org.drools.spi.Declaration;
 import org.drools.spi.Tuple;
 import org.drools.spi.FactExtractionException;
 

@@ -5,7 +5,7 @@
   <pomVersion>3</pomVersion>
   <name>drools</name>
   <id>drools</id>
-  <currentVersion>2.0-beta-2</currentVersion>
+  <currentVersion>2.0-beta-5-dev</currentVersion>
 
   <organization>
     <name>The Werken Company</name>
@@ -172,11 +172,6 @@
 
     <!-- J A R  R E S O U R C E S -->
     <!-- Resources that are packaged up inside the JAR file -->
-
-    <resources>
-      <inclues>
-      </inclues>
-    </resources>
 
   </build>
 

@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: AssignmentCondition.java,v 1.5 2002-07-27 05:55:59 bob Exp $
+ $Id: DeclarationAlreadyCompleteException.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,81 +46,44 @@ package org.drools.spi;
  
  */
 
-/** A <code>Condition</code> representing a <i>consistent assignment</i>
- *  as defined by the Rete-OO algorithm.
- *
- *  The assignment occurs through the process of extracting a
- *  new fact from existing facts.
- *
- *  @see Condition
- *  @see FactExtractor
+/** Indicates an attempt to add a parameter declaration to a
+ *  <code>Rule</code> after adding a <code>Condition</condition> to that
+ *  <code>Rule</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class AssignmentCondition implements Condition
+public class DeclarationAlreadyCompleteException extends RuleConstructionException
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The target of the assignment. */
-    private Declaration targetDeclaration;
-
-    /** FactExtractor to acquire value for assignment. */
-    private FactExtractor factExtractor;
+    /** The troubled rule. */
+    private Rule rule;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-    
+
     /** Construct.
      *
-     *  @param targetDeclaration The target of this assignment.
-     *  @param factExtractor Value generator for the assignment.
+     *  @param rule The Rule involved in the error.
      */
-    public AssignmentCondition(Declaration targetDeclaration,
-                               FactExtractor factExtractor)
+    public DeclarationAlreadyCompleteException(Rule rule)
     {
-        this.targetDeclaration = targetDeclaration;
-        this.factExtractor     = factExtractor;
+        this.rule = rule;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>Declaration</code> for the target
-     *  of the assignment.
+    /** Retrieve the implicated <code>Rule</code>.
      *
-     *  @return The target's <code>Declaration</code>
+     *  @return The rule.
      */
-    public Declaration getTargetDeclaration()
+    public Rule getRule()
     {
-        return this.targetDeclaration;
-    }
-
-    /** Retrieve the <code>FactExtractor</code> responsible
-     *  for generating the assignment value.
-     *
-     *  @return The <code>FactExtractor</code>.
-     */
-    public FactExtractor getFactExtractor()
-    {
-        return this.factExtractor;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.spi.Condition
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the array of <code>Declaration</code>s required
-     *  by this condition to perform its duties.
-     *
-     *  @return The array of <code>Declarations</code> expected
-     *          on incoming <code>Tuple</code>s.
-     */
-    public Declaration[] getRequiredTupleMembers()
-    {
-        return getFactExtractor().getRequiredTupleMembers();
+        return this.rule;
     }
 }

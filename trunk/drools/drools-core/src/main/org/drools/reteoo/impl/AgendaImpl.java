@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaImpl.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: AgendaImpl.java,v 1.2 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package org.drools.reteoo.impl;
 import org.drools.WorkingMemory;
 
 import org.drools.reteoo.Agenda;
-import org.drools.spi.Rule;
+import org.drools.rule.Rule;
 import org.drools.spi.ActionInvokationException;
 
 import java.util.Set;

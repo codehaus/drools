@@ -3,7 +3,7 @@ package org.drools.semantic.java;
 
 import org.drools.RuleBase;
 import org.drools.DroolsException;
-import org.drools.spi.RuleSet;
+import org.drools.rule.RuleSet;
 
 import org.drools.semantic.java.io.RuleSetReader;
 

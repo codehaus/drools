@@ -1,9 +1,9 @@
 
 package org.drools.semantic.java;
 
+import org.drools.rule.Declaration;
 import org.drools.spi.FilterCondition;
 import org.drools.spi.FilterException;
-import org.drools.spi.Declaration;
 import org.drools.spi.Tuple;
 
 import bsh.Interpreter;

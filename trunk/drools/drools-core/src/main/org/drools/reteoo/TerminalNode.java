@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.16 2002-07-28 15:49:50 bob Exp $
+ $Id: TerminalNode.java,v 1.17 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,12 +46,12 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.spi.Rule;
+import org.drools.rule.Rule;
 
 /** Leaf Rete-OO node responsible for enacting <code>Action</code>s
  *  on a matched <code>Rule</code>.
  *
- *  @see org.drools.spi.Rule
+ *  @see org.drools.rule.Rule
  *  @see org.drools.spi.Action
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>

@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: RuleConstructionException.java,v 1.6 2002-07-27 05:55:59 bob Exp $
+ $Id: InvalidRuleException.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -45,22 +45,43 @@ package org.drools.spi;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-import org.drools.DroolsException;
 
-/** Base exception for errors during <code>Rule</code> construction.
+/** Indicates an error regarding the semantic validity of a rule.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class RuleConstructionException extends DroolsException
+public class InvalidRuleException extends RuleConstructionException
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The invalid rule. */
+    private Rule rule;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
+     *
+     *  @param rule The invalid <code>Rule</code>.
      */
-    RuleConstructionException()
+    public InvalidRuleException(Rule rule)
     {
-        // intentionally left blank
+        this.rule = rule;
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the invalid <code>Rule</code>.
+     *
+     *  @return The invalid <code>Rule</code>.
+     */
+    public Rule getRule()
+    {
+        return this.rule;
     }
 }

@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools.rule;
 
 /*
- $Id: InvalidRuleException.java,v 1.5 2002-07-27 05:55:59 bob Exp $
+ $Id: NoConditionException.java,v 1.1 2002-08-01 18:47:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,19 +46,13 @@ package org.drools.spi;
  
  */
 
-/** Indicates an error regarding the semantic validity of a rule.
+/** Validity exception indicating that a <code>Rule</code> does not
+ *  contain any <code>Condition</code>s.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidRuleException extends RuleConstructionException
+public class NoConditionException extends InvalidRuleException
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The invalid rule. */
-    private Rule rule;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -67,21 +61,8 @@ public class InvalidRuleException extends RuleConstructionException
      *
      *  @param rule The invalid <code>Rule</code>.
      */
-    public InvalidRuleException(Rule rule)
+    public NoConditionException(Rule rule)
     {
-        this.rule = rule;
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the invalid <code>Rule</code>.
-     *
-     *  @return The invalid <code>Rule</code>.
-     */
-    public Rule getRule()
-    {
-        return this.rule;
+        super( rule );
     }
 }
