@@ -30,7 +30,7 @@
     <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-core</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm:drools/drools-core</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
 
