@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNodeInput.java,v 1.18 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: JoinNodeInput.java,v 1.19 2004-12-06 06:54:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -197,15 +197,15 @@ class JoinNodeInput
     {
         if ( this.side == LEFT )
         {
-            getJoinNode( ).modifyLeftTuples( trigger,
-                                             modifyTuples,
-                                             workingMemory );
+            this.joinNode.modifyLeftTuples( trigger,
+                                            modifyTuples,
+                                            workingMemory );
         }
         else
         {
-            getJoinNode( ).modifyRightTuples( trigger,
-                                              modifyTuples,
-                                              workingMemory );
+            this.joinNode.modifyRightTuples( trigger,
+                                             modifyTuples,
+                                             workingMemory );
         }
     }
 }

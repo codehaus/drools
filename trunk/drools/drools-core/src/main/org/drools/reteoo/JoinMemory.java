@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.52 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: JoinMemory.java,v 1.53 2004-12-06 06:54:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -151,30 +151,6 @@ class JoinMemory
     }
 
     /**
-     * Retrieve the <code>List</code> of <code>Tuples</code> held in the
-     * left side memory.
-     *
-     * @return The <code>List</code> of <code>Tuples</code> help in the left
-     *         side memory.
-     */
-    protected TupleSet getLeftTuples()
-    {
-        return this.leftTuples;
-    }
-
-    /**
-     * Retrieve the <code>List</code> of <code>Tuples</code> held in the
-     * right side memory.
-     *
-     * @return The <code>List</code> of <code>Tuples</code> help in the
-     *         right side memory.
-     */
-    protected TupleSet getRightTuples()
-    {
-        return this.rightTuples;
-    }
-
-    /**
      * Modify tuples on the left-side.
      *
      * @param trigger Triggering object handle.
@@ -184,8 +160,8 @@ class JoinMemory
     TupleSet modifyLeftTuples( FactHandle trigger )
     {
         return modifyTuples( trigger,
-                             getLeftTuples( ),
-                             getRightTuples( ) );
+                             this.leftTuples,
+                             this.rightTuples );
     }
 
     /**
@@ -197,8 +173,8 @@ class JoinMemory
     TupleSet modifyRightTuples( FactHandle trigger )
     {
         return modifyTuples( trigger,
-                             getRightTuples( ),
-                             getLeftTuples( ) );
+                             this.rightTuples,
+                             this.leftTuples );
     }
 
     /**

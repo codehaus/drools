@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.27 2004-12-05 01:53:52 simon Exp $
+ * $Id: TupleSet.java,v 1.28 2004-12-06 06:54:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -92,8 +93,8 @@ class TupleSet
      */
     TupleSet(ReteTuple tuple)
     {
-        this.tuples = new HashMap( 1, 1 );
-        addTuple( tuple );
+        this.tuples = Collections.singletonMap( tuple.getKey( ),
+                                                tuple );
     }
 
     /**
