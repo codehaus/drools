@@ -353,9 +353,9 @@ ObjectType personType = new ObjectType() \{
 
 // -- Create the semantic String object type.
 
-ObjectType personType = new ObjectType() \{
+ObjectType stringType = new ObjectType() \{
         public boolean matches(Object object) \{ 
-            return ( object instanceof Person );
+            return ( object instanceof String );
         \}
     \};
 
