@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.30 2004-11-02 12:01:11 simon Exp $
+ * $Id: JoinMemory.java,v 1.31 2004-11-03 03:14:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,6 +42,7 @@ package org.drools.reteoo;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
+import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 
 import java.io.Serializable;
@@ -62,21 +63,13 @@ class JoinMemory implements Serializable
     //     Instance members
     // ------------------------------------------------------------
 
-    private final JoinNode node;
-
-    /**
-     * Left-side tuples.
-     */
+    /** Left-side tuples. */
     private final TupleSet leftTuples;
 
-    /**
-     * Right-side tuples.
-     */
+    /** Right-side tuples. */
     private final TupleSet rightTuples;
 
-    /**
-     * Join column declarations.
-     */
+    /** Join column declarations. */
     private final Set joinDeclarations;
 
     // ------------------------------------------------------------
@@ -86,15 +79,13 @@ class JoinMemory implements Serializable
     /**
      * Construct.
      *
-     * @param node The <code>JoinNode</code> this memory is for.
+     * @param commonDeclarations
      */
-    JoinMemory( JoinNode node )
+    JoinMemory( Set commonDeclarations )
     {
-        this.node = node;
         this.leftTuples = new TupleSet();
         this.rightTuples = new TupleSet();
-
-        this.joinDeclarations = node.getCommonDeclarations();
+        this.joinDeclarations = commonDeclarations;
     }
 
     // ------------------------------------------------------------
@@ -187,13 +178,14 @@ class JoinMemory implements Serializable
      * @param trigger       Triggering object handle.
      * @param newTuples     Modification replacement tuples.
      * @param workingMemory The working memory session.
+     * @return The newly joined tuples.
      * @throws FactException if an error occurs during modification.
      */
-    protected void modifyLeftTuples( FactHandle trigger,
-                                     TupleSet newTuples,
-                                     WorkingMemoryImpl workingMemory ) throws FactException
+    protected TupleSet modifyLeftTuples( FactHandle trigger,
+                                         TupleSet newTuples,
+                                         WorkingMemory workingMemory ) throws FactException
     {
-        modifyTuples( trigger, newTuples, getLeftTuples(), getRightTuples(), workingMemory );
+        return modifyTuples( trigger, newTuples, getLeftTuples(), getRightTuples(), workingMemory );
     }
 
     /**
@@ -202,13 +194,14 @@ class JoinMemory implements Serializable
      * @param trigger       Triggering object handle.
      * @param newTuples     Modification replacement tuples.
      * @param workingMemory The working memory session.
+     * @return The newly joined tuples.
      * @throws FactException if an error occurs during modification.
      */
-    protected void modifyRightTuples( FactHandle trigger,
-                                      TupleSet newTuples,
-                                      WorkingMemoryImpl workingMemory ) throws FactException
+    protected TupleSet modifyRightTuples( FactHandle trigger,
+                                          TupleSet newTuples,
+                                          WorkingMemory workingMemory ) throws FactException
     {
-        modifyTuples( trigger, newTuples, getRightTuples(), getLeftTuples(), workingMemory );
+        return modifyTuples( trigger, newTuples, getRightTuples(), getLeftTuples(), workingMemory );
     }
 
     /**
@@ -219,13 +212,14 @@ class JoinMemory implements Serializable
      * @param thisSideTuples The tuples on the side that's receiving the modifications.
      * @param thatSideTuples The tuples on the side that's <b>not </b> receiving the modifications.
      * @param workingMemory  The working memory session.
+     * @return The newly joined tuples.
      * @throws FactException if an error occurs during modification.
      */
-    protected void modifyTuples( FactHandle trigger,
-                                 TupleSet newTuples,
-                                 TupleSet thisSideTuples,
-                                 TupleSet thatSideTuples,
-                                 WorkingMemoryImpl workingMemory ) throws FactException
+    protected TupleSet modifyTuples( FactHandle trigger,
+                                     TupleSet newTuples,
+                                     TupleSet thisSideTuples,
+                                     TupleSet thatSideTuples,
+                                     WorkingMemory workingMemory ) throws FactException
     {
         ReteTuple tuple;
 
@@ -254,7 +248,7 @@ class JoinMemory implements Serializable
             newJoined.addAllTuples( attemptJoin( tuple, thatSideTuples.iterator() ) );
         }
 
-        this.node.propagateModifyTuples( trigger, newJoined, workingMemory );
+        return newJoined;
     }
 
     /**

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.30 2004-10-28 06:27:48 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.31 2004-11-03 03:14:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,7 +62,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.30 2004-10-28 06:27:48 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.31 2004-11-03 03:14:57 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -94,7 +94,7 @@ class WorkingMemoryImpl implements WorkingMemory
     /** Flag to determine if a rule is currently being fired. */
     private boolean             firing;
 
-    private long                conditionCounter    = 0;
+    private long                conditionCounter;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -390,13 +390,13 @@ class WorkingMemoryImpl implements WorkingMemory
      *
      * @return The node's memory.
      */
-    public JoinMemory getJoinMemory(JoinNode node)
+    public JoinMemory getJoinMemory(JoinNode node, JoinMemoryFactory factory)
     {
         JoinMemory memory = ( JoinMemory ) this.joinMemories.get( node );
 
         if ( memory == null )
         {
-            memory = new JoinMemory( node );
+            memory = factory.createJoinMemory( node );
 
             this.joinMemories.put( node, memory );
         }
