@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.29 2004-11-02 09:28:48 simon Exp $
+ * $Id: ParameterNode.java,v 1.30 2004-11-03 11:54:20 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,8 +47,8 @@ import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
-import java.util.Collections;
 import java.util.Set;
+import java.util.Collections;
 
 /**
  * Receives <code>Objects</code> from an <code>ObjectTypeNode</code>, and
@@ -78,6 +78,9 @@ class ParameterNode extends TupleSource
     /** The parameter declaration. */
     private final Declaration declaration;
 
+    /** The parameter declaration as a set. */
+    private final Set declarations;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -95,6 +98,7 @@ class ParameterNode extends TupleSource
     {
         this.rule = rule;
         this.declaration = declaration;
+        this.declarations = Collections.singleton( declaration );
 
         if ( inputNode != null )
         {
@@ -194,6 +198,6 @@ class ParameterNode extends TupleSource
      */
     public Set getTupleDeclarations()
     {
-        return Collections.singleton( this.declaration );
+        return declarations;
     }
 }

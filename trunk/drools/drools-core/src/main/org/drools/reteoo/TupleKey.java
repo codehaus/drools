@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.19 2004-10-30 16:13:31 simon Exp $
+ * $Id: TupleKey.java,v 1.20 2004-11-03 11:54:20 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -80,12 +80,6 @@ class TupleKey implements Serializable
         handles = Collections.EMPTY_MAP;
     }
 
-    public TupleKey(TupleKey that)
-    {
-        handles = new HashMap( that.handles.size( ), 1 );
-        handles.putAll( that.handles );
-    }
-
     public TupleKey(TupleKey left, TupleKey right)
     {
         handles = new HashMap( left.handles.size( ) + right.handles.size( ), 1 );
@@ -141,12 +135,12 @@ class TupleKey implements Serializable
      */
     public boolean containsAll(TupleKey that)
     {
-        // return this.handles.containsAll( that.handles );
+        Iterator declIter = that.handles.keySet().iterator();
+        Declaration eachDecl;
 
-        for ( Iterator declIter = that.handles.keySet( ).iterator( ); declIter
-                                                                               .hasNext( ); )
+        while (  declIter.hasNext( ) )
         {
-            Declaration eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = ( Declaration ) declIter.next( );
 
             FactHandle thatHandle = that.get( eachDecl );
             FactHandle thisHandle = this.get( eachDecl );
