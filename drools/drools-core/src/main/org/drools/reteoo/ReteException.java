@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteException.java,v 1.5 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: ReteException.java,v 1.6 2004-11-19 02:13:46 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -50,7 +50,7 @@ import org.drools.DroolsException;
 public class ReteException extends DroolsException
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -64,7 +64,8 @@ public class ReteException extends DroolsException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public ReteException(Throwable rootCause)
     {

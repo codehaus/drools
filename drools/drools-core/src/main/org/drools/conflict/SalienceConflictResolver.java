@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: SalienceConflictResolver.java,v 1.12 2004-10-30 01:11:48 simon Exp $
+ * $Id: SalienceConflictResolver.java,v 1.13 2004-11-19 02:12:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,32 +47,32 @@ import org.drools.spi.ConflictResolver;
 /**
  * <code>ConflictResolver</code> that uses the salience of rules to resolve
  * conflict.
- *
+ * 
  * @see #getInstance
  * @see Rule#getSalience
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- *
+ * 
  * @version $Id: SalienceConflictResolver.java,v 1.3 2004/06/25 02:46:39
  *          mproctor Exp $
  */
 public class SalienceConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
-    //     Class members
+    // Class members
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
     private static final SalienceConflictResolver INSTANCE = new SalienceConflictResolver( );
 
     // ----------------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ----------------------------------------------------------------------
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
      */
     public static ConflictResolver getInstance()
@@ -81,7 +81,7 @@ public class SalienceConflictResolver extends AbstractConflictResolver
     }
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
@@ -97,7 +97,8 @@ public class SalienceConflictResolver extends AbstractConflictResolver
     /**
      * @see ConflictResolver
      */
-    public int compare(Activation lhs, Activation rhs)
+    public int compare(Activation lhs,
+                       Activation rhs)
     {
         return rhs.getRule( ).getSalience( ) - lhs.getRule( ).getSalience( );
     }

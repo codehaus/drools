@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.10 2004-11-09 13:52:38 simon Exp $
+ * $Id: Scheduler.java,v 1.11 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,25 +50,25 @@ import java.util.TimerTask;
 
 /**
  * Scheduler for rules requiring truth duration.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 final class Scheduler
 {
     // ------------------------------------------------------------
-    //     Class members
+    // Class members
     // ------------------------------------------------------------
 
     /** Singleton instance. */
     private static final Scheduler INSTANCE = new Scheduler( );
 
     // ------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
      */
     static Scheduler getInstance()
@@ -77,17 +77,17 @@ final class Scheduler
     }
 
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Alarm manager. */
     private Timer scheduler;
 
     /** Scheduled tasks. */
-    private Map   tasks;
+    private Map tasks;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -102,25 +102,29 @@ final class Scheduler
 
     /**
      * Schedule an agenda item.
-     *
-     * @param item The item to schedule.
-     * @param workingMemory The working memory session.
+     * 
+     * @param item
+     *            The item to schedule.
+     * @param workingMemory
+     *            The working memory session.
      */
-    void scheduleAgendaItem(AgendaItem item, WorkingMemoryImpl workingMemory)
+    void scheduleAgendaItem(AgendaItem item,
+                            WorkingMemoryImpl workingMemory)
     {
         Date now = new Date( );
 
-        Date then = new Date( now.getTime( )
-                              + ( item.getRule( ).getDuration( )
-                                      .getDuration( item.getTuple( ) ) * 1000 ) );
+        Date then = new Date( now.getTime( ) + (item.getRule( ).getDuration( ).getDuration( item.getTuple( ) ) * 1000) );
 
         try
         {
-            TimerTask task = new AgendaItemFireListener( item, workingMemory );
+            TimerTask task = new AgendaItemFireListener( item,
+                                                         workingMemory );
 
-            this.scheduler.schedule( task, then );
+            this.scheduler.schedule( task,
+                                     then );
 
-            this.tasks.put( item, task );
+            this.tasks.put( item,
+                            task );
         }
         catch ( Exception e )
         {
@@ -130,12 +134,13 @@ final class Scheduler
 
     /**
      * Cancel an agenda item.
-     *
-     * @param item The item to cancle.
+     * 
+     * @param item
+     *            The item to cancle.
      */
     void cancelAgendaItem(AgendaItem item)
     {
-        TimerTask task = ( TimerTask ) this.tasks.get( item );
+        TimerTask task = (TimerTask) this.tasks.get( item );
 
         if ( task != null )
         {
@@ -146,44 +151,47 @@ final class Scheduler
 
 /**
  * Fire listener.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 
 class AgendaItemFireListener extends TimerTask
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The agenda item. */
-    private AgendaItem    item;
+    private AgendaItem item;
 
     /** The working-memory session. */
     private WorkingMemoryImpl workingMemory;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param item The agenda item.
-     * @param workingMemory The working memory session.
+     * 
+     * @param item
+     *            The agenda item.
+     * @param workingMemory
+     *            The working memory session.
      */
-    AgendaItemFireListener(AgendaItem item, WorkingMemoryImpl workingMemory)
+    AgendaItemFireListener(AgendaItem item,
+                           WorkingMemoryImpl workingMemory)
     {
         this.item = item;
         this.workingMemory = workingMemory;
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     fr.dyade.jdring.AlarmListener
+    // fr.dyade.jdring.AlarmListener
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**

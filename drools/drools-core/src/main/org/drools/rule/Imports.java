@@ -11,34 +11,34 @@ import java.util.Set;
 import org.drools.spi.ImportEntry;
 /**
  * @author mproctor
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * 
+ * TODO To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Style - Code Templates
  */
 public class Imports
 {
     private Set imports;
-    
+
     public Imports()
     {
-        
+
     }
-    
+
     public void addImportEntry(ImportEntry importEntry)
     {
-        if (this.imports == null)
+        if ( this.imports == null )
         {
-            this.imports = new HashSet();
+            this.imports = new HashSet( );
         }
-        this.imports.add(importEntry);
-        
+        this.imports.add( importEntry );
+
     }
 
     public void removeImportEntry(ImportEntry importEntry)
     {
-        imports.remove(importEntry);
-    }    
-    
+        imports.remove( importEntry );
+    }
+
     public Set getImportEntries()
     {
         return this.imports;

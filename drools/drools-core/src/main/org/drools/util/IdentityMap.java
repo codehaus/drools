@@ -22,20 +22,23 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * A <code>Map</code> implementation that matches keys and values based
- * on <code>==</code> not <code>equals()</code>.
+ * A <code>Map</code> implementation that matches keys and values based on
+ * <code>==</code> not <code>equals()</code>.
  * <p>
- * This map will violate the detail of various Map and map view contracts.
- * As a general rule, don't compare this map to other maps.
- *
+ * This map will violate the detail of various Map and map view contracts. As a
+ * general rule, don't compare this map to other maps.
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-07 12:10:18 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author java util HashMap
  * @author Stephen Colebourne
  */
-public class IdentityMap
-        extends AbstractHashedMap implements Serializable, Cloneable {
+public class IdentityMap extends AbstractHashedMap
+    implements
+    Serializable,
+    Cloneable
+{
 
     /** Serialisation version */
     private static final long serialVersionUID = 2028493495224302329L;
@@ -43,146 +46,194 @@ public class IdentityMap
     /**
      * Constructs a new empty map with default size and load factor.
      */
-    public IdentityMap() {
-        super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
+    public IdentityMap()
+    {
+        super( DEFAULT_CAPACITY,
+               DEFAULT_LOAD_FACTOR,
+               DEFAULT_THRESHOLD );
     }
 
     /**
      * Constructs a new, empty map with the specified initial capacity.
-     *
-     * @param initialCapacity  the initial capacity
-     * @throws IllegalArgumentException if the initial capacity is less than one
+     * 
+     * @param initialCapacity
+     *            the initial capacity
+     * @throws IllegalArgumentException
+     *             if the initial capacity is less than one
      */
-    public IdentityMap(int initialCapacity) {
-        super(initialCapacity);
+    public IdentityMap(int initialCapacity)
+    {
+        super( initialCapacity );
     }
 
     /**
-     * Constructs a new, empty map with the specified initial capacity and
-     * load factor.
-     *
-     * @param initialCapacity  the initial capacity
-     * @param loadFactor  the load factor
-     * @throws IllegalArgumentException if the initial capacity is less than one
-     * @throws IllegalArgumentException if the load factor is less than zero
+     * Constructs a new, empty map with the specified initial capacity and load
+     * factor.
+     * 
+     * @param initialCapacity
+     *            the initial capacity
+     * @param loadFactor
+     *            the load factor
+     * @throws IllegalArgumentException
+     *             if the initial capacity is less than one
+     * @throws IllegalArgumentException
+     *             if the load factor is less than zero
      */
-    public IdentityMap(int initialCapacity, float loadFactor) {
-        super(initialCapacity, loadFactor);
+    public IdentityMap(int initialCapacity,
+                       float loadFactor)
+    {
+        super( initialCapacity,
+               loadFactor );
     }
 
     /**
      * Constructor copying elements from another map.
-     *
-     * @param map  the map to copy
-     * @throws NullPointerException if the map is null
+     * 
+     * @param map
+     *            the map to copy
+     * @throws NullPointerException
+     *             if the map is null
      */
-    public IdentityMap(Map map) {
-        super(map);
+    public IdentityMap(Map map)
+    {
+        super( map );
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
-     * Gets the hash code for the key specified.
-     * This implementation uses the identity hash code.
-     *
-     * @param key  the key to get a hash code for
+     * Gets the hash code for the key specified. This implementation uses the
+     * identity hash code.
+     * 
+     * @param key
+     *            the key to get a hash code for
      * @return the hash code
      */
-    protected int hash(Object key) {
-        return System.identityHashCode(key);
+    protected int hash(Object key)
+    {
+        return System.identityHashCode( key );
     }
 
     /**
-     * Compares two keys for equals.
-     * This implementation uses <code>==</code>.
-     *
-     * @param key1  the first key to compare
-     * @param key2  the second key to compare
+     * Compares two keys for equals. This implementation uses <code>==</code>.
+     * 
+     * @param key1
+     *            the first key to compare
+     * @param key2
+     *            the second key to compare
      * @return true if equal by identity
      */
-    protected boolean isEqualKey(Object key1, Object key2) {
+    protected boolean isEqualKey(Object key1,
+                                 Object key2)
+    {
         return (key1 == key2);
     }
 
     /**
-     * Compares two values for equals.
-     * This implementation uses <code>==</code>.
-     *
-     * @param value1  the first value to compare
-     * @param value2  the second value to compare
+     * Compares two values for equals. This implementation uses <code>==</code>.
+     * 
+     * @param value1
+     *            the first value to compare
+     * @param value2
+     *            the second value to compare
      * @return true if equal by identity
      */
-    protected boolean isEqualValue(Object value1, Object value2) {
+    protected boolean isEqualValue(Object value1,
+                                   Object value2)
+    {
         return (value1 == value2);
     }
 
     /**
-     * Creates an entry to store the data.
-     * This implementation creates an IdentityEntry instance.
-     *
-     * @param next  the next entry in sequence
-     * @param hashCode  the hash code to use
-     * @param key  the key to store
-     * @param value  the value to store
+     * Creates an entry to store the data. This implementation creates an
+     * IdentityEntry instance.
+     * 
+     * @param next
+     *            the next entry in sequence
+     * @param hashCode
+     *            the hash code to use
+     * @param key
+     *            the key to store
+     * @param value
+     *            the value to store
      * @return the newly created entry
      */
-    protected HashEntry createEntry(HashEntry next, int hashCode, Object key, Object value) {
-        return new IdentityEntry(next, hashCode, key, value);
+    protected HashEntry createEntry(HashEntry next,
+                                    int hashCode,
+                                    Object key,
+                                    Object value)
+    {
+        return new IdentityEntry( next,
+                                  hashCode,
+                                  key,
+                                  value );
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * HashEntry
      */
-    protected static class IdentityEntry extends HashEntry {
+    protected static class IdentityEntry extends HashEntry
+    {
 
-        protected IdentityEntry(HashEntry next, int hashCode, Object key, Object value) {
-            super(next, hashCode, key, value);
+        protected IdentityEntry(HashEntry next,
+                                int hashCode,
+                                Object key,
+                                Object value)
+        {
+            super( next,
+                   hashCode,
+                   key,
+                   value );
         }
 
-        public boolean equals(Object obj) {
-            if (obj == this) {
+        public boolean equals(Object obj)
+        {
+            if ( obj == this )
+            {
                 return true;
             }
-            if (obj instanceof Map.Entry == false) {
+            if ( obj instanceof Map.Entry == false )
+            {
                 return false;
             }
             Map.Entry other = (Map.Entry) obj;
-            return
-                (getKey() == other.getKey()) &&
-                (getValue() == other.getValue());
+            return (getKey( ) == other.getKey( )) && (getValue( ) == other.getValue( ));
         }
 
-        public int hashCode() {
-            return System.identityHashCode(getKey()) ^
-                   System.identityHashCode(getValue());
+        public int hashCode()
+        {
+            return System.identityHashCode( getKey( ) ) ^ System.identityHashCode( getValue( ) );
         }
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Clones the map without cloning the keys or values.
-     *
+     * 
      * @return a shallow clone
      */
-    public Object clone() {
-        return super.clone();
+    public Object clone()
+    {
+        return super.clone( );
     }
 
     /**
      * Write the map out using a custom routine.
      */
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        doWriteObject(out);
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        out.defaultWriteObject( );
+        doWriteObject( out );
     }
 
     /**
      * Read the map in using a custom routine.
      */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        doReadObject(in);
+    private void readObject(ObjectInputStream in) throws IOException,
+                                                 ClassNotFoundException
+    {
+        in.defaultReadObject( );
+        doReadObject( in );
     }
 
 }

@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.1 2004-11-09 13:52:38 simon Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.2 2004-11-19 02:13:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,19 +54,21 @@ import java.util.Collections;
 import java.io.Serializable;
 
 /**
- * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-public class WorkingMemoryEventSupport implements Serializable
+public class WorkingMemoryEventSupport
+    implements
+    Serializable
 {
-    private final List          listeners       = new ArrayList();
+    private final List listeners = new ArrayList( );
     private final WorkingMemory workingMemory;
 
-    public WorkingMemoryEventSupport( WorkingMemory workingMemory )
+    public WorkingMemoryEventSupport(WorkingMemory workingMemory)
     {
         this.workingMemory = workingMemory;
     }
 
-    public void addEventListener( WorkingMemoryEventListener listener )
+    public void addEventListener(WorkingMemoryEventListener listener)
     {
         if ( !this.listeners.contains( listener ) )
         {
@@ -74,7 +76,7 @@ public class WorkingMemoryEventSupport implements Serializable
         }
     }
 
-    public void removeEventListener( WorkingMemoryEventListener listener )
+    public void removeEventListener(WorkingMemoryEventListener listener)
     {
         this.listeners.remove( listener );
     }
@@ -84,115 +86,138 @@ public class WorkingMemoryEventSupport implements Serializable
         return Collections.unmodifiableList( this.listeners );
     }
 
-    public void fireObjectAsserted( FactHandle handle, Object object )
+    public void fireObjectAsserted(FactHandle handle,
+                                   Object object)
     {
         if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ObjectAssertedEvent event = new ObjectAssertedEvent( this.workingMemory, handle, object );
+        ObjectAssertedEvent event = new ObjectAssertedEvent( this.workingMemory,
+                                                             handle,
+                                                             object );
 
         Iterator iter = this.listeners.iterator( );
         while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next( ) ).objectAsserted( event );
+            ((WorkingMemoryEventListener) iter.next( )).objectAsserted( event );
         }
     }
 
-    public void fireObjectModified( FactHandle handle, Object object )
+    public void fireObjectModified(FactHandle handle,
+                                   Object object)
     {
-        if ( this.listeners.isEmpty() )
+        if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ObjectModifiedEvent event = new ObjectModifiedEvent( this.workingMemory, handle, object );
+        ObjectModifiedEvent event = new ObjectModifiedEvent( this.workingMemory,
+                                                             handle,
+                                                             object );
 
-        Iterator iter = this.listeners.iterator();
-        while ( iter.hasNext() )
+        Iterator iter = this.listeners.iterator( );
+        while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next() ).objectModified( event );
+            ((WorkingMemoryEventListener) iter.next( )).objectModified( event );
         }
     }
 
-    public void fireObjectRetracted( FactHandle handle )
+    public void fireObjectRetracted(FactHandle handle)
     {
-        if ( this.listeners.isEmpty() )
+        if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ObjectRetractedEvent event = new ObjectRetractedEvent( this.workingMemory, handle );
+        ObjectRetractedEvent event = new ObjectRetractedEvent( this.workingMemory,
+                                                               handle );
 
-        Iterator iter = this.listeners.iterator();
-        while ( iter.hasNext() )
+        Iterator iter = this.listeners.iterator( );
+        while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next() ).objectRetracted( event );
+            ((WorkingMemoryEventListener) iter.next( )).objectRetracted( event );
         }
     }
 
-    public void fireConditionTested( Rule rule, Condition condition, Tuple tuple, boolean result )
+    public void fireConditionTested(Rule rule,
+                                    Condition condition,
+                                    Tuple tuple,
+                                    boolean result)
     {
-        if ( this.listeners.isEmpty() )
+        if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ConditionTestedEvent event = new ConditionTestedEvent( this.workingMemory, rule, condition, tuple, result );
+        ConditionTestedEvent event = new ConditionTestedEvent( this.workingMemory,
+                                                               rule,
+                                                               condition,
+                                                               tuple,
+                                                               result );
 
-        Iterator iter = this.listeners.iterator();
-        while ( iter.hasNext() )
+        Iterator iter = this.listeners.iterator( );
+        while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next() ).conditionTested( event );
+            ((WorkingMemoryEventListener) iter.next( )).conditionTested( event );
         }
     }
 
-    public void fireActivationCreated( Consequence consequence, Tuple tuple )
+    public void fireActivationCreated(Consequence consequence,
+                                      Tuple tuple)
     {
-        if ( this.listeners.isEmpty() )
+        if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ActivationCreatedEvent event = new ActivationCreatedEvent( this.workingMemory, consequence, tuple );
+        ActivationCreatedEvent event = new ActivationCreatedEvent( this.workingMemory,
+                                                                   consequence,
+                                                                   tuple );
 
-        Iterator iter = this.listeners.iterator();
-        while ( iter.hasNext() )
+        Iterator iter = this.listeners.iterator( );
+        while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next() ).activationCreated( event );
+            ((WorkingMemoryEventListener) iter.next( )).activationCreated( event );
         }
     }
 
-    public void fireActivationCancelled( Consequence consequence, Tuple tuple )
+    public void fireActivationCancelled(Consequence consequence,
+                                        Tuple tuple)
     {
-        if ( this.listeners.isEmpty() )
+        if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ActivationCancelledEvent event = new ActivationCancelledEvent( this.workingMemory, consequence, tuple );
+        ActivationCancelledEvent event = new ActivationCancelledEvent( this.workingMemory,
+                                                                       consequence,
+                                                                       tuple );
 
-        Iterator iter = this.listeners.iterator();
-        while ( iter.hasNext() )
+        Iterator iter = this.listeners.iterator( );
+        while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next() ).activationCancelled( event );
+            ((WorkingMemoryEventListener) iter.next( )).activationCancelled( event );
         }
     }
 
-    public void fireActivationFired( Consequence consequence, Tuple tuple )
+    public void fireActivationFired(Consequence consequence,
+                                    Tuple tuple)
     {
-        if ( this.listeners.isEmpty() )
+        if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ActivationFiredEvent event = new ActivationFiredEvent( this.workingMemory, consequence, tuple );
+        ActivationFiredEvent event = new ActivationFiredEvent( this.workingMemory,
+                                                               consequence,
+                                                               tuple );
 
-        Iterator iter = this.listeners.iterator();
-        while ( iter.hasNext() )
+        Iterator iter = this.listeners.iterator( );
+        while ( iter.hasNext( ) )
         {
-            ( ( WorkingMemoryEventListener ) iter.next() ).activationFired( event );
+            ((WorkingMemoryEventListener) iter.next( )).activationFired( event );
         }
     }
 }

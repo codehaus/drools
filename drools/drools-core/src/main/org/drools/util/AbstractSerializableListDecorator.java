@@ -24,13 +24,14 @@ import java.util.List;
 
 /**
  * Serializable subclass of AbstractListDecorator.
- *
+ * 
  * @author Stephen Colebourne
  * @since Commons Collections 3.1
  */
-public abstract class AbstractSerializableListDecorator
-        extends AbstractListDecorator
-        implements Serializable {
+public abstract class AbstractSerializableListDecorator extends AbstractListDecorator
+    implements
+    Serializable
+{
 
     /** Serialization version */
     private static final long serialVersionUID = 2684959196747496299L;
@@ -38,32 +39,38 @@ public abstract class AbstractSerializableListDecorator
     /**
      * Constructor.
      */
-    protected AbstractSerializableListDecorator(List list) {
-        super(list);
+    protected AbstractSerializableListDecorator(List list)
+    {
+        super( list );
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Write the list out using a custom routine.
-     *
-     * @param out  the output stream
+     * 
+     * @param out
+     *            the output stream
      * @throws IOException
      */
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeObject(collection);
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        out.defaultWriteObject( );
+        out.writeObject( collection );
     }
 
     /**
      * Read the list in using a custom routine.
-     *
-     * @param in  the input stream
+     * 
+     * @param in
+     *            the input stream
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        collection = (Collection) in.readObject();
+    private void readObject(ObjectInputStream in) throws IOException,
+                                                 ClassNotFoundException
+    {
+        in.defaultReadObject( );
+        collection = (Collection) in.readObject( );
     }
 
 }

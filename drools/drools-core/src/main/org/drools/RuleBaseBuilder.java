@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.14 2004-10-22 15:20:50 simon Exp $
+ * $Id: RuleBaseBuilder.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,33 +47,33 @@ import org.drools.spi.ConflictResolver;
 
 /**
  * Factory for constructing a <code>RuleBase</code>.
- *
+ * 
  * <p>
  * The <code>RuleBaseBuilder</code> integrates the added <code>RuleSet</code>
  * s into the <b>Rete </b> network. A <code>RuleBaseBuilder</code> may be
  * re-used after building a <code>RuleBase</code> but it may not be used to
  * build multiple <code>RuleBase</code> s simultaneously by multiple threads.
  * </p>
- *
+ * 
  * @see #build
  * @see RuleSet
  * @see RuleBase
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleBaseBuilder.java,v 1.14 2004-10-22 15:20:50 simon Exp $
+ * 
+ * @version $Id: RuleBaseBuilder.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
  */
 public class RuleBaseBuilder
 {
     // ----------------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ----------------------------------------------------------------------
 
     /** Underlying Rete builder. */
     private Builder builder;
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
@@ -85,16 +85,18 @@ public class RuleBaseBuilder
     }
 
     // ----------------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ----------------------------------------------------------------------
 
     /**
      * Add a <code>RuleSet</code>.
-     *
-     * @param ruleSet The rule-set to add.
-     *
-     * @throws RuleIntegrationException If an error occurs while attempting to
-     *         integrate the rules into the Rete network..
+     * 
+     * @param ruleSet
+     *            The rule-set to add.
+     * 
+     * @throws RuleIntegrationException
+     *             If an error occurs while attempting to integrate the rules
+     *             into the Rete network..
      */
     public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException
     {
@@ -103,14 +105,14 @@ public class RuleBaseBuilder
 
     /**
      * Build the <code>RuleBase</code>.
-     *
+     * 
      * <p>
      * Builds the <code>RuleBase</code> based upon all previously added
      * <code>RuleSet</code>s.
      * </p>
-     *
+     * 
      * @see #addRuleSet
-     *
+     * 
      * @return The new rule-base.
      */
     public RuleBase build()

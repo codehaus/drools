@@ -7,7 +7,7 @@ public class ObjectModifiedEvent extends WorkingMemoryEvent
 {
     private final FactHandle handle;
 
-    private final Object     object;
+    private final Object object;
 
     public ObjectModifiedEvent(WorkingMemory workingMemory,
                                FactHandle handle,
@@ -30,7 +30,6 @@ public class ObjectModifiedEvent extends WorkingMemoryEvent
 
     public String toString()
     {
-        return "[ObjectModified: handle=" + this.handle + "; new_object="
-               + this.object + "]";
+        return "[ObjectModified: handle=" + this.handle + "; new_object=" + this.object + "]";
     }
 }

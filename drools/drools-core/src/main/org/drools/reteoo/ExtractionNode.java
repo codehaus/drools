@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.30 2004-11-16 22:29:56 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.31 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
+import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
@@ -51,36 +52,41 @@ import java.util.Set;
 
 /**
  * <i>extraction </i> node in the Rete-OO network.
- *
+ * 
  * @see ExtractionNode
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-class ExtractionNode extends TupleSource implements TupleSink
+class ExtractionNode extends TupleSource
+    implements
+    TupleSink
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** All declarations for this node. */
-    private final Set         tupleDeclarations;
+    private final Set tupleDeclarations;
 
     /** Declaration on LHS. */
     private final Declaration targetDeclaration;
 
     /** extrator. */
-    private final Extractor   extractor;
+    private final Extractor extractor;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param tupleSource Parent tuple source.
-     * @param targetDeclaration Target of extraction.
-     * @param extractor The fact extractor to use.
+     * 
+     * @param tupleSource
+     *            Parent tuple source.
+     * @param targetDeclaration
+     *            Target of extraction.
+     * @param extractor
+     *            The fact extractor to use.
      */
     public ExtractionNode(TupleSource tupleSource,
                           Declaration targetDeclaration,
@@ -91,7 +97,8 @@ class ExtractionNode extends TupleSource implements TupleSink
 
         Set sourceDecls = tupleSource.getTupleDeclarations( );
 
-        this.tupleDeclarations = new HashSet( sourceDecls.size( ) + 1, 1);
+        this.tupleDeclarations = new HashSet( sourceDecls.size( ) + 1,
+                                              1 );
 
         this.tupleDeclarations.addAll( sourceDecls );
         this.tupleDeclarations.add( targetDeclaration );
@@ -100,15 +107,15 @@ class ExtractionNode extends TupleSource implements TupleSink
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the <code>Declaration</code> which is the target of the
      * extraction.
-     *
+     * 
      * @see Declaration
-     *
+     * 
      * @return The target <code>Declaration</code>.
      */
     public Declaration getTargetDeclaration()
@@ -119,9 +126,9 @@ class ExtractionNode extends TupleSource implements TupleSink
     /**
      * Retrieve the <code>Extractor</code> used to generate the
      * right-hand-side value for the extraction.
-     *
+     * 
      * @see Extractor
-     *
+     * 
      * @return The <code>Extrator</code>.
      */
     public Extractor getExtractor()
@@ -130,15 +137,15 @@ class ExtractionNode extends TupleSource implements TupleSink
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.reteoo.impl.TupleSource
+    // org.drools.reteoo.impl.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Retrieve the <code>Set</code> of <code>Declaration</code> s in the
      * propagated <code>Tuples</code>.
-     *
+     * 
      * @see Declaration
-     *
+     * 
      * @return The <code>Set</code> of <code>Declarations</code> in progated
      *         <code>Tuples</code>.
      */
@@ -149,17 +156,21 @@ class ExtractionNode extends TupleSource implements TupleSink
 
     /**
      * Assert a new <code>Tuple</code>.
-     *
-     * @param tuple The <code>Tuple</code> being asserted.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws AssertionException If an error occurs while asserting.
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> being asserted.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws AssertionException
+     *             If an error occurs while asserting.
      */
-    public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
+    public void assertTuple(ReteTuple tuple,
+                            WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Object value = getExtractor( ).extractFact( tuple );
 
-        Object otherValue = tuple.get( this.targetDeclaration );        
+        Object otherValue = tuple.get( this.targetDeclaration );
 
         // Extractions should never evaluate to null
         // Extractions with same target should be of same type and value
@@ -167,37 +178,60 @@ class ExtractionNode extends TupleSource implements TupleSink
         if ( value == null || !(otherValue == null || value.equals( otherValue )) )
         {
             return;
-        }        
+        }
 
-        propagateAssertTuple( new ReteTuple( tuple, getTargetDeclaration( ) , value), workingMemory );
+        propagateAssertTuple( new ReteTuple( tuple,
+                                             getTargetDeclaration( ),
+                                             value ),
+                              workingMemory );
     }
 
     /**
      * Retract tuples.
-     *
-     * @param key The tuple key.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws RetractionException If an error occurs while retracting.
+     * 
+     * @param key
+     *            The tuple key.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws RetractionException
+     *             If an error occurs while retracting.
      */
-    public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
+    public void retractTuples(TupleKey key,
+                              WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        propagateRetractTuples( key, workingMemory );
+        propagateRetractTuples( key,
+                                workingMemory );
+    }
+    
+    /**
+     * Modify tuples.
+     *
+     * @param trigger The root fact object handle.
+     * @param newTuples Modification replacement tuples.
+     * @param workingMemory The working memory session.
+     *
+     * @throws FactException If an error occurs while modifying.
+     */
+    public void modifyTuples(FactHandle trigger,
+                             TupleSet tupleSet,
+                             WorkingMemoryImpl workingMemory) throws FactException
+    {
+   
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     java.lang.Object
+    // java.lang.Object
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Produce a debug string.
-     *
+     * 
      * @return The debug string.
      */
     public String toString()
     {
-        return "[ExtractionNodeImpl: target=" + getTargetDeclaration( )
-               + "; extractor=" + getExtractor( ) + "]";
+        return "[ExtractionNodeImpl: target=" + getTargetDeclaration( ) + "; extractor=" + getExtractor( ) + "]";
     }
 
 }

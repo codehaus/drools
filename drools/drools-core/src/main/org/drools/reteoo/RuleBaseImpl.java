@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.23 2004-11-09 09:03:35 simon Exp $
+ * $Id: RuleBaseImpl.java,v 1.24 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,49 +49,58 @@ import org.drools.spi.ConflictResolver;
 
 /**
  * Implementation of <code>RuleBase</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleBaseImpl.java,v 1.23 2004-11-09 09:03:35 simon Exp $
+ * 
+ * @version $Id: RuleBaseImpl.java,v 1.24 2004-11-19 02:13:46 mproctor Exp $
  */
-class RuleBaseImpl implements RuleBase
+class RuleBaseImpl
+    implements
+    RuleBase
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The root Rete-OO for this <code>RuleBase</code>. */
-    private final Rete              rete;
+    private final Rete rete;
 
     /** Conflict resolution strategy. */
-    private final ConflictResolver  conflictResolver;
-
+    private final ConflictResolver conflictResolver;
 
     /** The fact handle factory. */
     private final FactHandleFactory factHandleFactory;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param rete The rete network.
+     * 
+     * @param rete
+     *            The rete network.
      */
-    RuleBaseImpl( Rete rete )
+    RuleBaseImpl(Rete rete)
     {
-        this( rete, DefaultConflictResolver.getInstance( ), new DefaultFactHandleFactory( ) );
+        this( rete,
+              DefaultConflictResolver.getInstance( ),
+              new DefaultFactHandleFactory( ) );
     }
 
     /**
      * Construct.
-     *
-     * @param rete The rete network.
-     * @param conflictResolver The conflict resolver.
-     * @param factHandleFactory The fact handle factory.
+     * 
+     * @param rete
+     *            The rete network.
+     * @param conflictResolver
+     *            The conflict resolver.
+     * @param factHandleFactory
+     *            The fact handle factory.
      */
-    RuleBaseImpl( Rete rete, ConflictResolver conflictResolver, FactHandleFactory factHandleFactory )
+    RuleBaseImpl(Rete rete,
+                 ConflictResolver conflictResolver,
+                 FactHandleFactory factHandleFactory)
     {
         this.rete = rete;
         this.factHandleFactory = factHandleFactory;
@@ -99,7 +108,7 @@ class RuleBaseImpl implements RuleBase
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
@@ -128,7 +137,7 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Retrieve the Rete-OO network for this <code>RuleBase</code>.
-     *
+     * 
      * @return The RETE-OO network.
      */
     Rete getRete()
@@ -138,30 +147,63 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Assert a fact object.
-     *
-     * @param handle The handle.
-     * @param object The fact.
-     * @param workingMemory The working-memory.
-     *
-     * @throws FactException If an error occurs while performing the assertion.
+     * 
+     * @param handle
+     *            The handle.
+     * @param object
+     *            The fact.
+     * @param workingMemory
+     *            The working-memory.
+     * 
+     * @throws FactException
+     *             If an error occurs while performing the assertion.
      */
     void assertObject(FactHandle handle,
                       Object object,
                       WorkingMemoryImpl workingMemory) throws FactException
     {
-        getRete( ).assertObject( handle, object, workingMemory );
+        getRete( ).assertObject( handle,
+                                 object,
+                                 workingMemory );
     }
 
     /**
      * Retract a fact object.
-     *
-     * @param handle The handle.
-     * @param workingMemory The working-memory.
-     *
-     * @throws FactException If an error occurs while performing the retraction.
+     * 
+     * @param handle
+     *            The handle.
+     * @param workingMemory
+     *            The working-memory.
+     * 
+     * @throws FactException
+     *             If an error occurs while performing the retraction.
      */
-    void retractObject(FactHandle handle, WorkingMemoryImpl workingMemory) throws FactException
+    void retractObject(FactHandle handle,
+                       WorkingMemoryImpl workingMemory) throws FactException
     {
-        getRete( ).retractObject( handle, workingMemory );
+        getRete( ).retractObject( handle,
+                                  workingMemory );
+    }
+
+    /**
+     * Modify a fact object.
+     * 
+     * @param handle
+     *            The handle.
+     * @param object
+     *            The fact.
+     * @param workingMemory
+     *            The working-memory.
+     * 
+     * @throws FactException
+     *             If an error occurs while performing the modification.
+     */
+    void modifyObject(FactHandle handle,
+                      Object object,
+                      WorkingMemoryImpl workingMemory) throws FactException
+    {
+        getRete( ).modifyObject( handle,
+                                 object,
+                                 workingMemory );
     }
 }

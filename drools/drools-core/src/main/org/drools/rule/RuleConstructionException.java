@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleConstructionException.java,v 1.3 2004-09-17 00:14:11 mproctor Exp $
+ * $Id: RuleConstructionException.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -50,7 +50,7 @@ import org.drools.DroolsException;
 public class RuleConstructionException extends DroolsException
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**

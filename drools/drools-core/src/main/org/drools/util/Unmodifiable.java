@@ -19,21 +19,26 @@ package org.drools.util;
  * Marker interface for collections, maps and iterators that are unmodifiable.
  * <p>
  * This interface enables testing such as:
+ * 
  * <pre>
- * if (coll instanceof Unmodifiable) {
- *   coll = new ArrayList(coll);
+ * if ( coll instanceof Unmodifiable )
+ * {
+ *     coll = new ArrayList( coll );
  * }
  * // now we know coll is modifiable
+ * 
  * </pre>
- * Of course all this only works if you use the Unmodifiable classes defined
- * in this library. If you use the JDK unmodifiable class via java util Collections
+ * 
+ * Of course all this only works if you use the Unmodifiable classes defined in
+ * this library. If you use the JDK unmodifiable class via java util Collections
  * then the interface won't be there.
- *
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-15 23:06:07 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public interface Unmodifiable {
+public interface Unmodifiable
+{
     // marker interface - no methods to implement
 }

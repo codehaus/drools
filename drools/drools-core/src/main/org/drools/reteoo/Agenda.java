@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.44 2004-11-09 13:52:38 simon Exp $
+ * $Id: Agenda.java,v 1.45 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,8 @@ package org.drools.reteoo;
  *
  */
 
+import org.drools.FactHandle;
+import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.ConflictResolver;
@@ -55,25 +57,27 @@ import java.util.Set;
 
 /**
  * Rule-firing Agenda.
- *
+ * 
  * <p>
  * Since many rules may be matched by a single assertObject(...) all scheduled
  * actions are placed into the <code>Agenda</code>.
  * </p>
- *
+ * 
  * <p>
  * While processing a scheduled action, it may modify or retract objects in
  * other scheduled actions, which must then be removed from the agenda.
  * Non-invalidated actions are left on the agenda, and are executed in turn.
  * </p>
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-class Agenda implements Serializable
+class Agenda
+    implements
+    Serializable
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Working memory of this Agenda. */
@@ -83,22 +87,25 @@ class Agenda implements Serializable
     private final PriorityQueue items;
 
     /** Items time-delayed. */
-    private final Set           scheduledItems;
+    private final Set scheduledItems;
 
     /** The current agenda item being fired; or null if none. */
-    private AgendaItem          item;
+    private AgendaItem item;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param workingMemory The <code>WorkingMemory</code> of this agenda.
-     * @param conflictResolver The conflict resolver.
+     * 
+     * @param workingMemory
+     *            The <code>WorkingMemory</code> of this agenda.
+     * @param conflictResolver
+     *            The conflict resolver.
      */
-    public Agenda(WorkingMemoryImpl workingMemory, ConflictResolver conflictResolver)
+    public Agenda(WorkingMemoryImpl workingMemory,
+                  ConflictResolver conflictResolver)
     {
         this.workingMemory = workingMemory;
         this.items = new PriorityQueue( conflictResolver );
@@ -106,18 +113,21 @@ class Agenda implements Serializable
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Schedule a rule action invokation on this <code>Agenda</code>. Rules
      * specified with noNoop=true that are active should not be added to the
      * agenda
-     *
-     * @param tuple The matching <code>Tuple</code>.
-     * @param rule The rule to fire.
+     * 
+     * @param tuple
+     *            The matching <code>Tuple</code>.
+     * @param rule
+     *            The rule to fire.
      */
-    void addToAgenda(ReteTuple tuple, Rule rule)
+    void addToAgenda(ReteTuple tuple,
+                     Rule rule)
     {
         if ( rule == null )
         {
@@ -129,13 +139,13 @@ class Agenda implements Serializable
          * do not not re-add to the agenda
          */
 
-        if ( this.item != null && rule.getNoLoop( )
-             && rule.equals( this.item.getRule( ) ) )
+        if ( this.item != null && rule.getNoLoop( ) && rule.equals( this.item.getRule( ) ) )
         {
             return;
         }
 
-        AgendaItem item = new AgendaItem( tuple, rule );
+        AgendaItem item = new AgendaItem( tuple,
+                                          rule );
 
         Duration dur = rule.getDuration( );
 
@@ -149,16 +159,20 @@ class Agenda implements Serializable
             this.items.add( item );
         }
 
-        workingMemory.getEventSupport( ).fireActivationCreated(rule.getConsequence( ), tuple );
+        workingMemory.getEventSupport( ).fireActivationCreated( rule.getConsequence( ),
+                                                                tuple );
     }
 
     /**
      * Remove a tuple from the agenda.
-     *
-     * @param key The key to the tuple to be removed.
-     * @param rule The rule to remove.
+     * 
+     * @param key
+     *            The key to the tuple to be removed.
+     * @param rule
+     *            The rule to remove.
      */
-    void removeFromAgenda(TupleKey key, Rule rule)
+    void removeFromAgenda(TupleKey key,
+                          Rule rule)
     {
         if ( rule == null )
         {
@@ -171,15 +185,16 @@ class Agenda implements Serializable
 
         while ( itemIter.hasNext( ) )
         {
-            eachItem = ( AgendaItem ) itemIter.next( );
+            eachItem = (AgendaItem) itemIter.next( );
 
             if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                tuple = eachItem.getTuple();
+                tuple = eachItem.getTuple( );
 
                 itemIter.remove( );
 
-                this.workingMemory.getEventSupport().fireActivationCancelled( rule.getConsequence(), tuple );
+                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule.getConsequence( ),
+                                                                               tuple );
             }
         }
 
@@ -187,79 +202,158 @@ class Agenda implements Serializable
 
         while ( itemIter.hasNext( ) )
         {
-            eachItem = ( AgendaItem ) itemIter.next( );
+            eachItem = (AgendaItem) itemIter.next( );
 
             if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                tuple = eachItem.getTuple();
+                tuple = eachItem.getTuple( );
 
                 cancelItem( eachItem );
 
                 itemIter.remove( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule.getConsequence(), tuple );
+                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule.getConsequence( ),
+                                                                               tuple );
             }
         }
     }
 
+    /**
+     * Modify the agenda.
+     * 
+     * @param trigger
+     *            The triggering root object handle.
+     * @param newTuples
+     *            New tuples from the modification.
+     * @param rule
+     *            The rule.
+     */
+
+    void modifyAgenda(FactHandle trigger,
+                      TupleSet newTuples,
+                      Rule rule)
+    {
+        Iterator itemIter = this.items.iterator( );
+        AgendaItem eachItem;
+        ReteTuple eachTuple;
+        Tuple tuple;
+        Iterator iter;
+
+        // make sure we dont add an existing Tuple onto the Agenda
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = (AgendaItem) itemIter.next( );
+
+            if ( eachItem.getRule( ) == rule )
+            {
+                if ( eachItem.dependsOn( trigger ) )
+                {
+                    if ( newTuples.containsTuple( eachItem.getKey( ) ) )
+                    {
+                        newTuples.removeTuple( eachItem.getKey( ) );
+                    }
+                }
+            }
+        }
+
+        // make sure we dont add an existing Tuple onto the Schedule
+        itemIter = this.scheduledItems.iterator( );
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = (AgendaItem) itemIter.next( );
+
+            if ( eachItem.getRule( ) == rule )
+            {
+                if ( eachItem.dependsOn( trigger ) )
+                {
+                    if ( newTuples.containsTuple( eachItem.getKey( ) ) )
+                    {
+                        newTuples.removeTuple( eachItem.getKey( ) );
+                    }
+                }
+            }
+        }
+
+        // All remaining tuples are new so add them to the Agenda
+        Iterator tupleIter = newTuples.iterator( );
+        while ( tupleIter.hasNext( ) )
+        {
+            eachTuple = (ReteTuple) tupleIter.next( );
+
+            addToAgenda( eachTuple,
+                         rule );
+        }
+    }
+
+    /**
+     * Clears all Activations from the Agenda 
+     * 
+     */
     void clearAgenda()
     {
         AgendaItem eachItem;
         Tuple tuple;
+        
+        //Remove all items in the Agenda and fire a Cancelled event for each
         Iterator iter = this.items.iterator( );
-
         while ( iter.hasNext( ) )
         {
-            eachItem = ( AgendaItem ) iter.next( );
+            eachItem = (AgendaItem) iter.next( );
 
-            tuple = eachItem.getTuple();
+            tuple = eachItem.getTuple( );
+
+            iter.remove( );
+
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
+                                                                           tuple );
+        }
+        
+
+
+        iter = this.scheduledItems.iterator( );
+        
+        //Cancel all items in the Schedule and fire a Cancelled event for each
+        while ( iter.hasNext( ) )
+        {
+            eachItem = (AgendaItem) iter.next( );
+
+            tuple = eachItem.getTuple( );
 
             cancelItem( eachItem );
 
             iter.remove( );
 
             this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
-                                                                           tuple);
-        }
-
-        iter = this.scheduledItems.iterator( );
-
-        while ( iter.hasNext( ) )
-        {
-            eachItem = ( AgendaItem ) iter.next( );
-
-            tuple = eachItem.getTuple();
-
-            iter.remove( );
-
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
-                                                                           tuple);
-        }
+                                                                           tuple );
+        }        
     }
 
     /**
      * Schedule an agenda item for delayed firing.
-     *
-     * @param item The item to schedule.
+     * 
+     * @param item
+     *            The item to schedule.
      */
-    void scheduleItem( AgendaItem item )
+    void scheduleItem(AgendaItem item)
     {
-        Scheduler.getInstance().scheduleAgendaItem( item, this.workingMemory );
+        Scheduler.getInstance( ).scheduleAgendaItem( item,
+                                                     this.workingMemory );
     }
 
     /**
      * Cancel a scheduled agenda item for delayed firing.
-     *
-     * @param item The item to cancel.
+     * 
+     * @param item
+     *            The item to cancel.
      */
-    void cancelItem( AgendaItem item )
+    void cancelItem(AgendaItem item)
     {
-        Scheduler.getInstance().cancelAgendaItem( item );
+        Scheduler.getInstance( ).cancelAgendaItem( item );
     }
 
     /**
      * Determine if this <code>Agenda</code> has any scheduled items.
-     *
+     * 
      * @return <code>true<code> if the agenda is empty, otherwise
      *          <code>false</code>.
      */
@@ -275,9 +369,9 @@ class Agenda implements Serializable
 
     /**
      * Fire the next scheduled <code>Agenda</code> item.
-     *
-     * @throws ConsequenceException If an error occurs while firing an agenda
-     *         item.
+     * 
+     * @throws ConsequenceException
+     *             If an error occurs while firing an agenda item.
      */
     public void fireNextItem(AgendaFilter filter) throws ConsequenceException
     {
@@ -286,7 +380,7 @@ class Agenda implements Serializable
             return;
         }
 
-        item = ( AgendaItem ) this.items.remove( );
+        item = (AgendaItem) this.items.remove( );
 
         try
         {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.34 2004-11-09 09:03:35 simon Exp $
+ * $Id: TerminalNode.java,v 1.35 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,36 +41,42 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
+import org.drools.FactHandle;
 import org.drools.rule.Rule;
 
 /**
  * Leaf Rete-OO node responsible for enacting <code>Action</code> s on a
  * matched <code>Rule</code>.
- *
+ * 
  * @see org.drools.rule.Rule
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-final class TerminalNode implements TupleSink
+final class TerminalNode
+    implements
+    TupleSink
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The rule to invoke upon match. */
     private final Rule rule;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param inputSource The parent tuple source.
-     * @param rule The rule.
+     * 
+     * @param inputSource
+     *            The parent tuple source.
+     * @param rule
+     *            The rule.
      */
-    TerminalNode(TupleSource inputSource, Rule rule)
+    TerminalNode(TupleSource inputSource,
+                 Rule rule)
     {
         this.rule = rule;
 
@@ -78,12 +84,12 @@ final class TerminalNode implements TupleSink
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the <code>Action</code> associated with this node.
-     *
+     * 
      * @return The <code>Action</code> associated with this node.
      */
     public Rule getRule()
@@ -92,31 +98,59 @@ final class TerminalNode implements TupleSink
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.impl.TupleSink
+    // org.drools.impl.TupleSink
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Assert a new <code>Tuple</code>.
-     *
-     * @param tuple The <code>Tuple</code> being asserted.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws AssertionException If an error occurs while asserting.
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> being asserted.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws AssertionException
+     *             If an error occurs while asserting.
      */
-    public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
+    public void assertTuple(ReteTuple tuple,
+                            WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        workingMemory.getAgenda( ).addToAgenda( tuple, getRule( ) );
+        workingMemory.getAgenda( ).addToAgenda( tuple,
+                                                getRule( ) );
     }
 
     /**
      * Retract tuples.
-     *
-     * @param key The tuple key.
-     * @param workingMemory The working memory seesion.
+     * 
+     * @param key
+     *            The tuple key.
+     * @param workingMemory
+     *            The working memory seesion.
      */
-    public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory)
+    public void retractTuples(TupleKey key,
+                              WorkingMemoryImpl workingMemory)
     {
-        workingMemory.getAgenda( ).removeFromAgenda( key, getRule( ) );
+        workingMemory.getAgenda( ).removeFromAgenda( key,
+                                                     getRule( ) );
+    }
+
+    /**
+     * Modify tuples.
+     * 
+     * @param trigger
+     *            The root fact object handle.
+     * @param newTuples
+     *            Modification replacement tuples.
+     * @param workingMemory
+     *            The working memory session.
+     */
+    public void modifyTuples(FactHandle trigger,
+                             TupleSet newTuples,
+                             WorkingMemoryImpl workingMemory)
+    {
+        workingMemory.getAgenda( ).modifyAgenda( trigger,
+                                                 newTuples,
+                                                 getRule( ) );
     }
 
     public String toString()

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: FifoConflictResolver.java,v 1.2 2004-10-30 01:11:48 simon Exp $
+ * $Id: FifoConflictResolver.java,v 1.3 2004-11-19 02:12:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,30 +46,30 @@ import org.drools.spi.ConflictResolver;
 /**
  * <code>ConflictResolver</code> that orders rules on a First-In-First-Out
  * basis.
- *
+ * 
  * @see #getInstance
- *
+ * 
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- *
+ * 
  * @version $Id: RandomConflictResolver.java,v 1.1 2004/06/25 01:55:16 mproctor
  *          Exp $
  */
 public class FifoConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
-    //     Class members
+    // Class members
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
     private static final FifoConflictResolver INSTANCE = new FifoConflictResolver( );
 
     // ----------------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ----------------------------------------------------------------------
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
      */
     public static ConflictResolver getInstance()
@@ -78,7 +78,7 @@ public class FifoConflictResolver extends AbstractConflictResolver
     }
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
@@ -94,8 +94,9 @@ public class FifoConflictResolver extends AbstractConflictResolver
     /**
      * @see ConflictResolver
      */
-    public int compare(Activation lhs, Activation rhs)
+    public int compare(Activation lhs,
+                       Activation rhs)
     {
-        return ( int ) ( lhs.getActivationNumber( ) - rhs.getActivationNumber() );
+        return (int) (lhs.getActivationNumber( ) - rhs.getActivationNumber( ));
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ImportEntry.java,v 1.2 2004-11-04 19:08:58 dbarnett Exp $
+ * $Id: ImportEntry.java,v 1.3 2004-11-19 02:14:48 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,6 +42,6 @@ package org.drools.spi;
  */
 
 public interface ImportEntry
-{  
-    public String getImportEntry();      
+{
+    public String getImportEntry();
 }

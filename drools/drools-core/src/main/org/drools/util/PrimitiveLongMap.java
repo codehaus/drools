@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.8 2004-11-18 23:11:17 dbarnett Exp $
+ * $Id: PrimitiveLongMap.java,v 1.9 2004-11-19 02:15:18 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,13 +45,15 @@ import java.util.Collection;
  */
 
 /**
- *
+ * 
  * @author Mark Proctor
  */
 public class PrimitiveLongMap
     implements Serializable
 {
-    private final static Object NULL = new Serializable( ) { };
+    private final static Object NULL = new Serializable( )
+    {
+    };
 
     private final int indexIntervals;
     private final int intervalShifts;
@@ -132,7 +134,7 @@ public class PrimitiveLongMap
             value = NULL;
         }
 
-        Page page = findPage(key);
+        Page page = findPage( key );
 
         Object oldValue = page.put( key,
                                     value );
@@ -142,12 +144,12 @@ public class PrimitiveLongMap
 
     public Object remove(long key)
     {
-        if ( key >= this.maxKey )
+        if ( ( key < 0 ) || ( key >= this.maxKey ) )
         {
             return null;
         }
 
-        Page page = findPage(key);
+        Page page = findPage( key );
 
         Object oldValue = page.put( key,
                                     null );
@@ -191,6 +193,8 @@ public class PrimitiveLongMap
 
     public boolean containsKey(long key)
     {
+        if (key < 0) return false;
+        
         return get( key ) != null;
     }
 
@@ -248,7 +252,7 @@ public class PrimitiveLongMap
         this.pageIndex = newIndex;
     }
 
-    private Page findPage( long key )
+    private Page findPage(long key)
     {
         // determine Page
         int pageId = (int) key >> this.doubleShifts;
@@ -293,7 +297,6 @@ public class PrimitiveLongMap
                 }
             }
         }
-
 
         return page;
     }
@@ -434,7 +437,7 @@ public class PrimitiveLongMap
         Object[] getValues()
         {
             Object[] values = new Object[this.filledSlots];
-            if (values.length == 0)
+            if ( values.length == 0 )
             {
                 return values;
             }

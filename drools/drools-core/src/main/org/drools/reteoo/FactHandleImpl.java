@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: FactHandleImpl.java,v 1.14 2004-11-16 23:05:38 mproctor Exp $
+ * $Id: FactHandleImpl.java,v 1.15 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,45 +44,48 @@ import org.drools.FactHandle;
 
 /**
  * Implementation of <code>FactHandle</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: FactHandleImpl.java,v 1.14 2004-11-16 23:05:38 mproctor Exp $
+ * 
+ * @version $Id: FactHandleImpl.java,v 1.15 2004-11-19 02:13:46 mproctor Exp $
  */
-public class FactHandleImpl implements FactHandle
+public class FactHandleImpl
+    implements
+    FactHandle
 {
     // ----------------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ----------------------------------------------------------------------
 
     /** Handle id. */
-    private final long id;
+    private long id;
     private final long recency;
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     protected FactHandleImpl(long id)
     {
         this.id = id;
         this.recency = id;
-    }    
-    
+    }
+
     /**
      * Construct.
-     *
-     * @param id Handle id.
+     * 
+     * @param id
+     *            Handle id.
      */
-    protected FactHandleImpl(long id, long recency)
+    protected FactHandleImpl(long id,
+                             long recency)
     {
         this.id = id;
         this.recency = recency;
     }
-    
 
     // ----------------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ----------------------------------------------------------------------
 
     /**
@@ -90,14 +93,14 @@ public class FactHandleImpl implements FactHandle
      */
     public boolean equals(Object thatObj)
     {
-        if (this == thatObj)
+        if ( this == thatObj )
         {
             return true;
         }
 
         if ( thatObj instanceof FactHandleImpl )
         {
-            return ( ( FactHandleImpl ) thatObj ).id == this.id;
+            return ((FactHandleImpl) thatObj).id == this.id;
         }
 
         return false;
@@ -108,7 +111,7 @@ public class FactHandleImpl implements FactHandle
      */
     public int hashCode()
     {
-        return ( int ) this.id;
+        return (int) this.id;
     }
 
     /**
@@ -135,5 +138,10 @@ public class FactHandleImpl implements FactHandle
     public long getId()
     {
         return this.id;
-    }    
+    }
+    
+    void invalidate()
+    {
+        this.id = -1;
+    }
 }

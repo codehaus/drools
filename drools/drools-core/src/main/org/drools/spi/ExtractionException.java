@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ExtractionException.java,v 1.4 2004-09-17 00:14:13 mproctor Exp $
+ * $Id: ExtractionException.java,v 1.5 2004-11-19 02:14:48 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -50,12 +50,12 @@ import org.drools.rule.Rule;
  */
 public class ExtractionException extends AssertionException
 {
-    private Rule   rule;
+    private Rule rule;
 
     private String expr;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -69,7 +69,8 @@ public class ExtractionException extends AssertionException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public ExtractionException(Throwable rootCause)
     {
@@ -79,9 +80,12 @@ public class ExtractionException extends AssertionException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
-    public ExtractionException(Throwable rootCause, Rule rule, String expr)
+    public ExtractionException(Throwable rootCause,
+                               Rule rule,
+                               String expr)
     {
         super( rootCause );
         this.rule = rule;

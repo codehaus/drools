@@ -21,7 +21,7 @@ public class ConditionNodeTest extends TestCase
     public ConditionNodeTest(String name)
     {
         super( name );
-    }
+    }    
 
     public void setUp()
     {

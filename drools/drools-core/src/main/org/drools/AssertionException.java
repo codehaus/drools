@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: AssertionException.java,v 1.9 2004-11-07 22:39:43 bob Exp $
+ * $Id: AssertionException.java,v 1.10 2004-11-19 02:12:12 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,7 +51,7 @@ package org.drools;
 public class AssertionException extends FactException
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -65,7 +65,8 @@ public class AssertionException extends FactException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public AssertionException(Throwable rootCause)
     {

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.14 2004-11-13 01:43:07 simon Exp $
+ * $Id: RuleSet.java,v 1.15 2004-11-19 02:14:17 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,48 +50,51 @@ import java.util.Set;
 
 /**
  * Collection of related <code>Rule</code>s.
- *
+ * 
  * @see Rule
- *
+ * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleSet.java,v 1.14 2004-11-13 01:43:07 simon Exp $
+ * 
+ * @version $Id: RuleSet.java,v 1.15 2004-11-19 02:14:17 mproctor Exp $
  */
-public class RuleSet implements Serializable
+public class RuleSet
+    implements
+    Serializable
 {
     // ------------------------------------------------------------
-    //     Constants
+    // Constants
     // ------------------------------------------------------------
 
     /** Empty <code>RuleSet</code> array. */
     public static final RuleSet[] EMPTY_ARRAY = new RuleSet[0];
 
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Name of the ruleset. */
-    private String                name;
+    private String name;
 
     /** Documentation. */
-    private String                documentation;
+    private String documentation;
 
     /** Set of all rule-names in this <code>RuleSet</code>. */
-    private Set                   ruleNames;
+    private Set ruleNames;
 
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
-    private List                  rules;
+    private List rules;
 
-    private Set                   imports;
+    private Set imports;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param name The name of this <code>RuleSet</code>.
+     * 
+     * @param name
+     *            The name of this <code>RuleSet</code>.
      */
     public RuleSet(String name)
     {
@@ -102,12 +105,12 @@ public class RuleSet implements Serializable
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the name of this <code>RuleSet</code>.
-     *
+     * 
      * @return The name of this <code>RuleSet</code>.
      */
     public String getName()
@@ -117,8 +120,9 @@ public class RuleSet implements Serializable
 
     /**
      * Set the documentation.
-     *
-     * @param documentation The documentation.
+     * 
+     * @param documentation
+     *            The documentation.
      */
     public void setDocumentation(String documentation)
     {
@@ -127,7 +131,7 @@ public class RuleSet implements Serializable
 
     /**
      * Retrieve the documentation.
-     *
+     * 
      * @return The documentation or <code>null</code> if none.
      */
     public String getDocumentation()
@@ -137,13 +141,15 @@ public class RuleSet implements Serializable
 
     /**
      * Add a <code>Rule</code> to this <code>RuleSet</code>.
-     *
-     * @param rule The rule to add.
-     *
-     * @throws DuplicateRuleNameException If the <code>Rule</code> attempting
-     *         to be added has the same name as another previously added
-     *         <code>Rule</code>.
-     * @throws InvalidRuleException If the <code>Rule</code> is not valid.
+     * 
+     * @param rule
+     *            The rule to add.
+     * 
+     * @throws DuplicateRuleNameException
+     *             If the <code>Rule</code> attempting to be added has the
+     *             same name as another previously added <code>Rule</code>.
+     * @throws InvalidRuleException
+     *             If the <code>Rule</code> is not valid.
      */
     public void addRule(Rule rule) throws DuplicateRuleNameException,
                                   InvalidRuleException
@@ -154,20 +160,23 @@ public class RuleSet implements Serializable
 
         if ( containsRule( name ) )
         {
-            throw new DuplicateRuleNameException( this, getRule( name ), rule );
+            throw new DuplicateRuleNameException( this,
+                                                  getRule( name ),
+                                                  rule );
         }
 
         this.ruleNames.add( name );
         rule.setLoadOrder( rules.size( ) );
-        rule.setImports(this.imports);
+        rule.setImports( this.imports );
         this.rules.add( rule );
     }
 
     /**
      * Retrieve a <code>Rule</code> by name.
-     *
-     * @param name The name of the <code>Rule</code> to retrieve.
-     *
+     * 
+     * @param name
+     *            The name of the <code>Rule</code> to retrieve.
+     * 
      * @return The named <code>Rule</code>, or <code>null</code> if not
      *         such <code>Rule</code> has been added to this
      *         <code>RuleSet</code>.
@@ -203,17 +212,17 @@ public class RuleSet implements Serializable
 
     /**
      * Retrieve all <code>Rules</code> in this <code>RuleSet</code>.
-     *
+     * 
      * @return An array of all <code>Rules</code> in this <code>RuleSet</code>.
      */
     public Rule[] getRules()
     {
-        return ( Rule[] ) this.rules.toArray( new Rule[ this.rules.size( ) ] );
+        return (Rule[]) this.rules.toArray( new Rule[this.rules.size( )] );
     }
 
     public void addImport(ImportEntry importEntry)
     {
-        this.imports.add(importEntry);
+        this.imports.add( importEntry );
     }
 
     public Set getImports()

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.17 2004-11-09 13:52:38 simon Exp $
+ * $Id: AgendaItem.java,v 1.18 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,37 +51,43 @@ import java.io.Serializable;
 
 /**
  * Item entry in the <code>Agenda</code>.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-class AgendaItem implements Activation, Serializable
+class AgendaItem
+    implements
+    Activation,
+    Serializable
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The tuple. */
-    private ReteTuple   tuple;
+    private ReteTuple tuple;
 
     /** The rule. */
-    private Rule        rule;
+    private Rule rule;
 
-    //** The Counter */
+    // ** The Counter */
     private static long counter;
 
-    private long        activationNumber;
+    private long activationNumber;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param tuple The tuple.
-     * @param rule The rule.
+     * 
+     * @param tuple
+     *            The tuple.
+     * @param rule
+     *            The rule.
      */
-    AgendaItem(ReteTuple tuple, Rule rule)
+    AgendaItem(ReteTuple tuple,
+               Rule rule)
     {
         this.tuple = tuple;
         this.rule = rule;
@@ -89,12 +95,12 @@ class AgendaItem implements Activation, Serializable
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the rule.
-     *
+     * 
      * @return The rule.
      */
     public Rule getRule()
@@ -105,9 +111,10 @@ class AgendaItem implements Activation, Serializable
     /**
      * Determine if this tuple depends on the values derrived from a particular
      * root object.
-     *
-     * @param handle The root object handle.
-     *
+     * 
+     * @param handle
+     *            The root object handle.
+     * 
      * @return <code>true<code> if this agenda item depends
      *          upon the item, otherwise <code>false</code>.
      */
@@ -118,8 +125,9 @@ class AgendaItem implements Activation, Serializable
 
     /**
      * Set the tuple.
-     *
-     * @param tuple The tuple.
+     * 
+     * @param tuple
+     *            The tuple.
      */
     void setTuple(ReteTuple tuple)
     {
@@ -128,7 +136,7 @@ class AgendaItem implements Activation, Serializable
 
     /**
      * Retrieve the tuple.
-     *
+     * 
      * @return The tuple.
      */
     public Tuple getTuple()
@@ -138,7 +146,7 @@ class AgendaItem implements Activation, Serializable
 
     /**
      * Retrieve the <code>TupleKey</code>.
-     *
+     * 
      * @return The key to the tuple in this item.
      */
     TupleKey getKey()
@@ -148,19 +156,22 @@ class AgendaItem implements Activation, Serializable
 
     /**
      * Fire this item.
-     *
-     * @param workingMemory The working memory context.
-     *
-     * @throws ConsequenceException If an error occurs while attempting to fire
-     *         the consequence.
+     * 
+     * @param workingMemory
+     *            The working memory context.
+     * 
+     * @throws ConsequenceException
+     *             If an error occurs while attempting to fire the consequence.
      */
     void fire(WorkingMemoryImpl workingMemory) throws ConsequenceException
     {
         Consequence consequence = getRule( ).getConsequence( );
 
-        consequence.invoke( tuple, workingMemory );
+        consequence.invoke( tuple,
+                            workingMemory );
 
-        workingMemory.getEventSupport( ).fireActivationFired( consequence, this.tuple );
+        workingMemory.getEventSupport( ).fireActivationFired( consequence,
+                                                              this.tuple );
     }
 
     public long getActivationNumber()

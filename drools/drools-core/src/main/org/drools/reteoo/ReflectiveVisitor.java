@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReflectiveVisitor.java,v 1.3 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: ReflectiveVisitor.java,v 1.4 2004-11-19 02:13:46 mproctor Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,7 +51,9 @@ import org.drools.Visitor;
  * 
  * @author Jeremy Blosser
  */
-public abstract class ReflectiveVisitor implements Visitor
+public abstract class ReflectiveVisitor
+    implements
+    Visitor
 {
     static final String newline = System.getProperty( "line.separator" );
 
@@ -62,12 +64,15 @@ public abstract class ReflectiveVisitor implements Visitor
             if ( object != null )
             {
                 Method method = getMethod( object.getClass( ) );
-                method.invoke( this, new Object[]{object} );
+                method.invoke( this,
+                               new Object[]{object} );
             }
             else
             {
-                Method method = getClass( ).getMethod( "visitNull", null );
-                method.invoke( this, null );
+                Method method = getClass( ).getMethod( "visitNull",
+                                                       null );
+                method.invoke( this,
+                               null );
             }
         }
         catch ( Exception e )
@@ -85,9 +90,7 @@ public abstract class ReflectiveVisitor implements Visitor
         while ( method == null && newClazz != Object.class )
         {
             String methodName = newClazz.getName( );
-            methodName = "visit"
-                         + methodName
-                                     .substring( methodName.lastIndexOf( '.' ) + 1 );
+            methodName = "visit" + methodName.substring( methodName.lastIndexOf( '.' ) + 1 );
             try
             {
                 method = getClass( ).getMethod( methodName,
@@ -106,10 +109,7 @@ public abstract class ReflectiveVisitor implements Visitor
             for ( int i = 0; i < interfaces.length; i++ )
             {
                 String methodName = interfaces[i].getName( );
-                methodName = "visit"
-                             + methodName
-                                         .substring( methodName
-                                                               .lastIndexOf( '.' ) + 1 );
+                methodName = "visit" + methodName.substring( methodName.lastIndexOf( '.' ) + 1 );
                 try
                 {
                     method = getClass( ).getMethod( methodName,
@@ -117,7 +117,7 @@ public abstract class ReflectiveVisitor implements Visitor
                 }
                 catch ( NoSuchMethodException e )
                 {
-                    //swallow
+                    // swallow
                 }
             }
         }
@@ -140,7 +140,6 @@ public abstract class ReflectiveVisitor implements Visitor
 
     public void visitObject(Object object)
     {
-        System.err.println( "no visitor implementation for : "
-                            + object.getClass( ) + " : " + object );
+        System.err.println( "no visitor implementation for : " + object.getClass( ) + " : " + object );
     }
 }

@@ -22,24 +22,29 @@ import org.drools.util.ResettableIterator;
 /**
  * Provides an implementation of an empty iterator.
  * <p>
- * This class provides an implementation of an empty iterator.
- * This class provides for binary compatability between Commons Collections
- * 2.1.1 and 3.1 due to issues with <code>IteratorUtils</code>.
- *
+ * This class provides an implementation of an empty iterator. This class
+ * provides for binary compatability between Commons Collections 2.1.1 and 3.1
+ * due to issues with <code>IteratorUtils</code>.
+ * 
  * @since Commons Collections 2.1.1 and 3.1
- * @version $Revision: 1.1 $ $Date: 2004-11-07 12:10:18 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public class EmptyIterator extends AbstractEmptyIterator implements ResettableIterator {
+public class EmptyIterator extends AbstractEmptyIterator
+    implements
+    ResettableIterator
+{
 
     /**
      * Singleton instance of the iterator.
+     * 
      * @since Commons Collections 3.1
      */
-    public static final ResettableIterator RESETTABLE_INSTANCE = new EmptyIterator();
+    public static final ResettableIterator RESETTABLE_INSTANCE = new EmptyIterator( );
     /**
      * Singleton instance of the iterator.
+     * 
      * @since Commons Collections 2.1.1 and 3.1
      */
     public static final Iterator INSTANCE = RESETTABLE_INSTANCE;
@@ -47,8 +52,9 @@ public class EmptyIterator extends AbstractEmptyIterator implements ResettableIt
     /**
      * Constructor.
      */
-    protected EmptyIterator() {
-        super();
+    protected EmptyIterator()
+    {
+        super( );
     }
 
 }

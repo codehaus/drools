@@ -49,15 +49,20 @@ import org.drools.spi.ConflictResolver;
  * 
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
- * @version $Id: AbstractConflictResolver.java,v 1.1 2004-10-06 13:38:05 mproctor Exp $
+ * @version $Id: AbstractConflictResolver.java,v 1.1 2004/10/06 13:38:05
+ *          mproctor Exp $
  */
-public abstract class AbstractConflictResolver implements ConflictResolver
+public abstract class AbstractConflictResolver
+    implements
+    ConflictResolver
 {
     /**
      * @see ConflictResolver
      */
-    public final int compare(Object existing, Object adding)
+    public final int compare(Object existing,
+                             Object adding)
     {
-        return compare( ( Activation ) existing, ( Activation ) adding );
+        return compare( (Activation) existing,
+                        (Activation) adding );
     }
 }

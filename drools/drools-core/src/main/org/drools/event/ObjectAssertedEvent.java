@@ -7,7 +7,7 @@ public class ObjectAssertedEvent extends WorkingMemoryEvent
 {
     private final FactHandle handle;
 
-    private final Object     object;
+    private final Object object;
 
     public ObjectAssertedEvent(WorkingMemory workingMemory,
                                FactHandle handle,
@@ -30,7 +30,6 @@ public class ObjectAssertedEvent extends WorkingMemoryEvent
 
     public String toString()
     {
-        return "[ObjectAsserted: handle=" + this.handle + "; object="
-               + this.object + "]";
+        return "[ObjectAsserted: handle=" + this.handle + "; object=" + this.object + "]";
     }
 }

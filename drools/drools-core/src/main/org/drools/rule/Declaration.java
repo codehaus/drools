@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.23 2004-11-13 13:19:33 simon Exp $
+ * $Id: Declaration.java,v 1.24 2004-11-19 02:14:17 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,41 +46,50 @@ import java.io.Serializable;
 
 /**
  * A typed, named variable for <code>Condition</code> evaluation.
- *
+ * 
  * @see ObjectType
  * @see org.drools.spi.Condition
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-public class Declaration implements Serializable, Comparable
+public class Declaration
+    implements
+    Serializable,
+    Comparable
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The identifier for the variable. */
-    private final String      identifier;
+    private final String identifier;
 
     /** The type of the variable. */
-    // TODO: Would like to make this final if we can. Requires rejigging the xml handler stuff.
+    // TODO: Would like to make this final if we can. Requires rejigging the xml
+    // handler stuff.
     private ObjectType objectType;
 
     /** The order within a rule. */
-    private final int         order;
+    private final int order;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param identifier The name of the variable.
-     * @param objectType The type of this variable declaration.
-     * @param order The order within a rule.
+     * 
+     * @param identifier
+     *            The name of the variable.
+     * @param objectType
+     *            The type of this variable declaration.
+     * @param order
+     *            The order within a rule.
      */
-    Declaration( String identifier, ObjectType objectType, int order )
+    Declaration(String identifier,
+                ObjectType objectType,
+                int order)
     {
         this.objectType = objectType;
         this.identifier = identifier;
@@ -88,12 +97,12 @@ public class Declaration implements Serializable, Comparable
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the <code>ObjectType</code>.
-     *
+     * 
      * @return The object-type.
      */
     public ObjectType getObjectType()
@@ -102,14 +111,14 @@ public class Declaration implements Serializable, Comparable
     }
 
     // TODO: Remove this if possible
-    public void setObjectType( ObjectType objectType )
+    public void setObjectType(ObjectType objectType)
     {
         this.objectType = objectType;
     }
 
     /**
      * Retrieve the variable's identifier.
-     *
+     * 
      * @return The variable's identifier.
      */
     public String getIdentifier()
@@ -124,9 +133,9 @@ public class Declaration implements Serializable, Comparable
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    public int compareTo( Object object )
+    public int compareTo(Object object)
     {
-        return this.order - ( ( Declaration ) object ).order;
+        return this.order - ((Declaration) object).order;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

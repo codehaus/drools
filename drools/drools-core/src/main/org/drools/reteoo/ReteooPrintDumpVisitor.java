@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooPrintDumpVisitor.java,v 1.6 2004-11-13 01:43:07 simon Exp $
+ * $Id: ReteooPrintDumpVisitor.java,v 1.7 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,13 +48,13 @@ import java.util.Iterator;
 
 public class ReteooPrintDumpVisitor extends ReflectiveVisitor
 {
-    private PrintStream  out;
+    private PrintStream out;
 
     private StringBuffer buffer;
 
-    private int          depth;
+    private int depth;
 
-    private String       indent;
+    private String indent;
 
     public ReteooPrintDumpVisitor(PrintStream out)
     {
@@ -62,7 +62,8 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         this.indent = "  ";
     }
 
-    public ReteooPrintDumpVisitor(PrintStream out, String indent)
+    public ReteooPrintDumpVisitor(PrintStream out,
+                                  String indent)
     {
         this.out = out;
         this.indent = indent;
@@ -71,7 +72,7 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
     public void visitRuleBase(RuleBase ruleBase)
     {
         buffer = new StringBuffer( );
-        visit( ( ( RuleBaseImpl ) ruleBase ).getRete( ) );
+        visit( ((RuleBaseImpl) ruleBase).getRete( ) );
         out.println( buffer.toString( ) );
     }
 
@@ -98,15 +99,14 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         buffer.append( newline );
         buffer.append( indent ).append( "--------------" );
         buffer.append( newline );
-        buffer.append( indent ).append( "objectType: "
-                       + objectTypeNode.getObjectType( ).toString( ) );
+        buffer.append( indent ).append( "objectType: " + objectTypeNode.getObjectType( ).toString( ) );
         buffer.append( newline );
         Iterator it = objectTypeNode.getParameterNodeIterator( );
         int scopedDepth = depth;
         depth++;
         while ( it.hasNext( ) )
         {
-            visit( ( ParameterNode ) it.next( ) );
+            visit( (ParameterNode) it.next( ) );
         }
         depth = scopedDepth;
     }
@@ -207,8 +207,7 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
     public void visitObject(Object object)
     {
         String indent = getIndent( depth );
-        buffer.append( "no visitor implementation for : " + object.getClass( )
-                       + " : " + object );
+        buffer.append( "no visitor implementation for : " + object.getClass( ) + " : " + object );
         buffer.append( newline );
     }
 

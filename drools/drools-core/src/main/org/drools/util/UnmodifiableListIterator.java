@@ -21,80 +21,100 @@ import org.drools.util.Unmodifiable;
 
 /**
  * Decorates a list iterator such that it cannot be modified.
- *
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-15 23:06:07 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public final class UnmodifiableListIterator implements ListIterator, Unmodifiable {
+public final class UnmodifiableListIterator
+    implements
+    ListIterator,
+    Unmodifiable
+{
 
     /** The iterator being decorated */
     private ListIterator iterator;
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Decorates the specified iterator such that it cannot be modified.
-     *
-     * @param iterator  the iterator to decorate
-     * @throws IllegalArgumentException if the iterator is null
+     * 
+     * @param iterator
+     *            the iterator to decorate
+     * @throws IllegalArgumentException
+     *             if the iterator is null
      */
-    public static ListIterator decorate(ListIterator iterator) {
-        if (iterator == null) {
-            throw new IllegalArgumentException("ListIterator must not be null");
+    public static ListIterator decorate(ListIterator iterator)
+    {
+        if ( iterator == null )
+        {
+            throw new IllegalArgumentException( "ListIterator must not be null" );
         }
-        if (iterator instanceof Unmodifiable) {
+        if ( iterator instanceof Unmodifiable )
+        {
             return iterator;
         }
-        return new UnmodifiableListIterator(iterator);
+        return new UnmodifiableListIterator( iterator );
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Constructor.
-     *
-     * @param iterator  the iterator to decorate
+     * 
+     * @param iterator
+     *            the iterator to decorate
      */
-    private UnmodifiableListIterator(ListIterator iterator) {
-        super();
+    private UnmodifiableListIterator(ListIterator iterator)
+    {
+        super( );
         this.iterator = iterator;
     }
 
-    //-----------------------------------------------------------------------
-    public boolean hasNext() {
-        return iterator.hasNext();
+    // -----------------------------------------------------------------------
+    public boolean hasNext()
+    {
+        return iterator.hasNext( );
     }
 
-    public Object next() {
-        return iterator.next();
+    public Object next()
+    {
+        return iterator.next( );
     }
 
-    public int nextIndex() {
-        return iterator.nextIndex();
+    public int nextIndex()
+    {
+        return iterator.nextIndex( );
     }
 
-    public boolean hasPrevious() {
-        return iterator.hasPrevious();
+    public boolean hasPrevious()
+    {
+        return iterator.hasPrevious( );
     }
 
-    public Object previous() {
-        return iterator.previous();
+    public Object previous()
+    {
+        return iterator.previous( );
     }
 
-    public int previousIndex() {
-        return iterator.previousIndex();
+    public int previousIndex()
+    {
+        return iterator.previousIndex( );
     }
 
-    public void remove() {
-        throw new UnsupportedOperationException("remove() is not supported");
+    public void remove()
+    {
+        throw new UnsupportedOperationException( "remove() is not supported" );
     }
 
-    public void set(Object obj) {
-        throw new UnsupportedOperationException("set() is not supported");
+    public void set(Object obj)
+    {
+        throw new UnsupportedOperationException( "set() is not supported" );
     }
 
-    public void add(Object obj) {
-        throw new UnsupportedOperationException("add() is not supported");
+    public void add(Object obj)
+    {
+        throw new UnsupportedOperationException( "add() is not supported" );
     }
 
 }

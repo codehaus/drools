@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleIntegrationException.java,v 1.6 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: RuleIntegrationException.java,v 1.7 2004-11-19 02:12:12 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,25 +51,27 @@ import org.drools.rule.Rule;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleIntegrationException.java,v 1.6 2004-09-17 00:14:06 mproctor Exp $
+ * @version $Id: RuleIntegrationException.java,v 1.6 2004/09/17 00:14:06
+ *          mproctor Exp $
  */
 public class RuleIntegrationException extends DroolsException
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The rule. */
     private Rule rule;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      * 
-     * @param rule The offending rule.
+     * @param rule
+     *            The offending rule.
      */
     public RuleIntegrationException(Rule rule)
     {
@@ -77,7 +79,7 @@ public class RuleIntegrationException extends DroolsException
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
@@ -91,7 +93,7 @@ public class RuleIntegrationException extends DroolsException
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     java.lang.Throwable
+    // java.lang.Throwable
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**

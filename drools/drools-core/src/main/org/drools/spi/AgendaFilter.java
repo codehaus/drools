@@ -1,5 +1,5 @@
 /*
- * $Id: AgendaFilter.java,v 1.2 2004-11-08 16:22:04 simon Exp $
+ * $Id: AgendaFilter.java,v 1.3 2004-11-19 02:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,8 +46,11 @@ public interface AgendaFilter
 {
     /**
      * Determine if a given activation should be fired.
-     * @param activation The activation to fire.
-     * @return <code>true</code> if the activation should be fired; otherwise <code>false</code>
+     * 
+     * @param activation
+     *            The activation to fire.
+     * @return <code>true</code> if the activation should be fired; otherwise
+     *         <code>false</code>
      */
     boolean accept(Activation activation);
 }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: NoParameterDeclarationException.java,v 1.3 2004-09-17 00:14:11 mproctor Exp $
+ * $Id: NoParameterDeclarationException.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -49,13 +49,14 @@ package org.drools.rule;
 public class NoParameterDeclarationException extends InvalidRuleException
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      * 
-     * @param rule The invalid <code>Rule</code>.
+     * @param rule
+     *            The invalid <code>Rule</code>.
      */
     public NoParameterDeclarationException(Rule rule)
     {

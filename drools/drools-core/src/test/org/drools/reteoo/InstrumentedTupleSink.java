@@ -3,6 +3,8 @@ package org.drools.reteoo;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.drools.FactHandle;
+
 public class InstrumentedTupleSink implements TupleSink
 {
     private final List assertedTuples = new LinkedList( );
@@ -21,8 +23,15 @@ public class InstrumentedTupleSink implements TupleSink
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory)
     {
         this.retractedKeys.add( key );
-    }
+    }    
 
+    public void modifyTuples(FactHandle trigger,
+                             TupleSet tupleSet,
+                             WorkingMemoryImpl workingMemory)
+    {
+
+    }    
+    
     public List getRetractedKeys()
     {
         return this.retractedKeys;

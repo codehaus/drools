@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.24 2004-11-16 11:15:39 mproctor Exp $
+ * $Id: TupleKey.java,v 1.25 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,17 +52,19 @@ import java.util.Map;
 
 /**
  * A composite key to match tuples.
- *
+ * 
  * @see Tuple
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-class TupleKey implements Serializable
+class TupleKey
+    implements
+    Serializable
 {
-    public static final TupleKey EMPTY = new TupleKey();
+    public static final TupleKey EMPTY = new TupleKey( );
 
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Columns. */
@@ -72,7 +74,7 @@ class TupleKey implements Serializable
     private int hashCode;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     private TupleKey()
@@ -80,16 +82,20 @@ class TupleKey implements Serializable
         handles = Collections.EMPTY_MAP;
     }
 
-    public TupleKey(TupleKey left, TupleKey right)
+    public TupleKey(TupleKey left,
+                    TupleKey right)
     {
-        handles = new HashMap( left.handles.size( ) + right.handles.size( ), 1 );
+        handles = new HashMap( left.handles.size( ) + right.handles.size( ),
+                               1 );
         this.handles.putAll( left.handles );
         this.handles.putAll( right.handles );
     }
 
-    public TupleKey(Declaration declaration, FactHandle handle)
+    public TupleKey(Declaration declaration,
+                    FactHandle handle)
     {
-        handles = Collections.singletonMap( declaration, handle );
+        handles = Collections.singletonMap( declaration,
+                                            handle );
     }
 
     public String toString()
@@ -103,21 +109,23 @@ class TupleKey implements Serializable
 
     /**
      * Retrieve a <code>FactHandle</code> by declaration.
-     *
-     * @param declaration The declaration.
-     *
+     * 
+     * @param declaration
+     *            The declaration.
+     * 
      * @return The fact handle.
      */
     public FactHandle get(Declaration declaration)
     {
-        return ( FactHandle ) this.handles.get( declaration );
-    } 
-    
+        return (FactHandle) this.handles.get( declaration );
+    }
+
     /**
      * Determine if this key contains the specified root fact object.
-     *
-     * @param handle The fact-handle to test.
-     *
+     * 
+     * @param handle
+     *            The fact-handle to test.
+     * 
      * @return <code>true</code> if this key contains the specified root
      *         fact-handle, otherwise <code>false</code>.
      */
@@ -128,19 +136,20 @@ class TupleKey implements Serializable
 
     /**
      * Determine if the specified key is a subset of this key.
-     *
-     * @param that The key to compare.
-     *
+     * 
+     * @param that
+     *            The key to compare.
+     * 
      * @return <code>true</code> if the specified key is a subset of this key.
      */
     public boolean containsAll(TupleKey that)
     {
-        Iterator entryIter = that.handles.entrySet().iterator();
+        Iterator entryIter = that.handles.entrySet( ).iterator( );
         Map.Entry eachEntry;
 
-        while ( entryIter.hasNext() )
+        while ( entryIter.hasNext( ) )
         {
-            eachEntry = ( Map.Entry ) entryIter.next( );
+            eachEntry = (Map.Entry) entryIter.next( );
 
             if ( !eachEntry.getValue( ).equals( this.handles.get( eachEntry.getKey( ) ) ) )
             {
@@ -162,7 +171,7 @@ class TupleKey implements Serializable
 
         while ( i.hasNext( ) )
         {
-            eachHandle = ( FactHandleImpl ) i.next( );
+            eachHandle = (FactHandleImpl) i.next( );
             recency = eachHandle.getRecency( );
             if ( recency > currentRecency )
             {
@@ -183,9 +192,9 @@ class TupleKey implements Serializable
 
         Iterator i = this.handles.values( ).iterator( );
 
-        while ( i.hasNext() )
+        while ( i.hasNext( ) )
         {
-            eachHandle = ( FactHandleImpl ) i.next( );
+            eachHandle = (FactHandleImpl) i.next( );
             recency = eachHandle.getRecency( );
             if ( recency < currentRecency )
             {
@@ -204,14 +213,14 @@ class TupleKey implements Serializable
      */
     public boolean equals(Object thatObj)
     {
-        if (this == thatObj)
+        if ( this == thatObj )
         {
             return true;
         }
 
         if ( thatObj instanceof TupleKey )
         {
-            return this.handles.equals( ( ( TupleKey ) thatObj ).handles );
+            return this.handles.equals( ((TupleKey) thatObj).handles );
         }
 
         return false;

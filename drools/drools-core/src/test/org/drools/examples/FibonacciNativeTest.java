@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.9 2004-11-16 07:26:33 simon Exp $
+ * $Id: FibonacciNativeTest.java,v 1.10 2004-11-19 02:15:49 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
+import org.drools.reteoo.Dumper;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -423,7 +424,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
 
         // <java:consequence>
         //   f3.setValue( f1.getValue() + f2.getValue() );
-        //   System.err.println( f3.getSequence() + " == " + f3.getValue() );
+        // System.err.println( f3.getSequence() + " == " + f3.getValue() );
         //   drools.modifyObject( f3 );
         //   drools.retractObject( f1 );
         // </java:consequence>
@@ -457,6 +458,10 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
+        
+        //Dumper dumper = new Dumper( ruleBase );
+        //dumper.dumpReteToDot( System.err );
+        
         WorkingMemory workingMemory = getWorkingMemory( ruleBase );
         workingMemory.addEventListener(new TestWorkingMemoryEventListener());
 

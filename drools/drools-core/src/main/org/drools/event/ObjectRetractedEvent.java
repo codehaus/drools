@@ -7,7 +7,8 @@ public class ObjectRetractedEvent extends WorkingMemoryEvent
 {
     private final FactHandle handle;
 
-    public ObjectRetractedEvent(WorkingMemory workingMemory, FactHandle handle)
+    public ObjectRetractedEvent(WorkingMemory workingMemory,
+                                FactHandle handle)
     {
         super( workingMemory );
         this.handle = handle;

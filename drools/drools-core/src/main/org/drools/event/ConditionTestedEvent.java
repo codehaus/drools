@@ -7,13 +7,13 @@ import org.drools.spi.Tuple;
 
 public class ConditionTestedEvent extends WorkingMemoryEvent
 {
-    private final Rule      rule;
+    private final Rule rule;
 
     private final Condition condition;
 
-    private final Tuple     tuple;
+    private final Tuple tuple;
 
-    private final boolean   passed;
+    private final boolean passed;
 
     public ConditionTestedEvent(WorkingMemory workingMemory,
                                 Rule rule,
@@ -51,9 +51,6 @@ public class ConditionTestedEvent extends WorkingMemoryEvent
 
     public String toString()
     {
-        return "[ConditionTested: rule=" + this.rule.getName( )
-               + "; condition=" + this.condition + "; passed=" + this.passed
-               + "; tuple=" + this.tuple + "]";
+        return "[ConditionTested: rule=" + this.rule.getName( ) + "; condition=" + this.condition + "; passed=" + this.passed + "; tuple=" + this.tuple + "]";
     }
 }
-

@@ -21,24 +21,25 @@ package org.drools.util;
  * A Map Entry has considerable additional semantics over and above a simple
  * key-value pair. This interface defines the minimum key value, with just the
  * two get methods.
- *
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-07 12:10:18 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public interface KeyValue {
+public interface KeyValue
+{
 
     /**
      * Gets the key from the pair.
-     *
+     * 
      * @return the key
      */
     Object getKey();
 
     /**
      * Gets the value from the pair.
-     *
+     * 
      * @return the value
      */
     Object getValue();

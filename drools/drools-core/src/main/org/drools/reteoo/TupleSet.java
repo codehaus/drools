@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.19 2004-11-16 11:37:12 simon Exp $
+ * $Id: TupleSet.java,v 1.20 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,17 +52,19 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-class TupleSet implements Serializable
+class TupleSet
+    implements
+    Serializable
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Tuples, indexed by TupleKey. */
     private final Map tuples;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -74,8 +76,31 @@ class TupleSet implements Serializable
     }
 
     /**
+     * Construct with a single tuple.
+     * 
+     * @param tuple
+     *            The tuple.
+     */
+    TupleSet(ReteTuple tuple)
+    {
+        this( 1 );
+        addTuple( tuple );
+    }
+
+    /**
+     * Construct with a size hint.
+     * 
+     * @param sizeHint
+     *            Hint as to desired size.
+     */
+    TupleSet(int sizeHint)
+    {
+        this.tuples = new HashMap( sizeHint );
+    }
+
+    /**
      * Retrieve the size (number of tuples) in this set.
-     *
+     * 
      * @return The size of this set.
      */
     public int size()
@@ -84,47 +109,128 @@ class TupleSet implements Serializable
     }
 
     /**
+     * Return empty status
+     * 
+     * @return The size of this set.
+     */
+    public boolean isEmpty()
+    {
+        return this.tuples.isEmpty();
+    }    
+
+    /**
      * Add a single <code>Tuple</code> to this set.
-     *
-     * @param tuple The tuple.
+     * 
+     * @param tuple
+     *            The tuple.
      */
     public void addTuple(ReteTuple tuple)
     {
-        this.tuples.put( tuple.getKey( ), tuple );
+        this.tuples.put( tuple.getKey( ),
+                         tuple );
     }
 
     /**
-     * Retract tuples from this memory.
+     * Add a <code>Set</code> of <code>Tuple</code> s to this set.
      *
-     * @param key The key for the tuples to be removed.
+     * @param tuples The tuples.
      */
-    public void removeAllTuples( TupleKey key )
+    public void addAllTuples(Set tuples)
     {
-        Iterator tupleIter = iterator();
-        while ( tupleIter.hasNext() )
+        Iterator tupleIter = tuples.iterator( );
+        ReteTuple eachTuple = null;
+
+        while ( tupleIter.hasNext( ) )
         {
-            if ( ( ( ReteTuple ) tupleIter.next() ).getKey().containsAll( key ) )
+            eachTuple = ( ReteTuple ) tupleIter.next( );
+
+            addTuple( eachTuple );
+        }
+    }
+
+    /**
+     * Add a <code>TupleSet</code> of <code>Tuple<code>s to this set.
+     *
+     *  @param tupleSet The tuple set.
+     */
+    public void addAllTuples(TupleSet tupleSet)
+    {
+        this.tuples.putAll( tupleSet.tuples );
+    }    
+
+    /**
+     * Retract tuples from this memory.
+     * 
+     * @param key
+     *            The key for the tuples to be removed.
+     */
+    public void removeAllTuples(TupleKey key)
+    {
+        Iterator tupleIter = iterator( );
+        while ( tupleIter.hasNext( ) )
+        {
+            if ( ((ReteTuple) tupleIter.next( )).getKey( ).containsAll( key ) )
             {
-                tupleIter.remove();
+                tupleIter.remove( );
             }
         }
     }
 
     /**
      * Retrieve all <code>Tuple</code>s.
-     *
+     * 
      * @see org.drools.spi.Tuple
-     *
+     * 
      * @return The set of tuples.
      */
     public Set getTuples()
     {
         return new HashSet( this.tuples.values( ) );
     }
+    
+    /**
+     * Determine if this set contains a <code>Tuple</code> matching the
+     * specified <code>TupleKey</code>.
+     *
+     * @param key The tuple key.
+     *
+     * @return <code>true</code> if a matching tuple exists within this set,
+     *         otherwise <code>false<code>.
+     */
+    public boolean containsTuple(TupleKey key)
+    {
+        return this.tuples.containsKey( key );
+    }
+
+    /**
+     * Retrieve a <code>Tuple</code> by <code>TupleKey</code>.
+     *
+     * @see org.drools.spi.Tuple
+     * @see #containsTuple
+     *
+     * @param key The tuple key.
+     *
+     * @return The matching tuple or <code>null</code> if this set contains no
+     *         matching tuple.
+     */
+    public ReteTuple getTuple(TupleKey key)
+    {
+        return ( ReteTuple ) this.tuples.get( key );
+    }
+
+    /**
+     * Remove a tuple from this set.
+     *
+     * @param key Key matching the tuple.
+     */
+    public void removeTuple(TupleKey key)
+    {
+        this.tuples.remove( key );
+    }    
 
     /**
      * Retrieve an iterator over the tuples.
-     *
+     * 
      * @return The iterator.
      */
     public Iterator iterator()
@@ -137,4 +243,3 @@ class TupleSet implements Serializable
         return this.tuples.values( ).toString( );
     }
 }
-

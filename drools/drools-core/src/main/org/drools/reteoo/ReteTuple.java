@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.51 2004-11-16 22:29:56 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.52 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,38 +57,42 @@ import java.util.Set;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
- *
+ * 
  * @see Tuple
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-class ReteTuple implements Tuple, Serializable
+class ReteTuple
+    implements
+    Tuple,
+    Serializable
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     private final WorkingMemory workingMemory;
 
-    private final Rule          rule;
+    private final Rule rule;
 
     /** Key objects for this tuple. */
-    private final TupleKey      key;
-   
-    private final Set           declarations;
+    private final TupleKey key;
+
+    private final Set declarations;
 
     /** Extraction value objects in this tuple. */
-    private final Map           extractions;    
+    private final Map extractions;
 
-    private FactHandleImpl      mostRecentFact;
+    private FactHandleImpl mostRecentFact;
 
-    private FactHandleImpl      leastRecentFact;
+    private FactHandleImpl leastRecentFact;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
-    public ReteTuple(WorkingMemory workingMemory, Rule rule)
+    public ReteTuple(WorkingMemory workingMemory,
+                     Rule rule)
     {
         this.workingMemory = workingMemory;
         this.rule = rule;
@@ -97,18 +101,21 @@ class ReteTuple implements Tuple, Serializable
         this.extractions = Collections.EMPTY_MAP;
     }
 
-    ReteTuple(ReteTuple left, ReteTuple right)
+    ReteTuple(ReteTuple left,
+              ReteTuple right)
     {
         this.workingMemory = left.workingMemory;
         this.rule = left.rule;
-        this.key = new TupleKey( left.key, right.key );
-        this.declarations = new HashSet( left.declarations.size( ) + right.declarations.size( ), 1 );
+        this.key = new TupleKey( left.key,
+                                 right.key );
+        this.declarations = new HashSet( left.declarations.size( ) + right.declarations.size( ),
+                                         1 );
         this.declarations.addAll( left.declarations );
         this.declarations.addAll( right.declarations );
-        if (left.extractions != Collections.EMPTY_MAP)
+        if ( left.extractions != Collections.EMPTY_MAP )
         {
             this.extractions = left.extractions;
-        	this.extractions.putAll(right.extractions);
+            this.extractions.putAll( right.extractions );
         }
         else
         {
@@ -116,27 +123,35 @@ class ReteTuple implements Tuple, Serializable
         }
     }
 
-    ReteTuple( ReteTuple that, FactHandle handle, Declaration declaration )
+    ReteTuple(ReteTuple that,
+              FactHandle handle,
+              Declaration declaration)
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
-        this.key = new TupleKey( that.key, new TupleKey(declaration, handle) );
-        this.declarations = new HashSet( that.declarations.size( ) + 1, 1 );
+        this.key = new TupleKey( that.key,
+                                 new TupleKey( declaration,
+                                               handle ) );
+        this.declarations = new HashSet( that.declarations.size( ) + 1,
+                                         1 );
         this.declarations.addAll( that.declarations );
         this.declarations.add( declaration );
         this.extractions = that.extractions;
     }
 
-    ReteTuple( ReteTuple that, Declaration declaration, Object value)
+    ReteTuple(ReteTuple that,
+              Declaration declaration,
+              Object value)
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
         this.key = that.key;
-        this.declarations = new HashSet( that.declarations.size( ) + 1, 1 );
+        this.declarations = new HashSet( that.declarations.size( ) + 1,
+                                         1 );
         this.declarations.addAll( that.declarations );
         this.declarations.add( declaration );
-        
-        if (that.extractions == Collections.EMPTY_MAP)
+
+        if ( that.extractions == Collections.EMPTY_MAP )
         {
             this.extractions = new HashMap( );
         }
@@ -145,17 +160,22 @@ class ReteTuple implements Tuple, Serializable
             this.extractions = that.extractions;
         }
 
-        this.extractions.put(declaration, value);
-    }    
+        this.extractions.put( declaration,
+                              value );
+    }
 
-    ReteTuple( WorkingMemory workingMemory, Rule rule, Declaration declaration, FactHandle handle )
+    ReteTuple(WorkingMemory workingMemory,
+              Rule rule,
+              Declaration declaration,
+              FactHandle handle)
     {
         this.workingMemory = workingMemory;
         this.rule = rule;
-        this.key = new TupleKey( declaration, handle );
+        this.key = new TupleKey( declaration,
+                                 handle );
         this.declarations = Collections.singleton( declaration );
         this.extractions = Collections.EMPTY_MAP;
-        
+
     }
 
     public String toString()
@@ -164,12 +184,12 @@ class ReteTuple implements Tuple, Serializable
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the key for this tuple.
-     *
+     * 
      * @return The key.
      */
     TupleKey getKey()
@@ -179,9 +199,10 @@ class ReteTuple implements Tuple, Serializable
 
     /**
      * Determine if this tuple depends upon a specified object.
-     *
-     * @param handle The object handle to test.
-     *
+     * 
+     * @param handle
+     *            The object handle to test.
+     * 
      * @return <code>true</code> if this tuple depends upon the specified
      *         object, otherwise <code>false</code>.
      */
@@ -207,11 +228,11 @@ class ReteTuple implements Tuple, Serializable
             catch ( NoSuchFactObjectException e )
             {
             }
-        } 
+        }
         else
-        //could be a extraction value
+        // could be a extraction value
         {
-            return this.extractions.get(declaration);
+            return this.extractions.get( declaration );
         }
         return null;
     }
@@ -262,7 +283,7 @@ class ReteTuple implements Tuple, Serializable
     {
         if ( this.leastRecentFact == null )
         {
-            this.leastRecentFact = this.key.getLeastRecentFact();
+            this.leastRecentFact = this.key.getLeastRecentFact( );
         }
         return this.leastRecentFact != null ? this.leastRecentFact.getRecency( ) : -1;
     }

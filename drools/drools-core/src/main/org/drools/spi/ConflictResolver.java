@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConflictResolver.java,v 1.8 2004-10-30 01:11:48 simon Exp $
+ * $Id: ConflictResolver.java,v 1.9 2004-11-19 02:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,23 +45,27 @@ import java.util.Comparator;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
- *
+ * 
  * <p>
  * Since a fact or set of facts may activate multiple rules, a
  * <code>ConflictResolutionStrategy</code> is used to provide priority
  * ordering of conflicting rules.
  * </p>
- *
+ * 
  * @see Activation
  * @see Tuple
  * @see org.drools.rule.Rule
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
- *
- * @version $Id: ConflictResolver.java,v 1.8 2004-10-30 01:11:48 simon Exp $
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
+ * 
+ * @version $Id: ConflictResolver.java,v 1.9 2004-11-19 02:14:48 mproctor Exp $
  */
-public interface ConflictResolver extends Serializable, Comparator
+public interface ConflictResolver
+    extends
+    Serializable,
+    Comparator
 {
-    int compare( Activation lhs, Activation rhs );
+    int compare(Activation lhs,
+                Activation rhs);
 }

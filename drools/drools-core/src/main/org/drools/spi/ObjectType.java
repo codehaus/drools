@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ObjectType.java,v 1.8 2004-09-17 00:14:13 mproctor Exp $
+ * $Id: ObjectType.java,v 1.9 2004-11-19 02:14:48 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -47,13 +47,16 @@ package org.drools.spi;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public interface ObjectType extends SemanticComponent
+public interface ObjectType
+    extends
+    SemanticComponent
 {
     /**
      * Determine if the passed <code>Object</code> belongs to the object type
      * defined by this <code>objectType</code> instance.
      * 
-     * @param object The <code>Object</code> to test.
+     * @param object
+     *            The <code>Object</code> to test.
      * 
      * @return <code>true</code> if the <code>Object</code> matches this
      *         object type, else <code>false</code>.
