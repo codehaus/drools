@@ -7,10 +7,10 @@
     <s:condition name="condition"
                  classname="org.drools.semantics.java.ExprCondition"/>
 
-    <s:extractor name="extract"
+    <s:extractor name="extractor"
                  classname="org.drools.semantics.java.ExprExtractor"/>
 
-    <s:consequence name="action"
+    <s:consequence name="consequence"
                    classname="org.drools.semantics.java.BlockConsequence"/>
 
 </s:module>
