@@ -3,6 +3,83 @@
 
     <goal name="get-deps" />
 
+<!-- Convenience goals to help regression test all examples quickly -->
+    <goal name="run-all">
+        <attainGoal name="fibonacci-java"/>
+        <attainGoal name="fibonacci-java-extract"/>
+        <attainGoal name="fibonacci-python"/>
+        <attainGoal name="fibonacci-groovy"/>
+        <attainGoal name="fibonacci-java-jndi"/>
+        <attainGoal name="fibonacci-java-serialized"/>
+        <attainGoal name="fibonacci-groovy-jndi"/>
+        <attainGoal name="fibonacci-groovy-serialized"/>
+        <attainGoal name="fibonacci-native"/>
+        <attainGoal name="escalation-java"/>
+        <attainGoal name="state-java"/>
+        <attainGoal name="state-groovy"/>
+        <attainGoal name="state-python"/>
+        <attainGoal name="helloworld-native"/>
+        <attainGoal name="helloworld-java"/>
+        <attainGoal name="helloworld-java-extract"/>
+        <attainGoal name="helloworld-groovy"/>
+        <attainGoal name="helloworld-python"/>
+        <attainGoal name="manners-jsr94"/>
+        <attainGoal name="manners-native"/>
+        <attainGoal name="manners-java"/>
+        <attainGoal name="manners-groovy"/>
+        <attainGoal name="primefactors-java"/>
+        <attainGoal name="primefactors-java-verbose"/>
+        <attainGoal name="petstore-java"/>
+        <attainGoal name="petstore-groovy"/>
+    </goal>
+
+    <goal name="run-all-java">
+	<attainGoal name="fibonacci-java"/>
+	<attainGoal name="fibonacci-java-extract"/>
+	<attainGoal name="fibonacci-java-jndi"/>
+	<attainGoal name="fibonacci-java-serialized"/>
+        <attainGoal name="escalation-java"/>
+	<attainGoal name="state-java"/>
+	<attainGoal name="helloworld-java"/>
+	<attainGoal name="helloworld-java-extract"/>
+	<attainGoal name="manners-java"/>
+	<attainGoal name="primefactors-java"/>
+	<attainGoal name="primefactors-java-verbose"/>
+	<attainGoal name="petstore-java"/>
+    </goal>
+
+    <goal name="run-all-groovy">
+	<attainGoal name="fibonacci-groovy"/>
+	<attainGoal name="fibonacci-groovy-jndi"/>
+	<attainGoal name="fibonacci-groovy-serialized"/>
+	<attainGoal name="state-groovy"/>
+	<attainGoal name="helloworld-groovy"/>
+	<attainGoal name="manners-groovy"/>
+	<attainGoal name="petstore-groovy"/>
+    </goal>
+
+    <goal name="run-all-python">
+	<attainGoal name="fibonacci-python"/>
+	<attainGoal name="helloworld-python"/>
+	<attainGoal name="state-python"/>
+    </goal>
+
+    <goal name="run-all-native">
+	<attainGoal name="fibonacci-native"/>
+	<attainGoal name="helloworld-native"/>
+	<attainGoal name="manners-native"/>
+    </goal>
+
+    <goal name="run-all-jndi">
+	<attainGoal name="fibonacci-java-jndi"/>
+	<attainGoal name="fibonacci-groovy-jndi"/>
+    </goal>
+
+    <goal name="run-all-serialized">
+	<attainGoal name="fibonacci-java-serialized"/>
+	<attainGoal name="fibonacci-groovy-serialized"/>
+    </goal>
+
 <!-- Fibonacci Examples -->
     <goal name="fibonacci-java" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciExample"
