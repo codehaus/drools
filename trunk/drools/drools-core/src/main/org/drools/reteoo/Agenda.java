@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.31 2004-09-23 23:13:00 mproctor Exp $
+ * $Id: Agenda.java,v 1.32 2004-10-05 12:30:33 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -134,12 +134,10 @@ class Agenda implements Serializable
          * and the current rule is active then do not
          * not re-add to the agenda
          */
-        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) this.workingMemory;
-        AgendaItem activeItem = workingMemory.getAgenda().getActiveItem();
         
-        if (activeItem != null 
+        if (this.item != null 
             &&
-            rule.getNoLoop() && rule.equals(activeItem.getRule()))
+            rule.getNoLoop() && rule.equals(this.item.getRule()))
         {
             return;
         }
