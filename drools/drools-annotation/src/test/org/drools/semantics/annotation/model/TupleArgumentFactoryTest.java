@@ -7,17 +7,17 @@ import java.lang.reflect.Method;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.semantics.annotation.Parameter;
-import org.drools.semantics.annotation.model.ArgumentSource;
-import org.drools.semantics.annotation.model.TupleArgumentSourceFactory;
+import org.drools.semantics.annotation.model.Argument;
+import org.drools.semantics.annotation.model.TupleArgumentFactory;
 import org.drools.semantics.base.ClassObjectType;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
 
-public class TupleArgumentSourceFactoryTestCase extends TestCase {
+public class TupleArgumentFactoryTest extends TestCase {
 
     private EasymockContainer mocks = new EasymockContainer();
 
-    private static final String BASE_DEFAULT_IDENTIFIER = TupleArgumentSourceFactory.BASE_DEFAULT_IDENTIFIER;
+    private static final String BASE_DEFAULT_IDENTIFIER = TupleArgumentFactory.BASE_DEFAULT_IDENTIFIER;
 
     private Mock<Rule> mockRule = mocks.createMock(Rule.class);
     private Mock<Declaration> mockDeclaration = mocks.createMock(Declaration.class);
@@ -31,7 +31,7 @@ public class TupleArgumentSourceFactoryTestCase extends TestCase {
         public void identifierDefaultedObject(@Parameter TestObject value) {}
     }
 
-    private TupleArgumentSourceFactory factory = new TupleArgumentSourceFactory();
+    private TupleArgumentFactory factory = new TupleArgumentFactory();
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -60,7 +60,7 @@ public class TupleArgumentSourceFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ArgumentSource arg = factory.create(
+        Argument arg = factory.create(
                 mockRule.object, int.class,
                 getParameterAnnotations("identifierSpecified", int.class));
 
@@ -76,7 +76,7 @@ public class TupleArgumentSourceFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ArgumentSource arg = factory.create(
+        Argument arg = factory.create(
                 mockRule.object, int.class,
                 getParameterAnnotations("identifierSpecified", int.class));
 
@@ -98,7 +98,7 @@ public class TupleArgumentSourceFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ArgumentSource arg = factory.create(
+        Argument arg = factory.create(
                 mockRule.object, parameterType,
                 getParameterAnnotations(methodName, parameterType));
 
@@ -116,7 +116,7 @@ public class TupleArgumentSourceFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ArgumentSource arg = factory.create(
+        Argument arg = factory.create(
                 mockRule.object, parameterType,
                 getParameterAnnotations(methodName, parameterType));
 

@@ -3,7 +3,6 @@ package org.drools.semantics.annotation.model;
 import java.util.List;
 
 import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.semantics.annotation.*;
 import org.drools.spi.Tuple;
@@ -18,16 +17,21 @@ import org.easymock.container.EasymockContainer.Mock;
 
 import junit.framework.TestCase;
 
+/*
+ * TODO Some kind of ArgumentSource needs to be extracted out of AnnonatedPojoRuleBuilder
+ * to enable better tests.
+ */
 public class AnnonatedPojoRuleBuilderTest extends TestCase
 {
     private EasymockContainer mocks = new EasymockContainer( );
-    private Rule rule = new Rule("test");
+    private org.drools.rule.Rule rule = new org.drools.rule.Rule("test");
 
     private AnnonatedPojoRuleBuilder builder = new AnnonatedPojoRuleBuilder();
 
     //---- Condition
 
     public void testConditionInvalidReturnType() throws Exception {
+        @Rule
         class Pojo {
             @Condition
             public void condition() {}
@@ -43,6 +47,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     }
 
     public void testConditionUnannoatedParameter() throws Exception {
+        @Rule
         class Pojo {
             @Condition
             public boolean condition(String parameter,
@@ -61,6 +66,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     }
 
     public void testConditionIllegalKnowledgeHelperParameter() throws Exception {
+        @Rule
         class Pojo {
             @Condition
             public boolean condition(KnowledgeHelper knowledgeHelper) {
@@ -81,6 +87,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     }
 
     public void testConditionParameterAnnotation() throws Exception {
+        @Rule
         class Pojo {
             @Condition
             public boolean condition(@Parameter("p1") @Deprecated String p) {
@@ -97,9 +104,28 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         assertEquals(1, declarations.size());
     }
 
+    public void testConditionDefaultedParameterAnnotation() throws Exception {
+        @Rule(defaultParameterAnnotation=true)
+        class Pojo {
+            @Condition
+            public boolean condition(String p) {
+                return false;
+            }
+            @Consequence
+            public void consequence() {}
+        }
+        Pojo pojo = new Pojo();
+
+        builder.buildRule(rule, pojo);
+
+        List<Declaration> declarations = rule.getParameterDeclarations();
+        assertEquals(1, declarations.size());
+    }
+
     //---- Consequence
 
     public void testConsequenceNoMethod() throws Exception {
+        @Rule
         class Pojo {
             public void consequence() {
                 // did not annotate!
@@ -116,6 +142,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     }
 
     public void testConsequenceInvalidReturnType() throws Exception {
+        @Rule
         class Pojo {
             @Consequence
             public int consequence() {
@@ -133,6 +160,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     }
 
     public void testConsequenceUnannoatedParameter() throws Exception {
+        @Rule
         class Pojo {
             @Consequence
             public void consequence(String parameter,
@@ -149,23 +177,8 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         }
     }
 
-    public void testConsequenceMultipleKnowledgeHelperParameters() throws Exception {
-        class Pojo {
-            @Consequence
-            public void consequence(KnowledgeHelper kh1, KnowledgeHelper kn2) {}
-        }
-        Pojo pojo = new Pojo();
-
-
-        try {
-            builder.buildRule(rule, pojo);
-            fail("Expected InvalidParameterException");
-        } catch (InvalidParameterException e) {
-            // expected
-        }
-    }
-
     public void testConsequenceParameterAnnotation() throws Exception {
+        @Rule
         class Pojo1 {
             @Consequence
             public void consequence(@Deprecated @ApplicationData("a2") String p) {}
@@ -178,6 +191,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     }
 
     public void testMultipleConsequenceMethods() throws Exception {
+        @Rule
         class Pojo {
             public int consequenceOneCallCount;
             public int consequenceTwoCallCount;
@@ -195,7 +209,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         Pojo pojo = new Pojo();
         Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
 
-        Rule returnedRule = builder.buildRule(rule, pojo);
+        org.drools.rule.Rule returnedRule = builder.buildRule(rule, pojo);
         org.drools.spi.Consequence compositeConsequence = returnedRule.getConsequence();
 
         compositeConsequence.invoke(mockTuple.object);
@@ -207,6 +221,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
     //---- ---- ----
 
     public void testBuild() throws Exception {
+        @Rule
         class Pojo {
             @Condition
             public boolean conditionOne(
@@ -230,7 +245,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         }
         Pojo pojo = new Pojo();
 
-        Rule returnedRule = builder.buildRule(rule, pojo);
+        org.drools.rule.Rule returnedRule = builder.buildRule(rule, pojo);
 
         assertSame(returnedRule, rule);
 

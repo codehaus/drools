@@ -18,11 +18,11 @@ class PojoCondition implements Condition {
         this.requiredDeclarations = extractDeclarations(ruleMethod.getArguments());
     }
 
-    private static Declaration[] extractDeclarations(ArgumentSource[] arguments) {
+    private static Declaration[] extractDeclarations(Argument[] arguments) {
         List<Declaration> declarations = new ArrayList<Declaration>(arguments.length);
-        for (ArgumentSource arg : arguments) {
-            if (arg instanceof TupleArgumentSource) {
-                declarations.add(((TupleArgumentSource) arg).getDeclaration());
+        for (Argument arg : arguments) {
+            if (arg instanceof TupleArgument) {
+                declarations.add(((TupleArgument) arg).getDeclaration());
             }
         }
         return declarations.toArray(new Declaration[declarations.size()]);

@@ -9,4 +9,6 @@ import java.lang.annotation.Retention;
 @Inherited @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Rule
-{}
+{
+    boolean defaultParameterAnnotation() default false;
+}

@@ -5,21 +5,21 @@ import java.lang.annotation.Annotation;
 import org.drools.semantics.annotation.ApplicationData;
 import org.drools.rule.Rule;
 
-public class ApplicationDataArgumentSourceFactory extends AnnotationArgumentSourceFactory {
+public class ApplicationDataArgumentFactory extends AnnotationArgumentFactory {
 
     static final String DEFAULT_IDENTIFIER = "ApplicationData$defaultIdentifier";
 
-    public ApplicationDataArgumentSourceFactory() {
+    public ApplicationDataArgumentFactory() {
         super(ApplicationData.class);
     }
 
-    public Class<? extends ArgumentSource> getParameterValueType() {
-        return ApplicationDataArgumentSource.class;
+    public Class<? extends Argument> getArgumentType() {
+        return ApplicationDataArgument.class;
     }
 
-    protected ArgumentSource doCreate(Rule rule, Class< ? > parameterClass,
+    protected Argument doCreate(Rule rule, Class< ? > parameterClass,
                                       Annotation annotation) {
         String parameterId = ((ApplicationData) annotation).value( );
-        return new ApplicationDataArgumentSource( parameterId, parameterClass );
+        return new ApplicationDataArgument( parameterId, parameterClass );
     }
 }
