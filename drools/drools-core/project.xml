@@ -5,7 +5,7 @@
     <name>drools-core</name>
     <id>drools-core</id>
     <groupId>drools</groupId>
-    <currentVersion>2.0-beta-12-dev</currentVersion>
+    <currentVersion>2.0-beta-13-dev</currentVersion>
 
     <organization>
         <name>The Codehaus</name>

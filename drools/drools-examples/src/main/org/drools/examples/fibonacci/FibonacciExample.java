@@ -12,17 +12,18 @@ public class FibonacciExample
         throws Exception
     {
         RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciExample.class.getResource( "fibonacci.drl" ) );
-        
+
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-        
+
         Fibonacci fibonacci = new Fibonacci( 50 );
-        
+
         long start = System.currentTimeMillis();
 
         workingMemory.assertObject( fibonacci );
 
+
         workingMemory.fireAllRules();
-        
+
         long stop = System.currentTimeMillis();
 
         System.err.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
