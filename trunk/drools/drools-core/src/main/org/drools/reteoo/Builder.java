@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.48 2004-11-03 11:54:20 simon Exp $
+ * $Id: Builder.java,v 1.49 2004-11-03 14:27:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -289,8 +289,7 @@ public class Builder
         {
             eachCond = ( Condition ) condIter.next( );
 
-            tupleSource = findMatchingTupleSourceForCondition( eachCond,
-                                                               leafNodes );
+            tupleSource = findMatchingTupleSourceForCondition( eachCond, leafNodes );
 
             if ( tupleSource == null )
             {
@@ -299,7 +298,7 @@ public class Builder
 
             condIter.remove( );
 
-            conditionNode = new ConditionNode( tupleSource, eachCond, order );
+            conditionNode = new ConditionNode( tupleSource, eachCond, order++ );
 
             leafNodes.remove( tupleSource );
             leafNodes.add( conditionNode );
