@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.17 2004-07-21 12:08:37 mproctor Exp $
+ $Id: Interp.java,v 1.18 2004-07-26 19:56:15 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.17 2004-07-21 12:08:37 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.18 2004-07-26 19:56:15 bob Exp $
  */
 public class Interp implements Serializable
 {
@@ -172,17 +172,31 @@ public class Interp implements Serializable
             objectType = eachDecl.getObjectType();
             paramNames[i + 2] = eachDecl.getIdentifier();
             paramTypes[i + 2] = ((ClassObjectType)objectType).getType();
+
             //Import classes for each of the declarations
+
             if ( objectType instanceof ClassObjectType )
             {
                 type = ((ClassObjectType)objectType).getType().getName();
 
                 nestedClassPosition = type.indexOf('$');
+
                 if (nestedClassPosition != -1)
                 {
                     type = type.substring(0, nestedClassPosition);
                 }
+
                 buffer.append("import " + type + ";" + newline);
+
+                if ( objectType instanceof ExtraImports )
+                {
+                    String[] extra = ((ExtraImports)objectType).getExtraImports();
+
+                    for ( int e = 0 ; e < extra.length ; ++e )
+                    {
+                        buffer.append( "import " + extra[e] + ";" + newline );
+                    }
+                }
             }
         }
 
