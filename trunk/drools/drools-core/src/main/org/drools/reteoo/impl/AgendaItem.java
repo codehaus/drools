@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaItem.java,v 1.4 2003-10-14 19:16:16 bob Exp $
+ $Id: AgendaItem.java,v 1.5 2003-10-14 22:57:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -158,6 +158,6 @@ class AgendaItem
      */
     public String toString()
     {
-        return "[" + getTuple() + getRule().getName() + "]";
+        return "[" + getTuple() + "; " + getRule().getName() + "]";
     }
 }

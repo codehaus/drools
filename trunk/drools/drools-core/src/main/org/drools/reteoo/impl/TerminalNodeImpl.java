@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TerminalNodeImpl.java,v 1.5 2003-10-14 19:16:16 bob Exp $
+ $Id: TerminalNodeImpl.java,v 1.6 2003-10-14 22:57:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -115,8 +115,8 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *
      *  @throws AssertionException If an error occurs while asserting.
      */
-    public void assertTuple( ReteTuple tuple,
-                             WorkingMemory workingMemory ) throws AssertionException
+    public void assertTuple(ReteTuple tuple,
+                            WorkingMemory workingMemory) throws AssertionException
     {
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
@@ -129,8 +129,8 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *  @param key The tuple key.
      *  @param workingMemory The working memory seesion.
      */
-    public void retractTuples( TupleKey key,
-                               WorkingMemory workingMemory )
+    public void retractTuples(TupleKey key,
+                              WorkingMemory workingMemory)
     {
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
@@ -144,9 +144,9 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      */
-    public void modifyTuples( Object trigger,
-                              TupleSet newTuples,
-                              WorkingMemory workingMemory )
+    public void modifyTuples(Object trigger,
+                             TupleSet newTuples,
+                             WorkingMemory workingMemory)
     {
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 

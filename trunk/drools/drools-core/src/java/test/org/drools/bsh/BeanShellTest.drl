@@ -6,7 +6,7 @@
     <rule-set name="test rules"
         xmlns:java="http://drools.org/semantics/java">
 
-        <rule name="testAssert">
+        <rule name="testAssert" salience="1">
             <parameter identifier="string">
                 <java:class type="java.lang.String"/>
             </parameter>
@@ -24,7 +24,7 @@
             </consequence>
         </rule>
 
-        <rule name="testModify">
+        <rule name="testModify" salience="1">
             <parameter identifier="buffer">
                 <java:class type="java.lang.StringBuffer"/>
             </parameter>
@@ -44,7 +44,7 @@
             </consequence>
         </rule>
 
-        <rule name="testRetract:1">
+        <rule name="testRetract:1" salience="2">
             <parameter identifier="buffer">
                 <java:class type="java.lang.StringBuffer"/>
             </parameter>
@@ -62,7 +62,7 @@
             </consequence>
         </rule>
 
-        <rule name="testRetract:2">
+        <rule name="testRetract:2" salience="1">
             <parameter identifier="buffer">
                 <java:class type="java.lang.StringBuffer"/>
             </parameter>

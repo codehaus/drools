@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleSetLoader;
-import org.drools.jsr94.rules.RuleServiceProviderImpl;
+//import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.drools.rule.RuleSet;
 
 import javax.rules.RuleRuntime;
@@ -51,10 +51,13 @@ public class BeanShellTest extends TestCase
         HashMap appData = new HashMap();
         appData.put( "rules.fired", list );
 
-        WorkingMemory workingMemory = ruleBase.createWorkingMemory();
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+
         workingMemory.setApplicationData( appData );
 
         workingMemory.assertObject( "testAssert" );
+
+        workingMemory.fireAllRules();
 
         assertEquals( 3, list.size() );
         assertEquals( "testAssert", list.get( 0 ) );
@@ -62,6 +65,7 @@ public class BeanShellTest extends TestCase
         assertEquals( "testRetract", list.get( 2 ) );
     }
 
+/*
     public void testBshCommandsThroughJSR94() throws Exception
     {
         // First, setup the RuleServiceProvider and RuleAdministrator
@@ -101,4 +105,5 @@ public class BeanShellTest extends TestCase
         assertEquals( 1, outList.size() );
         assertEquals( "testAssert", outList.get( 0 ) );
     }
+*/
 }

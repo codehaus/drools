@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: KnowledgeTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
+ $Id: KnowledgeTag.java,v 1.5 2003-10-14 22:57:59 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.drools.WorkingMemory;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: KnowledgeTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
+ *  @version $Id: KnowledgeTag.java,v 1.5 2003-10-14 22:57:59 bob Exp $
  */
 public class KnowledgeTag extends TagSupport
 {
@@ -69,9 +69,6 @@ public class KnowledgeTag extends TagSupport
 
     /** The variable. */
     private String var;
-
-    /** Transactional flag. */
-    private boolean transactional;
 
     /** The working memory. */
     private WorkingMemory workingMemory;
@@ -88,30 +85,11 @@ public class KnowledgeTag extends TagSupport
     public KnowledgeTag()
     {
         super( true );
-        this.transactional = false;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /** Set the transactionality flag.
-     *
-     *  @param transactional Transactionality flag.
-     */
-    public void setTransactional(boolean transactional)
-    {
-        this.transactional = transactional;
-    }
-
-    /** Retrieve the transactionality flag.
-     *
-     *  @return The transactionality flag.
-     */
-    public boolean getTransactional()
-    {
-        return this.transactional;
-    }
 
     /** Set the variable in which to store the <code>WorkingMemory</code>.
      *
@@ -189,14 +167,7 @@ public class KnowledgeTag extends TagSupport
 
         if ( this.workingMemory == null )
         {
-            if ( this.transactional )
-            {
-                this.workingMemory = this.ruleBase.createTransactionalWorkingMemory();
-            }
-            else
-            {
-                this.workingMemory = this.ruleBase.createWorkingMemory();
-            }
+            this.workingMemory = this.ruleBase.createWorkingMemory();
         }
 
         invokeBody( output );

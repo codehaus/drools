@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
-  $Id: WorkingMemory.java,v 1.15 2003-10-14 19:16:16 bob Exp $
+  $Id: WorkingMemory.java,v 1.16 2003-10-14 22:57:57 bob Exp $
 
   Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -162,8 +162,6 @@ public class WorkingMemory
      */
     public synchronized void fireAllRules() throws AssertionException
     {
-        Agenda agenda = getAgenda();
-
         // If we're already firing a rule, then it'll pick up
         // the firing for any other assertObject(..) that get
         // nested inside, avoiding concurrent-modification
@@ -171,6 +169,8 @@ public class WorkingMemory
 
         if ( ! this.firing )
         {
+            Agenda agenda = getAgenda();
+
             try
             {
                 this.firing = true;
