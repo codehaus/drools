@@ -100,6 +100,14 @@
       </roles>
     </developer>
 
+    <developer>
+      <name>Christiaan ten Klooster</name>
+      <email>christiaan@dacelo.nl</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
   </developers>
   <!-- Need to mark these as compile-time/run-time -->
 
