@@ -1,7 +1,7 @@
 package bsh.commands;
 
 /*
- $Id: modifyObject.java,v 1.4 2003-10-15 20:03:59 bob Exp $
+ $Id: modifyObject.java,v 1.5 2003-12-05 06:02:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -78,6 +78,8 @@ public class modifyObject
         WorkingMemory workingMemory = (WorkingMemory) interp.get( "drools$working$memory" );
         Tuple         tuple         = (Tuple) interp.get( "drools$tuple" );
 
+        //System.err.println( "handle: " + tuple.getFactHandleForObject( object ) );
+        //System.err.println( "object: " + object );
         workingMemory.modifyObject( tuple.getFactHandleForObject( object ),
                                     object );
     }

@@ -7,6 +7,7 @@ import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 
 public class ExprExtractorFactory
+    implements ExtractorFactory
 {
     private static final ExprExtractorFactory INSTANCE = new ExprExtractorFactory();
 

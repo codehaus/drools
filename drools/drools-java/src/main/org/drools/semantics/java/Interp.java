@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.7 2003-03-25 19:47:29 tdiesler Exp $
+ $Id: Interp.java,v 1.8 2003-12-05 06:02:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,7 +64,7 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.7 2003-03-25 19:47:29 tdiesler Exp $
+ *  @version $Id: Interp.java,v 1.8 2003-12-05 06:02:26 bob Exp $
  */
 public class Interp
 {
@@ -180,5 +180,10 @@ public class Interp
         }
 
         return ns;
+    }
+
+    public String toString()
+    {
+        return "[[ " + this.text + " ]]";
     }
 }
