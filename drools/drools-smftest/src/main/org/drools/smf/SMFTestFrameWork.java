@@ -137,7 +137,7 @@ public abstract class SMFTestFrameWork extends TestCase
         ObjectTypeFactory objectTypeFactory = module
                                                     .getObjectTypeFactory( "class" );
         ObjectType cheeseType = objectTypeFactory
-                                                 .newObjectType( cheeseConfiguration );
+                                                 .newObjectType( cheeseConfiguration, null );
 
         tuple = new MockTuple( );
         Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );
@@ -216,7 +216,7 @@ public abstract class SMFTestFrameWork extends TestCase
         MockConfiguration stringConfiguration = new MockConfiguration( "test2" );
         stringConfiguration.setText( String.class.getName( ) );
         ObjectType stringType = objectTypeFactory
-                                                 .newObjectType( stringConfiguration );
+                                                 .newObjectType( stringConfiguration, null );
         Declaration favouriteCheeseDecl = new Declaration( stringType,
                                                            "favouriteCheese" );
 
@@ -295,14 +295,14 @@ public abstract class SMFTestFrameWork extends TestCase
                                                                        "cheeseConfig" );
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectType cheeseType = objectTypeFactory
-                                                 .newObjectType( cheeseConfiguration );
+                                                 .newObjectType( cheeseConfiguration, null );
 
         // Integer ObjectType
         MockConfiguration integerConfiguration = new MockConfiguration(
                                                                         "integerConfig" );
         integerConfiguration.setText( Integer.class.getName( ) );
         ObjectType integerType = objectTypeFactory
-                                                  .newObjectType( integerConfiguration );
+                                                  .newObjectType( integerConfiguration, null );
 
         // Declarations
         Declaration camembertDecl = new Declaration( cheeseType, "camembert" );
@@ -451,7 +451,7 @@ public abstract class SMFTestFrameWork extends TestCase
         ObjectTypeFactory objectTypeFactory = module
                                                     .getObjectTypeFactory( "class" );
         ObjectType cheeseType = objectTypeFactory
-                                                 .newObjectType( cheeseConfiguration );
+                                                 .newObjectType( cheeseConfiguration, null );
 
         tuple = new MockTuple( );
         Rule rule = (Rule) new InstrumentedRule( "Test Rule 1" );

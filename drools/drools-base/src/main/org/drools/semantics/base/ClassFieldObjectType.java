@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.1 2004-10-25 21:34:41 mproctor Exp $
+ * $Id: ClassFieldObjectType.java,v 1.2 2004-10-26 09:22:27 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,7 +50,7 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.1 2004-10-25 21:34:41 mproctor Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.2 2004-10-26 09:22:27 mproctor Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
@@ -188,11 +188,11 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
     {
         if (hashCode == 0)
         {
-            int iConstant = 37;
-            int iTotal = 17;
-            iTotal = iTotal * iConstant + getType( ).hashCode();
-            iTotal = iTotal * iConstant + getFieldName( ).hashCode();
-            this.hashCode = iTotal * iConstant + getFieldValue( ).hashCode();
+            int constant = 37;
+            int total = 17;
+            total = total * constant + getType( ).hashCode();
+            total = total * constant + getFieldName( ).hashCode();
+            this.hashCode = total * constant + getFieldValue( ).hashCode();
         }
         return this.hashCode;                
     }

@@ -4,58 +4,57 @@
           xmlns="http://drools.org/rules"
           xmlns:groovy="http://drools.org/semantics/groovy">
 
+   <imports>
+     <groovy:import>org.drools.examples.state.State</groovy:import>
+   </imports>
+
     <rule name="Bootstrap">
         <parameter identifier="a">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="A">State</class-field>
         </parameter>
 
-        <groovy:condition>a.getName().equals("A")</groovy:condition>
-        <groovy:condition>a.getState().equals("NOTRUN")</groovy:condition>
+        <groovy:condition>a.state == "NOTRUN"</groovy:condition>
 
         <groovy:consequence>
-            println a.getName() + " finished" ;
-            a.setState("FINISHED");
+            println "${a.name} finished"
+            a.state = "FINISHED";
             drools.modifyObject(a);
         </groovy:consequence>
     </rule>
 
     <rule name="AtoB" salience="30">
         <parameter identifier="a">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="A">State</class-field>
         </parameter>
         <parameter identifier="b">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="B">State</class-field>
         </parameter>
 
-        <groovy:condition>a.getName().equals("A")</groovy:condition>
-        <groovy:condition>a.getState().equals("FINISHED")</groovy:condition>
-        <groovy:condition>b.getName().equals("B")</groovy:condition>
-        <groovy:condition>b.getState().equals("NOTRUN")</groovy:condition>
+        <groovy:condition>a.state == "FINISHED"</groovy:condition>
+        <groovy:condition>b.state == "NOTRUN"</groovy:condition>
 
         <groovy:consequence>
-            println b.getName() + " finished" ;
-            b.setState("FINISHED");
+            println "${b.name} finished"
+            b.state = "FINISHED";
             drools.modifyObject(b);
         </groovy:consequence>
     </rule>
 
     <rule name="BtoC" salience="20">
         <parameter identifier="b">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="B">State</class-field>
         </parameter>
         <parameter identifier="c">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="C">State</class-field>
         </parameter>
 
-        <groovy:condition>b.getName().equals("B")</groovy:condition>
-        <groovy:condition>b.getState().equals("FINISHED")</groovy:condition>
-        <groovy:condition>c.getName().equals("C")</groovy:condition>
-        <groovy:condition>c.getState().equals("NOTRUN")</groovy:condition>
+        <groovy:condition>b.state == "FINISHED"</groovy:condition>
+        <groovy:condition>c.state == "NOTRUN"</groovy:condition>
 
         <groovy:consequence>
-            println c.getName() + " finished" ;
-            c.setState("FINISHED");
-            drools.modifyObject(c);
+            println "${c.name} finished"
+            c.state = "FINISHED"
+            drools.modifyObject(c)
         </groovy:consequence>
     </rule>
 
@@ -63,21 +62,19 @@
 
     <rule name="BtoD" salience="10">
         <parameter identifier="b">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="B">State</class-field>
         </parameter>
         <parameter identifier="d">
-            <class>org.drools.examples.state.State</class>
+            <class-field field="name" value="D">State</class-field>
         </parameter>
 
-        <groovy:condition>b.getName().equals("B")</groovy:condition>
-        <groovy:condition>b.getState().equals("FINISHED")</groovy:condition>
-        <groovy:condition>d.getName().equals("D")</groovy:condition>
-        <groovy:condition>d.getState().equals("NOTRUN")</groovy:condition>
+        <groovy:condition>b.state == "FINISHED"</groovy:condition>
+        <groovy:condition>d.state == "NOTRUN"</groovy:condition>
 
         <groovy:consequence>
-            println d.getName() + " finished" ;
-            d.setState("FINISHED");
-            drools.modifyObject(d);
+            println "${d.name} finished"
+            d.state = "FINISHED"
+            drools.modifyObject(d)
         </groovy:consequence>
     </rule>
 

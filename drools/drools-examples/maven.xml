@@ -162,6 +162,17 @@
       </java>
     </goal>
 
+    <goal name="state-python" prereqs="jar:jar">
+      <java classname="org.drools.examples.state.StateExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="state.python.drl"/>
+      </java>
+    </goal>
+
 <!-- Hello World Examples -->
     <goal name="helloworld-native" prereqs="jar:jar">
       <java classname="org.drools.examples.helloworld.HelloWorldNative"
