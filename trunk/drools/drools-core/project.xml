@@ -256,6 +256,9 @@
             <includes>
                 <include>**/*Test.java</include>
             </includes>
+            <excludes>
+                <exclude>**/jsr94/*.java</exclude>
+            </excludes>
             <!--
                   <excludes>
                     <exclude>**/*.java</exclude>
