@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.17 2004-10-30 12:43:28 simon Exp $
+ * $Id: ConditionNode.java,v 1.18 2004-10-31 11:59:14 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -71,13 +71,13 @@ class ConditionNode extends TupleSource implements TupleSink
     // ------------------------------------------------------------
 
     /** The semantic <code>Condition</code>. */
-    private Condition   condition;
+    private final Condition   condition;
 
     /** The source of incoming <code>Tuples</code>. */
-    private TupleSource tupleSource;
+    private final TupleSource tupleSource;
 
     /** The order the condition is declared in its rule */
-    private int         order;
+    private final int         order;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -140,7 +140,7 @@ class ConditionNode extends TupleSource implements TupleSink
      *
      * @param tuple The <code>Tuple</code> being asserted.
      * @param workingMemory The working memory seesion.
-     * 
+     *
      * @throws AssertionException If an error occurs while asserting.
      */
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
