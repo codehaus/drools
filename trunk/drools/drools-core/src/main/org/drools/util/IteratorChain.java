@@ -17,10 +17,9 @@ package org.drools.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import org.drools.util.UnmodifiableList;
 
 /**
  * An IteratorChain is an Iterator that wraps a number of Iterators.
@@ -41,10 +40,10 @@ import org.drools.util.UnmodifiableList;
  * <p>
  * NOTE: As from version 3.0, the IteratorChain may contain no iterators. In
  * this case the class will function as an empty iterator.
- * 
+ *
  * @since Commons Collections 2.1
- * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
- * 
+ * @version $Revision: 1.3 $ $Date: 2004-11-22 02:38:39 $
+ *
  * @author Morgan Delagrange
  * @author Stephen Colebourne
  */
@@ -84,7 +83,7 @@ public class IteratorChain
 
     /**
      * Construct an IteratorChain with a single Iterator.
-     * 
+     *
      * @param iterator
      *            first Iterator in the IteratorChain
      * @throws NullPointerException
@@ -99,7 +98,7 @@ public class IteratorChain
     /**
      * Constructs a new <code>IteratorChain</code> over the two given
      * iterators.
-     * 
+     *
      * @param a
      *            the first child iterator
      * @param b
@@ -118,7 +117,7 @@ public class IteratorChain
     /**
      * Constructs a new <code>IteratorChain</code> over the array of
      * iterators.
-     * 
+     *
      * @param iterators
      *            the array of iterators
      * @throws NullPointerException
@@ -136,7 +135,7 @@ public class IteratorChain
     /**
      * Constructs a new <code>IteratorChain</code> over the collection of
      * iterators.
-     * 
+     *
      * @param iterators
      *            the collection of iterators
      * @throws NullPointerException
@@ -157,7 +156,7 @@ public class IteratorChain
     // -----------------------------------------------------------------------
     /**
      * Add an Iterator to the end of the chain
-     * 
+     *
      * @param iterator
      *            Iterator to add
      * @throws IllegalStateException
@@ -177,7 +176,7 @@ public class IteratorChain
 
     /**
      * Set the Iterator at the given index
-     * 
+     *
      * @param index
      *            index of the Iterator to replace
      * @param iterator
@@ -203,17 +202,17 @@ public class IteratorChain
 
     /**
      * Get the list of Iterators (unmodifiable)
-     * 
+     *
      * @return the unmodifiable list of iterators added
      */
     public List getIterators()
     {
-        return UnmodifiableList.decorate( iteratorChain );
+        return Collections.unmodifiableList( iteratorChain );
     }
 
     /**
      * Number of Iterators in the current IteratorChain.
-     * 
+     *
      * @return Iterator count
      */
     public int size()
@@ -225,7 +224,7 @@ public class IteratorChain
      * Determine if modifications can still be made to the IteratorChain.
      * IteratorChains cannot be modified once they have executed a method from
      * the Iterator interface.
-     * 
+     *
      * @return true if IteratorChain cannot be modified, false if it can
      */
     public boolean isLocked()
@@ -266,7 +265,7 @@ public class IteratorChain
         {
             if ( iteratorChain.isEmpty( ) )
             {
-                currentIterator = EmptyIterator.INSTANCE;
+                currentIterator = Collections.EMPTY_LIST.iterator( );
             }
             else
             {
@@ -287,7 +286,7 @@ public class IteratorChain
     // -----------------------------------------------------------------------
     /**
      * Return true if any Iterator in the IteratorChain has a remaining element.
-     * 
+     *
      * @return true if elements remain
      */
     public boolean hasNext()
@@ -301,7 +300,7 @@ public class IteratorChain
 
     /**
      * Returns the next Object of the current Iterator
-     * 
+     *
      * @return Object from the current Iterator
      * @throws java.util.NoSuchElementException
      *             if all the Iterators are exhausted
@@ -321,7 +320,7 @@ public class IteratorChain
      * underlying Iterator. Therefore, this method may throw an
      * UnsupportedOperationException if the underlying Iterator does not support
      * this method.
-     * 
+     *
      * @throws UnsupportedOperationException
      *             if the remove operator is not supported by the underlying
      *             Iterator

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: BlockConsequence.java,v 1.10 2004-11-13 13:27:16 simon Exp $
+ * $Id: BlockConsequence.java,v 1.11 2004-11-22 02:38:37 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,7 +58,7 @@ import java.util.Set;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: BlockConsequence.java,v 1.10 2004-11-13 13:27:16 simon Exp $
+ * @version $Id: BlockConsequence.java,v 1.11 2004-11-22 02:38:37 simon Exp $
  */
 public class BlockConsequence extends Exec implements Consequence
 {
@@ -107,9 +107,10 @@ public class BlockConsequence extends Exec implements Consequence
 
         dict.setVariable( "__drools_working_memory", workingMemory );
         Map appData = workingMemory.getApplicationDataMap( );
+        Map.Entry entry;
         for ( Iterator iterator = appData.entrySet( ).iterator( ); iterator.hasNext(); )
         {
-            Map.Entry entry = ( Map.Entry ) iterator.next( );
+            entry = ( Map.Entry ) iterator.next( );
             dict.setVariable( ( String ) entry.getKey( ), entry.getValue( ) );
         }
 
