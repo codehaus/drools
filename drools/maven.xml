@@ -168,7 +168,7 @@
 		<!--
 			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 		-->
-    <goal name="drools-dist" >
+    <goal name="drools-dist" prereqs="javadoc-all">
       <copy todir="./lib" flatten="true">
         <fileset dir="." includes="**/drools-*.jar" />
       </copy>
@@ -189,7 +189,7 @@
 			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 			and all dependencies
 		-->
-    <goal name="drools-dist-deps" >
+    <goal name="drools-dist-deps" prereqs="javadoc-all">
       <copy todir="./lib" flatten="true">
         <fileset dir="." includes="**/drools-*.jar" />
       </copy>
