@@ -1,0 +1,92 @@
+\section{Rete-OO}
+
+The Rete algorithm works wonderfully in language systems 
+such as Lisp, where pertinent attributes about objects 
+are directly asserted to the rules engine.  In an
+object-oriented language, such as C++ or Java, and entire 
+graph of objects can be reachable from a single named 
+root object.  Expressing highly complex relationships between
+entities using Cambridge-prefix notation may require many
+separate assertions.  In an OO language, the single root
+object is all that should be asserted, as using normal
+language constructs, attributes and relationships can be
+\emph{extracted}.
+
+Bob McWhirter adapted Forgy's original Rete algorithm to 
+object-oriented constructs, creating the Rete-OO algorithm.
+As with Rete, there are \emph{1/1} nodes and \emph{2/1}
+nodes.  Unlike Rete, there are nodes that exist simply 
+to extract reachable attributes and add columns to passing
+tuples. Rete always constructs the filtering \emph{1/1} nodes toward
+the root of the tree leaving the bottom portion to be 
+comprised of purely aggregating \emph{2/1} \emph{join} nodes.  
+Rete-OO must interleave both \emph{1/1} and \emph{2/1} nodes.
+
+The same example as in section \ref{algo.rete}, 
+the conditions could be expressed in terms of object-oriented
+language boolean and assignment expressions.  The choice
+of Java as the expression language is purely arbitrary.
+
+\medskip
+
+\begin{tabular}{cl}
+(0) & \texttt{Person personOne, personTwo} \\
+(1) & \texttt{personOne.hasSister(personTwo)} \\
+(3) & \texttt{petName = personOne.getCat().getName()} \\
+(3) & \texttt{petName = personTwo.getDog().getName()} \\
+\end{tabular}
+
+\bigskip
+
+Rete-OO adds the concept of root object declaration, where 
+the root objects of the condition are declared with their
+name and type.  The object's type maps directly to the
+tuple type in Rete.  The root object name has no direct
+mapping in Rete and causes the addition of a \emph{parameter node}
+to Rete-OO.  Boolean expressions in Rete-OO conditions are
+equivalent to Rete's condition patterns against attributes.
+The assignment expressions map to place-holder variables in
+Forgy's algorithm.
+
+The types of nodes used in Rete-OO graph construction are
+listed here.  Those that are new or different from Rete are
+denoted with a '*'.
+
+\begin{itemize}
+	\item \emph{Object type.} \\
+		Object type nodes differentiate objects by
+		filtering on their defined type.
+	\item \emph{*Parameter.}\\
+		Parameter nodes create a tuple with a single
+		entry binding the object to the name.
+	\item \emph{Filter.}\\
+		Filter nodes simply tests a tuple against 
+		an a boolean expression.
+	\item \emph{*Assignment.}\\
+		Assignment nodes extract new attributes and
+		create new columns on tuples.
+	\item \emph{Join.}\\
+		Join nodes connect the output arcs from two
+		other nodes and allows consistent tuples to
+		be merged and passed through.
+	\item \emph{Terminal.}\\
+		Terminals effect the firing of the rule with
+		the valid tuples.
+\end{itemize}
+
+The resulting Rete-OO graph is constructed in a different
+manner than the equivalent Rete graph, due to the addition
+and rearrangement of some nodes.
+
+\begin{center}
+	\xymatrix @R-10pt{
+		\bullet \ar[d] \\
+		type(Person) \ar[d] \ar[dr] \\
+		parameter(personOne) \ar[d] & parameter(personTwo) \ar[d] \\
+		assignment(petName) \ar[dr] & assignment(petName) \ar[d] \\
+		 & join \ar[d] \\
+		 & filter(hasSister) \ar[d] \\
+		 & terminal \\
+	}
+\end{center}
+

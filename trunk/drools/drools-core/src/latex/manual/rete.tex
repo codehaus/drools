@@ -1,0 +1,155 @@
+\section{Rete}
+\label{algo.rete}
+
+Charles Forgy created the original Rete algorithm around 1981 as part
+of his DARPA-funded research.  Compared to many previous
+production-matching algorithms, Rete was very advanced.  Even today,
+there have been few improvements to it in the general
+case\footnote{Both ILOG and Haley claim to have optimized Rete
+algorithms, but details are not currently public.}.  Variations on 
+Rete, such as Treat, may have different performance characteristics
+depending on the environment.  Some perform better with large rule 
+sets but small numbers of objects, while other perform well for 
+steady-state environments, but react poorly to numerous successive 
+changes in the data.
+
+A \emph{Rete network} is a graph through which data flows.
+Originally, data was specified using Cambridge-prefix tuples since
+Lisp-like languages were in style\footnote{As it is for many artificial
+intelligence projects.}.  The tuples were used to express attributes
+about objects.  For example, tuples may be used to express a person's
+name and her pets.  The tuples are dropped into the Rete network,
+and those that read the far end result in the firing of a rule.
+The original production-matching was based upon pattern-matching and
+could almost be accomplished completely through lexical means.
+
+The Rete network is comprise of two types of nodes:
+
+\begin{itemize}
+	\item \emph{1-input/1-output nodes.}  The \emph{1/1} nodes are
+		constrictive nodes that only allow matching tuples to
+		flow through.  Any tuples that do not match are discarded
+		by the node.
+	\item \emph{2-input/1-output nodes.}
+		The \emph{2/1} nodes simply connect the output arcs from two
+		other nodes (either \emph{1/1} nodes or \emph{2/1} nodes) merging
+		tuples from both the left and right incoming arcs
+		into a single tuple on the outgoing arc.
+\end{itemize}
+
+There is a forest of \emph{1/1} nodes that act as the entry-point
+into the entire Rete network for any incoming tuple.  The
+network-entry  nodes filter tuples purely by their type.  
+This allows for distinguishing tuples describing one type of 
+entity from another.  Tuples about dogs and tuples about cats may 
+each have a different type and will be differentiated from each 
+other by the \emph{1/1} network-entry nodes.
+
+Each condition of a rule is merely a pattern for a tuple type.
+The condition describes the attributes that a tuple must have and acts
+as a filter.  Each condition is transformed into a \emph{1/1} node
+that only allows tuples matching the specified attributes.
+An attribute value may be specified as a variable, which implies that
+the variable must be the same value in all occurrences, for a 
+combination of tuples.  The \emph{1/1} filter nodes are attached to
+the network downstream from the \emph{1/1} that differentiates their
+tuple type.
+
+Consider a condition such as ``For any person who have a dog that
+has the same name as that person's sister's cat, then...''  This could
+be expressed with the condition patterns of:
+
+\medskip
+
+\begin{tabular}{llll}
+
+(1) & \texttt{( person} & \texttt{name=sisOne?} & \texttt{sister=sisTwo? )}\\
+(2) & \texttt{( person} & \texttt{name=sisTwo?} & \texttt{sister=sisOne? )}\\
+(3) & \texttt{( person} & \texttt{name=sisOne?} & \texttt{cat=petName? )}\\
+(4) & \texttt{( person} & \texttt{name=sisTwo?} & \texttt{dog=petName? )}\\
+
+\end{tabular}
+
+\medskip
+
+Conditions \emph{\#1} and \emph{\#2} model the sister relationship so
+that the rule only applies to two people who are sisters.  The
+\verb|sisOne?| and \verb|sisTwo?| tokens are variables that must be
+consistent across any set of tuples that match this rule.  
+
+Conditions \emph{\#3} and \emph{\#4} serve two roles.  The \verb|cat|
+and \verb|dog| attributes share the same \verb|petName?| variable and
+serve to identify two people who have a cat and a dog with the same
+name.  They each contain a \verb|name| attribute with either the
+variable \verb|sisOne?| or \verb|sisTwo?| which ties the last two
+conditions back to the first two.
+
+\begin{figure}[htbpc]
+  \begin{center}
+	\xymatrix @R-10pt{
+		\bullet \ar[d] \\
+		person \ar[d] \ar[dr] \ar[drr] \ar[drrr] \\
+%
+	\txt{(1)} \ar[dr] & \txt{(2)} \ar[d] & \txt{(3)} \ar[dd] & \txt{(4)} \ar[ddd] \\
+%
+	       & \txt{join (1)} \ar[dr] \\
+%
+	       & & \txt{join (2)} \ar[dr] \\
+%
+	       & & & \txt{join (3)} \ar[d] \\
+%
+	       & & & terminal \\
+	}
+  \end{center}
+\end{figure}
+
+\setlength{\extrarowheight}{3pt}
+
+
+\begin{figure}[htbpc]
+  \begin{center}
+    \begin{tabular}{|c||c|c|c|c|}
+      \hline
+        \textsf{\emph{type}} & \textsf{name} & \textsf{sister} & \textsf{cat} & \textsf{dog} \\
+      \hline
+      \hline
+        \multicolumn{5}{|c|}{\emph{tuple set \# 1}}\\
+      \hline 
+      \hline 
+        person & rebecca & jeannie & ugly & \emph{null} \\
+      \hline
+        person & jeannie & rebecca & \emph{null} & ugly \\
+      \hline
+      \hline
+        \multicolumn{5}{|c|}{\emph{tuple set \# 2}}\\
+      \hline
+      \hline
+        person & rebecca & jeannie & zoomie & \emph{null} \\
+      \hline
+        person & jeannie & rebecca & \emph{null} & ugly \\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \caption{Example tuple sets}
+  \label{table.tuplesets}
+\end{figure}
+
+If two sets of tuples (see Figure \ref{table.tuplesets}) were
+asserted against the rule, \emph{tuple set \#1} would cause a firing
+of the rule, where \emph{tuple set \#2} would not.  In both cases,
+the two tuples would pass nodes \emph{(1)} and \emph{(2)}, as the
+nodes simply associate the \verb|sisOne?| and \verb|sisTwo?| variables
+with the appropriate values from each tuple.
+
+The \emph{join (1)} node would allow both tuples to merge and
+propagate past it in both the first and second case.  Additionally,
+for both cases, the \emph{rebecca} tuple would pass node \emph{(3)}
+and the \emph{jeannie} tuple would pass node \emph{4}.
+
+The \emph{join (3)} node is where the two cases differ.  In the first
+case, nodes \emph{(3)} and \emph{(4)} have each associated the value
+of ``ugly'' to the \verb|petName?| variable.  In the second case, the
+two nodes has assigned different values to the variable.  The
+\emph{join (3)} node only allows those tuples that have consistent
+associations with all variables to pass.

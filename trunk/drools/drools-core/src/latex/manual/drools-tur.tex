@@ -1,0 +1,79 @@
+
+%%
+%%
+%% the drools manual
+%%
+%%
+
+\documentclass[10pt,letterpaper,colorhighlight]{book}
+
+
+%%
+%% Package Imports
+%%
+
+\usepackage{alltt}
+\usepackage{cite}
+\usepackage{plain}
+\usepackage{epic}
+\usepackage{ecltree}
+\usepackage{hyperref}
+\usepackage{varioref}
+\usepackage{array}
+\usepackage{xypic}
+
+%%
+%% Extra Commands and Evironments
+%%
+
+\newenvironment{codelisting}%
+	{\begin{minipage}{250pt}\footnotesize\begin{alltt}}%
+	{\end{alltt}\end{minipage}}
+
+\newcommand{\drools}{{\textsf{drools}}}
+
+
+%% \newcommand{\url}[1]{\textt{#1}}
+
+
+\begin{document}
+
+\let\footnoterule\hrule
+
+\makeatletter
+\renewcommand{\@makefntext}[1]%
+	{\noindent\makebox[1.8em][r]{\@makefnmark}#1}
+\makeatother
+
+\title{
+	\textsf{drools}\\
+	\bigskip
+	\textsf{Theory, Usage and Reference}
+}
+
+\author{
+	\textsf{The Werken Company}\\
+	\textsf{www.werken.com}
+}
+
+
+\frontmatter
+
+\maketitle
+
+\tableofcontents
+
+\mainmatter
+
+\include{introduction}
+\include{algo}
+\include{usage}
+\include{semantics}
+
+\appendix
+
+\include{project-info}
+\include{license}
+
+
+\end{document}
