@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: DroolsException.java,v 1.7 2002-08-18 18:47:06 bob Exp $
+ $Id: DroolsException.java,v 1.8 2002-08-20 21:19:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Locale;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DroolsException.java,v 1.7 2002-08-18 18:47:06 bob Exp $
+ *  @version $Id: DroolsException.java,v 1.8 2002-08-20 21:19:55 bob Exp $
  */
 public class DroolsException extends Exception
 {
@@ -208,7 +208,7 @@ public class DroolsException extends Exception
 
         msg.append( getMyMessage() );
 
-        msg.append( " -> " );
+        msg.append( " : " );
 
         msg.append( rootCause.getMessage() );
 
@@ -233,7 +233,7 @@ public class DroolsException extends Exception
 
         msg.append( getMyMessage() );
 
-        msg.append( " -> " );
+        msg.append( " : " );
 
         msg.append( rootCause.getLocalizedMessage() );
 
@@ -260,7 +260,7 @@ public class DroolsException extends Exception
 
         msg.append( getMyMessage() );
 
-        msg.append( " -> " );
+        msg.append( " : " );
 
         if ( rootCause instanceof DroolsException )
         {
@@ -284,7 +284,7 @@ public class DroolsException extends Exception
 
         if ( rootCause != null )
         {
-            System.err.println( " ->" );
+            System.err.println( "\nnested exception was: " );
 
             rootCause.printStackTrace();
         }
@@ -302,7 +302,7 @@ public class DroolsException extends Exception
 
         if ( rootCause != null )
         {
-            s.println( " ->" );
+            System.err.println( "\nnested exception was: " );
             rootCause.printStackTrace( s );
         }
     }
@@ -319,7 +319,7 @@ public class DroolsException extends Exception
 
         if ( rootCause != null )
         {
-            s.println( " ->" );
+            System.err.println( "\nnested exception was: " );
             rootCause.printStackTrace( s );
         }
     }

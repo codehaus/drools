@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: RuleBaseTag.java,v 1.2 2002-08-20 19:33:29 bob Exp $
+ $Id: RuleBaseTag.java,v 1.3 2002-08-20 21:19:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,12 +54,13 @@ import org.drools.rule.Rule;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
 /** Create a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseTag.java,v 1.2 2002-08-20 19:33:29 bob Exp $
+ *  @version $Id: RuleBaseTag.java,v 1.3 2002-08-20 21:19:55 bob Exp $
  */
 public class RuleBaseTag extends TagSupport
 {
@@ -70,6 +71,9 @@ public class RuleBaseTag extends TagSupport
     /** The rule-base. */
     private RuleBase ruleBase;
 
+    /** The variable. */
+    private String var;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -78,12 +82,31 @@ public class RuleBaseTag extends TagSupport
      */
     public RuleBaseTag()
     {
+        super( true );
         this.ruleBase = null;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    /** Set the variable in which to store the <code>RuleBase</code>.
+     *
+     *  @param var The variable name.
+     */
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    /** Retrieve the variable in which to store the <code>RuleBase</code>.
+     *
+     *  @return The variable name.
+     */
+    public String getVar()
+    {
+        return this.var;
+    }
 
     /** Retrieve the <code>RuleBase</code>.
      *
@@ -101,7 +124,7 @@ public class RuleBaseTag extends TagSupport
      *  @throws JellyException If an error occurs while attempting
      *          to add the rule-set.
      */
-    protected void addRuleSet(RuleSet ruleSet) throws JellyException
+    public void addRuleSet(RuleSet ruleSet) throws JellyException
     {
         try
         {
@@ -120,7 +143,7 @@ public class RuleBaseTag extends TagSupport
      *  @throws JellyException If an error occurs while attempting
      *          to add the rule.
      */
-    protected void addRule(Rule rule) throws JellyException
+    public void addRule(Rule rule) throws JellyException
     {
         try
         {
@@ -145,6 +168,11 @@ public class RuleBaseTag extends TagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        if ( this.var == null )
+        {
+            throw new MissingAttributeException( "var" );
+        }
+
         this.ruleBase = new RuleBase();
         invokeBody( output );
     }

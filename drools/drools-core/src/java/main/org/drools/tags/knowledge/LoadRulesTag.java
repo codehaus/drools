@@ -1,7 +1,7 @@
-package org.drools.tags.rule;
+package org.drools.tags.knowledge;
 
 /*
- $Id: RuleTag.java,v 1.3 2002-08-20 21:19:55 bob Exp $
+ $Id: LoadRulesTag.java,v 1.1 2002-08-20 21:19:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,34 +46,34 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
-import org.drools.tags.knowledge.RuleBaseTag;
+import org.drools.RuleBase;
+import org.drools.RuleIntegrationException;
 
+import org.apache.commons.jelly.Script;
+import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.parser.XMLParser;
 
-/** Construct a <code>Rule</code> for a <code>RuleSet</code>.
- *
- *  @see Rule
+import java.net.URL;
+
+/** Load <code>Rule</code>s and <code>RuleSet</code>s
+ *  into a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTag.java,v 1.3 2002-08-20 21:19:55 bob Exp $
+ *  @version $Id: LoadRulesTag.java,v 1.1 2002-08-20 21:19:55 bob Exp $
  */
-public class RuleTag extends RuleTagSupport
+public class LoadRulesTag extends TagSupport
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Rule name. */
-    private String name;
-
-    /** The rule. */
-    private Rule rule;
-
-    /** The variable. */
-    private String var;
+    /** The uri. */
+    private String uri;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -81,64 +81,37 @@ public class RuleTag extends RuleTagSupport
 
     /** Construct.
      */
-    public RuleTag()
+    public LoadRulesTag()
     {
-        // intentionally left blank
+        super( true );
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the <code>Rule<code> name.
+    /** Set the URI to load.
      *
-     *  @param name The name.
+     *  @param uri The URI to load.
      */
-    public void setName(String name)
+    public void setUri(String uri)
     {
-        this.name = name;
+        this.uri = uri;
     }
 
-    /** Retrieve the <code>Rule</code> name.
+    /** Retrieve the URI to load.
      *
-     *  @return The name.
+     *  @return uri The URI to load.
      */
-    public String getName()
+    public String getUri()
     {
-        return this.name;
-    }
-
-    /** Set the variable in which to store the <code>Rule</code>.
-     *
-     *  @param var The variable name.
-     */
-    public void setVar(String var)
-    {
-        this.var = var;
-    }
-
-    /** Retrieve the variable in which to store the <code>Rule</code>.
-     *
-     *  @return The variable name.
-     */
-    public String getVar()
-    {
-        return this.var;
-    }
-
-    /** Retrieve the <code>Rule</code>.
-     *
-     *  @return The rule.
-     */
-    public Rule getRule()
-    {
-        return this.rule;
+        return this.uri;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
+    
     /** Perform this tag.
      *
      *  @param output The output sink.
@@ -148,36 +121,48 @@ public class RuleTag extends RuleTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        requiredAttribute( "name",
-                           this.name );
-
-        this.rule = new Rule( this.name );
-
-        if ( this.var != null )
+        if ( getUri() == null )
         {
-            getContext().setVariable( this.var,
-                                      this.rule );
+            throw new MissingAttributeException( "uri" );
         }
 
-        getContext().setVariable( "org.drools.rule",
-                                  this.rule );
+        URL uri = new URL( getUri() );
 
-        invokeBody( output );
+        RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
 
-        RuleSet ruleSet = getRuleSet();
-
-        if ( ruleSet != null )
+        if ( tag == null )
         {
-            ruleSet.addRule( this.rule );
+            throw new JellyException( "<load-rules> may only be used within a <rule-set>" );
         }
-        else
-        {
-            RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
 
-            if ( tag != null )
-            {
-                tag.addRule( this.rule );
-            }
+        RuleBase ruleBase = tag.getRuleBase();
+
+        XMLParser parser = new XMLParser();
+
+        JellyContext context = new JellyContext( getContext(),
+                                                 uri,
+                                                 uri );
+
+        context.setInherit( true );
+        context.setExport( false );
+
+        parser.setContext( context );
+
+        try
+        {
+            Script script = parser.parse( uri.toExternalForm() );
+            
+            script.run( context,
+                        output );
+        }
+        catch (JellyException e)
+        {
+            throw (JellyException) e.fillInStackTrace();
+
+        }
+        catch (Exception e)
+        {
+            throw new JellyException( e );
         }
     }
 }
