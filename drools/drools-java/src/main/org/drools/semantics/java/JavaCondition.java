@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.1 2004-12-07 13:58:50 simon Exp $
+ * $Id: JavaCondition.java,v 1.2 2004-12-07 14:27:55 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,12 +66,6 @@ public class JavaCondition
     Condition
 {
     // ------------------------------------------------------------
-    // Constants
-    // ------------------------------------------------------------
-
-    private static final String[]       SCRIPT_PARAM_NAMES = new String[] { "tuple", "decls", "drools", "applicationData" };
-
-    // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
 
@@ -84,7 +78,7 @@ public class JavaCondition
     private final Declaration[]         requiredDeclarations;
 
 
-    private transient ConditionScript   conditionScript;
+    private transient Script   script;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -111,7 +105,7 @@ public class JavaCondition
 
         this.requiredDeclarations = ( Declaration[] ) requiredDecls.toArray( new Declaration[ requiredDecls.size( ) ] );
 
-        this.conditionScript = compile( );
+        this.script = compile( );
     }
 
     // ------------------------------------------------------------
@@ -137,16 +131,16 @@ public class JavaCondition
     {
         try
         {
-            return conditionScript.invoke( tuple,
-                                           requiredDeclarations,
-                                           new KnowledgeHelper( rule, tuple ),
-                                           tuple.getWorkingMemory( ).getApplicationDataMap( ) );
+            return script.invoke( tuple,
+                                  requiredDeclarations,
+                                  new KnowledgeHelper( rule, tuple ),
+                                  tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }
         catch ( Scanner.LocatedException e )
         {
             throw new ConditionException( e,
-                                          rule,
-                                          originalExpression );
+                                          this.rule,
+                                          this.originalExpression );
         }
         catch (CompilationException e)
         {
@@ -158,8 +152,8 @@ public class JavaCondition
         catch (Exception e)
         {
             throw new ConditionException( e,
-                                          rule,
-                                          originalExpression );
+                                          this.rule,
+                                          this.originalExpression );
         }
     }
 
@@ -173,16 +167,13 @@ public class JavaCondition
         return this.requiredDeclarations;
     }
 
-    private ConditionScript compile() throws Exception
+    private Script compile() throws Exception
     {
-        return ( ConditionScript ) Interp.compile( this.rule,
-                                                   ConditionScript.class,
-                                                   this.expression,
-                                                   this.originalExpression,
-                                                   SCRIPT_PARAM_NAMES,
-                                                   this.requiredDeclarations,
-                                                   this.rule.getImports( JavaImportEntry.class ),
-                                                   rule.getApplicationData( ) );
+        return ( Script ) JavaCompiler.compile( this.rule,
+                                                Script.class,
+                                                this.expression,
+                                                this.originalExpression,
+                                                this.requiredDeclarations );
     }
 
     // ------------------------------------------------------------
@@ -191,7 +182,7 @@ public class JavaCondition
     {
         stream.defaultReadObject( );
 
-        this.conditionScript = compile( );
+        this.script = compile( );
     }
 
     public int hashCode()
@@ -219,7 +210,7 @@ public class JavaCondition
         return "[Condition: " + originalExpression + "]";
     }
 
-    public static interface ConditionScript
+    public static interface Script
     {
         public boolean invoke( Tuple tuple,
                                Declaration[] decls,

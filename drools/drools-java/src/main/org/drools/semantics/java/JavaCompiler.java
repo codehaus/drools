@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Interp.java,v 1.24 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.1 2004-12-07 14:27:55 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,48 +41,37 @@ package org.drools.semantics.java;
  *
  */
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import net.janino.Scanner;
-
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
-public class Interp
+import java.io.IOException;
+
+class JavaCompiler
 {
-    static Object compile(Rule rule,
-                                            Class clazz,
-                                            String expr,
-                                            String origExpr,
-                                            String[] scriptParamNames,
-                                            Declaration[] params,
-                                            Set imports,
-                                            Map applicationData) throws IOException,
-                                                                CompilationException
+    private static final String[] PARAM_NAMES = new String[] { "tuple", "decls", "drools", "applicationData" };
+
+    public static Object compile( Rule rule,
+                                  Class clazz,
+                                  String expression,
+                                  String originalExpression,
+                                  Declaration[] params ) throws IOException, CompilationException
     {
-        if ( applicationData == null )
-        {
-            applicationData = new HashMap( );
-        }
         try
         {
-            return DroolsScriptEvaluator.compile( expr,
+            return JavaScriptEvaluator.compile( expression,
                                                   clazz,
-                                                  scriptParamNames,
+                                                  PARAM_NAMES,
                                                   params,
-                                                  imports,
-                                                  applicationData );
+                                                  rule.getImports( JavaImportEntry.class ),
+                                                  rule.getApplicationData( ) );
         }
         catch ( Scanner.LocatedException e )
         {
             throw new CompilationException( rule,
-                                            origExpr,
+                                            originalExpression,
                                             e.getLocation( ).getLineNumber( ),
-                                            e.getLocation( ).getColumnNumber( ),
-                                            e.getMessage( ) );
+                                            e.getLocation( ).getColumnNumber( ), e.getMessage( ) );
         }
     }
 }
