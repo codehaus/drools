@@ -13,31 +13,31 @@ import org.drools.semantics.annotation.Consequence;
 public class HeatingVentOpenFloorWarmEnough
 {
     @Condition
-    public boolean isPumpHeating(@Parameter("pump") HeatPump pump) {
+    public boolean isPumpHeating(@Parameter HeatPump pump) {
         return pump.getState() == HeatPump.State.HEATING;
      }
 
     @Condition
-    public boolean isVentOpen(@Parameter("vent") Vent vent) {
+    public boolean isVentOpen(@Parameter Vent vent) {
         return vent.getState() == Vent.State.OPEN;
      }
 
     @Condition
-    public boolean isSameFloor(@Parameter("vent") Vent vent,
-                               @Parameter("thermometer") Thermometer thermometer,
-                               @Parameter("pump") HeatPump pump) {
+    public boolean isSameFloor(@Parameter Vent vent,
+                               @Parameter Thermometer thermometer,
+                               @Parameter HeatPump pump) {
         return vent.getFloor() == thermometer.getFloor()
                 && vent.getFloor().getHeatPump() == pump;
     }
 
     @Condition
-    public boolean isWarmEnough(@Parameter("thermometer") Thermometer thermometer,
-                                @Parameter("control") TempuratureControl control) {
+    public boolean isWarmEnough(@Parameter Thermometer thermometer,
+                                @Parameter TempuratureControl control) {
         return control.isWarmEnough(thermometer.getReading());
     }
 
     @Consequence
-    public void consequence(@Parameter("vent") Vent vent) {
+    public void consequence(@Parameter Vent vent) {
         vent.setState(Vent.State.CLOSED);
         System.out.println("HeatingVentOpenFloorWarmEnough: " + vent
                            + ", " + vent.getFloor().getThermometer());

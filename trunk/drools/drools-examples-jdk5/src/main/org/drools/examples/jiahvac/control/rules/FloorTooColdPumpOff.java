@@ -13,24 +13,24 @@ import org.drools.semantics.annotation.Consequence;
 public class FloorTooColdPumpOff
 {
     @Condition
-    public boolean isPumpOff(@Parameter("pump") HeatPump pump) {
+    public boolean isPumpOff(@Parameter HeatPump pump) {
         return pump.getState() == OFF;
      }
 
     @Condition
-    public boolean isPumpServicingFloor(@Parameter("pump") HeatPump pump,
-                                        @Parameter("thermometer") Thermometer thermometer) {
+    public boolean isPumpServicingFloor(@Parameter HeatPump pump,
+                                        @Parameter() Thermometer thermometer) {
         return thermometer.getFloor().getHeatPump() == pump;
     }
 
     @Condition
-    public boolean isTooCold(@Parameter("thermometer") Thermometer thermometer,
-                             @Parameter("control") TempuratureControl control) {
+    public boolean isTooCold(@Parameter Thermometer thermometer,
+                             @Parameter TempuratureControl control) {
         return control.isTooCold(thermometer.getReading());
     }
 
     @Consequence
-    public void consequence(@Parameter("pump") HeatPump pump) {
+    public void consequence(@Parameter HeatPump pump) {
         pump.setState(HEATING);
         System.out.println("FloorTooColdPumpOff: " + pump);
     }
