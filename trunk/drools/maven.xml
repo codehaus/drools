@@ -127,11 +127,6 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="eclipse-all">
-      <j:set var="goal" value="eclipse"/>
-      <attainGoal name="multiproject:goal"/>
-    </goal>
-
     <goal name="deploy-snapshot-all">
       <j:set var="goal" value="jar:deploy-snapshot"/>
       <attainGoal name="multiproject:goal"/>
