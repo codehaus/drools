@@ -39,7 +39,7 @@ target_all()
 
 target_site()
 {
-  build javadoc pdf
+  #build javadoc pdf
 
   echo "building site"
 
@@ -468,6 +468,7 @@ target_source_dist()
   cp *.sh  $BASE/build/dists/drools-$VERSION-src/
   cp -R ./lib $BASE/build/dists/drools-$VERSION-src/
   cp -R ./site $BASE/build/dists/drools-$VERSION-src/
+
   copy_tree $BASE/src/ $BASE/build/dists/drools-$VERSION-src/src tex pdf 
 
   local module
@@ -503,7 +504,7 @@ target_binary_dist()
 
 target_deploy_release()
 {
-  build compile
+  build clean dists
 
   ssh bob@codehaus.org mkdir -p /www/dist.codehaus.org/drools/jars
   ssh bob@codehaus.org mkdir -p /www/dist.codehaus.org/drools/distributions
@@ -511,6 +512,8 @@ target_deploy_release()
   scp $BASE/build/lib/drools-*.jar bob@codehaus.org:/www/dist.codehaus.org/drools/jars
   scp $BASE/build/dists/drools-*.tar.gz bob@codehaus.org:/www/dist.codehaus.org/drools/distributions
   scp $BASE/build/dists/drools-*.zip bob@codehaus.org:/www/dist.codehaus.org/drools/distributions
+
+  scp $BASE/build/lib/drools-*.jar bmcwhirter@login.ibiblio.org:maven/drools/jars
 
   build deploy_site
 }
