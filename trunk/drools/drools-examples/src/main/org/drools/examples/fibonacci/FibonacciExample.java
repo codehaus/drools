@@ -26,6 +26,5 @@ public class FibonacciExample
         long stop = System.currentTimeMillis();
 
         System.err.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
-
     }
 }
