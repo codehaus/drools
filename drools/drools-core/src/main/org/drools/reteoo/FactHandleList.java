@@ -1,9 +1,9 @@
 package org.drools.reteoo;
 
 /*
-* $Id: FactHandleList.java,v 1.1 2004-12-01 13:41:57 simon Exp $
+* $Id: FactHandleList.java,v 1.2 2004-12-01 14:19:33 simon Exp $
 *
-* Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+* Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
 * Redistribution and use of this software and associated documentation
 * ("Software"), with or without modification, are permitted provided that the
@@ -112,7 +112,7 @@ final class FactHandleList implements Serializable
      * @param index The index at which the handle will be placed.
      * @param handle The handle to use.
      */
-    public FactHandleList( int index, FactHandleImpl handle )
+    public FactHandleList( int index, FactHandle handle )
     {
         this.handles = new FactHandleImpl[ index + 1 ];
         this.handles[ index ] = handle;
