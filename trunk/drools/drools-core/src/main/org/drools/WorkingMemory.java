@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.41 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: WorkingMemory.java,v 1.42 2005-01-11 15:04:58 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools;
 
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.spi.AgendaFilter;
+import org.drools.spi.AsyncExceptionHandler;
 
 import java.io.Serializable;
 import java.util.List;
@@ -244,6 +245,13 @@ public interface WorkingMemory extends Serializable
     void modifyObject( FactHandle handle,
                        Object object ) throws FactException;
 
+    /**
+     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
+     * used for duration rules.
+     * @param handler
+     */
+    void setAsyncExceptionHandler(AsyncExceptionHandler handler);
+    
     /**
      * Clear the Agenda
      *

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.13 2005-01-09 02:23:48 mproctor Exp $
+ * $Id: Scheduler.java,v 1.14 2005-01-11 15:04:59 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,7 @@ package org.drools.reteoo;
  *
  */
 
+import org.drools.spi.AsyncExceptionHandler;
 import org.drools.spi.ConsequenceException;
 
 import java.util.Date;
@@ -86,7 +87,7 @@ final class Scheduler
     /** Scheduled tasks. */
     private Map   tasks;
 
-    private ConsequenceException consequenceException;
+    private AsyncExceptionHandler exceptionHandler;
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
@@ -142,20 +143,20 @@ final class Scheduler
         }
     }
     
-    void setError(ConsequenceException e)
+    void setAsyncExceptionHandler(AsyncExceptionHandler handler)
     {
-        this.consequenceException = e;
+        this.exceptionHandler = handler;
+    }      
+    
+    AsyncExceptionHandler getAsyncExceptionHandler()
+    {
+        return this.exceptionHandler;
     }
     
-    boolean hadError()
+    public int size()
     {
-        return (this.consequenceException != null);
+        return this.tasks.size();
     }
-
-    ConsequenceException getConsequenceException()
-    {
-        return this.consequenceException;
-    }    
 }
 
 /**
@@ -214,7 +215,8 @@ class AgendaItemFireListener extends TimerTask
         }
         catch ( ConsequenceException e )
         {
-            Scheduler.getInstance( ).setError(e);            
+            
+            Scheduler.getInstance().getAsyncExceptionHandler().handleException(e, this.workingMemory);           
         }
     }
 }

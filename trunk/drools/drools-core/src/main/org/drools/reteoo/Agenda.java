@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.52 2005-01-09 02:23:47 mproctor Exp $
+ * $Id: Agenda.java,v 1.53 2005-01-11 15:04:59 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools.reteoo;
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
+import org.drools.spi.AsyncExceptionHandler;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
@@ -375,4 +376,14 @@ class Agenda
             item = null;
         }
     }
+
+    /**
+     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
+     * used for duration rules.
+     * @param handler
+     */
+    void setAsyncExceptionHandler(AsyncExceptionHandler handler)
+    {
+        Scheduler.getInstance( ).setAsyncExceptionHandler(handler);
+    }     
 }
