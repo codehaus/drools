@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: LoadRulesTag.java,v 1.1 2002-08-20 21:19:55 bob Exp $
+ $Id: LoadRulesTag.java,v 1.2 2002-08-20 21:49:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,6 @@ package org.drools.tags.knowledge;
  */
 
 import org.drools.RuleBase;
-import org.drools.RuleIntegrationException;
 
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.TagSupport;
@@ -64,7 +63,7 @@ import java.net.URL;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: LoadRulesTag.java,v 1.1 2002-08-20 21:19:55 bob Exp $
+ *  @version $Id: LoadRulesTag.java,v 1.2 2002-08-20 21:49:32 bob Exp $
  */
 public class LoadRulesTag extends TagSupport
 {
