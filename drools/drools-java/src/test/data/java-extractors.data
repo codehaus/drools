@@ -1,0 +1,3 @@
+"camembert"
+<!--drools-test--!>
+"I have " + camembert.getBitesLeft() + " bites of " + camembert.getName() + " left"

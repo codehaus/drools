@@ -1,0 +1,31 @@
+true
+<!--drools-test--!>
+false
+<!--drools-test--!>
+1==1
+<!--drools-test--!>
+"String".equals("String")
+<!--drools-test--!>
+new String("String").equals("String")
+<!--drools-test--!>
+camembert.getName().equals("camembert")
+<!--drools-test--!>
+camembert.getName().equals("stilton")
+<!--drools-test--!>
+stilton.getBitesLeft() == 3
+<!--drools-test--!>
+stilton.getBitesLeft() == 2
+<!--drools-test--!>
+stilton.equals(camembert)
+<!--drools-test--!>
+!stilton.equals(camembert)
+<!--drools-test--!>
+stilton.getBitesLeft() == camembert.getBitesLeft()
+<!--drools-test--!>
+stilton.getBitesLeft() != camembert.getBitesLeft()
+<!--drools-test--!>
+stilton.getBitesLeft() == bites.intValue()
+<!--drools-test--!>
+stilton.equals(favouriteCheese)
+<!--drools-test--!>
+camembert.equals(favouriteCheese)
