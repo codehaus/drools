@@ -98,8 +98,7 @@ public class Builder
         TupleSource lastNode = (TupleSource) attachableNodes.iterator().next();
 
         TerminalNode terminal = new TerminalNode( lastNode,
-                                                  rule.getAction(),
-                                                  rule.getDuration(),
+                                                  rule,
                                                   ++this.priorityCounter);
     }
 

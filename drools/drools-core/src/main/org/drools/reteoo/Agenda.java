@@ -4,6 +4,7 @@ package org.drools.reteoo;
 import org.drools.WorkingMemory;
 
 import org.drools.spi.Action;
+import org.drools.spi.Rule;
 import org.drools.spi.Declaration;
 import org.drools.spi.ActionInvokationException;
 
@@ -63,18 +64,16 @@ public class Agenda
      *  @param action The <code>Action</code> to fire.
      */
     void addToAgenda(ReteTuple tuple,
-                     Action action,
-                     long duration)
+                     Rule rule)
     {
-        if ( action == null )
+        if ( rule == null )
         {
             return;
         }
 
         AgendaItem item = new AgendaItem( tuple,
-                                          action,
-                                          duration );
-        if ( duration > 0 )
+                                          rule );
+        if ( rule.getDuration() > 0 )
         {
             this.scheduledItems.add( item );
             scheduleItem( item );
@@ -86,9 +85,9 @@ public class Agenda
     }
 
     void removeFromAgenda(TupleKey key,
-                          Action action)
+                          Rule rule)
     {
-        if ( action == null )
+        if ( rule == null )
         {
             return;
         }
@@ -100,7 +99,7 @@ public class Agenda
         {
             eachItem = (AgendaItem) itemIter.next();
 
-            if ( eachItem.getAction() == action )
+            if ( eachItem.getRule() == rule )
             {
                 if ( eachItem.getTuple().getKey().containsAll( key ) )
                 {
@@ -116,7 +115,7 @@ public class Agenda
         {
             eachItem = (AgendaItem) itemIter.next();
 
-            if ( eachItem.getAction() == action )
+            if ( eachItem.getRule() == rule )
             {
                 if ( eachItem.getTuple().getKey().containsAll( key ) )
                 {
@@ -129,8 +128,7 @@ public class Agenda
 
     void modifyAgenda(Object trigger,
                       TupleSet newTuples,
-                      Action action,
-                      long duration)
+                      Rule rule)
     {
         Iterator   itemIter  = this.items.iterator();
         AgendaItem eachItem  = null;
@@ -140,7 +138,7 @@ public class Agenda
         {
             eachItem = (AgendaItem) itemIter.next();
 
-            if ( eachItem.getAction() == action )
+            if ( eachItem.getRule() == rule )
             {
                 eachTuple = eachItem.getTuple();
 
@@ -166,7 +164,7 @@ public class Agenda
         {
             eachItem = (AgendaItem) itemIter.next();
 
-            if ( eachItem.getAction() == action )
+            if ( eachItem.getRule() == rule )
             {
                 eachTuple = eachItem.getTuple();
 
@@ -193,8 +191,7 @@ public class Agenda
             eachTuple = (ReteTuple) tupleIter.next();
 
             addToAgenda( eachTuple,
-                         action,
-                         duration );
+                         rule );
         }
     }
 
