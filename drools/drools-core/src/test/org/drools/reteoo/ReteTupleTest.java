@@ -18,7 +18,7 @@ public class ReteTupleTest extends TestCase
      * assertSame( this.rootObj, tuple.get( this.rootDecl ) );
      *
      * assertTrue( tuple.getKey().containsDeclaration( this.rootDecl ) );
-     * assertTrue( tuple.getKey().containsRootFactHandle( handle ) ); }
+     * assertTrue( tuple.getKey().containsFactHandle( handle ) ); }
      *
      * public void testDependsOn() { MockFactHandle handle = new MockFactHandle(
      * 1 );
