@@ -6,7 +6,8 @@ JAVA=java
 JAR=jar
 
 #IFS=""
-MODULES="core smf io base java python groovy jsr94"
+MODULES="core io base java python groovy smf jsr94"
+COMPILATION_MODULES="core smf io base java python groovy jsr94"
 
 export JAVA JAVAC JAR
 ##
@@ -34,7 +35,7 @@ target_all()
 
 target_site()
 {
-  build javadoc
+  #build javadoc
 
   echo "building site"
 
@@ -46,7 +47,7 @@ target_site()
     module_site $module
   done
 
-  #copy_tree $BASE/build/docs/api $BASE/build/site/api 
+  copy_tree $BASE/build/docs/api $BASE/build/site/api 
 }
 
 module_site()
@@ -72,28 +73,12 @@ generate_root_page()
 
   local TOP="."
 
-  echo "<!--foo-->" > $out
+  echo "" > $out
 
-  #cat $BASE/lib/site/first.html > $out
-  old_IFS=$IFS
-  IFS=""
-  while read line ; do
-    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
-    line="$(echo "$line" | sed s/TOP/$TOP/g)"
-    echo "$line" >> $out
-  done < $BASE/lib/site/first.html 
-  IFS=$old_IFS
+  cat $BASE/lib/site/first.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g >> $out
   generate_root_nav $page $out
   cat $BASE/lib/site/middle.html >> $out
-  
-  old_IFS=$IFS
-  IFS=""
-  while read line ; do
-    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
-    line="$(echo "$line" | sed s/TOP/$TOP/g)"
-    echo "$line" >> $out
-  done < ./site/$page
-  IFS=$old_IFS
+  cat ./site/$page | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g >> $out
   cat $BASE/lib/site/last.html >> $out
 }
 
@@ -110,29 +95,12 @@ generate_module_page()
  
   echo "" > $out
 
-  #cat $BASE/lib/site/first.html > $out
-  old_IFS=$IFS
-  IFS=""
-  while read line ; do
-    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
-    line="$(echo "$line" | sed s/TOP/$TOP/g)"
-    echo "$line" >> $out
-  done < $BASE/lib/site/first.html 
-  IFS=$old_IFS
-
+  cat $BASE/lib/site/first.html | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g >> $out
   generate_module_nav $page $module $out
 
   cat $BASE/lib/site/middle.html >> $out
 
-  old_IFS=$IFS
-  IFS=""
-  while read line ; do
-    line="$(echo "$line" | sed s/VERSION/$VERSION/g)"
-    line="$(echo "$line" | sed s/TOP/$TOP/g)"
-    echo "$line" >> $out
-  done < ./drools-$module/site/$page
-  IFS=$old_IFS
-
+  cat ./drools-$module/site/$page | sed -e s/VERSION/$VERSION/g -e s/TOP/$TOP/g >> $out
   cat $BASE/lib/site/last.html >> $out
 }
 
@@ -141,13 +109,13 @@ generate_root_nav()
   local page=$1
   local out=$2
 
-  generate_local_nav $page $out ./site/nav
+  generate_local_nav $page $out ./site/nav.nav
 
   local module
 
   for module in $MODULES ; do 
-    if [ -f drools-$module/site/nav ] ; then
-      generate_nonlocal_nav "$out" "drools-$module/site/nav" "$module" ""
+    if [ -f drools-$module/site/nav.nav ] ; then
+      generate_nonlocal_nav "$out" "drools-$module/site/nav.nav" "$module" ""
     fi
   done
   
@@ -161,14 +129,14 @@ generate_module_nav()
 
   local module
 
-  generate_nonlocal_nav $out $BASE/site/nav ".." ""
+  generate_nonlocal_nav $out $BASE/site/nav.nav ".." ""
 
   for module in $MODULES ; do 
-    if [ -f drools-$module/site/nav ] ; then
+    if [ -f drools-$module/site/nav.nav ] ; then
       if [ "$module" == "$thismodule" ] ; then 
-        generate_local_nav "$page" "$out" "drools-$module/site/nav"
+        generate_local_nav "$page" "$out" "drools-$module/site/nav.nav"
       else
-        generate_nonlocal_nav "$out" "drools-$module/site/nav" "$module" "../"
+        generate_nonlocal_nav "$out" "drools-$module/site/nav.nav" "$module" "../"
       fi
     fi
   done
@@ -204,7 +172,7 @@ generate_local_nav()
           echo "    <div class=\"navLink\"><small><i><a href=\"$url\">$desc</a></i></small></div>" >> $out
       else
         if [ "$url" == "$page" ] ; then
-          echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold; color: #770000\">$desc</a></small></div>" >> $out
+          echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold\">[ $desc ]</a></small></div>" >> $out
         else
           echo "    <div class=\"navLink\"><small><a href=\"$url\">$desc</a></small></div>" >> $out
         fi
@@ -311,7 +279,7 @@ target_compile()
   local modules=$1
 
   if [ -z $modules ] ; then
-    modules=$MODULES
+    modules=$COMPILATION_MODULES
   fi
   build prepare
 
@@ -416,6 +384,52 @@ target_javadoc()
       bsh.commands 
 }
 
+target_dists()
+{
+  build source_dist binary_dist
+}
+
+target_source_dist()
+{
+  echo "creating source distribution" 
+
+  mkdir -p $BASE/build/dists/drools-$VERSION-src/
+
+  cp *.txt $BASE/build/dists/drools-$VERSION-src/
+  cp *.sh  $BASE/build/dists/drools-$VERSION-src/
+  cp -R ./lib $BASE/build/dists/drools-$VERSION-src/
+  cp -R ./site $BASE/build/dists/drools-$VERSION-src/
+
+  local module
+
+  for module in $MODULES ; do
+    copy_tree drools-$module/ $BASE/build/dists/drools-$VERSION-src/drools-$module java html properties sh jar g nav
+  done
+
+  cd $BASE/build/dists
+  tar zcvf drools-$VERSION-src.tar.gz drools-$VERSION-src
+  zip -r9 drools-$VERSION-src.zip drools-$VERSION-src
+  cd -
+}
+
+target_binary_dist()
+{
+  echo "creating binary distribution" 
+
+  build compile javadoc
+
+  mkdir -p $BASE/build/dists/drools-$VERSION/
+
+  cp *.txt  $BASE/build/dists/drools-$VERSION/
+  copy_tree $BASE/build/lib/ $BASE/build/dists/drools-$VERSION/lib
+  copy_tree $BASE/build/docs/api $BASE/build/dists/drools-$VERSION/docs
+
+  cd $BASE/build/dists
+  tar zcvf drools-$VERSION.tar.gz drools-$VERSION
+  zip -r9 drools-$VERSION.zip drools-$VERSION
+  cd -
+}
+
 target_clean()
 {
   echo "cleaning filesystem"
@@ -460,10 +474,32 @@ copy_tree()
 {
   local source=$1
   local dest=$2
-  local exts="$3 $4 $5 $6 $7 $8 $9"
+  local exts=""
 
   if [ ! -d $source ] ; then
     return
+  fi
+
+  if [ ! -z "$3" ] ; then 
+    exts="$exts $3"
+  fi
+  if [ ! -z "$4" ] ; then 
+    exts="$exts $4"
+  fi
+  if [ ! -z "$5" ] ; then 
+    exts="$exts $5"
+  fi
+  if [ ! -z "$6" ] ; then 
+    exts="$exts $6"
+  fi
+  if [ ! -z "$7" ] ; then 
+    exts="$exts $7"
+  fi
+  if [ ! -z "$8" ] ; then 
+    exts="$exts $8"
+  fi
+  if [ ! -z "$9" ] ; then 
+    exts="$exts $9"
   fi
 
   mkdir -p $dest
