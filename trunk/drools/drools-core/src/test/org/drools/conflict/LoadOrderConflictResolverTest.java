@@ -42,7 +42,7 @@ package org.drools.conflict;
  */
 
 import junit.framework.TestCase;
-import org.drools.PriorityQueue;
+import org.drools.util.PriorityQueue;
 import org.drools.rule.InstrumentedRule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;

@@ -42,7 +42,7 @@ package org.drools.conflict;
  */
 
 import org.drools.DroolsTestCase;
-import org.drools.PriorityQueue;
+import org.drools.util.PriorityQueue;
 import org.drools.rule.InstrumentedRule;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.InstrumentedCondition;

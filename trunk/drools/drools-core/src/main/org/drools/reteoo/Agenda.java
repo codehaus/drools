@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.37 2004-11-06 04:08:42 mproctor Exp $
+ * $Id: Agenda.java,v 1.38 2004-11-07 12:10:17 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.FactHandle;
-import org.drools.PriorityQueue;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
@@ -53,6 +52,8 @@ import org.drools.spi.Tuple;
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.event.ActivationCreatedEvent;
 import org.drools.event.ActivationCancelledEvent;
+
+import org.drools.util.PriorityQueue;
 
 import java.io.Serializable;
 import java.util.HashSet;

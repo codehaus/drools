@@ -1,3 +1,4 @@
+package org.drools.util;
 /*
  * Copyright 2001-2004 The Apache Software Foundation
  *
@@ -13,7 +14,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.drools;
 
 import java.io.Serializable;
 import java.util.AbstractCollection;
@@ -42,7 +42,7 @@ import java.util.NoSuchElementException;
  * @author Paul Jack
  * @author Stephen Colebourne
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- * @version $Revision: 1.2 $ $Date: 2004-10-25 13:22:34 $
+ * @version $Revision: 1.1 $ $Date: 2004-11-07 12:10:18 $
  */
 public class PriorityQueue extends AbstractCollection implements Serializable
 {
