@@ -22,8 +22,8 @@ public class TupleKeyTest extends TestCase
      * assertTrue( otherKey.containsDeclaration( this.decl1 ) ); assertTrue(
      * otherKey.containsDeclaration( this.decl2 ) );
      *
-     * assertTrue( otherKey.containsRootFactHandle( this.handle1 ) );
-     * assertTrue( otherKey.containsRootFactHandle( this.handle2 ) );
+     * assertTrue( otherKey.containsFactHandle( this.handle1 ) );
+     * assertTrue( otherKey.containsFactHandle( this.handle2 ) );
      *
      * assertSame( this.obj1, otherKey.get( this.decl1 ) ); assertSame(
      * this.obj2, otherKey.get( this.decl2 ) );

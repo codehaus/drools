@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.18 2004-11-16 07:26:33 simon Exp $
+ * $Id: Tuple.java,v 1.19 2004-11-16 09:10:49 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,8 +53,6 @@ import java.util.Set;
  * @see Declaration
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: Tuple.java,v 1.18 2004-11-16 07:26:33 simon Exp $
  */
 public interface Tuple
 {
