@@ -16,10 +16,7 @@ table {
 
 .app h3 {
         font-family: sans-serif;
-        border-top:solid 1px #000000;
-        border-bottom:solid 1px #000000;
-	border-left: solid 1px #000000;
-	border-right: solid 1px #000000;
+	border: solid 1px #999999;
         padding:6px;
         background-color:#eeeeee;
 	color:#990000;
@@ -41,7 +38,6 @@ table {
 	color:#990000;
 	padding-left: 24px;
 	margin-left:.25in;
-	margin-right:.25in;
 }
 
 .app h4 a {
@@ -56,6 +52,7 @@ table {
         border: solid #777777 1px;
 	padding: 4px;
 	letter-spacing: .1em;
+	font-weight:normal;
 }
 
 .app td {
@@ -123,6 +120,7 @@ div#banner {
  border-right: none;
  border-bottom: none;
  border-top: none;
+ min-width:1.5in;
  }
 
 #navcolumn div strong {
@@ -130,6 +128,7 @@ div#banner {
   padding: 4px;
   line-height:20pt;
   border-bottom: 1px solid #bbbbbb;
+  font-weight: normal;
 }
 
 #navcolumn div {
