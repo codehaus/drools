@@ -1,9 +1,9 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.2 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: PythonInterp.java,v 1.3 2004-12-15 16:00:06 dbarnett Exp $
  *
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -41,6 +41,13 @@ package org.drools.semantics.python;
  *
  */
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -58,13 +65,6 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.core.parser;
 import org.python.parser.ast.modType;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Base class for Jython interpreter-based Python semantic components.
@@ -218,7 +218,7 @@ public class PythonInterp
      * @param text the block of text to be stripped
      * @return the block of text stripped of its leading indention
      */
-    private static String stripOuterIndention(String text)
+    protected static String stripOuterIndention(String text)
     {
         try
         {
@@ -486,4 +486,3 @@ public class PythonInterp
         return dict;
     }
 }
-
