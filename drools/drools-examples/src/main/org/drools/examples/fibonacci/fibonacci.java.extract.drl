@@ -31,6 +31,7 @@
 
     <java:consequence>
       f.setValue( 1 );
+      System.err.println( f.getSequence() + " == " + f.getValue() );
       drools.modifyObject( f );
     </java:consequence>
   </rule>
@@ -57,6 +58,7 @@
 
     <java:consequence>
       f.setValue( 1 );
+      System.err.println( f.getSequence() + " == " + f.getValue() );
       drools.modifyObject( f );
     </java:consequence>
   </rule>
