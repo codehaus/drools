@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.4 2004-11-28 06:45:25 simon Exp $
+ * $Id: DurationHandler.java,v 1.5 2004-11-28 14:44:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -92,7 +92,7 @@ class DurationHandler extends BaseAbstractHandler implements Handler
         try
         {
             Rule rule = (Rule) ruleSetReader.getParent( Rule.class );
-            duration = factory.newDuration( config, rule.getAllDeclarations( ) );
+            duration = factory.newDuration( config, rule.getParameterDeclarations( ) );
 
             rule.setDuration( duration );
         }

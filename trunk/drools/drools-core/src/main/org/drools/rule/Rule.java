@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.49 2004-11-28 06:45:24 simon Exp $
+ * $Id: Rule.java,v 1.50 2004-11-28 14:44:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,7 +47,6 @@ import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -82,12 +81,6 @@ public class Rule
 
     /** Salience value. */
     private int salience;
-
-    /** All declarations. */
-    private final List allDeclarations = new ArrayList( );
-
-    /** The local declarations. */
-    private final List localDeclarations = new ArrayList( );
 
     /** Formal parameter declarations. */
     private final List parameterDeclarations = new ArrayList( );
@@ -271,39 +264,24 @@ public class Rule
     }
 
     /**
-     * Add a declaration.
-     *
-     * @param identifier
-     *            The identifier.
-     * @param objectType
-     *            The type.
-     */
-    public Declaration addLocalDeclaration(String identifier,
-                                           ObjectType objectType) throws InvalidRuleException
-    {
-        Declaration declaration = addDeclaration( identifier,
-                                                  objectType );
-
-        this.localDeclarations.add( declaration );
-
-        return declaration;
-    }
-
-    /**
      * Add a <i>root fact object </i> parameter <code>Declaration</code> for
      * this <code>Rule</code>.
      *
-     * @param identifier
-     *            The identifier.
-     * @param objectType
-     *            The type.
+     * @param identifier The identifier.
+     * @param objectType The type.
      * @return The declaration.
      */
     public Declaration addParameterDeclaration(String identifier,
                                                ObjectType objectType) throws InvalidRuleException
     {
-        Declaration declaration = addDeclaration( identifier,
-                                                  objectType );
+        if ( getParameterDeclaration( identifier ) != null )
+        {
+            throw new InvalidRuleException( this );
+        }
+
+        Declaration declaration = new Declaration( identifier,
+                                                   objectType,
+                                                   this.parameterDeclarations.size( ) );
 
         this.parameterDeclarations.add( declaration );
 
@@ -313,31 +291,27 @@ public class Rule
     /**
      * Retrieve a parameter <code>Declaration</code> by identifier.
      *
-     * @param identifier
-     *            The identifier.
+     * @param identifier The identifier.
      *
      * @return The declaration or <code>null</code> if no declaration matches
      *         the <code>identifier</code>.
      */
     public Declaration getParameterDeclaration(String identifier)
     {
-        return getDeclaration( this.parameterDeclarations,
-                               identifier );
-    }
+        Declaration eachDecl;
 
-    /**
-     * Retrieve a <code>Declaration</code> by identifier.
-     *
-     * @param identifier
-     *            The identifier.
-     *
-     * @return The declaration or <code>null</code> if no declaration matches
-     *         the <code>identifier</code>.
-     */
-    public Declaration getDeclaration(String identifier)
-    {
-        return getDeclaration( this.allDeclarations,
-                               identifier );
+        Iterator declIter = this.parameterDeclarations.iterator( );
+        while ( declIter.hasNext() )
+        {
+            eachDecl = ( Declaration ) declIter.next();
+
+            if ( eachDecl.getIdentifier().equals( identifier ) )
+            {
+                return eachDecl;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -349,26 +323,6 @@ public class Rule
     public List getParameterDeclarations()
     {
         return Collections.unmodifiableList( this.parameterDeclarations );
-    }
-
-    /**
-     * Retrieve the set of all implied local Declarations.
-     *
-     * @return The Set of all implied <code>Declarations</code> in order which are implied by the conditions.
-     */
-    public List getLocalDeclarations()
-    {
-        return Collections.unmodifiableList( this.localDeclarations );
-    }
-
-    /**
-     * Retrieve the array of all <code>Declaration</code> s of this rule.
-     *
-     * @return The Set of all <code>Declarations</code> in order.
-     */
-    public List getAllDeclarations()
-    {
-        return Collections.unmodifiableList( this.allDeclarations );
     }
 
     /**
@@ -460,7 +414,7 @@ public class Rule
         buffer.append( this.duration );
         buffer.append( "\n" );
 
-        for ( Iterator i = this.allDeclarations.iterator( ); i.hasNext( ); )
+        for ( Iterator i = this.parameterDeclarations.iterator( ); i.hasNext( ); )
         {
             buffer.append( indent ).append( i.next( ) );
         }
@@ -474,41 +428,5 @@ public class Rule
         buffer.append( indent ).append( this.consequence );
         buffer.append( "\n" );
         return buffer.toString( );
-    }
-
-    private Declaration addDeclaration(String identifier,
-                                       ObjectType objectType) throws InvalidRuleException
-    {
-        if ( getDeclaration( identifier ) != null )
-        {
-            throw new InvalidRuleException( this );
-        }
-
-        Declaration declaration = new Declaration( identifier,
-                                                   objectType,
-                                                   allDeclarations.size( ) );
-
-        this.allDeclarations.add( declaration );
-
-        return declaration;
-    }
-
-    private Declaration getDeclaration(Collection declarations,
-                                       String identifier)
-    {
-        Declaration eachDecl;
-
-        Iterator declIter = declarations.iterator( );
-        while ( declIter.hasNext( ) )
-        {
-            eachDecl = (Declaration) declIter.next( );
-
-            if ( eachDecl.getIdentifier( ).equals( identifier ) )
-            {
-                return eachDecl;
-            }
-        }
-
-        return null;
     }
 }
