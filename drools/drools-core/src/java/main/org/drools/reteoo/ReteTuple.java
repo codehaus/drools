@@ -96,6 +96,10 @@ public class ReteTuple implements Tuple
         return this.otherColumns.get( declaration );
     }
 
+    /** Retrieve all declarations participating in this tuple.
+     *
+     *  @return Set of all declarations.
+     */
     public Set getDeclarations()
     {
         Set decls = new HashSet( this.keyColumns.size() 
