@@ -133,13 +133,6 @@ div#banner {
   margin-bottom:10px;
 }
 
-small {
-	font-family: courier;
-	color:#777777;
-	text-transform: lowercase;
-}
-
-
 #breadcrumbs {
     border: 1px solid #777777;
 }
