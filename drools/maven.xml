@@ -83,7 +83,6 @@
            destdir="doc/api"
            author="true"
            additionalparam="-J-Djava.awt.headless=true">
-           >
 
            <ant:classpath>
              <ant:path refid="maven.dependency.classpath"/>
