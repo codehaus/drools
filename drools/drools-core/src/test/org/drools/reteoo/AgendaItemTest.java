@@ -14,7 +14,7 @@ public class AgendaItemTest extends DroolsTestCase
         FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
-        Declaration decl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration decl = rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -39,7 +39,7 @@ public class AgendaItemTest extends DroolsTestCase
     {
         FactHandleImpl handle = new FactHandleImpl( 1 );
         Rule rule = new Rule( "test-rule" );
-        Declaration decl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration decl = rule.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -74,7 +74,7 @@ public class AgendaItemTest extends DroolsTestCase
 
         Rule rule = new Rule( "test-rule" );
 
-        Declaration decl = rule.addParameterDeclaration( "cheese", new MockObjectType( true ) );
+        Declaration decl = rule.addParameterDeclaration( "cheese", new MockObjectType() );
 
         ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), decl, handle );
 

@@ -22,7 +22,7 @@ public class ParameterNodeTest extends DroolsTestCase
         Object object1 = "cheese";
 
         Rule rule = new Rule( "test-rule 1" );
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType() );
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
@@ -58,7 +58,7 @@ public class ParameterNodeTest extends DroolsTestCase
     public void testGetTupleDeclarations() throws Exception
     {
         Rule rule = new Rule( "test-rule 1" );
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType() );
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
         //add condition

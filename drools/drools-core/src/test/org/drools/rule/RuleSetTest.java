@@ -115,7 +115,7 @@ public class RuleSetTest extends DroolsTestCase
     {
         Rule rule1 = new Rule( "test-rule 1" );
 
-        rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule1.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -129,7 +129,7 @@ public class RuleSetTest extends DroolsTestCase
 
         Rule rule2 = new Rule( "test-rule 2" );
 
-        rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule2.addParameterDeclaration( "paramVar", new MockObjectType() );
 
         //add consequence
         rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
