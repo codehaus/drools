@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Exec.java,v 1.3 2002-08-27 20:10:23 bob Exp $
+ $Id: Exec.java,v 1.4 2002-10-11 15:01:10 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -62,17 +62,15 @@ import java.util.Hashtable;
  *  @see BlockConsequence
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: Exec.java,v 1.3 2002-08-27 20:10:23 bob Exp $
+ *  @version $Id: Exec.java,v 1.4 2002-10-11 15:01:10 ckl Exp $
  */
 public class Exec extends Interp
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
-
-    /** The interpreter. */
-    private PythonInterpreter interp;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -82,7 +80,6 @@ public class Exec extends Interp
      */
     protected Exec()
     {
-        this.interp = new PythonInterpreter();
     }
 
     // ------------------------------------------------------------
@@ -111,6 +108,7 @@ public class Exec extends Interp
         Py.runCode( getCode(),
                     locals,
                     globals );
+
     }
 
     /** Execute.
