@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.21 2004-10-30 12:43:28 simon Exp $
+ * $Id: ExtractionNode.java,v 1.22 2004-10-31 12:25:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -65,13 +65,13 @@ class ExtractionNode extends TupleSource implements TupleSink
     // ------------------------------------------------------------
 
     /** All declarations for this node. */
-    private Set         tupleDeclarations;
+    private final Set         tupleDeclarations;
 
     /** Declaration on LHS. */
-    private Declaration targetDeclaration;
+    private final Declaration targetDeclaration;
 
     /** extrator. */
-    private Extractor   extractor;
+    private final Extractor   extractor;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -93,7 +93,7 @@ class ExtractionNode extends TupleSource implements TupleSink
 
         Set sourceDecls = tupleSource.getTupleDeclarations( );
 
-        this.tupleDeclarations = new HashSet( sourceDecls.size( ) + 1 );
+        this.tupleDeclarations = new HashSet( sourceDecls.size( ) + 1, 1);
 
         this.tupleDeclarations.addAll( sourceDecls );
         this.tupleDeclarations.add( targetDeclaration );
@@ -203,29 +203,17 @@ class ExtractionNode extends TupleSource implements TupleSink
 
         Iterator tupleIter = newTuples.iterator( );
         ReteTuple eachTuple = null;
-
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            retractedKeys.add( eachTuple.getKey( ) );
-        }
-
-        Iterator keyIter = retractedKeys.iterator( );
         TupleKey eachKey = null;
 
-        while ( keyIter.hasNext( ) )
-        {
-            eachKey = ( TupleKey ) keyIter.next( );
-
-            propagateRetractTuples( eachKey, workingMemory );
-        }
-
-        tupleIter = newTuples.iterator( );
-
         while ( tupleIter.hasNext( ) )
         {
             eachTuple = ( ReteTuple ) tupleIter.next( );
+            eachKey = eachTuple.getKey( );
+
+            if ( retractedKeys.add( eachKey ) )
+            {
+                propagateRetractTuples( eachKey, workingMemory );
+            }
 
             assertTuple( eachTuple, workingMemory );
         }
