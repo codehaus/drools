@@ -13,6 +13,7 @@ public class InstrumentedObjectTypeNode
 {
     private List assertedObjects;
     private List retractedHandles;
+    private List modifiedHandles;
 
     public InstrumentedObjectTypeNode(ObjectType objectType)
     {
@@ -20,6 +21,7 @@ public class InstrumentedObjectTypeNode
 
         this.assertedObjects  = new ArrayList();
         this.retractedHandles = new ArrayList();
+        this.modifiedHandles  = new ArrayList();
     }
 
     public void assertObject(FactHandle handle,
@@ -32,6 +34,18 @@ public class InstrumentedObjectTypeNode
                             memory );
 
         this.assertedObjects.add( object );
+    }
+
+    public void modifyObject(FactHandle handle,
+                             Object object,
+                             WorkingMemoryImpl memory)
+        throws FactException
+    {
+        super.modifyObject( handle,
+                            object,
+                            memory );
+
+        this.modifiedHandles.add( handle );
     }
 
     public void retractObject(FactHandle handle,
@@ -49,6 +63,11 @@ public class InstrumentedObjectTypeNode
         return this.assertedObjects;
     }
 
+    public List getModifiedHandles()
+    {
+        return this.modifiedHandles;
+    }
+    
     public List getRetractedHandles()
     {
         return this.retractedHandles;

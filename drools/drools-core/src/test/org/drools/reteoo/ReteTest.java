@@ -97,7 +97,6 @@ public class ReteTest
     public void testRetractObject()
         throws Exception
     {
-
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
 
         MockFactHandle handle1 = new MockFactHandle( 1 );
@@ -142,5 +141,41 @@ public class ReteTest
         
         assertContains( handle2,
                         retracted );
+    }
+
+    public void testModifyObject()
+        throws Exception
+    {
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
+
+        MockFactHandle handle1 = new MockFactHandle( 1 );
+        MockFactHandle handle2 = new MockFactHandle( 2 );
+
+        memory.putObject( handle1,
+                          "cheese1" );
+
+        memory.putObject( handle2,
+                          "cheese2" );
+
+        this.rete.modifyObject( handle1,
+                                "cheese1-b",
+                                memory );
+
+        this.rete.modifyObject( handle2,
+                                "cheese2-b",
+                                memory );
+
+        List modified = null;
+
+        modified = this.objectTypeNode.getModifiedHandles();
+
+        assertLength( 2,
+                      modified );
+
+        assertContains( handle1,
+                        modified );
+
+        assertContains( handle2,
+                        modified );
     }
 }
