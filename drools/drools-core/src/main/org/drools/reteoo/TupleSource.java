@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.22 2004-11-21 13:18:04 simon Exp $
+ * $Id: TupleSource.java,v 1.23 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -104,13 +104,10 @@ abstract class TupleSource
      * Propagate the assertion of a <code>Tuple</code> to this node's
      * <code>TupleSink</code>.
      *
-     * @param tuple
-     *            The <code>Tuple</code> to propagate.
-     * @param workingMemory
-     *            the working memory session.
+     * @param tuple The <code>Tuple</code> to propagate.
+     * @param workingMemory the working memory session.
      *
-     * @throws AssertionException
-     *             If an errors occurs while attempting assertion.
+     * @throws AssertionException If an errors occurs while attempting assertion.
      */
     protected void propagateAssertTuple(ReteTuple tuple,
                                         WorkingMemoryImpl workingMemory) throws AssertionException
@@ -124,13 +121,10 @@ abstract class TupleSource
      * Propagate the retration of a <code>Tuple</code> to this node's
      * <code>TupleSink</code>.
      *
-     * @param key
-     *            The tuple key.
-     * @param workingMemory
-     *            The working memory session.
+     * @param key The tuple key.
+     * @param workingMemory The working memory session.
      *
-     * @throws RetractionException
-     *             If an error occurs while attempting retraction
+     * @throws RetractionException If an error occurs while attempting retraction
      *
      */
     protected void propagateRetractTuples(TupleKey key,
@@ -144,15 +138,11 @@ abstract class TupleSource
      * Propagate the modification of <code>Tuple</code> s to this node's
      * <code>TupleSink</code>.
      *
-     * @param trigger
-     *            The modification trigger object handle.
-     * @param newTuples
-     *            Modification replacement tuples.
-     * @param workingMemory
-     *            The working memory session.
+     * @param trigger The modification trigger object handle.
+     * @param newTuples Modification replacement tuples.
+     * @param workingMemory The working memory session.
      *
-     * @throws FactException
-     *             If an error occurs while attempting modification.
+     * @throws FactException If an error occurs while attempting modification.
      */
     protected void propagateModifyTuples(FactHandle trigger,
                                          TupleSet newTuples,

@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.11 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.12 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,7 +46,6 @@ import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
-import org.drools.reteoo.Dumper;
 import org.drools.rule.ApplicationData;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -460,10 +459,10 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
-        
+
         //Dumper dumper = new Dumper( ruleBase );
         //dumper.dumpReteToDot( System.err );
-        
+
         WorkingMemory workingMemory = getWorkingMemory( ruleBase );
         workingMemory.addEventListener(new TestWorkingMemoryEventListener());
 

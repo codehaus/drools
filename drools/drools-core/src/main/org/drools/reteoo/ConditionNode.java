@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.27 2004-11-29 12:50:32 simon Exp $
+ * $Id: ConditionNode.java,v 1.28 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -146,13 +146,10 @@ class ConditionNode extends TupleSource
     /**
      * Assert a new <code>Tuple</code>.
      *
-     * @param tuple
-     *            The <code>Tuple</code> being asserted.
-     * @param workingMemory
-     *            The working memory seesion.
+     * @param tuple The <code>Tuple</code> being asserted.
+     * @param workingMemory The working memory seesion.
      *
-     * @throws AssertionException
-     *             If an error occurs while asserting.
+     * @throws AssertionException If an error occurs while asserting.
      */
     public void assertTuple(ReteTuple tuple,
                             WorkingMemoryImpl workingMemory) throws AssertionException
@@ -178,13 +175,10 @@ class ConditionNode extends TupleSource
     /**
      * Retract tuples.
      *
-     * @param key
-     *            The tuple key.
-     * @param workingMemory
-     *            The working memory seesion.
+     * @param key The tuple key.
+     * @param workingMemory The working memory seesion.
      *
-     * @throws RetractionException
-     *             If an error occurs while retracting.
+     * @throws RetractionException If an error occurs while retracting.
      */
     public void retractTuples(TupleKey key,
                               WorkingMemoryImpl workingMemory) throws RetractionException
@@ -196,15 +190,11 @@ class ConditionNode extends TupleSource
     /**
      * Modify tuples.
      *
-     * @param trigger
-     *            The root fact object handle.
-     * @param newTuples
-     *            Modification replacement tuples.
-     * @param workingMemory
-     *            The working memory session.
+     * @param trigger The root fact object handle.
+     * @param newTuples Modification replacement tuples.
+     * @param workingMemory The working memory session.
      *
-     * @throws FactException
-     *             If an error occurs while modifying.
+     * @throws FactException If an error occurs while modifying.
      */
     public void modifyTuples(FactHandle trigger,
                              TupleSet newTuples,
