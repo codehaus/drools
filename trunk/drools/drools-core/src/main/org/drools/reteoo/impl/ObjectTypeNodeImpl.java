@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ObjectTypeNodeImpl.java,v 1.3 2002-08-13 04:12:26 bob Exp $
+ $Id: ObjectTypeNodeImpl.java,v 1.4 2002-08-25 21:15:06 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -164,6 +164,11 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
     {
         ObjectType objectType = getObjectType();
 
+        if ( ! objectType.matches( object ) )
+        {
+            return;
+        }
+
         Iterator          nodeIter = getParameterNodeIterator();
         ParameterNodeImpl eachNode = null;
 
@@ -171,11 +176,8 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
         {
             eachNode = (ParameterNodeImpl) nodeIter.next();
 
-            if ( objectType.matches( object ) )
-            {
-                eachNode.assertObject( object,
-                                       workingMemory );
-            }
+            eachNode.assertObject( object,
+                                   workingMemory );
         }
     }
 
@@ -192,6 +194,11 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
     {
         ObjectType objectType = getObjectType();
 
+        if ( ! objectType.matches( object ) )
+        {
+            return;
+        }
+
         Iterator          nodeIter = getParameterNodeIterator();
         ParameterNodeImpl eachNode = null;
 
@@ -199,11 +206,8 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
         {
             eachNode = (ParameterNodeImpl) nodeIter.next();
 
-            if ( objectType.matches( object ) )
-            {
-                eachNode.retractObject( object,
-                                        workingMemory );
-            }
+            eachNode.retractObject( object,
+                                    workingMemory );
         }
     }
 
@@ -224,6 +228,11 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
     {
         ObjectType objectType = getObjectType();
 
+        if ( ! objectType.matches( object ) )
+        {
+            return;
+        }
+
         Iterator          nodeIter = getParameterNodeIterator();
         ParameterNodeImpl eachNode = null;
 
@@ -231,11 +240,8 @@ public class ObjectTypeNodeImpl implements ObjectTypeNode
         {
             eachNode = (ParameterNodeImpl) nodeIter.next();
 
-            if ( objectType.matches( object ) )
-            {
-                eachNode.modifyObject( object,
-                                       workingMemory );
-            }
+            eachNode.modifyObject( object,
+                                   workingMemory );
         }
     }
 }
