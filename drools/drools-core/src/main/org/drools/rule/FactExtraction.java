@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: AssignmentCondition.java,v 1.1 2002-08-01 18:47:33 bob Exp $
+ $Id: FactExtraction.java,v 1.1 2002-08-01 19:27:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.drools.spi.Condition;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class AssignmentCondition implements Condition
+public class FactExtraction implements Condition
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -81,8 +81,8 @@ public class AssignmentCondition implements Condition
      *  @param targetDeclaration The target of this assignment.
      *  @param factExtractor Value generator for the assignment.
      */
-    public AssignmentCondition(Declaration targetDeclaration,
-                               FactExtractor factExtractor)
+    public FactExtraction(Declaration targetDeclaration,
+                          FactExtractor factExtractor)
     {
         this.targetDeclaration = targetDeclaration;
         this.factExtractor     = factExtractor;

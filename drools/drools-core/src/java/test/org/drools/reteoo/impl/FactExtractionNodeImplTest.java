@@ -1,4 +1,3 @@
-
 package org.drools.reteoo.impl;
 
 import org.drools.AssertionException;
@@ -13,9 +12,9 @@ import junit.framework.TestCase;
 import java.util.Set;
 import java.util.List;
 
-public class AssignmentNodeTest extends TestCase
+public class FactExtractionNodeImplTest extends TestCase
 {
-    public AssignmentNodeTest(String name)
+    public FactExtractionNodeImplTest(String name)
     {
         super( name );
     }
@@ -42,11 +41,11 @@ public class AssignmentNodeTest extends TestCase
 
         source.addTupleDeclaration( stringDecl );
 
-        AssignmentNodeImpl assignNode = new AssignmentNodeImpl( source,
-                                                                objectDecl,
-                                                                null );
+        FactExtractionNodeImpl extractNode = new FactExtractionNodeImpl( source,
+                                                                         objectDecl,
+                                                                         null );
 
-        Set decls = assignNode.getTupleDeclarations();
+        Set decls = extractNode.getTupleDeclarations();
 
         assertEquals( 2,
                       decls.size() );
@@ -67,21 +66,21 @@ public class AssignmentNodeTest extends TestCase
 
         source.addTupleDeclaration( objectDecl );
 
-        AssignmentNodeImpl assignNode = new AssignmentNodeImpl( source,
-                                                                stringDecl,
-                                                                new InstrumentedFactExtractor( "cheese" ) );
+        FactExtractionNodeImpl extractNode = new FactExtractionNodeImpl( source,
+                                                                         stringDecl,
+                                                                         new InstrumentedFactExtractor( "cheese" ) );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
-        assignNode.setTupleSink( sink );
+        extractNode.setTupleSink( sink );
 
         ReteTuple tuple = new ReteTuple();
 
         try
         {
-            assignNode.assertTuple( source,
-                                    tuple,
-                                    null );
+            extractNode.assertTuple( source,
+                                     tuple,
+                                     null );
             
             List assertedTuples = sink.getAssertedTuples();
             

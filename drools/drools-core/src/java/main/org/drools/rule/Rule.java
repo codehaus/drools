@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.1 2002-08-01 18:47:33 bob Exp $
+ $Id: Rule.java,v 1.2 2002-08-01 19:27:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -95,8 +95,8 @@ public class Rule
     /** Filter conditions. */
     private Set filterConditions;
 
-    /** Assignment conditions. */
-    private Set assignmentConditions;
+    /** Fact extractions */
+    private Set factExtractions;
 
     /** Action. */
     private Action action;
@@ -122,7 +122,7 @@ public class Rule
         this.localDeclarations     = Collections.EMPTY_SET;
 
         this.filterConditions      = Collections.EMPTY_SET;
-        this.assignmentConditions  = Collections.EMPTY_SET;
+        this.factExtractions       = Collections.EMPTY_SET;
     }
 
     /** Set the truthness duration.
@@ -173,7 +173,7 @@ public class Rule
                  &&
                  ( ! ( getFilterConditions().isEmpty()
                        &&
-                       getAssignmentConditions().isEmpty() ) ) );
+                       getFactExtractions().isEmpty() ) ) );
     }
 
     /** Check the validity of this rule, and throw exceptions if
@@ -204,7 +204,7 @@ public class Rule
 
         if ( getFilterConditions().isEmpty()
              &&
-             getAssignmentConditions().isEmpty() )
+             getFactExtractions().isEmpty() )
         {
             throw new NoConditionException( this );
         }
@@ -305,22 +305,22 @@ public class Rule
         this.filterConditions.add( filterCondition );
     }
 
-    /** Add a consistent <code>AssignmentCondition</code> to this rule.
+    /** Add a consistent <code>FactExtraction</code> to this rule.
      *
-     *  @param assignmentCondition the <code>AssignmentCondition</code> to add.
+     *  @param factExtraction the <code>FactExtraction</code> to add.
      */
-    public void addAssignmentCondition(AssignmentCondition assignmentCondition)
+    public void addFactExtraction(FactExtraction factExtraction)
     {
         setState( STATE_OTHER );
 
-        if ( this.assignmentConditions == Collections.EMPTY_SET )
+        if ( this.factExtractions == Collections.EMPTY_SET )
         {
-            this.assignmentConditions = new HashSet();
+            this.factExtractions = new HashSet();
         }
 
-        this.assignmentConditions.add( assignmentCondition );
+        this.factExtractions.add( factExtraction );
 
-        Declaration decl = assignmentCondition.getTargetDeclaration();
+        Declaration decl = factExtraction.getTargetDeclaration();
 
         if ( ! this.parameterDeclarations.contains( decl ) )
         {
@@ -338,14 +338,14 @@ public class Rule
         return this.filterConditions;
     }
 
-    /** Retrieve the <code>Set</code> of <code>AssignmentConditions</code> for
+    /** Retrieve the <code>Set</code> of <code>FactExtractions</code> for
      *  this rule.
      *
-     *  @return The <code>Set</code> of <code>AssignmentConditions</code>.
+     *  @return The <code>Set</code> of <code>FactExtractions</code>.
      */
-    public Set getAssignmentConditions()
+    public Set getFactExtractions()
     {
-        return this.assignmentConditions;
+        return this.factExtractions;
     }
 
     /** Set the <code>Action</code> that is associated with the
@@ -381,7 +381,7 @@ public class Rule
             + "'; paramDecls=" + this.parameterDeclarations
             + "; localDecls=" + this.localDeclarations
             + "; filterConds=" + this.filterConditions
-            + "; assignConds=" + this.assignmentConditions
+            + "; factExtracts=" + this.factExtractions
             + "]";
     }
 

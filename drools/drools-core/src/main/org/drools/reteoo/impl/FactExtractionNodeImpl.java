@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AssignmentNodeImpl.java,v 1.3 2002-08-01 18:47:33 bob Exp $
+ $Id: FactExtractionNodeImpl.java,v 1.1 2002-08-01 19:27:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
-import org.drools.reteoo.AssignmentNode;
+import org.drools.reteoo.FactExtractionNode;
 import org.drools.rule.Declaration;
 import org.drools.spi.FactExtractor;
 
@@ -59,11 +59,11 @@ import java.util.HashSet;
 
 /** <i>Consistent-Assignment</i> node in the Rete-OO network.
  *
- *  @see AssignmentNode
+ *  @see FactExtractionNode
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class AssignmentNodeImpl extends TupleSourceImpl implements AssignmentNode, TupleSinkImpl
+public class FactExtractionNodeImpl extends TupleSourceImpl implements FactExtractionNode, TupleSinkImpl
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -88,9 +88,9 @@ public class AssignmentNodeImpl extends TupleSourceImpl implements AssignmentNod
      *  @param targetDeclaration Target of assignment/extraction.
      *  @param factExtractor The fact extractor to use.
      */
-    public AssignmentNodeImpl(TupleSourceImpl tupleSource,
-                              Declaration targetDeclaration,
-                              FactExtractor factExtractor)
+    public FactExtractionNodeImpl(TupleSourceImpl tupleSource,
+                                  Declaration targetDeclaration,
+                                  FactExtractor factExtractor)
     {
         this.factExtractor     = factExtractor;
         this.targetDeclaration = targetDeclaration;

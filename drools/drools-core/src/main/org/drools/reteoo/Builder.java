@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.14 2002-08-01 18:47:33 bob Exp $
+ $Id: Builder.java,v 1.15 2002-08-01 19:27:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,12 +51,12 @@ import org.drools.reteoo.impl.ObjectTypeNodeImpl;
 import org.drools.reteoo.impl.ParameterNodeImpl;
 import org.drools.reteoo.impl.FilterNodeImpl;
 import org.drools.reteoo.impl.JoinNodeImpl;
-import org.drools.reteoo.impl.AssignmentNodeImpl;
+import org.drools.reteoo.impl.FactExtractionNodeImpl;
 import org.drools.reteoo.impl.TerminalNodeImpl;
 import org.drools.reteoo.impl.TupleSourceImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-import org.drools.rule.AssignmentCondition;
+import org.drools.rule.FactExtraction;
 import org.drools.spi.ObjectType;
 import org.drools.spi.FilterCondition;
 import org.drools.spi.Condition;
@@ -125,21 +125,21 @@ public class Builder
      */
     public void addRule(Rule rule) throws ReteConstructionException
     {
-        Set assignmentConds = new HashSet( rule.getAssignmentConditions() );
-        Set filterConds     = new HashSet( rule.getFilterConditions() );
+        Set factExtracts = new HashSet( rule.getFactExtractions() );
+        Set filterConds  = new HashSet( rule.getFilterConditions() );
 
         Set leafNodes = null;
 
-        boolean performedJoin     = false;
-        boolean attachAssign      = false;
-        boolean cycleAttachAssign = false;
+        boolean performedJoin      = false;
+        boolean attachedExtract    = false;
+        boolean cycleAttachExtract = false;
         
         leafNodes = createParameterNodes( rule );
 
         do 
         {
-            performedJoin = false;
-            attachAssign  = false;
+            performedJoin   = false;
+            attachedExtract = false;
 
             if ( ! filterConds.isEmpty() )
             {
@@ -147,14 +147,14 @@ public class Builder
                                         leafNodes );
             }
 
-            attachAssign = attachAssignmentConditions( assignmentConds,
-                                                       leafNodes );
+            attachedExtract = attachFactExtractions( factExtracts,
+                                                     leafNodes );
 
             performedJoin = createJoinNodes( leafNodes );
 
             if ( ! performedJoin
                  &&
-                 ! attachAssign
+                 ! attachedExtract
                  &&
                  ! filterConds.isEmpty())
             {
@@ -166,7 +166,7 @@ public class Builder
                 &&
                 ( performedJoin
                   ||
-                  attachAssign
+                  attachedExtract
                   ) );
 
         TupleSource lastNode = (TupleSource) leafNodes.iterator().next();
@@ -405,8 +405,8 @@ public class Builder
      *  @return <code>true</code> if assignment conditions have been
      *          attached, otherwise <code>false</code>.
      */
-    protected boolean attachAssignmentConditions(Set assignmentConds,
-                                                 Set leafNodes)
+    protected boolean attachFactExtractions(Set factExtracts,
+                                            Set leafNodes)
     {
         boolean attached      = false;
         boolean cycleAttached = false;
@@ -414,18 +414,18 @@ public class Builder
         do
         {
             cycleAttached = false;
-
-            Iterator            condIter  = assignmentConds.iterator();
-            AssignmentCondition eachCond  = null;
-            TupleSourceImpl     tupleSource = null;
             
-            AssignmentNode assignNode = null;
+            Iterator        extractIter = factExtracts.iterator();
+            FactExtraction  eachExtract = null;
+            TupleSourceImpl tupleSource = null;
             
-            while ( condIter.hasNext() )
+            FactExtractionNode extractNode = null;
+            
+            while ( extractIter.hasNext() )
             {
-                eachCond = (AssignmentCondition) condIter.next();
+                eachExtract = (FactExtraction) extractIter.next();
                 
-                tupleSource = findMatchingTupleSourceForAssignment( eachCond,
+                tupleSource = findMatchingTupleSourceForExtraction( eachExtract,
                                                                     leafNodes );
                 
                 if ( tupleSource == null )
@@ -433,14 +433,14 @@ public class Builder
                     continue;
                 }
                 
-                condIter.remove();
+                extractIter.remove();
                 
-                assignNode = new AssignmentNodeImpl( tupleSource,
-                                                     eachCond.getTargetDeclaration(),
-                                                     eachCond.getFactExtractor() );
+                extractNode = new FactExtractionNodeImpl( tupleSource,
+                                                         eachExtract.getTargetDeclaration(),
+                                                         eachExtract.getFactExtractor() );
                 
                 leafNodes.remove( tupleSource );
-                leafNodes.add( assignNode );
+                leafNodes.add( extractNode );
                 
                 cycleAttached = true;
             }
@@ -489,7 +489,7 @@ public class Builder
     }
 
     /** Locate a <code>TupleSource</code> suitable for attaching
-     *  the <code>AssignmentCondition</code>.
+     *  the <code>FactExtraction</code>.
      *
      *  @param condition The <code>Condition</code> to attach.
      *  @param sources Candidate <code>TupleSources</code>.
@@ -497,11 +497,11 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSourceImpl findMatchingTupleSourceForAssignment(AssignmentCondition condition,
+    protected TupleSourceImpl findMatchingTupleSourceForExtraction(FactExtraction extract,
                                                                    Set sources)
     {
-        Declaration targetDecl = condition.getTargetDeclaration();
-
+        Declaration targetDecl = extract.getTargetDeclaration();
+        
         Iterator        sourceIter = sources.iterator();
         TupleSourceImpl eachSource = null;
 
@@ -518,7 +518,7 @@ public class Builder
                 continue;
             }
 
-            if ( matches( condition,
+            if ( matches( extract,
                           decls ) )
             {
                 return eachSource;
@@ -541,8 +541,20 @@ public class Builder
     protected boolean matches(Condition condition,
                               Set declarations)
     {
-        Declaration[] requiredDecls = condition.getRequiredTupleMembers();
+        return matches( condition.getRequiredTupleMembers(),
+                        declarations );
+    }
 
+    protected boolean matches(FactExtraction extract,
+                              Set declarations)
+    {
+        return matches( extract.getRequiredTupleMembers(),
+                        declarations );
+    }
+
+    protected boolean matches(Declaration[] requiredDecls,
+                              Set declarations)
+    {
         for ( int i = 0 ; i < requiredDecls.length ; ++i )
         {
             if ( ! declarations.contains( requiredDecls[i] ) )
