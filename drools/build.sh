@@ -56,8 +56,10 @@ function target_javadoc()
 {
   local sourcepath=""
 
+
   for module in $MODULES ; do 
     if [ -z $sourcepath ] ; then
+      ( cd drools-$module/src/main/ ; find ./ -depth \( -name '*.html' \) -print | cpio -pudm --quiet ../../build/sources )
       sourcepath=./drools-$module/build/sources/
     else
       sourcepath=$sourcepath:./drools-$module/build/sources/
@@ -65,8 +67,26 @@ function target_javadoc()
   done
 
   $JAVADOC \
+      -classpath $(dyn_javadoc_classpath) \
       -sourcepath $sourcepath \
-      -d ./build/docs/api/ org.drools
+      -windowtitle "Drools $VERSION Public API" \
+      -use \
+      -version \
+      -author \
+      -d ./build/docs/api/ -subpackages org.drools:bsh.commands\
+      -group "Core Engine" org.drools:org.drools.rule:org.drools.conflict \
+      -group "Semanic Providers Interface" org.drools.spi \
+      -group "Semantic Module Framework" org.drools.smf \
+      -group "Rule I/O" org.drools.io \
+      -group "Base Semantic Module" org.drools.semantics.base \
+      -group "Java Semantic Module" org.drools.semantics.java:org.drools.semantics.java.parser:bsh.commands \
+      -group "Python Semantic Module" org.drools.semantics.python \
+      -group "Groovy Semantic Module" org.drools.semantics.groovy \
+      -group "JSR-94 Binding" org.drools.jsr94:org.drools.jsr94.rules:org.drools.jsr94.rules.admin:org.drools.jsr94.jca.spi \
+      -exclude org.drools.reteoo \
+      org.drools \
+      bsh.commands 
+
 }
 
 function dyn_classpath()
@@ -91,9 +111,26 @@ function dyn_classpath()
   echo $cp 
 }
 
+function dyn_javadoc_classpath()
+{
+  local jars=./build/lib/*.jar
+
+  local cp=""
+
+  for jar in $jars ; do
+    if [ -z $cp ] ; then
+      cp=$jar
+    else
+      cp="$cp:$jar"
+    fi
+  done
+
+  echo $cp
+}
+
 function dyn_common_classpath()
 {
-  local jars="../build/lib/*.jar"
+  local jars=../build/lib/*.jar
 
   local cp=""
 
@@ -214,7 +251,7 @@ JAVADOC=javadoc
 
 export JAVA JAVAC JAR JAVADOC
 
-if [ -z $* ] ; then
+if [ -z "$*" ] ; then
   do_
 else
   for target in $* ; do
