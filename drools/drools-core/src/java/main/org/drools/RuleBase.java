@@ -150,7 +150,7 @@ public class RuleBase
      *  @param object The object to modify.
      *  @param workingMemory The working memory session.
      *
-     *  @throws ModificationException if an error occurs during assertion.
+     *  @throws FactException if an error occurs during assertion.
      */
     protected void modifyObject(Object object,
                                 WorkingMemory workingMemory) throws FactException
