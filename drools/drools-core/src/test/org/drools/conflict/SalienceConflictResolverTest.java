@@ -135,6 +135,25 @@ public class SalienceConflictResolverTest extends TestCase
         MockAgendaItem item;
         items.clear();
 
+        brieRule.setSalience(0);
+        fetaRule.setSalience(0);
+        camembertRule.setSalience(0);
+
+        conflictItems = this.conflictResolver.insert(brie, items);
+        assertNull(conflictItems);
+
+        conflictItems = this.conflictResolver.insert(feta, items);
+        assertEquals(1, conflictItems.size());
+        assertEquals(0, ((MockAgendaItem) conflictItems.get(0)).getRule().getSalience());
+        assertEquals("brie", ((MockAgendaItem) conflictItems.get(0)).getRule().getName());
+
+        conflictItems = this.conflictResolver.insert(camembert, items);
+        assertEquals(1, conflictItems.size());
+        assertEquals(0, ((MockAgendaItem) conflictItems.get(0)).getRule().getSalience());
+        assertEquals("brie", ((MockAgendaItem) conflictItems.get(0)).getRule().getName());
+
+        items.clear();
+
         brieRule.setSalience(1);
         fetaRule.setSalience(1);
         camembertRule.setSalience(2);
