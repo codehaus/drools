@@ -152,8 +152,8 @@
 
         <dependency>
             <id>antlr</id>
-            <version>2.7.2</version>
-            <jar>antlr-2.7.2.jar</jar>
+            <version>2.7.1</version>
+            <jar>antlrall-2.7.1.jar</jar>
             <url>http://antlr.org/</url>
         </dependency>
 
@@ -218,10 +218,12 @@
             <url>http://jython.org/</url>
         </dependency>
 
+<!--
         <dependency>
             <id>jaas</id>
             <version>1.0</version>
         </dependency>
+-->
 
         <dependency>
             <id>jca</id>
