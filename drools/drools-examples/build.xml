@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.34 2003-03-25 19:48:59 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.35 2003-03-25 20:19:06 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
@@ -281,9 +281,8 @@
 
         <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="src/java/main" packagenames="org.drools.*">
             <classpath>
-                <fileset dir="${libdir}">
-                    <include name="*.jar"/>
-                </fileset>
+                <fileset dir="${commonlibdir}" includes="*.jar"/>
+                <fileset dir="${libdir}" includes="*.jar"/>
                 <pathelement location="target/${jarname}.jar"/>
             </classpath>
         </javadoc>
