@@ -1,14 +1,13 @@
 package org.drools.reteoo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.drools.AssertionException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.MockObjectType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InstrumentedParameterNode extends ParameterNode
 {
@@ -19,16 +18,14 @@ public class InstrumentedParameterNode extends ParameterNode
     private static Rule rule;
 
     /**
-     * 
+     *
      * this is a nasty hack, but need to make sure that the rule is passed via
      * the super call
      */
     static
     {
         rule = new Rule( "test-rule 1" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition

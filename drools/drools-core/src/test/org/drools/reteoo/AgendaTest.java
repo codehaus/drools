@@ -6,16 +6,16 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
-import org.drools.spi.MockObjectType;
 import org.drools.spi.AgendaFilter;
+import org.drools.spi.MockObjectType;
 
 /**
- * 
+ *
  * @author mproctor
  *
  * @todo remove schedule items
  * @todo add/remove schedule items
- * 
+ *
  */
 
 public class AgendaTest extends DroolsTestCase
@@ -28,18 +28,18 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple,
-                               WorkingMemory workingMemory)
+            public void invoke(org.drools.spi.Tuple tuple, WorkingMemory workingMemory )
             {
                 agenda.addToAgenda( ( ReteTuple ) tuple, tuple.getRule( ) );
             }
         } );
+
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
@@ -69,7 +69,7 @@ public class AgendaTest extends DroolsTestCase
         assertEquals( 1, agenda.size( ) );
         agenda.clearAgenda();
     }
-    
+
     public void testFilters() throws Exception
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete() );
@@ -78,9 +78,8 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
@@ -141,9 +140,9 @@ public class AgendaTest extends DroolsTestCase
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
         agenda.fireNextItem( filterFalse );
-        assertEquals( 0, agenda.size( ) );                   
+        assertEquals( 0, agenda.size( ) );
     }
- 
+
     public void testClearAgenda() throws Exception
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete() );
@@ -152,9 +151,8 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
@@ -184,6 +182,6 @@ public class AgendaTest extends DroolsTestCase
         assertEquals( 1, agenda.size( ) );
         agenda.fireNextItem( null );
         assertEquals( 0, agenda.size( ) );
-    }    
-    
+    }
+
 }

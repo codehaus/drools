@@ -1,36 +1,24 @@
 package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
-import org.drools.MockObjectType;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.spi.MockObjectType;
 
 import java.util.List;
 import java.util.Set;
 
 public class ObjectTypeNodeTest extends DroolsTestCase
 {
-    private Declaration decl;
-
-    public void setUp()
-    {
-        this.decl = new Declaration( new MockObjectType( Object.class ),
-                                     "object" );
-    }
-
-    public void tearDown()
-    {
-        this.decl = null;
-    }
-
     public void testAssertObject() throws Exception
     {
-        ObjectTypeNode objectTypeNode = new ObjectTypeNode(
-                                                            new MockObjectType(
-                                                                                String.class ) );
+        Rule rule = new Rule( getName( ) );
 
-        InstrumentedParameterNode paramNode = new InstrumentedParameterNode(
-                                                                             null,
-                                                                             this.decl );
+        Declaration decl = rule.addParameterDeclaration( "object", new MockObjectType( Object.class ) );
+
+        ObjectTypeNode objectTypeNode = new ObjectTypeNode( new MockObjectType( String.class ) );
+
+        InstrumentedParameterNode paramNode = new InstrumentedParameterNode( null, decl );
 
         objectTypeNode.addParameterNode( paramNode );
 

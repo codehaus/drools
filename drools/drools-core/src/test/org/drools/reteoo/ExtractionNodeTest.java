@@ -13,20 +13,22 @@ import java.util.Set;
 
 public class ExtractionNodeTest extends TestCase
 {
+    private Rule        rule;
     private Declaration stringDecl;
-
     private Declaration objectDecl;
 
     public void setUp()
     {
-        this.stringDecl = new Declaration( new MockObjectType( ), "string" );
-
-        this.objectDecl = new Declaration( new MockObjectType( ), "object" );
+        this.rule = new Rule( getName() );
+        this.stringDecl = this.rule.addDeclaration( "string", new MockObjectType( ) );
+        this.objectDecl = this.rule.addDeclaration( "object", new MockObjectType( ) );
     }
 
     public void tearDown()
     {
-
+        this.rule = null;
+        this.stringDecl = null;
+        this.objectDecl = null;
     }
 
     public void testGetTupleDeclarations()
@@ -35,8 +37,7 @@ public class ExtractionNodeTest extends TestCase
 
         source.addTupleDeclaration( stringDecl );
 
-        ExtractionNode extractNode = new ExtractionNode( source, objectDecl,
-                                                         null );
+        ExtractionNode extractNode = new ExtractionNode( source, objectDecl, null );
 
         Set decls = extractNode.getTupleDeclarations( );
 
@@ -52,36 +53,25 @@ public class ExtractionNodeTest extends TestCase
 
         source.addTupleDeclaration( objectDecl );
 
-        ExtractionNode extractNode = new ExtractionNode(
-                                                         source,
-                                                         stringDecl,
-                                                         new InstrumentedExtractor(
-                                                                                    "cheese" ) );
+        ExtractionNode extractNode = new ExtractionNode( source, stringDecl, new InstrumentedExtractor( "cheese" ) );
 
-        InstrumentedTupleSink sink = new InstrumentedTupleSink( );
+        InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
         extractNode.setTupleSink( sink );
 
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
-        Rule rule = new Rule( "test-rule 1" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule, paramDecl, new FactHandleImpl( 1 ),
-                            new String( "cheese" ) );
+        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule, paramDecl, new FactHandleImpl( 1 ), "cheese" );
 
         try
         {
-            extractNode
-                       .assertTuple(
-                                     tuple,
-                                     ( WorkingMemoryImpl ) tuple
-                                                                .getWorkingMemory( ) );
+            extractNode.assertTuple( tuple, ( WorkingMemoryImpl ) tuple.getWorkingMemory() );
 
             List assertedTuples = sink.getAssertedTuples( );
 

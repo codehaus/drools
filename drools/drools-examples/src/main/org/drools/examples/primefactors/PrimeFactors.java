@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
- * $Id: PrimeFactors.java,v 1.5 2004-10-25 21:34:44 mproctor Exp $
+ * $Id: PrimeFactors.java,v 1.6 2004-11-12 17:11:16 simon Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,15 +39,6 @@ package org.drools.examples.primefactors;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.zip.GZIPInputStream;
-
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.WorkingMemory;
@@ -56,6 +47,15 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.semantics.base.ClassObjectType;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.zip.GZIPInputStream;
 
 public class PrimeFactors
 {
@@ -66,13 +66,7 @@ public class PrimeFactors
     private static final String          DRL_FILE      = "primes.java.drl";
 
     /** . */
-    private static final ClassObjectType numberType    = new ClassObjectType(
-                                                                              Number.class );
-
-    /** . */
-    static final Declaration             numberDecl    = new Declaration(
-                                                                          numberType,
-                                                                          "Number" );
+    private static final ClassObjectType numberType    = new ClassObjectType( Number.class );
 
     /** Default number of numberOfRules. */
     private static int                   numberOfRules = 100;
@@ -155,9 +149,10 @@ public class PrimeFactors
         for ( int i = 0; i < numberOfRules; i++ )
         {
             Rule rule = new Rule( "Factor by " + primes[i] );
-            rule.addParameterDeclaration( numberDecl );
-            rule.addCondition( new FactorCondition( primes[i] ) );
-            rule.setConsequence( new FactorConsequence( primes[i] ) );
+
+            Declaration numberDecl = rule.addParameterDeclaration( "number", numberType );
+            rule.addCondition( new FactorCondition( numberDecl, primes[i] ) );
+            rule.setConsequence( new FactorConsequence( numberDecl, primes[i] ) );
             ruleSet.addRule( rule );
         }
         verbose( "Created " + numberOfRules + " rules" + stopwatch( 0 ) );
@@ -166,10 +161,7 @@ public class PrimeFactors
         verbose( "Building RuleBase with " + numberOfRules + " rules..." );
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.addRuleSet( ruleSet );
-        builder
-               .addRuleSet( new RuleSetReader( )
-                                                .read( PrimeFactors.class
-                                                                         .getResource( DRL_FILE ) ) );
+        builder.addRuleSet( new RuleSetReader( ).read( PrimeFactors.class.getResource( DRL_FILE ) ) );
         RuleBase ruleBase = builder.build( );
         verbose( "Built RuleBase with " + numberOfRules + " rules"
                  + stopwatch( 0 ) );
@@ -276,8 +268,7 @@ public class PrimeFactors
 
         if ( verbose )
         {
-            for ( Iterator i = workingMemory.getObjects( ).iterator( ); i
-                                                                         .hasNext( ); )
+            for ( Iterator i = workingMemory.getObjects( ).iterator( ); i.hasNext(); )
             {
                 System.out.println( i.next( ) );
             }
@@ -295,13 +286,8 @@ public class PrimeFactors
         primes = new int[numberOfRules];
         try
         {
-            BufferedReader br = new BufferedReader(
-                                                    new InputStreamReader(
-                                                                           new GZIPInputStream(
-                                                                                                PrimeFactors.class
-                                                                                                                  .getResource(
-                                                                                                                                PRIMES_FILE )
-                                                                                                                  .openStream( ) ) ) );
+            BufferedReader br = new BufferedReader( new InputStreamReader( new GZIPInputStream(
+                    PrimeFactors.class.getResource( PRIMES_FILE ).openStream() ) ) );
 
             String line;
             for ( int i = 0; i < numberOfRules; i++ )

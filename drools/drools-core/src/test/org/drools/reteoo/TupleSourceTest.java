@@ -4,9 +4,7 @@ import junit.framework.TestCase;
 import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.MockObjectType;
 
 import java.util.List;
 
@@ -34,9 +32,6 @@ public class TupleSourceTest extends TestCase
 
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition

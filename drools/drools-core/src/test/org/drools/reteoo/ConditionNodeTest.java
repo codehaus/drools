@@ -14,7 +14,9 @@ import java.util.Set;
 
 public class ConditionNodeTest extends TestCase
 {
-    private ReteTuple tuple;
+    private RuleBase    ruleBase;
+    private Rule        rule;
+    private ReteTuple   tuple;
 
     public ConditionNodeTest(String name)
     {
@@ -23,13 +25,12 @@ public class ConditionNodeTest extends TestCase
 
     public void setUp()
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
-        Rule rule = new Rule( "test-rule 1" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+        this.ruleBase = new RuleBaseImpl( new Rete( ) );
+        this.rule = new Rule( "test-rule 1" );
+
         //add consequence
-        rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
+        this.rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
+
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
         this.tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule );
@@ -54,9 +55,7 @@ public class ConditionNodeTest extends TestCase
         try
         {
             RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
-            node
-                .assertTuple( this.tuple,
-                              ( WorkingMemoryImpl ) ruleBase.newWorkingMemory( ) );
+            node.assertTuple( this.tuple, ( WorkingMemoryImpl ) ruleBase.newWorkingMemory( ) );
 
             List asserted = sink.getAssertedTuples( );
 
@@ -86,10 +85,7 @@ public class ConditionNodeTest extends TestCase
 
         try
         {
-            RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
-            node
-                .assertTuple( this.tuple,
-                              ( WorkingMemoryImpl ) ruleBase.newWorkingMemory( ) );
+            node.assertTuple( this.tuple, ( WorkingMemoryImpl ) this.ruleBase.newWorkingMemory( ) );
 
             List asserted = sink.getAssertedTuples( );
 
@@ -107,8 +103,7 @@ public class ConditionNodeTest extends TestCase
      */
     public void testGetTupleDeclarations()
     {
-        Declaration decl = new Declaration( new MockObjectType( Object.class ),
-                                            "object" );
+        Declaration decl = this.rule.addParameterDeclaration( "object", new MockObjectType( Object.class ) );
 
         ParameterNode paramNode = new ParameterNode( null, null, decl );
 

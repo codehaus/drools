@@ -1,44 +1,44 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.6 2004-11-09 13:52:39 simon Exp $
- *
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- *
- * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided that the
- * following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright statements and
- * notices. Redistributions must also contain a copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- *
- * 3. The name "drools" must not be used to endorse or promote products derived
- * from this Software without prior written permission of The Werken Company.
- * For written permission, please contact bob@werken.com.
- *
- * 4. Products derived from this Software may not be called "drools" nor may
- * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a registered trademark of The Werken Company.
- *
- * 5. Due credit should be given to The Werken Company.
- * (http://drools.werken.com/).
- *
- * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
- * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+* $Id: MannersNativeTest.java,v 1.7 2004-11-12 17:11:15 simon Exp $
+*
+* Copyright 2002 (C) The Werken Company. All Rights Reserved.
+*
+* Redistribution and use of this software and associated documentation
+* ("Software"), with or without modification, are permitted provided that the
+* following conditions are met:
+*
+* 1. Redistributions of source code must retain copyright statements and
+* notices. Redistributions must also contain a copy of this document.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice,
+* this list of conditions and the following disclaimer in the documentation
+* and/or other materials provided with the distribution.
+*
+* 3. The name "drools" must not be used to endorse or promote products derived
+* from this Software without prior written permission of The Werken Company.
+* For written permission, please contact bob@werken.com.
+*
+* 4. Products derived from this Software may not be called "drools" nor may
+* "drools" appear in their names without prior written permission of The Werken
+* Company. "drools" is a registered trademark of The Werken Company.
+*
+* 5. Due credit should be given to The Werken Company.
+* (http://drools.werken.com/).
+*
+* THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
+* AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+* ARE DISCLAIMED. IN NO EVENT SHALL THE WERKEN COMPANY OR ITS CONTRIBUTORS BE
+* LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+* SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*/
 
 import junit.framework.TestCase;
 import org.drools.FactException;
@@ -85,19 +85,19 @@ import java.util.StringTokenizer;
 public class MannersNativeTest extends TestCase implements Serializable
 {
     /** Drools working memory. */
-    private WorkingMemory workingMemory = null;
+    private WorkingMemory workingMemory;
 
     /** Number of guests at the dinner (default: 16). */
-    private int    numGuests  = 16;
+    private int numGuests = 16;
 
     /** Number of seats at the table (default: 16). */
-    private int    numSeats   = 16;
+    private int numSeats = 16;
 
     /** Minimum number of hobbies each guest should have (default: 2). */
-    private int    minHobbies = 2;
+    private int minHobbies = 2;
 
     /** Maximun number of hobbies each guest should have (default: 3). */
-    private int    maxHobbies = 3;
+    private int maxHobbies = 3;
 
     protected void setUp() throws Exception
     {
@@ -114,35 +114,33 @@ public class MannersNativeTest extends TestCase implements Serializable
         // ===========================================
         // <rule name="find first seat" salience="40">
         // ===========================================
-        Rule rule = new Rule( "find first seat" );
-        rule.setSalience( 40 );
+        final Rule findFirstSeatRule = new Rule( "find first seat" );
+        findFirstSeatRule.setSalience( 40 );
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
         //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        final Declaration contextDecl = new Declaration( contextType, "context" );
-        rule.addParameterDeclaration( contextDecl );
+        final Declaration contextDeclA = findFirstSeatRule.addParameterDeclaration( "context", contextType );
 
         // <parameter identifier="guest">
         //   <class>org.drools.examples.manners.model.Guest</class>
         // </parameter>
-        final Declaration guestDecl = new Declaration( guestType, "guest" );
-        rule.addParameterDeclaration( guestDecl );
+        final Declaration guestDeclA = findFirstSeatRule.addParameterDeclaration( "guest", guestType );
 
         // Build and Add the Condition to the Rule
         // <java:condition>context.isState("start")</java:condition>
-        Condition condition = new Condition( )
+        final Condition conditionA1 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Context context = ( Context ) tuple.get( contextDecl );
+                Context context = ( Context ) tuple.get( contextDeclA );
                 return context.isState( "start" );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{contextDecl};
+                return new Declaration[]{contextDeclA};
             }
 
             public String toString()
@@ -150,7 +148,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "context.isState(\"start\")";
             }
         };
-        rule.addCondition( condition );
+        findFirstSeatRule.addCondition( conditionA1 );
 
         // Build and Add the Consequence to the Rule
         // <java:consequence>
@@ -160,12 +158,12 @@ public class MannersNativeTest extends TestCase implements Serializable
         //   context.setState("find_seating");
         //   drools.modifyObject(context);
         // </java:consequence>
-        Consequence consequence = new Consequence( )
+        final Consequence consequenceA = new Consequence()
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
             {
-                Context context = ( Context ) tuple.get( contextDecl );
-                Guest guest = ( Guest ) tuple.get( guestDecl );
+                Context context = ( Context ) tuple.get( contextDeclA );
+                Guest guest = ( Guest ) tuple.get( guestDeclA );
 
                 try
                 {
@@ -180,11 +178,7 @@ public class MannersNativeTest extends TestCase implements Serializable
 
                 try
                 {
-                    workingMemory
-                                 .modifyObject(
-                                                tuple
-                                                     .getFactHandleForObject( context ),
-                                                context );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ), context );
                 }
                 catch ( FactException e )
                 {
@@ -192,48 +186,44 @@ public class MannersNativeTest extends TestCase implements Serializable
                 }
             }
         };
-        rule.setConsequence( consequence );
-        ruleSet.addRule( rule );
+        findFirstSeatRule.setConsequence( consequenceA );
+        ruleSet.addRule( findFirstSeatRule );
 
         // ========================================
         // <rule name="find seating" salience="30">
         // ========================================
-        rule = new Rule( "find seating" );
-        rule.setSalience( 30 );
+        final Rule findSeatingRule = new Rule( "find seating" );
+        findSeatingRule.setSalience( 30 );
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
         //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        //        final Declaration contextDecl = new Declaration(contextType,
-        // "context");
-        rule.addParameterDeclaration( contextDecl );
+        final Declaration contextDeclB = findSeatingRule.addParameterDeclaration( "context", contextType );
 
         // <parameter identifier="guest">
         //   <class>org.drools.examples.manners.model.Guest</class>
         // </parameter>
-        //        final Declaration guestDecl = new Declaration(guestType, "guest");
-        rule.addParameterDeclaration( guestDecl );
+        final Declaration guestDeclB = findSeatingRule.addParameterDeclaration( "guest", guestType );
 
         // <parameter identifier="seating">
         //     <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
-        final Declaration seatingDecl = new Declaration( seatingType, "seating" );
-        rule.addParameterDeclaration( seatingDecl );
+        final Declaration seatingDeclB = findSeatingRule.addParameterDeclaration( "seating", seatingType );
 
         // Build and Add the Condition to the Rule
         // <java:condition>context.isState("find_seating")</java:condition>
-        condition = new Condition( )
+        final Condition conditionB1 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Context context = ( Context ) tuple.get( contextDecl );
+                Context context = ( Context ) tuple.get( contextDeclB );
                 return context.isState( "find_seating" );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{contextDecl};
+                return new Declaration[]{contextDeclB};
             }
 
             public String toString()
@@ -241,20 +231,20 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "context.isState(\"find_seating\")";
             }
         };
-        rule.addCondition( condition );
+        findSeatingRule.addCondition( conditionB1 );
 
         // <java:condition>seating.getGuest2() == null</java:condition>
-        condition = new Condition( )
+        final Condition conditionB2 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                return seating.getGuest2( ) == null;
+                Seating seating = ( Seating ) tuple.get( seatingDeclB );
+                return seating.getGuest2() == null;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{seatingDecl};
+                return new Declaration[]{seatingDeclB};
             }
 
             public String toString()
@@ -262,21 +252,21 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "seating.getGuest2() == null";
             }
         };
-        rule.addCondition( condition );
+        findSeatingRule.addCondition( conditionB2 );
 
         // <java:condition>!seating.getTabooList().contains(guest)</java:condition>
-        condition = new Condition( )
+        final Condition conditionB3 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                Guest guest = ( Guest ) tuple.get( guestDecl );
-                return !seating.getTabooList( ).contains( guest );
+                Seating seating = ( Seating ) tuple.get( seatingDeclB );
+                Guest guest = ( Guest ) tuple.get( guestDeclB );
+                return !seating.getTabooList().contains( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{seatingDecl, guestDecl};
+                return new Declaration[]{seatingDeclB, guestDeclB};
             }
 
             public String toString()
@@ -284,21 +274,21 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "!seating.getTabooList().contains(guest)";
             }
         };
-        rule.addCondition( condition );
+        findSeatingRule.addCondition( conditionB3 );
 
         // <java:condition>seating.getGuest1().hasOppositeSex(guest)</java:condition>
-        condition = new Condition( )
+        final Condition conditionB4 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                Guest guest = ( Guest ) tuple.get( guestDecl );
-                return seating.getGuest1( ).hasOppositeSex( guest );
+                Seating seating = ( Seating ) tuple.get( seatingDeclB );
+                Guest guest = ( Guest ) tuple.get( guestDeclB );
+                return seating.getGuest1().hasOppositeSex( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{seatingDecl, guestDecl};
+                return new Declaration[]{seatingDeclB, guestDeclB};
             }
 
             public String toString()
@@ -306,21 +296,21 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "seating.getGuest1().hasOppositeSex(guest)";
             }
         };
-        rule.addCondition( condition );
+        findSeatingRule.addCondition( conditionB4 );
 
         // <java:condition>seating.getGuest1().hasSameHobby(guest)</java:condition>
-        condition = new Condition( )
+        final Condition conditionB5 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                Guest guest = ( Guest ) tuple.get( guestDecl );
-                return seating.getGuest1( ).hasSameHobby( guest );
+                Seating seating = ( Seating ) tuple.get( seatingDeclB );
+                Guest guest = ( Guest ) tuple.get( guestDeclB );
+                return seating.getGuest1().hasSameHobby( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{seatingDecl, guestDecl};
+                return new Declaration[]{seatingDeclB, guestDeclB};
             }
 
             public String toString()
@@ -328,7 +318,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "seating.getGuest1().hasSameHobby(guest)";
             }
         };
-        rule.addCondition( condition );
+        findSeatingRule.addCondition( conditionB5 );
 
         // Build and Add the Consequence to the Rule
         // <java:consequence>
@@ -341,15 +331,14 @@ public class MannersNativeTest extends TestCase implements Serializable
         //    seating.getTabooList().add(guest);
         //    drools.modifyObject(seating);
         // </java:consequence>
-        consequence = new Consequence( )
+        final Consequence consequenceB = new Consequence()
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
             {
-                Guest guest = ( Guest ) tuple.get( guestDecl );
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
+                Guest guest = ( Guest ) tuple.get( guestDeclB );
+                Seating seating = ( Seating ) tuple.get( seatingDeclB );
 
-                Seating nextSeat = new Seating( seating.getSeat2( ), guest,
-                                                seating );
+                Seating nextSeat = new Seating( seating.getSeat2(), guest, seating );
                 try
                 {
                     workingMemory.assertObject( nextSeat );
@@ -360,15 +349,11 @@ public class MannersNativeTest extends TestCase implements Serializable
                 }
 
                 seating.setGuest2( guest );
-                seating.getTabooList( ).add( guest );
+                seating.getTabooList().add( guest );
 
                 try
                 {
-                    workingMemory
-                                 .modifyObject(
-                                                tuple
-                                                     .getFactHandleForObject( seating ),
-                                                seating );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( seating ), seating );
                 }
                 catch ( FactException e )
                 {
@@ -376,45 +361,43 @@ public class MannersNativeTest extends TestCase implements Serializable
                 }
             }
         };
-        rule.setConsequence( consequence );
-        ruleSet.addRule( rule );
+        findSeatingRule.setConsequence( consequenceB );
+        ruleSet.addRule( findSeatingRule );
 
         // ===========================================
         // <rule name="try another path" salience="20">
         // ===========================================
-        rule = new Rule( "try another path" );
-        rule.setSalience( 20 );
+        final Rule tryAnotherPathRule = new Rule( "try another path" );
+        tryAnotherPathRule.setSalience( 20 );
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
         //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        rule.addParameterDeclaration( contextDecl );
+        final Declaration contextDeclC = tryAnotherPathRule.addParameterDeclaration( "context", contextType );
 
         // <parameter identifier="lastSeat">
         //     <class>org.drools.examples.manners.model.LastSeat</class>
         // </parameter>
-        final Declaration lastSeatDecl = new Declaration( lastSeatType,
-                                                          "lastSeat" );
-        rule.addParameterDeclaration( lastSeatDecl );
+        final Declaration lastSeatDeclC = tryAnotherPathRule.addParameterDeclaration( "lastSeat", lastSeatType );
 
         // <parameter identifier="seating">
         //     <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
-        rule.addParameterDeclaration( seatingDecl );
+        final Declaration seatingDeclC = tryAnotherPathRule.addParameterDeclaration( "seating", seatingType );
 
         // <java:condition>context.isState("find_seating")</java:condition>
-        condition = new Condition( )
+        final Condition conditionC1 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Context context = ( Context ) tuple.get( contextDecl );
+                Context context = ( Context ) tuple.get( contextDeclC );
                 return context.isState( "find_seating" );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{contextDecl};
+                return new Declaration[]{contextDeclC};
             }
 
             public String toString()
@@ -422,22 +405,22 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "context.isState(\"find_seating\")";
             }
         };
-        rule.addCondition( condition );
+        tryAnotherPathRule.addCondition( conditionC1 );
 
         // <java:condition>lastSeat.getSeat() >
         // seating.getSeat1()</java:condition>
-        condition = new Condition( )
+        final Condition conditionC2 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                LastSeat lastSeat = ( LastSeat ) tuple.get( lastSeatDecl );
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                return lastSeat.getSeat( ) > seating.getSeat1( );
+                LastSeat lastSeat = ( LastSeat ) tuple.get( lastSeatDeclC );
+                Seating seating = ( Seating ) tuple.get( seatingDeclC );
+                return lastSeat.getSeat() > seating.getSeat1();
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{lastSeatDecl, seatingDecl};
+                return new Declaration[]{lastSeatDeclC, seatingDeclC};
             }
 
             public String toString()
@@ -445,20 +428,20 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "lastSeat.getSeat() > seating.getSeat1()";
             }
         };
-        rule.addCondition( condition );
+        tryAnotherPathRule.addCondition( conditionC2 );
 
         // <java:condition>seating.getGuest2() == null</java:condition>
-        condition = new Condition( )
+        final Condition conditionC3 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                return seating.getGuest2( ) == null;
+                Seating seating = ( Seating ) tuple.get( seatingDeclC );
+                return seating.getGuest2() == null;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{seatingDecl};
+                return new Declaration[]{seatingDeclC};
             }
 
             public String toString()
@@ -466,7 +449,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "seating.getGuest2() == null";
             }
         };
-        rule.addCondition( condition );
+        tryAnotherPathRule.addCondition( conditionC3 );
 
         // <java:consequence>
         //    System.out.println("FIRE: try another path: " + seating);
@@ -477,22 +460,18 @@ public class MannersNativeTest extends TestCase implements Serializable
         //
         //    drools.retractObject(seating);
         // </java:consequence>
-        consequence = new Consequence( )
+        final Consequence consequenceC = new Consequence()
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
+                Seating seating = ( Seating ) tuple.get( seatingDeclC );
 
-                Seating prevSeat = seating.getPrevSeat( );
+                Seating prevSeat = seating.getPrevSeat();
                 prevSeat.setGuest2( null );
 
                 try
                 {
-                    workingMemory
-                                 .modifyObject(
-                                                tuple
-                                                     .getFactHandleForObject( prevSeat ),
-                                                prevSeat );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( prevSeat ), prevSeat );
                 }
                 catch ( FactException e )
                 {
@@ -501,9 +480,7 @@ public class MannersNativeTest extends TestCase implements Serializable
 
                 try
                 {
-                    workingMemory
-                                 .retractObject( tuple
-                                                      .getFactHandleForObject( seating ) );
+                    workingMemory.retractObject( tuple.getFactHandleForObject( seating ) );
                 }
                 catch ( FactException e )
                 {
@@ -511,43 +488,43 @@ public class MannersNativeTest extends TestCase implements Serializable
                 }
             }
         };
-        rule.setConsequence( consequence );
-        ruleSet.addRule( rule );
+        tryAnotherPathRule.setConsequence( consequenceC );
+        ruleSet.addRule( tryAnotherPathRule );
 
         // =======================================
         // <rule name="we are done" salience="10">
         // =======================================
-        rule = new Rule( "we are done" );
-        rule.setSalience( 10 );
+        final Rule weAreDoneRule = new Rule( "we are done" );
+        weAreDoneRule.setSalience( 10 );
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
         //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        rule.addParameterDeclaration( contextDecl );
+        final Declaration contextDeclD = weAreDoneRule.addParameterDeclaration( "context", contextType );
 
         // <parameter identifier="lastSeat">
         //     <class>org.drools.examples.manners.model.LastSeat</class>
         // </parameter>
-        rule.addParameterDeclaration( lastSeatDecl );
+        final Declaration lastSeatDeclD = weAreDoneRule.addParameterDeclaration( "lastSeat", lastSeatType );
 
         // <parameter identifier="seating">
         //     <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
-        rule.addParameterDeclaration( seatingDecl );
+        final Declaration seatingDeclD = weAreDoneRule.addParameterDeclaration( "seating", seatingType );
 
         // <java:condition>context.isState("find_seating")</java:condition>
-        condition = new Condition( )
+        final Condition conditionD1 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                Context context = ( Context ) tuple.get( contextDecl );
+                Context context = ( Context ) tuple.get( contextDeclD );
                 return context.isState( "find_seating" );
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{contextDecl};
+                return new Declaration[]{contextDeclD};
             }
 
             public String toString()
@@ -555,22 +532,22 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "context.isState(\"find_seating\")";
             }
         };
-        rule.addCondition( condition );
+        weAreDoneRule.addCondition( conditionD1 );
 
         // <java:condition>lastSeat.getSeat() ==
         // seating.getSeat1()</java:condition>
-        condition = new Condition( )
+        final Condition conditionD2 = new Condition()
         {
-            public boolean isAllowed(Tuple tuple)
+            public boolean isAllowed( Tuple tuple )
             {
-                LastSeat lastSeat = ( LastSeat ) tuple.get( lastSeatDecl );
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                return lastSeat.getSeat( ) == seating.getSeat1( );
+                LastSeat lastSeat = ( LastSeat ) tuple.get( lastSeatDeclD );
+                Seating seating = ( Seating ) tuple.get( seatingDeclD );
+                return lastSeat.getSeat() == seating.getSeat1();
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{lastSeatDecl, seatingDecl};
+                return new Declaration[]{lastSeatDeclD, seatingDeclD};
             }
 
             public String toString()
@@ -578,7 +555,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 return "lastSeat.getSeat() == seating.getSeat1()";
             }
         };
-        rule.addCondition( condition );
+        weAreDoneRule.addCondition( conditionD2 );
 
         // <java:consequence>
         //    System.out.println("FIRE: we are done");
@@ -601,23 +578,22 @@ public class MannersNativeTest extends TestCase implements Serializable
         //    context.setState("all_done");
         //    drools.modifyObject(context);
         // </java:consequence>
-        consequence = new Consequence( )
+        final Consequence consequenceD = new Consequence()
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
             {
-                Seating seating = ( Seating ) tuple.get( seatingDecl );
-                Context context = ( Context ) tuple.get( contextDecl );
+                Seating seating = ( Seating ) tuple.get( seatingDeclD );
+                Context context = ( Context ) tuple.get( contextDeclD );
 
-                List list = new ArrayList( );
+                List list = new ArrayList();
                 while ( seating != null )
                 {
-                    Seat seat = new Seat( seating.getSeat1( ),
-                                          seating.getGuest1( ).getName( ) );
-                    seating = seating.getPrevSeat( );
+                    Seat seat = new Seat( seating.getSeat1(), seating.getGuest1().getName() );
+                    seating = seating.getPrevSeat();
                     list.add( seat );
                 }
 
-                for ( int i = list.size( ); i > 0; i-- )
+                for ( int i = list.size(); i > 0; i-- )
                 {
                     Seat seat = ( Seat ) list.get( i - 1 );
                     try
@@ -633,11 +609,7 @@ public class MannersNativeTest extends TestCase implements Serializable
                 context.setState( "all_done" );
                 try
                 {
-                    workingMemory
-                                 .modifyObject(
-                                                tuple
-                                                     .getFactHandleForObject( context ),
-                                                context );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ), context );
                 }
                 catch ( FactException e )
                 {
@@ -645,17 +617,17 @@ public class MannersNativeTest extends TestCase implements Serializable
                 }
             }
         };
-        rule.setConsequence( consequence );
-        ruleSet.addRule( rule );
+        weAreDoneRule.setConsequence( consequenceD );
+        ruleSet.addRule( weAreDoneRule );
 
         // ==================
         // Build the RuleSet.
         // ==================
-        RuleBaseBuilder builder = new RuleBaseBuilder( );
+        RuleBaseBuilder builder = new RuleBaseBuilder();
         builder.addRuleSet( ruleSet );
-        RuleBase ruleBase = builder.build( );
+        RuleBase ruleBase = builder.build();
         workingMemory = getWorkingMemory( ruleBase );
-        workingMemory.addEventListener(new TestWorkingMemoryEventListener());
+        workingMemory.addEventListener( new TestWorkingMemoryEventListener() );
     }
 
     protected void tearDown() throws Exception
@@ -665,60 +637,55 @@ public class MannersNativeTest extends TestCase implements Serializable
 
     public void testManners() throws Exception
     {
-        List inList = getInputObjects( generateData( ) );
-
-        long start = System.currentTimeMillis( );
+        List inList = getInputObjects( generateData() );
 
         //test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
         workingMemory = serializeWorkingMemory( workingMemory );
 
-        for ( Iterator i = inList.iterator( ); i.hasNext( ); )
+        for ( Iterator i = inList.iterator(); i.hasNext(); )
         {
-            workingMemory.assertObject( i.next( ) );
+            workingMemory.assertObject( i.next() );
         }
 
         //test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
         workingMemory = serializeWorkingMemory( workingMemory );
 
-        workingMemory.fireAllRules( );
+        workingMemory.fireAllRules();
 
         //test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
         workingMemory = serializeWorkingMemory( workingMemory );
 
-        List outList = workingMemory.getObjects( );
+        List outList = workingMemory.getObjects();
 
         int actualGuests = validateResults( inList, outList );
 
-        assertEquals(numGuests, actualGuests);
+        assertEquals( numGuests, actualGuests );
 
-        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners().get(0);
-        assertEquals(50, listener.asserted);
-        assertEquals(0, listener.retracted);
-        assertEquals(17, listener.modified);
+        TestWorkingMemoryEventListener listener = ( TestWorkingMemoryEventListener ) workingMemory.getEventListeners().get( 0 );
+        assertEquals( 50, listener.asserted );
+        assertEquals( 0, listener.retracted );
+        assertEquals( 17, listener.modified );
         //can't test this as it changes on each run
         //assertEquals(2024, listener.tested);
-        assertEquals(96, listener.created);
-        assertEquals(17, listener.fired);
-        assertEquals(79, listener.cancelled);
-
+        assertEquals( 96, listener.created );
+        assertEquals( 17, listener.fired );
+        assertEquals( 79, listener.cancelled );
     }
 
-
     /**
-     * Verify that each guest has at least one common hobby with the guest
-     * before him/her.
+     * Verify that each guest has at least one common hobby with the guest before him/her.
      */
-    private static int validateResults(List inList, List outList)
+    private static int validateResults( List inList, List outList )
     {
         int seatCount = 0;
         Guest lastGuest = null;
-        Iterator it = outList.iterator( );
-        while ( it.hasNext( ) )
+        Iterator it = outList.iterator();
+        while ( it.hasNext() )
         {
-            Object obj = it.next( );
+            Object obj = it.next();
             if ( !( obj instanceof Seat ) )
             {
                 continue;
@@ -733,10 +700,10 @@ public class MannersNativeTest extends TestCase implements Serializable
             Guest guest = guest4Seat( inList, seat );
 
             boolean hobbyFound = false;
-            for ( int i = 0; !hobbyFound && i < lastGuest.getHobbies( ).size( ); i++ )
+            for ( int i = 0; !hobbyFound && i < lastGuest.getHobbies().size(); i++ )
             {
-                String hobby = ( String ) lastGuest.getHobbies( ).get( i );
-                if ( guest.getHobbies( ).contains( hobby ) )
+                String hobby = ( String ) lastGuest.getHobbies().get( i );
+                if ( guest.getHobbies().contains( hobby ) )
                 {
                     hobbyFound = true;
                 }
@@ -744,9 +711,7 @@ public class MannersNativeTest extends TestCase implements Serializable
 
             if ( !hobbyFound )
             {
-                throw new RuntimeException( "seat: " + seat.getSeat( )
-                                            + " no common hobby " + lastGuest
-                                            + " -> " + guest );
+                throw new RuntimeException( "seat: " + seat.getSeat() + " no common hobby " + lastGuest + " -> " + guest );
             }
             seatCount++;
         }
@@ -755,21 +720,20 @@ public class MannersNativeTest extends TestCase implements Serializable
     }
 
     /**
-     * Gets the Guest object from the inList based on the guest name of the
-     * seat.
+     * Gets the Guest object from the inList based on the guest name of the seat.
      */
-    private static Guest guest4Seat(List inList, Seat seat)
+    private static Guest guest4Seat( List inList, Seat seat )
     {
-        Iterator it = inList.iterator( );
-        while ( it.hasNext( ) )
+        Iterator it = inList.iterator();
+        while ( it.hasNext() )
         {
-            Object obj = it.next( );
+            Object obj = it.next();
             if ( !( obj instanceof Guest ) )
             {
                 continue;
             }
             Guest guest = ( Guest ) obj;
-            if ( guest.getName( ).equals( seat.getName( ) ) )
+            if ( guest.getName().equals( seat.getName() ) )
             {
                 return guest;
             }
@@ -779,46 +743,43 @@ public class MannersNativeTest extends TestCase implements Serializable
     }
 
     /**
-     * Convert the facts from the <code>InputStream</code> to a list of
-     * objects.
+     * Convert the facts from the <code>InputStream</code> to a list of objects.
      */
-    private List getInputObjects(InputStream inputStream) throws IOException
+    private List getInputObjects( InputStream inputStream ) throws IOException
     {
-        List list = new ArrayList( );
+        List list = new ArrayList();
 
-        BufferedReader br = new BufferedReader(
-                                                new InputStreamReader(
-                                                                       inputStream ) );
+        BufferedReader br = new BufferedReader( new InputStreamReader( inputStream ) );
 
-        Map guests = new HashMap( );
+        Map guests = new HashMap();
 
-        String line = null;
-        while ( ( line = br.readLine( ) ) != null )
+        String line;
+        while ( ( line = br.readLine() ) != null )
         {
-            if ( line.trim( ).length( ) == 0 || line.trim( ).startsWith( ";" ) )
+            if ( line.trim().length() == 0 || line.trim().startsWith( ";" ) )
             {
                 continue;
             }
             StringTokenizer st = new StringTokenizer( line, "() " );
-            String type = st.nextToken( );
+            String type = st.nextToken();
 
             if ( "guest".equals( type ) )
             {
-                if ( !"name".equals( st.nextToken( ) ) )
+                if ( !"name".equals( st.nextToken() ) )
                 {
                     throw new IOException( "expected 'name' in: " + line );
                 }
-                String name = st.nextToken( );
-                if ( !"sex".equals( st.nextToken( ) ) )
+                String name = st.nextToken();
+                if ( !"sex".equals( st.nextToken() ) )
                 {
                     throw new IOException( "expected 'sex' in: " + line );
                 }
-                String sex = st.nextToken( );
-                if ( !"hobby".equals( st.nextToken( ) ) )
+                String sex = st.nextToken();
+                if ( !"hobby".equals( st.nextToken() ) )
                 {
                     throw new IOException( "expected 'hobby' in: " + line );
                 }
-                String hobby = st.nextToken( );
+                String hobby = st.nextToken();
 
                 Guest guest = ( Guest ) guests.get( name );
                 if ( guest == null )
@@ -832,26 +793,23 @@ public class MannersNativeTest extends TestCase implements Serializable
 
             if ( "last_seat".equals( type ) )
             {
-                if ( !"seat".equals( st.nextToken( ) ) )
+                if ( !"seat".equals( st.nextToken() ) )
                 {
                     throw new IOException( "expected 'seat' in: " + line );
                 }
-                list
-                    .add( new LastSeat(
-                                        new Integer( st.nextToken( ) )
-                                                                      .intValue( ) ) );
+                list.add( new LastSeat( new Integer( st.nextToken() ).intValue() ) );
             }
 
             if ( "context".equals( type ) )
             {
-                if ( !"state".equals( st.nextToken( ) ) )
+                if ( !"state".equals( st.nextToken() ) )
                 {
                     throw new IOException( "expected 'state' in: " + line );
                 }
-                list.add( new Context( st.nextToken( ) ) );
+                list.add( new Context( st.nextToken() ) );
             }
         }
-        inputStream.close( );
+        inputStream.close();
 
         return list;
     }
@@ -860,7 +818,7 @@ public class MannersNativeTest extends TestCase implements Serializable
     {
         final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
-        StringWriter writer = new StringWriter( );
+        StringWriter writer = new StringWriter();
 
         int maxMale = numGuests / 2;
         int maxFemale = numGuests / 2;
@@ -869,16 +827,16 @@ public class MannersNativeTest extends TestCase implements Serializable
         int femaleCount = 0;
 
         // init hobbies
-        List hobbyList = new ArrayList( );
+        List hobbyList = new ArrayList();
         for ( int i = 1; i <= maxHobbies; i++ )
         {
             hobbyList.add( "h" + i );
         }
 
-        Random rnd = new Random( );
+        Random rnd = new Random();
         for ( int i = 1; i <= numGuests; i++ )
         {
-            char sex = rnd.nextBoolean( ) ? 'm' : 'f';
+            char sex = rnd.nextBoolean() ? 'm' : 'f';
             if ( sex == 'm' && maleCount == maxMale )
             {
                 sex = 'f';
@@ -898,14 +856,12 @@ public class MannersNativeTest extends TestCase implements Serializable
 
             List guestHobbies = new ArrayList( hobbyList );
 
-            int numHobbies = minHobbies
-                             + rnd.nextInt( maxHobbies - minHobbies + 1 );
+            int numHobbies = minHobbies + rnd.nextInt( maxHobbies - minHobbies + 1 );
             for ( int j = 0; j < numHobbies; j++ )
             {
-                int hobbyIndex = rnd.nextInt( guestHobbies.size( ) );
+                int hobbyIndex = rnd.nextInt( guestHobbies.size() );
                 String hobby = ( String ) guestHobbies.get( hobbyIndex );
-                writer.write( "(guest (name n" + i + ") (sex " + sex
-                              + ") (hobby " + hobby + "))" + LINE_SEPARATOR );
+                writer.write( "(guest (name n" + i + ") (sex " + sex + ") (hobby " + hobby + "))" + LINE_SEPARATOR );
                 guestHobbies.remove( hobbyIndex );
             }
         }
@@ -914,45 +870,42 @@ public class MannersNativeTest extends TestCase implements Serializable
         writer.write( LINE_SEPARATOR );
         writer.write( "(context (state start))" + LINE_SEPARATOR );
 
-        return new ByteArrayInputStream( writer.getBuffer( ).toString( )
-                                               .getBytes( ) );
+        return new ByteArrayInputStream( writer.getBuffer().toString().getBytes() );
     }
 
-    private static WorkingMemory getWorkingMemory(RuleBase ruleBase) throws Exception
+    private static WorkingMemory getWorkingMemory( RuleBase ruleBase ) throws Exception
     {
         // Serialize to a byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = new ObjectOutputStream( bos );
-        out.writeObject( ruleBase.newWorkingMemory( ) );
-        out.close( );
+        out.writeObject( ruleBase.newWorkingMemory() );
+        out.close();
 
         // Get the bytes of the serialized object
-        byte[] bytes = bos.toByteArray( );
+        byte[] bytes = bos.toByteArray();
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
-        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
-        in.close( );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
+        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject();
+        in.close();
         return workingMemoryOut;
     }
 
-    private static WorkingMemory serializeWorkingMemory(WorkingMemory workingMemoryIn) throws Exception
+    private static WorkingMemory serializeWorkingMemory( WorkingMemory workingMemoryIn ) throws Exception
     {
         // Serialize to a byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = new ObjectOutputStream( bos );
         out.writeObject( workingMemoryIn );
-        out.close( );
+        out.close();
 
         // Get the bytes of the serialized object
-        byte[] bytes = bos.toByteArray( );
+        byte[] bytes = bos.toByteArray();
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
-        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
-        in.close( );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
+        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject();
+        in.close();
         return workingMemoryOut;
     }
 }

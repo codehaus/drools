@@ -1,14 +1,14 @@
 package org.drools.rule;
 
+import org.drools.DroolsTestCase;
+import org.drools.spi.MockObjectType;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-
-import org.drools.DroolsTestCase;
-import org.drools.spi.MockObjectType;
 
 public class RuleSetTest extends DroolsTestCase
 {
@@ -114,16 +114,12 @@ public class RuleSetTest extends DroolsTestCase
     public void testSerializeRuleSet() throws Exception
     {
         Rule rule1 = new Rule( "test-rule 1" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
 
-        Declaration localDecl = new Declaration( new MockObjectType( true ),
-                                                 "localVar" );
+        rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        Extraction extraction = new Extraction( localDecl, null );
+        rule1.addDeclaration( "localVar", new MockObjectType( true ) );
 
-        rule1.addParameterDeclaration( paramDecl );
-        rule1.addExtraction( extraction );
+        rule1.addExtraction( "localVar", null );
 
         //add consequence
         rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -136,14 +132,12 @@ public class RuleSetTest extends DroolsTestCase
         rule1.setLoadOrder( 22 );
 
         Rule rule2 = new Rule( "test-rule 2" );
-        paramDecl = new Declaration( new MockObjectType( true ), "paramVar" );
 
-        localDecl = new Declaration( new MockObjectType( true ), "localVar" );
+        rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        extraction = new Extraction( localDecl, null );
+        rule2.addDeclaration( "localVar", new MockObjectType( true ) );
 
-        rule2.addParameterDeclaration( paramDecl );
-        rule2.addExtraction( extraction );
+        rule2.addExtraction( "localVar", null );
 
         //add consequence
         rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -168,8 +162,7 @@ public class RuleSetTest extends DroolsTestCase
         byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
         ruleSet = ( RuleSet ) in.readObject( );
         in.close( );
 

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.20 2004-10-11 22:59:38 simon Exp $
+ * $Id: Declaration.java,v 1.21 2004-11-12 17:11:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,7 @@ import java.io.Serializable;
  * @see org.drools.spi.Condition
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
  */
 public class Declaration implements Serializable
 {
@@ -65,14 +66,15 @@ public class Declaration implements Serializable
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The type of the variable. */
-    private ObjectType                objectType;
-
     /** The identifier for the variable. */
-    private String                    identifier;
+    private final String      identifier;
 
-    /** cache the hashcode for optimisation */
-    private int                       hashcode;
+    /** The type of the variable. */
+    // TODO: Would like to make this final if we can. Requires rejigging the xml handler stuff.
+    private ObjectType objectType;
+
+    /** The order within a rule. */
+    private final int         order;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -81,40 +83,20 @@ public class Declaration implements Serializable
     /**
      * Construct.
      *
-     * @param objectType The type of this variable declaration.
      * @param identifier The name of the variable.
+     * @param objectType The type of this variable declaration.
+     * @param order The order within a rule.
      */
-    public Declaration(ObjectType objectType, String identifier)
+    Declaration( String identifier, ObjectType objectType, int order )
     {
         this.objectType = objectType;
         this.identifier = identifier;
-        this.hashcode = innerHashCode();
-    }
-
-    /**
-     * Construct.
-     *
-     * @param identifier The name of the variable.
-     */
-    public Declaration(String identifier)
-    {
-        this.identifier = identifier;
+        this.order = order;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /**
-     * Set the <code>ObjectType</code>.
-     *
-     * @param objectType The object-type.
-     */
-    public void setObjectType(ObjectType objectType)
-    {
-        this.objectType = objectType;
-        this.hashcode = innerHashCode();
-    }
 
     /**
      * Retrieve the <code>ObjectType</code>.
@@ -124,6 +106,12 @@ public class Declaration implements Serializable
     public ObjectType getObjectType()
     {
         return this.objectType;
+    }
+
+    // TODO: Remove this if possible
+    public void setObjectType( ObjectType objectType )
+    {
+        this.objectType = objectType;
     }
 
     /**
@@ -136,39 +124,30 @@ public class Declaration implements Serializable
         return this.identifier;
     }
 
+    public int getOrder()
+    {
+        return this.order;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    /**
-     * @see Object
-     */
-    public boolean equals(Object thatObj)
+    public int hashCode()
     {
-        if (this == thatObj )
+        return this.order;
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
         {
             return true;
         }
-
-        if ( thatObj instanceof Declaration )
+        else if ( object == null || object.getClass() != getClass() )
         {
-            Declaration that = ( Declaration ) thatObj;
-
-            return this.objectType.equals( that.objectType ) && this.identifier.equals( that.identifier );
+            return false;
         }
 
-        return false;
-    }
-
-    /**
-     * @see Object
-     */
-    public int hashCode()
-    {
-        return hashcode;
-    }
-
-    private int innerHashCode()
-    {
-        return this.objectType.hashCode( ) ^ this.identifier.hashCode( );
+        return this.order == ( ( Declaration ) object ).order;
     }
 
     public String toString()

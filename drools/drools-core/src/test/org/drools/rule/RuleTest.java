@@ -1,18 +1,18 @@
 package org.drools.rule;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-
 import org.drools.DroolsTestCase;
 import org.drools.WorkingMemory;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.MockObjectType;
 import org.drools.spi.Tuple;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 public class RuleTest extends DroolsTestCase
 {
@@ -50,10 +50,7 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-
-        rule.addParameterDeclaration( paramDecl );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         Declaration[] paramDecls = rule.getParameterDeclarations( );
 
@@ -82,16 +79,11 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        Declaration localDecl = new Declaration( new MockObjectType( true ),
-                                                 "localVar" );
+        Declaration localDecl = rule.addDeclaration( "localVar", new MockObjectType( true ) );
 
-        Extraction extraction = new Extraction( localDecl, null );
-
-        rule.addParameterDeclaration( paramDecl );
-        rule.addExtraction( extraction );
+        rule.addExtraction( "localVar", null );
 
         Declaration[] paramDecls = rule.getParameterDeclarations( );
         assertLength( 1, paramDecls );
@@ -152,45 +144,11 @@ public class RuleTest extends DroolsTestCase
 
     public void testParameterOrder() throws Exception
     {
-        Declaration paramDecl0 = new Declaration( new MockObjectType( true ),
-                                                  "paramVar0" );
-
-        Declaration paramDecl1 = new Declaration( new MockObjectType( true ),
-                                                  "paramVar1" );
-
-        Declaration paramDecl2 = new Declaration( new MockObjectType( true ),
-                                                  "paramVar2" );
-
-        Declaration paramDecl3 = new Declaration( new MockObjectType( true ),
-                                                  "paramVar3" );
-
         Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( paramDecl0 );
-        rule.addParameterDeclaration( paramDecl1 );
-        rule.addParameterDeclaration( paramDecl2 );
 
-        assertEquals( 0, rule.getParameterOrder( paramDecl0 ) );
-        assertEquals( 1, rule.getParameterOrder( paramDecl1 ) );
-        assertEquals( 2, rule.getParameterOrder( paramDecl2 ) );
-
-        rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( paramDecl1 );
-        rule.addParameterDeclaration( paramDecl0 );
-        rule.addParameterDeclaration( paramDecl2 );
-
-        assertEquals( 1, rule.getParameterOrder( "paramVar0" ) );
-        assertEquals( 2, rule.getParameterOrder( "paramVar2" ) );
-        assertEquals( 0, rule.getParameterOrder( "paramVar1" ) );
-
-        try
-        {
-            int i = rule.getParameterOrder( paramDecl3 );
-            fail( "getParameterOrder(paramDecl3) Should not be able to find this parameter" );
-        }
-        catch ( RuntimeException e )
-        {
-            //
-        }
+        assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getOrder( ) );
+        assertEquals( 1, rule.addDeclaration( "localVar1", new MockObjectType( true ) ).getOrder( ) );
+        assertEquals( 2, rule.addParameterDeclaration( "paramVar2", new MockObjectType( true ) ).getOrder( ) );
     }
 
     public void testDuration_SimpleLong() throws Exception
@@ -242,16 +200,13 @@ public class RuleTest extends DroolsTestCase
     {
 
         Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
 
-        Declaration localDecl = new Declaration( new MockObjectType( true ),
-                                                 "localVar" );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
-        Extraction extraction = new Extraction( localDecl, null );
+        rule.addDeclaration( "localVar", new MockObjectType( true ) );
 
-        rule.addParameterDeclaration( paramDecl );
-        rule.addExtraction( extraction );
+        rule.addExtraction( "localVar", null );
+
 
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
