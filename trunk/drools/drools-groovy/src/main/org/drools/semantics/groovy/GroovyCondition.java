@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyCondition.java,v 1.2 2004-12-08 23:07:50 simon Exp $
+ * $Id: GroovyCondition.java,v 1.3 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -76,7 +76,7 @@ public class GroovyCondition extends GroovyInterp implements Condition
         super( text,
                rule );
 
-        ExprAnalyzer analyzer = new ExprAnalyzer( );
+        GroovyExprAnalyzer analyzer = new GroovyExprAnalyzer( );
 
         this.requiredDeclarations = analyzer.analyze( getText( ),
                                                       rule.getParameterDeclarations( ) );
