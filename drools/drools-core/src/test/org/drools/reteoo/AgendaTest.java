@@ -42,25 +42,25 @@ public class AgendaTest extends DroolsTestCase
 
         ReteTuple tuple = new ReteTuple( workingMemory, rule );
 
-        assertEquals( 0, agenda.getItems( ).size( ) );
+        assertEquals( 0, agenda.size( ) );
 
         /*
          * This is not recursive so a rule should not be able to activate itself
          */
         rule.setNoLoop( true );
         agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.getItems( ).size( ) );
+        assertEquals( 1, agenda.size( ) );
         agenda.fireNextItem( );
-        assertEquals( 0, agenda.getItems( ).size( ) );
+        assertEquals( 0, agenda.size( ) );
 
         /*
          * This is recursive so a rule should be able to activate itself
          */
         rule.setNoLoop( false );
         agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.getItems( ).size( ) );
+        assertEquals( 1, agenda.size( ) );
         agenda.fireNextItem( );
-        assertEquals( 1, agenda.getItems( ).size( ) );
+        assertEquals( 1, agenda.size( ) );
 
     }
 }
