@@ -161,6 +161,8 @@
             <roles>
                 <role>Developer</role>
             </roles>
+	    <timezone>-5</timezone>
+	    <organization>Cantilever Technologies</organization>
         </developer>
     </developers>
     <contributors>
@@ -177,6 +179,14 @@
             <roles>
                 <role>JSR-94 Contributor</role>
             </roles>
+        </contributor>
+        <contributor>
+            <name>Doug Bryant</name>
+            <email>doug@netinlet.com</email>
+            <roles>
+                <role>Groovy Contributor</role>
+            </roles>
+	    <timezone>-5</timezone>
         </contributor>
     </contributors>
     <build>

@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciJNDIExample.java,v 1.1 2004-07-07 04:45:21 dbarnett Exp $
+$Id: FibonacciJNDIExample.java,v 1.2 2004-07-16 19:03:34 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -53,43 +53,46 @@ import org.drools.io.RuleBaseBuilder;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-public class FibonacciJNDIExample
-{
-    private static void initJNDI(String[] args)
-        throws Exception
-    {
-        System.setProperty("java.naming.factory.initial", args[0]);
+public class FibonacciJNDIExample {
+    private static void initJNDI(String namingFactory, String drl)
+            throws Exception {
+        System.setProperty("java.naming.factory.initial", namingFactory);
 
         System.setProperty("org.osjava.jndi.shared", "true");
 
-        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciJNDIExample.class.getResource( "fibonacci.java.drl" ) );
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl(FibonacciJNDIExample.class.getResource(drl));
 
-        Context context =  new InitialContext();
+        Context context = new InitialContext();
         context.bind("fibonacci", ruleBase);
     }
 
     public static void main(String[] args)
-        throws Exception
-    {
-        initJNDI(args);
+            throws Exception {
+        if (args.length != 2) {
+            System.out.println("Usage: " + FibonacciJNDIExample.class.getName() + " [jndi initial context] [drl file]");
+            return;
+        }
+        System.out.println("Using drl: " + args[1]);
 
-        Context context =  new InitialContext();
+        initJNDI(args[0], args[1]);
+
+        Context context = new InitialContext();
 
         RuleBase ruleBase = (RuleBase) context.lookup("fibonacci");
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-        org.drools.examples.fibonacci.Fibonacci fibonacci = new Fibonacci( 50 );
+        org.drools.examples.fibonacci.Fibonacci fibonacci = new Fibonacci(50);
 
         long start = System.currentTimeMillis();
 
-        workingMemory.assertObject( fibonacci );
+        workingMemory.assertObject(fibonacci);
 
         workingMemory.fireAllRules();
 
         long stop = System.currentTimeMillis();
 
-        System.out.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
+        System.out.println("fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop - start) + "ms");
     }
 
 

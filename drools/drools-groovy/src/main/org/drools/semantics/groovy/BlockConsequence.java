@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: BlockConsequence.java,v 1.3 2004-06-11 23:31:27 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import java.util.Iterator;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.3 2004-06-11 23:31:27 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
  */
 public class BlockConsequence extends Exec implements Consequence {
     // ------------------------------------------------------------
@@ -77,6 +77,13 @@ public class BlockConsequence extends Exec implements Consequence {
         super(text);
     }
 
+    /**
+     * Default constructor - required for serialization
+     */
+    public BlockConsequence() {
+        super();
+    }
+    
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
