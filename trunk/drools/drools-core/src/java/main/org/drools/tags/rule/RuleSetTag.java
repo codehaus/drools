@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleSetTag.java,v 1.3 2002-08-20 05:06:24 bob Exp $
+ $Id: RuleSetTag.java,v 1.4 2002-08-20 21:19:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,7 @@ package org.drools.tags.rule;
 
 import org.drools.io.RuleSetLoader;
 import org.drools.rule.RuleSet;
+import org.drools.tags.knowledge.RuleBaseTag;
 
 import org.apache.commons.jelly.XMLOutput;
 
@@ -57,7 +58,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetTag.java,v 1.3 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: RuleSetTag.java,v 1.4 2002-08-20 21:19:55 bob Exp $
  */
 public class RuleSetTag extends RuleTagSupport
 {
@@ -168,6 +169,13 @@ public class RuleSetTag extends RuleTagSupport
         if ( loader != null )
         {
             loader.addRuleSet( this.ruleSet );
+        }
+
+        RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
+
+        if ( tag != null )
+        {
+            tag.addRuleSet( this.ruleSet );
         }
     }
 }

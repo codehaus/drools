@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: KnowledgeTagLibrary.java,v 1.1 2002-08-20 18:33:17 bob Exp $
+ $Id: KnowledgeTagLibrary.java,v 1.2 2002-08-20 21:19:55 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import org.apache.commons.jelly.TagLibrary;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: KnowledgeTagLibrary.java,v 1.1 2002-08-20 18:33:17 bob Exp $
+ *  @version $Id: KnowledgeTagLibrary.java,v 1.2 2002-08-20 21:19:55 bob Exp $
  */
 public class KnowledgeTagLibrary extends TagLibrary
 {
@@ -64,6 +64,12 @@ public class KnowledgeTagLibrary extends TagLibrary
      */
     public KnowledgeTagLibrary()
     {
+        registerTag( "rule-base",
+                     RuleBaseTag.class );
+
+        registerTag( "load-rules",
+                     LoadRulesTag.class );
+
         registerTag( "knowledge",
                      KnowledgeTag.class );
 
