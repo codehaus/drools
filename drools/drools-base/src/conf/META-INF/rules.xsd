@@ -44,27 +44,11 @@
                   <xs:element ref="python:class"/>
                 </xs:choice>
                 <xs:attribute name="identifier" use="required" type="xs:string"/>
-              </xs:complexType>
-            </xs:element>     
-          
-          <xs:element minOccurs="0" maxOccurs="unbounded" ref="java:extractor"/>   
-          
-        </xs:choice>
-        
-        <!-- make sure extractor targets are specified 
-             after decleration identifiers
-        <xs:key name="identifierKey">
-          <xs:selector xpath="./declaration and ./parameter" />
-          <xs:field xpath="@identifier" />
-        </xs:key>
-        <xs:keyref name="targetToIdentifier" refer="identifierKey">
-          <xs:selector xpath="./java:extractor" />
-          <xs:field xpath="@target" />
-        </xs:keyref>  
-	-->
-        
-        
-        
+              </xs:complexType>          
+            </xs:element>              
+          <xs:element minOccurs="0" maxOccurs="unbounded" ref="java:extractor" />                          
+        </xs:choice>             
+                
         <xs:choice maxOccurs="unbounded">
           <xs:element ref="java:condition"/>
           <xs:element ref="groovy:condition"/>
@@ -89,6 +73,17 @@
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:string"/>
       <xs:attribute name="salience" type="xs:integer"/>     
-    </xs:complexType>
+    </xs:complexType>  
+    <!-- make sure extractor targets are specified 
+         after decleration identifiers -->
+    <xs:key name="identifierKey">
+      <xs:selector xpath="rules:declaration | rules:parameter" />
+      <xs:field xpath="@identifier" />
+    </xs:key>           
+    <xs:keyref name="targetToIdentifier" 
+               refer="rules:identifierKey">
+      <xs:selector xpath="java:extractor" />
+      <xs:field xpath="@target" />
+    </xs:keyref>              
   </xs:element>
 </xs:schema>
