@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.4 2004-12-16 19:35:21 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -95,8 +95,8 @@ class JavaCompiler
         {
             throw new CompilationException( rule,
                                             originalExpression,
-                                            e.getLocation( ).getLineNumber( ),
-                                            e.getLocation( ).getColumnNumber( ),
+                                            e.getLocation() != null ? e.getLocation( ).getLineNumber( ) : -1,
+                                            e.getLocation() != null ? e.getLocation( ).getColumnNumber( ) : -1,
                                             e.getMessage( ) );
         }
     }
