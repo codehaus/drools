@@ -18,16 +18,12 @@
     <shortDescription>Rete Based Rules Engine</shortDescription>
 
     <description>
-        The drools project is a dynamic rules engine for Java.
-        It uses a modified implementation of Forgy's RETE algorithm to
-        allow natural expression of rules within an object-oriented language.
     </description>
 
     <url>http://drools.org</url>
 
     <siteAddress>drools.codehaus.org</siteAddress>
     <siteDirectory>/www/drools.codehaus.org</siteDirectory>
-    <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/drools:drools</connection>
@@ -38,18 +34,6 @@
     <branches/>
 
     <mailingLists>
-        <mailingList>
-            <name>drools interest</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/drools-interest/</archive>
-        </mailingList>
-        <mailingList>
-            <name>drools cvs messages</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/drools-cvs/</archive>
-        </mailingList>
     </mailingLists>
 
     <developers>
@@ -86,6 +70,16 @@
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
+            <version>2.0-beta-12-dev</version>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-smf</artifactId>
+            <version>2.0-beta-12-dev</version>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-io</artifactId>
             <version>2.0-beta-12-dev</version>
         </dependency>
 
