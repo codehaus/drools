@@ -1,13 +1,13 @@
 #!/bin/bash
 
-VERSION=2.0-beta-12a
+VERSION=2.0-beta-13
 JAVADOC=javadoc
 JAVAC=javac
 JAVA=java
 JAR=jar
 
 DEPLOY_SITE=codehaus.org
-DEPLOY_DIR=/www/drools.codehaus.org
+DEPLOY_DIR=/www/drools.codehaus.org/ravi
 
 #IFS=""
 MODULES="core io base java python groovy smf jsr94"
@@ -62,6 +62,7 @@ target_quicksite()
 
   copy_tree $BASE/build/docs/api $BASE/build/site/api 
   cp -f $BASE/build/docs/*.pdf $BASE/build/site/
+  cp -f $BASE/site/*.gif $BASE/build/site/
 }
 
 build_unified_drl_reference()
