@@ -1,56 +1,125 @@
 package org.drools.reteoo;
 
+import org.drools.MockFactHandle;
 import org.drools.AssertionException;
+import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
-
-import junit.framework.TestCase;
+import org.drools.DroolsTestCase;
 
 import java.util.List;
 
-public class TerminalNodeTest extends TestCase
+public class TerminalNodeTest
+    extends DroolsTestCase
 {
-    public void setUp()
-    {
-    }
-
-    public void tearDown()
-    {
-    }
-
-    public void testNothing()
-    {
-    }
-
-    /** All Tuples asserted to a TerminalNode MUST be
-     *  passed to the matching Action's invoke(..) method.
-     */
-    /*
     public void testAssertTuple()
+        throws Exception
     {
-        InstrumentedAction action = new InstrumentedAction();
-        TerminalNode       node = new TerminalNode( null,
-                                                    action );
+        final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
+                                                                  null );
+        
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+            {
+                public Agenda getAgenda()
+                {
+                    return agenda;
+                }
+            };
+
+        
+
+        Rule rule = new Rule( "test-rule" );
+
+        InstrumentedConsequence consequence = new InstrumentedConsequence();
+
+        rule.setConsequence( consequence );
+
+        TerminalNode node = new TerminalNode( null,
+                                              rule );
 
         ReteTuple tuple = new ReteTuple();
 
-        try
-        {
-            node.assertTuple( null,
-                              tuple,
-                              null );
-            
-            List invoked = action.getInvokedTuples();
-
-            assertEquals( 1,
-                          invoked.size() );
-
-            assertSame( tuple,
-                        invoked.get( 0 ) );
-        }
-        catch (AssertionException e)
-        {
-            fail( e.toString() );
-        }
+        node.assertTuple( tuple,
+                          memory );
+        
+        assertLength( 1,
+                      agenda.getAdded() );
+        
+        assertContains( tuple,
+                        agenda.getAdded() );
     }
-    */
+
+    public void testRetractTuples()
+        throws Exception
+    {
+        final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
+                                                                  null );
+        
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+            {
+                public Agenda getAgenda()
+                {
+                    return agenda;
+                }
+            };
+
+        
+
+        Rule rule = new Rule( "test-rule" );
+
+        InstrumentedConsequence consequence = new InstrumentedConsequence();
+
+        rule.setConsequence( consequence );
+
+        TerminalNode node = new TerminalNode( null,
+                                              rule );
+
+        TupleKey key = new TupleKey();
+
+        node.retractTuples( key,
+                            memory );
+        
+        assertLength( 1,
+                      agenda.getRemoved() );
+        
+        assertContains( key,
+                        agenda.getRemoved() );
+    }
+
+    public void testModifyTuples()
+        throws Exception
+    {
+        final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
+                                                                  null );
+        
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+            {
+                public Agenda getAgenda()
+                {
+                    return agenda;
+                }
+            };
+
+        
+
+        Rule rule = new Rule( "test-rule" );
+
+        InstrumentedConsequence consequence = new InstrumentedConsequence();
+
+        rule.setConsequence( consequence );
+
+        TerminalNode node = new TerminalNode( null,
+                                              rule );
+
+        MockFactHandle handle = new MockFactHandle( 42 );
+
+        node.modifyTuples( handle,
+                           new TupleSet(),
+                           memory );
+        
+        assertLength( 1,
+                      agenda.getModified() );
+        
+        assertContains( handle,
+                        agenda.getModified() );
+    }
 }
