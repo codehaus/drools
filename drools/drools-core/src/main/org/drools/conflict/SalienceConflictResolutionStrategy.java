@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 import org.drools.spi.ConflictResolutionStrategy;
-import org.drools.spi.Firing;
+import org.drools.spi.Activation;
 
 public class SalienceConflictResolutionStrategy
     implements ConflictResolutionStrategy
@@ -18,11 +18,11 @@ public class SalienceConflictResolutionStrategy
         // intentionally left blank
     }
 
-    public int compare(Firing firingOne,
-                       Firing firingTwo)
+    public int compare(Activation activationOne,
+                       Activation activationTwo)
     {
-        int salienceOne = firingOne.getRule().getSalience();
-        int salienceTwo = firingTwo.getRule().getSalience();
+        int salienceOne = activationOne.getRule().getSalience();
+        int salienceTwo = activationTwo.getRule().getSalience();
 
         if ( salienceOne > salienceTwo )
         {

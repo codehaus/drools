@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.spi.ConflictResolutionStrategy;
-import org.drools.spi.Firing;
+import org.drools.spi.Activation;
 
 import java.util.Comparator;
 
@@ -18,7 +18,7 @@ public class ConflictResolutionComparator
     public int compare(Object lhs,
                        Object rhs)
     {
-        return this.strategy.compare( (Firing) lhs,
-                                      (Firing) rhs );
+        return this.strategy.compare( (Activation) lhs,
+                                      (Activation) rhs );
     }
 }
