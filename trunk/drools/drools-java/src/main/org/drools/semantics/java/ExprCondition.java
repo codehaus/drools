@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.10 2003-10-26 22:06:49 bob Exp $
+ $Id: ExprCondition.java,v 1.11 2003-11-28 06:43:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,31 +48,23 @@ package org.drools.semantics.java;
 
 import org.drools.rule.Declaration;
 import org.drools.smf.Configuration;
-import org.drools.smf.ConfigurableCondition;
-import org.drools.smf.ConfigurationException;
-import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
+import org.drools.spi.Condition;
+import org.drools.spi.ConditionException;
 
 /** Java expression semantics <code>Condition</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.10 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.11 2003-11-28 06:43:01 bob Exp $
  */
-public class ExprCondition extends Expr implements ConfigurableCondition
+public class ExprCondition
+    extends Expr
+    implements Condition
 {
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
-    /** Construct, partially.
-     *
-     *  @see Expr#configure
-     */
-    public ExprCondition()
-    {
-        // intentionally left blank.
-    }
 
     /** Construct.
      *
@@ -83,10 +75,11 @@ public class ExprCondition extends Expr implements ConfigurableCondition
      *          attempting to perform configuration.
      */
     public ExprCondition(String expr,
-                         Declaration[] availDecls) throws ConfigurationException
+                         Declaration[] availDecls)
+        throws Exception
     {
         super( expr,
-                   availDecls );
+               availDecls );
     }
 
     // ------------------------------------------------------------
@@ -124,18 +117,5 @@ public class ExprCondition extends Expr implements ConfigurableCondition
         }
 
         throw new NonBooleanExprException( getExpression() );
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[ExprCondition: expr=" + getExpression() + "]";
     }
 }

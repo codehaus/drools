@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
+ $Id: ExprExtractor.java,v 1.9 2003-11-28 06:43:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,8 +47,7 @@ package org.drools.semantics.java;
  */
 
 import org.drools.rule.Declaration;
-import org.drools.smf.ConfigurableExtractor;
-import org.drools.smf.ConfigurationException;
+import org.drools.spi.Extractor;
 import org.drools.spi.ExtractionException;
 import org.drools.spi.Tuple;
 
@@ -56,22 +55,15 @@ import org.drools.spi.Tuple;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
+ *  @version $Id: ExprExtractor.java,v 1.9 2003-11-28 06:43:01 bob Exp $
  */
-public class ExprExtractor extends Expr implements ConfigurableExtractor
+public class ExprExtractor
+    extends Expr
+    implements Extractor
 {
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
-    /** Construct, partially.
-     *
-     *  @see Expr#configure
-     */
-    public ExprExtractor()
-    {
-        // intentionally left blank
-    }
 
     /** Construct.
      *
@@ -82,7 +74,8 @@ public class ExprExtractor extends Expr implements ConfigurableExtractor
      *          attempting to perform configuration.
      */
     public ExprExtractor(String expr,
-                         Declaration[] availDecls) throws ConfigurationException
+                         Declaration[] availDecls)
+        throws Exception
     {
         super( expr,
                availDecls );
@@ -115,18 +108,5 @@ public class ExprExtractor extends Expr implements ConfigurableExtractor
         {
             throw new ExtractionException( e );
         }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[ExprExtractor: expr=" + getExpression() + "]";
     }
 }
