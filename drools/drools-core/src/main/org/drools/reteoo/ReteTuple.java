@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.34 2004-10-16 23:59:53 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.35 2004-10-17 02:22:06 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ import java.util.HashSet;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.34 2004-10-16 23:59:53 mproctor Exp $
+ * @version $Id: ReteTuple.java,v 1.35 2004-10-17 02:22:06 mproctor Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -77,6 +77,7 @@ class ReteTuple implements Tuple, Serializable
 
     /** Value columns in this tuple. */
     private Map            columns;
+    
     private Set            targetDeclarations;
 
     private Map            objectToHandle;
@@ -119,6 +120,10 @@ class ReteTuple implements Tuple, Serializable
         this.rule = that.rule;
         this.key = new TupleKey( that.key );
         this.columns = new HashMap( that.columns );
+        if (that.targetDeclarations != null)
+        {
+            this.targetDeclarations = new HashSet( that.targetDeclarations );
+        }
         this.objectToHandle = new HashMap( that.objectToHandle );
 
         this.mostRecentFact = ( FactHandleImpl ) that.getMostRecentFact( );
@@ -144,15 +149,6 @@ class ReteTuple implements Tuple, Serializable
         this.mostRecentFact = (FactHandleImpl) handle;
         this.leastRecentFact = (FactHandleImpl) handle;
     }
-
-    /*
-     * ReteTuple() { this( null, null ); }
-     */
-
-    /*
-     * public String toString() { return "[Tuple: key=" + this.key + ";
-     * columns=" + this.columns + "; o2h=" + this.objectToHandle + "]"; }
-     */
 
     public String toString()
     {
@@ -192,6 +188,17 @@ class ReteTuple implements Tuple, Serializable
     {
         this.key.putAll( that.key );
         this.columns.putAll( that.columns );
+        if (that.getTargetDeclarations() != null)
+        {
+            if (this.targetDeclarations == null)
+            {
+                this.targetDeclarations = new HashSet( that.targetDeclarations );
+            }
+            else
+            {
+                this.targetDeclarations.addAll(that.targetDeclarations);
+            }
+        }
         this.objectToHandle.putAll( that.objectToHandle );
         this.isChanged = true;
 
@@ -216,6 +223,13 @@ class ReteTuple implements Tuple, Serializable
         this.columns.put( declaration, value );
     }
     
+    /**
+     * Extractors may not have a key, so need to keep track
+     * of Columns derived from extractors
+     * 
+     * @param declaration
+     * @param value
+     */
     public void putTargetDeclarationColumn(Declaration declaration, Object value)
     {
         this.columns.put( declaration, value );
@@ -224,11 +238,11 @@ class ReteTuple implements Tuple, Serializable
         	targetDeclarations = new HashSet();
         }
         this.targetDeclarations.add( declaration );
-        //System.err.println(this.targetDeclarations);
     }
     
     /**
      * Will return null if there are no target declarations
+     * 
      * @return Set
      */
     public Set getTargetDeclarations()
