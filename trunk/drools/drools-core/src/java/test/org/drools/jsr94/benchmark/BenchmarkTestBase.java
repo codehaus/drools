@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark;
 
 /*
- $Id: BenchmarkTestBase.java,v 1.1 2003-03-22 00:57:26 tdiesler Exp $
+ $Id: BenchmarkTestBase.java,v 1.2 2003-03-27 20:42:02 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -51,10 +51,7 @@ import junit.framework.TestCase;
 import javax.rules.RuleServiceProvider;
 import javax.rules.StatelessRuleSession;
 import javax.rules.admin.RuleAdministrator;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -62,117 +59,134 @@ import java.util.*;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public abstract class BenchmarkTestBase extends TestCase {
+public abstract class BenchmarkTestBase extends TestCase
+{
 
-   protected RuleServiceProvider ruleServiceProvider;
-   protected RuleAdministrator ruleAdministrator;
-   protected StatelessRuleSession statelessRuleSession;
+    protected RuleServiceProvider ruleServiceProvider;
+    protected RuleAdministrator ruleAdministrator;
+    protected StatelessRuleSession statelessRuleSession;
 
-   private long start, end;
+    private long start, end;
 
-   /** setup the timer. */
-   protected void setUp() throws Exception {
-      super.setUp();
-      start = System.currentTimeMillis();
-   }
+    /** setup the timer. */
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+        start = System.currentTimeMillis();
+    }
 
-   /** stop the timer. */
-   protected void tearDown() throws Exception {
-      super.tearDown();
-      end = System.currentTimeMillis();
-      System.out.println("Elapsed time: " + (end - start) + "ms");
-   }
+    /** stop the timer. */
+    protected void tearDown() throws Exception
+    {
+        super.tearDown();
+        end = System.currentTimeMillis();
+        System.out.println( "Elapsed time: " + ( end - start ) + "ms" );
+    }
 
-   /**
-    * Convert the facts from the <code>InputStream</code> to a list of objects.
-    */
-   protected List getInputObjects(String resource) throws IOException {
-      List list = new ArrayList();
+    /**
+     * Convert the facts from the <code>InputStream</code> to a list of objects.
+     */
+    protected List getInputObjects( String filename ) throws IOException
+    {
+        List list = new ArrayList();
 
-      InputStream facts = getClass().getClassLoader().getResourceAsStream(resource);
-      BufferedReader br = new BufferedReader(new InputStreamReader(facts));
+        InputStream inputStream = new FileInputStream( filename );
+        BufferedReader br = new BufferedReader( new InputStreamReader( inputStream ) );
 
-      Map guests = new HashMap();
+        Map guests = new HashMap();
 
-      String line = null;
-      while ((line = br.readLine()) != null) {
-         if (line.trim().length() == 0 || line.trim().startsWith(";")) continue;
-         StringTokenizer st = new StringTokenizer(line, "() ");
-         String type = st.nextToken();
+        String line = null;
+        while (( line = br.readLine() ) != null)
+        {
+            if (line.trim().length() == 0 || line.trim().startsWith( ";" )) continue;
+            StringTokenizer st = new StringTokenizer( line, "() " );
+            String type = st.nextToken();
 
-         if ("guest".equals(type)) {
-            if (!"name".equals(st.nextToken())) throw new IOException("expected 'name' in: " + line);
-            String name = st.nextToken();
-            if (!"sex".equals(st.nextToken())) throw new IOException("expected 'sex' in: " + line);
-            String sex = st.nextToken();
-            if (!"hobby".equals(st.nextToken())) throw new IOException("expected 'hobby' in: " + line);
-            String hobby = st.nextToken();
+            if ("guest".equals( type ))
+            {
+                if (!"name".equals( st.nextToken() )) throw new IOException( "expected 'name' in: " + line );
+                String name = st.nextToken();
+                if (!"sex".equals( st.nextToken() )) throw new IOException( "expected 'sex' in: " + line );
+                String sex = st.nextToken();
+                if (!"hobby".equals( st.nextToken() )) throw new IOException( "expected 'hobby' in: " + line );
+                String hobby = st.nextToken();
 
-            Guest guest = (Guest)guests.get(name);
-            if (guest == null) {
-               guest = new Guest(name, sex.charAt(0));
-               guests.put(name, guest);
-               list.add(guest);
+                Guest guest = (Guest) guests.get( name );
+                if (guest == null)
+                {
+                    guest = new Guest( name, sex.charAt( 0 ) );
+                    guests.put( name, guest );
+                    list.add( guest );
+                }
+                guest.addHobby( hobby );
             }
-            guest.addHobby(hobby);
-         }
 
-         if ("last_seat".equals(type)) {
-            if (!"seat".equals(st.nextToken())) throw new IOException("expected 'seat' in: " + line);
-            list.add(new LastSeat(new Integer(st.nextToken()).intValue()));
-         }
-
-         if ("context".equals(type)) {
-            if (!"state".equals(st.nextToken())) throw new IOException("expected 'state' in: " + line);
-            list.add(new Context(st.nextToken()));
-         }
-      }
-      return list;
-   }
-
-   /** Verify that each guest has at least one common hobby with the one before him/her. */
-   protected int validateResults(List inList, List outList) {
-
-      int seatCount = 0;
-      Guest lastGuest = null;
-      Iterator it = outList.iterator();
-      while (it.hasNext()) {
-         Object obj = it.next();
-         if (!(obj instanceof Seat)) continue;
-
-         Seat seat = (Seat)obj;
-         if (lastGuest == null)
-            lastGuest = guest4Seat(inList, seat);
-
-         Guest guest = guest4Seat(inList, seat);
-
-         boolean hobbyFound = false;
-         for (int i = 0; !hobbyFound && i < lastGuest.getHobbies().size(); i++) {
-            String hobby = (String)lastGuest.getHobbies().get(i);
-            if (guest.getHobbies().contains(hobby)) {
-               hobbyFound = true;
+            if ("last_seat".equals( type ))
+            {
+                if (!"seat".equals( st.nextToken() )) throw new IOException( "expected 'seat' in: " + line );
+                list.add( new LastSeat( new Integer( st.nextToken() ).intValue() ) );
             }
-         }
 
-         if (!hobbyFound) fail("seat: " + seat.getSeat() + " no common hobby " + lastGuest + " -> " + guest);
-         seatCount++;
-      }
+            if ("context".equals( type ))
+            {
+                if (!"state".equals( st.nextToken() )) throw new IOException( "expected 'state' in: " + line );
+                list.add( new Context( st.nextToken() ) );
+            }
+        }
+        inputStream.close();
 
-      return seatCount;
-   }
+        return list;
+    }
 
-   /** Gets the Guest object from the inList base on the guest name of the seat. */
-   private Guest guest4Seat(List inList, Seat seat) {
+    /** Verify that each guest has at least one common hobby with the one before him/her. */
+    protected int validateResults( List inList, List outList )
+    {
 
-      Iterator it = inList.iterator();
-      while (it.hasNext()) {
-         Object obj = it.next();
-         if (!(obj instanceof Guest)) continue;
-         Guest guest = (Guest)obj;
-         if (guest.getName().equals(seat.getName()))
-            return guest;
-      }
+        int seatCount = 0;
+        Guest lastGuest = null;
+        Iterator it = outList.iterator();
+        while (it.hasNext())
+        {
+            Object obj = it.next();
+            if (!( obj instanceof Seat )) continue;
 
-      return null;
-   }
+            Seat seat = (Seat) obj;
+            if (lastGuest == null)
+                lastGuest = guest4Seat( inList, seat );
+
+            Guest guest = guest4Seat( inList, seat );
+
+            boolean hobbyFound = false;
+            for (int i = 0; !hobbyFound && i < lastGuest.getHobbies().size(); i++)
+            {
+                String hobby = (String) lastGuest.getHobbies().get( i );
+                if (guest.getHobbies().contains( hobby ))
+                {
+                    hobbyFound = true;
+                }
+            }
+
+            if (!hobbyFound) fail( "seat: " + seat.getSeat() + " no common hobby " + lastGuest + " -> " + guest );
+            seatCount++;
+        }
+
+        return seatCount;
+    }
+
+    /** Gets the Guest object from the inList base on the guest name of the seat. */
+    private Guest guest4Seat( List inList, Seat seat )
+    {
+
+        Iterator it = inList.iterator();
+        while (it.hasNext())
+        {
+            Object obj = it.next();
+            if (!( obj instanceof Guest )) continue;
+            Guest guest = (Guest) obj;
+            if (guest.getName().equals( seat.getName() ))
+                return guest;
+        }
+
+        return null;
+    }
 }

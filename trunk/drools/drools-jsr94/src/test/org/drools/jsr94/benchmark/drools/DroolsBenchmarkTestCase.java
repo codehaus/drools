@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark.drools;
 
 /*
- $Id: DroolsBenchmarkTestCase.java,v 1.1 2003-03-22 00:59:48 tdiesler Exp $
+ $Id: DroolsBenchmarkTestCase.java,v 1.2 2003-03-27 20:42:02 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -54,6 +54,7 @@ import javax.rules.StatelessRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.List;
 
 /**
@@ -67,63 +68,73 @@ import java.util.List;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class DroolsBenchmarkTestCase extends BenchmarkTestBase {
+public class DroolsBenchmarkTestCase extends BenchmarkTestBase
+{
 
-   /** Jess <code>RuleServiceProvider</code> URI. */
-   public static final String RULE_SERVICE_PROVIDER = "http://drools.org/RuleServiceProvider";
-   public static final String RULE_URI = "http://drools.org/manners";
+    /** Drools <code>RuleServiceProvider</code> URI. */
+    public static final String RULE_SERVICE_PROVIDER = "http://drools.org/RuleServiceProvider";
 
-   /**
-    * Setup the test case.
-    */
-   protected void setUp() throws Exception {
-      super.setUp();
+    /** manners URI */
+    public static final String RULE_URI = "http://drools.org/manners";
 
-      // obtain the RuleServiceProvider
-      RuleServiceProviderManager.registerRuleServiceProvider(RULE_SERVICE_PROVIDER, org.drools.jsr94.rules.RuleServiceProviderImpl.class);
-      ruleServiceProvider = RuleServiceProviderManager.getRuleServiceProvider(RULE_SERVICE_PROVIDER);
-      ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
+    private static final String TESTDATA_LOCATION = "src/java/test/org/drools/jsr94/benchmark";
+    /**
+     * Setup the test case.
+     */
+    protected void setUp() throws Exception
+    {
+        super.setUp();
 
-      // load the rules and register them
-      LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
-      InputStream rules = getClass().getClassLoader().getResourceAsStream("test/jsr94/benchmark/drools/manners.xml");
-      RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(rules, null);
-      ruleAdministrator.registerRuleExecutionSet(RULE_URI, ruleExecutionSet, null);
+        // obtain the RuleServiceProvider
+        RuleServiceProviderManager.registerRuleServiceProvider( RULE_SERVICE_PROVIDER, org.drools.jsr94.rules.RuleServiceProviderImpl.class );
+        ruleServiceProvider = RuleServiceProviderManager.getRuleServiceProvider( RULE_SERVICE_PROVIDER );
+        ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
 
-      RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
-      statelessRuleSession = (StatelessRuleSession)ruleRuntime.createRuleSession(RULE_URI, null, RuleRuntime.STATELESS_SESSION_TYPE);
-   }
+        // load the rules and register them
+        LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider( null );
+        InputStream rules = new FileInputStream(TESTDATA_LOCATION + "/drools/manners.xml" );
+        RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet( rules, null );
+        ruleAdministrator.registerRuleExecutionSet( RULE_URI, ruleExecutionSet, null );
 
-   /**
-    * Tear down the test case
-    */
-   protected void tearDown() throws Exception {
-      statelessRuleSession.release();
-      ruleAdministrator.unregisterRuleExecutionSet(RULE_URI, null);
-      super.tearDown();
-   }
+        RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+        statelessRuleSession = (StatelessRuleSession) ruleRuntime.createRuleSession( RULE_URI, null, RuleRuntime.STATELESS_SESSION_TYPE );
+    }
 
-   public void testMissManners16() throws Exception {
-      List inList = getInputObjects("test/jsr94/benchmark/manners16.dat");
-      List outList = statelessRuleSession.executeRules(inList);
-      assertEquals("seated guests", 16, validateResults(inList, outList));
-   }
+    /**
+     * Tear down the test case
+     */
+    protected void tearDown() throws Exception
+    {
+        statelessRuleSession.release();
+        ruleAdministrator.unregisterRuleExecutionSet( RULE_URI, null );
+        super.tearDown();
+    }
 
-   public void testMissManners32() throws Exception {
-      List inList = getInputObjects("test/jsr94/benchmark/manners32.dat");
-      List outList = statelessRuleSession.executeRules(inList);
-      assertEquals("seated guests", 32, validateResults(inList, outList));
-   }
+    public void testMissManners16() throws Exception
+    {
+        List inList = getInputObjects(TESTDATA_LOCATION + "/manners16.dat" );
+        List outList = statelessRuleSession.executeRules( inList );
+        assertEquals( "seated guests", 16, validateResults( inList, outList ) );
+    }
 
-   public void testMissManners64() throws Exception {
-      List inList = getInputObjects("test/jsr94/benchmark/manners64.dat");
-      List outList = statelessRuleSession.executeRules(inList);
-      assertEquals("seated guests", 64, validateResults(inList, outList));
-   }
+    public void testMissManners32() throws Exception
+    {
+        List inList = getInputObjects(TESTDATA_LOCATION + "/manners32.dat" );
+        List outList = statelessRuleSession.executeRules( inList );
+        assertEquals( "seated guests", 32, validateResults( inList, outList ) );
+    }
 
-   public void testMissManners128() throws Exception {
-      List inList = getInputObjects("test/jsr94/benchmark/manners128.dat");
-      List outList = statelessRuleSession.executeRules(inList);
-      assertEquals("seated guests", 128, validateResults(inList, outList));
-   }
+    public void testMissManners64() throws Exception
+    {
+        List inList = getInputObjects(TESTDATA_LOCATION + "/manners64.dat" );
+        List outList = statelessRuleSession.executeRules( inList );
+        assertEquals( "seated guests", 64, validateResults( inList, outList ) );
+    }
+
+    public void testMissManners128() throws Exception
+    {
+        List inList = getInputObjects(TESTDATA_LOCATION + "/manners128.dat" );
+        List outList = statelessRuleSession.executeRules( inList );
+        assertEquals( "seated guests", 128, validateResults( inList, outList ) );
+    }
 }
