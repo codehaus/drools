@@ -13,28 +13,26 @@ opposite sex.  Manners is a small program, which has only few rules, and
 employs a depth-first search approach to the problem.
 
 -->
-<rules xmlns="http://drools.org/rules" >
-
-    <semantics module="org.drools.semantics.java"/>
-
-    <rule-set name="Miss Manners" xmlns:java="http://drools.org/semantics/java" >
+<rule-set name="Miss Manners"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
 
        <!--
        Initialize the root seating element.
        -->
-        <rule name="find first seat">
+        <rule name="find first seat" salience="40">
            <parameter identifier="context">
-               <java:class type="org.drools.jsr94.benchmark.Context"/>
+               <java:class>org.drools.jsr94.benchmark.Context</java:class>
            </parameter>
            <parameter identifier="guest">
-               <java:class type="org.drools.jsr94.benchmark.Guest"/>
+               <java:class>org.drools.jsr94.benchmark.Guest</java:class>
            </parameter>
 
-           <condition><java:condition>
+           <java:condition>
               context.isState("start")
-           </java:condition></condition>
+           </java:condition>
 
-            <consequence><java:consequence>
+            <java:consequence>
                System.out.println("FIRE: find first seat: " + guest);
 
                import org.drools.jsr94.benchmark.drools.Seating;
@@ -42,44 +40,44 @@ employs a depth-first search approach to the problem.
 
                context.setState("find_seating");
                modifyObject(context);
-            </java:consequence></consequence>
+            </java:consequence>
         </rule>
 
        <!--
        Find guest for empty seat.
        -->
-       <rule name="find seating">
+       <rule name="find seating" salience="30">
           <parameter identifier="context">
-              <java:class type="org.drools.jsr94.benchmark.Context"/>
+              <java:class>org.drools.jsr94.benchmark.Context</java:class>
           </parameter>
           <parameter identifier="guest">
-              <java:class type="org.drools.jsr94.benchmark.Guest"/>
+              <java:class>org.drools.jsr94.benchmark.Guest</java:class>
           </parameter>
           <parameter identifier="seating">
-              <java:class type="org.drools.jsr94.benchmark.drools.Seating"/>
+              <java:class>org.drools.jsr94.benchmark.drools.Seating</java:class>
           </parameter>
 
-          <condition><java:condition>
+          <java:condition>
              context.isState("find_seating")
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              seating.getGuest2() == null
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              !seating.getTabooList().contains(guest)
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              seating.getGuest1().hasOpositeSex(guest)
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              seating.getGuest1().hasSameHobby(guest)
-          </java:condition></condition>
+          </java:condition>
 
-          <consequence><java:consequence>
+          <java:consequence>
              System.out.println("FIRE: find seating: " + seating + " " + guest);
 
              Seating nextSeat = new Seating(seating.getSeat2(), guest, seating);
@@ -90,36 +88,36 @@ employs a depth-first search approach to the problem.
              seating.setNextSeat(nextSeat);
              modifyObject(seating);
 
-          </java:consequence></consequence>
+          </java:consequence>
        </rule>
 
        <!--
        Reached dead end, try another path.
        -->
-       <rule name="try another path">
+       <rule name="try another path" salience="20">
           <parameter identifier="context">
-              <java:class type="org.drools.jsr94.benchmark.Context"/>
+              <java:class>org.drools.jsr94.benchmark.Context</java:class>
           </parameter>
           <parameter identifier="lastSeat">
-              <java:class type="org.drools.jsr94.benchmark.LastSeat"/>
+              <java:class>org.drools.jsr94.benchmark.LastSeat</java:class>
           </parameter>
           <parameter identifier="seating">
-              <java:class type="org.drools.jsr94.benchmark.drools.Seating"/>
+              <java:class>org.drools.jsr94.benchmark.drools.Seating</java:class>
           </parameter>
 
-          <condition><java:condition>
+          <java:condition>
              context.isState("find_seating")
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              lastSeat.getSeat() > seating.getSeat1()
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              seating.getGuest2() == null
-          </java:condition></condition>
+          </java:condition>
 
-          <consequence><java:consequence>
+          <java:consequence>
              System.out.println("FIRE: try another path: " + seating);
 
              Seating prevSeat = seating.getPrevSeat();
@@ -127,32 +125,32 @@ employs a depth-first search approach to the problem.
              modifyObject(prevSeat);
 
              retractObject(seating);
-          </java:consequence></consequence>
+          </java:consequence>
        </rule>
 
        <!--
        All seats are taken.
        -->
-       <rule name="we are done">
+       <rule name="we are done" salience="10">
           <parameter identifier="context">
-              <java:class type="org.drools.jsr94.benchmark.Context"/>
+              <java:class>org.drools.jsr94.benchmark.Context</java:class>
           </parameter>
           <parameter identifier="lastSeat">
-              <java:class type="org.drools.jsr94.benchmark.LastSeat"/>
+              <java:class>org.drools.jsr94.benchmark.LastSeat</java:class>
           </parameter>
           <parameter identifier="seating">
-              <java:class type="org.drools.jsr94.benchmark.drools.Seating"/>
+              <java:class>org.drools.jsr94.benchmark.drools.Seating</java:class>
           </parameter>
 
-          <condition><java:condition>
+          <java:condition>
              context.isState("find_seating")
-          </java:condition></condition>
+          </java:condition>
 
-          <condition><java:condition>
+          <java:condition>
              lastSeat.getSeat() == seating.getSeat1()
-          </java:condition></condition>
+          </java:condition>
 
-          <consequence><java:consequence>
+          <java:consequence>
              System.out.println("FIRE: we are done");
 
              import org.drools.jsr94.benchmark.Seat;
@@ -171,9 +169,8 @@ employs a depth-first search approach to the problem.
 
              context.setState("all_done");
              modifyObject(context);
-          </java:consequence></consequence>
+          </java:consequence>
        </rule>
 
-    </rule-set>
+</rule-set>
 
-</rules>

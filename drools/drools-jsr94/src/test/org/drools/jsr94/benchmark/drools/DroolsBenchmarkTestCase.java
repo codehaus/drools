@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark.drools;
 
 /*
- $Id: DroolsBenchmarkTestCase.java,v 1.3 2004-06-06 02:31:50 n_alex Exp $
+ $Id: DroolsBenchmarkTestCase.java,v 1.4 2004-06-30 23:39:53 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -72,12 +72,11 @@ public class DroolsBenchmarkTestCase extends BenchmarkTestBase
 {
 
     /** Drools <code>RuleServiceProvider</code> URI. */
-    public static final String RULE_SERVICE_PROVIDER = "http://drools.org/RuleServiceProvider";
+    public static final String RULE_SERVICE_PROVIDER = "http://drools.org/";
 
     /** manners URI */
-    public static final String RULE_URI = "http://drools.org/manners";
+    public static final String RULE_URI = "manners.drl";
 
-    private static final String TESTDATA_LOCATION = "src/java/test/org/drools/jsr94/benchmark";
     /**
      * Setup the test case.
      */
@@ -92,7 +91,7 @@ public class DroolsBenchmarkTestCase extends BenchmarkTestBase
 
         // load the rules and register them
         LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider( null );
-        InputStream rules = new FileInputStream(TESTDATA_LOCATION + "/drools/manners.xml" );
+        InputStream rules = DroolsBenchmarkTestCase.class.getResourceAsStream( RULE_URI );
         RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet( rules, null );
         ruleAdministrator.registerRuleExecutionSet( RULE_URI, ruleExecutionSet, null );
 
@@ -112,28 +111,32 @@ public class DroolsBenchmarkTestCase extends BenchmarkTestBase
 
     public void testMissManners16() throws Exception
     {
-        List inList = getInputObjects(TESTDATA_LOCATION + "/manners16.dat" );
+        List inList = getInputObjects(
+        BenchmarkTestBase.class.getResourceAsStream( "manners16.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
         assertEquals( "seated guests", 16, validateResults( inList, outList ) );
     }
 
     public void testMissManners32() throws Exception
     {
-        List inList = getInputObjects(TESTDATA_LOCATION + "/manners32.dat" );
+        List inList = getInputObjects(
+        BenchmarkTestBase.class.getResourceAsStream( "manners32.dat" ));
         List outList = statelessRuleSession.executeRules( inList );
         assertEquals( "seated guests", 32, validateResults( inList, outList ) );
     }
 
     public void testMissManners64() throws Exception
     {
-        List inList = getInputObjects(TESTDATA_LOCATION + "/manners64.dat" );
+        List inList = getInputObjects(
+        BenchmarkTestBase.class.getResourceAsStream( "manners64.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
         assertEquals( "seated guests", 64, validateResults( inList, outList ) );
     }
 
     public void testMissManners128() throws Exception
     {
-        List inList = getInputObjects(TESTDATA_LOCATION + "/manners128.dat" );
+        List inList = getInputObjects(
+        BenchmarkTestBase.class.getResourceAsStream( "manners128.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
         assertEquals( "seated guests", 128, validateResults( inList, outList ) );
     }

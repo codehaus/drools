@@ -97,15 +97,13 @@
             <includes>
                 <include>**/*TestCase.java</include>
             </includes>
-            <excludes>
-                <exclude>**/benchmark/**</exclude>
-            </excludes>
             <resources>
                 <resource>
                     <directory>src/test</directory>
                     <includes>
                         <include>**/*.drl</include>
                         <include>**/*.jelly</include>
+                        <include>**/*.dat</include>
                     </includes>
                 </resource>
             </resources>
