@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConsequenceHandler.java,v 1.1 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: ConsequenceHandler.java,v 1.2 2004-11-23 22:10:30 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.io;
  */
 import java.util.HashSet;
 
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ConsequenceFactory;
@@ -75,6 +76,7 @@ class ConsequenceHandler extends BaseAbstractHandler implements Handler
             this.validPeers.add( Duration.class );
             this.validPeers.add( Condition.class );
             this.validPeers.add( Extractor.class );
+            this.validPeers.add( Declaration.class );
 
             this.allowNesting = false;
         }

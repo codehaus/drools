@@ -45,7 +45,7 @@
         </xs:choice>
 
 
-        <xs:element ref="rules:abstractCondition"  maxOccurs="unbounded" />
+        <xs:element ref="rules:abstractCondition" minOccurs="0" maxOccurs="unbounded" />
 
         <xs:element name="duration" minOccurs="0" >
           <xs:complexType>

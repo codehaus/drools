@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.44 2004-11-19 02:14:17 mproctor Exp $
+ * $Id: Rule.java,v 1.45 2004-11-23 22:08:59 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -232,10 +232,6 @@ public class Rule
         if ( getParameterDeclarations( ).isEmpty( ) )
         {
             throw new NoParameterDeclarationException( this );
-        }
-        if ( getConditions( ).isEmpty( ) )
-        {
-            throw new NoConditionException( this );
         }
         if ( getConsequence( ) == null )
         {
