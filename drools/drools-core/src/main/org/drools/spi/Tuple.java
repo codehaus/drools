@@ -1,31 +1,31 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.13 2004-09-17 00:14:13 mproctor Exp $
- * 
+ * $Id: Tuple.java,v 1.14 2004-10-27 22:46:56 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,32 +37,32 @@ package org.drools.spi;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
-
-import java.util.Set;
 
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
+import java.util.Set;
+
 /**
  * A mapping of <code>Declaration</code> s to current fact values.
- * 
+ *
  * @see Declaration
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: Tuple.java,v 1.13 2004-09-17 00:14:13 mproctor Exp $
+ *
+ * @version $Id: Tuple.java,v 1.14 2004-10-27 22:46:56 simon Exp $
  */
 public interface Tuple
 {
     /**
      * Retrieve the value bound to a particular <code>Declaration</code>.
-     * 
+     *
      * @param declaration The <code>Declaration</code> key.
-     * 
+     *
      * @return The currently bound <code>Object</code> value.
      */
     Object get(Declaration declaration);
@@ -70,7 +70,7 @@ public interface Tuple
     /**
      * Retrieve the <code>Collection</code> of all <code>Declarations</code>
      * active in this tuple.
-     * 
+     *
      * @return The <code>Collection</code> of all <code>Declarations</code>
      *         in this tuple.
      */
@@ -78,16 +78,16 @@ public interface Tuple
 
     /**
      * Retrieve the <code>FactHandle</code> for a given object.
-     * 
+     *
      * <p>
      * Within a consequence of a rule, if the desire is to retract or modify a
      * root fact this method provides a way to retrieve the
      * <code>FactHandle</code>. Facts that are <b>not </b> root fact objects
      * have no handle.
      * </p>
-     * 
+     *
      * @param object The object.
-     * 
+     *
      * @return The fact-handle or <code>null</code> if the supplied object is
      *         not a root fact object.
      */
@@ -96,7 +96,7 @@ public interface Tuple
     /**
      * Returns a reference to the <code>Rule</code> associated with this
      * object.
-     * 
+     *
      * @return Rule
      */
     Rule getRule();
@@ -104,7 +104,7 @@ public interface Tuple
     /**
      * Returns a reference to the <code>WorkingMemory</code> associated with
      * this object.
-     * 
+     *
      * @return WorkingMemory
      */
     WorkingMemory getWorkingMemory();

@@ -1,11 +1,11 @@
 package org.drools;
 
+import org.drools.event.WorkingMemoryEventListener;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.drools.event.WorkingMemoryEventListener;
 
 public class MockWorkingMemory implements WorkingMemory
 {
@@ -13,7 +13,7 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * add event listener to listeners ArrayList
-     * 
+     *
      * @param listener
      */
     public void addEventListener(WorkingMemoryEventListener listener)
@@ -23,7 +23,7 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * remove event listener from listeners ArrayList
-     * 
+     *
      * @param listener
      */
     public void removeEventListener(WorkingMemoryEventListener listener)
@@ -33,7 +33,7 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * Returns a read-only list of listeners
-     * 
+     *
      * @return listeners
      */
     public List getListeners()
@@ -48,7 +48,7 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * Retrieve all of the set application data in this memory
-     * 
+     *
      * @return the application data as a Map
      */
     public Map getApplicationDataMap()
@@ -58,7 +58,7 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * Set a specific piece of application data in this working memory
-     * 
+     *
      * @param name the name under which to populate the data
      * @param value the application data
      */
@@ -69,7 +69,7 @@ public class MockWorkingMemory implements WorkingMemory
 
     /**
      * Retrieve a specific piece of application data by name
-     * 
+     *
      * @return application data or null if nothing is set under this name
      */
     public Object getApplicationData(String name)
@@ -93,6 +93,11 @@ public class MockWorkingMemory implements WorkingMemory
     }
 
     public Object getObject(FactHandle handle) throws NoSuchFactObjectException
+    {
+        return null;
+    }
+
+    public FactHandle getFactHandle(Object object) throws NoSuchFactHandleException
     {
         return null;
     }

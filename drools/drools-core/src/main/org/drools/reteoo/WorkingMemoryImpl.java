@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.28 2004-10-25 13:28:09 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.29 2004-10-27 22:46:56 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.FactHandle;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.NoSuchFactHandleException;
 import org.drools.event.WorkingMemoryEventListener;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.28 2004-10-25 13:28:09 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.29 2004-10-27 22:46:56 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -261,6 +262,21 @@ class WorkingMemoryImpl implements WorkingMemory
         }
 
         return object;
+    }
+
+    /**
+     * @see WorkingMemory
+     */
+    public FactHandle getFactHandle(Object object) throws NoSuchFactHandleException
+    {
+        FactHandle factHandle = ( FactHandle ) this.handles.get( object );
+
+        if ( object == null )
+        {
+            throw new NoSuchFactHandleException( object );
+        }
+
+        return factHandle;
     }
 
     /**
