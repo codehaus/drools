@@ -557,6 +557,18 @@
     </java>
   </target>
 
+  <target name="examples.fish" depends="compile.examples">
+    <java classname="FishMonger" fork="true">
+      <arg value="example_data/fish_monger.xml"/>
+      <classpath>
+        <pathelement location="${build.dest.main}"/>
+        <pathelement location="${build.dest.examples}"/>
+        <pathelement location="${lib.dir}/drools.jar"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+    </java>
+  </target>
+
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
@@ -575,6 +587,10 @@
   <!-- =================================================================== -->
   <!-- Helper targets                                                      -->
   <!-- =================================================================== -->
+
+
+  <target name="check"
+          depends="all, test, examples"/>
 
   <target name="all"     
           depends="clean,jar.all,doc,javadoc"/>
@@ -601,7 +617,7 @@
           depends="test.all"/>
 
   <target name="examples"
-          depends="examples.supply"/>
+          depends="examples.supply, examples.fish"/>
 
 </project>
 
