@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.11 2004-12-04 02:00:46 simon Exp $
+ * $Id: PrimitiveLongMap.java,v 1.12 2004-12-04 06:26:39 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -149,7 +149,7 @@ public class PrimitiveLongMap
 
     public Object remove(long key)
     {
-        if ( key >= this.maxKey || key < 0 )
+        if ( key > this.maxKey || key < 0 )
         {
             return null;
         }
