@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
-import org.drools.MockObjectType;
+import org.drools.spi.MockObjectType;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,12 +18,8 @@ public class ReteTest extends DroolsTestCase
     {
         this.rete = new Rete( );
 
-        this.objectTypeNode = new InstrumentedObjectTypeNode(
-                                                              new MockObjectType(
-                                                                                  Object.class ) );
-        this.stringTypeNode = new InstrumentedObjectTypeNode(
-                                                              new MockObjectType(
-                                                                                  String.class ) );
+        this.objectTypeNode = new InstrumentedObjectTypeNode( new MockObjectType( Object.class ) );
+        this.stringTypeNode = new InstrumentedObjectTypeNode( new MockObjectType( String.class ) );
 
         this.rete.addObjectTypeNode( this.objectTypeNode );
         this.rete.addObjectTypeNode( this.stringTypeNode );
