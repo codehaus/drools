@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.17 2004-10-25 15:38:43 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.18 2004-10-25 15:40:12 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -252,7 +252,7 @@ class ExtractionNode extends TupleSource implements TupleSink
                       
         if ((otherTargetDecls != null)&&otherTargetDecls.contains(decl))
         {
-            if (!otherTargetDecls.contains(decl) || !value.equals(tuple.get(decl))) 
+            if (!value.equals(tuple.get(decl))) 
             {
                 return false;
             }
