@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 import org.drools.AssertionException;
-import org.drools.spi.InstrumentedAction;
+import org.drools.spi.InstrumentedConsequence;
 
 import junit.framework.TestCase;
 
