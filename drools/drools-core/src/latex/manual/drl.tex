@@ -34,7 +34,7 @@ be accessible through a URL:
 A \verb|RuleSetLoader| is provided for loading DRL files into a
 \verb|RuleBase|.  Given a URL, the \verb|RuleSetLoader| will retrieve
 the DRL file and load all rules and rule-sets into the specified
-\verb|RuleBase| which can then immediately be use for knowledge
+\verb|RuleBase| which can then immediately be used for knowledge
 manipulation.
 
 \begin{codelisting}
@@ -92,7 +92,7 @@ no attributes and serves only to aggregate \verb|<rule-set>|s and
 be affixed to this element.
 
 \begin{codelisting}
-<rules xmlns:drl="http://drools.org/rules">
+<drl:rules xmlns:drl="http://drools.org/rules">
 \textcolor{light}{  <drl:rule-set ...>
     ...
   </drl:rule-set>
