@@ -210,5 +210,16 @@
       </java>
     </goal>
 
+    <goal name="manners-groovy" prereqs="jar:jar">
+      <java classname="org.drools.examples.manners.MannersExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="manners.groovy.drl"/>
+      </java>
+    </goal>
+
 </project>
 
