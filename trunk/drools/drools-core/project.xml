@@ -196,6 +196,16 @@
     </dependency>
 
     <dependency>
+      <id>jsr94</id>
+      <version>1.0-pr</version>
+    </dependency>
+
+    <dependency>
+      <id>jca</id>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
       <id>xml-apis</id>
       <version>2.0.2</version>
     </dependency>
