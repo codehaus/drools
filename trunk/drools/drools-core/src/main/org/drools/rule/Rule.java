@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.4 2002-08-02 02:26:03 bob Exp $
+ $Id: Rule.java,v 1.5 2002-08-02 22:35:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -136,12 +136,13 @@ public class Rule
      */
     public boolean isValid()
     {
-        return ( ( ! getParameterDeclarations().isEmpty() )
-                 &&
-                 ( ! ( getConditions().isEmpty()
-                       &&
-                       getFactExtractions().isEmpty() ) ) );
+        return ! ( getParameterDeclarations().isEmpty()
+                   ||
+                   getConditions().isEmpty()
+                   ||
+                   getFactExtractions().isEmpty() );
     }
+
 
     /** Check the validity of this rule, and throw exceptions if
      *  it failed validity tests.

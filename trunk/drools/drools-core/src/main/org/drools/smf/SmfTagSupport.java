@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SmfTagSupport.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: SmfTagSupport.java,v 1.2 2002-08-02 22:35:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -73,8 +73,8 @@ public abstract class SmfTagSupport extends TagSupport
      *
      *  @return The <code>SemanticsRepository</code>.
      */
-    public SemanticsRepository getSemanticsLoader()
+    public SemanticsLoader getSemanticsLoader()
     {
-        return (SemanticsRepository) getContext().getVariable( "drools.semantics.loader" );
+        return (SemanticsLoader) getContext().getVariable( "drools.semantics.loader" );
     }
 }
