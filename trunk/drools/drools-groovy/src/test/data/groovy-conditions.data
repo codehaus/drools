@@ -37,4 +37,6 @@ camembert.getName().equals(favouriteCheese)
 "http://www.w3.org/2001/XMLSchema,string".equals("http://www.w3.org/2001/XMLSchema,string")
 <!--drools-test--!> // 19
 SMFTestFrameWork.conditionExceptionTest()
+<!--drools-test--!> // 20
+new BigInteger("1").toString().equals(new Cheese("1").getName())
 

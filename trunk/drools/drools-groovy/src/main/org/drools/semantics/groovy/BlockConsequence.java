@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: BlockConsequence.java,v 1.6 2004-09-17 00:36:28 mproctor Exp $
+ * $Id: BlockConsequence.java,v 1.7 2004-10-24 00:59:11 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.drools.WorkingMemory;
+import org.drools.rule.Imports;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
@@ -58,7 +59,7 @@ import org.drools.spi.Tuple;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: BlockConsequence.java,v 1.6 2004-09-17 00:36:28 mproctor Exp $
+ * @version $Id: BlockConsequence.java,v 1.7 2004-10-24 00:59:11 mproctor Exp $
  */
 public class BlockConsequence extends Exec implements Consequence
 {
@@ -71,9 +72,9 @@ public class BlockConsequence extends Exec implements Consequence
      * 
      * @param text The block text.
      */
-    public BlockConsequence(String text)
+    public BlockConsequence(String text, Imports imports)
     {
-        super( text );
+        super( text, imports );
     }
 
     /**

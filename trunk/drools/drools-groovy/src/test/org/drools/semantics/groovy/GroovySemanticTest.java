@@ -1,5 +1,7 @@
 package org.drools.semantics.groovy;
 
+import org.drools.rule.Imports;
+import org.drools.semantics.groovy.GroovyImportEntry;
 import org.drools.smf.SMFTestFrameWork;
 
 /**
@@ -16,6 +18,9 @@ public class GroovySemanticTest extends SMFTestFrameWork
 
     public void setUp() throws Exception
     {
-        super.setUp( "groovy" );
+        Imports imports = new Imports();               
+        imports.addImportEntry(new GroovyImportEntry("java.math.*"));
+        imports.addImportEntry(new GroovyImportEntry("org.drools.smf.SMFTestFrameWork.Cheese"));                 
+        super.setUp( "groovy", imports );
     }
 }

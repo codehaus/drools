@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprExtractor.java,v 1.4 2004-09-17 00:36:28 mproctor Exp $
+ * $Id: ExprExtractor.java,v 1.5 2004-10-24 00:59:11 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,6 +42,7 @@ package org.drools.semantics.groovy;
  */
 
 import org.drools.rule.Declaration;
+import org.drools.rule.Imports;
 import org.drools.spi.ExtractionException;
 import org.drools.spi.Extractor;
 import org.drools.spi.Tuple;
@@ -52,7 +53,7 @@ import org.drools.spi.Tuple;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * 
- * @version $Id: ExprExtractor.java,v 1.4 2004-09-17 00:36:28 mproctor Exp $
+ * @version $Id: ExprExtractor.java,v 1.5 2004-10-24 00:59:11 mproctor Exp $
  */
 public class ExprExtractor extends Eval implements Extractor
 {
@@ -65,9 +66,9 @@ public class ExprExtractor extends Eval implements Extractor
      * 
      * @param expr The expression.
      */
-    public ExprExtractor(String expr, Declaration[] availDecls) throws Exception
+    public ExprExtractor(String expr, Imports imports, Declaration[] availDecls) throws Exception
     {
-        super( expr, availDecls );
+        super( expr, imports, availDecls );
     }
 
     public ExprExtractor()

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.5 2004-09-17 00:36:28 mproctor Exp $
+ * $Id: Interp.java,v 1.6 2004-10-24 00:59:11 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,12 +48,15 @@ import groovy.lang.Script;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.rule.Imports;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
@@ -66,7 +69,7 @@ import org.drools.spi.Tuple;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Interp.java,v 1.5 2004-09-17 00:36:28 mproctor Exp $
+ * @version $Id: Interp.java,v 1.6 2004-10-24 00:59:11 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -79,6 +82,8 @@ public class Interp implements Serializable
     private String text;
 
     private Script code;
+    
+    private String newline = System.getProperty( "line.separator" );
 
     // ------------------------------------------------------------
     //     Constructors
@@ -87,12 +92,30 @@ public class Interp implements Serializable
     /**
      * Construct.
      */
-    protected Interp(String text, String type)
+    protected Interp(String text, Imports imports, String type)
     {
         this.text = text;
         try
         {
-            this.code = buildScript( text );
+            StringBuffer newText = new StringBuffer();
+            if ((imports != null)&&(imports.getImportEntries() != null))
+            {
+                Iterator it =imports.getImportEntries().iterator();
+                
+                while (it.hasNext())
+                {
+                    ImportEntry importEntry = (ImportEntry) it.next();
+                    if (importEntry instanceof GroovyImportEntry)
+                    {
+                        newText.append("import ");
+                        newText.append(importEntry.getImportEntry());
+                        newText.append(";");
+                        newText.append(newline);
+                    }
+                }                   
+            }
+            newText.append(text);
+            this.code = buildScript( newText.toString() );
         }
         catch ( Exception e )
         {
