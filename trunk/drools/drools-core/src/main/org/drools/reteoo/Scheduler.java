@@ -38,7 +38,7 @@ class Scheduler
     {
         Date now = new Date();
 
-        Date then = new Date( now.getTime() + ( item.getDuration() * 1000 ) );
+        Date then = new Date( now.getTime() + ( item.getRule().getDuration() * 1000 ) );
 
         try
         {
