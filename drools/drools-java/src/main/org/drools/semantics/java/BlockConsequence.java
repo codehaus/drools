@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.13 2004-03-22 21:14:49 bob Exp $
+ $Id: BlockConsequence.java,v 1.14 2004-03-24 21:42:23 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -57,7 +57,7 @@ import org.drools.spi.Tuple;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.13 2004-03-22 21:14:49 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.14 2004-03-24 21:42:23 bob Exp $
  */
 public class BlockConsequence
     extends Interp
@@ -107,7 +107,7 @@ public class BlockConsequence
             ns.setVariable( "drools$tuple",
                             tuple, false);
 
-             //ns.importCommands("bsh.commands");
+             ns.importCommands("org.drools.semantics.java.bsh");
 
             //beanshell 2.0 does not like null values in setVariable
             if (workingMemory.getApplicationData() != null) {
