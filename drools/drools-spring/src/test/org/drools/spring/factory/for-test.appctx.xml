@@ -5,11 +5,15 @@
 
 	<bean id="beanMetadataRuleFactoryBean" abstract="true"
 		class="org.drools.spring.factory.BeanRuleMetadataRuleFactoryBean">
-		<property name="methodMetadataSource">
-			<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+		<property name="methodMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+			</list>
 		</property>
-		<property name="argumentMetadataSource">
-			<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+		<property name="argumentMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+			</list>
 		</property>
 	</bean>
 
@@ -78,14 +82,20 @@
 
 	<bean id="basicRuleFactoryBean" abstract="true"
 		class="org.drools.spring.factory.BasicRuleFactoryBean">
-		<property name="ruleMetadataSource">
-			<bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+		<property name="ruleMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+			</list>
 		</property>
-		<property name="methodMetadataSource">
-			<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+		<property name="methodMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+			</list>
 		</property>
-		<property name="argumentMetadataSource">
-			<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+		<property name="argumentMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+			</list>
 		</property>
 	</bean>
 

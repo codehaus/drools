@@ -55,7 +55,7 @@ public class RuleBuilder {
                 continue;
             }
 
-            ArgumentMetadata[] argumentsMetadata = argumentMetadataSource.getArgumentMetadata(pojoMethod);
+            ArgumentMetadata[] argumentsMetadata = getArgumentMetadata(pojoMethod);
             Argument[] arguments = getArguments(rule, argumentsMetadata);
 
             if (methodMedata.getMethodType() == MethodMetadata.CONDITION) {
@@ -77,6 +77,20 @@ public class RuleBuilder {
 
         rule.checkValidity();
         return rule;
+    }
+
+    private ArgumentMetadata[] getArgumentMetadata(Method pojoMethod) throws InvalidParameterException {
+        Class[] parameterTypes = pojoMethod.getParameterTypes();
+        ArgumentMetadata[] metadata = new ArgumentMetadata[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            metadata[i] = argumentMetadataSource.getArgumentMetadata(pojoMethod, parameterTypes[i], i);
+            if (metadata[i] == null) {
+                throw new InvalidParameterException("Cannot determine parameter metdata"
+                        + ": method=" + pojoMethod.getName()
+                        + ", parameterType[" + i + "]=" + parameterTypes[i]);
+            }
+        }
+        return metadata;
     }
 
     private Argument[] getArguments(Rule rule, ArgumentMetadata[] argumentsMetadata) throws DroolsException {

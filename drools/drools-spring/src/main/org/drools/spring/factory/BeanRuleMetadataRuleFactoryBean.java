@@ -2,6 +2,8 @@ package org.drools.spring.factory;
 
 import org.drools.spring.metadata.ArgumentMetadataSource;
 import org.drools.spring.metadata.BasicRuleMetadata;
+import org.drools.spring.metadata.ChainedArgumentMetadataSource;
+import org.drools.spring.metadata.ChainedMethodMetadataSource;
 import org.drools.spring.metadata.MethodMetadataSource;
 import org.drools.spring.metadata.RuleMetadata;
 import org.drools.spring.metadata.RuleMetadataSource;
@@ -14,12 +16,12 @@ public class BeanRuleMetadataRuleFactoryBean extends AbstractRuleFactoryBean imp
 
     private BasicRuleMetadata ruleMetadata = new BasicRuleMetadata();
 
-    public void setMethodMetadataSource(MethodMetadataSource methodMetadataSource) {
-        this.methodMetadataSource = methodMetadataSource;
+    public void setMethodMetadataSourceChain(MethodMetadataSource[] chain) {
+        this.methodMetadataSource = new ChainedMethodMetadataSource(chain);
     }
 
-    public void setArgumentMetadataSource(ArgumentMetadataSource argumentMetadataSource) {
-        this.argumentMetadataSource = argumentMetadataSource;
+    public void setArgumentMetadataSourceChain(ArgumentMetadataSource[] chain) {
+        this.argumentMetadataSource = new ChainedArgumentMetadataSource(chain);
     }
 
     public void setName(String name) {

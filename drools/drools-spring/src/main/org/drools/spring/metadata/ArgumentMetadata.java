@@ -6,6 +6,8 @@ import org.drools.spring.pojorule.Argument;
 
 public interface ArgumentMetadata {
 
+    Class getParameterClass();
+
     Argument createArgument(Rule rule) throws DroolsException;
 
 }
