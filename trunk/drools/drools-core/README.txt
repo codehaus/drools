@@ -1,4 +1,4 @@
-$Id: README.txt,v 1.2 2003-10-27 22:35:14 bob Exp $
+$Id: README.txt,v 1.3 2003-12-02 18:40:31 bob Exp $
 
 Drools Readme
 =============
@@ -22,4 +22,5 @@ Drools Readme
     Big bunch of flowers.
 
 -the drools team
+
 
