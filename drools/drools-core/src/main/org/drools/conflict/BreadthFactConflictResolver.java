@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: BreadthFactConflictResolver.java,v 1.1 2004-09-11 12:59:08 mproctor Exp $
+ $Id: BreadthFactConflictResolver.java,v 1.2 2004-09-16 23:43:01 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -50,7 +50,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.drools.rule.Rule;
-import org.drools.reteoo.FactHandleImpl;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.Tuple;

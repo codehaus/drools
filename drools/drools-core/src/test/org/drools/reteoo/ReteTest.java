@@ -1,13 +1,10 @@
 package org.drools.reteoo;
 
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.MockObjectType;
-import org.drools.MockFactHandle;
-import org.drools.DroolsTestCase;
-
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
+
+import org.drools.DroolsTestCase;
+import org.drools.MockObjectType;
 
 public class ReteTest
     extends DroolsTestCase
@@ -54,11 +51,11 @@ public class ReteTest
         Object object1 = new Object();
         String string1 = "cheese";
 
-        this.rete.assertObject( new MockFactHandle( 1 ),
+        this.rete.assertObject( new FactHandleImpl( 1 ),
                                 object1,
                                 null );
         
-        this.rete.assertObject( new MockFactHandle( 2 ),
+        this.rete.assertObject( new FactHandleImpl( 2 ),
                                 string1,
                                 null );
         
@@ -99,8 +96,8 @@ public class ReteTest
     {
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
 
-        MockFactHandle handle1 = new MockFactHandle( 1 );
-        MockFactHandle handle2 = new MockFactHandle( 2 );
+        FactHandleImpl handle1 = new FactHandleImpl( 1 );
+        FactHandleImpl handle2 = new FactHandleImpl( 2 );
 
         memory.putObject( handle1,
                           "cheese1" );
@@ -148,8 +145,8 @@ public class ReteTest
     {
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null );
 
-        MockFactHandle handle1 = new MockFactHandle( 1 );
-        MockFactHandle handle2 = new MockFactHandle( 2 );
+        FactHandleImpl handle1 = new FactHandleImpl( 1 );
+        FactHandleImpl handle2 = new FactHandleImpl( 2 );
 
         memory.putObject( handle1,
                           "cheese1" );

@@ -1,15 +1,13 @@
 package org.drools.reteoo;
 
-import org.drools.AssertionException;
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.spi.Tuple;
-import org.drools.spi.MockObjectType;
-import org.drools.MockFactHandle;
-import org.drools.DroolsTestCase;
-
 import java.util.List;
 import java.util.Set;
+
+import org.drools.DroolsTestCase;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.spi.MockObjectType;
+import org.drools.spi.Tuple;
 
 public class ParameterNodeTest
     extends DroolsTestCase
@@ -53,7 +51,7 @@ public class ParameterNodeTest
         
         node.setTupleSink( sink );
 
-        MockFactHandle handle = new MockFactHandle( 1 );
+        FactHandleImpl handle = new FactHandleImpl( 1 );
         
         node.assertObject( handle,
                            object1,

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.17 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: ObjectTypeNode.java,v 1.18 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,15 +46,15 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.FactException;
-import org.drools.spi.ObjectType;
-
 import java.io.Serializable;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.spi.ObjectType;
 
 /** Filters <code>Objects</code> coming from the <code>Rete</code>
  *  using a <code>ObjectType</code> semantic module.

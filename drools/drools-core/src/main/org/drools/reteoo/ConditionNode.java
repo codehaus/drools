@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ConditionNode.java,v 1.13 2004-09-11 13:00:08 mproctor Exp $
+ $Id: ConditionNode.java,v 1.14 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,15 +46,15 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.FactException;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.spi.Condition;
-
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+
+import org.drools.AssertionException;
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.RetractionException;
+import org.drools.spi.Condition;
 
 /** Node which filters <code>ReteTuple</code>s.
  *

@@ -1,17 +1,14 @@
 package org.drools.rule;
 
-import org.drools.DroolsTestCase;
-import org.drools.spi.Consequence;
-import org.drools.spi.Extractor;
-import org.drools.spi.MockObjectType;
-
-import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+
+import org.drools.DroolsTestCase;
+import org.drools.spi.MockObjectType;
 
 
 public class RuleSetTest extends DroolsTestCase

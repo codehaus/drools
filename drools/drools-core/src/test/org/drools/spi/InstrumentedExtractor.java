@@ -1,11 +1,11 @@
 
 package org.drools.spi;
 
-import org.drools.rule.Declaration;
-
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+
+import org.drools.rule.Declaration;
 
 public class InstrumentedExtractor implements Extractor
 {

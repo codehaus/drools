@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Tuple.java,v 1.11 2004-09-11 13:00:10 mproctor Exp $
+ $Id: Tuple.java,v 1.12 2004-09-16 23:43:05 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -50,8 +50,8 @@ import java.util.Set;
 
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
-import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 
 /**
  * A mapping of <code>Declaration</code>s to current fact values.
@@ -60,7 +60,7 @@ import org.drools.rule.Declaration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Tuple.java,v 1.11 2004-09-11 13:00:10 mproctor Exp $
+ *  @version $Id: Tuple.java,v 1.12 2004-09-16 23:43:05 mproctor Exp $
  */
 public interface Tuple
 {

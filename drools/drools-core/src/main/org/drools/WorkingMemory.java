@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.25 2004-08-05 11:10:34 mproctor Exp $
+ $Id: WorkingMemory.java,v 1.26 2004-09-16 23:43:00 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,10 +46,9 @@ package org.drools;
 
  */
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import java.io.Serializable;
 
 import org.drools.event.WorkingMemoryEventListener;
 

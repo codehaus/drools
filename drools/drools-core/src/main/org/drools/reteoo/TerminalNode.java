@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.29 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: TerminalNode.java,v 1.30 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,8 +46,8 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
 import org.drools.AssertionException;
+import org.drools.FactHandle;
 import org.drools.rule.Rule;
 
 /** Leaf Rete-OO node responsible for enacting <code>Action</code>s

@@ -1,18 +1,16 @@
 package org.drools.reteoo;
 
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.RuleBase;
-import org.drools.conflict.DefaultConflictResolver;
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
-import org.drools.spi.MockObjectType;
-import org.drools.WorkingMemory;
+import java.util.List;
 
 import junit.framework.TestCase;
 
-import java.util.List;
+import org.drools.AssertionException;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.spi.MockObjectType;
 
 public class TupleSourceTest
     extends TestCase

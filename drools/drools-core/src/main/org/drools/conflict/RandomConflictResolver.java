@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: RandomConflictResolver.java,v 1.2 2004-07-04 11:45:43 mproctor Exp $
+ $Id: RandomConflictResolver.java,v 1.3 2004-09-16 23:43:01 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,9 +46,8 @@ package org.drools.conflict;
 
  */
 
-import java.util.List;
-import java.util.ListIterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import org.drools.rule.Rule;

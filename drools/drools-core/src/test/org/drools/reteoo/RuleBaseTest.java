@@ -1,26 +1,21 @@
 package org.drools.reteoo;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
-import org.drools.spi.Consequence;
-import org.drools.spi.Extractor;
-import org.drools.spi.InstrumentedExtractor;
-import org.drools.spi.MockObjectType;
-
-import org.drools.rule.Extraction;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
+import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-
-import org.drools.conflict.DefaultConflictResolver;
-
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectInputStream;
-import java.io.ObjectInput;
+import org.drools.spi.InstrumentedExtractor;
+import org.drools.spi.MockObjectType;
 
 public class RuleBaseTest extends DroolsTestCase
 {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSet.java,v 1.13 2004-08-05 10:15:44 mproctor Exp $
+ $Id: TupleSet.java,v 1.14 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,15 +46,14 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-
-import java.util.Map;
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-import java.io.Serializable;
+import org.drools.FactHandle;
 
 /** A set of <code>Tuple<code>s indexed by <code>TupleKey<code>s.
  *

@@ -1,11 +1,6 @@
 package org.drools.reteoo;
 
-import org.drools.MockFactHandle;
 import org.drools.DroolsTestCase;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
 public class TupleSetTest
     extends DroolsTestCase
@@ -52,7 +47,7 @@ public class TupleSetTest
             {
                 public TupleKey getKey()
                 {
-                    return new TupleKey( new MockFactHandle( 1 ) );
+                    return new TupleKey( new FactHandleImpl( 1 ) );
                 }
             };
 
@@ -60,7 +55,7 @@ public class TupleSetTest
             {
                 public TupleKey getKey()
                 {
-                    return new TupleKey( new MockFactHandle( 2 ) );
+                    return new TupleKey( new FactHandleImpl( 2 ) );
                 }
             };
 
@@ -103,7 +98,7 @@ public class TupleSetTest
             {
                 public TupleKey getKey()
                 {
-                    return new TupleKey( new MockFactHandle( 1 ) );
+                    return new TupleKey( new FactHandleImpl( 1 ) );
                 }
             };
 
@@ -111,7 +106,7 @@ public class TupleSetTest
             {
                 public TupleKey getKey()
                 {
-                    return new TupleKey( new MockFactHandle( 2 ) );
+                    return new TupleKey( new FactHandleImpl( 2 ) );
                 }
             };
 
@@ -154,7 +149,7 @@ public class TupleSetTest
             {
                 public TupleKey getKey()
                 {
-                    return new TupleKey( new MockFactHandle( 1 ) );
+                    return new TupleKey( new FactHandleImpl( 1 ) );
                 }
             };
 
@@ -162,7 +157,7 @@ public class TupleSetTest
             {
                 public TupleKey getKey()
                 {
-                    return new TupleKey( new MockFactHandle( 2 ) );
+                    return new TupleKey( new FactHandleImpl( 2 ) );
                 }
             };
 
@@ -179,7 +174,7 @@ public class TupleSetTest
         assertEquals( 2,
                       set.size() );
 
-        set.removeTuple( new TupleKey( new MockFactHandle( 1 ) ) );
+        set.removeTuple( new TupleKey( new FactHandleImpl( 1 ) ) );
 
         assertEquals( 1,
                       set.size() );
@@ -190,8 +185,8 @@ public class TupleSetTest
 
     public void testGetKeys()
     {
-        final TupleKey key1 = new TupleKey( new MockFactHandle( 1 ) );
-        final TupleKey key2 = new TupleKey( new MockFactHandle( 2 ) );
+        final TupleKey key1 = new TupleKey( new FactHandleImpl( 1 ) );
+        final TupleKey key2 = new TupleKey( new FactHandleImpl( 2 ) );
         
         ReteTuple tuple1 = new ReteTuple()
             {
@@ -230,9 +225,9 @@ public class TupleSetTest
 
     public void testGetTuple_ContainsTuple()
     {
-        final TupleKey key1 = new TupleKey( new MockFactHandle( 1 ) );
-        final TupleKey key2 = new TupleKey( new MockFactHandle( 2 ) );
-        final TupleKey key3 = new TupleKey( new MockFactHandle( 3 ) );
+        final TupleKey key1 = new TupleKey( new FactHandleImpl( 1 ) );
+        final TupleKey key2 = new TupleKey( new FactHandleImpl( 2 ) );
+        final TupleKey key3 = new TupleKey( new FactHandleImpl( 3 ) );
         
         ReteTuple tuple1 = new ReteTuple()
             {
@@ -276,12 +271,12 @@ public class TupleSetTest
     public void testGetTuples_ByFactHandle()
     {
         final TupleKey key1 = new TupleKey();
-        key1.addRootFactHandle( new MockFactHandle( 1 ) );
-        key1.addRootFactHandle( new MockFactHandle( 2 ) );
+        key1.addRootFactHandle( new FactHandleImpl( 1 ) );
+        key1.addRootFactHandle( new FactHandleImpl( 2 ) );
 
         final TupleKey key2 = new TupleKey();
-        key2.addRootFactHandle( new MockFactHandle( 2 ) );
-        key2.addRootFactHandle( new MockFactHandle( 3 ) );
+        key2.addRootFactHandle( new FactHandleImpl( 2 ) );
+        key2.addRootFactHandle( new FactHandleImpl( 3 ) );
 
         ReteTuple tuple1 = new ReteTuple()
             {
@@ -307,36 +302,36 @@ public class TupleSetTest
         TupleSet set = new TupleSet( initSet );
 
         assertLength( 1,
-                      set.getTuples( new MockFactHandle( 1 ) ) );
+                      set.getTuples( new FactHandleImpl( 1 ) ) );
 
         assertContains( tuple1,
-                        set.getTuples( new MockFactHandle( 1 ) ) );
+                        set.getTuples( new FactHandleImpl( 1 ) ) );
 
         assertLength( 1,
-                      set.getTuples( new MockFactHandle( 3 ) ) );
+                      set.getTuples( new FactHandleImpl( 3 ) ) );
 
         assertContains( tuple2,
-                        set.getTuples( new MockFactHandle( 3 ) ) );
+                        set.getTuples( new FactHandleImpl( 3 ) ) );
 
         assertLength( 2,
-                      set.getTuples( new MockFactHandle( 2 ) ) );
+                      set.getTuples( new FactHandleImpl( 2 ) ) );
 
         assertContains( tuple1,
-                        set.getTuples( new MockFactHandle( 2 ) ) );
+                        set.getTuples( new FactHandleImpl( 2 ) ) );
 
         assertContains( tuple2,
-                        set.getTuples( new MockFactHandle( 2 ) ) );
+                        set.getTuples( new FactHandleImpl( 2 ) ) );
     }
 
     public void testRemoveTuplesByPartialKey()
     {
         final TupleKey key1 = new TupleKey();
-        key1.addRootFactHandle( new MockFactHandle( 1 ) );
-        key1.addRootFactHandle( new MockFactHandle( 2 ) );
+        key1.addRootFactHandle( new FactHandleImpl( 1 ) );
+        key1.addRootFactHandle( new FactHandleImpl( 2 ) );
 
         final TupleKey key2 = new TupleKey();
-        key2.addRootFactHandle( new MockFactHandle( 2 ) );
-        key2.addRootFactHandle( new MockFactHandle( 3 ) );
+        key2.addRootFactHandle( new FactHandleImpl( 2 ) );
+        key2.addRootFactHandle( new FactHandleImpl( 3 ) );
 
         ReteTuple tuple1 = new ReteTuple()
             {
@@ -361,7 +356,7 @@ public class TupleSetTest
 
         TupleSet set = new TupleSet( initSet );
 
-        TupleKey partialKey = new TupleKey( new MockFactHandle( 1 ) );
+        TupleKey partialKey = new TupleKey( new FactHandleImpl( 1 ) );
 
         set.removeTuplesByPartialKey( partialKey );
 

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
-import org.drools.FactHandle;
 import org.drools.FactException;
+import org.drools.FactHandle;
 
 public class KnowledgeHelper
 {

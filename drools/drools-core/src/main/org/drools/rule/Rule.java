@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.34 2004-09-11 13:00:09 mproctor Exp $
+ $Id: Rule.java,v 1.35 2004-09-16 23:43:04 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,20 +46,19 @@ package org.drools.rule;
 
  */
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import java.io.Serializable;
 
 /** A set of <code>Condition</code>s and a <code>Consequence</code>.
  *
@@ -72,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.34 2004-09-11 13:00:09 mproctor Exp $
+ *  @version $Id: Rule.java,v 1.35 2004-09-16 23:43:04 mproctor Exp $
  */
 public class Rule implements Serializable
 {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.28 2004-08-05 10:15:44 mproctor Exp $
+ $Id: Agenda.java,v 1.29 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,19 +46,18 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.WorkingMemory;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
+
 import org.drools.FactHandle;
+import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
-import org.drools.spi.Duration;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Iterator;
-
-import java.io.Serializable;
+import org.drools.spi.Duration;
 
 /** Rule-firing Agenda.
  *

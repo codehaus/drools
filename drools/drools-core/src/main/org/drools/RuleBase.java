@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.28 2004-06-29 15:44:22 n_alex Exp $
+ $Id: RuleBase.java,v 1.29 2004-09-16 23:43:00 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,10 +46,9 @@ package org.drools;
 
  */
 
-import org.drools.spi.ConflictResolver;
-import org.drools.rule.RuleSet;
-
 import java.io.Serializable;
+
+import org.drools.spi.ConflictResolver;
 
 /** Active collection of <code>Rule</code>s.
  *
@@ -63,7 +62,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBase.java,v 1.28 2004-06-29 15:44:22 n_alex Exp $
+ *  @version $Id: RuleBase.java,v 1.29 2004-09-16 23:43:00 mproctor Exp $
  */
 public interface RuleBase
     extends Serializable

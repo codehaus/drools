@@ -1,9 +1,9 @@
 package org.drools.reteoo;
 
-import org.drools.FactHandle;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.drools.FactHandle;
 
 public class InstrumentedTupleSink
     implements TupleSink

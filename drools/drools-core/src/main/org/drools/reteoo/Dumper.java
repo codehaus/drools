@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Dumper.java,v 1.5 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: Dumper.java,v 1.6 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -46,15 +46,15 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.RuleBase;
-
 import java.io.PrintStream;
+
+import org.drools.RuleBase;
 
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Dumper.java,v 1.5 2004-08-08 05:48:37 dbarnett Exp $
+ *  @version $Id: Dumper.java,v 1.6 2004-09-16 23:43:03 mproctor Exp $
  */
 public class Dumper
 {

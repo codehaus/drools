@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Scheduler.java,v 1.7 2003-11-19 21:31:10 bob Exp $
+ $Id: Scheduler.java,v 1.8 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,14 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.spi.ConsequenceException;
-
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.drools.WorkingMemory;
+import org.drools.spi.ConsequenceException;
 
 /** Scheduler for rules requiring truth duration.
  *

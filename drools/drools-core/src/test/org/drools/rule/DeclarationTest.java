@@ -1,9 +1,8 @@
 package org.drools.rule;
 
-import org.drools.spi.ObjectType;
-import org.drools.MockObjectType;
-
 import junit.framework.TestCase;
+
+import org.drools.MockObjectType;
 
 public class DeclarationTest extends TestCase
 {

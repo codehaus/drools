@@ -1,11 +1,9 @@
 package org.drools.reteoo;
 
-import org.drools.rule.Declaration;
-import org.drools.MockObjectType;
-
 import junit.framework.TestCase;
 
-import java.util.Set;
+import org.drools.MockObjectType;
+import org.drools.rule.Declaration;
 
 public class ParameterTupleTest
     extends TestCase

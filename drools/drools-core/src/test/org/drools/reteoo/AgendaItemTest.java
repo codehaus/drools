@@ -1,14 +1,12 @@
 package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
-import org.drools.MockFactHandle;
-import org.drools.rule.Rule;
+import org.drools.RuleBase;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.spi.MockObjectType;
-import org.drools.rule.RuleSet;
-import org.drools.conflict.DefaultConflictResolver;
-import org.drools.RuleBase;
 
 public class AgendaItemTest
     extends DroolsTestCase
@@ -19,7 +17,7 @@ public class AgendaItemTest
         Declaration decl = new Declaration( new MockObjectType(true),
                                             "cheese" );
 
-        MockFactHandle handle = new MockFactHandle( 1 );
+        FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
@@ -49,7 +47,7 @@ public class AgendaItemTest
                     item.getKey() );
 
         assertTrue( item.dependsOn( handle ) );
-        assertFalse( item.dependsOn( new MockFactHandle( 2 ) ) );
+        assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );
     }
 
     public void testSetTuple()
@@ -58,7 +56,7 @@ public class AgendaItemTest
         Declaration decl = new Declaration( new MockObjectType(true),
                                             "cheese" );
 
-        MockFactHandle handle = new MockFactHandle( 1 );
+        FactHandleImpl handle = new FactHandleImpl( 1 );
         Rule rule = new Rule( "test-rule" );
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
                                                  "paramVar" );                                                 
@@ -81,7 +79,7 @@ public class AgendaItemTest
                     item.getTuple() );
 
         assertTrue( item.dependsOn( handle ) );
-        assertFalse( item.dependsOn( new MockFactHandle( 2 ) ) );      
+        assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );      
         
         ReteTuple newTuple = new ReteTuple( null,
                                             rule,
@@ -95,7 +93,7 @@ public class AgendaItemTest
                     item.getTuple() );
 
         assertTrue( item.dependsOn( handle ) );
-        assertFalse( item.dependsOn( new MockFactHandle( 2 ) ) );
+        assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );
     }
 
     public void testFire()
@@ -108,7 +106,7 @@ public class AgendaItemTest
         Declaration decl = new Declaration( new MockObjectType(true),
                                             "cheese" );
 
-        MockFactHandle handle = new MockFactHandle( 1 );
+        FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
 

@@ -1,11 +1,11 @@
 package org.drools.reteoo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class InstrumentedAgenda
     extends Agenda

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.19 2004-09-11 16:35:42 mproctor Exp $
+ $Id: WorkingMemoryImpl.java,v 1.20 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,26 +46,26 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.WorkingMemory;
-import org.drools.FactException;
-import org.drools.RuleBase;
-import org.drools.NoSuchFactObjectException;
-import org.drools.spi.ConflictResolver;
-import org.drools.conflict.DefaultConflictResolver;
-import org.drools.event.WorkingMemoryEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.NoSuchFactObjectException;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.conflict.DefaultConflictResolver;
+import org.drools.event.WorkingMemoryEventListener;
+import org.drools.spi.ConflictResolver;
 
 /** Implementation of <code>WorkingMemory</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.19 2004-09-11 16:35:42 mproctor Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.20 2004-09-16 23:43:03 mproctor Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory

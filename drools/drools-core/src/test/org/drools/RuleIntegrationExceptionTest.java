@@ -1,8 +1,8 @@
 package org.drools;
 
-import org.drools.rule.Rule;
-
 import junit.framework.TestCase;
+
+import org.drools.rule.Rule;
 
 public class RuleIntegrationExceptionTest
     extends TestCase

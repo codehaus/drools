@@ -2,11 +2,8 @@ package org.drools.reteoo;
 
 import junit.framework.TestCase;
 
-import org.drools.rule.Declaration;
 import org.drools.MockObjectType;
-import org.drools.MockFactHandle;
-
-import java.util.Map;
+import org.drools.rule.Declaration;
 
 public class ReteTupleTest
     extends TestCase

@@ -1,19 +1,17 @@
 package org.drools.reteoo;
 
-import org.drools.AssertionException;
-import org.drools.RuleBase;
-import org.drools.conflict.DefaultConflictResolver;
-import org.drools.reteoo.MockTupleSource;
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.spi.MockObjectType;
-import org.drools.spi.InstrumentedExtractor;
-import org.drools.MockFactHandle;
+import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
-import java.util.Set;
-import java.util.List;
+import org.drools.AssertionException;
+import org.drools.RuleBase;
+import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.spi.InstrumentedExtractor;
+import org.drools.spi.MockObjectType;
 
 public class ExtractionNodeTest
     extends TestCase
@@ -80,13 +78,13 @@ public class ExtractionNodeTest
         
         ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), rule);
         
-        tuple.putKeyColumn(paramDecl, new MockFactHandle(1), new String("cheese"));
+        tuple.putKeyColumn(paramDecl, new FactHandleImpl(1), new String("cheese"));
         
 
         try
         {
             extractNode.assertTuple( tuple,
-                                     null );
+                                     (WorkingMemoryImpl) tuple.getWorkingMemory() );            
 
             List assertedTuples = sink.getAssertedTuples();
 

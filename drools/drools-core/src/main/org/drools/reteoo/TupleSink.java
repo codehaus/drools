@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSink.java,v 1.17 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: TupleSink.java,v 1.18 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,12 +46,12 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.FactException;
-
 import java.io.Serializable;
+
+import org.drools.AssertionException;
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.RetractionException;
 
 /** Receiver of propagated <code>ReteTuple</code>s from a <code>TupleSource</code>.
  *

@@ -1,18 +1,18 @@
 package org.drools.reteoo;
 
+import java.util.List;
+import java.util.Set;
+
+import junit.framework.TestCase;
+
 import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.TrueCondition;
 import org.drools.spi.FalseCondition;
 import org.drools.spi.MockObjectType;
-
-import junit.framework.TestCase;
-
-import java.util.List;
-import java.util.Set;
+import org.drools.spi.TrueCondition;
 
 public class ConditionNodeTest
     extends TestCase

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.15 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: Rete.java,v 1.16 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,19 +46,16 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.FactException;
-import org.drools.spi.ObjectType;
-
 import java.io.Serializable;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.spi.ObjectType;
 
 /** The Rete-OO network.
  *

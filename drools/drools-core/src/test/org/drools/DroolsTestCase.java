@@ -1,9 +1,9 @@
 package org.drools;
 
-import junit.framework.TestCase;
-
 import java.util.Arrays;
 import java.util.Collection;
+
+import junit.framework.TestCase;
 
 public class DroolsTestCase
     extends TestCase
