@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <project
-    default="default"
+    default="jar-all"
     xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
     xmlns:u="jelly:util"
