@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools;
 
 /*
- $Id: FilterCondition.java,v 1.4 2002-07-31 20:51:03 bob Exp $
+ $Id: SimpleRepository.java,v 1.1 2002-07-31 20:51:03 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,32 +46,34 @@ package org.drools.spi;
  
  */
 
-/** A <code>Condition</code> that filters facts.
- *
- *  @see Tuple
- *  
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public interface FilterCondition extends Condition
+import java.util.Map;
+import java.util.HashMap;
+
+public class SimpleRepository implements RuleBaseRepository
 {
-    /** Retrieve the array of <code>Declaration</code>s required
-     *  by this condition to perform its duties.
-     *
-     *  @return The array of <code>Declarations</code> expected
-     *          on incoming <code>Tuples</code>.
-     */
-    Declaration[] getRequiredTupleMembers();
+    private Map ruleBases;
 
-    /** Determine if the supplied <code>Tuple</code> is allowed
-     *  by this filter.
-     *
-     *  @param tuple The <code>Tuple</code> to test.
-     *
-     *  @return <code>true</code> if the <code>Tuple</code>
-     *          passes this filter, else <code>false</code>.
-     *
-     *  @throws FilterException if an error occurs during filtering.
-     */
-    boolean isAllowed(Tuple tuple) throws FilterException;
+    public SimpleRepository()
+    {
+        this.ruleBases = new HashMap();
+    }
+
+    public void registerRuleBase(String uri,
+                                 RuleBase ruleBase)
+    {
+        this.ruleBases.put( uri,
+                            ruleBase );
+    }
+
+    public RuleBase lookupRuleBase(String uri) throws NoSuchRuleBaseException
+    {
+        RuleBase ruleBase = (RuleBase) this.ruleBases.get( uri );
+
+        if ( ruleBase == null )
+        {
+            throw new NoSuchRuleBaseException( uri );
+        }
+
+        return ruleBase;
+    }
 }
-

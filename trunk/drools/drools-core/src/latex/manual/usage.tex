@@ -20,7 +20,23 @@ import org.drools.*;
 
 \subsection{Locating a Rule-base}
 
-\dots not implemented yet \dots
+\verb|RuleBase| objects are typically loaded from a
+\verb|RuleBaseRepository|.  Different repository implementations
+provide different mechanisms for the storage of each
+\verb|RuleBase|.  The method by which your project obtains
+a \verb|RuleBaseRepository| is implementation-specific but
+may involve a lookup and discovery mechanism such as JNDI.
+
+Once a \verb|RuleBaseRepository| has been obtained, the
+simple method\\ \verb|lookupRuleBase(String uri)| is used
+to retrieve a \verb|RuleBase| from its URI.
+
+\bigskip
+\begin{codelisting}
+RuleBaseRepository repo = myUtilities.getRepository();
+
+RuleBase ruleBase = repo.lookupRuleBase( "http://rules.werken.com/client-scoring" );
+\end{codelisting}
 
 \subsection{Creating a Working Memory}
 
@@ -83,7 +99,8 @@ the engine.  Method for these three actions are defined upon the
 
 \bigskip
 
-\begin{codelisting}
+\footnotesize
+\begin{alltt}
 /** Assert a new fact object into this working memory.
 *
 *  @param object The object to assert.
@@ -91,7 +108,7 @@ the engine.  Method for these three actions are defined upon the
 *  @throws AssertionException if an error occurs during assertion.
 */
 public void assertObject(Object object) throws AssertionException
-
+\newpage
 /** Modify a fact object in this working memory.
 *
 *  With the exception of time-based nodes, modification of
@@ -111,10 +128,10 @@ public void modifyObject(Object object) throws FactException
 *  @throws RetractionException if an error occurs during retraction.
 */
 public void retractObject(Object object) throws RetractionException
-\end{codelisting}
+\end{alltt}
+\normalsize
 
 \section{JSR-94 API}
 
 Once JSR-94 is publically available and \drools{} has an API
 binding, it will be documented.
-

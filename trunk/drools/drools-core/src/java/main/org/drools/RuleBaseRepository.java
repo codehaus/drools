@@ -1,7 +1,7 @@
-package org.drools.spi;
+package org.drools;
 
 /*
- $Id: FilterCondition.java,v 1.4 2002-07-31 20:51:03 bob Exp $
+ $Id: RuleBaseRepository.java,v 1.1 2002-07-31 20:51:03 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,32 +46,7 @@ package org.drools.spi;
  
  */
 
-/** A <code>Condition</code> that filters facts.
- *
- *  @see Tuple
- *  
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public interface FilterCondition extends Condition
+public interface RuleBaseRepository
 {
-    /** Retrieve the array of <code>Declaration</code>s required
-     *  by this condition to perform its duties.
-     *
-     *  @return The array of <code>Declarations</code> expected
-     *          on incoming <code>Tuples</code>.
-     */
-    Declaration[] getRequiredTupleMembers();
-
-    /** Determine if the supplied <code>Tuple</code> is allowed
-     *  by this filter.
-     *
-     *  @param tuple The <code>Tuple</code> to test.
-     *
-     *  @return <code>true</code> if the <code>Tuple</code>
-     *          passes this filter, else <code>false</code>.
-     *
-     *  @throws FilterException if an error occurs during filtering.
-     */
-    boolean isAllowed(Tuple tuple) throws FilterException;
+    RuleBase lookupRuleBase(String uri) throws NoSuchRuleBaseException;
 }
-
