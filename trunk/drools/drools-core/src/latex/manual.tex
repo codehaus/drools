@@ -2,9 +2,9 @@
 \documentclass[10pt,oneside,letterpaper,colorhighlight]{book}
 
 
-  \def\pdfBorderAttrs{/Border [0 0 0] } % No border around Links
-  \usepackage{thumbpdf}
-  \pdfcompresslevel=9
+\def\pdfBorderAttrs{/Border [0 0 0] } % No border around Links
+%\usepackage{thumbpdf}
+%\pdfcompresslevel=9
 
 
 
@@ -38,7 +38,7 @@
 
 \fancypagestyle{plain}{
     \fancyhf{}
-    %\fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
+    \fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
     \renewcommand{\footrulewidth}{0pt}
     \renewcommand{\headrulewidth}{0pt}
 }
@@ -204,29 +204,9 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \begin{document}
 
-
 \frontmatter
-\pagestyle{empty}
 
 \begin{titlepage} 
 \usefont{OT1}{phv}{b}{n}\selectfont
@@ -255,17 +235,27 @@
 \end{flushright}
 \end{titlepage} 
 
-\pagestyle{empty}
-\part {PreFace}
-\chapter{About the Authurs}
-\include {robertsearle}
+\include{preface}
 
-
-\pagestyle{empty}
 \tableofcontents
 \listoffigures
 
+{
+\renewcommand{\chaptername}{}
+\renewcommand{\thechapter}{}
+\renewcommand{\thesection}{}
+\renewcommand{\thepage}{\roman{page}}
+
+\include{acknowledgements}
+\include{about}
+\include{authors}
+}
+
+
 \mainmatter
+%\setcounter{chapter}{0}
+%\setcounter{page}{1}
+
 \fancypagestyle{plain}{
     \fancyhf{}
     \fancyfoot[C]{\usefont{OT1}{phv}{b}{n}\selectfont \thepage }
@@ -276,36 +266,41 @@
 
 
 
-\part {Drools}
+\part{Drools}
 
 %\include{introduction}
-\include{functional_overview}
-\include{architecture}
-\include{drl}
 
-\part {Drools Internals}
+\include{drl}
+\include{client}
+\include{admin}
+\include{conflict}
+\include{jsr94}
+
+\part{Semantic Modules}
 \include{java}
 \include{python}
 \include{xml}
 \include{dispatcher}
-\include{client}
-\include{admin}
 
-\include{conflict}
-\include{jsr94}
+\part{Drools Internals}
+
+%\include{functional_overview}
+\include{architecture}
 \include{smf}
 \include{rule_assembly}
 
-\part {Examples}
+\part{Examples}
 \include{examples}
 
-\part {Appendices}
+\part{Appendices}
 \appendix
 \include{algo}
 
 \include{faq}
 \include{project-info}
 \include{license}
+
+\backmatter
 
 \bibliography{manual}
 \bibliographystyle{acm}
