@@ -1,7 +1,7 @@
 package org.drools.examples.nodesharing;
 
 /*
-* $Id: NodeSharingExample.java,v 1.2 2004-12-09 00:37:15 simon Exp $
+* $Id: NodeSharingExample.java,v 1.3 2004-12-16 19:17:30 dbarnett Exp $
 *
 * Copyright 2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -40,16 +40,23 @@ package org.drools.examples.nodesharing;
 *
 */
 
+import java.io.IOException;
+
+import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
 import org.drools.reteoo.Dumper;
+import org.xml.sax.SAXException;
 
 public class NodeSharingExample
 {
-    public static void main( String[] args ) throws Exception
+    public static void main( String[] args ) throws DroolsException,
+                                                    SAXException,
+                                                    IOException
     {
-        RuleBase ruleBase = RuleBaseLoader.loadFromUrl( NodeSharingExample.class.getResource( "nodesharing.java.drl" ) );
+        RuleBase ruleBase = RuleBaseLoader.loadFromUrl(
+            NodeSharingExample.class.getResource( "nodesharing.java.drl" ) );
 
         System.out.println( "DUMP RETE" );
         System.out.println( "---------" );

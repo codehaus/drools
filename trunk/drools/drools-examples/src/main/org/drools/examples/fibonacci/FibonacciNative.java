@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciNative.java,v 1.6 2004-11-17 16:29:37 dbarnett Exp $
+ * $Id: FibonacciNative.java,v 1.7 2004-12-16 19:17:30 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,7 @@ package org.drools.examples.fibonacci;
  *
  */
 
+import org.drools.DroolsException;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
@@ -61,7 +62,7 @@ import org.drools.spi.Tuple;
 
 public class FibonacciNative
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args) throws DroolsException
     {
         // <rule-set name="fibonacci" ...>
         RuleSet ruleSet = new RuleSet( "fibonacci" );

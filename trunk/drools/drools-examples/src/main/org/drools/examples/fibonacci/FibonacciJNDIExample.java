@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciJNDIExample.java,v 1.5 2004-12-04 14:59:45 simon Exp $
+ * $Id: FibonacciJNDIExample.java,v 1.6 2004-12-16 19:17:30 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,16 +40,25 @@ package org.drools.examples.fibonacci;
  *
  */
 
+import java.io.IOException;
+
+import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
+import org.xml.sax.SAXException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 public class FibonacciJNDIExample
 {
-    private static void initJNDI(String namingFactory, String drl) throws Exception
+    private static void initJNDI(String namingFactory, String drl)
+        throws DroolsException,
+               SAXException,
+               IOException,
+               NamingException
     {
         System.setProperty( "java.naming.factory.initial", namingFactory );
 
@@ -61,7 +70,10 @@ public class FibonacciJNDIExample
         context.bind( "fibonacci", ruleBase );
     }
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args) throws DroolsException,
+                                                  NamingException,
+                                                  SAXException,
+                                                  IOException
     {
         if ( args.length != 2 )
         {
