@@ -4,6 +4,5 @@ import org.drools.rule.Rule;
 
 public interface RuleFactory
 {
-    Rule newRule(Configuration config)
-        throws FactoryException;
+    Rule newRule(Configuration config) throws FactoryException;
 }

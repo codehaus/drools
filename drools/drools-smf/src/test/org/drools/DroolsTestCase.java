@@ -1,45 +1,39 @@
 package org.drools;
 
-import junit.framework.TestCase;
-
 import java.util.Arrays;
 import java.util.Collection;
 
-public class DroolsTestCase
-    extends TestCase
+import junit.framework.TestCase;
+
+public class DroolsTestCase extends TestCase
 {
-    public DroolsTestCase( )
+    public DroolsTestCase()
     {
-      super(  );
+        super( );
     }
 
     public DroolsTestCase(String name)
     {
-      super( name );
+        super( name );
     }
 
-    public void assertLength(int len,
-                             Object[] array)
+    public void assertLength(int len, Object[] array)
     {
-        assertEquals( Arrays.asList( array ) + " does not have length of " + len,
-                      len,
-                      array.length );
+        assertEquals( Arrays.asList( array ) + " does not have length of "
+                      + len, len, array.length );
     }
 
-    public void assertLength(int len,
-                             Collection collection)
+    public void assertLength(int len, Collection collection)
     {
-        assertEquals( collection + " does not have length of " + len,
-                      len,
-                      collection.size() );
+        assertEquals( collection + " does not have length of " + len, len,
+                      collection.size( ) );
     }
 
-    public void assertContains(Object obj,
-                               Object[] array)
+    public void assertContains(Object obj, Object[] array)
     {
-        for ( int i = 0 ; i < array.length ; ++i )
+        for ( int i = 0; i < array.length; ++i )
         {
-            if ( array[ i ] == obj )
+            if ( array[i] == obj )
             {
                 return;
             }
@@ -48,14 +42,14 @@ public class DroolsTestCase
         fail( Arrays.asList( array ) + " does not contain " + obj );
     }
 
-    public void assertContains(Object obj,
-                               Collection collection)
+    public void assertContains(Object obj, Collection collection)
     {
         assertTrue( collection + " does not contain " + obj,
                     collection.contains( obj ) );
     }
 
-    public void testDummy() throws Exception {
+    public void testDummy() throws Exception
+    {
         // do nothing
     }
 }

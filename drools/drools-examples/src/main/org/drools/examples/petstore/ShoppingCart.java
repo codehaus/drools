@@ -1,7 +1,7 @@
 package org.drools.examples.petstore;
 
 /*
- * $Id: ShoppingCart.java,v 1.1 2004-07-07 04:45:22 dbarnett Exp $
+ * $Id: ShoppingCart.java,v 1.2 2004-09-17 00:37:57 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,121 +48,121 @@ import java.util.Map;
 
 public class ShoppingCart
 {
-	private List items;
+    private List          items;
 
-	private double discount;
+    private double        discount;
 
-	private Map states;
+    private Map           states;
 
-	private static String newline = System.getProperty( "line.separator" );
+    private static String newline = System.getProperty( "line.separator" );
 
-	public ShoppingCart()
-	{
-		states = new HashMap( );
-		this.items = new ArrayList( );
-		this.discount = 0;
-	}
+    public ShoppingCart()
+    {
+        states = new HashMap( );
+        this.items = new ArrayList( );
+        this.discount = 0;
+    }
 
-	public boolean getState( String state )
-	{
-		if ( states.containsKey( state ) )
-		{
-			return ((Boolean) states.get( state )).booleanValue( );
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean getState(String state)
+    {
+        if ( states.containsKey( state ) )
+        {
+            return ( ( Boolean ) states.get( state ) ).booleanValue( );
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public void setState( String state, boolean value )
-	{
-		states.put( state, new Boolean( value ) );
-	}
+    public void setState(String state, boolean value)
+    {
+        states.put( state, new Boolean( value ) );
+    }
 
-	public void setDiscount( double discount )
-	{
-		this.discount = discount;
-	}
+    public void setDiscount(double discount)
+    {
+        this.discount = discount;
+    }
 
-	public double getDiscount()
-	{
-		return this.discount;
-	}
+    public double getDiscount()
+    {
+        return this.discount;
+    }
 
-	public void addItem( CartItem item )
-	{
-		this.items.add( item );
-	}
+    public void addItem(CartItem item)
+    {
+        this.items.add( item );
+    }
 
-	public List getItems()
-	{
-		return this.items;
-	}
+    public List getItems()
+    {
+        return this.items;
+    }
 
-	public List getItems( String name )
-	{
-		ArrayList matching = new ArrayList( );
+    public List getItems(String name)
+    {
+        ArrayList matching = new ArrayList( );
 
-		Iterator itemIter = getItems( ).iterator( );
-		CartItem eachItem = null;
+        Iterator itemIter = getItems( ).iterator( );
+        CartItem eachItem = null;
 
-		while ( itemIter.hasNext( ) )
-		{
-			eachItem = (CartItem) itemIter.next( );
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = ( CartItem ) itemIter.next( );
 
-			if ( eachItem.getName( ).equals( name ) )
-			{
-				matching.add( eachItem );
-			}
-		}
+            if ( eachItem.getName( ).equals( name ) )
+            {
+                matching.add( eachItem );
+            }
+        }
 
-		return matching;
-	}
+        return matching;
+    }
 
-	public double getGrossCost()
-	{
-		Iterator itemIter = getItems( ).iterator( );
-		CartItem eachItem = null;
+    public double getGrossCost()
+    {
+        Iterator itemIter = getItems( ).iterator( );
+        CartItem eachItem = null;
 
-		double cost = 0.00;
+        double cost = 0.00;
 
-		while ( itemIter.hasNext( ) )
-		{
-			eachItem = (CartItem) itemIter.next( );
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = ( CartItem ) itemIter.next( );
 
-			cost += eachItem.getCost( );
-		}
+            cost += eachItem.getCost( );
+        }
 
-		return cost;
-	}
+        return cost;
+    }
 
-	public double getDiscountedCost()
-	{
-		double cost = getGrossCost( );
-		double discount = getDiscount( );
+    public double getDiscountedCost()
+    {
+        double cost = getGrossCost( );
+        double discount = getDiscount( );
 
-		double discountedCost = cost * (1 - discount);
+        double discountedCost = cost * ( 1 - discount );
 
-		return discountedCost;
-	}
+        return discountedCost;
+    }
 
-	public String toString()
-	{
-		StringBuffer buf = new StringBuffer( );
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer( );
 
-		buf.append( "ShoppingCart:" + newline );
+        buf.append( "ShoppingCart:" + newline );
 
-		Iterator itemIter = getItems( ).iterator( );
+        Iterator itemIter = getItems( ).iterator( );
 
-		while ( itemIter.hasNext( ) )
-		{
-			buf.append( "\t" + itemIter.next( ) + newline );
-		}
+        while ( itemIter.hasNext( ) )
+        {
+            buf.append( "\t" + itemIter.next( ) + newline );
+        }
 
-		buf.append( "gross total=" + getGrossCost( ) + newline );
-		buf.append( "discounted total=" + getDiscountedCost( ) + newline );
+        buf.append( "gross total=" + getGrossCost( ) + newline );
+        buf.append( "discounted total=" + getDiscountedCost( ) + newline );
 
-		return buf.toString( );
-	}
+        return buf.toString( );
+    }
 }

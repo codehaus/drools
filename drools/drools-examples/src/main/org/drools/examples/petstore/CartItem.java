@@ -1,7 +1,7 @@
 package org.drools.examples.petstore;
 
 /*
- * $Id: CartItem.java,v 1.1 2004-07-07 04:45:22 dbarnett Exp $
+ * $Id: CartItem.java,v 1.2 2004-09-17 00:37:57 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,28 +42,29 @@ package org.drools.examples.petstore;
 
 public class CartItem
 {
-	private String name;
-	private double cost;
+    private String name;
 
-	public CartItem( String name, double cost )
-	{
-		this.name = name;
-		this.cost = cost;
-	}
+    private double cost;
 
-	public String getName()
-	{
-		return this.name;
-	}
+    public CartItem(String name, double cost)
+    {
+        this.name = name;
+        this.cost = cost;
+    }
 
-	public double getCost()
-	{
-		return this.cost;
-	}
+    public String getName()
+    {
+        return this.name;
+    }
 
-	public String toString()
-	{
-		return name + " " + this.cost;
-	}
+    public double getCost()
+    {
+        return this.cost;
+    }
+
+    public String toString()
+    {
+        return name + " " + this.cost;
+    }
 
 }

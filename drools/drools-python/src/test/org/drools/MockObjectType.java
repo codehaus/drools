@@ -2,8 +2,7 @@ package org.drools;
 
 import org.drools.spi.ObjectType;
 
-public class MockObjectType
-    implements ObjectType
+public class MockObjectType implements ObjectType
 {
     private Class type;
 
@@ -30,18 +29,14 @@ public class MockObjectType
     {
         if ( thatObj instanceof MockObjectType )
         {
-            MockObjectType that = (MockObjectType) thatObj;
+            MockObjectType that = ( MockObjectType ) thatObj;
 
-            if ( this.type == null
-                 &&
-                 that.type == null )
+            if ( this.type == null && that.type == null )
             {
                 return true;
             }
 
-            if ( this.type == null
-                 ||
-                 that.type == null)
+            if ( this.type == null || that.type == null )
             {
                 return false;
             }
@@ -59,6 +54,6 @@ public class MockObjectType
             return 0;
         }
 
-        return this.type.hashCode();
+        return this.type.hashCode( );
     }
 }

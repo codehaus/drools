@@ -2,13 +2,11 @@ package org.drools.smf;
 
 import org.drools.DroolsTestCase;
 
-public class SimpleSemanticsRepositoryTest
-    extends DroolsTestCase
+public class SimpleSemanticsRepositoryTest extends DroolsTestCase
 {
-    public void testRegisterLookup()
-        throws Exception
+    public void testRegisterLookup() throws Exception
     {
-        SimpleSemanticsRepository repo = new SimpleSemanticsRepository();
+        SimpleSemanticsRepository repo = new SimpleSemanticsRepository( );
 
         try
         {
@@ -16,25 +14,24 @@ public class SimpleSemanticsRepositoryTest
 
             fail( "should have thrown NoSuchSemanticModuleException" );
         }
-        catch (NoSuchSemanticModuleException e)
+        catch ( NoSuchSemanticModuleException e )
         {
             // expected and correct
 
-            assertEquals( "http://cheese.org/",
-                          e.getUri() );
+            assertEquals( "http://cheese.org/", e.getUri( ) );
 
             assertEquals( "no such semantic module: http://cheese.org/",
-                          e.getMessage() );
+                          e.getMessage( ) );
         }
 
-        SimpleSemanticModule module = new SimpleSemanticModule( "http://cheese.org/" );
+        SimpleSemanticModule module = new SimpleSemanticModule(
+                                                                "http://cheese.org/" );
 
         repo.registerSemanticModule( module );
 
-        assertSame( module,
-                    repo.lookupSemanticModule( "http://cheese.org/" ) );
+        assertSame( module, repo.lookupSemanticModule( "http://cheese.org/" ) );
 
-        SemanticModule[] modules = repo.getSemanticModules();
-        assertEquals("Not the correct number of modules. ", modules.length, 1);
+        SemanticModule[] modules = repo.getSemanticModules( );
+        assertEquals( "Not the correct number of modules. ", modules.length, 1 );
     }
 }

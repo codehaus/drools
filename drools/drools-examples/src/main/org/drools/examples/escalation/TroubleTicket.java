@@ -3,16 +3,19 @@ package org.drools.examples.escalation;
 public class TroubleTicket
 {
     public static final int NEW      = 1;
+
     public static final int NOTIFIED = 2;
+
     public static final int NULL     = 3;
 
-    private String submitter;
-    private int    status;
+    private String          submitter;
+
+    private int             status;
 
     public TroubleTicket(String submitter)
     {
         this.submitter = submitter;
-        this.status    = NEW;
+        this.status = NEW;
     }
 
     public String getSubmitter()
@@ -32,25 +35,25 @@ public class TroubleTicket
 
     public String toString()
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer( );
 
         buf.append( "[TroubleTicket: submitter='" );
-        buf.append( getSubmitter() );
+        buf.append( getSubmitter( ) );
         buf.append( "'; status='" );
 
-        switch ( getStatus() )
+        switch ( getStatus( ) )
         {
-            case (NEW) :
+            case ( NEW ) :
             {
                 buf.append( "NEW" );
                 break;
             }
-            case (NOTIFIED):
+            case ( NOTIFIED ) :
             {
                 buf.append( "NOTIFIED" );
                 break;
             }
-            case (NULL):
+            case ( NULL ) :
             {
                 buf.append( "/dev/null" );
                 break;
@@ -59,6 +62,6 @@ public class TroubleTicket
 
         buf.append( "']" );
 
-        return buf.toString();
+        return buf.toString( );
     }
 }

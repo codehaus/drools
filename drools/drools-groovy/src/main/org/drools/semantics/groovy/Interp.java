@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
+ * $Id: Interp.java,v 1.5 2004-09-17 00:36:28 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -46,16 +46,16 @@ import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.Script;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Map;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
-import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
+import org.drools.spi.Tuple;
 
 /**
  * Base class for Groovy based semantic components.
@@ -66,9 +66,10 @@ import org.drools.spi.KnowledgeHelper;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  * 
- * @version $Id: Interp.java,v 1.4 2004-07-16 19:03:34 dbarnett Exp $
+ * @version $Id: Interp.java,v 1.5 2004-09-17 00:36:28 mproctor Exp $
  */
-public class Interp implements Serializable {
+public class Interp implements Serializable
+{
 
     // ------------------------------------------------------------
     //     Instance members
@@ -86,19 +87,24 @@ public class Interp implements Serializable {
     /**
      * Construct.
      */
-    protected Interp(String text, String type) {
-       this.text = text;
-       try {
-           this.code = buildScript(text);
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected Interp(String text, String type)
+    {
+        this.text = text;
+        try
+        {
+            this.code = buildScript( text );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace( );
         }
     }
 
     /**
      * Default constructor - required for serialization
      */
-    protected Interp() {
+    protected Interp()
+    {
         text = null;
         code = null;
     }
@@ -112,11 +118,13 @@ public class Interp implements Serializable {
      * 
      * @return The text to evaluate.
      */
-    public String getText() {
+    public String getText()
+    {
         return this.text;
     }
 
-    protected Script getCode() {
+    protected Script getCode()
+    {
         return this.code;
     }
 
@@ -128,67 +136,76 @@ public class Interp implements Serializable {
      * 
      * @return The dictionary
      */
-    protected Binding setUpDictionary(Tuple tuple) {
-        Set decls = tuple.getDeclarations();
-        Binding dict = new Binding();
+    protected Binding setUpDictionary(Tuple tuple)
+    {
+        Set decls = tuple.getDeclarations( );
+        Binding dict = new Binding( );
 
-        for ( Iterator declIter = decls.iterator();
-              declIter.hasNext(); )
+        for ( Iterator declIter = decls.iterator( ); declIter.hasNext( ); )
         {
-            Declaration eachDecl = (Declaration) declIter.next();
+            Declaration eachDecl = ( Declaration ) declIter.next( );
 
-            dict.setVariable( eachDecl.getIdentifier().intern(),
-                              tuple.get(eachDecl) );
+            dict.setVariable( eachDecl.getIdentifier( ).intern( ),
+                              tuple.get( eachDecl ) );
         }
 
-        WorkingMemory workingMemory = tuple.getWorkingMemory();
+        WorkingMemory workingMemory = tuple.getWorkingMemory( );
 
-        dict.setVariable( "drools".intern(),
-                          new KnowledgeHelper( tuple ) );
+        dict.setVariable( "drools".intern( ), new KnowledgeHelper( tuple ) );
 
-        Map appDataMap = workingMemory.getApplicationDataMap();
+        Map appDataMap = workingMemory.getApplicationDataMap( );
 
-        for ( Iterator keyIter = appDataMap.keySet().iterator();
-              keyIter.hasNext(); )
+        for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter
+                                                                          .hasNext( ); )
         {
-            String key   = (String) keyIter.next();
+            String key = ( String ) keyIter.next( );
             Object value = appDataMap.get( key );
 
-            dict.setVariable( key,
-                              value );
+            dict.setVariable( key, value );
         }
 
         return dict;
     }
 
-    protected Script buildScript(String text) throws Exception {
-        GroovyCodeSource codeSource = new GroovyCodeSource( text,"groovy.script","groovy.script" );
-        GroovyClassLoader loader = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
-        Class clazz = loader.parseClass(codeSource);
+    protected Script buildScript(String text) throws Exception
+    {
+        GroovyCodeSource codeSource = new GroovyCodeSource( text,
+                                                            "groovy.script",
+                                                            "groovy.script" );
+        GroovyClassLoader loader = new GroovyClassLoader(
+                                                          Thread
+                                                                .currentThread( )
+                                                                .getContextClassLoader( ) );
+        Class clazz = loader.parseClass( codeSource );
 
-        return ((Script) clazz.newInstance());
+        return ( ( Script ) clazz.newInstance( ) );
     }
 
     /**
      * Extra work for serialization...
      */
-    private void writeObject(java.io.ObjectOutputStream out)
-            throws IOException {
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException
+    {
         this.code = null;
-        out.defaultWriteObject();
+        out.defaultWriteObject( );
     }
 
     /**
-     * Extra work for serialization.
-     * re-creates the script object that is not serialized
+     * Extra work for serialization. re-creates the script object that is not
+     * serialized
      */
-    private void readObject(java.io.ObjectInputStream in)
-            throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        try {
-            this.code = buildScript(this.getText());
-        } catch (Exception e) {
-            throw new IOException("Error re-serializing Code Object. Error:" + e.getMessage());
+    private void readObject(java.io.ObjectInputStream in) throws IOException,
+                                                         ClassNotFoundException
+    {
+        in.defaultReadObject( );
+        try
+        {
+            this.code = buildScript( this.getText( ) );
+        }
+        catch ( Exception e )
+        {
+            throw new IOException( "Error re-serializing Code Object. Error:"
+                                   + e.getMessage( ) );
         }
     }
 }
