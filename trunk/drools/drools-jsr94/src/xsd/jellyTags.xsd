@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xml:lang="en"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary"
+           xmlns="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary"
+           elementFormDefault="qualified"
+           version="ALPHA 1.1">
+
+<xs:annotation>
+ <xs:documentation>
+   Author: Roger F. Gay
+   Date: August 18, 2003
+   Used-in: jelly.xsd
+   With: jelly.xsd supplementing DRL-Schema version 1.1
+ </xs:documentation>
+ <xs:documentation>
+   Several name attributes are set to "unknown" because they were not needed
+   by the test samples. This version needs to be corrected if it is to be
+   used in real-life. The elements in this schema came from KnowledgeTagLibrary.java 
+   The attribute "fact" in the assert tag was used in example sisters.drl
+ </xs:documentation>
+</xs:annotation>
+
+<xs:element name="rule-base">
+  <xs:complexType>
+    <xs:attribute name="unknown" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+<xs:element name="load-rules">
+  <xs:complexType>
+    <xs:attribute name="unknown" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+<xs:element name="knowledge">
+  <xs:complexType>
+    <xs:attribute name="unknown" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+<xs:element name="assert">
+  <xs:complexType>
+    <xs:attribute name="fact" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+<xs:element name="modify">
+  <xs:complexType>
+    <xs:attribute name="unknown" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+<xs:element name="retract">
+  <xs:complexType>
+    <xs:attribute name="unknown" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xml:lang="en"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://drools.org/semantics/python"
+           xmlns="http://drools.org/semantics/python"
+           elementFormDefault="qualified"
+           version="DRL-Schema ALPHA 1.1">
+
+<xs:annotation>
+ <xs:documentation>
+  Title: python.xsd supplement to DRL-Schema version ALPHA 1.1
+ </xs:documentation>
+ <xs:documentation>
+  Author: Roger F. Gay 
+  Contact: roger.f.gay@picslt.org 
+  Date: August 18, 2003
+ </xs:documentation>
+</xs:annotation>
+<xs:annotation>
+ <xs:documentation>
+  Elements condition, extractor, and consequence supported by this semantic module 
+   related xsd are defined in org/drools/semantics/java/python/semantics.xml
+ </xs:documentation>
+</xs:annotation>
+
+<xs:element name="condition"   type="xs:string" />
+<xs:element name="extractor"   type="xs:string" />
+<xs:element name="consequence" type="xs:string" />
+
+</xs:schema>
