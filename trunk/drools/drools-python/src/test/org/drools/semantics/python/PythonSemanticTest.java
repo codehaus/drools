@@ -3,7 +3,6 @@ package org.drools.semantics.python;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.drools.rule.Imports;
 import org.drools.smf.SMFTestFrameWork;
 
 /**
