@@ -1,0 +1,119 @@
+\chapter{Java Semantic Module}
+
+\section{Overview}
+
+The Java Semantic Module provides implementations of semantic
+components that adhere to the Java language semantics.  The components
+can be used directoy from Java with through a DRL file.
+
+
+\begin{itemize}
+	\item \textbf{\textsf{org.drools.semantics.java.ClassObjectType}}\\
+		A \verb|ObjectType| implementation that adheres
+		to Java class types.  Usable within \verb|<parameter>|
+		and \verb|<declaration>| DRL tags.
+	\item \textbf{\textsf{org.drools.semantics.java.ExprCondition}}\\
+		A \verb|Condition| implementation that uses boolean
+		Java expressions for filtering. Usable within 
+		\verb|<condition>| DRL tags.
+	\item \textbf{\textsf{org.drools.semantics.java.ExprExtractor}}\\
+		A \verb|Extractor| implementation that uses Java
+		expressions for extracting new facts.  Usable
+		within \verb|<extraction>| DRL tags.
+	\item \textbf{\textsf{org.drools.semantics.java.BlockConsequence}}\\
+		A \verb|Consequence| impementation that uses
+		A block of Java statements as the action of a
+		matched rule.  Usable within \verb|<consequence>|
+		DRL tags.
+\end{itemize}
+
+\clearpage
+
+\section{Usage with DRL}
+
+\subsection{Loading the Module}
+
+The Java Semantic Module's tags exist within the XML namespace
+URI of \verb|http://drools.org/semantics/java| and within the
+Java package of\\ \verb|org.drools.semantics.java|.  To use the
+Java Semantic Module within a DRL file, the DRL \verb|<semantics>|
+tag must be used, as must an XML namespace prefix binding.
+
+\begin{codelisting}
+\textcolor{light}{<drl:rules xmlns:drl="http://drools.org/rules"}
+       xmlns:java="http://drools.org/semantics/java"\textcolor{light}{>}
+
+  <drl:semantics module="org.drools.semantics.java"/>
+
+  \textcolor{light}{<drl:rule ...>
+    <drl:parameter identifier="account">}
+      <java:class type="com.werken.Account"/>
+    \textcolor{light}{</drl:parameter>
+  </drl:rule>
+
+</drl:rules>}
+\end{codelisting}
+
+
+\subsection{\texttt{java:class}}
+
+The \verb|<java:class>| tag defines an \emph{object type} that adheres
+to Java class semantics for types.  It has a single attribute of
+\verb|type| which takes a class name as a value.  The tag may be
+used as the content of both \verb|<drl:parameter>| and
+\verb|<drl:declaration>| DRL tags.
+
+\begin{codelisting}
+\textcolor{light}{<drl:parameter identifier="account">}
+  <java:class type="com.werken.Account"/>
+\textcolor{light}{</drl:parameter>
+<drl:declaration identifier="person">}
+  <java:class type="com.werken.Person"/>
+\textcolor{light}{</drl:declaration>}
+\end{codelisting}
+
+\subsection{\texttt{java:condition}}
+
+The \verb|<java:condition>| tag defines an \emph{condition} that
+adheres to Java boolean expression semantics.  It has no
+attributes and the body content is the boolean expression to
+evaluate.  The tag may be used as the content of a \verb|<drl:condition>|
+tag.
+
+\begin{codelisting}
+\textcolor{light}{<drl:condition>}
+  <java:condition>acctBalance == 0</java:condition>
+\textcolor{light}{</drl:condition>}
+\end{codelisting}
+
+\subsection{\texttt{java:extractor}}
+
+The \verb|java:extractor| tags defines a \emph{fact extractor}
+that adheres to Java expression semantics.  It has
+no attributes and the body content is the expression to generate
+the new fact.  The tag may be used as the content of a 
+\verb|<drl:extraction>| tag.
+
+\begin{codelisting}
+\textcolor{light}{<drl:extraction target="accountBalance">}
+  <java:extractor>person.getAccount().getBalance()</java:extractor>
+\textcolor{light}{</drl:extraction>}
+\end{codelisting}
+
+\subsection{\texttt{java:consequence}}
+
+The \verb|<java:consequence>| tag defines a \emph{rule consequence}
+that adheres to Java statement block semantics.  It may exist as the
+content of a \verb|<drl:consequence>| tag.  It has no
+attributes and the body content is the set of statements
+to execute upon rule match.
+
+
+\begin{codelisting}
+\textcolor{light}{<drl:consequence>}
+   System.err.println( "The balance is: " + acctBalance );
+   theRepoMan.addAccount( account );
+   assertObject( theRepoMan );
+\textcolor{light}{</drl:consequence>}
+\end{codelisting}
+

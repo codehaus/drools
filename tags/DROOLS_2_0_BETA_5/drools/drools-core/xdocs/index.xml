@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>drools</title>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+  </properties>
+
+  <body>
+
+  <section name="drools">
+    <p>
+    <code>drools</code> is an augmented implementation of Forgy's Rete algorithm
+    tailored for the object-oriented language of Java.  Adapting
+    Rete to an object-oriented interface allows for more natural
+    expression of business rules with regards to business objects.
+    </p>
+
+    <subsection name="Rete-OO">
+
+      <p>
+      The <code>drools</code> engine uses a modified form of the Rete algorithm
+      called the Rete-OO algorithm.  Internally it operates using the same
+      concepts and methods as Forgy's original but adds some node types
+      required for seemless integration with an object-oriented language.
+      </p>
+
+    </subsection>
+
+    <subsection name="Semantics Provider Interface &amp; Framework">
+
+      <p>
+      At the core, <code>drools</code> is purely an Rete-OO algorithmic
+      engine.  The engine works in terms of very abstracted concepts,
+      such as <a href="./apidocs/org/drools/spi/Condition.html">Conditions</a>, 
+      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectTypes</a> and
+      <a href="./apidocs/org/drools/spi/Extractor.html">Extractors</a>.  
+      Concrete <i>semantic modules</i> are used to bind 
+      application-specific semantics tightly to the internals of the 
+      algorithmic engine.
+      </p>
+    </subsection>
+  </section>
+
+</body>
+</document>
+
