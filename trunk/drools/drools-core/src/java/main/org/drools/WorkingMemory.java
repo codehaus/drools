@@ -1,10 +1,10 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.13 2003-03-04 05:09:38 kaz Exp $
+ $Id: WorkingMemory.java,v 1.14 2003-08-21 01:08:39 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
     permission of The Werken Company. "drools" is a registered
     trademark of The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://drools.werken.com/).
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,18 +43,20 @@ package org.drools;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
-import org.drools.reteoo.JoinNode;
-import org.drools.reteoo.JoinMemory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.drools.reteoo.Agenda;
-import org.drools.reteoo.impl.JoinNodeImpl;
-import org.drools.reteoo.impl.JoinMemoryImpl;
+import org.drools.reteoo.JoinMemory;
+import org.drools.reteoo.JoinNode;
 import org.drools.reteoo.impl.AgendaImpl;
+import org.drools.reteoo.impl.JoinMemoryImpl;
+import org.drools.reteoo.impl.JoinNodeImpl;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /** A knowledge session for a <code>RuleBase</code>.
  *
@@ -62,6 +64,8 @@ import java.util.HashMap;
  */
 public class WorkingMemory
 {
+    private static Log log = LogFactory.getLog( WorkingMemory.class );
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -80,7 +84,7 @@ public class WorkingMemory
 
     /** Application data which is associated with this memory. */
     private Object applicationData;
-    
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -89,12 +93,12 @@ public class WorkingMemory
      *
      *  @param ruleBase The rule base with which this memory is associated.
      */
-    protected WorkingMemory(RuleBase ruleBase)
+    protected WorkingMemory( RuleBase ruleBase )
     {
-        this.ruleBase     = ruleBase;
+        this.ruleBase = ruleBase;
         this.joinMemories = new HashMap();
 
-        this.agenda       = new AgendaImpl( this );
+        this.agenda = new AgendaImpl( this );
     }
 
     // ------------------------------------------------------------
@@ -120,7 +124,7 @@ public class WorkingMemory
     {
         this.applicationData = appData;
     }
-    
+
     /** Retrieve the rule-firing <code>Agenda</code> for
      *  this <code>WorkingMemory</code>.
      *
@@ -148,19 +152,19 @@ public class WorkingMemory
     private void fireAgenda() throws AssertionException
     {
         Agenda agenda = getAgenda();
-        
+
         // If we're already firing a rule, then it'll pick up
         // the firing for any other assertObject(..) that get
         // nested inside, avoiding concurrent-modification
         // exceptions, depending on code paths of the actions.
 
-        if ( ! this.firing )
+        if ( !this.firing )
         {
             try
             {
                 this.firing = true;
-                
-                while ( ! agenda.isEmpty() )
+
+                while ( !agenda.isEmpty() )
                 {
                     getAgenda().fireNextItem();
                 }
@@ -178,10 +182,12 @@ public class WorkingMemory
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public synchronized void assertObject(Object object) throws AssertionException
+    public synchronized void assertObject( Object object ) throws AssertionException
     {
+        log.debug( "assertObject: " + object );
+
         getRuleBase().assertObject( object,
-                                    this );
+                this );
 
         fireAgenda();
     }
@@ -192,10 +198,12 @@ public class WorkingMemory
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public synchronized void retractObject(Object object) throws RetractionException
+    public synchronized void retractObject( Object object ) throws RetractionException
     {
+        log.debug( "retractObject: " + object );
+
         getRuleBase().retractObject( object,
-                                     this );
+                this );
     }
 
     /** Modify a fact object in this working memory.
@@ -208,10 +216,12 @@ public class WorkingMemory
      *
      *  @throws FactException if an error occurs during modification.
      */
-    public synchronized void modifyObject(Object object) throws FactException
+    public synchronized void modifyObject( Object object ) throws FactException
     {
+        log.debug( "modifyObject: " + object );
+
         getRuleBase().modifyObject( object,
-                                    this );
+                this );
 
         fireAgenda();
     }
@@ -222,7 +232,7 @@ public class WorkingMemory
      *
      *  @return The node's memory.
      */
-    public JoinMemory getJoinMemory(JoinNode node)
+    public JoinMemory getJoinMemory( JoinNode node )
     {
         JoinMemory memory = (JoinMemory) this.joinMemories.get( node );
 
@@ -231,15 +241,15 @@ public class WorkingMemory
             memory = new JoinMemoryImpl( (JoinNodeImpl) node );
 
             this.joinMemories.put( node,
-                                   memory );
+                    memory );
         }
 
         return memory;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /** Produce a debug string.
      *
@@ -247,7 +257,6 @@ public class WorkingMemory
      */
     public String toString()
     {
-        return "[WorkingMemory: " + this.joinMemories + "]";
+        return "[WorkingMemory: " + joinMemories + ",applicationData" + applicationData + "]";
     }
-
 }
