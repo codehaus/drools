@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: DefaultConflictResolver.java,v 1.3 2004-06-26 15:10:56 mproctor Exp $
+ $Id: DefaultConflictResolver.java,v 1.4 2004-06-26 17:54:53 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.io.Serializable;
+
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.Tuple;
@@ -72,7 +74,7 @@ import org.drools.spi.Tuple;
  * @version $Id: DefaultConflictResolver.java,v 1.2 2004/06/25 11:46:58 mproctor
  *          Exp $
  */
-public class DefaultConflictResolver implements ConflictResolver
+public class DefaultConflictResolver implements ConflictResolver, Serializable
 {
 	// ----------------------------------------------------------------------
 	//     Class members
