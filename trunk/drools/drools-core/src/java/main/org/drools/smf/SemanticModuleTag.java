@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticModuleTag.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,93 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
- *
- *  @see SimpleSemanticModule#addFactExtractor
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.MissingAttributeException;
+
+/** Defines a <code>SemanticModule</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public class SemanticModuleTag extends SmfTagSupport
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The invalid fact extractor. */
-    private Class cls;
+    /** The module. */
+    private SimpleSemanticModule module;
+
+    /** The uri. */
+    private String uri;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param cls The invalid fact extractor.
      */
-    public InvalidFactExtractorException(Class cls)
+    public SemanticModuleTag()
     {
-        this.cls = cls;
+        // intentionally left blank.
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the invalid class.
+    /** Retrieve the <code>SemanticModule</code>.
      *
-     *  @return The invalid class.
+     *  @return The semantic module.
      */
-    public Class getInvalidClass()
+    public SimpleSemanticModule getSemanticModule()
     {
-        return this.cls;
+        return this.module;
+    }
+
+    /** Set the URI.
+     *
+     *  @param uri The URI.
+     */
+    public void setUri(String uri)
+    {
+        this.uri = uri;
+    }
+
+    /** Retrieve the URI.
+     *
+     *  @return The URI.
+     */
+    public String getUri()
+    {
+        return this.uri;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
+    //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the error message.
+    /** Perform this tag.
      *
-     *  @return The error message.
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
      */
-    public String getMessage()
+    public void doTag(XMLOutput output) throws Exception
     {
-        return this.cls.getName() + " is not a valid fact extractor";
+        if ( this.uri == null )
+        {
+            throw new MissingAttributeException( "uri" );
+        }
+
+        this.module = new SimpleSemanticModule( this.uri );
+
+        invokeBody( output );
+
+        getSemanticsLoader().registerSemanticModule( this.module );
+
+        this.module = null;
+        this.uri    = null;
     }
 }
+

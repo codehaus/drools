@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: SmfTagLibrary.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,32 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
- *
- *  @see SimpleSemanticModule#addFactExtractor
+import org.apache.commons.jelly.TagLibrary;
+
+/** Tag library for defining semantic modules.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public class SmfTagLibrary extends TagLibrary
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The invalid fact extractor. */
-    private Class cls;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param cls The invalid fact extractor.
      */
-    public InvalidFactExtractorException(Class cls)
+    public SmfTagLibrary()
     {
-        this.cls = cls;
-    }
+        registerTag( "module",
+                     SemanticModuleTag.class );
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
+        registerTag( "type",
+                     ObjectTypeTag.class );
 
-    /** Retrieve the invalid class.
-     *
-     *  @return The invalid class.
-     */
-    public Class getInvalidClass()
-    {
-        return this.cls;
-    }
+        registerTag( "extractor",
+                     FactExtractorTag.class );
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the error message.
-     *
-     *  @return The error message.
-     */
-    public String getMessage()
-    {
-        return this.cls.getName() + " is not a valid fact extractor";
+        registerTag( "action",
+                     ActionTag.class );
     }
 }

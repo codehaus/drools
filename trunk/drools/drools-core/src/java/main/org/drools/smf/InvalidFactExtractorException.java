@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.2 2002-08-02 14:10:33 bob Exp $
+ $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package org.drools.smf;
 /** Indicates an attempt to add an invalid fact extractor to
  *  a semantic module.
  *
- *  @see SemanticModule#addFactExtractor
+ *  @see SimpleSemanticModule#addFactExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticsLoader.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,21 +46,27 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
- *
- *  @see SimpleSemanticModule#addFactExtractor
+import org.apache.commons.jelly.Script;
+import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.parser.XMLParser;
+
+import java.io.IOException;
+
+import java.net.URL;
+
+/** Loads <code>SemanticModule</code> definition from XML.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public class SemanticsLoader
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The invalid fact extractor. */
-    private Class cls;
+    /** The repository. */
+    private SemanticsRepository repo;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -68,36 +74,52 @@ public class InvalidFactExtractorException extends SemanticModuleException
 
     /** Construct.
      *
-     *  @param cls The invalid fact extractor.
+     *  @param repo The repository to populate.
      */
-    public InvalidFactExtractorException(Class cls)
+    public SemanticsLoader(SemanticsRepository repo)
     {
-        this.cls = cls;
+        this.repo = repo;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the invalid class.
+    /** Load a <code>SemanticModule</code> deifnition from a URL.
      *
-     *  @return The invalid class.
+     *  @param url The URL to load.
+     *
+     *  @throws IOException If an IO errors occurs.
+     *  @throws Exception If an error occurs evaluating the definition.
      */
-    public Class getInvalidClass()
+    public void load(URL url) throws IOException, Exception
     {
-        return this.cls;
+        XMLParser parser = new XMLParser();
+
+        JellyContext context = new JellyContext();
+
+        context.registerTagLibrary( "http://drools.org/semantics",
+                                    new SmfTagLibrary() );
+
+        context.setVariable( "drools.semantics.loader",
+                             this );
+
+        parser.setContext(context);
+
+        Script script = parser.parse( url.toExternalForm() );
+        
+        XMLOutput output = XMLOutput.createXMLOutput( System.err );
+        
+        script.run( context,
+                    output );
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the error message.
+    /** Load a <code>SemanticModule</code> into the repository.
      *
-     *  @return The error message.
+     *  @param module The module to load.
      */
-    public String getMessage()
+    void loadSemanticModule(SemanticModule module)
     {
-        return this.cls.getName() + " is not a valid fact extractor";
+        this.repo.registerSemanticModule( module );
     }
-}
+}     

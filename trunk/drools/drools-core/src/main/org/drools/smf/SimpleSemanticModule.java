@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.1 2002-08-02 14:10:33 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.2 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -166,8 +166,8 @@ public class SimpleSemanticModule implements SemanticModule
      *  @throws InvalidFactExtractorException If a class that is not a
      *          object type is added.
      */
-    public void addFactExtrator(String name,
-                                Class factExtractor) throws InvalidFactExtractorException
+    public void addFactExtractor(String name,
+                                 Class factExtractor) throws InvalidFactExtractorException
     {
         if ( ! FactExtractor.class.isAssignableFrom( factExtractor ) )
         {

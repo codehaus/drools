@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidFactExtractorException.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: FactExtractorTag.java,v 1.1 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,58 @@ package org.drools.smf;
  
  */
 
-/** Indicates an attempt to add an invalid fact extractor to
- *  a semantic module.
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
+
+/** Defines a <code>FactExtractor</code>.
  *
- *  @see SimpleSemanticModule#addFactExtractor
+ *  @see org.drools.spi.FactExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class InvalidFactExtractorException extends SemanticModuleException
+public class FactExtractorTag extends SemanticComponentTagSupport
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The invalid fact extractor. */
-    private Class cls;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param cls The invalid fact extractor.
      */
-    public InvalidFactExtractorException(Class cls)
+    public FactExtractorTag()
     {
-        this.cls = cls;
+        // intentionally left blank.
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the invalid class.
-     *
-     *  @return The invalid class.
-     */
-    public Class getInvalidClass()
-    {
-        return this.cls;
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Throwable
+    //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the error message.
+    /** Perform this tag.
      *
-     *  @return The error message.
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
      */
-    public String getMessage()
+    public void doTag(XMLOutput output) throws Exception
     {
-        return this.cls.getName() + " is not a valid fact extractor";
+        checkAttributes();
+
+        SimpleSemanticModule module = getCurrentSemanticModule();
+
+        if ( module == null )
+        {
+            throw new JellyException( "<action> tag can only be used within a <semantic-module>" );
+        }
+
+        Class extractClass = Class.forName( getClassname() );
+
+       module.addFactExtractor( getName(),
+                                extractClass );
     }
 }
+

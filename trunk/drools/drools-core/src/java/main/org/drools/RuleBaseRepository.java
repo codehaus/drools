@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBaseRepository.java,v 1.2 2002-08-01 21:00:21 bob Exp $
+ $Id: RuleBaseRepository.java,v 1.3 2002-08-02 19:43:11 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,4 +64,12 @@ public interface RuleBaseRepository
      *          can be located.
      */
     RuleBase lookupRuleBase(String uri) throws NoSuchRuleBaseException;
+
+    /** Register a <code>RuleBase</code> by URI.
+     *
+     *  @param uri The uri.
+     *  @param ruleBase The rule base.
+     */
+    void registerRuleBase(String uri,
+                          RuleBase ruleBase);
 }
