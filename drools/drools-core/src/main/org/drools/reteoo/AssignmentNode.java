@@ -21,6 +21,9 @@ public class AssignmentNode extends TupleSource implements TupleSink
                           Declaration targetDeclaration,
                           FactExtractor factExtractor)
     {
+        this.factExtractor     = factExtractor;
+        this.targetDeclaration = targetDeclaration;
+
         Set sourceDecls = tupleSource.getTupleDeclarations();
 
         this.tupleDeclarations = new HashSet( sourceDecls.size() + 1 );
@@ -50,13 +53,24 @@ public class AssignmentNode extends TupleSource implements TupleSink
                             Tuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
+        Object value = getFactExtractor().extractFact( tuple );
 
+        ReteTuple newTuple = new ReteTuple();
+
+        newTuple.putAll( tuple );
+
+        newTuple.put( getTargetDeclaration(),
+                      value );
+
+        propagateAssertTuple( newTuple,
+                              workingMemory );
     }
 
     public void retractObject(TupleSource tupleSource,
                               Object object,
                               WorkingMemory workingMemory) throws RetractionException
     {
-
+        propagateRetractObject( object,
+                                workingMemory );
     }
 }
