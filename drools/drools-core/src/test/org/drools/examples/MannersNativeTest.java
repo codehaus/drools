@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.2 2004-11-07 18:34:44 mproctor Exp $
+ * $Id: MannersNativeTest.java,v 1.3 2004-11-07 18:36:25 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -677,8 +677,8 @@ public class MannersNativeTest extends TestCase implements Serializable
         long start = System.currentTimeMillis( );
 
         //test serialization
-        //workingMemory = serializeWorkingMemory( workingMemory );
-        //workingMemory = serializeWorkingMemory( workingMemory );
+        workingMemory = serializeWorkingMemory( workingMemory );
+        workingMemory = serializeWorkingMemory( workingMemory );
 
         for ( Iterator i = inList.iterator( ); i.hasNext( ); )
         {
@@ -686,14 +686,14 @@ public class MannersNativeTest extends TestCase implements Serializable
         }
 
         //test serialization
-        //workingMemory = serializeWorkingMemory( workingMemory );
-        //workingMemory = serializeWorkingMemory( workingMemory );
+        workingMemory = serializeWorkingMemory( workingMemory );
+        workingMemory = serializeWorkingMemory( workingMemory );
 
         workingMemory.fireAllRules( );
 
         //test serialization
-        //workingMemory = serializeWorkingMemory( workingMemory );
-        //workingMemory = serializeWorkingMemory( workingMemory );
+        workingMemory = serializeWorkingMemory( workingMemory );
+        workingMemory = serializeWorkingMemory( workingMemory );
 
         List outList = workingMemory.getObjects( );
 
