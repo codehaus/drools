@@ -207,15 +207,25 @@
     <goal name="drools:dist-bin" prereqs="drools:dist-prepare,javadoc-all">
 
       <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}.zip">
-    		 <zipfileset dir="${basedir}/target/docs" prefix="docs" />
-    		 <zipfileset dir="${basedir}/target/" prefix="lib" includes="drools-*.jar"/>
-    		 <zipfileset dir="${basedir}" excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+    		 <zipfileset dir="${basedir}/target/docs" 
+                             prefix="drools-${pom.currentVersion}/docs" />
+    		 <zipfileset dir="${basedir}/target/" 
+                             prefix="drools-${pom.currentVersion}/lib" 
+                             includes="drools-*.jar"/>
+    		 <zipfileset dir="${basedir}" 
+                             prefix="drools-${pom.currentVersion}" 
+                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </zip>
 
       <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}.tar.gz" compression="gzip">
-    		 <tarfileset dir="${basedir}/target/docs" prefix="docs" />
-    		 <tarfileset dir="${basedir}/target/" prefix="lib" includes="drools-*.jar"/>
-    		 <tarfileset dir="${basedir}/" excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+    		 <tarfileset dir="${basedir}/target/docs" 
+                             prefix="drools-${pom.currentVersion}/docs" />
+    		 <tarfileset dir="${basedir}/target/" 
+                             prefix="drools-${pom.currentVersion}/lib" 
+                             includes="drools-*.jar"/>
+    		 <tarfileset dir="${basedir}/" 
+                             prefix="drools-${pom.currentVersion}" 
+                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </tar>
     </goal>
 
@@ -227,17 +237,29 @@
     <goal name="drools:dist-bin-withdeps" prereqs="drools:dist-prepare,javadoc-all">
 
       <zip destfile="${basedir}/target/dist/drools-deps-${pom.currentVersion}.zip">
-    		 <zipfileset dir="${basedir}/target/docs" prefix="docs" />
-   		   <zipfileset dir="${basedir}/target/dependencies" prefix="lib" />
-    		 <zipfileset dir="${basedir}/target/" prefix="lib" includes="drools-*.jar"/>
-    		 <zipfileset dir="${basedir}" excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+    		 <zipfileset dir="${basedir}/target/docs" 
+                             prefix="drools-${pom.currentVersion}/docs" />
+   		 <zipfileset dir="${basedir}/target/dependencies" 
+                             prefix="drools-${pom.currentVersion}/lib" />
+    		 <zipfileset dir="${basedir}/target/" 
+                             prefix="drools-${pom.currentVersion}/lib" 
+                             includes="drools-*.jar"/>
+    		 <zipfileset dir="${basedir}" 
+                             prefix="drools-${pom.currentVersion}" 
+                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </zip>
 
       <tar destfile="${basedir}/target/dist/drools-deps-${pom.currentVersion}.tar.gz" compression="gzip">
-    		 <tarfileset dir="${basedir}/target/docs" prefix="docs" />
-    		 <tarfileset dir="${basedir}/target/dependencies" prefix="lib" />
-    		 <tarfileset dir="${basedir}/target/" prefix="lib" includes="drools-*.jar"/>
-    		 <tarfileset dir="${basedir}" excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+    		 <tarfileset dir="${basedir}/target/docs" 
+                             prefix="drools-${pom.currentVersion}/docs" />
+    		 <tarfileset dir="${basedir}/target/dependencies" 
+                             prefix="drools-${pom.currentVersion}/lib" />
+    		 <tarfileset dir="${basedir}/target/" 
+                             prefix="drools-${pom.currentVersion}/lib" 
+                             includes="drools-*.jar"/>
+    		 <tarfileset dir="${basedir}" 
+                             prefix="drools-${pom.currentVersion}" 
+                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </tar>
     </goal>
 
@@ -247,11 +269,13 @@
 		-->
     <goal name="drools:dist-src" prereqs="drools:dist-prepare,javadoc-all">
       <zip destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.zip"
+           prefix="drools-${pom.currentVersion}"
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="${basedir}" />
 
       <tar destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.tar.gz"
            compression="gzip"
+           prefix="drools-${pom.currentVersion}"
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="${basedir}" />
     </goal>
