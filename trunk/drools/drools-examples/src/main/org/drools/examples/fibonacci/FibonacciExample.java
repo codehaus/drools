@@ -23,13 +23,17 @@ public class FibonacciExample
         
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
         
-        Fibonacci fibonacci = new Fibonacci( 25 );
-
+        Fibonacci fibonacci = new Fibonacci( 80 );
         
+        long start = System.currentTimeMillis();
+
         workingMemory.assertObject( fibonacci );
 
         workingMemory.fireAllRules();
         
-        System.err.println( fibonacci.getValue() );
+        long stop = System.currentTimeMillis();
+
+        System.err.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
+
     }
 }

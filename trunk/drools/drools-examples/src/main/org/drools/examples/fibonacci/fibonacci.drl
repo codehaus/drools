@@ -3,41 +3,36 @@
           xmlns:java="http://drools.org/semantics/java">
 
   <rule name="Bootstrap 1">
-    <parameter identifier="a">
+    <parameter identifier="f">
       <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
     </parameter>
-    <java:condition>a.getSequence() == 1</java:condition>
-    <java:condition>a.getValue() == -1</java:condition>
+    <java:condition>f.getSequence() == 1</java:condition>
+    <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>
-      a.setValue( 1 );
-      modifyObject( a );
-      //retractObject( a );
-      //assertObject( a );
+      f.setValue( 1 );
+      modifyObject( f );
     </java:consequence>
   </rule>
 
   <rule name="Bootstrap 2">
-    <parameter identifier="b">
+    <parameter identifier="f">
       <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
     </parameter>
-    <java:condition>b.getSequence() == 2</java:condition>
-    <java:condition>b.getValue() == -1</java:condition>
+    <java:condition>f.getSequence() == 2</java:condition>
+    <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>
-      b.setValue( 1 );
-      modifyObject( b );
-      //retractObject( b );
-      //assertObject( b );
+      f.setValue( 1 );
+      modifyObject( f );
     </java:consequence>
   </rule>
 
   <rule name="Recurse">
-    <parameter identifier="c">
+    <parameter identifier="f">
       <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
     </parameter>
-    <java:condition>c.getValue() == -1</java:condition>
+    <java:condition>f.getValue() == -1</java:condition>
     <java:consequence>
-      System.err.println( "recursing for: " + c.getSequence() );
-      assertObject( new Fibonacci( c.getSequence() - 1 ) );
+      assertObject( new Fibonacci( f.getSequence() - 1 ) );
     </java:consequence>
   </rule>
 
@@ -57,28 +52,10 @@
     <java:condition>f2.getValue() != -1</java:condition>
     <java:condition>f3.getValue() == -1</java:condition>
     <java:consequence>
-      System.err.println( "calc for " + f3.getSequence() );
-      System.err.println( "::: " + (f1.getValue() + f2.getValue()) );
       f3.setValue( f1.getValue() + f2.getValue() );
       modifyObject( f3 );
-      //retractObject( f3 );
-      //assertObject( f3 );
+      retractObject( f1 );
     </java:consequence>
   </rule>
-
-<!--
-  <rule name="find sequence">
-    <parameter identifier="f1">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
-    </parameter>
-    <parameter identifier="f2">
-      <java:class>org.drools.examples.fibonacci.Fibonacci</java:class>
-    </parameter>
-    <java:condition>f2.getSequence() == (f1.getSequence() + 1)</java:condition>
-    <java:consequence>
-       System.err.println( "\n\n%%%%%%%%%%% SEQUENCE : " + f1 + " " + f2 + "\n\n" );
-    </java:consequence>
-  </rule>
--->
 
 </rule-set>
