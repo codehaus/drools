@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-  targetNamespace="http://drools.org/semantics/groovy" 
-  elementFormDefault="qualified" 
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://drools.org/semantics/groovy"
+  elementFormDefault="qualified"
   xmlns:groovy="http://drools.org/semantics/groovy">
   <xs:element name="class" type="xs:string"/>
   <xs:element name="condition" type="xs:string"/>
   <xs:element name="consequence" type="xs:string"/>
+  <xs:element name="import" type="xs:string"/>
   <xs:element name="extractor">
     <xs:complexType>
       <xs:simpleContent>
@@ -14,5 +15,5 @@
         </xs:extension>
       </xs:simpleContent>
     </xs:complexType>
-  </xs:element>  
+  </xs:element>
 </xs:schema>
