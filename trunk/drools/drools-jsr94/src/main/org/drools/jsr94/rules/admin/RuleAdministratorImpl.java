@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleAdministratorImpl.java,v 1.10 2004-11-05 20:49:34 dbarnett Exp $
+ * $Id: RuleAdministratorImpl.java,v 1.11 2004-11-14 20:12:37 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,9 +51,23 @@ import javax.rules.admin.RuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSetRegisterException;
 
 /**
- * The <code>RuleAdministrator</code> interface is used by rule execution set
- * administrators to load rule execution sets from external sources and create a
- * RuleExecutionSet runtime object.
+ * The Drools implementation of the <code>RuleAdministrator</code> interface
+ * which is used by rule execution set administrators to load rule execution
+ * sets from external sources and create a <code>RuleExecutionSet</code>
+ * runtime object.
+ * <p/>
+ * The <code>RuleAdministrator</code> should be accessed by calling:
+ * <p/>
+ * <code>
+ * RuleServiceProvider ruleServiceProvider = RuleServiceProvider.newInstance();
+ * RuleAdministrator ruleAdministration =
+ *     ruleServiceProvider.getRuleAdministrator();
+ * </code>
+ * <p/>
+ * In an additional step the administrator may also choose to bind the
+ * <code>RuleExecutionSet</code> instance to a URI so that it is globally
+ * accessible and <code>RuleSession</code>s can be created for the
+ * <code>RuleExecutionSet</code> through the RuleRuntime.
  *
  * @see RuleAdministrator
  *
@@ -62,10 +76,18 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  */
 public class RuleAdministratorImpl implements RuleAdministrator
 {
+    /** Default constructor. */
+    public RuleAdministratorImpl( )
+    {
+        super( );
+    }
+
     /**
-     * Returns a <code>RemoteRuleExecutionSetProvider</code> implementation.
+     * Returns a <code>RuleExecutionSetProvider</code> implementation.
      *
-     * @see RuleAdministrator
+     * @param properties additional properties
+     *
+     * @return The created <code>RuleExecutionSetProvider</code>.
      */
     public RuleExecutionSetProvider getRuleExecutionSetProvider(
         Map properties )
@@ -76,7 +98,13 @@ public class RuleAdministratorImpl implements RuleAdministrator
     /**
      * Returns a <code>LocalRuleExecutionSetProvider</code> implementation.
      *
-     * @see RuleAdministrator#getLocalRuleExecutionSetProvider
+     * Returns a <code>LocalRuleExecutionSetProvider</code> implementation
+     * or null if this implementation does not support creating a
+     * <code>RuleExecutionSet</code> from non-serializable resources.
+     *
+     * @param properties additional properties
+     *
+     * @return The created <code>LocalRuleExecutionSetProvider</code>.
      */
     public LocalRuleExecutionSetProvider getLocalRuleExecutionSetProvider(
         Map properties )
@@ -86,12 +114,23 @@ public class RuleAdministratorImpl implements RuleAdministrator
 
     /**
      * Registers a <code>RuleExecutionSet</code> and associates it with a
-     * given URI.
+     * given URI. Once a <code>RuleExecutionSet</code> has been registered it
+     * is accessible to runtime clients through the <code>RuleRuntime</code>.
+     * If a <code>RuleExecutionSet</code> has already been associated with
+     * the URI it should be deregistered (as if
+     * <code>deregisterRuleExecutionSet/</code> had been called) and the URI
+     * should be associated with the new <code>RuleExecutionSet</code>.
      *
-     * @see RuleAdministrator#registerRuleExecutionSet
+     * @param bindUri the URI to associate with the
+     *        <code>RuleExecutionSet</code>.
+     * @param set the <code>RuleExecutionSet</code> to associate with the URI
+     * @param properties additional properties used to perform the registration
+     *
+     * @throws RuleExecutionSetRegisterException if an error occurred that
+     *         prevented registration
      */
     public void registerRuleExecutionSet(
-            String bindUri, RuleExecutionSet ruleExecutionSet, Map properties )
+            String bindUri, RuleExecutionSet set, Map properties )
         throws RuleExecutionSetRegisterException
     {
         try
@@ -99,7 +138,7 @@ public class RuleAdministratorImpl implements RuleAdministrator
             // Note: an existing RuleExecutionSet is simply replaced
             RuleExecutionSetRepository repository =
                 RuleExecutionSetRepository.getInstance( );
-            repository.registerRuleExecutionSet( bindUri, ruleExecutionSet );
+            repository.registerRuleExecutionSet( bindUri, set );
         }
         catch ( Exception ex )
         {
@@ -112,7 +151,13 @@ public class RuleAdministratorImpl implements RuleAdministrator
      * Unregisters a previously registered <code>RuleExecutionSet</code> from
      * a URI.
      *
-     * @see RuleAdministrator#deregisterRuleExecutionSet
+     * @param bindUri the URI to disassociate with the
+     *        <code>RuleExecutionSet</code>.
+     * @param properties additional properties used to perform the
+     *        deregistration
+     *
+     * @throws RuleExecutionSetDeregistrationException if an error occurred that
+     *         prevented unregistration
      */
     public void deregisterRuleExecutionSet( String bindUri, Map properties )
         throws RuleExecutionSetDeregistrationException

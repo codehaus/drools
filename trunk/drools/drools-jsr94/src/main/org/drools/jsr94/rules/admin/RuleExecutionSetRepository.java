@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetRepository.java,v 1.8 2004-11-05 20:49:34 dbarnett Exp $
+ * $Id: RuleExecutionSetRepository.java,v 1.9 2004-11-14 20:12:37 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,21 +53,26 @@ import javax.rules.admin.RuleExecutionSet;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-public class RuleExecutionSetRepository
+public final class RuleExecutionSetRepository
 {
-    // holds the registered <code>RuleExecutionSet</code> objects.
-    private Map map = new HashMap( );
-
+    /** The Singleton instance of the repository. */
     private static RuleExecutionSetRepository REPOSITORY;
 
-    /** Hide the constructor. */
+    /** Holds the registered <code>RuleExecutionSet</code> objects. */
+    private Map map = new HashMap( );
+
+    /** Private constructor; use <code>getInstance</code> instead. */
     private RuleExecutionSetRepository( )
     {
         // Hide the constructor.
     }
 
-    /** Get the class instance of a <code>RuleExecutionSetRepository</code>. */
-    public static RuleExecutionSetRepository getInstance( )
+    /**
+     * Gets the Singleton instance of a <code>RuleExecutionSetRepository</code>.
+     *
+     * @return The Singleton instance of the repository.
+     */
+    public static synchronized RuleExecutionSetRepository getInstance( )
     {
         if ( REPOSITORY != null )
         {
@@ -77,10 +82,13 @@ public class RuleExecutionSetRepository
     }
 
     /**
-     * Retrieves a List of the URIs that currently have
-     * <code>RuleExecutionSets</code> associated with them.
+     * Retrieves a <code>List</code> of the URIs that currently have
+     * <code>RuleExecutionSet</code>s associated with them.
      *
      * An empty list is returned is there are no associations.
+     *
+     * @return a <code>List</code> of the URIs that currently have
+     *         <code>RuleExecutionSet</code>s associated with them.
      */
     public List getRegistrations( )
     {
@@ -91,7 +99,12 @@ public class RuleExecutionSetRepository
 
     /**
      * Get the <code>RuleExecutionSet</code> bound to this URI, or return
-     * null.
+     * <code>null</code>.
+     *
+     * @param bindUri the URI associated with the wanted
+     *        <code>RuleExecutionSet</code>.
+     *
+     * @return the <code>RuleExecutionSet</code> bound to the given URI.
      */
     public RuleExecutionSet getRuleExecutionSet( String bindUri )
     {
@@ -100,6 +113,11 @@ public class RuleExecutionSetRepository
 
     /**
      * Register a <code>RuleExecutionSet</code> under the given URI.
+     *
+     * @param bindUri the URI to associate with the
+     *        <code>RuleExecutionSet</code>.
+     * @param ruleSet the <code>RuleExecutionSet</code> to associate with the
+     *        URI
      */
     public void registerRuleExecutionSet(
         String bindUri, RuleExecutionSet ruleSet )
@@ -117,6 +135,9 @@ public class RuleExecutionSetRepository
 
     /**
      * Unregister a <code>RuleExecutionSet</code> from the given URI.
+     *
+     * @param bindUri the URI to disassociate with the
+     *        <code>RuleExecutionSet</code>.
      */
     public void unregisterRuleExecutionSet( String bindUri )
     {

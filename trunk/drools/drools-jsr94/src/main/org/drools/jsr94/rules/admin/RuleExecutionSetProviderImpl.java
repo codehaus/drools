@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetProviderImpl.java,v 1.14 2004-11-05 20:49:34 dbarnett Exp $
+ * $Id: RuleExecutionSetProviderImpl.java,v 1.15 2004-11-14 20:12:37 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,7 +47,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.Map;
 
 import javax.rules.admin.RuleExecutionSet;
@@ -66,9 +65,10 @@ import org.drools.smf.DefaultSemanticsRepository;
 import org.w3c.dom.Element;
 
 /**
- * The <code>RuleExecutionSetProvider</code>  interface defines
- * <code>RuleExecutionSet</code>  creation methods for defining
- * <code>RuleExecutionSets</code>  from potentially serializable resources.
+ * The Drools implementation of the <code>RuleExecutionSetProvider</code>
+ * interface which defines <code>RuleExecutionSet</code> creation methods for
+ * defining <code>RuleExecutionSet</code>s from potentially serializable
+ * resources.
  *
  * @see RuleExecutionSetProvider
  *
@@ -78,17 +78,27 @@ import org.w3c.dom.Element;
 public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
 {
     /**
-     * Creates a <code>RuleExecutionSet</code>  implementation from an XML
-     * Document and additional vendor-specific properties.
+     * Creates a <code>RuleExecutionSet</code> implementation from an XML
+     * Document and additional Drools-specific properties. A Drools-specific
+     * rule execution set is read from the supplied XML Document.
      *
-     * @see RuleExecutionSetProvider#createRuleExecutionSet(Element, Map)
+     * @param ruleExecutionSetElement the XML element that is the source of the
+     *        rule execution set
+     * @param properties additional properties used to create the
+     *        <code>RuleExecutionSet</code> implementation.
+     *        May be <code>null</code>.
+     *
+     * @throws RuleExecutionSetCreateException on rule execution set creation
+     *         error.
+     *
+     * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(
-            Element element, Map properties )
-        throws RuleExecutionSetCreateException, RemoteException
+            Element ruleExecutionSetElement, Map properties )
+        throws RuleExecutionSetCreateException
     {
         // Prepare the DOM source
-        Source source = new DOMSource( element );
+        Source source = new DOMSource( ruleExecutionSetElement );
 
         RuleSetReader reader = null;
         try
@@ -140,46 +150,62 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
     }
 
     /**
-     * <p>
-     * Creates a <code>RuleExecutionSet</code>  implementation from a vendor
-     * specific Abstract Syntax Tree (AST) representation and vendor-specific
-     * properties.
-     * </p>
-     *
-     * <p>
+     * Creates a <code>RuleExecutionSet</code> implementation from a
+     * Drools-specific Abstract Syntax Tree (AST) representation and
+     * Drools-specific properties.
+     * <p/>
      * This method accepts a <code>org.drools.RuleBase</code> object as its
-     * vendor specific AST representation.
-     * </p>
+     * vendor-specific AST representation.
      *
-     * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable, Map)
+     * @param ruleExecutionSetAst the Drools representation of a
+     *        rule execution set
+     * @param properties additional properties used to create the
+     *        <code>RuleExecutionSet</code> implementation.
+     *        May be <code>null</code>.
+     *
+     * @throws RuleExecutionSetCreateException on rule execution set creation
+     *         error.
+     *
+     * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(
-            Serializable serializable, Map properties )
-        throws RuleExecutionSetCreateException, RemoteException
+            Serializable ruleExecutionSetAst, Map properties )
+        throws RuleExecutionSetCreateException
     {
-        if ( serializable instanceof RuleSet )
+        if ( ruleExecutionSetAst instanceof RuleSet )
         {
             LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider =
                 new LocalRuleExecutionSetProviderImpl( );
             return localRuleExecutionSetProvider.createRuleExecutionSet(
-                serializable, properties );
+                ruleExecutionSetAst, properties );
         }
         else
         {
             throw new IllegalArgumentException( "Serializable object must be "
                 + "an instance of org.drools.rule.RuleSet.  It was "
-                + serializable.getClass( ).getName( ) );
+                + ruleExecutionSetAst.getClass( ).getName( ) );
         }
     }
 
     /**
-     * Creates a <code>RuleExecutionSet</code>  implementation from a URI.
+     * Creates a <code>RuleExecutionSet</code> implementation from a URI.
+     * The URI is opaque to the specification and may be used to refer to the
+     * file system, a database, or Drools-specific datasource.
      *
-     * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
+     * @param ruleExecutionSetUri the URI to load the rule execution set from
+     * @param properties additional properties used to create the
+     *        <code>RuleExecutionSet</code> implementation.
+     *        May be <code>null</code>.
+     *
+     * @throws RuleExecutionSetCreateException on rule execution set creation
+     *         error.
+     * @throws IOException if an I/O error occurs while accessing the URI
+     *
+     * @return The created <code>RuleExecutionSet</code>.
      */
     public RuleExecutionSet createRuleExecutionSet(
             String ruleExecutionSetUri, Map properties )
-        throws RuleExecutionSetCreateException, IOException, RemoteException
+        throws RuleExecutionSetCreateException, IOException
     {
         InputStream in = null;
         try

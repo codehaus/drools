@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.15 2004-11-05 20:08:36 dbarnett Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.16 2004-11-14 20:12:37 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,13 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.rules.ObjectFilter;
+import javax.rules.admin.RuleExecutionSet;
+
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
 import org.drools.WorkingMemory;
@@ -48,14 +55,9 @@ import org.drools.jsr94.rules.Jsr94FactHandleFactory;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
-import javax.rules.ObjectFilter;
-import javax.rules.admin.RuleExecutionSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
- * A named set of executable <code>Rule</code> instances. A
+ * The Drools implementation of the <code>RuleExecutionSet</code> interface
+ * which defines a named set of executable <code>Rule</code> instances. A
  * <code>RuleExecutionSet</code> can be executed by a rules engine via the
  * <code>RuleSession</code> interface.
  *
@@ -66,37 +68,62 @@ import java.util.Map;
  */
 public class RuleExecutionSetImpl implements RuleExecutionSet
 {
-    private String       description;
+    /**
+     * A description of this rule execution set or null if no
+     * description is specified.
+     */
+    private String description;
 
-    private String       defaultObjectFilterClassName;
+    /**
+     * The default ObjectFilter class name
+     * associated with this rule execution set.
+     */
+    private String defaultObjectFilterClassName;
 
-    private Map          properties;
+    /** A <code>Map</code> of user-defined and Drools-defined properties. */
+    private Map properties;
 
-    private RuleBase     ruleBase;
+    /**
+     * The <code>RuleBase</code> associated with this
+     * <code>RuleExecutionSet</code>.
+     */
+    private RuleBase ruleBase;
 
-    private RuleSet      ruleSet;
+    /**
+     * The <code>RuleSet</code> associated with this
+     * <code>RuleExecutionSet</code>.
+     */
+    private RuleSet ruleSet;
 
+    /**
+     * The default ObjectFilter class name
+     * associated with this rule execution set.
+     */
     private ObjectFilter objectFilter;
 
     /**
-     * <p>
      * Instances of this class should be obtained from the
      * <code>LocalRuleExecutionSetProviderImpl</code>. Each
      * <code>RuleExecutionSetImpl</code> corresponds with an
      * <code>org.drools.RuleSet</code> object.
+     *
+     * @param ruleSet The <code>RuleSet</code> to associate with this
+     *        <code>RuleExecutionSet</code>.
+     * @param properties A <code>Map</code> of user-defined and
+     *        Drools-defined properties.
      */
     RuleExecutionSetImpl( RuleSet ruleSet, Map properties )
     {
         this.properties = properties;
         this.ruleSet = ruleSet;
-        this.description = ruleSet.getDocumentation( );
+        description = ruleSet.getDocumentation( );
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder( );
         builder.setFactHandleFactory( Jsr94FactHandleFactory.getInstance( ) );
         try
         {
             builder.addRuleSet( ruleSet );
-            this.ruleBase = builder.build( );
+            ruleBase = builder.build( );
         }
         catch ( RuleIntegrationException e )
         {
@@ -106,12 +133,14 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
 
     /**
      * Get an instance of the default filter, or null.
+     *
+     * @return An instance of the default filter, or null.
      */
     public synchronized ObjectFilter getObjectFilter( )
     {
-        if ( this.objectFilter == null )
+        if ( objectFilter == null )
         {
-            if ( this.defaultObjectFilterClassName != null )
+            if ( defaultObjectFilterClassName != null )
             {
                 ClassLoader cl =
                     Thread.currentThread( ).getContextClassLoader( );
@@ -125,8 +154,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
                 {
                     Class filterClass =
                         cl.loadClass( defaultObjectFilterClassName );
-                    this.objectFilter =
-                        ( ObjectFilter ) filterClass.newInstance( );
+                    objectFilter = ( ObjectFilter ) filterClass.newInstance( );
                 }
                 catch ( Exception e )
                 {
@@ -135,54 +163,98 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
             }
         }
 
-        return this.objectFilter;
+        return objectFilter;
     }
 
     /**
-     * Returns a new WorkingMemory object
+     * Returns a new WorkingMemory object.
      *
-     * @return
+     * @return A new WorkingMemory object.
      */
     public WorkingMemory newWorkingMemory( )
     {
-        return this.ruleBase.newWorkingMemory( );
+        return ruleBase.newWorkingMemory( );
     }
 
     // JSR94 interface methods start here -------------------------------------
+
+    /**
+     * Get the name of this rule execution set.
+     *
+     * @return The name of this rule execution set.
+     */
     public String getName( )
     {
-        return this.ruleSet.getName( );
+        return ruleSet.getName( );
     }
 
+    /**
+     * Get a description of this rule execution set.
+     *
+     * @return A description of this rule execution set or null of no
+     *         description is specified.
+     */
     public String getDescription( )
     {
         return description;
     }
 
+    /**
+     * Get a user-defined or Drools-defined property.
+     *
+     * @param key the key to use to retrieve the property
+     *
+     * @return the value bound to the key or null
+     */
     public Object getProperty( Object key )
     {
         return properties.get( key );
     }
 
-    public void setProperty( Object key, Object val )
+    /**
+     * Set a user-defined or Drools-defined property.
+     *
+     * @param key the key for the property value
+     * @param value the value to associate with the key
+     */
+    public void setProperty( Object key, Object value )
     {
-        properties.put( key, val );
+        properties.put( key, value );
     }
 
+    /**
+     * Set the default <code>ObjectFilter</code> class. This class is
+     * instantiated at runtime and used to filter result objects unless
+     * another filter is specified using the available APIs in the runtime
+     * view of a rule engine.
+     * <p/>
+     * Setting the class name to null removes the default
+     * <code>ObjectFilter</code>.
+     *
+     * @param objectFilterClassname the default <code>ObjectFilter</code> class
+     */
     public void setDefaultObjectFilter( String objectFilterClassname )
     {
         this.defaultObjectFilterClassName = objectFilterClassname;
     }
 
+    /**
+     * Returns the default ObjectFilter class name
+     * associated with this rule execution set.
+     *
+     * @return the default ObjectFilter class name
+     */
     public String getDefaultObjectFilter( )
     {
         return defaultObjectFilterClassName;
     }
 
     /**
-     * Returns a list of RuleImpl objects.
+     * Return a list of all <code>Rule</code>s that are part of the
+     * <code>RuleExecutionSet</code>.
      *
-     * @return
+     * @return a list of all <code>Rule</code>s that are part of the
+     *         <code>RuleExecutionSet</code>.
      */
     public List getRules( )
     {
