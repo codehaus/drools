@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseDuration.java,v 1.4 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: BaseDuration.java,v 1.5 2004-12-06 01:12:44 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,15 +44,33 @@ package org.drools.semantics.base;
 import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
 
+/**
+ * Implementation of the <code>Duration</code> interface
+ * for specifying truthness duration.
+ */
 public class BaseDuration implements Duration
 {
+    /** The number of seconds of the duration. */
     private long seconds;
 
+    /**
+     * Constructor.
+     * 
+     * @param seconds the number of seconds of the duration
+     */
     public BaseDuration( long seconds )
     {
         this.seconds = seconds;
     }
 
+    /**
+     * Retrieves the duration for which the conditions of this
+     * <code>Tuple</code> must remain true before the rule will fire.
+     * 
+     * @param tuple the <code>Tuple</code>
+     * 
+     * @return the duration in seconds
+     */
     public long getDuration( Tuple tuple )
     {
         return this.seconds;
