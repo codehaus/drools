@@ -16,13 +16,10 @@
 
 		<then>
 			import java.util.Iterator;
-			import java.util.ArrayList;
 
 			System.err.println( "Examining shopping cart" );
 			
-			ArrayList items = new ArrayList( cart.getItems() );
-
-			Iterator iter = items.iterator();
+			Iterator iter = cart.getItems().iterator();
 
 			while ( iter.hasNext() )
 			{

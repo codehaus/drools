@@ -23,6 +23,8 @@ public class WorkingMemory
     /** Rule-firing agenda. */
     private Agenda   agenda;
 
+    private boolean firing;
+
     /** Construct a new working memory for a ruleBase.
      */
     protected WorkingMemory(RuleBase ruleBase)
@@ -73,9 +75,21 @@ public class WorkingMemory
 
         Agenda agenda = getAgenda();
 
-        while ( ! agenda.isEmpty() )
+        if ( ! this.firing )
         {
-            getAgenda().fireNextItem();
+            try
+            {
+                this.firing = true;
+                
+                while ( ! agenda.isEmpty() )
+                {
+                    getAgenda().fireNextItem();
+                }
+            }
+            finally
+            {
+                this.firing = false;
+            }
         }
     }
 
