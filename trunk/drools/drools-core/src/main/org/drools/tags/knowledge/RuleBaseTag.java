@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: RuleBaseTag.java,v 1.1 2002-08-20 18:33:17 bob Exp $
+ $Id: RuleBaseTag.java,v 1.2 2002-08-20 19:33:29 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseTag.java,v 1.1 2002-08-20 18:33:17 bob Exp $
+ *  @version $Id: RuleBaseTag.java,v 1.2 2002-08-20 19:33:29 bob Exp $
  */
 public class RuleBaseTag extends TagSupport
 {
@@ -67,6 +67,7 @@ public class RuleBaseTag extends TagSupport
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The rule-base. */
     private RuleBase ruleBase;
 
     // ------------------------------------------------------------
@@ -93,6 +94,13 @@ public class RuleBaseTag extends TagSupport
         return this.ruleBase;
     }
 
+    /** Add a <code>RuleSet</code> to the <code>RuleBase</code>.
+     *
+     *  @param ruleSet The rule-set to add.
+     *
+     *  @throws JellyException If an error occurs while attempting
+     *          to add the rule-set.
+     */
     protected void addRuleSet(RuleSet ruleSet) throws JellyException
     {
         try
@@ -105,6 +113,13 @@ public class RuleBaseTag extends TagSupport
         }
     }
 
+    /** Add a <code>Rule</code> to the <code>RuleBase</code>.
+     *
+     *  @param rule The rule to add.
+     *
+     *  @throws JellyException If an error occurs while attempting
+     *          to add the rule.
+     */
     protected void addRule(Rule rule) throws JellyException
     {
         try
@@ -117,6 +132,17 @@ public class RuleBaseTag extends TagSupport
         }
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    
+    /** Perform this tag.
+     *
+     *  @param output The output sink.
+     *
+     *  @throws Exception If an error occurs while attempting
+     *          to perform this tag.
+     */
     public void doTag(XMLOutput output) throws Exception
     {
         this.ruleBase = new RuleBase();
