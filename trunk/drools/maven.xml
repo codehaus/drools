@@ -6,12 +6,12 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <!-- adding comment to test damagecontrol.  please ignore -->
     <goal name="default">
       <attainGoal name="multiproject:install"/>
     </goal>
 
-    <goal name="clean">
+    <goal name="clean-all">
+      <attainGoal name="clean"/>
       <attainGoal name="multiproject:clean"/>
     </goal>
 
@@ -21,23 +21,33 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="javadoc">
+    <goal name="javadoc-all">
       <j:set var="goal" value="javadoc:generate"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="checkstyle">
+    <goal name="checkstyle-all">
       <j:set var="goal" value="checkstyle:report,maven-jxr-plugin:report,xdoc"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="deploy-snapshot">
+    <goal name="deploy-snapshot-all">
       <j:set var="goal" value="jar:deploy-snapshot"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="idea">
+    <goal name="idea-all">
       <attainGoal name="idea:multiproject"/>
+    </goal>
+
+    <goal name="eclipse-all">
+      <j:set var="goal" value="eclipse"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="crlf-all">
+      <j:set var="goal" value="crlf"/>
+      <attainGoal name="multiproject:goal"/>
     </goal>
 
     <goal name="crlf">
@@ -49,5 +59,6 @@
         includes="**/*.*"
         eof="remove"/>
     </goal>
+
 </project>
 
