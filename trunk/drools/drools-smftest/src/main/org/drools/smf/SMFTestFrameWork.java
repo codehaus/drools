@@ -208,35 +208,84 @@ public abstract class SMFTestFrameWork  extends TestCase
     public void testExtractors() throws Exception
     {
         MockTuple tuple;
-
-        MockConfiguration cheeseConfiguration = new MockConfiguration("test1");
-        cheeseConfiguration.setText(Cheese.class.getName());
-
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory("class");
-        ObjectType cheeseType = objectTypeFactory.newObjectType(cheeseConfiguration);
 
+        // Cheese ObjectType
+        MockConfiguration cheeseConfiguration =
+            new MockConfiguration("cheeseConfig");
+        cheeseConfiguration.setText(Cheese.class.getName());
+        ObjectType cheeseType =
+            objectTypeFactory.newObjectType(cheeseConfiguration);
+
+        // Integer ObjectType
+        MockConfiguration integerConfiguration =
+            new MockConfiguration("integerConfig");
+        integerConfiguration.setText(Integer.class.getName());
+        ObjectType integerType =
+            objectTypeFactory.newObjectType(integerConfiguration);
+
+        // Declarations
         Declaration camembertDecl = new Declaration(cheeseType, "camembert");
         Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
+        Declaration integerDecl = new Declaration(integerType, "bitesLeft");
 
-
+        // Setup
+        int testNumber = 0;
         tuple = new MockTuple();
         tuple.setWorkingMemory(new MockWorkingMemory());
-        assertEquals("camembert", (String) testExtractor(0, "java.lang.String", tuple, new Declaration[] {}));
 
-        tuple.put(camembertDecl, new Cheese("camembert"));
-        assertEquals("I have 3 bites of camembert left", (String) testExtractor(1, "java.lang.String", tuple, new Declaration[] {camembertDecl}));
+        // The Tests
+
+        // 0
+        assertEquals("camembert",
+            (String) testExtractor(
+                testNumber++, "java.lang.String", tuple, new Declaration[] {}));
+
+        // 1
+        Cheese camembert = new Cheese("camembert");
+        tuple.put(camembertDecl, camembert);
+        assertEquals("I have 3 bites of camembert left",
+            (String) testExtractor(
+                testNumber++, "java.lang.String", tuple,
+                new Declaration[] {camembertDecl}));
+
+        // 2
+        Cheese stilton = new Cheese("stilton");
+        tuple.put(stiltonDecl, stilton);
+        assertEquals("I have 3 bites of stilton left",
+            (String) testExtractor(
+                testNumber++, "java.lang.String", tuple,
+                new Declaration[] {camembertDecl, stiltonDecl}));
+
+        // 3
+        tuple.put(integerDecl, new Integer(camembert.getBitesLeft()));
+        assertEquals(new Integer(3),
+            testExtractor(
+                testNumber++, "java.lang.Integer", tuple,
+                new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
+
+        // 4
+        tuple.put(integerDecl, new Integer(stilton.getBitesLeft()));
+        assertEquals(new Integer(3),
+            testExtractor(
+                testNumber++, "java.lang.Integer", tuple,
+                new Declaration[] {camembertDecl, stiltonDecl, integerDecl}));
     }
 
     /**
      * private helper method to test each of the extracted extractors
      */
-    private Object  testExtractor(int testNumber, String returnType, Tuple tuple, Declaration[] decls) throws Exception
+    private Object  testExtractor(
+            int testNumber, String returnType, Tuple tuple, Declaration[] decls)
+        throws Exception
     {
         ExtractorFactory extractorFactory = module.getExtractorFactory("extractor");
-        MockConfiguration extractorConfiguration = new MockConfiguration("test" + testNumber);
+        MockConfiguration extractorConfiguration =
+            new MockConfiguration("test" + testNumber);
         extractorConfiguration.setAttribute("javaClass", returnType);
         extractorConfiguration.setText((String) tests.get(testNumber));
-        Extractor extractor = extractorFactory.newExtractor(extractorConfiguration, decls);
+        Extractor extractor =
+            extractorFactory.newExtractor(extractorConfiguration, decls);
         Object fact = extractor.extractFact(tuple);
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         if (!cl.loadClass(returnType).isInstance(fact))
