@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionTestCase.java,v 1.2 2003-06-18 17:04:36 tdiesler Exp $
+ $Id: StatelessRuleSessionTestCase.java,v 1.3 2003-10-16 03:48:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -105,7 +105,8 @@ public class StatelessRuleSessionTestCase extends JSR94TestBase {
       inObjects.add(jeannie);
 
       // execute the rules
-      List outList = statelessSession.executeRules(inObjects);
+      List outList = statelessSession.executeRules( inObjects );
+
       assertEquals("incorrect size", 7, outList.size());
 
       assertTrue("where is bob", outList.contains(bob));

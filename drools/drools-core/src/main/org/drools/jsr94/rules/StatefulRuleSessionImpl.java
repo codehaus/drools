@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionImpl.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: StatefulRuleSessionImpl.java,v 1.6 2003-10-16 03:48:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,9 +46,11 @@ package org.drools.jsr94.rules;
 
  */
 
-import org.drools.AssertionException;
 import org.drools.DroolsException;
-import org.drools.RetractionException;
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.WorkingMemory;
+import org.drools.NoSuchFactObjectException;
 import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
 import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
 
@@ -56,6 +58,7 @@ import javax.rules.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * This interface is a representation of a stateful rules engine session.
@@ -67,223 +70,211 @@ import java.util.Map;
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public class StatefulRuleSessionImpl extends RuleSessionImpl implements StatefulRuleSession
+public class StatefulRuleSessionImpl
+    extends RuleSessionImpl
+    implements StatefulRuleSession
 {
+    // ----------------------------------------------------------------------
+    //     Constructors
+    // ----------------------------------------------------------------------
 
-    /** the rule set from the repository */
-    private RuleExecutionSetImpl ruleSet;
-
-    /** The working memory this session is associated with. */
-    private JSR94TransactionalWorkingMemory workingMemory;
-
-    /**
-     * Gets the <code>RuleExecutionSet</code> for this URI and associated it with a RuleBase.
+    /** Gets the <code>RuleExecutionSet</code> for this URI and associated it with a RuleBase.
      *
      * @param bindUri the URI the <code>RuleExecutionSet</code> has been bound to
+     *
      * @throws RuleExecutionSetNotFoundException if there is no rule set under the given URI
      */
-    StatefulRuleSessionImpl( String bindUri, Map properties ) throws RuleExecutionSetNotFoundException
+    StatefulRuleSessionImpl(String bindUri,
+                            Map properties )
+        throws RuleExecutionSetNotFoundException
     {
+        setProperties( properties );
 
-        // get the rule set from the repository
         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-        ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet( bindUri );
-        if ( ruleSet == null ) throw new RuleExecutionSetNotFoundException( "no execution set bound to: " + bindUri );
 
-        // Note: this breaks the factory intension of RuleBase.createTransactionalWorkingMemory
-        workingMemory = new JSR94TransactionalWorkingMemory( ruleSet.getRuleBase() );
-        workingMemory.setApplicationData( properties );
+        RuleExecutionSetImpl ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet( bindUri );
 
+        if ( ruleSet == null )
+        {
+            throw new RuleExecutionSetNotFoundException( "no execution set bound to: " + bindUri );
+        }
+
+        setRuleExecutionSet( ruleSet );
+
+        initWorkingMemory();
     }
 
-    /**
-     * Returns true if the given object is contained within the working memory of this rule session.
-     *
-     * @see StatefulRuleSessionImpl#containsObject
+    // ----------------------------------------------------------------------
+    //     Instance methods
+    // ----------------------------------------------------------------------
+
+    /** @see StatefulRuleSessionImpl
      */
-    public boolean containsObject( Handle handle )
+    public boolean containsObject(Handle handle)
     {
-        return workingMemory.getObjectHandles().contains( handle );
+        if ( handle instanceof FactHandle )
+        {
+            return getWorkingMemory().containsObject( (FactHandle) handle );
+        }
+
+        return false;
     }
 
-    /**
-     * Adds a given object to the working memory of this rule session.
-     * The argument to this method is Object because in the non-managed env. not all objects should have
-     * to implement Serialzable.
-     * If the RuleSession is Serializable and it contains non-serializable fields a runtime exception will be thrown.
-     *
-     * @see StatefulRuleSessionImpl#addObject
+    /** @see StatefulRuleSessionImpl
      */
-    public Handle addObject( Object object ) throws InvalidRuleSessionException
+    public Handle addObject(Object object)
+        throws InvalidRuleSessionException
     {
+        checkRuleSessionValidity();
+
         try
         {
-            Handle handle = workingMemory.getNextHandle();
-            workingMemory.assertObjectForHandle( handle, object );
-            return handle;
+            return getWorkingMemory().assertObject( object );
         }
-        catch ( AssertionException ex )
+        catch (FactException e)
         {
-            throw new InvalidRuleSessionException( "cannot assert object", ex );
+            throw new InvalidRuleSessionException( "cannot assert object",
+                                                   e );
         }
     }
 
-    /**
-     * Adds a List of Objects to the working memory of this rule session.
-     *
-     * @see StatefulRuleSessionImpl#addObjects
+    /** @see StatefulRuleSessionImpl
      */
-    public List addObjects( List list ) throws InvalidRuleSessionException
+    public List addObjects(List objects)
+        throws InvalidRuleSessionException
     {
+        checkRuleSessionValidity();
 
-        // return a list of handles
-        List retList = new ArrayList();
-        for ( int i = 0; i < list.size(); i++ )
+        List handles = new ArrayList();
+
+        for ( Iterator objectIter = objects.iterator();
+              objectIter.hasNext(); )
         {
-            retList.add( addObject( list.get( i ) ) );
+            handles.add( addObject( objectIter.next() ) );
         }
-        return retList;
+        return handles;
     }
 
-    /**
-     * Notifies the rules engine that a given object in working memory has changed.
-     * The semantics of this call are equivalent to calling <code>removeObjectForHandle</code>
-     * followed by <code>addObject</code>.
-     * The original Handle is rebound to the new value for the Object however.
-     *
-     * @see StatefulRuleSessionImpl#updateObject
+    /** @see StatefulRuleSessionImpl
      */
-    public void updateObject( Handle handle, Object object ) throws InvalidRuleSessionException
+    public void updateObject(Handle handle,
+                             Object object)
+        throws InvalidRuleSessionException, InvalidHandleException
     {
-        try
+        checkRuleSessionValidity();
+
+        if ( handle instanceof FactHandle )
         {
-            workingMemory.removeObjectForHandle( handle );
-            workingMemory.assertObjectForHandle( handle, object );
+            try
+            {
+                getWorkingMemory().modifyObject( (FactHandle) handle,
+                                                 object );
+            }
+            catch (FactException e)
+            {
+                throw new InvalidRuleSessionException( "cannot update object",
+                                                       e );
+            }
         }
-        catch ( RetractionException ex )
+        else
         {
-            throw new InvalidRuleSessionException( "cannot retract object", ex );
-        }
-        catch ( AssertionException ex )
-        {
-            throw new InvalidRuleSessionException( "cannot assert object", ex );
+            throw new InvalidHandleException( "invalid handle" );
+                                                   
         }
     }
 
-    /**
-     * Removes a given object from the working memory of this rule session.
-     *
-     * @see StatefulRuleSessionImpl#removeObject
+    /** @see StatefulRuleSessionImpl
      */
-    public void removeObject( Handle handle ) throws InvalidRuleSessionException
+    public void removeObject(Handle handle)
+        throws InvalidRuleSessionException, InvalidHandleException
     {
-        try
+        checkRuleSessionValidity();
+
+        if ( handle instanceof FactHandle )
         {
-            workingMemory.removeObjectForHandle( handle );
+            try
+            {
+                getWorkingMemory().retractObject( (FactHandle) handle );
+            }
+            catch (FactException e)
+            {
+                throw new InvalidRuleSessionException( "cannot remove object",
+                                                       e );
+            }
         }
-        catch ( RetractionException ex )
+        else
         {
-            throw new InvalidRuleSessionException( "cannot retract object", ex );
+            throw new InvalidHandleException( "invalid handle" );
         }
     }
 
-    /**
-     * Returns a List of all objects in the working memory of this rule session
-     * that pass the default <code>RuleExecutionSet</code> filter (if present).
-     *
-     * @see StatefulRuleSessionImpl#getObjects
+    /** @see StatefulRuleSessionImpl
      */
     public List getObjects()
+        throws InvalidRuleSessionException
     {
+        checkRuleSessionValidity();
 
-        List outList = new ArrayList();
-        outList.addAll( workingMemory.getObjects() );
-
-        // apply the default filter
-        ObjectFilter objectFilter = ruleSet.getObjectFilter();
-        if ( objectFilter != null )
-        {
-
-            // apply the filter
-            List cpyList = new ArrayList();
-            for ( int i = 0; i < outList.size(); i++ )
-            {
-                Object obj = objectFilter.filter( outList.get( i ) );
-                if ( obj != null ) cpyList.add( obj );
-            }
-            outList = cpyList;
-        }
-
-        return outList;
+        return getObjects( getRuleExecutionSet().getObjectFilter() );
     }
 
-    /**
-     * Returns a List over the objects in the working memory of this rule session based upon a given object filter.
-     *
-     * @see StatefulRuleSessionImpl#getObjects(ObjectFilter)
+    /** @see StatefulRuleSessionImpl
      */
-    public List getObjects( ObjectFilter objectFilter )
+    public List getObjects(ObjectFilter objectFilter)
+        throws InvalidRuleSessionException
     {
+        checkRuleSessionValidity();
 
-        List outList = new ArrayList();
-        outList.addAll( workingMemory.getObjects() );
+        List objects = new ArrayList();
 
-        // apply the filter
-        List cpyList = new ArrayList();
-        for ( int i = 0; i < outList.size(); i++ )
-        {
-            Object obj = objectFilter.filter( outList.get( i ) );
-            if ( obj != null ) cpyList.add( obj );
-        }
+        objects.addAll( getWorkingMemory().getObjects() );
 
-        return cpyList;
+        applyFilter( objects,
+                     objectFilter );
+
+        return objects;
     }
 
-    /**
-     * Executes the rules in the bound rule execution set using the objects present in working memory
-     * until no rule is executable anymore.
-     *
-     * @see StatefulRuleSessionImpl#executeRules
+    /** @see StatefulRuleSessionImpl
      */
-    public void executeRules() throws InvalidRuleSessionException
+    public void executeRules()
+        throws InvalidRuleSessionException
     {
+        checkRuleSessionValidity();
+
         try
         {
-            workingMemory.commit();
+            getWorkingMemory().fireAllRules();
         }
-        catch ( DroolsException ex )
+        catch (DroolsException e)
         {
-            throw new InvalidRuleSessionException( "cannot commit working memory", ex );
+            throw new InvalidRuleSessionException( "cannot execute rules",
+                                                   e );
         }
     }
 
-    /**
-     * Resets this rule session. Calling this method will remove all objects from the working memory
-     * of this rule session and will reset any other state associated with this rule session.
-     *
-     * @see StatefulRuleSessionImpl#reset
+    /** @see StatefulRuleSessionImpl
      */
-    public void reset()
+    public Object getObject(Handle handle)
+        throws InvalidRuleSessionException, InvalidHandleException
     {
-        workingMemory.abort();
-        workingMemory = new JSR94TransactionalWorkingMemory( ruleSet.getRuleBase() );
-    }
+        checkRuleSessionValidity();
 
-    /**
-     * Returns the Object within the <code>StatefulRuleSession</code> associated with a Handle.
-     *
-     * @see StatefulRuleSessionImpl#getObject
-     */
-    public Object getObject( Handle handle )
-    {
-        return workingMemory.getObject( handle );
-    }
-
-    /**
-     * Releases all resources used by this rule session.
-     * This method renders this rule session unusable until it is reacquired through the RuleRuntime.
-     */
-    public void release()
-    {
+        if ( handle instanceof FactHandle )
+        {
+            try
+            {
+                return getWorkingMemory().getObject( (FactHandle) handle );
+            }
+            catch (NoSuchFactObjectException e)
+            {
+                throw new InvalidHandleException( "invalid handle",
+                                                  e );
+            }
+        }
+        else
+        {
+            throw new InvalidHandleException( "invalid handle" );
+        }
     }
 }

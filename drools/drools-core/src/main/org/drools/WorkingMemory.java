@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
-  $Id: WorkingMemory.java,v 1.17 2003-10-15 20:03:59 bob Exp $
+  $Id: WorkingMemory.java,v 1.18 2003-10-16 03:48:32 bob Exp $
 
   Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -60,6 +60,8 @@ import org.drools.conflict.SalienceConflictResolutionStrategy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -210,6 +212,11 @@ public class WorkingMemory
         }
 
         return this.objects.get( handle );
+    }
+
+    public List getObjects()
+    {
+        return new ArrayList( this.objects.values() );
     }
 
     public boolean containsObject(FactHandle handle)

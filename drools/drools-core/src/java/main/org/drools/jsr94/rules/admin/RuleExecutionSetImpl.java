@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.5 2003-10-16 03:48:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,16 +71,21 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     private String name;
     private String description;
     private String filterName;
-    private Map props = new HashMap();
+    private Map props;
 
-    private RuleBase ruleBase = new RuleBase();
-    private List ruleList = new ArrayList();
+    private RuleBase ruleBase;
+    private List ruleList;
+
+    private ObjectFilter objectFilter;
 
     /**
      * Hide the constructor.
      */
     RuleExecutionSetImpl()
     {
+        this.props = new HashMap();
+        this.ruleBase = new RuleBase();
+        this.ruleList = new ArrayList();
     }
 
     /**
@@ -122,26 +127,32 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     /**
      * Get an instance of the default filter, or null.
      */
-    public ObjectFilter getObjectFilter()
+    public synchronized ObjectFilter getObjectFilter()
     {
-
-        ObjectFilter objectFilter = null;
-
-        // instanciate the current object filter
-        if ( filterName != null )
+        if ( this.objectFilter == null )
         {
-            try
+            if ( this.filterName != null )
             {
-                Class filterClass = Class.forName( filterName );
-                return (ObjectFilter) filterClass.newInstance();
-            }
-            catch ( Exception ex )
-            {
-                throw new RuntimeException( ex.toString() );
+                ClassLoader cl = Thread.currentThread().getContextClassLoader();
+                
+                if ( cl == null )
+                {
+                    cl = RuleExecutionSetImpl.class.getClassLoader();
+                }
+                
+                try
+                {
+                    Class filterClass = cl.loadClass( filterName );
+                    this.objectFilter = (ObjectFilter) filterClass.newInstance();
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException( e.toString() );
+                }
             }
         }
-
-        return objectFilter;
+        
+        return this.objectFilter;
     }
 
     // JSR94 interface methods start here ------------------------------------------------------------------------------

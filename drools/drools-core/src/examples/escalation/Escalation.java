@@ -70,6 +70,7 @@ public class Escalation
 
                 workingMemory.assertObject( daveTicket );
                 workingMemory.assertObject( bobTicket );
+                workingMemory.fireAllRules();
 
                 System.err.println( "----------------------------------------");
                 System.err.println( "    POST ASSERT" );

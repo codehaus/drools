@@ -1,5 +1,4 @@
-<rules xmlns="http://drools.org/rules"
-       xmlns:know="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary">
+<rules xmlns="http://drools.org/rules">
 
   <semantics module="org.drools.semantics.java"/>
   <semantics module="org.drools.semantics.python"/>
