@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: DefaultConflictResolver.java,v 1.1 2004-06-25 01:55:16 mproctor Exp $
+ $Id: DefaultConflictResolver.java,v 1.2 2004-06-25 11:46:58 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -67,7 +67,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefaultConflictResolver.java,v 1.1 2004-06-25 01:55:16 mproctor Exp $
+ *  @version $Id: DefaultConflictResolver.java,v 1.2 2004-06-25 11:46:58 mproctor Exp $
  */
 public class DefaultConflictResolver implements ConflictResolver
 {
@@ -95,7 +95,7 @@ public class DefaultConflictResolver implements ConflictResolver
     /**
      * Setup a default ConflictResolver configuration
      */
-    DefaultConflictResolver() {
+    public DefaultConflictResolver() {
         conflictResolvers = new ArrayList();
         this.conflictResolvers.add(SalienceConflictResolver.getInstance());
         //this.conflictResolvers.add(BreadthConflictResolver.getInstance());

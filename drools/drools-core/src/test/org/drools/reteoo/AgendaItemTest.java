@@ -7,7 +7,7 @@ import org.drools.rule.Declaration;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.MockObjectType;
 import org.drools.rule.RuleSet;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.spi.ConflictResolver;
 import org.drools.RuleBase;
 
@@ -51,20 +51,20 @@ public class AgendaItemTest
     {
         Declaration decl = new Declaration( new MockObjectType(),
                                             "cheese" );
-        
+
         MockFactHandle handle = new MockFactHandle( 1 );
-        
+
         ReteTuple tuple = new ReteTuple( null,
                                          null,
                                          decl,
                                          handle,
                                          new Object() );
-        
+
         Rule rule = new Rule( "test-rule" );
-        
+
         AgendaItem item = new AgendaItem( tuple,
                                           rule );
-        
+
         assertSame( tuple,
                     item.getTuple() );
 
@@ -76,7 +76,7 @@ public class AgendaItemTest
                                             decl,
                                             handle,
                                             new Object() );
-        
+
         item.setTuple( newTuple );
 
         assertSame( newTuple,
@@ -90,9 +90,9 @@ public class AgendaItemTest
         throws Exception
     {
 
-        RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());
-        
-    	
+        RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new DefaultConflictResolver());
+
+
         Declaration decl = new Declaration( new MockObjectType(),
                                             "cheese" );
 
