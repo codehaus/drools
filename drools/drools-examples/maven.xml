@@ -113,4 +113,14 @@
         <arg value="state.groovy.drl"/>
       </java>
     </goal>
+
+    <goal name="helloworld-native" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorld"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
 </project>
