@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.39 2004-11-25 17:53:53 mproctor Exp $
+ * $Id: JoinMemory.java,v 1.40 2004-11-26 14:58:03 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -267,7 +267,7 @@ class JoinMemory
                 //nasty hack to propagate extractions
                 //we can move to centralised extractions
                 //when a JoinMemory can specify which extractions to retract
-                tuple.updateExtractions(newTuples.getTuple(tuple.getKey()));
+                //tuple.updateExtractions(newTuples.getTuple(tuple.getKey()));
                 newJoined.addAllTuples( attemptJoin( tuple,
                                                      thatSideTuples ) );
             }
