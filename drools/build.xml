@@ -187,10 +187,8 @@
             src="http://www.ibiblio.org/maven/asm/jars/${asm.jar}"/>
         <get dest="${lib.dir}/${asm-util.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/asm/jars/${asm-util.jar}"/>
-
-        <!-- Janino JAR on ibiblio is corrupt, so using one from CodeHaus -->
         <get dest="${lib.dir}/${janino.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="http://dist.codehaus.org/janino/jars/${janino.jar}"/>
+            src="http://www.ibiblio.org/maven/janino/jars/${janino.jar}"/>
 
         <!-- Local JARs not found at ibiblio -->
         <get dest="${lib.dir}/${jca.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
