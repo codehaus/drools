@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.27 2004-11-03 23:04:02 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.28 2004-11-05 10:05:03 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,10 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.net.URL;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -71,10 +75,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <code>RuleSet</code> loader.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: RuleSetReader.java,v 1.27 2004-11-03 23:04:02 mproctor Exp $
+ *
+ * @version $Id: RuleSetReader.java,v 1.28 2004-11-05 10:05:03 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -130,7 +134,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * <p>
      * Uses the default JAXP SAX parser and the default classpath-based
      * <code>DefaultSemanticModule</code>.
@@ -159,11 +163,11 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * <p>
      * Uses the default classpath-based <code>DefaultSemanticModule</code>.
      * </p>
-     * 
+     *
      * @param parser
      *            The SAX parser.
      */
@@ -175,7 +179,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param repo
      *            The semantics repository.
      * @param parser
@@ -189,7 +193,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param repo
      *            The semantics repository.
      */
@@ -205,12 +209,12 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>URL</code>.
-     * 
+     *
      * @param url
      *            The rule-set URL.
-     * 
+     *
      * @return The rule-set.
-     * 
+     *
      * @throws Exception
      *             If an error occurs during the parse.
      */
@@ -221,12 +225,12 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>Reader</code>.
-     * 
+     *
      * @param reader
      *            The reader containing the rule-set.
-     * 
+     *
      * @return The rule-set.
-     * 
+     *
      * @throws Exception
      *             If an error occurs during the parse.
      */
@@ -237,12 +241,12 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputStream</code>.
-     * 
+     *
      * @param inputStream
      *            The input-stream containing the rule-set.
-     * 
+     *
      * @return The rule-set.
-     * 
+     *
      * @throws Exception
      *             If an error occurs during the parse.
      */
@@ -253,12 +257,12 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a URL.
-     * 
+     *
      * @param url
      *            The rule-set URL.
-     * 
+     *
      * @return The rule-set.
-     * 
+     *
      * @throws Exception
      *             If an error occurs during the parse.
      */
@@ -269,12 +273,12 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputSource</code>.
-     * 
+     *
      * @param in
      *            The rule-set input-source.
-     * 
+     *
      * @return The rule-set.
-     * 
+     *
      * @throws Exception
      *             If an error occurs during the parse.
      */
@@ -301,25 +305,7 @@ public class RuleSetReader extends DefaultHandler
             parser = factory.newSAXParser( );
             try
             {
-                InputStream java = cl.getResourceAsStream( "META-INF/java.xsd" );
-                InputStream python = cl
-                        .getResourceAsStream( "META-INF/python.xsd" );
-                InputStream groovy = cl
-                        .getResourceAsStream( "META-INF/groovy.xsd" );
-                InputStream rules = cl
-                        .getResourceAsStream( "META-INF/rules.xsd" );
-
-                java.util.List schemaList = new java.util.ArrayList( );
-
-                if ( rules != null ) schemaList.add( rules );
-                if ( java != null ) schemaList.add( java );
-                if ( python != null ) schemaList.add( python );
-                if ( groovy != null ) schemaList.add( groovy );
-
                 parser.setProperty( JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA );
-                parser.setProperty( SCHEMA_SOURCE, (InputStream[]) schemaList
-                        .toArray( new InputStream[0] ) );
-
             }
             catch ( SAXNotRecognizedException e )
             {
@@ -337,7 +323,7 @@ public class RuleSetReader extends DefaultHandler
             throw new ParserConfigurationException(
                     "parser must be namespace-aware" );
         }
-      
+
         if ( this.repo == null )
         {
             try
@@ -380,7 +366,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Get the <code>Locator</code>.
-     * 
+     *
      * @return The locator.
      */
     public Locator getLocator()
@@ -549,18 +535,18 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Start a configuration node.
-     * 
+     *
      * @param name
      *            Tag name.
      * @param attrs
      *            Tag attributes.
-     * 
+     *
      * @throws SAXException
      *             If an error occurs during parse.
      */
     protected void startConfiguration( String name, Attributes attrs ) throws SAXException
     {
-        this.characters2 = new StringBuffer( );        
+        this.characters2 = new StringBuffer( );
 
         DefaultConfiguration config = new DefaultConfiguration( name );
 
@@ -588,21 +574,21 @@ public class RuleSetReader extends DefaultHandler
     public void characters( char[] chars, int start, int len ) throws SAXException
     {
         if ( this.characters2 != null )
-        {            
+        {
             this.characters2.append( chars, start, len );
         }
     }
 
     /**
      * End a configuration node.
-     * 
+     *
      * @return The configuration.
      */
     protected Configuration endConfiguration()
     {
         DefaultConfiguration config = (DefaultConfiguration) this.configurationStack
                 .removeLast( );
-        
+
         config.setText( this.characters2.toString( ) );
 
         this.characters2 = null;
@@ -661,6 +647,68 @@ public class RuleSetReader extends DefaultHandler
     Object getCurrent()
     {
         return this.current;
+    }
+
+    public InputSource resolveEntity(String publicId,
+                                     String systemId)
+      throws SAXException
+    {
+        //try the actual location given by systemId
+        try
+        {
+            URL url = new URL(systemId);
+            return new InputSource(url.openStream());
+        }
+        catch (Exception e)
+        {
+        }
+
+        //Try and get the index for the filename, else return null
+        int index = systemId.lastIndexOf("/");
+        if (index == -1)
+        {
+          index = systemId.lastIndexOf("\\");
+        }
+        if (index == -1)
+        {
+            return null;
+        }
+
+        String xsd = systemId.substring(index+1);
+        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+
+        if ( cl == null )
+        {
+            cl = RuleSetReader.class.getClassLoader( );
+        }
+
+        //Try looking in META-INF
+        try
+        {
+            return new InputSource(cl.getResourceAsStream("META-INF/" + xsd));
+        }
+        catch (Exception e)
+        {
+        }
+
+        //Try looking at root of classpath
+        try
+        {
+            return new InputSource("/" + cl.getResourceAsStream(xsd));
+        }
+        catch (Exception e)
+        {
+        }
+
+        //Try current working directory
+        try
+        {
+            return new InputSource(new BufferedInputStream(new FileInputStream(xsd)));
+        }
+        catch (Exception e)
+        {
+        }
+        return null;
     }
 
     private void print( SAXParseException x )
