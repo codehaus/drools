@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: ExprVisitor.java,v 1.5 2004-11-28 03:34:05 simon Exp $
+ * $Id: PythonExprVisitor.java,v 1.1 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ import java.util.Set;
  * @author <a href="bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster </a>
  */
-public class ExprVisitor extends Visitor
+public class PythonExprVisitor extends Visitor
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -75,7 +75,7 @@ public class ExprVisitor extends Visitor
     /**
      * Construct.
      */
-    ExprVisitor()
+    PythonExprVisitor()
     {
         // intentionally left blank.
     }
@@ -97,7 +97,7 @@ public class ExprVisitor extends Visitor
      *
      * @throws Exception If an error occurs while traversing.
      */
-    public Object eval_input(SimpleNode node) throws Exception
+    public Object eval_input( SimpleNode node ) throws Exception
     {
         variables = new HashSet( );
 
@@ -115,11 +115,10 @@ public class ExprVisitor extends Visitor
      *
      * @throws Exception If an error occurs while traversing.
      */
-    public Object visitName(Name node) throws Exception
+    public Object visitName( Name node ) throws Exception
     {
         variables.add( node.id );
 
         return node;
     }
-
 }

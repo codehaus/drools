@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonCondition.java,v 1.1 2004-12-08 23:07:50 simon Exp $
+ * $Id: PythonCondition.java,v 1.2 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -77,7 +77,7 @@ public class PythonCondition extends PythonInterp implements Condition
                rule,
                "eval" );
 
-        ExprAnalyzer analyzer = new ExprAnalyzer();
+        PythonExprAnalyzer analyzer = new PythonExprAnalyzer();
 
         this.requiredDeclarations = analyzer.analyze( getNode( ),
                                                       rule.getParameterDeclarations( ) );

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.6 2004-11-28 02:22:18 simon Exp $
+ * $Id: GroovyExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,12 +59,12 @@ import java.util.Set;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: ExprAnalyzer.java,v 1.6 2004-11-28 02:22:18 simon Exp $
+ * @version $Id: GroovyExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
  */
-public class ExprAnalyzer
+public class GroovyExprAnalyzer
 {
 
-    public ExprAnalyzer()
+    public GroovyExprAnalyzer()
     {
     }
 
@@ -83,7 +83,8 @@ public class ExprAnalyzer
      * @throws Exception If an error occurs while attempting to analyze the
      *         expression.
      */
-    public Declaration[] analyze(String text, List availDecls) throws Exception
+    public Declaration[] analyze( String text,
+                                  List availDecls ) throws Exception
     {
         SourceUnit unit = SourceUnit.create( "groovy.script", text );
         unit.parse( );
@@ -95,7 +96,7 @@ public class ExprAnalyzer
         MethodNode method = ( MethodNode ) methods.get( 0 );
         ASTNode expr = method.getCode( );
 
-        ExprVisitor visitor = new ExprVisitor( );
+        GroovyExprVisitor visitor = new GroovyExprVisitor( );
         expr.visit( visitor );
         Set refs = visitor.getVariables( );
 

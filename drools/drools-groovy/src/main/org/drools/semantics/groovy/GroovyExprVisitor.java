@@ -1,7 +1,7 @@
-package org.drools.semantics.python;
+package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.5 2004-11-28 02:22:18 simon Exp $
+ * $Id: GroovyExprVisitor.java,v 1.1 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,71 +41,35 @@ package org.drools.semantics.python;
  *
  */
 
-import org.drools.rule.Declaration;
-import org.python.parser.ast.modType;
+import org.codehaus.groovy.ast.CodeVisitorSupport;
+import org.codehaus.groovy.ast.expr.VariableExpression;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Analyzes python expressions for all mentioned variables.
+ * Visits nodes in a Groovy parse tree to extract the individual expression
+ * criteria.
  *
- * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
+ * @author <a href="bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  */
-public class ExprAnalyzer
+public class GroovyExprVisitor extends CodeVisitorSupport
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
+    /** List of the variables as we parse an expression. */
+    private Set variables = new HashSet( );
 
-    /**
-     * Construct.
-     */
-    public ExprAnalyzer()
+    GroovyExprVisitor()
     {
-        // intentionally left blank
     }
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /**
-     * Analyze an expression.
-     *
-     * @param expr The expression to analyze.
-     * @param availDecls Total set of declarations available.
-     *
-     * @return The array of declarations used by the expression.
-     *
-     * @throws Exception If an error occurs while attempting to analyze the
-     *         expression.
-     */
-
-    public Declaration[] analyze(modType expr, List availDecls) throws Exception
+    public Set getVariables()
     {
-        ExprVisitor visitor = new ExprVisitor( );
+        return variables;
+    }
 
-        List decls = new ArrayList( );
-
-        Set refs = ( Set ) visitor.eval_input( expr );
-
-        Iterator declIter = availDecls.iterator( );
-        Declaration eachDecl;
-
-        while ( declIter.hasNext( ) )
-        {
-            eachDecl = ( Declaration ) declIter.next( );
-
-            if ( refs.contains( eachDecl.getIdentifier( ) ) )
-            {
-                decls.add( eachDecl );
-                refs.remove( eachDecl.getIdentifier( ) );
-            }
-        }
-
-        return ( Declaration[] ) decls.toArray( new Declaration[ decls.size( ) ] );
+    public void visitVariableExpression( VariableExpression expression )
+    {
+        variables.add( expression.getVariable( ) );
     }
 }

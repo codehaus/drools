@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.3 2004-12-07 15:44:36 simon Exp $
+ * $Id: JavaCondition.java,v 1.4 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -99,7 +99,7 @@ public class JavaCondition
         this.rule = rule;
 
 
-        ExprAnalyzer analyzer = new ExprAnalyzer();
+        JavaExprAnalyzer analyzer = new JavaExprAnalyzer();
         List requiredDecls = analyzer.analyze( expression,
                                                rule.getParameterDeclarations() );
 

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprAnalyzer.java,v 1.10 2004-11-28 02:22:18 simon Exp $
+ * $Id: JavaExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,10 +59,8 @@ import java.util.Set;
  * Expression analyzer.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- *
- * @version $Id: ExprAnalyzer.java,v 1.10 2004-11-28 02:22:18 simon Exp $
  */
-public class ExprAnalyzer
+public class JavaExprAnalyzer
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -71,7 +69,7 @@ public class ExprAnalyzer
     /**
      * Construct.
      */
-    public ExprAnalyzer()
+    public JavaExprAnalyzer()
     {
         // intentionally left blank.
     }
@@ -93,9 +91,9 @@ public class ExprAnalyzer
      * @throws MissingDeclarationException If the expression requires a
      *         declaration not present in the available declarations.
      */
-    public List analyze(String expr, List availDecls) throws TokenStreamException,
-                                                             RecognitionException,
-                                                             MissingDeclarationException
+    public List analyze( String expr,
+                         List availDecls )
+            throws TokenStreamException, RecognitionException, MissingDeclarationException
     {
         JavaLexer lexer = new JavaLexer( new StringReader( expr ) );
         JavaRecognizer parser = new JavaRecognizer( lexer );
@@ -117,7 +115,8 @@ public class ExprAnalyzer
      *
      * @throws RecognitionException If an error occurs in the parser.
      */
-    private List analyze( List availDecls, AST ast ) throws RecognitionException
+    private List analyze( List availDecls,
+                          AST ast ) throws RecognitionException
     {
         JavaTreeParser treeParser = new JavaTreeParser( );
 
