@@ -1,8 +1,7 @@
 <project default="jar:jar" xmlns:j="jelly:core">
 
 
-		<goal name="get-deps">
-    </goal>
+		<goal name="get-deps" />
 
 <!-- Fibonacci Examples -->
     <goal name="fibonacci-java" prereqs="jar:jar">
