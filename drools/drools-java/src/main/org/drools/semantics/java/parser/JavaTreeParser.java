@@ -2,20 +2,14 @@
 
 	package org.drools.semantics.java.parser;
 
-	import java.util.List;	
-	import java.util.ArrayList;	
+	import java.util.ArrayList;
+import java.util.List;
 
-import antlr.TreeParser;
-import antlr.Token;
-import antlr.collections.AST;
-import antlr.RecognitionException;
-import antlr.ANTLRException;
-import antlr.NoViableAltException;
 import antlr.MismatchedTokenException;
-import antlr.SemanticException;
+import antlr.NoViableAltException;
+import antlr.RecognitionException;
+import antlr.collections.AST;
 import antlr.collections.impl.BitSet;
-import antlr.ASTPair;
-import antlr.collections.impl.ASTArray;
 
 
 /** Java 1.3 AST Recognizer.

@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
- * $Id: PrimeFactors.java,v 1.6 2004-11-12 17:11:16 simon Exp $
+ * $Id: PrimeFactors.java,v 1.7 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,15 +39,6 @@ package org.drools.examples.primefactors;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.drools.RuleBase;
-import org.drools.RuleBaseBuilder;
-import org.drools.WorkingMemory;
-import org.drools.io.RuleSetReader;
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
-import org.drools.semantics.base.ClassObjectType;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,6 +47,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
+
+import org.drools.RuleBase;
+import org.drools.RuleBaseBuilder;
+import org.drools.WorkingMemory;
+import org.drools.io.RuleSetReader;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
+import org.drools.semantics.base.ClassObjectType;
 
 public class PrimeFactors
 {

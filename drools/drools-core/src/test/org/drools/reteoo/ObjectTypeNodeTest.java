@@ -1,12 +1,12 @@
 package org.drools.reteoo;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.drools.DroolsTestCase;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
-
-import java.util.Collection;
-import java.util.List;
 
 public class ObjectTypeNodeTest extends DroolsTestCase
 {

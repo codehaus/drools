@@ -2,7 +2,7 @@ package org.drools.semantics.base;
 
 
 /*
- * $Id: ListSemaphore.java,v 1.1 2005-02-02 02:18:33 mproctor Exp $
+ * $Id: ListSemaphore.java,v 1.2 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,9 +42,9 @@ package org.drools.semantics.base;
  *
  */
 
-import org.drools.spi.Semaphore;
-
 import java.util.List;
+
+import org.drools.spi.Semaphore;
 
 public class ListSemaphore
     implements

@@ -1,7 +1,7 @@
 package org.drools.examples.petstore;
 
 /*
- * $Id: PetStore.java,v 1.4 2004-12-04 14:59:45 simon Exp $
+ * $Id: PetStore.java,v 1.5 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,11 @@ package org.drools.examples.petstore;
  *
  */
 
-import org.drools.RuleBase;
-import org.drools.io.RuleBaseLoader;
-
 import java.net.URL;
 import java.util.Vector;
+
+import org.drools.RuleBase;
+import org.drools.io.RuleBaseLoader;
 
 public class PetStore
 {

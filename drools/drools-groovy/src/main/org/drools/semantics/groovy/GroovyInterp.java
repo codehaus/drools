@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.5 2005-01-26 16:14:40 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.6 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,13 +45,6 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.Script;
-import org.drools.WorkingMemory;
-import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-import org.drools.spi.Functions;
-import org.drools.spi.DefaultKnowledgeHelper;
-import org.drools.spi.Tuple;
-import org.drools.spi.DefaultKnowledgeHelper;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -59,6 +52,13 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.drools.WorkingMemory;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
+import org.drools.spi.DefaultKnowledgeHelper;
+import org.drools.spi.Functions;
+import org.drools.spi.Tuple;
 
 /**
  * Base class for Groovy based semantic components.

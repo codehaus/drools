@@ -1,9 +1,9 @@
 package org.drools.semantics.groovy;
 
-import org.drools.smf.SMFTestFrameWork;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.drools.smf.SMFTestFrameWork;
 
 /**
  * Extends SMFTestFrameWork specifying the groovy Semantic Module. The

@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectTypeFactory.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
+ * $Id: ClassObjectTypeFactory.java,v 1.7 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,18 +41,16 @@ package org.drools.semantics.base;
  *
  */
 
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class ClassObjectTypeFactory
     implements

@@ -1,12 +1,5 @@
 package org.drools.rule;
 
-import org.drools.DroolsTestCase;
-import org.drools.WorkingMemory;
-import org.drools.spi.Consequence;
-import org.drools.spi.Duration;
-import org.drools.spi.MockObjectType;
-import org.drools.spi.Tuple;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
@@ -14,6 +7,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.List;
+
+import org.drools.DroolsTestCase;
+import org.drools.spi.Consequence;
+import org.drools.spi.Duration;
+import org.drools.spi.MockObjectType;
+import org.drools.spi.Tuple;
 
 public class RuleTest extends DroolsTestCase
 {
@@ -34,9 +33,11 @@ public class RuleTest extends DroolsTestCase
             // expected and correct
         }
 
-        assertLength( 0, rule.getParameterDeclarations( ) );
+        assertLength( 0,
+                      rule.getParameterDeclarations( ) );
 
-        assertLength( 0, rule.getConditions( ) );
+        assertLength( 0,
+                      rule.getConditions( ) );
 
         assertNull( rule.getConsequence( ) );
     }
@@ -45,15 +46,19 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar",
+                                                              new MockObjectType( true ) );
 
         List paramDecls = rule.getParameterDeclarations( );
 
-        assertLength( 1, paramDecls );
+        assertLength( 1,
+                      paramDecls );
 
-        assertContains( paramDecl, paramDecls );
+        assertContains( paramDecl,
+                        paramDecls );
 
-        assertSame( paramDecl, rule.getParameterDeclaration( "paramVar" ) );
+        assertSame( paramDecl,
+                    rule.getParameterDeclaration( "paramVar" ) );
 
         assertNull( rule.getParameterDeclaration( "betty" ) );
     }
@@ -62,12 +67,15 @@ public class RuleTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        Declaration paramDecl = rule.addParameterDeclaration( "paramVar",
+                                                              new MockObjectType( true ) );
 
         List paramDecls = rule.getParameterDeclarations( );
-        assertLength( 1, paramDecls );
+        assertLength( 1,
+                      paramDecls );
 
-        assertContains( paramDecl, paramDecls );
+        assertContains( paramDecl,
+                        paramDecls );
 
         assertNull( rule.getParameterDeclaration( "betty" ) );
     }
@@ -80,37 +88,46 @@ public class RuleTest extends DroolsTestCase
 
         rule.setDocumentation( "the cheesiest!" );
 
-        assertEquals( "the cheesiest!", rule.getDocumentation( ) );
+        assertEquals( "the cheesiest!",
+                      rule.getDocumentation( ) );
     }
 
     public void testSalience() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
 
-        assertEquals( 0, rule.getSalience( ) );
+        assertEquals( 0,
+                      rule.getSalience( ) );
 
         rule.setSalience( 42 );
 
-        assertEquals( 42, rule.getSalience( ) );
+        assertEquals( 42,
+                      rule.getSalience( ) );
     }
 
     public void testLoadOrder() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
 
-        assertEquals( 0, rule.getLoadOrder( ) );
+        assertEquals( 0,
+                      rule.getLoadOrder( ) );
 
         rule.setLoadOrder( 42 );
 
-        assertEquals( 42, rule.getLoadOrder( ) );
+        assertEquals( 42,
+                      rule.getLoadOrder( ) );
     }
 
     public void testDeclarationOrder() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
 
-        assertEquals( 0, rule.addParameterDeclaration( "paramVar0", new MockObjectType( true ) ).getIndex( ) );
-        assertEquals( 1, rule.addParameterDeclaration( "paramVar1", new MockObjectType( true ) ).getIndex( ) );
+        assertEquals( 0,
+                      rule.addParameterDeclaration( "paramVar0",
+                                                    new MockObjectType( true ) ).getIndex( ) );
+        assertEquals( 1,
+                      rule.addParameterDeclaration( "paramVar1",
+                                                    new MockObjectType( true ) ).getIndex( ) );
     }
 
     public void testDuration_SimpleLong() throws Exception
@@ -125,7 +142,8 @@ public class RuleTest extends DroolsTestCase
 
         assertTrue( dur instanceof FixedDuration );
 
-        assertEquals( 42L, rule.getDuration( ).getDuration( null ) );
+        assertEquals( 42L,
+                      rule.getDuration( ).getDuration( null ) );
     }
 
     public void testDuration_WithObject() throws Exception
@@ -136,7 +154,8 @@ public class RuleTest extends DroolsTestCase
 
         rule.setDuration( dur );
 
-        assertSame( dur, rule.getDuration( ) );
+        assertSame( dur,
+                    rule.getDuration( ) );
     }
 
     public void testConsequence() throws Exception
@@ -147,7 +166,7 @@ public class RuleTest extends DroolsTestCase
 
         Consequence consequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory)
+            public void invoke(Tuple tuple)
             {
                 // nothing;
             }
@@ -155,7 +174,8 @@ public class RuleTest extends DroolsTestCase
 
         rule.setConsequence( consequence );
 
-        assertSame( consequence, rule.getConsequence( ) );
+        assertSame( consequence,
+                    rule.getConsequence( ) );
     }
 
     public void testSerializeRuleSet() throws Exception
@@ -163,12 +183,13 @@ public class RuleTest extends DroolsTestCase
 
         Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
 
-        //add consequence
+        // add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
-        //add conditions
+        // add conditions
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
@@ -185,14 +206,17 @@ public class RuleTest extends DroolsTestCase
         byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
-        rule = ( Rule ) in.readObject( );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
+        rule = (Rule) in.readObject( );
         in.close( );
 
-        assertEquals( 42, rule.getSalience( ) );
-        assertEquals( 22, rule.getLoadOrder( ) );
-        assertLength( 1, rule.getParameterDeclarations( ) );
-        assertLength( 2, rule.getConditions( ) );
+        assertEquals( 42,
+                      rule.getSalience( ) );
+        assertEquals( 22,
+                      rule.getLoadOrder( ) );
+        assertLength( 1,
+                      rule.getParameterDeclarations( ) );
+        assertLength( 2,
+                      rule.getConditions( ) );
     }
 }

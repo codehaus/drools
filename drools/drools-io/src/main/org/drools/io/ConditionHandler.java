@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConditionHandler.java,v 1.4 2005-01-23 18:16:19 mproctor Exp $
+ * $Id: ConditionHandler.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,6 +39,8 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import java.util.HashSet;
+
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.ConditionFactory;
@@ -49,8 +51,6 @@ import org.drools.spi.Condition;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import java.util.HashSet;
 
 /**
  * @author mproctor

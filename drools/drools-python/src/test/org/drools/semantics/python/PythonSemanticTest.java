@@ -1,9 +1,9 @@
 package org.drools.semantics.python;
 
-import org.drools.smf.SMFTestFrameWork;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.drools.smf.SMFTestFrameWork;
 
 /**
  * Extends SMFTestFrameWork specifying the python Semantic Module. The

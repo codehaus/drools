@@ -41,20 +41,21 @@ package org.drools.conflict;
  *
  */
 
-import junit.framework.TestCase;
-import org.drools.util.PriorityQueue;
-import org.drools.rule.InstrumentedRule;
-import org.drools.rule.RuleSet;
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.MockTuple;
-import org.drools.spi.MockAgendaItem;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+
+import junit.framework.TestCase;
+
+import org.drools.rule.InstrumentedRule;
+import org.drools.rule.RuleSet;
+import org.drools.spi.ConflictResolver;
+import org.drools.spi.MockAgendaItem;
+import org.drools.spi.MockTuple;
+import org.drools.util.PriorityQueue;
 
 public class LoadOrderConflictResolverTest extends TestCase
 {

@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersJSR94.java,v 1.3 2004-11-12 17:11:15 simon Exp $
+ * $Id: MannersJSR94.java,v 1.4 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,9 @@ package org.drools.examples.manners;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.drools.jsr94.rules.RuleServiceProviderImpl;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 import javax.rules.InvalidRuleSessionException;
 import javax.rules.RuleRuntime;
@@ -50,9 +52,8 @@ import javax.rules.StatelessRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+
+import org.drools.jsr94.rules.RuleServiceProviderImpl;
 
 /**
  * Uses the JSR-94 RuleServiceProviderImpl for Drools to solve the Miss Manners

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.7 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: DurationHandler.java,v 1.8 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,6 +39,8 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import java.util.HashSet;
+
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
@@ -50,8 +52,6 @@ import org.drools.spi.Duration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import java.util.HashSet;
 
 /**
  * @author mproctor

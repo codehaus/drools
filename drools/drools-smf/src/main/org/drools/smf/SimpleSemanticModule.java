@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticModule.java,v 1.9 2005-01-23 18:16:20 mproctor Exp $
+ * $Id: SimpleSemanticModule.java,v 1.10 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,8 +43,6 @@ package org.drools.smf;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.drools.rule.ApplicationData;
 
 /**
  * Simple implementation of a Semantic Module.

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaSemanticTest.java,v 1.8 2005-02-02 02:03:07 mproctor Exp $
+ * $Id: JavaSemanticTest.java,v 1.9 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,10 +40,10 @@ package org.drools.semantics.java;
  *
  */
 
-import org.drools.smf.SMFTestFrameWork;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.drools.smf.SMFTestFrameWork;
 
 /**
  * Extends SMFTestFrameWork specifying the Java Semantic Module. The

@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: SemaphoreFactory.java,v 1.1 2004-12-21 00:24:37 mproctor Exp $
+ * $Id: SemaphoreFactory.java,v 1.2 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,16 +41,11 @@ package org.drools.semantics.base;
  *
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
 

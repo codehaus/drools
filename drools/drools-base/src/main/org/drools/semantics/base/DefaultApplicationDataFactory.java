@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: DefaultApplicationDataFactory.java,v 1.4 2004-12-14 21:00:26 mproctor Exp $
+ * $Id: DefaultApplicationDataFactory.java,v 1.5 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,12 +47,11 @@ import java.util.Set;
 
 import org.drools.rule.ApplicationData;
 import org.drools.rule.RuleSet;
-import org.drools.smf.Configuration;
 import org.drools.smf.ApplicationDataFactory;
+import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
-import org.drools.spi.RuleBaseContext;
-
 import org.drools.spi.ImportEntry;
+import org.drools.spi.RuleBaseContext;
 
 public class DefaultApplicationDataFactory
     implements

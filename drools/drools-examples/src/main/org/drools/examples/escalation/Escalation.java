@@ -1,13 +1,13 @@
 package org.drools.examples.escalation;
 
+import java.io.IOException;
+import java.net.URL;
+
 import org.drools.AssertionException;
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class Escalation
 {

@@ -21,13 +21,13 @@ package org.drools.util;
  * SUCH DAMAGE.
  */
 
-import junit.framework.TestCase;
-
 import java.io.Serializable;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
- * @version $Id: PriorityQueueTest.java,v 1.1 2004-11-07 12:10:19 mproctor Exp $
+ * @version $Id: PriorityQueueTest.java,v 1.2 2005-02-04 02:13:37 mproctor Exp $
  */
 public class PriorityQueueTest extends TestCase
 {

@@ -1,6 +1,7 @@
 package org.drools.spi;
 
 import junit.framework.TestCase;
+
 import org.drools.rule.Rule;
 
 /**

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
+ * $Id: GroovyExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,11 @@ package org.drools.semantics.groovy;
  *
  */
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.MethodNode;
@@ -48,18 +53,13 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.SourceUnit;
 import org.drools.rule.Declaration;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 /**
  * Analyzes python expressions for all mentioned variables.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: GroovyExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
+ * @version $Id: GroovyExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
  */
 public class GroovyExprAnalyzer
 {

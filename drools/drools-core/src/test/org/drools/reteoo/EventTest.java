@@ -1,15 +1,9 @@
 package org.drools.reteoo;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import org.drools.DroolsTestCase;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.TestWorkingMemoryEventListener;
-import org.drools.WorkingMemory;
-import org.drools.event.ActivationCancelledEvent;
-import org.drools.event.ActivationCreatedEvent;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -43,8 +37,7 @@ public class EventTest extends DroolsTestCase
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple,
-                               WorkingMemory workingMemory)
+            public void invoke(org.drools.spi.Tuple tuple)
             {
                 // Agenda agenda =
                 // ((WorkingMemoryImpl)workingMemory).getAgenda();

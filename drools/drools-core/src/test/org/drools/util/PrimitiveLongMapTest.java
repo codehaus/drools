@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.8 2005-01-09 01:27:33 mproctor Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.9 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,9 @@ package org.drools.util;
  *
  */
 
-import junit.framework.TestCase;
-
 import java.util.Collection;
+
+import junit.framework.TestCase;
 
 public class PrimitiveLongMapTest extends TestCase
 {

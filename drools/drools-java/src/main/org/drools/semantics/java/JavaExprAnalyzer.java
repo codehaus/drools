@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
+ * $Id: JavaExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,20 +41,21 @@ package org.drools.semantics.java;
  *
  */
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-import antlr.collections.AST;
-import org.drools.rule.Declaration;
-import org.drools.semantics.java.parser.JavaLexer;
-import org.drools.semantics.java.parser.JavaRecognizer;
-import org.drools.semantics.java.parser.JavaTreeParser;
-
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.drools.rule.Declaration;
+import org.drools.semantics.java.parser.JavaLexer;
+import org.drools.semantics.java.parser.JavaRecognizer;
+import org.drools.semantics.java.parser.JavaTreeParser;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+import antlr.collections.AST;
 /**
  * Expression analyzer.
  *

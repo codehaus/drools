@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandle.java,v 1.13 2004-11-28 05:02:38 simon Exp $
+ * $Id: Jsr94FactHandle.java,v 1.14 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,9 +41,9 @@ package org.drools.jsr94.rules;
  *
  */
 
-import org.drools.reteoo.FactHandleImpl;
-
 import javax.rules.Handle;
+
+import org.drools.reteoo.FactHandleImpl;
 
 /**
  * The Drools implementation of the <code>Handle</code> interface which provides

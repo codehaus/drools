@@ -1,12 +1,13 @@
 package org.drools.reteoo;
 
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
-
-import java.util.List;
 
 public class TupleSourceTest extends TestCase
 {

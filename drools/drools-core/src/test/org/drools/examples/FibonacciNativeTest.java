@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: FibonacciNativeTest.java,v 1.14 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: FibonacciNativeTest.java,v 1.15 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,18 @@ package org.drools.examples;
  *
  */
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import junit.framework.TestCase;
+
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
@@ -56,33 +67,28 @@ import org.drools.spi.ConsequenceException;
 import org.drools.spi.RuleBaseContext;
 import org.drools.spi.Tuple;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.net.URL;
-import java.net.URLClassLoader;
-
 /**
  * This Fibonacci example demonstrates how to build a native RuleSet without
  * using one of the many Semantic Modules.
  */
 
-public class FibonacciNativeTest extends TestCase implements Serializable
+public class FibonacciNativeTest extends TestCase
+    implements
+    Serializable
 {
     public void testFibonacci() throws Exception
     {
         // <rule-set name="fibonacci" ...>
         RuleBaseContext ruleBaseContext = new RuleBaseContext( );
-        URLClassLoader urlClassLoader = new URLClassLoader(new URL[] {});
-        ruleBaseContext.put("java-classLoader", urlClassLoader);
-        urlClassLoader = (URLClassLoader) ruleBaseContext.get("java-classLoader");
-        
+        URLClassLoader urlClassLoader = new URLClassLoader( new URL[]{} );
+        ruleBaseContext.put( "java-classLoader",
+                             urlClassLoader );
+        urlClassLoader = (URLClassLoader) ruleBaseContext.get( "java-classLoader" );
+
         final RuleSet ruleSet = new RuleSet( "fibonacci" );
-        ruleSet.addApplicationData(new ApplicationData(ruleSet, "fibtotal", FibTotal.class));
+        ruleSet.addApplicationData( new ApplicationData( ruleSet,
+                                                         "fibtotal",
+                                                         FibTotal.class ) );
 
         // <rule name="Bootstrap 1" salience="20">
         final Rule bootstrap1Rule = new Rule( "Bootstrap 1" );
@@ -95,9 +101,10 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         // Build the declaration and specify it as a parameter of the Bootstrap1
         // Rule
         // <parameter identifier="f">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration1 = bootstrap1Rule.addParameterDeclaration( "f", fibonacciType );
+        final Declaration fDeclaration1 = bootstrap1Rule.addParameterDeclaration( "f",
+                                                                                  fibonacciType );
 
         // Build and Add the Condition to the Bootstrap1 Rule
         // <java:condition>f.getSequence() == 1</java:condition>
@@ -105,7 +112,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration1 );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration1 );
                 return f.getSequence( ) == 1;
             }
 
@@ -126,7 +133,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration1 );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration1 );
                 return f.getValue( ) == -1;
             }
 
@@ -144,28 +151,30 @@ public class FibonacciNativeTest extends TestCase implements Serializable
 
         // Build and Add the Consequence to the Bootstrap1 Rule
         // <java:consequence>
-        //   f.setValue( 1 );
-        //   System.err.println( f.getSequence() + " == " + f.getValue() );
-        //   drools.modifyObject( f );
+        // f.setValue( 1 );
+        // System.err.println( f.getSequence() + " == " + f.getValue() );
+        // drools.modifyObject( f );
         // </java:consequence>
         final Consequence bootstrapConsequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration1 );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration1 );
                 f.setValue( 1 );
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ),
+                                                f );
                 }
                 catch ( FactException e )
                 {
                     throw new ConsequenceException( e );
                 }
 
-                FibTotal total = (FibTotal) workingMemory.getApplicationData("fibtotal");
-                total.setTotal(total.getTotal() + 1);
+                FibTotal total = (FibTotal) workingMemory.getApplicationData( "fibtotal" );
+                total.setTotal( total.getTotal( ) + 1 );
             }
         };
         bootstrap1Rule.setConsequence( bootstrapConsequence );
@@ -176,9 +185,10 @@ public class FibonacciNativeTest extends TestCase implements Serializable
 
         // Specify the declaration as a parameter of the Bootstrap2 Rule
         // <parameter identifier="f">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration2 = bootstrap2Rule.addParameterDeclaration( "f", fibonacciType );
+        final Declaration fDeclaration2 = bootstrap2Rule.addParameterDeclaration( "f",
+                                                                                  fibonacciType );
 
         // Build and Add the Conditions to the Bootstrap1 Rule
         // <java:condition>f.getSequence() == 2</java:condition>
@@ -186,7 +196,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration2 );
                 return f.getSequence( ) == 2;
             }
 
@@ -207,7 +217,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration2 );
                 return f.getValue( ) == -1;
             }
 
@@ -225,28 +235,30 @@ public class FibonacciNativeTest extends TestCase implements Serializable
 
         // Build and Add the Consequence to the Bootstrap1 Rule
         // <java:consequence>
-        //   f.setValue( 1 );
-        //   System.err.println( f.getSequence() + " == " + f.getValue() );
-        //   drools.modifyObject( f );
+        // f.setValue( 1 );
+        // System.err.println( f.getSequence() + " == " + f.getValue() );
+        // drools.modifyObject( f );
         // </java:consequence>
-        final Consequence bootstrap2Consequence = new Consequence()
+        final Consequence bootstrap2Consequence = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration2 );
                 f.setValue( 1 );
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ),
+                                                f );
                 }
                 catch ( FactException e )
                 {
                     throw new ConsequenceException( e );
                 }
 
-                FibTotal total = ( FibTotal ) workingMemory.getApplicationData( "fibtotal" );
-                total.setTotal( total.getTotal() + 1 );
+                FibTotal total = (FibTotal) workingMemory.getApplicationData( "fibtotal" );
+                total.setTotal( total.getTotal( ) + 1 );
             }
         };
         bootstrap2Rule.setConsequence( bootstrap2Consequence );
@@ -257,16 +269,17 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         recurseRule.setSalience( 10 );
 
         // <parameter identifier="f">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclarationRecurse = recurseRule.addParameterDeclaration( "f", fibonacciType );
+        final Declaration fDeclarationRecurse = recurseRule.addParameterDeclaration( "f",
+                                                                                     fibonacciType );
 
         // <java:condition>f.getValue() == -1</java:condition>
         final Condition conditionRecurse = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclarationRecurse );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclarationRecurse );
                 return f.getValue( ) == -1;
             }
 
@@ -283,17 +296,19 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         recurseRule.addCondition( conditionRecurse );
 
         // <java:consequence>
-        //   System.err.println( "recurse for " + f.getSequence() );
-        //   drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
+        // System.err.println( "recurse for " + f.getSequence() );
+        // drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
         // </java:consequence>
         final Consequence recurseConsequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclarationRecurse );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
+                Fibonacci f = (Fibonacci) tuple.get( fDeclarationRecurse );
                 try
                 {
-                    workingMemory.assertObject( new Fibonacci( f.getSequence() - 1 ) );
+                    workingMemory.assertObject( new Fibonacci( f.getSequence( ) - 1 ) );
                 }
                 catch ( FactException e )
                 {
@@ -308,19 +323,22 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         final Rule calculateRule = new Rule( "Calculate" );
 
         // <parameter identifier="f1">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration f1Declaration = calculateRule.addParameterDeclaration( "f1", fibonacciType );
+        final Declaration f1Declaration = calculateRule.addParameterDeclaration( "f1",
+                                                                                 fibonacciType );
 
         // <parameter identifier="f2">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration f2Declaration = calculateRule.addParameterDeclaration( "f2", fibonacciType );
+        final Declaration f2Declaration = calculateRule.addParameterDeclaration( "f2",
+                                                                                 fibonacciType );
 
         // <parameter identifier="f3">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration f3Declaration = calculateRule.addParameterDeclaration( "f3", fibonacciType );
+        final Declaration f3Declaration = calculateRule.addParameterDeclaration( "f3",
+                                                                                 fibonacciType );
 
         // <java:condition>f2.getSequence() ==
         // (f1.getSequence()+1)</java:condition>
@@ -328,8 +346,8 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                Fibonacci f1 = (Fibonacci) tuple.get( f1Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
                 return f2.getSequence( ) == f1.getSequence( ) + 1;
             }
 
@@ -351,8 +369,8 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
-                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
+                Fibonacci f3 = (Fibonacci) tuple.get( f3Declaration );
                 return f3.getSequence( ) == f2.getSequence( ) + 1;
             }
 
@@ -373,7 +391,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
+                Fibonacci f1 = (Fibonacci) tuple.get( f1Declaration );
                 return f1.getValue( ) != -1;
             }
 
@@ -394,7 +412,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
                 return f2.getValue( ) != -1;
             }
 
@@ -415,7 +433,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                Fibonacci f3 = (Fibonacci) tuple.get( f3Declaration );
                 return f3.getValue( ) == -1;
             }
 
@@ -432,23 +450,26 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         calculateRule.addCondition( conditionCalculateE );
 
         // <java:consequence>
-        //   f3.setValue( f1.getValue() + f2.getValue() );
+        // f3.setValue( f1.getValue() + f2.getValue() );
         // System.err.println( f3.getSequence() + " == " + f3.getValue() );
-        //   drools.modifyObject( f3 );
-        //   drools.retractObject( f1 );
+        // drools.modifyObject( f3 );
+        // drools.retractObject( f1 );
         // </java:consequence>
         final Consequence calculateConsequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
-                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
+                Fibonacci f1 = (Fibonacci) tuple.get( f1Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
+                Fibonacci f3 = (Fibonacci) tuple.get( f3Declaration );
 
                 f3.setValue( f1.getValue( ) + f2.getValue( ) );
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f3 ), f3 );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f3 ),
+                                                f3 );
                     workingMemory.retractObject( tuple.getFactHandleForObject( f1 ) );
                 }
                 catch ( FactException e )
@@ -456,78 +477,95 @@ public class FibonacciNativeTest extends TestCase implements Serializable
                     throw new ConsequenceException( e );
                 }
 
-                FibTotal total = (FibTotal) workingMemory.getApplicationData("fibtotal");
-                total.setTotal(total.getTotal() + 1);
+                FibTotal total = (FibTotal) workingMemory.getApplicationData( "fibtotal" );
+                total.setTotal( total.getTotal( ) + 1 );
             }
         };
         calculateRule.setConsequence( calculateConsequence );
         ruleSet.addRule( calculateRule );
 
         // Build the RuleSet.
-        
+
         RuleBaseBuilder builder = new RuleBaseBuilder( ruleBaseContext );
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
-        
-        //test context before serlisation
-        assertSame(urlClassLoader, ruleBase.getRuleBaseContext( ).get("java-classLoader"));
 
-        //test context before serlisation
+        // test context before serlisation
+        assertSame( urlClassLoader,
+                    ruleBase.getRuleBaseContext( ).get( "java-classLoader" ) );
+
+        // test context before serlisation
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
-        assertSame(urlClassLoader, workingMemory.getRuleBase( ).getRuleBaseContext( ).get("java-classLoader"));        
+        assertSame( urlClassLoader,
+                    workingMemory.getRuleBase( ).getRuleBaseContext( ).get( "java-classLoader" ) );
 
-        //Dumper dumper = new Dumper( ruleBase );
-        //dumper.dumpReteToDot( System.err );
-                
+        // Dumper dumper = new Dumper( ruleBase );
+        // dumper.dumpReteToDot( System.err );
+
         workingMemory = getWorkingMemory( ruleBase );
-        workingMemory.addEventListener(new TestWorkingMemoryEventListener());
+        workingMemory.addEventListener( new TestWorkingMemoryEventListener( ) );
 
-        workingMemory.setApplicationData("fibtotal", new FibTotal());
+        workingMemory.setApplicationData( "fibtotal",
+                                          new FibTotal( ) );
 
         // Assert the facts, and fire the rules.
         Fibonacci fibonacci = new Fibonacci( 50 );
-        workingMemory.assertObject( fibonacci );       
+        workingMemory.assertObject( fibonacci );
 
-        //test serialization
+        // test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
         workingMemory = serializeWorkingMemory( workingMemory );
 
         workingMemory.fireAllRules( );
 
-        //test serialization
+        // test serialization
         workingMemory = serializeWorkingMemory( workingMemory );
         workingMemory = serializeWorkingMemory( workingMemory );
-        
-        //test context after serlisation        
-        assertNull(workingMemory.getRuleBase( ).getRuleBaseContext().get("java-classLoader"));
 
-        //test application ran correctly
-        assertEquals(2, workingMemory.getObjects().size());
-        Fibonacci a = (Fibonacci) workingMemory.getObjects().get(0);
-        Fibonacci b = (Fibonacci) workingMemory.getObjects().get(1);
-        assertEquals(50, a.getSequence());
-        assertEquals(49, b.getSequence());
+        // test context after serlisation
+        assertNull( workingMemory.getRuleBase( ).getRuleBaseContext( ).get( "java-classLoader" ) );
 
-        assertEquals(12586269025L, a.getValue());
-        assertEquals(7778742049L, b.getValue());
+        // test application ran correctly
+        assertEquals( 2,
+                      workingMemory.getObjects( ).size( ) );
+        Fibonacci a = (Fibonacci) workingMemory.getObjects( ).get( 0 );
+        Fibonacci b = (Fibonacci) workingMemory.getObjects( ).get( 1 );
+        assertEquals( 50,
+                      a.getSequence( ) );
+        assertEquals( 49,
+                      b.getSequence( ) );
 
-        //test application data
-        FibTotal total = (FibTotal) workingMemory.getApplicationData("fibtotal");
-        assertEquals(50, total.getTotal());
+        assertEquals( 12586269025L,
+                      a.getValue( ) );
+        assertEquals( 7778742049L,
+                      b.getValue( ) );
 
-        //test listener
-        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners().get(0);
-        assertEquals(50, listener.asserted);
-        assertEquals(48, listener.retracted);
-        assertEquals(50, listener.modified);
-        //can't test this as it changes on each run
-        //assertEquals(2024, listener.tested);
-        assertEquals(100, listener.created);
-        assertEquals(99, listener.fired);
-        assertEquals(1, listener.cancelled);
+        // test application data
+        FibTotal total = (FibTotal) workingMemory.getApplicationData( "fibtotal" );
+        assertEquals( 50,
+                      total.getTotal( ) );
+
+        // test listener
+        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners( ).get( 0 );
+        assertEquals( 50,
+                      listener.asserted );
+        assertEquals( 48,
+                      listener.retracted );
+        assertEquals( 50,
+                      listener.modified );
+        // can't test this as it changes on each run
+        // assertEquals(2024, listener.tested);
+        assertEquals( 100,
+                      listener.created );
+        assertEquals( 99,
+                      listener.fired );
+        assertEquals( 1,
+                      listener.cancelled );
     }
 
-    public static class Fibonacci implements Serializable
+    public static class Fibonacci
+        implements
+        Serializable
     {
         private int  sequence;
 
@@ -560,7 +598,9 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         }
     }
 
-    public static class FibTotal implements Serializable
+    public static class FibTotal
+        implements
+        Serializable
     {
         int total;
 
@@ -587,9 +627,8 @@ public class FibonacciNativeTest extends TestCase implements Serializable
         byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
-        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
+        WorkingMemory workingMemoryOut = (WorkingMemory) in.readObject( );
         in.close( );
         return workingMemoryOut;
     }
@@ -607,7 +646,7 @@ public class FibonacciNativeTest extends TestCase implements Serializable
 
         // Deserialize from a byte array
         ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
-        WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
+        WorkingMemory workingMemoryOut = (WorkingMemory) in.readObject( );
         in.close( );
         return workingMemoryOut;
     }

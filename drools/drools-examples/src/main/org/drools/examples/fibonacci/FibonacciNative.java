@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciNative.java,v 1.7 2004-12-16 19:17:30 dbarnett Exp $
+ * $Id: FibonacciNative.java,v 1.8 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -78,9 +78,10 @@ public class FibonacciNative
         // Build the declaration and specify it as a parameter of the Bootstrap1
         // Rule
         // <parameter identifier="f">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration = bootstrap1Rule.addParameterDeclaration( "f", fibonacciType );
+        final Declaration fDeclaration = bootstrap1Rule.addParameterDeclaration( "f",
+                                                                                 fibonacciType );
 
         // Build and Add the Condition to the Bootstrap1 Rule
         // <java:condition>f.getSequence() == 1</java:condition>
@@ -88,7 +89,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration );
                 return f.getSequence( ) == 1;
             }
 
@@ -109,7 +110,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration );
                 return f.getValue( ) == -1;
             }
 
@@ -127,21 +128,24 @@ public class FibonacciNative
 
         // Build and Add the Consequence to the Bootstrap1 Rule
         // <java:consequence>
-        //   f.setValue( 1 );
-        //   System.err.println( f.getSequence() + " == " + f.getValue() );
-        //   drools.modifyObject( f );
+        // f.setValue( 1 );
+        // System.err.println( f.getSequence() + " == " + f.getValue() );
+        // drools.modifyObject( f );
         // </java:consequence>
         final Consequence bootstrapConsequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration );
                 f.setValue( 1 );
                 System.err.println( f.getSequence( ) + " == " + f.getValue( ) );
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ),
+                                                f );
                 }
                 catch ( FactException e )
                 {
@@ -157,9 +161,10 @@ public class FibonacciNative
 
         // Specify the declaration as a parameter of the Bootstrap2 Rule
         // <parameter identifier="f">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration2 = bootstrap2Rule.addParameterDeclaration( "f", fibonacciType  );
+        final Declaration fDeclaration2 = bootstrap2Rule.addParameterDeclaration( "f",
+                                                                                  fibonacciType );
 
         // Build and Add the Conditions to the Bootstrap1 Rule
         // <java:condition>f.getSequence() == 2</java:condition>
@@ -167,7 +172,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration2 );
                 return f.getSequence( ) == 2;
             }
 
@@ -188,7 +193,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration2 );
                 return f.getValue( ) == -1;
             }
 
@@ -206,21 +211,24 @@ public class FibonacciNative
 
         // Build and Add the Consequence to the Bootstrap2 Rule
         // <java:consequence>
-        //   f.setValue( 1 );
-        //   System.err.println( f.getSequence() + " == " + f.getValue() );
-        //   drools.modifyObject( f );
+        // f.setValue( 1 );
+        // System.err.println( f.getSequence() + " == " + f.getValue() );
+        // drools.modifyObject( f );
         // </java:consequence>
         final Consequence bootstrapConsequence2 = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
+                Fibonacci f = (Fibonacci) tuple.get( fDeclaration2 );
                 f.setValue( 1 );
                 System.err.println( f.getSequence( ) + " == " + f.getValue( ) );
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ),
+                                                f );
                 }
                 catch ( FactException e )
                 {
@@ -236,16 +244,17 @@ public class FibonacciNative
         recurseRule.setSalience( 10 );
 
         // <parameter identifier="f">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclarationRecurse = recurseRule.addParameterDeclaration( "f", fibonacciType );
+        final Declaration fDeclarationRecurse = recurseRule.addParameterDeclaration( "f",
+                                                                                     fibonacciType );
 
         // <java:condition>f.getValue() == -1</java:condition>
         final Condition conditionRecurse = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclarationRecurse );
+                Fibonacci f = (Fibonacci) tuple.get( fDeclarationRecurse );
                 return f.getValue( ) == -1;
             }
 
@@ -262,18 +271,20 @@ public class FibonacciNative
         recurseRule.addCondition( conditionRecurse );
 
         // <java:consequence>
-        //   System.err.println( "recurse for " + f.getSequence() );
-        //   drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
+        // System.err.println( "recurse for " + f.getSequence() );
+        // drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
         // </java:consequence>
         final Consequence recurseConsequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclarationRecurse );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
+                Fibonacci f = (Fibonacci) tuple.get( fDeclarationRecurse );
                 System.err.println( "recurse for " + f.getSequence( ) );
                 try
                 {
-                    workingMemory.assertObject( new Fibonacci( f.getSequence() - 1 ) );
+                    workingMemory.assertObject( new Fibonacci( f.getSequence( ) - 1 ) );
                 }
                 catch ( FactException e )
                 {
@@ -288,19 +299,22 @@ public class FibonacciNative
         final Rule calculateRule = new Rule( "Calculate" );
 
         // <parameter identifier="f1">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration f1Declaration = calculateRule.addParameterDeclaration( "f1", fibonacciType );
+        final Declaration f1Declaration = calculateRule.addParameterDeclaration( "f1",
+                                                                                 fibonacciType );
 
         // <parameter identifier="f2">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration f2Declaration = calculateRule.addParameterDeclaration( "f2", fibonacciType );
+        final Declaration f2Declaration = calculateRule.addParameterDeclaration( "f2",
+                                                                                 fibonacciType );
 
         // <parameter identifier="f3">
-        //   <class>org.drools.examples.fibonacci.Fibonacci</class>
+        // <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration f3Declaration = calculateRule.addParameterDeclaration( "f3", fibonacciType );
+        final Declaration f3Declaration = calculateRule.addParameterDeclaration( "f3",
+                                                                                 fibonacciType );
 
         // <java:condition>f2.getSequence() ==
         // (f1.getSequence()+1)</java:condition>
@@ -308,8 +322,8 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                Fibonacci f1 = (Fibonacci) tuple.get( f1Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
                 return f2.getSequence( ) == f1.getSequence( ) + 1;
             }
 
@@ -331,8 +345,8 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
-                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
+                Fibonacci f3 = (Fibonacci) tuple.get( f3Declaration );
                 return f3.getSequence( ) == f2.getSequence( ) + 1;
             }
 
@@ -353,7 +367,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
+                Fibonacci f1 = (Fibonacci) tuple.get( f1Declaration );
                 return f1.getValue( ) != -1;
             }
 
@@ -374,7 +388,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
                 return f2.getValue( ) != -1;
             }
 
@@ -395,7 +409,7 @@ public class FibonacciNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                Fibonacci f3 = (Fibonacci) tuple.get( f3Declaration );
                 return f3.getValue( ) == -1;
             }
 
@@ -412,24 +426,27 @@ public class FibonacciNative
         calculateRule.addCondition( conditionCalculateE );
 
         // <java:consequence>
-        //   f3.setValue( f1.getValue() + f2.getValue() );
-        //   System.err.println( f3.getSequence() + " == " + f3.getValue() );
-        //   drools.modifyObject( f3 );
-        //   drools.retractObject( f1 );
+        // f3.setValue( f1.getValue() + f2.getValue() );
+        // System.err.println( f3.getSequence() + " == " + f3.getValue() );
+        // drools.modifyObject( f3 );
+        // drools.retractObject( f1 );
         // </java:consequence>
         final Consequence calculateConsequence = new Consequence( )
         {
-            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
-                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
-                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
+                Fibonacci f1 = (Fibonacci) tuple.get( f1Declaration );
+                Fibonacci f2 = (Fibonacci) tuple.get( f2Declaration );
+                Fibonacci f3 = (Fibonacci) tuple.get( f3Declaration );
 
                 f3.setValue( f1.getValue( ) + f2.getValue( ) );
                 System.err.println( f3.getSequence( ) + " == " + f3.getValue( ) );
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( f3 ), f3 );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f3 ),
+                                                f3 );
                     workingMemory.retractObject( tuple.getFactHandleForObject( f1 ) );
                 }
                 catch ( FactException e )
@@ -462,8 +479,6 @@ public class FibonacciNative
         workingMemory.assertObject( fibonacci );
         workingMemory.fireAllRules( );
         long stop = System.currentTimeMillis( );
-        System.err.println( "fibonacci(" + fibonacci.getSequence( ) + ") == "
-                            + fibonacci.getValue( ) + " took "
-                            + ( stop - start ) + "ms" );
+        System.err.println( "fibonacci(" + fibonacci.getSequence( ) + ") == " + fibonacci.getValue( ) + " took " + (stop - start) + "ms" );
     }
 }

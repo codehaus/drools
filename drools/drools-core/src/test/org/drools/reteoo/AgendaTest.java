@@ -29,8 +29,7 @@ public class AgendaTest extends DroolsTestCase
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple,
-                               WorkingMemory workingMemory)
+            public void invoke(org.drools.spi.Tuple tuple)
             {
                 agenda.addToAgenda( (ReteTuple) tuple,
                                     rule );
@@ -88,8 +87,7 @@ public class AgendaTest extends DroolsTestCase
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple,
-                               WorkingMemory workingMemory)
+            public void invoke(org.drools.spi.Tuple tuple)
             {
                 agenda.addToAgenda( (ReteTuple) tuple,
                                     rule );
@@ -173,9 +171,10 @@ public class AgendaTest extends DroolsTestCase
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple,
-                               WorkingMemory workingMemory)
+            public void invoke(org.drools.spi.Tuple tuple)
             {
+                WorkingMemory workingMemory = tuple.getWorkingMemory( );
+
                 agenda.addToAgenda( (ReteTuple) tuple,
                                     rule );
                 workingMemory.clearAgenda( );

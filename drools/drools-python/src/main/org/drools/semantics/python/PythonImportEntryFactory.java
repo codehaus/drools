@@ -1,10 +1,9 @@
 package org.drools.semantics.python;
 
-import org.drools.rule.Declaration;
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
-import org.drools.smf.ImportEntryFactory;
 import org.drools.smf.FactoryException;
+import org.drools.smf.ImportEntryFactory;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.RuleBaseContext;
 

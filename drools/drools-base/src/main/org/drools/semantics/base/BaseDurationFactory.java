@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseDurationFactory.java,v 1.10 2004-12-14 21:00:26 mproctor Exp $
+ * $Id: BaseDurationFactory.java,v 1.11 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,6 @@ package org.drools.semantics.base;
  */
 
 import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
 import org.drools.spi.Duration;

@@ -1,17 +1,5 @@
 package org.drools.semantics.java;
 
-import org.codehaus.janino.EvaluatorBase;
-import org.codehaus.janino.Java;
-import org.codehaus.janino.Mod;
-import org.codehaus.janino.Parser;
-import org.codehaus.janino.Scanner;
-import org.codehaus.janino.util.PrimitiveWrapper;
-import org.codehaus.janino.DebuggingInformation;
-
-import org.drools.rule.Declaration;
-import org.drools.semantics.base.ClassObjectType;
-import org.drools.spi.ObjectType;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
@@ -21,6 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import org.codehaus.janino.DebuggingInformation;
+import org.codehaus.janino.EvaluatorBase;
+import org.codehaus.janino.Java;
+import org.codehaus.janino.Mod;
+import org.codehaus.janino.Parser;
+import org.codehaus.janino.Scanner;
+import org.codehaus.janino.util.PrimitiveWrapper;
+import org.drools.rule.Declaration;
+import org.drools.semantics.base.ClassObjectType;
+import org.drools.spi.ObjectType;
 
 public class JavaScriptEvaluator extends EvaluatorBase
 {

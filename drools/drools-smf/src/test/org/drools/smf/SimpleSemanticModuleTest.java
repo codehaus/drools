@@ -1,5 +1,7 @@
 package org.drools.smf;
 
+import java.util.Set;
+
 import org.drools.DroolsTestCase;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -8,9 +10,6 @@ import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * 

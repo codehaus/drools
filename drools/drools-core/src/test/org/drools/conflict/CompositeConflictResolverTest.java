@@ -1,10 +1,11 @@
 package org.drools.conflict;
 
 import junit.framework.TestCase;
-import org.drools.spi.Activation;
-import org.drools.spi.MockTuple;
-import org.drools.spi.MockAgendaItem;
+
 import org.drools.rule.Rule;
+import org.drools.spi.Activation;
+import org.drools.spi.MockAgendaItem;
+import org.drools.spi.MockTuple;
 
 /*
  * $Id: ComplexityConflictResolverTest.java,v 1.3 2004/09/16 23:43:08 mproctor

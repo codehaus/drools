@@ -2,16 +2,15 @@ package org.drools.semantics.java;
 
 import java.io.IOException;
 
-import org.drools.rule.RuleSet;
-import org.drools.smf.Configuration;
-import org.drools.smf.FunctionsFactory;
-import org.drools.smf.FactoryException;
-import org.drools.spi.RuleBaseContext;
-import org.drools.spi.Functions;
-
 import org.codehaus.janino.Java.CompileException;
 import org.codehaus.janino.Parser.ParseException;
 import org.codehaus.janino.Scanner.ScanException;
+import org.drools.rule.RuleSet;
+import org.drools.smf.Configuration;
+import org.drools.smf.FactoryException;
+import org.drools.smf.FunctionsFactory;
+import org.drools.spi.Functions;
+import org.drools.spi.RuleBaseContext;
 
 public class JavaFunctionsFactory
     implements

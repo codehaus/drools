@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImplTest.java,v 1.5 2004-11-28 00:58:44 simon Exp $
+ * $Id: WorkingMemoryImplTest.java,v 1.6 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,6 @@ package org.drools.reteoo;
  *
  */
 
-import junit.framework.TestCase;
-import org.drools.FactHandle;
-import org.drools.WorkingMemory;
-import org.drools.RuleBase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
@@ -52,8 +47,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.drools.FactHandle;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>

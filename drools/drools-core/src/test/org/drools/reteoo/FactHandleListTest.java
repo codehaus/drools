@@ -1,9 +1,10 @@
 package org.drools.reteoo;
 
-import junit.framework.TestCase;
-import org.drools.FactHandle;
-
 import java.io.Serializable;
+
+import junit.framework.TestCase;
+
+import org.drools.FactHandle;
 
 public class FactHandleListTest extends TestCase
 {

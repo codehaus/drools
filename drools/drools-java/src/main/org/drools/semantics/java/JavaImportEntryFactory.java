@@ -2,10 +2,10 @@ package org.drools.semantics.java;
 
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
-import org.drools.smf.ImportEntryFactory;
 import org.drools.smf.FactoryException;
-import org.drools.spi.RuleBaseContext;
+import org.drools.smf.ImportEntryFactory;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.RuleBaseContext;
 
 public class JavaImportEntryFactory implements ImportEntryFactory
 {

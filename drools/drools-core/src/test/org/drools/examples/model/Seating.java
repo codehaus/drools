@@ -1,7 +1,7 @@
 package org.drools.examples.model;
 
 /*
- * $Id: Seating.java,v 1.1 2004-11-07 18:49:04 mproctor Exp $
+ * $Id: Seating.java,v 1.2 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,9 @@ package org.drools.examples.model;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
 
 public class Seating  implements Serializable
 {

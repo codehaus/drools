@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.21 2004-12-05 20:37:06 dbarnett Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.22 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,14 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.rules.ObjectFilter;
+import javax.rules.admin.RuleExecutionSet;
+
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.RuleIntegrationException;
@@ -49,14 +57,6 @@ import org.drools.WorkingMemory;
 import org.drools.jsr94.rules.Jsr94FactHandleFactory;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-
-import javax.rules.ObjectFilter;
-import javax.rules.admin.RuleExecutionSet;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The Drools implementation of the <code>RuleExecutionSet</code> interface
