@@ -81,7 +81,7 @@ public class BeanShellFilterCondition implements FilterCondition
                     // exception regarding the non-Boolean return from bsh.
                 }
 
-                throw new FilterException();
+                throw new NonBooleanExpressionException();
             }
         }
         catch (EvalError e)
