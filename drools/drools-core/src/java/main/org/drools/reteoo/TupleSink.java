@@ -4,6 +4,7 @@ package org.drools.reteoo;
 import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
+import org.drools.FactException;
 
 /** Receiver of propagated {@link ReteTuple}s from a {@link TupleSource}.
  *
@@ -32,4 +33,10 @@ public interface TupleSink
     void retractObject(TupleSource inputSource,
                        Object object,
                        WorkingMemory workingMemory) throws RetractionException;
+
+    /*
+    void retractTuples(TupleSource inputSOurce,
+                       Object triggerObject,
+                       TupleSet tuples) throws FactException;
+    */
 }

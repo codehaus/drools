@@ -6,7 +6,7 @@ package org.drools;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
-public class AssertionException extends DroolsException
+public class AssertionException extends FactException
 {
     /** Construct.
      */
