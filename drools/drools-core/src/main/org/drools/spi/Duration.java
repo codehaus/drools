@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Duration.java,v 1.3 2004-06-18 19:03:37 n_alex Exp $
+ $Id: Duration.java,v 1.4 2004-06-20 16:07:10 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ public interface Duration
 {
     /**
      * <p>Retrieve the duration for which the conditions of this
-     * <code>Tuple</code> have remain true before the rule will
+     * <code>Tuple</code> must remain true before the rule will
      * fire.</p>
      *
      *  @param tuple

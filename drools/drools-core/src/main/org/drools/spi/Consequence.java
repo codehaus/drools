@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Consequence.java,v 1.5 2003-11-19 21:31:12 bob Exp $
+ $Id: Consequence.java,v 1.6 2004-06-20 16:07:10 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools.spi;
 
 import org.drools.WorkingMemory;
 
-/** Consequence to be fired upon successful  match of a <code>Rule</code>.
+/** Consequence to be fired upon successful match of a <code>Rule</code>.
  *
  *  @see org.drools.rule.Rule
  *

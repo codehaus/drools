@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ConflictResolver.java,v 1.1 2003-12-02 23:12:41 bob Exp $
+ $Id: ConflictResolver.java,v 1.2 2004-06-20 16:07:10 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -56,13 +56,13 @@ import java.util.List;
  *  priority ordering of conflicting rules.
  *  </p>
  *
- *  @see Activation.
- *  @see Tuple.
- *  @see org.drools.rule.Rule.
+ *  @see Activation
+ *  @see Tuple
+ *  @see org.drools.rule.Rule
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConflictResolver.java,v 1.1 2003-12-02 23:12:41 bob Exp $
+ *  @version $Id: ConflictResolver.java,v 1.2 2004-06-20 16:07:10 n_alex Exp $
  */
 public interface ConflictResolver
 {
