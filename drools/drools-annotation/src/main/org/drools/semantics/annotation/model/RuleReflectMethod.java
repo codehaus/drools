@@ -17,10 +17,10 @@ class RuleReflectMethod implements Externalizable
     private ParameterValue[] parameterValues;
 
     /**
-     * Not intended to be called. Required only for Externalizable. 
+     * Not intended to be called. Required only for Externalizable.
      */
     public RuleReflectMethod() {}
-    
+
     public RuleReflectMethod( Rule rule, Object pojo, Method method,
             ParameterValue[] parameterValues )
     {
@@ -65,9 +65,9 @@ class RuleReflectMethod implements Externalizable
     {
         rule = (Rule) in.readObject();
         pojo = in.readObject();
-        
+
         String methodName = (String) in.readObject();
-        Class[] parameterTypes = (Class[]) in.readObject(); 
+        Class[] parameterTypes = (Class[]) in.readObject();
         try
         {
             method = pojo.getClass().getMethod(methodName, parameterTypes);
@@ -76,16 +76,16 @@ class RuleReflectMethod implements Externalizable
         {
             throw new RuntimeException(e);
         }
-        
+
         parameterValues = (ParameterValue[]) in.readObject();
     }
-    
+
     public String toString() {
-        return pojo.getClass().getSimpleName() 
+        return pojo.getClass().getSimpleName()
                 + "." + method.getName()
                 + "(" + toStringParamterTypes() + ")";
     }
-    
+
     private String toStringParamterTypes() {
         return "...";
 //        StringBuilder value = new StringBuilder();

@@ -1,4 +1,4 @@
-package org.drools.examples.jiahvac.control.pump;
+package org.drools.examples.jiahvac.control.rules;
 
 import org.drools.examples.jiahvac.model.Floor;
 import org.drools.examples.jiahvac.model.HeatPump;
@@ -17,22 +17,31 @@ public class FloorsWarmEnough
     public boolean isPumpHeating(@DroolsParameter("pump") HeatPump pump) {
         return pump.getState() == HEATING;
      }
-    
+
+    @DroolsCondition
+    public boolean isPumpServicingFloor(@DroolsParameter("pump") HeatPump pump,
+                                        @DroolsParameter("thermometer") Thermometer thermometer) {
+        return thermometer.getFloor().getHeatPump() == pump;
+    }
+
     @DroolsCondition
     public boolean isAllFloorsWarmEnough(@DroolsParameter("pump") HeatPump pump,
                                          @DroolsParameter("thermometer") Thermometer thermometer,
                                          @DroolsParameter("control") TempuratureControl control) {
-        if (thermometer.getFloor().getHeatPump() != pump) {
+        if (!control.isWarmEnough(thermometer.getReading())) {
             return false;
         }
-        boolean result = true;
         for (Floor floor : pump.getFloors()) {
-            double temp = floor.getThermometer().getReading();
-            result &= control.isWarmEnough(temp);
+            if (floor == thermometer.getFloor()) {
+                continue;
+            }
+            if (!control.isWarmEnough(floor.getThermometer().getReading())) {
+                return false;
+            }
         }
-        return result;
+        return true;
      }
-    
+
     @DroolsConsequence
     public void consequence(@DroolsParameter("pump") HeatPump pump) {
         pump.setState(OFF);

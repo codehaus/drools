@@ -124,6 +124,40 @@
             </properties>
 		</dependency>
 
+        <dependency>
+            <groupId>easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>1.1</version>
+            <properties>
+                <scope>compile, test</scope>
+            </properties>
+        </dependency>
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymockclassextension</artifactId>
+			<version>1.1</version>
+            <properties>
+                <scope>compile, test</scope>
+            </properties>
+		</dependency>
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymockcontainer-jdk5</artifactId>
+			<version>1.0.1</version>
+            <properties>
+                <scope>compile, test</scope>
+            </properties>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-full</artifactId>
+			<version>2.0.2</version>
+            <properties>
+                <requiredBy>easymock</requiredBy>
+                <scope>compile, test</scope>
+            </properties>
+		</dependency>
+
     </dependencies>
 
     <build>

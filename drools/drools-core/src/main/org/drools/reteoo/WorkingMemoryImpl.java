@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.61 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.62 2005-02-05 18:03:49 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,7 +67,7 @@ import org.drools.util.PrimitiveLongStack;
 
 /**
  * Implementation of <code>WorkingMemory</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -120,7 +120,7 @@ class WorkingMemoryImpl
 
     /**
      * Construct.
-     * 
+     *
      * @param ruleBase
      *            The backing rule-base.
      */
@@ -152,7 +152,7 @@ class WorkingMemoryImpl
 
     /**
      * Create a new <code>FactHandle</code>.
-     * 
+     *
      * @return The new fact handle.
      */
     FactHandle newFactHandle()
@@ -204,7 +204,7 @@ class WorkingMemoryImpl
     /**
      * Retrieve the rule-firing <code>Agenda</code> for this
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @return The <code>Agenda</code>.
      */
     protected Agenda getAgenda()
@@ -382,9 +382,10 @@ class WorkingMemoryImpl
         }
         catch ( NoSuchMethodException e )
         {
-            // Method addPropertyChangeListener not found,
-            // so Drools will be unable to process JavaBean
-            // PropertyChangeEvents on the asserted Object
+            System.err.println( "Warning: Method addPropertyChangeListener not found"
+                                + " on the class " + object.getClass( )
+                                + " so Drools will be unable to process JavaBean"
+                                + " PropertyChangeEvents on the asserted Object" );
         }
         catch ( IllegalArgumentException e )
         {
@@ -450,7 +451,7 @@ class WorkingMemoryImpl
 
     /**
      * Associate an object with its handle.
-     * 
+     *
      * @param handle
      *            The handle.
      * @param object
@@ -540,10 +541,10 @@ class WorkingMemoryImpl
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
      * <code>JoinNode</code>.
-     * 
+     *
      * @param node
      *            The <code>JoinNode</code> key.
-     * 
+     *
      * @return The node's memory.
      */
     public JoinMemory getJoinMemory(JoinNode node)
@@ -570,7 +571,7 @@ class WorkingMemoryImpl
     /**
      * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
      * Scheduler used for duration rules.
-     * 
+     *
      * @param handler
      */
     public void setAsyncExceptionHandler(AsyncExceptionHandler handler)
