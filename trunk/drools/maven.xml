@@ -6,6 +6,12 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
+    <goal name="damagecontrol">
+      <attainGoal name="multiproject:clean"/>
+      ${pom.getPluginContext( "maven-multiproject-plugin" ).setVariable( "goal", "jar:jar" )}
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
     <goal name="default">
       <attainGoal name="multiproject:install"/>
     </goal>
