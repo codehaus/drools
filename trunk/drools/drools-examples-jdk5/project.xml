@@ -2,8 +2,8 @@
 <project>
     <extend>../project.xml</extend>
     <pomVersion>3</pomVersion>
-    <name>Drools :: Java Annotation Semantics Module Example Library</name>
-    <artifactId>drools-annotation-examples</artifactId>
+    <name>Drools :: Example Library - JDK5</name>
+    <artifactId>drools-examples-jdk5</artifactId>
     <groupId>drools</groupId>
 
     <dependencies>
