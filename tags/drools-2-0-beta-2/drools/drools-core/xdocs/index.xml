@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>drools</title>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+  </properties>
+
+  <body>
+
+  <section name="drools">
+    <p>
+    Drools is an augmented implementation of Forgy's RETE algorithm,
+    tailored for the object-oriented language of Java.  Adapting
+    RETE to an object-oriented interface allows for more natural
+    expression of business rules with regards to business objects.
+    </p>
+  </section>
+
+</body>
+</document>
+

@@ -1,0 +1,32 @@
+
+<ruleset name="My Rule Set">
+
+	<import>org.dom4j.Document</import>
+
+	<rule name="My Rule">
+
+		<param type="Document">doc1</param>
+		<param type="Document">doc2</param>
+
+		<decl type="String">id</decl>
+
+		<when>
+			<cond>doc1.getRootElement().getName().equals( "a" )</cond>
+			<cond>id = doc1.selectObject( "string(/a/@id)" )</cond>
+			<cond>id = doc2.selectObject( "string(/b/@id)" )</cond>
+		</when>
+
+		<then>
+			import org.drools.semantic.java.io.RuleSetReaderTest;
+
+			RuleSetReaderTest.RETURN_doc1 = doc1;
+			RuleSetReaderTest.RETURN_doc2 = doc2;
+
+			retractObject( doc1 );
+			modifyObject( doc2 );
+
+		</then>
+	</rule>
+
+</ruleset>
+
