@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.53 2005-01-11 15:04:59 mproctor Exp $
+ * $Id: Agenda.java,v 1.54 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,11 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactHandle;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
@@ -49,11 +53,6 @@ import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
 import org.drools.util.PriorityQueue;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Rule-firing Agenda.
@@ -80,17 +79,28 @@ class Agenda
     // Instance members
     // ------------------------------------------------------------
 
+    public static int               NONE    = 0;
+    public static int               ASSERT  = 1;
+    public static int               MODIFY  = 2;
+    public static int               RETRACT = 3;
+
     /** Working memory of this Agenda. */
     private final WorkingMemoryImpl workingMemory;
 
     /** Items in the agenda. */
-    private final PriorityQueue     items;
+    private final PriorityQueue     activationQueue;
 
     /** Items time-delayed. */
-    private final Set               scheduledItems;
+    private final Map               scheduledItems;
+
+    private final Map               itemsToRetract;
+
+    private final Map               scheduledItemsToRetract;
 
     /** The current agenda item being fired; or null if none. */
     private AgendaItem              item;
+
+    private int                     mode    = 0;
 
     // ------------------------------------------------------------
     // Constructors
@@ -108,8 +118,10 @@ class Agenda
                   ConflictResolver conflictResolver)
     {
         this.workingMemory = workingMemory;
-        this.items = new PriorityQueue( conflictResolver );
-        this.scheduledItems = new HashSet( );
+        this.activationQueue = new PriorityQueue( conflictResolver );
+        this.scheduledItems = new HashMap( );
+        this.itemsToRetract = new HashMap( );
+        this.scheduledItemsToRetract = new HashMap( );
     }
 
     // ------------------------------------------------------------
@@ -129,12 +141,6 @@ class Agenda
     void addToAgenda(ReteTuple tuple,
                      Rule rule)
     {
-        // TODO: Remove this defensive rubbish.
-        if ( rule == null )
-        {
-            return;
-        }
-
         /*
          * if no-loop is true for this rule and the current rule is active then
          * do not not re-add to the agenda
@@ -145,23 +151,50 @@ class Agenda
             return;
         }
 
-        AgendaItem item = new AgendaItem( tuple,
-                                          rule );
-
         Duration dur = rule.getDuration( );
 
         if ( dur != null && dur.getDuration( tuple ) > 0 )
         {
-            this.scheduledItems.add( item );
-            scheduleItem( item );
+            // check if item has been retracted as part of a modify
+            AgendaItem item = null;
+            if ( !this.itemsToRetract.isEmpty( ) )
+            {
+                item = (AgendaItem) this.scheduledItems.get( tuple.getKey( ) );
+            }
+
+            if ( item == null )
+            {
+                item = new AgendaItem( tuple,
+                                       rule );
+                this.scheduledItems.put( item.getKey( ),
+                                         item );
+                scheduleItem( item );
+                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
+                                                                             tuple );
+            }
         }
         else
         {
-            this.items.add( item );
-        }
+            // check if item has been retracted as part of a modify
+            AgendaItem item = null;
+            if ( !this.itemsToRetract.isEmpty( ) )
+            {
+                item = (AgendaItem) this.itemsToRetract.remove( tuple.getKey( ) );
+            }
 
-        workingMemory.getEventSupport( ).fireActivationCreated( rule,
-                                                                tuple );
+            if ( item == null )
+            {
+                item = new AgendaItem( tuple,
+                                       rule );
+                this.activationQueue.add( item );
+                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
+                                                                             tuple );
+            }
+            else
+            {
+                this.activationQueue.add( item );
+            }
+        }
     }
 
     /**
@@ -175,14 +208,9 @@ class Agenda
     void removeFromAgenda(TupleKey key,
                           Rule rule)
     {
-        if ( rule == null )
-        {
-            return;
-        }
-
         AgendaItem eachItem;
         Tuple tuple;
-        Iterator itemIter = this.items.iterator( );
+        Iterator itemIter = this.activationQueue.iterator( );
 
         while ( itemIter.hasNext( ) )
         {
@@ -190,19 +218,25 @@ class Agenda
 
             if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                tuple = eachItem.getTuple( );
-
                 itemIter.remove( );
                 // need to restart iterator as heap could place elements before
                 // current iterator position
-                itemIter = this.items.iterator( );
+                itemIter = this.activationQueue.iterator( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
-                                                                               tuple );
+                if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
+                {
+                    this.itemsToRetract.put( eachItem.getKey( ),
+                                             eachItem );
+                }
+                else
+                {
+                    this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
+                                                                                   eachItem.getTuple( ) );
+                }
             }
         }
 
-        itemIter = this.scheduledItems.iterator( );
+        itemIter = this.scheduledItems.values( ).iterator( );
 
         while ( itemIter.hasNext( ) )
         {
@@ -210,67 +244,51 @@ class Agenda
 
             if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                tuple = eachItem.getTuple( );
+                if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
+                {
+                    this.scheduledItemsToRetract.put( eachItem.getKey( ),
+                                                      eachItem );
+                }
+                else
+                {
+                    tuple = eachItem.getTuple( );
 
-                cancelItem( eachItem );
+                    cancelItem( eachItem );
 
-                itemIter.remove( );
+                    itemIter.remove( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
-                                                                               tuple );
+                    this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
+                                                                                   tuple );
+                }
             }
         }
     }
 
-    /**
-     * Modify the agenda.
-     * 
-     * @param trigger
-     *            The triggering root object handle.
-     * @param modifyTuples
-     *            New tuples from the modification.
-     * @param rule
-     *            The rule. TODO: Can't simply remove them from the TupleSet!!!
-     */
-    void modifyAgenda(FactHandle trigger,
-                      TupleSet modifyTuples,
-                      Rule rule)
+    void removeMarkedItemsFromAgenda()
     {
-        Iterator itemIter = this.items.iterator( );
         AgendaItem eachItem;
-        ReteTuple eachTuple;
 
-        // make sure we dont add an existing Tuple onto the Agenda
+        Iterator itemIter = this.itemsToRetract.values( ).iterator( );
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = (AgendaItem) itemIter.next( );
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+                                                                           eachItem.getTuple( ) );
+            itemIter.remove( );
+        }
+
+        itemIter = this.scheduledItemsToRetract.values( ).iterator( );
         while ( itemIter.hasNext( ) )
         {
             eachItem = (AgendaItem) itemIter.next( );
 
-            if ( eachItem.getRule( ) == rule && eachItem.dependsOn( trigger ) )
-            {
-                modifyTuples.removeTuple( eachItem.getKey( ) );
-            }
-        }
+            cancelItem( eachItem );
 
-        // make sure we dont add an existing Tuple onto the Schedule
-        itemIter = this.scheduledItems.iterator( );
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) itemIter.next( );
+            itemIter.remove( );
 
-            if ( eachItem.getRule( ) == rule && eachItem.dependsOn( trigger ) )
-            {
-                modifyTuples.removeTuple( eachItem.getKey( ) );
-            }
-        }
-
-        // All remaining tuples are new so add them to the Agenda
-        Iterator tupleIter = modifyTuples.iterator( );
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = (ReteTuple) tupleIter.next( );
-
-            addToAgenda( eachTuple,
-                         rule );
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+                                                                           eachItem.getTuple( ) );
+            itemIter.remove( );
         }
     }
 
@@ -283,7 +301,7 @@ class Agenda
         AgendaItem eachItem;
 
         // Remove all items in the Agenda and fire a Cancelled event for each
-        Iterator iter = this.items.iterator( );
+        Iterator iter = this.activationQueue.iterator( );
         while ( iter.hasNext( ) )
         {
             eachItem = (AgendaItem) iter.next( );
@@ -294,7 +312,7 @@ class Agenda
                                                                            eachItem.getTuple( ) );
         }
 
-        iter = this.scheduledItems.iterator( );
+        iter = this.scheduledItems.values( ).iterator( );
 
         // Cancel all items in the Schedule and fire a Cancelled event for each
         while ( iter.hasNext( ) )
@@ -341,12 +359,12 @@ class Agenda
      */
     public boolean isEmpty()
     {
-        return this.items.isEmpty( );
+        return this.activationQueue.isEmpty( );
     }
 
     public int size()
     {
-        return items.size( );
+        return activationQueue.size( );
     }
 
     /**
@@ -356,13 +374,13 @@ class Agenda
      *             If an error occurs while firing an agenda item.
      */
     public void fireNextItem(AgendaFilter filter) throws ConsequenceException
-    {       
+    {
         if ( isEmpty( ) )
         {
             return;
         }
 
-        item = (AgendaItem) this.items.remove( );
+        item = (AgendaItem) this.activationQueue.remove( );
 
         try
         {
@@ -378,12 +396,18 @@ class Agenda
     }
 
     /**
-     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
-     * used for duration rules.
+     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
+     * Scheduler used for duration rules.
+     * 
      * @param handler
      */
     void setAsyncExceptionHandler(AsyncExceptionHandler handler)
     {
-        Scheduler.getInstance( ).setAsyncExceptionHandler(handler);
-    }     
+        Scheduler.getInstance( ).setAsyncExceptionHandler( handler );
+    }
+
+    void setMode(int mode)
+    {
+        this.mode = mode;
+    }
 }

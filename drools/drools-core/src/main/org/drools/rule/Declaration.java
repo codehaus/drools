@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.32 2004-12-06 15:36:16 simon Exp $
+ * $Id: Declaration.java,v 1.33 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,9 @@ package org.drools.rule;
  *
  */
 
-import org.drools.spi.ObjectType;
-
 import java.io.Serializable;
+
+import org.drools.spi.ObjectType;
 
 /**
  * A typed, named variable for <code>Condition</code> evaluation.

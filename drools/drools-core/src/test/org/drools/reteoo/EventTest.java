@@ -99,6 +99,9 @@ public class EventTest extends DroolsTestCase
         assertEquals( 0,
                       listener.fired );
 
+        workingMemory.modifyObject( stringFact1,
+                                    "stilton" );
+
         workingMemory.fireAllRules( );
 
         assertEquals( 4,
@@ -106,7 +109,7 @@ public class EventTest extends DroolsTestCase
         assertEquals( 0,
                       ((WorkingMemoryImpl) workingMemory).getAgenda( ).size( ) );
 
-        assertEquals( 0,
+        assertEquals( 1,
                       listener.modified );
         assertEquals( 0,
                       listener.cancelled );
@@ -118,9 +121,9 @@ public class EventTest extends DroolsTestCase
                       ((WorkingMemoryImpl) workingMemory).getAgenda( ).size( ) );
         assertEquals( 0,
                       listener.cancelled );
-        assertEquals( 1,
+        assertEquals( 2,
                       listener.modified );
-        assertEquals( 7,
+        assertEquals( 9,
                       listener.tested );
         assertEquals( 7,
                       listener.created );

@@ -1,8 +1,8 @@
 package org.drools.reteoo;
 
-import org.drools.FactHandle;
-
 import java.io.Serializable;
+
+import org.drools.FactHandle;
 
 public interface FactHandleFactory
     extends

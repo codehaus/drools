@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.23 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: Rete.java,v 1.24 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,15 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.spi.ObjectType;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.spi.ObjectType;
 
 /**
  * The Rete-OO network.
@@ -138,38 +138,7 @@ class Rete
         }
     }
 
-    /**
-     * Modify a fact object in this <code>RuleBase</code> and the specified
-     * <code>WorkingMemory</code>.
-     *
-     * With the exception of time-based nodes, modification of a fact object is
-     * semantically equivelent to retracting and re-asserting it.
-     *
-     * @param handle
-     *            The fact handle.
-     * @param object
-     *            The modified value object.
-     * @param workingMemory
-     *            The working memory session.
-     *
-     * @throws FactException
-     *             if an error occurs during modification.
-     */
-    void modifyObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws FactException
-    {
-        Iterator nodeIter = getObjectTypeNodeIterator( );
-
-        while ( nodeIter.hasNext( ) )
-        {
-            ( (ObjectTypeNode) nodeIter.next( ) ).modifyObject( handle,
-                                                                object,
-                                                                workingMemory );
-        }
-    }
-
-    /**
+   /**
      * Add an <code>ObjectTypeNode</code> child to this <code>Rete</code>.
      *
      * @param node

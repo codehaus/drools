@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.28 2004-12-06 16:11:40 simon Exp $
+ * $Id: ObjectTypeNode.java,v 1.29 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,16 +40,16 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.spi.ObjectType;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.spi.ObjectType;
 
 /**
  * Filters <code>Objects</code> coming from the <code>Rete</code> using a
@@ -198,42 +198,6 @@ class ObjectTypeNode
         {
             ( ( ParameterNode ) this.parameterNodes.get( i ) ).retractObject( handle,
                                                                               workingMemory );
-        }
-    }
-
-    /**
-     * Modify a fact object in this <code>RuleBase</code> and the specified
-     * <code>WorkingMemory</code>.
-     *
-     * With the exception of time-based nodes, modification of a fact object is
-     * semantically equivelent to retracting and re-asserting it.
-     *
-     * @param handle The fact handle.
-     * @param object The modified value object.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException if an error occurs during assertion.
-     */
-    void modifyObject( FactHandle handle,
-                       Object object,
-                       WorkingMemoryImpl workingMemory ) throws FactException
-    {
-        if ( this.objectType.matches( object ) )
-        {
-            for ( int i = 0, size = this.parameterNodes.size(); i < size; i++ )
-            {
-                ( ( ParameterNode ) this.parameterNodes.get( i ) ).modifyObject( handle,
-                                                                                 object,
-                                                                                 workingMemory );
-            }
-        }
-        else
-        {
-            for ( int i = 0, size = this.parameterNodes.size( ); i < size; i++ )
-            {
-                ( ( ParameterNode ) this.parameterNodes.get( i ) ).retractObject( handle,
-                                                                                  workingMemory );
-            }
         }
     }
 }

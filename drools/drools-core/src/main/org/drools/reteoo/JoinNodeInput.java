@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNodeInput.java,v 1.19 2004-12-06 06:54:48 simon Exp $
+ * $Id: JoinNodeInput.java,v 1.20 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,8 +41,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
 import org.drools.RetractionException;
 
 /**
@@ -178,34 +176,5 @@ class JoinNodeInput
         getJoinNode( ).retractTuples( key,
                                       workingMemory );
     }
-    /**
-     * Modify tuples.
-     *
-     * @param trigger
-     *            The root fact object handle.
-     * @param modifyTuples
-     *            Modification replacement tuples.
-     * @param workingMemory
-     *            The working memory session.
-     *
-     * @throws FactException
-     *             If an error occurs while modifying.
-     */
-    public void modifyTuples(FactHandle trigger,
-                             TupleSet modifyTuples,
-                             WorkingMemoryImpl workingMemory) throws FactException
-    {
-        if ( this.side == LEFT )
-        {
-            this.joinNode.modifyLeftTuples( trigger,
-                                            modifyTuples,
-                                            workingMemory );
-        }
-        else
-        {
-            this.joinNode.modifyRightTuples( trigger,
-                                             modifyTuples,
-                                             workingMemory );
-        }
-    }
+
 }

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.42 2005-01-11 15:04:58 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.43 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,13 +41,13 @@ package org.drools;
  *
  */
 
-import org.drools.event.WorkingMemoryEventListener;
-import org.drools.spi.AgendaFilter;
-import org.drools.spi.AsyncExceptionHandler;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import org.drools.event.WorkingMemoryEventListener;
+import org.drools.spi.AgendaFilter;
+import org.drools.spi.AsyncExceptionHandler;
 
 /**
  * A knowledge session for a <code>RuleBase</code>.

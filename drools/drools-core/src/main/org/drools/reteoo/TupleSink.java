@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSink.java,v 1.23 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: TupleSink.java,v 1.24 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,12 +40,10 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.RetractionException;
-
 import java.io.Serializable;
+
+import org.drools.AssertionException;
+import org.drools.RetractionException;
 
 /**
  * Receiver of propagated <code>ReteTuple</code> s from a
@@ -87,20 +85,4 @@ interface TupleSink
     void retractTuples(TupleKey key,
                        WorkingMemoryImpl workingMemory) throws RetractionException;
 
-    /**
-     * Modify tuples.
-     *
-     * @param trigger
-     *            The root fact object handle.
-     * @param modifyTuples
-     *            Modification replacement tuples.
-     * @param workingMemory
-     *            The working memory session.
-     *
-     * @throws FactException
-     *             If an error occurs while modifying.
-     */
-    void modifyTuples(FactHandle trigger,
-                      TupleSet modifyTuples,
-                      WorkingMemoryImpl workingMemory) throws FactException;
 }

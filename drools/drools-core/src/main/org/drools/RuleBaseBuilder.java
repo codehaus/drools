@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.19 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: RuleBaseBuilder.java,v 1.20 2005-02-02 00:23:21 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -63,7 +63,7 @@ import org.drools.spi.RuleBaseContext;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleBaseBuilder.java,v 1.19 2004-12-14 21:00:27 mproctor Exp $
+ * @version $Id: RuleBaseBuilder.java,v 1.20 2005-02-02 00:23:21 mproctor Exp $
  */
 public class RuleBaseBuilder
 {
@@ -140,7 +140,7 @@ public class RuleBaseBuilder
         this.builder.setFactHandleFactory( factHandleFactory );
     }
 
-    public void setConflictResolver( ConflictResolver conflictResolver )
+    public void setConflictResolver(ConflictResolver conflictResolver)
     {
         this.builder.setConflictResolver( conflictResolver );
     }

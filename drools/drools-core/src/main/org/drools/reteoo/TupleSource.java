@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.29 2004-12-06 16:11:40 simon Exp $
+ * $Id: TupleSource.java,v 1.30 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,13 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.AssertionException;
-import org.drools.FactException;
-import org.drools.FactHandle;
-import org.drools.RetractionException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.drools.AssertionException;
+import org.drools.RetractionException;
 
 /**
  * A source of <code>ReteTuple</code> s for a <code>TupleSink</code>.
@@ -139,28 +137,6 @@ abstract class TupleSource
         {
             ( ( TupleSink ) this.tupleSinks.get( i ) ).retractTuples( key,
                                                                       workingMemory );
-        }
-    }
-
-    /**
-     * Propagate the modification of <code>Tuple</code> s to this node's
-     * <code>TupleSink</code>.
-     *
-     * @param trigger The modification trigger object handle.
-     * @param modifyTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     *
-     * @throws FactException If an error occurs while attempting modification.
-     */
-    protected void propagateModifyTuples(FactHandle trigger,
-                                         TupleSet modifyTuples,
-                                         WorkingMemoryImpl workingMemory) throws FactException
-    {
-        for ( int i = 0, size = this.tupleSinks.size( ); i < size; i++ )
-        {
-            ( ( TupleSink ) this.tupleSinks.get( i ) ).modifyTuples( trigger,
-                                                                     modifyTuples,
-                                                                     workingMemory );
         }
     }
 

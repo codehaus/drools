@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: DefaultKnowledgeHelper.java,v 1.1 2005-01-26 16:14:40 mproctor Exp $
+ * $Id: DefaultKnowledgeHelper.java,v 1.2 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,11 @@ package org.drools.spi;
  *
  */
 
+import java.util.List;
+
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
-
-import java.util.List;
 
 public class DefaultKnowledgeHelper implements KnowledgeHelper
 {

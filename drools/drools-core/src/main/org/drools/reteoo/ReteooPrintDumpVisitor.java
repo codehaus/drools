@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooPrintDumpVisitor.java,v 1.10 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: ReteooPrintDumpVisitor.java,v 1.11 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,11 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.RuleBase;
-import org.drools.rule.Declaration;
-
 import java.io.PrintStream;
 import java.util.Iterator;
+
+import org.drools.RuleBase;
+import org.drools.rule.Declaration;
 
 public class ReteooPrintDumpVisitor extends ReflectiveVisitor
 {
