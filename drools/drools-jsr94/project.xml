@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>drools</name>
   <id>drools</id>
-  <currentVersion>2.0-beta-9</currentVersion>
+  <currentVersion>2.0-beta-10</currentVersion>
 
   <organization>
     <name>The Werken Company</name>
@@ -111,6 +111,14 @@
     <developer>
       <name>Tom Vasak</name>
       <email>tomv@aic.net.au</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Matt Ho</name>
+      <email>matt@indigoegg.com</email>
       <roles>
         <role>Developer</role>
       </roles>
