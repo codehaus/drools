@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprExtractor.java,v 1.17 2004-11-13 01:43:07 simon Exp $
+ * $Id: ExprExtractor.java,v 1.18 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,7 +46,7 @@ import org.drools.spi.Extractor;
 import org.drools.spi.Tuple;
 
 import javax.naming.ConfigurationException;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Java expression semantics <code>Condition</code>.
@@ -73,7 +73,7 @@ public class ExprExtractor extends Expr implements Extractor
      * @throws ConfigurationException If an error occurs while attempting to
      *         perform configuration.
      */
-    public ExprExtractor(String expr, Set availDecls) throws Exception
+    public ExprExtractor(String expr, List availDecls) throws Exception
     {
         super( expr, availDecls );
     }

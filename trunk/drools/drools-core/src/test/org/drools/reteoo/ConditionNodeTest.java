@@ -21,7 +21,7 @@ public class ConditionNodeTest extends TestCase
     public ConditionNodeTest(String name)
     {
         super( name );
-    }    
+    }
 
     public void setUp()
     {
@@ -101,7 +101,7 @@ public class ConditionNodeTest extends TestCase
      * A FilterNode MUST delegate to its input source for getTupleDeclarations()
      * since it does not alter the structure of the Tuples.
      */
-    public void testGetTupleDeclarations()
+    public void testGetTupleDeclarations() throws Exception
     {
         Declaration decl = this.rule.addParameterDeclaration( "object", new MockObjectType( Object.class ) );
 

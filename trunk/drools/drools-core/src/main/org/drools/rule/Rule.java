@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.47 2004-11-26 18:35:18 dbarnett Exp $
+ * $Id: Rule.java,v 1.48 2004-11-28 02:22:18 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,27 +50,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * A set of <code>Condition</code> s and a <code>Consequence</code>.
- * 
+ *
  * The <code>Conditions</code> describe the circumstances that represent a
  * match for this rule. The <code>Consequence</code> gets fired when the
  * <code>Conditions</code> match.
- * 
+ *
  * @see Condition
  * @see Consequence
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- * 
- * TODO: Check for missing/duplicate declarations.
  */
 public class Rule
     implements
@@ -90,19 +85,19 @@ public class Rule
     private int salience;
 
     /** All declarations. */
-    private final SortedSet allDeclarations = new TreeSet( );
+    private final List allDeclarations = new ArrayList( );
 
     /** The local declarations. */
-    private final SortedSet localDeclarations = new TreeSet( );
+    private final List localDeclarations = new ArrayList( );
 
     /** Formal parameter declarations. */
-    private final SortedSet parameterDeclarations = new TreeSet( );
+    private final List parameterDeclarations = new ArrayList( );
 
     /** Conditions. */
     private final List conditions = new ArrayList( );
 
     /** Extractions */
-    private final Set extractions = new HashSet( );
+    private final List extractions = new ArrayList( );
 
     /** Consequence. */
     private Consequence consequence;
@@ -124,7 +119,7 @@ public class Rule
 
     /**
      * Construct.
-     * 
+     *
      * @param name
      *            The name of this rule.
      */
@@ -136,7 +131,7 @@ public class Rule
 
     /**
      * Set the documentation.
-     * 
+     *
      * @param documentation
      *            The documentation.
      */
@@ -147,7 +142,7 @@ public class Rule
 
     /**
      * Retrieve the documentation.
-     * 
+     *
      * @return The documentation or <code>null</code> if none.
      */
     public String getDocumentation()
@@ -157,15 +152,15 @@ public class Rule
 
     /**
      * Set the truthness duration.
-     * 
+     *
      * <p>
      * This is merely a convenience method for calling
      * {@link #setDuration(Duration)}with a <code>FixedDuration</code>.
      * </p>
-     * 
+     *
      * @see #setDuration(Duration)
      * @see FixedDuration
-     * 
+     *
      * @param seconds
      *            The number of seconds the rule must hold true in order to
      *            fire.
@@ -177,7 +172,7 @@ public class Rule
 
     /**
      * Set the truthness duration object.
-     * 
+     *
      * @param duration
      *            The truth duration object.
      */
@@ -188,7 +183,7 @@ public class Rule
 
     /**
      * Retrieve the truthness duration object.
-     * 
+     *
      * @return The truthness duration object.
      */
     public Duration getDuration()
@@ -198,7 +193,7 @@ public class Rule
 
     /**
      * Determine if this rule is internally consistent and valid.
-     * 
+     *
      * @return <code>true</code> if this rule is valid, else
      *         <code>false</code>.
      */
@@ -210,20 +205,20 @@ public class Rule
     /**
      * Check the validity of this rule, and throw exceptions if it fails
      * validity tests.
-     * 
+     *
      * <p>
      * Possibly exceptions include:
      * </p>
-     * 
+     *
      * <pre>
      * NoParameterDeclarationException
      * </pre>
-     * 
+     *
      * <p>
      * A <code>Rule</code> must include at least one parameter declaration and
      * one condition.
      * </p>
-     * 
+     *
      * @throws InvalidRuleException
      *             if this rule is in any way invalid.
      */
@@ -241,7 +236,7 @@ public class Rule
 
     /**
      * Retrieve the name of this rule.
-     * 
+     *
      * @return The name of this rule.
      */
     public String getName()
@@ -251,7 +246,7 @@ public class Rule
 
     /**
      * Retrieve the <code>Rule</code> salience.
-     * 
+     *
      * @return The salience.
      */
     public int getSalience()
@@ -281,14 +276,14 @@ public class Rule
 
     /**
      * Add a declaration.
-     * 
+     *
      * @param identifier
      *            The identifier.
      * @param objectType
      *            The type.
      */
     public Declaration addLocalDeclaration(String identifier,
-                                           ObjectType objectType)
+                                           ObjectType objectType) throws InvalidRuleException
     {
         Declaration declaration = addDeclaration( identifier,
                                                   objectType );
@@ -301,7 +296,7 @@ public class Rule
     /**
      * Add a <i>root fact object </i> parameter <code>Declaration</code> for
      * this <code>Rule</code>.
-     * 
+     *
      * @param identifier
      *            The identifier.
      * @param objectType
@@ -309,7 +304,7 @@ public class Rule
      * @return The declaration.
      */
     public Declaration addParameterDeclaration(String identifier,
-                                               ObjectType objectType)
+                                               ObjectType objectType) throws InvalidRuleException
     {
         Declaration declaration = addDeclaration( identifier,
                                                   objectType );
@@ -321,10 +316,10 @@ public class Rule
 
     /**
      * Retrieve a parameter <code>Declaration</code> by identifier.
-     * 
+     *
      * @param identifier
      *            The identifier.
-     * 
+     *
      * @return The declaration or <code>null</code> if no declaration matches
      *         the <code>identifier</code>.
      */
@@ -336,7 +331,7 @@ public class Rule
 
     /**
      * Add a consistent <code>Extraction</code> to this rule.
-     * 
+     *
      * @param identifier
      *            The declaration identifier.
      * @param extractor
@@ -346,35 +341,24 @@ public class Rule
     public Extraction addExtraction(String identifier,
                                     Extractor extractor) throws InvalidRuleException
     {
-        // check extractors do not share declarations
-        Declaration eachDecl;
 
         // check extractor doesn't target a parameter
-        Iterator declIter = this.parameterDeclarations.iterator( );
-        while ( declIter.hasNext( ) )
+        if ( getParameterDeclaration( identifier ) != null )
         {
-            eachDecl = (Declaration) declIter.next( );
-
-            if ( eachDecl.getIdentifier( ).equals( identifier ) )
-            {
-                throw new InvalidRuleException( this );
-            }
+            throw new InvalidRuleException( this );
         }
 
         // check identifer is not an existing targetted local declaration
         Iterator it = this.extractions.iterator( );
-        Extraction extractions;
         while ( it.hasNext( ) )
         {
-            extractions = (Extraction) it.next( );
-            eachDecl = extractions.getTargetDeclaration( );
-
-            if ( eachDecl.getIdentifier( ).equals( identifier ) )
+            if ( ( (Extraction) it.next( ) ).getTargetDeclaration( ).getIdentifier( ).equals( identifier ) )
             {
                 throw new InvalidRuleException( this );
             }
         }
 
+        // Create the new extraction
         Extraction extraction = new Extraction( getDeclaration( identifier ),
                                                 extractor );
 
@@ -385,10 +369,10 @@ public class Rule
 
     /**
      * Retrieve a <code>Declaration</code> by identifier.
-     * 
+     *
      * @param identifier
      *            The identifier.
-     * 
+     *
      * @return The declaration or <code>null</code> if no declaration matches
      *         the <code>identifier</code>.
      */
@@ -401,39 +385,37 @@ public class Rule
     /**
      * Retrieve the set of all <i>root fact object </i> parameter
      * <code>Declarations</code>.
-     * 
-     * @return The <code>Set</code> of <code>Declarations</code> which
-     *         specify the <i>root fact objects </i>.
+     *
+     * @return The Set of <code>Declarations</code> in order which specify the <i>root fact objects</i>.
      */
-    public SortedSet getParameterDeclarations()
+    public List getParameterDeclarations()
     {
-        return Collections.unmodifiableSortedSet( this.parameterDeclarations );
+        return Collections.unmodifiableList( this.parameterDeclarations );
     }
 
     /**
      * Retrieve the set of all implied local Declarations.
-     * 
-     * @return The <code>Set</code> of all implied <code>Declarations</code>
-     *         which are implied by the conditions.
+     *
+     * @return The Set of all implied <code>Declarations</code> in order which are implied by the conditions.
      */
-    public SortedSet getLocalDeclarations()
+    public List getLocalDeclarations()
     {
-        return Collections.unmodifiableSortedSet( this.localDeclarations );
+        return Collections.unmodifiableList( this.localDeclarations );
     }
 
     /**
      * Retrieve the array of all <code>Declaration</code> s of this rule.
-     * 
-     * @return The <code>Set</code> of all <code>Declarations</code>.
+     *
+     * @return The Set of all <code>Declarations</code> in order.
      */
-    public SortedSet getAllDeclarations()
+    public List getAllDeclarations()
     {
-        return Collections.unmodifiableSortedSet( this.allDeclarations );
+        return Collections.unmodifiableList( this.allDeclarations );
     }
 
     /**
      * Add a <code>Condition</code> to this rule.
-     * 
+     *
      * @param condition
      *            The <code>Condition</code> to add.
      */
@@ -445,7 +427,7 @@ public class Rule
     /**
      * Retrieve the <code>List</code> of <code>Conditions</code> for this
      * rule.
-     * 
+     *
      * @return The <code>List</code> of <code>Conditions</code>.
      */
     public List getConditions()
@@ -461,18 +443,18 @@ public class Rule
     /**
      * Retrieve the <code>Set</code> of <code>Extractions</code> for this
      * rule.
-     * 
+     *
      * @return The <code>Set</code> of <code>Extractions</code>.
      */
-    public Set getExtractions()
+    public List getExtractions()
     {
-        return Collections.unmodifiableSet( this.extractions );
+        return Collections.unmodifiableList( this.extractions );
     }
 
     /**
      * Set the <code>Consequence</code> that is associated with the successful
      * match of this rule.
-     * 
+     *
      * @param consequence
      *            The <code>Consequence</code> to attach to this
      *            <code>Rule</code>.
@@ -485,7 +467,7 @@ public class Rule
     /**
      * Retrieve the <code>Consequence</code> associated with this
      * <code>Rule</code>.
-     * 
+     *
      * @return The <code>Consequence</code>.
      */
     public Consequence getConsequence()
@@ -553,8 +535,13 @@ public class Rule
     }
 
     private Declaration addDeclaration(String identifier,
-                                       ObjectType objectType)
+                                       ObjectType objectType) throws InvalidRuleException
     {
+        if ( getDeclaration( identifier ) != null )
+        {
+            throw new InvalidRuleException( this );
+        }
+
         Declaration declaration = new Declaration( identifier,
                                                    objectType,
                                                    allDeclarations.size( ) );

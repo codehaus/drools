@@ -9,8 +9,9 @@ package org.drools.smf;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author mproctor
@@ -18,7 +19,7 @@ import java.util.TreeSet;
 public class InstrumentedRule extends Rule
 {
 
-    private SortedSet allDeclarations;
+    private List allDeclarations;
 
     public InstrumentedRule(String name)
     {
@@ -27,14 +28,11 @@ public class InstrumentedRule extends Rule
 
     public void setDeclarations(Declaration[] declarations)
     {
-        allDeclarations = new TreeSet();
-        for (int i = 0; i < declarations.length; i++)
-        {
-            allDeclarations.add(declarations[i]);
-        }
+        // Make a defensive copy!
+        allDeclarations = new ArrayList( Arrays.asList( declarations ) );
     }
 
-    public SortedSet getAllDeclarations()
+    public List getAllDeclarations()
     {
         return this.allDeclarations;
     }

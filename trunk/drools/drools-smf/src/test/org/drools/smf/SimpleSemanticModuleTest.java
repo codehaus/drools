@@ -9,6 +9,7 @@ import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
 
 import java.util.Set;
+import java.util.List;
 
 /**
  *
@@ -178,7 +179,7 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
     private class MockDurationFactory implements DurationFactory
     {
 
-        public Duration newDuration(Configuration c, Set d)
+        public Duration newDuration(Configuration c, List d)
         {
 
             return null;

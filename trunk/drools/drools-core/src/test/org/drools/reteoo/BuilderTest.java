@@ -13,6 +13,8 @@ import org.drools.spi.ObjectType;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
+import java.util.LinkedList;
 
 public class BuilderTest extends TestCase
 {
@@ -28,7 +30,7 @@ public class BuilderTest extends TestCase
 
     private Rule        rule1;
 
-    public void setUp()
+    public void setUp() throws Exception
     {
         this.builder = new Builder( );
 
@@ -44,7 +46,7 @@ public class BuilderTest extends TestCase
 
     public void testCreateParameterNodes()
     {
-        Set nodes = this.builder.createParameterNodes( this.rule1 );
+        List nodes = this.builder.createParameterNodes( this.rule1 );
 
         assertEquals( 2, nodes.size( ) );
 
@@ -88,7 +90,7 @@ public class BuilderTest extends TestCase
 
     public void testFindMatchingTupleSourceForExtraction() throws Exception
     {
-        Set sources = new HashSet( );
+        List sources = new LinkedList( );
 
         MockTupleSource source;
 
@@ -105,7 +107,7 @@ public class BuilderTest extends TestCase
 
         source.addTupleDeclaration( this.objectDecl );
 
-        sources.add( source );        
+        sources.add( source );
 
         extractor = new InstrumentedExtractor( );
 
@@ -113,27 +115,27 @@ public class BuilderTest extends TestCase
 
         try
         {
-          extract = rule1.addExtraction( "object", extractor );
+          rule1.addExtraction( "object", extractor );
           fail("Extractor cannot target a parameter");
         } catch (InvalidRuleException e)
         {
-            
+
         }
-        
+
         Declaration localObjectDecl = this.rule1.addLocalDeclaration("localObject", this.objectType);
         source.addTupleDeclaration( localObjectDecl );
-        
+
         extract = rule1.addExtraction( "localObject", extractor );
-        
+
         try
         {
             extract = rule1.addExtraction( "localObject", extractor );
             fail("Extractor cannot target the same local declaration twice");
         } catch (InvalidRuleException e)
         {
-            
+
         }
-                                   
+
         found = this.builder.findMatchingTupleSourceForExtraction( extract, sources );
 
         //sources contains objectsDecl, not stringDecl
@@ -186,7 +188,7 @@ public class BuilderTest extends TestCase
 
     public void testFindMatchingTupleSourceForCondition()
     {
-        Set sources = new HashSet( );
+        List sources = new LinkedList( );
 
         MockTupleSource source;
 
@@ -205,8 +207,7 @@ public class BuilderTest extends TestCase
 
         TupleSource found;
 
-        found = this.builder
-                            .findMatchingTupleSourceForCondition( cond, sources );
+        found = this.builder.findMatchingTupleSourceForCondition( cond, sources );
 
         assertNotNull( found );
 
@@ -221,8 +222,7 @@ public class BuilderTest extends TestCase
 
         source.addTupleDeclaration( this.objectDecl );
 
-        found = this.builder
-                            .findMatchingTupleSourceForCondition( cond, sources );
+        found = this.builder.findMatchingTupleSourceForCondition( cond, sources );
 
         assertNull( found );
 
@@ -240,8 +240,7 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        found = this.builder
-                            .findMatchingTupleSourceForCondition( cond, sources );
+        found = this.builder.findMatchingTupleSourceForCondition( cond, sources );
 
         assertNotNull( found );
 
