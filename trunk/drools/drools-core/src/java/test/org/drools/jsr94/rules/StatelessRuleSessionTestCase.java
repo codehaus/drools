@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: StatelessRuleSessionTestCase.java,v 1.2 2003-06-18 17:04:36 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -45,8 +45,6 @@ package org.drools.jsr94.rules;
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
  */
-
-import sisters.Person;
 
 import javax.rules.ObjectFilter;
 import javax.rules.RuleRuntime;

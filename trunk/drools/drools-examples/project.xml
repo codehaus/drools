@@ -152,8 +152,8 @@
 
         <dependency>
             <id>antlr</id>
-            <version>2.7.1</version>
-            <jar>antlrall-2.7.1.jar</jar>
+            <version>2.7.2</version>
+            <jar>antlr-2.7.2.jar</jar>
             <url>http://antlr.org/</url>
         </dependency>
 
@@ -185,6 +185,7 @@
             <groupId>commons-jelly</groupId>
             <artifactId>commons-jelly-tags-junit</artifactId>
             <version>SNAPSHOT</version>
+            <url>http://jakarta.apache.org/commons/jelly/</url>
         </dependency>
 
         <dependency>

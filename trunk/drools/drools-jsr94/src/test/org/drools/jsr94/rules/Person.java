@@ -1,4 +1,4 @@
-package sisters;
+package org.drools.jsr94.rules;
 
 import java.util.Set;
 import java.util.HashSet;

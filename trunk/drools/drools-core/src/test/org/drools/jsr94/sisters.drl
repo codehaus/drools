@@ -12,11 +12,11 @@
     <rule name="Find Sisters">
 
       <parameter identifier="person">
-        <java:class type="sisters.Person"/>
+        <java:class type="org.drools.jsr94.rules.Person"/>
       </parameter>
 
       <parameter identifier="sister">
-        <java:class type="sisters.Person"/>
+        <java:class type="org.drools.jsr94.rules.Person"/>
       </parameter>
 
       <condition>
