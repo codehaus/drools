@@ -1,6 +1,18 @@
 
 <project default="java:jar" xmlns:jxr="jxr">
 
+    <postGoal name="clover">
+      <copy tofile="${basedir}/target/docs/clover/style.css"
+            file="${basedir}/xdocs/stylesheets/clover-style.css"
+            overwrite="true"/>
+      <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
+            file="${basedir}/target/docs/clover/pkgs-summary.html"/>
+    </postGoal>
+
+    <preGoal name="site:generate">
+      <attainGoal name="clover"/>
+    </preGoal>
+
     <preGoal name="test:test">
       <copy toDir="${maven.test.dest}">
         <fileset dir="${basedir}/src/java/main/">

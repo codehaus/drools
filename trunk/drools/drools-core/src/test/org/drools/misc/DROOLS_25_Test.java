@@ -20,10 +20,10 @@ import org.drools.rule.RuleSet;
 import java.net.URL;
 import java.util.*;
 
-public class DROOLS_25 extends TestCase {
+public class DROOLS_25_Test extends TestCase {
     private WorkingMemory workingMemory;
 
-    public DROOLS_25(String name) {
+    public DROOLS_25_Test(String name) {
         super( name );
     }
 
@@ -36,7 +36,7 @@ public class DROOLS_25 extends TestCase {
             // Then, use the [org.drools.semantic.java.RuleLoader]
             // static method to load a rule-set from a local File.
             RuleSetLoader loader = new RuleSetLoader();
-            URL url = getClass().getResource( "BugTest.drl" );
+            URL url = getClass().getResource( "DROOLS_25_Test.drl" );
             assertNotNull( url );
             List ruleSets = loader.load( url );
 
