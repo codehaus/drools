@@ -108,7 +108,16 @@
       </roles>
     </developer>
 
+    <developer>
+      <name>Tom Vasak</name>
+      <email>tomv@aic.net.au</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
   </developers>
+
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
