@@ -1,9 +1,9 @@
 package org.drools.jsr94.jca.spi;
 
 /*
- * $Id: RuleConnectionFactory.java,v 1.7 2004-09-17 00:29:37 mproctor Exp $
+ * $Id: RuleConnectionFactory.java,v 1.8 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -73,10 +73,8 @@ import org.drools.jsr94.rules.RuleServiceProviderImpl;
  * 
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-public class RuleConnectionFactory extends RuleServiceProviderImpl implements
-                                                                  ConnectionFactory,
-                                                                  Serializable,
-                                                                  Referenceable
+public class RuleConnectionFactory extends RuleServiceProviderImpl
+    implements ConnectionFactory, Serializable, Referenceable
 {
 
     private String                   desc;
@@ -89,8 +87,9 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
 
     private PrintWriter              logWriter;
 
-    public RuleConnectionFactory(ManagedConnectionFactory mcf,
-                                 ConnectionManager cm) throws ResourceException
+    public RuleConnectionFactory(
+            ManagedConnectionFactory mcf, ConnectionManager cm )
+        throws ResourceException
     {
         this.mcf = mcf;
         this.cm = cm;
@@ -110,7 +109,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
      * java.io.Serializable and javax.resource.Referenceableinterfaces to
      * support JNDI registration.
      */
-    public Connection getConnection() throws ResourceException
+    public Connection getConnection( ) throws ResourceException
     {
         logWriter.println( "RuleConnectionFactory.getConnection,1" );
         return null;
@@ -131,7 +130,8 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
      * ManagedConnectionFactory instance is configured with complete set of
      * properties required for the creation of a connection to an EIS instance.
      */
-    public Connection getConnection(ConnectionSpec connectionSpec) throws ResourceException
+    public Connection getConnection( ConnectionSpec connectionSpec )
+        throws ResourceException
     {
         logWriter.println( "RuleConnectionFactory.getConnection,2" );
         return null;
@@ -141,7 +141,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
      * Gets a RecordFactory instance. The RecordFactory is used for the creation
      * of generic Record instances.
      */
-    public RecordFactory getRecordFactory() throws ResourceException
+    public RecordFactory getRecordFactory( ) throws ResourceException
     {
         logWriter.println( "RuleConnectionFactory.getRecordFactory" );
         return null;
@@ -153,7 +153,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
      * invocation of this method does not require that an active connection to
      * an EIS instance should have been established.
      */
-    public ResourceAdapterMetaData getMetaData() throws ResourceException
+    public ResourceAdapterMetaData getMetaData( ) throws ResourceException
     {
         logWriter.println( "RuleConnectionFactory.getMetaData" );
         return null;
@@ -164,7 +164,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
      * to set the Reference that can be later returned by the getReference
      * method (as defined in the javax.naming.Referenceable interface).
      */
-    public void setReference(Reference reference)
+    public void setReference( Reference reference )
     {
         logWriter.println( "RuleConnectionFactory.setReference" );
         this.reference = reference;
@@ -173,10 +173,9 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements
     /**
      * Retrieves the Reference of this object.
      */
-    public Reference getReference() throws NamingException
+    public Reference getReference( ) throws NamingException
     {
         logWriter.println( "RuleConnectionFactory.getReference" );
         return reference;
     }
-
 }

@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Constants.java,v 1.3 2004-09-17 00:29:38 mproctor Exp $
+ * $Id: Constants.java,v 1.4 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -53,7 +53,9 @@ package org.drools.jsr94.rules;
  */
 public class Constants
 {
-    public final static String RES_NAME        = "javax.rules.admin.RuleExecutionSet.name";
+    public static final String RES_NAME =
+        "javax.rules.admin.RuleExecutionSet.name";
 
-    public final static String RES_DESCRIPTION = "javax.rules.admin.RuleExecutionSet.description";
+    public static final String RES_DESCRIPTION =
+        "javax.rules.admin.RuleExecutionSet.description";
 }

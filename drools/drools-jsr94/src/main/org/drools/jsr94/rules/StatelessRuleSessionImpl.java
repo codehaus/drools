@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatelessRuleSessionImpl.java,v 1.7 2004-09-17 00:29:38 mproctor Exp $
+ * $Id: StatelessRuleSessionImpl.java,v 1.8 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -64,8 +64,8 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
  * 
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-public class StatelessRuleSessionImpl extends RuleSessionImpl implements
-                                                             StatelessRuleSession
+public class StatelessRuleSessionImpl extends RuleSessionImpl
+    implements StatelessRuleSession
 {
     /**
      * Gets the <code>RuleExecutionSet</code> for this URI and associated it
@@ -76,21 +76,21 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements
      * @throws RuleExecutionSetNotFoundException if there is no rule set under
      *         the given URI
      */
-    StatelessRuleSessionImpl(String bindUri, Map properties) throws RuleExecutionSetNotFoundException
+    StatelessRuleSessionImpl( String bindUri, Map properties )
+        throws RuleExecutionSetNotFoundException
     {
         setProperties( properties );
 
-        RuleExecutionSetRepository repository = RuleExecutionSetRepository
-                                                                          .getInstance( );
+        RuleExecutionSetRepository repository =
+            RuleExecutionSetRepository.getInstance( );
 
-        RuleExecutionSetImpl ruleSet = ( RuleExecutionSetImpl ) repository
-                                                                          .getRuleExecutionSet( bindUri );
+        RuleExecutionSetImpl ruleSet =
+            ( RuleExecutionSetImpl ) repository.getRuleExecutionSet( bindUri );
 
         if ( ruleSet == null )
         {
             throw new RuleExecutionSetNotFoundException(
-                                                         "RuleExecutionSet unbound: "
-                                                                                                                                                                                                                                    + bindUri );
+                "RuleExecutionSet unbound: " + bindUri );
         }
 
         setRuleExecutionSet( ruleSet );
@@ -99,22 +99,24 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatelessRuleSession
      */
-    public List executeRules(List objects) throws InvalidRuleSessionException
+    public List executeRules( List objects ) throws InvalidRuleSessionException
     {
-        return executeRules( objects, getRuleExecutionSet( ).getObjectFilter( ) );
+        return executeRules(
+            objects, getRuleExecutionSet( ).getObjectFilter( ) );
     }
 
     /**
      * @see StatelessRuleSession#executeRules(List,ObjectFilter)
      */
-    public List executeRules(List objects, ObjectFilter objectFilter) throws InvalidRuleSessionException
+    public List executeRules( List objects, ObjectFilter objectFilter )
+        throws InvalidRuleSessionException
     {
         WorkingMemory workingMemory = newWorkingMemory( );
 
         try
         {
-            for ( Iterator objectIter = objects.iterator( ); objectIter
-                                                                       .hasNext( ); )
+            for ( Iterator objectIter = objects.iterator( );
+                  objectIter.hasNext( ); )
             {
                 workingMemory.assertObject( objectIter.next( ) );
             }

@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: NotImplementedException.java,v 1.5 2004-09-17 00:29:38 mproctor Exp $
+ * $Id: NotImplementedException.java,v 1.6 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -50,7 +50,7 @@ package org.drools.jsr94.rules;
 public class NotImplementedException extends RuntimeException
 {
 
-    public NotImplementedException()
+    public NotImplementedException( )
     {
         super( "not yet implemented for drools" );
     }
