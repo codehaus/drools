@@ -28,8 +28,10 @@ a \verb|RuleBaseRepository| is implementation-specific but
 may involve a lookup and discovery mechanism such as JNDI.
 
 Once a \verb|RuleBaseRepository| has been obtained, the
-simple method\\ \verb|lookupRuleBase(String uri)| is used
-to retrieve a \verb|RuleBase| from its URI.
+simple method\\ \verb|lookupRuleBase(..)| method is used
+to retrieve a \verb|RuleBase| by its URI.\footnote{URIs that
+identify rule bases are not necessarily deferenceable.  They
+serve only as unique identifiers for a collection of rules.}
 
 \bigskip
 \begin{codelisting}
@@ -45,7 +47,7 @@ RuleBase ruleBase = repo.lookupRuleBase( ruleBaseUri );
 \subsection{Creating a Working Memory}
 
 \drools{} provides two different types of working memory
-implementations.  A normal \verb|WorkingMemory| or a
+implementations: a normal \verb|WorkingMemory| and a
 \verb|TransactionWorkingMemory|.
 
 \begin{itemize}
@@ -95,9 +97,9 @@ public TransactionalWorkingMemory createTransactionalWorkingMemory()
 \subsection{Fact Manipulation}
 
 Once you have a \verb|WorkingMemory| in hand, you must assert fact
-objects to make them available to \drools{} for matching.  Additionally, as facts
+objects to make them available to \drools{} for analysis.  Additionally, as facts
 change, the engine must be notified.  Likewise, when a object should
-no longer be considered for rule matching, it must be retracted from
+no longer be considered for analysis, it must be retracted from
 the engine.  Method for these three actions are defined upon the
 \verb|WorkingMemory| class.
 

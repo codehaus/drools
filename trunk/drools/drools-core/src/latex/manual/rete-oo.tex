@@ -1,19 +1,19 @@
 \section{Rete-OO}
 
 The Rete algorithm works wonderfully in language systems 
-such as Lisp, where pertinent attributes about objects 
+such as Lisp where pertinent attributes about objects 
 are directly asserted to the rules engine.  In an
 object-oriented language, such as C++ or Java, and entire 
 graph of objects can be reachable from a single named 
 root object.  Expressing highly complex relationships between
 entities using Cambridge-prefix notation may require many
 separate assertions.  In an OO language, the single root
-object is all that should be asserted, as using normal
-language constructs, attributes and relationships can be
-\emph{extracted}.
+object is all that should be asserted, since attributes 
+and relationships can be \emph{extracted} using normal
+langauge constructs.
 
-Bob McWhirter adapted Forgy's original Rete algorithm to 
-object-oriented constructs, creating the Rete-OO algorithm.
+Bob McWhirter of The Werken Company adapted Forgy's original Rete 
+algorithm to object-oriented constructs, creating the Rete-OO algorithm.
 As with Rete, there are \emph{1/1} nodes and \emph{2/1}
 nodes.  Unlike Rete, there are nodes that exist simply 
 to extract reachable attributes and add columns to passing
@@ -38,17 +38,15 @@ of Java as the expression language is purely arbitrary.
 
 \bigskip
 
-Rete-OO adds the concept of root object declaration, where 
-the root objects of the condition are declared with their
+Rete-OO adds the concept of \emph{root object declaration}, where 
+the root objects of the condition are declared with a
 name and type.  The object's type maps directly to the
 tuple type in Rete.  The root object name has no direct
 mapping in Rete and causes the addition of a \emph{parameter node}
-to Rete-OO.  Boolean expressions in Rete-OO conditions are
+in Rete-OO.  Boolean expressions in Rete-OO conditions are
 equivalent to Rete's condition patterns against attributes.
 The assignment expressions map to place-holder variables in
 Forgy's algorithm.
-
-\newpage
 
 The types of nodes used in Rete-OO graph construction are
 listed here.  Those that are new or different from Rete are
@@ -65,15 +63,16 @@ denoted with a '*'.
 		Condition nodes simply tests a tuple against 
 		an a boolean expression.
 	\item \textsf{\textbf{Extraction*}}\\
-		Extraction nodes extract new attributes and
-		create new columns on tuples.
+		Extraction nodes extract new attributes, 
+		create new columns on tuples, and store the
+		results.
 	\item \textsf{\textbf{Join}}\\
 		Join nodes connect the output arcs from two
 		other nodes and allows consistent tuples to
 		be merged and passed through.
 	\item \textsf{\textbf{Terminal}}\\
-		Terminals effect the firing of the rule with
-		the valid tuples.
+		Terminal nodes fire to indicate a successful
+		match for the rule.  
 \end{itemize}
 
 The resulting Rete-OO graph is constructed in a different
@@ -82,6 +81,7 @@ and rearrangement of some nodes.
 
 \begin{figure}
 \begin{center}
+  \begin{minipage}{6in}
 	\xymatrix @R-10pt{
 		\bullet \ar[d] \\
 		type(Person) \ar[d] \ar[dr] \\
@@ -91,6 +91,7 @@ and rearrangement of some nodes.
 		 & condition(hasSister) \ar[d] \\
 		 & terminal \\
 	}
+  \end{minipage}
 \end{center}
 \label{network.rete-oo}
 \caption{Rete-OO network}
