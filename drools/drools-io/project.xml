@@ -3,7 +3,7 @@
 
     <pomVersion>3</pomVersion>
     <name>drools-io</name>
-    <id>drools-io</id>
+    <artifactId>drools-io</artifactId>
     <groupId>drools</groupId>
     <currentVersion>2.0-beta-12-dev</currentVersion>
 

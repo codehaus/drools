@@ -33,7 +33,7 @@
 
       <div class="code">
 <pre>
-public boolean matches(Object object)
+public boolean <a href="TOP/api/org/drools/spi/ObjectType.html#matches(java.lang.Object)">matches</a>(Object object)
 {
     if ( ! object instanceof Employee )
     {
@@ -51,7 +51,63 @@ public boolean matches(Object object)
     <div class="subsection">
       <div class="subsectionTitle"><a href="TOP/api/org/drools/spi/Condition.html">Condition</a></div> 
       <p>
+      A set of <a href="TOP/api/org/drools/spi/Condition.html">Condition</a>s is used by each rule to
+      determine when it should fire.  Each condition is given a set of objects to test against, returning
+      either boolean <code>true</code> or <code>false</code>.  The combinations of objects that are
+      presented to the condition is a <a href="TOP/api/org/drools/spi/Tuple.html">Tuple</a>.  A tuple is
+      a map-like structure that maintains a correlation between a fact object and the 
+      <a href="TOP/api/org/drools/rule/Declaration.html">Declaration</a> that it is bound to.
       <p>
+
+      <p>
+      For example, a rule might involve two Person objects, where the condition is "p1 is mother of p2".
+      In this case, variable, <code>p1</code>, and <code>p2</code>, matches a declaration.  Two objects,
+      <code>o1</code> and <code>o2</code>, can be bound to the declaration 4 different ways:
+      </p>
+
+      <ol>
+        <li>{ p1=o1, p2=o2 } ... Object #1 bound to p1, Object #2 bound to p2.</li>
+        <li>{ p1=o2, p2=o1 } ... Object #2 bound to p1, Object #1 bound to p2.</li>
+        <li>{ p1=o1, p2=o1 } ... Object #1 bound to both p1 and p2.</li>
+        <li>{ p1=o2, p2=o2 } ... Object #1 bound to both p1 and p2.</li>
+      </ol>
+
+      <p>
+      In this scenario, only one of the first two tuples will ever satisfy the condition.  The
+      particular binding is significant and each permutation must be tested.
+      </p>
+      <div class="code">
+<pre>
+public boolean <a href="TOP/api/org/drools/spi/Condition.html#isAllowed(org.drools.spi.Tuple)">isAllowed</a>(<a href="TOP/api/org/drools/spi/Tuple.html">Tuple</a> tuple)
+    throws <a href="TOP/api/org/drools/spi/ConditionException.html">ConditionException</a>
+{
+    Person p1 = tuple.<a href="TOP/api/org/drools/spi/Tuple.html#get(org.drools.rule.Declaration)">get</a>( this.p1Decl );
+    Person p2 = tuple.<a href="TOP/api/org/drools/spi/Tuple.html#get(org.drools.rule.Declaration)">get</a>( this.p2Decl );
+
+    return p1.isMotherOf( p2 );
+}
+</pre>
+      </div>
+
+      <p>
+      The Rete-OO algorithm requires knowledge about what declarations are being tested
+      within each condition in order to build efficient datastructures.  Each condition
+      implementation therefore is required to implement the <a href="TOP/api/org/drools/spi/Condition.html#getRequiredTupleMembers()">getRequiredTupleMembers()</a>
+      method.  In the example above, the entire rule may invole a complex relationship
+      between 12 people, while this particular condition is only relevant to objects
+      <code>p1</code> and <code>p2</code>, but has no need for <code>p3</code> through
+      <code>p12</code>.  
+      </p>
+
+      <div class="code">
+<pre>
+public <a href="TOP/api/org/drools/rule/Declaration.html">Declaration</a> <a href="TOP/api/org/drools/spi/Condition.html#getRequiredTupleMembers()">getRequiredTupleMembers</a>()
+{
+    return new <a href="TOP/api/org/drools/rule/Declaration.html">Declaration</a>[] { this.p1Decl, this.p2Decl };
+}
+</pre>
+      </div>
+
     </div>
     <div class="subsection">
       <div class="subsectionTitle"><a href="TOP/api/org/drools/spi/Extractor.html">Extractor</a></div> 
