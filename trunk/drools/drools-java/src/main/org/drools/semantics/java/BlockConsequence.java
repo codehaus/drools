@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.15 2004-06-11 23:31:27 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.16 2004-06-15 18:24:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,7 +59,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.15 2004-06-11 23:31:27 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.16 2004-06-15 18:24:17 bob Exp $
  */
 public class BlockConsequence
     extends Interp
@@ -99,8 +99,10 @@ public class BlockConsequence
                        WorkingMemory workingMemory)
         throws ConsequenceException
     {
+        System.err.println( "firing for " + tuple );
         try
         {
+            /*
             NameSpace ns = setUpNameSpace( tuple );
 
             ns.setVariable( "drools$working$memory",
@@ -109,15 +111,14 @@ public class BlockConsequence
             ns.setVariable( "drools$tuple",
                             tuple, false);
 
-            ns.importCommands("org.drools.semantics.java.bsh");
-
             Map appData = workingMemory.getApplicationDataMap();
             for (Iterator iterator = appData.entrySet().iterator(); iterator.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) iterator.next();
                 ns.setVariable((String)entry.getKey(), entry.getValue(), false);
             }
-            evaluate( ns );
+            */
+            evaluate( tuple );
         }
         catch (Exception e)
         {

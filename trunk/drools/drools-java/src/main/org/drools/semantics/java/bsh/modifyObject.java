@@ -1,7 +1,7 @@
 package org.drools.semantics.java.bsh;
 
 /*
- $Id: modifyObject.java,v 1.2 2004-03-22 21:20:55 bob Exp $
+ $Id: modifyObject.java,v 1.3 2004-06-15 18:24:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -78,8 +78,6 @@ public class modifyObject
         WorkingMemory workingMemory = (WorkingMemory) interp.get( "drools$working$memory" );
         Tuple         tuple         = (Tuple) interp.get( "drools$tuple" );
 
-        //System.err.println( "handle: " + tuple.getFactHandleForObject( object ) );
-        //System.err.println( "object: " + object );
         workingMemory.modifyObject( tuple.getFactHandleForObject( object ),
                                     object );
     }

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.11 2004-06-15 05:12:45 bob Exp $
+ $Id: Interp.java,v 1.12 2004-06-15 18:24:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,7 +66,7 @@ import java.util.Map;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.11 2004-06-15 05:12:45 bob Exp $
+ *  @version $Id: Interp.java,v 1.12 2004-06-15 18:24:17 bob Exp $
  */
 public class Interp
 {
@@ -206,7 +206,7 @@ public class Interp
             }
         }
 
-        evaluate( ns );
+        // evaluate( ns );
 
         return ns;
     }
