@@ -114,9 +114,9 @@
     <!-- Configure JAR versions here. -->
     <property name="antlr.jar" value="antlr-2.7.2.jar"/>
     <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
-    <property name="janino.jar" value="janino-2.0.16.jar"/>
+    <property name="janino.jar" value="janino-2.3.0.jar"/>
     <property name="clover.jar" value="clover-1.2.3.jar"/>
-    <property name="groovy.jar" value="groovy-all-1.0-beta-8.jar"/>
+    <property name="groovy.jar" value="groovy-all-1.0-beta-9.jar"/>
     <property name="jsr94.jar" value="jsr94-1.1.jar"/>
     <property name="jsr94-tck.jar" value="jsr94-tck-1.1.jar"/>
     <property name="sigtest.jar" value="sigtest-1.1.jar"/>
