@@ -77,6 +77,46 @@
                   refid="extra.dependency.path"/>
     </goal>
 
+      <goal name="ydoc-all" description="Generates Javadoc including cool UMLdiagrams">
+         <attainGoal name="tweak-compile.src.set"/>
+         <javadoc
+           destdir="doc/api"
+           author="true"
+           additionalparam="-J-Djava.awt.headless=true">
+           >
+
+           <ant:classpath>
+             <ant:path refid="maven.dependency.classpath"/>
+           </ant:classpath>
+
+           <fileset dir=".">
+             <include name="drools-*/src/main/**/*.java" />
+           </fileset>
+
+           <doclet
+                   name="ydoc.doclets.YStandard">
+                   <ant:path>
+                     <ant:pathelement location="./lib/ydoc.jar" />
+                     <ant:pathelement location="./lib/class2svg.jar" />
+                     <ant:pathelement location="./lib/styleed.jar" />
+                     <ant:pathelement location="./resources"/>
+                     <ant:path refid="maven.dependency.classpath"/>
+                   </ant:path>
+                   <param name="-generic"    value=""/>
+                   <param name="-umlautogen" value=""/>
+                   <param name="-filter" value="ydoc.filters.ExcludeFilter"/>
+                   <param name="-tag" value="y.precondition"/>
+                   <param name="-tag" value="y.postcondition"/>
+                   <param name="-tag" value="y.complexity"/>
+                   <param name="-tag" value="param"/>
+                   <param name="-tag" value="return"/>
+                   <param name="-tag" value="see"/>
+                   <param name="-tag" value="y.uml"/>
+                   <param name="-breakiterator"/>
+           </doclet>
+         </javadoc>
+       </goal>
+
     <goal name="javadoc-all" prereqs="jar-all,drools:get-deps">
       <attainGoal name="tweak-compile.src.set"/>
       <attainGoal name="javadoc"/>
@@ -348,7 +388,7 @@
             <tarfileset dir="${basedir}/"
                         prefix="drools-${pom.currentVersion}"
                         includes="*.xml"/>
-        
+
             <tarfileset dir="${basedir}/"
                         prefix="drools-${pom.currentVersion}"
                         includes="*.properties"/>
