@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.3 2002-08-18 19:17:50 bob Exp $
+ $Id: BlockConsequence.java,v 1.4 2002-08-19 00:31:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,21 +59,67 @@ import bsh.EvalError;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.3 2002-08-18 19:17:50 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.4 2002-08-19 00:31:42 bob Exp $
  */
 public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct, partially.
+     *
+     *  @see Interp#setText
+     */
     public BlockConsequence()
     {
         // intentionally left blank
     }
 
+    /** Construct.
+     *
+     *  @param block The statement block.
+     */
+    public BlockConsequence(String block)
+    {
+        setText( block );
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.smf.ConfigurableConsequence
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Configure.
+     *
+     *  @param text Configuration text.
+     *  @param decls Available declarations.
+     *
+     *  @throws ConfigurationException If an error occurs while
+     *          attempting to perform configuration.
+     */
     public void configure(String text,
                           Declaration[] decls) throws ConfigurationException
     {
         setText( text );
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.spi.Consequence
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Execute the consequence for the supplied
+     *  matching <code>Tuple</code>.
+     *
+     *  @param tuple The matching tuple.
+     *  @param workingMemory The working memory session.
+     *
+     *  @throws ConsequenceException If an error occurs while
+     *          attempting to invoke the consequence.
+     */
     public void invoke(Tuple tuple,
                        WorkingMemory workingMemory) throws ConsequenceException
     {

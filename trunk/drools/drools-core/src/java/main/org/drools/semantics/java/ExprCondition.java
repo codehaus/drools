@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.3 2002-08-18 19:17:50 bob Exp $
+ $Id: ExprCondition.java,v 1.4 2002-08-19 00:31:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,6 @@ package org.drools.semantics.java;
  */
 
 import org.drools.smf.ConfigurableCondition;
-import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.drools.spi.ConditionException;
 
@@ -57,14 +56,50 @@ import bsh.EvalError;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.3 2002-08-18 19:17:50 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.4 2002-08-19 00:31:42 bob Exp $
  */
 public class ExprCondition extends Expr implements ConfigurableCondition
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct, partially.
+     *
+     *  @see Expr#setExpression
+     */
     public ExprCondition()
     {
+        // intentionally left blank.
     }
 
+    /** Construct.
+     *
+     *  @param expr The expression.
+     */
+    public ExprCondition(String expr)
+    {
+        setExpression( expr );
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.spi.Condition
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Determine if the supplied <code>Tuple</code> is allowed
+     *  by this condition.
+     *
+     *  @param tuple The <code>Tuple</code> to test.
+     *
+     *  @return <code>true</code> if the <code>Tuple</code>
+     *          passes this condition, else <code>false</code>.
+     *
+     *  @throws ConditionException if an error occurs during filtering.
+     */
     public boolean isAllowed(Tuple tuple) throws ConditionException
     {
         try

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.2 2002-08-18 19:59:31 bob Exp $
+ $Id: ClassObjectType.java,v 1.3 2002-08-19 00:31:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,37 +52,90 @@ import org.drools.spi.ObjectType;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.2 2002-08-18 19:59:31 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.3 2002-08-19 00:31:42 bob Exp $
  */
 public class ClassObjectType implements ObjectType
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Java object class. */
     private Class objectTypeClass;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct, partially.
+     *
+     *  @see #setType
+     */
     public ClassObjectType()
     {
         this.objectTypeClass = java.lang.Object.class;
     }
 
+    /** Construct.
+     *
+     *  @param objectTypeClass Java object class.
+     */
     public ClassObjectType(Class objectTypeClass)
     {
         this.objectTypeClass = objectTypeClass;
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Set the Java object class.
+     *
+     *  @param objectTypeClass The Java object class.
+     */
     public void setType(Class objectTypeClass)
     {
         this.objectTypeClass = objectTypeClass;
     }
 
+    /** Return the Java object class.
+     *
+     *  @return The Java object class.
+     */
     public Class getType()
     {
         return this.objectTypeClass;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.spi.ObjectType
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Determine if the passed <code>Object</code>
+     *  belongs to the object type defined by this
+     *  <code>objectType</code> instance.
+     *
+     *  @param object The <code>Object</code> to test.
+     *
+     *  @return <code>true</code> if the <code>Object</code>
+     *          matches this object type, else <code>false</code>.
+     */
     public boolean matches(Object object)
     {
         return getType().isInstance( object );
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Determine if another object is equal to this.
+     *
+     *  @param thatObj The object to test.
+     *
+     *  @return <code>true</code> if <code>thatObj</code> is equal
+     *          to this, otherwise <code>false</code>.
+     */
     public boolean equals(Object thatObj)
     {
         if ( thatObj == null
