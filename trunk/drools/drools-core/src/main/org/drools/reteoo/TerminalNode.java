@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.27 2004-08-05 02:13:48 dbarnett Exp $
+ $Id: TerminalNode.java,v 1.28 2004-08-07 16:23:31 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -151,12 +151,9 @@ final class TerminalNode
                              getRule() );
     }
 
-    public String dump(String indent)
+    public String toString()
     {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(indent + "TerminalNode\n");
-        buffer.append(indent + "-------------\n");
-        return buffer.toString();
+        return "[TerminalNode: rule=" + rule.getName() + "]";
     }
 
     /**
