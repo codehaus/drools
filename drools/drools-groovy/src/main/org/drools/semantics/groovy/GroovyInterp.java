@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.14 2004-12-07 14:52:00 simon Exp $
+ * $Id: GroovyInterp.java,v 1.1 2004-12-08 22:46:06 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,6 +52,8 @@ import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
@@ -59,15 +61,10 @@ import java.util.Map;
 /**
  * Base class for Groovy based semantic components.
  *
- * @see Eval
- * @see Exec
- *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
- *
- * @version $Id: Interp.java,v 1.14 2004-12-07 14:52:00 simon Exp $
  */
-public class Interp implements Serializable
+public class GroovyInterp implements Serializable
 {
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
@@ -90,7 +87,7 @@ public class Interp implements Serializable
     /**
      * Construct.
      */
-    protected Interp( String text, Rule rule )
+    protected GroovyInterp( String text, Rule rule )
     {
         this.rule = rule;
         this.text = text;
@@ -98,15 +95,15 @@ public class Interp implements Serializable
         {
             StringBuffer newText = new StringBuffer( );
             Iterator it = rule.getImports( GroovyImportEntry.class ).iterator();
-            while (it.hasNext())
+            while ( it.hasNext( ) )
             {
-                newText.append("import ");
+                newText.append( "import " );
                 newText.append( it.next( ) );
-                newText.append(";");
-                newText.append(LINE_SEPARATOR);
+                newText.append( ";");
+                newText.append( LINE_SEPARATOR );
             }
-            newText.append(text);
-            this.code = buildScript( newText.toString() );
+            newText.append( text );
+            this.code = buildScript( newText.toString( ) );
         }
         catch ( Exception e )
         {
@@ -180,10 +177,7 @@ public class Interp implements Serializable
         GroovyCodeSource codeSource = new GroovyCodeSource( text,
                                                             "groovy.script",
                                                             "groovy.script" );
-        GroovyClassLoader loader = new GroovyClassLoader(
-                                                          Thread
-                                                                .currentThread( )
-                                                                .getContextClassLoader( ) );
+        GroovyClassLoader loader = new GroovyClassLoader( Thread.currentThread( ).getContextClassLoader( ) );
         Class clazz = loader.parseClass( codeSource );
 
         return ( Script ) clazz.newInstance( );
@@ -192,7 +186,7 @@ public class Interp implements Serializable
     /**
      * Extra work for serialization...
      */
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException
+    private void writeObject( ObjectOutputStream out ) throws IOException
     {
         this.code = null;
         out.defaultWriteObject( );
@@ -202,8 +196,7 @@ public class Interp implements Serializable
      * Extra work for serialization. re-creates the script object that is not
      * serialized
      */
-    private void readObject(java.io.ObjectInputStream in) throws IOException,
-                                                         ClassNotFoundException
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {
         in.defaultReadObject( );
         try

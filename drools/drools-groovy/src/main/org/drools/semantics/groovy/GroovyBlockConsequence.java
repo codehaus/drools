@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: BlockConsequence.java,v 1.12 2004-11-29 12:14:43 simon Exp $
+ * $Id: GroovyBlockConsequence.java,v 1.1 2004-12-08 22:46:06 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,7 +58,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  */
-public class BlockConsequence extends Exec implements Consequence
+public class GroovyBlockConsequence extends GroovyInterp implements Consequence
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -70,10 +70,11 @@ public class BlockConsequence extends Exec implements Consequence
      * @param text The block text.
      * @param rule The rule.
      */
-    public BlockConsequence( String text,
-                             Rule rule)
+    public GroovyBlockConsequence( String text,
+                                   Rule rule )
     {
-        super( text, rule );
+        super( text,
+               rule );
     }
 
     // ------------------------------------------------------------
@@ -93,7 +94,8 @@ public class BlockConsequence extends Exec implements Consequence
      * @throws ConsequenceException If an error occurs while attempting to
      *         invoke the consequence.
      */
-    public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+    public void invoke( Tuple tuple,
+                        WorkingMemory workingMemory ) throws ConsequenceException
     {
         Binding dict = setUpDictionary( tuple );
 
@@ -103,16 +105,20 @@ public class BlockConsequence extends Exec implements Consequence
         for ( Iterator iterator = appData.entrySet( ).iterator( ); iterator.hasNext(); )
         {
             entry = ( Map.Entry ) iterator.next( );
-            dict.setVariable( ( String ) entry.getKey( ), entry.getValue( ) );
+            dict.setVariable( ( String ) entry.getKey( ),
+                              entry.getValue( ) );
         }
 
         try
         {
-            execute( dict );
+            //ScriptContext globals = new ScriptContext();
+            getCode().setBinding( dict );
+            getCode().run();
         }
         catch ( Exception e )
         {
-            throw new ConsequenceException( e, getRule( ) );
+            throw new ConsequenceException( e,
+                                            getRule( ) );
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequenceFactory.java,v 1.1 2004-12-07 15:17:10 simon Exp $
+ * $Id: GroovyBlockConsequenceFactory.java,v 1.2 2004-12-08 22:46:06 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ public class GroovyBlockConsequenceFactory
     public Consequence newConsequence( Configuration config,
                                        Rule rule) throws FactoryException
     {
-        return new BlockConsequence( config.getText( ),
+        return new GroovyBlockConsequence( config.getText( ),
                                      rule );
     }
 }
