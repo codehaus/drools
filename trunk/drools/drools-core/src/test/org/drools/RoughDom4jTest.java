@@ -93,14 +93,7 @@ public class RoughDom4jTest extends TestCase
             rule.addAssignmentCondition( new AssignmentCondition( id,
                                                                   bExtract ) );
             
-            rule.setAction( new Action() {
-
-                    public void invoke(Tuple tuple,
-                                       WorkingMemory workingMemory)
-                    {
-                        System.err.println( "\n\n\nHI MOM\n\n\n" );
-                    }
-                });
+            rule.setAction( new MyAction( doc1, doc2, id ) );
 
             ruleBase.addRule( rule );
 
@@ -127,3 +120,29 @@ public class RoughDom4jTest extends TestCase
         }
     }
 }
+
+class MyAction implements Action
+{
+    private Declaration doc1;
+    private Declaration doc2;
+    private Declaration id;
+
+    public MyAction(Declaration doc1,
+                    Declaration doc2,
+                    Declaration id)
+    {
+        this.doc1 = doc1;
+        this.doc2 = doc2;
+        this.id   = id;
+    }
+
+    public void invoke(Tuple tuple,
+                       WorkingMemory workingMemory)
+    {
+        System.err.println( "RULE MATCH" );
+        System.err.println( "doc1 -> " + tuple.get( this.doc1 ) );
+        System.err.println( "doc2 -> " + tuple.get( this.doc2 ) );
+        System.err.println( "id   -> " + tuple.get( this.id ) );
+    }
+}
+
