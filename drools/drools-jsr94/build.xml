@@ -457,7 +457,7 @@
 
   <target name="prepare.latex" depends="prepare">
     <copy todir="${build.doc}" filtering="true">
-      <fileset dir="${latex.dir}" includes="*.tex"/>
+      <fileset dir="${latex.dir}" includes="*.tex,*.bib"/>
     </copy>
   </target>
 

@@ -5,7 +5,8 @@
 %%
 %%
 
-\documentclass[10pt,twocolumn,letterpaper]{article}
+%% \documentclass[10pt,twocolumn,letterpaper]{article}
+\documentclass[10pt,letterpaper]{article}
 
 
 %%
@@ -19,7 +20,7 @@
 \usepackage{epic}
 \usepackage{ecltree}
 %\usepackage{fancybox}
-\usepackage{ftnright}
+%\usepackage{ftnright}
 \usepackage{hyperref}
 \usepackage{eepic}
 
@@ -37,9 +38,6 @@
 %% Extra Commands and Evironments
 %%
 
-% \newenvironment{codelisting}%
-	% {\begin{Sbox}\begin{minipage}{250pt}\small\begin{alltt}}%
-	% {\end{alltt}\end{minipage}\end{Sbox}\fbox{\TheSbox}}
 
 \newenvironment{codelisting}%
 	{\begin{minipage}{250pt}\small\begin{alltt}}%
@@ -48,15 +46,15 @@
 
 \begin{document}
 
-\let\footnoterule\hrule
-\setlength{\skip\footins}{10pt plus 5pt minus 3pt}
+%% \let\footnoterule\hrule
+%% \setlength{\skip\footins}{10pt plus 5pt minus 3pt}
 
-\makeatletter
+%% \makeatletter
 
-\renewcommand{\@makefntext}[1]%
-	{\noindent\makebox[1.8em][r]{\@makefnmark}#1}
+%% \renewcommand{\@makefntext}[1]%
+%% 	{\noindent\makebox[1.8em][r]{\@makefnmark}#1}
 
-\makeatother
+%% \makeatother
 
 \title{The Design and Implementation of \emph{drools},\\an Extensible Rules
 Engine for Java}
@@ -84,7 +82,7 @@ reusable \emph{rule bases}.
 \section{The Rete-OO Algorithm}
 
 The author adapted Forgy's Rete algorithm\cite{forgy82rete} to work in an
-object-oriented environment\cite{werken01reteoo}, able to lazily pull facts%
+object-oriented environment\cite{mcw01reteoo}, able to lazily pull facts%
 	\footnote{Pulling facts is different than infering facts.} 
 from initial fact objects. All objects reachable from an
 initial fact object is an object-tree%
@@ -107,9 +105,10 @@ additional modules that build upon the engine.
 	to a \emph{semantic module} is provided to allow custom differentiation of object
 	types.
 
-	\item \emph{Column generation.} For \emph{column generator nodes},
+	\item \emph{Fact extraction.} For \emph{column generator nodes},
 	delegation to a \emph{semantic module} is provided to allow custom methods for
-	generating additional columns on a \emph{tuple}.
+	generating additional columns on a \emph{tuple} through extraction
+	of facts available from 
 
 \end{enumerate}
 
@@ -155,7 +154,7 @@ to \emph{object type differentiation}.  Each semantic module must
 supply an implementation of the \verb|org.drools.spi.ObjectType| 
 interface Figure \ref{semantic.interface.object-type}).
 
-\begin{figure*}[p]
+\begin{figure*}
 	\begin{codelisting}
 	public interface ObjectType
 	\{
@@ -173,7 +172,7 @@ initialized with a \verb|java.lang.Class| and internally uses
 \verb|isAssignableFrom(...)| to determine membership 
 (Figure \ref{semantic.object-type.java-example}).
 
-\begin{figure*}[p]
+\begin{figure*}
 	\begin{codelisting}
 	public class JavaObjectType 
 	             implements ObjectType
@@ -220,44 +219,44 @@ extractions (Figure \ref{semantic.fact-extractor.java-example}).
 Alternatively, an XPath-based XML fact extrator may also
 be an option (Fiture \ref{semantic.fact-extractor.xml-example}).
 
-\begin{figure*}[p]
+\begin{figure*}
 	\begin{codelisting}
 	public interface FactExtractor
 	\{
 	     Object extractFact(Tuple tuple);
-	     String[] getRequiredColumnNames();
+	     Declaration[] getRequiredTupleMembers();
 	\}
 	\end{codelisting}
 	\caption{The \emph{FactExtractor} interface.}
 	\label{semantic.interface.fact-extractor}
 \end{figure*}
 
-\begin{figure*}[p]
+\begin{figure*}
 	\begin{codelisting}
 	public class ReflectionFactExtractor 
 	             implements FactExtractor
 	\{
-	     private String columnName;
-	     private Method method;
+	     private Declaration sourceDecl;
+	     private Method      method;
 
-	     public ReflectionFactExtractor(String columnName,
+	     public ReflectionFactExtractor(Declaration sourceDecl,
 	                                    Method method)
 	     \{
-	          this.columnName = columnName;
+	          this.sourceDecl = sourceDecl;
 	          this.method     = method;
 	     \}
 
 	     public Object extractFact(Tuple tuple)
 	     \{
-	          Object self = tuple.get( this.columnName );
+	          Object self = tuple.get( this.sourceDecl );
 
 	          return this.method.invoke( self,
 	                                     ... );
 	     \}
 
-	     public String[] getRequiredColumnNames()
+	     public Declaration[] getRequiredTupleMembers()
 	     \{
-	          return new String[] \{ this.columnName \};
+	          return new Declaration[] \{ this.sourceDecl \};
 	     \}
 	\}
 	\end{codelisting}
@@ -265,18 +264,18 @@ be an option (Fiture \ref{semantic.fact-extractor.xml-example}).
 	\label{semantic.fact-extractor.java-example}
 \end{figure*}
 
-\begin{figure*}[p]
+\begin{figure*}
 	\begin{codelisting}
 	public class XPathFactExtractor 
 	             implements FactExtractor
 	\{
-	     private String columnName;
-	     private XPath  xpath;
+	     private Declaration sourceDecl;
+	     private XPath       xpath;
 
-	     public XPathFactExtractor(String columnName,
+	     public XPathFactExtractor(Declaration sourceDecl,
 	                               XPath xpath)
 	     \{
-	          this.columnName = columnName;
+	          this.sourceDecl = sourceDecl;
 	          this.xpath      = xpath;
 	     \}
 
@@ -287,9 +286,9 @@ be an option (Fiture \ref{semantic.fact-extractor.xml-example}).
 	          return this.xpath.evaluate( context );
 	     \}
 
-	     public String[] getRequiredColumnNames()
+	     public Declaration[] getRequiredTupleMembers()
 	     \{
-	          return new String[] \{ this.columnName \};
+	          return new Declaration[] \{ this.sourceDecl \};
 	     \}
 	\}
 	\end{codelisting}
@@ -345,11 +344,85 @@ and attaching \verb|Declarations| for the parameter objects and any
 local named objects, along with affixing \verb|Conditions|
 and an \verb|Action|.
 
-\section{Knowledge Management\\Infrastructure}
+\section{Knowledge Management Infrastructure}
+
+In today's enterprise systems, it is common for multiple users to
+be connected to and working with a system simultaneously.  It is
+possible that a single set of rules apply to each user, but that
+each user has his own distinct set of fact objects.  In the case
+of an e-commerce website, each user has a unique \emph{shopping cart}
+containing items they have selected.  The same rules apply to 
+each person's cart, to determine discounts, shipping, etc.
+
+In drools, there is a clear separation between the rules network 
+and the working-memory data.  The network maintains absolutely 
+no state with regards to condition evaluation.  The \emph{join nodes}
+store their tuples in a special portion of the working memory.
+Likewise, the rule-firing agenda is integrated within the working
+memory objects.  In this sense, the \emph{org.drools.WorkingMemory}
+object is very much like a rules session object which isolates one
+batch of facts from another, even against the same rule base.
+
+It is then possible to associate an instance of \emph{WorkingMemory} 
+with each user or thread, and provide rule evaluation against a 
+common (or possibly different) set of rules without interfering
+with other rules sessions.
 
 \section{Java Semantic Module}
 
+The \emph{Java Semantic Module} provides developer-friendly
+normal Java semantics for rule writing.  Each object's
+\emph{object type} exactly matches the object's Java \emph{Class}.
+\emph{Fact extraction} occurs using normal Java method call
+semantics to navigate an object graph.
+
+To aide in development, an XML rules file syntax has been developed, 
+(see Figure \ref{semantic.java.rule-file})but it is by no means the 
+\emph{only} syntax that is possible, since the entire rule
+construction process is driven by a public API.
+
+\begin{figure*}
+	\begin{codelisting}
+
+
+<ruleset set="Shopping Cart">
+
+    <rule name="Apply Discount">
+
+        <param type="ShoppingCart">cart</param>
+
+        <when>
+            <cond>cart.getGrossCost() &gt; 100.00</cond>
+        </when>
+
+        <then>
+            System.err.println( "Applying 15% discount to cart" );
+            cart.setDiscount( 0.15 );
+        </then>
+
+    </rule>
+
+</ruleset>
+
+
+	\end{codelisting}
+	\caption{Example \emph{Java Semantic Module} rule file syntax.}
+	\label{semantic.java.rule-file}
+\end{figure*}
+
+
+
+
 \section{XML Semantic Module}
+
+The \emph{XML Semantic Module} provides XML-based semantics.
+Each document's \emph{object type} is defined not in terms
+of the Java object representing the document, but rather by the
+internal semantics of the document's namespace and root element
+name. \emph{Fact extraction} is accomplished by using XPath
+expressions\footnote{XPath is integrated using Jaxen
+(http://jaxen.org/)} to access internal parts of documents.
+
 
 \bibliography{werken}
 \bibliographystyle{acm}
