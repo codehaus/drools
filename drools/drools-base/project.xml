@@ -23,11 +23,6 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
-        <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.2</version>
-        </dependency>
     </dependencies>
 
     <build>

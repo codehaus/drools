@@ -5,16 +5,7 @@
     <artifactId>drools-core</artifactId>
     <groupId>drools</groupId>
 
-    <dependencies>
-        <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.2</version>
-        </dependency>
-    </dependencies>
-
     <build>
-      <aspectSourceDirectory>src/aspects</aspectSourceDirectory>
 
         <unitTest>
             <includes>
