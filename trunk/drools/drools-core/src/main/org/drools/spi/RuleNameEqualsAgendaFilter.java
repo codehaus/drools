@@ -1,5 +1,7 @@
+package org.drools.spi;
+
 /*
- * $Id: AgendaFilter.java,v 1.2 2004-11-08 16:22:04 simon Exp $
+ * $Id: RuleNameEqualsAgendaFilter.java,v 1.1 2004-11-08 16:22:04 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -37,17 +39,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package org.drools.spi;
 
 /**
- * @author mproctor
+ * Filters activations based on an exact match of a rule name.
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
  */
-public interface AgendaFilter
+public class RuleNameEqualsAgendaFilter implements AgendaFilter
 {
-    /**
-     * Determine if a given activation should be fired.
-     * @param activation The activation to fire.
-     * @return <code>true</code> if the activation should be fired; otherwise <code>false</code>
-     */
-    boolean accept(Activation activation);
+    private final String name;
+
+    public RuleNameEqualsAgendaFilter( String name )
+    {
+        this.name = name;
+    }
+
+    public boolean accept( Activation activation )
+    {
+        return activation.getRule().getName().equals( this.name );
+    }
 }

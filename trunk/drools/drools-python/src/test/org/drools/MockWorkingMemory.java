@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.event.WorkingMemoryEventListener;
+import org.drools.spi.AgendaFilter;
 
 public class MockWorkingMemory implements WorkingMemory
 {
@@ -102,6 +103,11 @@ public class MockWorkingMemory implements WorkingMemory
         //
     }
 
+    public void fireAllRules( AgendaFilter agendaFilter ) throws FactException
+    {
+        //
+    }
+
     public Object getObject(FactHandle handle) throws NoSuchFactObjectException
     {
         return null;
@@ -139,11 +145,11 @@ public class MockWorkingMemory implements WorkingMemory
 
     public void retractObject(FactHandle handle) throws FactException
     {
-
+        //
     }
 
     public void modifyObject(FactHandle handle, Object object) throws FactException
     {
-
+        //
     }
 }
