@@ -1,9 +1,9 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReflectiveVisitor.java,v 1.1 2004-08-07 16:23:31 mproctor Exp $
+ $Id: ReflectiveVisitor.java,v 1.2 2004-08-08 05:48:37 dbarnett Exp $
 
- Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -50,9 +50,19 @@ import java.lang.reflect.Method;
 
 import org.drools.Visitor;
 
+/**
+ * Java Tip 98: Reflect on the Visitor design pattern.
+ * Implement visitors in Java, using reflection.
+ * http://www.javaworld.com/javaworld/javatips/jw-javatip98.html
+ * 
+ * @author Jeremy Blosser
+ */
 public abstract class ReflectiveVisitor implements Visitor
 {
-    public void visit(Object object) {
+    static final String newline = System.getProperty("line.separator");
+
+    public void visit(Object object)
+    {
         try
         {
             if (object != null)
@@ -62,7 +72,7 @@ public abstract class ReflectiveVisitor implements Visitor
             }
             else
             {
-                Method method = this.getClass().getMethod("visitNull", null);
+                Method method = getClass().getMethod("visitNull", null);
                 method.invoke(this, null);
             }
         }
@@ -72,7 +82,7 @@ public abstract class ReflectiveVisitor implements Visitor
         }
     }
 
-    protected Method getMethod(Class clazz)
+    private Method getMethod(Class clazz)
     {
         Class newClazz = clazz;
         Method method = null;
@@ -81,7 +91,8 @@ public abstract class ReflectiveVisitor implements Visitor
         while (method == null && newClazz != Object.class)
         {
             String methodName = newClazz.getName();
-            methodName = "visit" + methodName.substring(methodName.lastIndexOf('.') + 1);
+            methodName =
+                "visit" + methodName.substring(methodName.lastIndexOf('.') + 1);
             try
             {
                method = getClass().getMethod(methodName, new Class[] {newClazz});
@@ -99,10 +110,12 @@ public abstract class ReflectiveVisitor implements Visitor
             for (int i = 0; i < interfaces.length; i++)
             {
                 String methodName = interfaces[i].getName();
-                methodName = "visit" + methodName.substring(methodName.lastIndexOf('.') + 1);
+                methodName =
+                    "visit" + methodName.substring(methodName.lastIndexOf('.') + 1);
                 try
                 {
-                    method = getClass().getMethod(methodName, new Class[] {interfaces[i]});
+                    method = getClass().getMethod(
+                        methodName, new Class[] {interfaces[i]});
                 }
                 catch (NoSuchMethodException e)
                 {
@@ -114,13 +127,22 @@ public abstract class ReflectiveVisitor implements Visitor
         {
             try
             {
-                method = this.getClass().getMethod("visitObject", new Class[] {Object.class});
+                method = getClass().getMethod(
+                    "visitObject", new Class[] {Object.class});
             }
             catch (Exception e)
             {
-                // Can't happen
+                // Shouldn't happen as long as all Visitors extend this class
+                // and this class continues to implement visitObject(Object).
+                e.printStackTrace();
             }
         }
         return method;
+    }
+    
+    public void visitObject(Object object)
+    {
+        System.err.println(
+            "no visitor implementation for : " + object.getClass() + " : " + object);
     }
 }

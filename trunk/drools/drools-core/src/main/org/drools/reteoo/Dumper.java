@@ -1,9 +1,9 @@
 package org.drools.reteoo;
 
 /*
- $Id: Dumper.java,v 1.4 2004-08-07 16:23:31 mproctor Exp $
+ $Id: Dumper.java,v 1.5 2004-08-08 05:48:37 dbarnett Exp $
 
- Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -47,19 +47,14 @@ package org.drools.reteoo;
  */
 
 import org.drools.RuleBase;
-import org.drools.Visitor;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Dumper.java,v 1.4 2004-08-07 16:23:31 mproctor Exp $
+ *  @version $Id: Dumper.java,v 1.5 2004-08-08 05:48:37 dbarnett Exp $
  */
 public class Dumper
 {
@@ -77,8 +72,7 @@ public class Dumper
 
     public void dumpRete(PrintStream out, String indent)
     {
-        Visitor visitor = new ReteooPrintDumpVisitor(out, indent);
-        visitor.visit(ruleBase);
+        new ReteooPrintDumpVisitor(out, indent).visit(ruleBase);
     }
 
     /**
@@ -86,46 +80,8 @@ public class Dumper
      */
     public void dumpReteToDot(PrintStream out)
     {
-        JoinNodeInput.resetDump();
-        out.println(ruleBase.dumpReteToDot());
-    }
-
-    /**
-     * Converts line-breaks into \n for GraphViz DOT compatibility.
-     */
-    static String formatForDot(Object object)
-    {
-        if (null == object)
-        {
-            return "<NULL>";
-        }
-
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader(
-                new ByteArrayInputStream(object.toString().getBytes())));
-
-        StringBuffer buffer = new StringBuffer();
-        try
-        {
-            boolean firstLine = true;
-            for (String line = br.readLine(); null != line; line = br.readLine())
-            {
-                if (line.trim().length() == 0)
-                {
-                    continue;
-                }
-                if (!firstLine)
-                {
-                    buffer.append("\\n");
-                }
-                buffer.append(line);
-            }
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException("Error formatting '" + object + "'", e);
-        }
-
-        return buffer.toString();
+        out.println("digraph RETEOO {");
+        new ReteooDotDumpVisitor(out).visit(ruleBase);
+        out.println("}");
     }
 }
