@@ -38,7 +38,7 @@
 <pre>
     export CVS_RSH=ssh
  
-    cvs -z3 -d:ext:developername@cvs.drools.sourceforge.net:/cvsroot/drools co modulename
+    cvs -z3 -d:ext:developername@cvs.drools.sourceforge.net:/cvsroot/drools co drools-2
 </pre>
 
     </section>
