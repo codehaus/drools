@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.14 2004-07-04 11:45:43 mproctor Exp $
+ $Id: ObjectTypeNode.java,v 1.15 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -274,5 +274,23 @@ class ObjectTypeNode
             buffer.append(o.dump(indent + " "));
         }
         return buffer.toString();
+    }
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(thisNode + " [label=\"ObjectTypeNode\\n" +
+            "objectType: " + objectType + "\"];\n");
+        
+        long nextNode = thisNode + 1;
+        for (Iterator i = getParameterNodeIterator(); i.hasNext(); )
+        {
+            ParameterNode o = (ParameterNode) i.next();
+            buffer.append(thisNode + " -> " + nextNode + ";\n");
+            nextNode = o.dumpToDot(buffer, nextNode);
+        }
+        return nextNode;
     }
 }

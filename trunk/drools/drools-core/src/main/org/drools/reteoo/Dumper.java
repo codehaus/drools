@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Dumper.java,v 1.1 2004-07-04 11:45:43 mproctor Exp $
+ $Id: Dumper.java,v 1.2 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -53,7 +53,7 @@ import java.io.PrintStream;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Dumper.java,v 1.1 2004-07-04 11:45:43 mproctor Exp $
+ *  @version $Id: Dumper.java,v 1.2 2004-07-13 17:19:41 dbarnett Exp $
  */
 public class Dumper
 {
@@ -67,5 +67,13 @@ public class Dumper
     public void dumpRete(PrintStream out)
     {
       out.println(ruleBase.dumpRete());
+    }
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public void dumpReteToDot(PrintStream out)
+    {
+      out.println(ruleBase.dumpReteToDot());
     }
 }

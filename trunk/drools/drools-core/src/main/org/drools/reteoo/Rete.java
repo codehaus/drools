@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.11 2004-07-04 11:45:43 mproctor Exp $
+ $Id: Rete.java,v 1.12 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -258,6 +258,31 @@ class Rete
           ObjectTypeNode o = (ObjectTypeNode) it.next();
           buffer.append(o.dump(" "));
         }
+        return buffer.toString();
+    }
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public String dumpToDot()
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("digraph Rete {\n");
+        
+        // Node 0 will be the root of the Rete itself
+        long thisNode = 0;
+        buffer.append(thisNode + " [label=\"Rete\"];\n");
+        
+        long nextNode = thisNode + 1;
+        for (Iterator i = getObjectTypeNodeIterator(); i.hasNext(); )
+        {
+            ObjectTypeNode o = (ObjectTypeNode) i.next();
+            buffer.append(thisNode + " -> " + nextNode + ";\n");
+            nextNode = o.dumpToDot(buffer, nextNode);
+        }
+        
+        buffer.append("}");
+        
         return buffer.toString();
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNodeInput.java,v 1.7 2004-07-05 21:51:36 mproctor Exp $
+ $Id: JoinNodeInput.java,v 1.8 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -203,5 +203,12 @@ class JoinNodeInput
         buffer.append(indent + "-------------\n");
         buffer.append(indent + this.toString());
         return buffer.toString();
+    }
+
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(
+            thisNode + " [label=\"JoinNodeInput\\n(TupleSink)\\n" + this + "\"];\n");
+        return thisNode + 1;
     }
 }
