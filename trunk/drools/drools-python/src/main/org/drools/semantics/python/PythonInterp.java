@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.4 2004-12-29 15:55:09 mproctor Exp $
+ * $Id: PythonInterp.java,v 1.5 2005-01-24 20:51:58 brianm Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,9 +53,10 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.Functions;
-import org.drools.spi.KnowledgeHelper;
+import org.drools.spi.KnowledgeHelperDrools;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelperDrools;
 import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
@@ -452,7 +453,7 @@ public class PythonInterp
             WorkingMemory workingMemory = tuple.getWorkingMemory( );
 
             dict.setdefault( new PyString( "drools".intern( ) ),
-                             Py.java2py( new KnowledgeHelper( this.rule,
+                             Py.java2py( new KnowledgeHelperDrools( this.rule,
                                                               tuple ) ) );
 
             Map appDataMap = workingMemory.getApplicationDataMap( );
