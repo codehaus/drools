@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: SimplicityConflictResolver.java,v 1.11 2004-12-06 23:07:37 dbarnett Exp $
+ * $Id: SimplicityConflictResolver.java,v 1.12 2004-12-15 21:00:06 dbarnett Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -100,6 +100,6 @@ public class SimplicityConflictResolver extends AbstractConflictResolver
     public int compare( Activation lhs,
                         Activation rhs )
     {
-        return lhs.getRule( ).getConditions( ).size( ) - rhs.getRule( ).getConditions( ).size( );
+        return lhs.getRule( ).getConditionSize( ) - rhs.getRule( ).getConditionSize( );
     }
 }
