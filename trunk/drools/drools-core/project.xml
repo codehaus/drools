@@ -135,6 +135,15 @@
       </roles>
     </developer>
 
+    <developer>
+        <name>Thomas Diesler</name>
+        <id>tdiesler</id>
+        <email>Thomas.Diesler@softcon.de</email>
+        <roles>
+            <role>JSR-94 and JCA lead</role>
+        </roles>
+    </developer>
+
   </developers>
 
   <!-- Need to mark these as compile-time/run-time -->
