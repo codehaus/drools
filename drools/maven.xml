@@ -30,8 +30,19 @@
     </goal>
 
     <goal name="clean-all">
-      <attainGoal name="clean"/>
+      <mkdir dir="${maven.build.dir}"/>
+      <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-core-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-examples-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-groovy-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-io-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-java-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-jsr94-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-smf-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
       <attainGoal name="multiproject:clean"/>
+      <attainGoal name="clean"/>
     </goal>
 
     <!--
@@ -186,7 +197,7 @@
 		<!--
 			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 		-->
-    <goal name="drools:dist-prepare" prereqs="clean-all">
+    <goal name="drools:dist-prepare"> <!-- prereqs="clean-all"> -->
       <ant:mkdir dir="target/dist/"/>
     </goal>
 
