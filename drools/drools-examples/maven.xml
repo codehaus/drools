@@ -253,19 +253,24 @@
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
-        <arg value="1000"/> <!-- Iterations -->
+        <arg value="10000"/> <!-- Number of Rules -->
+        <arg value="300"/> <!-- Number of Facts -->
+        <arg value="0"/> <!-- Random Seed -->
+        <arg value="false"/> <!-- Verbose Output -->
       </java>
     </goal>
 
-    <goal name="primefactors-java-debug" prereqs="jar:jar">
+    <goal name="primefactors-java-verbose" prereqs="jar:jar">
       <java classname="org.drools.examples.primefactors.PrimeFactors"
             fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
-        <arg value="20"/> <!-- Iterations -->
-        <arg value="true"/> <!-- Debug -->
+        <arg value="100"/> <!-- Number of Rules -->
+        <arg value="10"/> <!-- Number of Facts -->
+        <arg value="-1"/> <!-- Random Seed -->
+        <arg value="true"/> <!-- Verbose Output -->
       </java>
     </goal>
 

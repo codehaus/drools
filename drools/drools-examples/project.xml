@@ -129,6 +129,7 @@
                 <directory>src/main</directory>
                 <includes>
                     <include>**/*.drl</include>
+                    <include>**/primes.txt.gz</include>
                 </includes>
             </resource>
         </resources>
