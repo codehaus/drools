@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.23 2002-11-22 03:08:45 bob Exp $
+ $Id: Builder.java,v 1.24 2003-08-21 00:57:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,24 +46,19 @@ package org.drools.reteoo;
  
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.drools.RuleIntegrationException;
-import org.drools.reteoo.impl.ReteImpl;
-import org.drools.reteoo.impl.ObjectTypeNodeImpl;
-import org.drools.reteoo.impl.ParameterNodeImpl;
-import org.drools.reteoo.impl.ConditionNodeImpl;
-import org.drools.reteoo.impl.JoinNodeImpl;
-import org.drools.reteoo.impl.ExtractionNodeImpl;
-import org.drools.reteoo.impl.TerminalNodeImpl;
-import org.drools.reteoo.impl.TupleSourceImpl;
-import org.drools.rule.Rule;
+import org.drools.reteoo.impl.*;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
-import org.drools.spi.ObjectType;
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
+import org.drools.spi.ObjectType;
 
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Builds the Rete-OO network for a <code>RuleSet</code>.
  *
@@ -78,6 +73,8 @@ import java.util.Iterator;
  */
 public class Builder
 {
+    private static Log log = LogFactory.getLog(Builder.class);
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -125,6 +122,8 @@ public class Builder
      */
     public void addRule(Rule rule) throws RuleIntegrationException
     {
+        log.debug("addRule: rule=" + rule);
+
         Set factExtracts = new HashSet( rule.getExtractions() );
         Set conds        = new HashSet( rule.getConditions() );
 
@@ -132,7 +131,6 @@ public class Builder
 
         boolean performedJoin      = false;
         boolean attachedExtract    = false;
-        boolean cycleAttachExtract = false;
         boolean joinedForCondition = false;
         
         leafNodes = createParameterNodes( rule );
@@ -198,6 +196,7 @@ public class Builder
         TerminalNode terminal = new TerminalNodeImpl( lastNode,
                                                       rule,
                                                       ++this.priorityCounter);
+        log.debug("new TerminalNode: " + terminal);
     }
 
     /** Create the <code>ParameterNode</code>s for the <code>Rule</code>,
@@ -210,6 +209,8 @@ public class Builder
      */
     protected Set createParameterNodes(Rule rule)
     {
+        log.debug("createParameterNodes: " + rule);
+
         Set leafNodes = new HashSet();
 
         Set      parameterDecls  = rule.getParameterDeclarations();
@@ -257,6 +258,8 @@ public class Builder
     protected void attachConditions(Set conds,
                                     Set leafNodes)
     {
+        log.debug("attachConditions: conds=" + conds + ",leafNodes=" + leafNodes);
+
         Iterator        condIter    = conds.iterator();
         Condition       eachCond    = null;
         TupleSourceImpl tupleSource = null;
@@ -297,6 +300,8 @@ public class Builder
     protected boolean joinForCondition(Set conds,
                                        Set leafNodes)
     {
+        log.debug("joinForCondition: conds=" + conds + ",leafNodes=" + leafNodes);
+
         return joinArbitrary( leafNodes );
     }
 
@@ -350,6 +355,8 @@ public class Builder
      */
     protected boolean createJoinNodes(Set leafNodes)
     {
+        log.debug("createJoinNodes: leafNodes=" + leafNodes);
+
         boolean performedJoin = false;
 
         Object[] leftNodes  = leafNodes.toArray();

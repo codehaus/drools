@@ -1,10 +1,10 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TerminalNodeImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
+ $Id: TerminalNodeImpl.java,v 1.4 2003-08-21 00:57:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.reteoo.impl;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
     permission of The Werken Company. "drools" is a registered
     trademark of The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://drools.werken.com/).
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.reteoo.impl;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import org.drools.WorkingMemory;
@@ -82,9 +82,9 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *  @param rule The rule.
      *  @param priority The priority.
      */
-    public TerminalNodeImpl(TupleSource inputSource,
-                            Rule rule,
-                            int priority)
+    public TerminalNodeImpl( TupleSource inputSource,
+                             Rule rule,
+                             int priority )
     {
         this.rule = rule;
 
@@ -92,7 +92,7 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
 
         if ( inputSource != null )
         {
-            ((TupleSourceImpl)inputSource).setTupleSink( this );
+            ( (TupleSourceImpl) inputSource ).setTupleSink( this );
         }
     }
 
@@ -120,9 +120,9 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
         return this.rule;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.drools.impl.TupleSink
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /** Assert a new <code>Tuple</code>.
      *
@@ -131,14 +131,14 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *
      *  @throws AssertionException If an error occurs while asserting.
      */
-    public void assertTuple(ReteTuple tuple,
-                            WorkingMemory workingMemory) throws AssertionException
+    public void assertTuple( ReteTuple tuple,
+                             WorkingMemory workingMemory ) throws AssertionException
     {
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
         agenda.addToAgenda( tuple,
-                            getRule(),
-                            getPriority() );
+                getRule(),
+                getPriority() );
     }
 
     /** Retract tuples.
@@ -146,13 +146,13 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *  @param key The tuple key.
      *  @param workingMemory The working memory seesion.
      */
-    public void retractTuples(TupleKey key,
-                              WorkingMemory workingMemory) 
+    public void retractTuples( TupleKey key,
+                               WorkingMemory workingMemory )
     {
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
 
         agenda.removeFromAgenda( key,
-                                 getRule() );
+                getRule() );
     }
 
     /** Modify tuples.
@@ -161,15 +161,24 @@ public class TerminalNodeImpl implements TerminalNode, TupleSinkImpl
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      */
-    public void modifyTuples(Object trigger,
-                             TupleSet newTuples,
-                             WorkingMemory workingMemory)
+    public void modifyTuples( Object trigger,
+                              TupleSet newTuples,
+                              WorkingMemory workingMemory )
     {
         AgendaImpl agenda = (AgendaImpl) workingMemory.getAgenda();
-        
+
         agenda.modifyAgenda( trigger,
-                             newTuples,
-                             getRule(),
-                             getPriority() );
+                newTuples,
+                getRule(),
+                getPriority() );
+    }
+
+    /** Return a string representation of this object.
+     *
+     * @return a String
+     */
+    public String toString()
+    {
+      return "[TerminalNodeImpl: priority=" + priority + ",rule=" + rule + "]";
     }
 }

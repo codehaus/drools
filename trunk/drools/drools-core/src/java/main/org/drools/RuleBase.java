@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.14 2002-08-20 18:33:17 bob Exp $
+ $Id: RuleBase.java,v 1.15 2003-08-21 00:57:46 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,8 @@ import org.drools.reteoo.Rete;
 import org.drools.reteoo.impl.ReteImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Iterator;
 
@@ -63,6 +65,8 @@ import java.util.Iterator;
  */
 public class RuleBase
 {
+    private static Log log = LogFactory.getLog(RuleBase.class);
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -113,6 +117,8 @@ public class RuleBase
      */
     public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException
     {
+       log.debug("addRuleSet: " + ruleSet);
+
         Iterator ruleIter = ruleSet.getRuleIterator();
         Rule     eachRule = null;
 
@@ -139,6 +145,8 @@ public class RuleBase
      */
     public void addRule(Rule rule) throws RuleIntegrationException
     {
+        log.debug("addRule: " + rule);
+
         getBuilder().addRule( rule );
     }
 
