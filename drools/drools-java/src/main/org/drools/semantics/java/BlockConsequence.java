@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.39 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: BlockConsequence.java,v 1.40 2004-11-29 11:37:45 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ import java.util.Set;
 
 /**
  * Java block semantics <code>Consequence</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
 public class BlockConsequence
@@ -84,7 +84,7 @@ public class BlockConsequence
 
     /**
      * Construct.
-     * 
+     *
      * @param block
      *            The statement block.
      * @param block
@@ -120,12 +120,12 @@ public class BlockConsequence
 
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     * 
+     *
      * @param tuple
      *            The matching tuple.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws ConsequenceException
      *             If an error occurs while attempting to invoke the
      *             consequence.
@@ -139,19 +139,20 @@ public class BlockConsequence
 
             script.invoke( tuple,
                            this.declarations,
-                           new KnowledgeHelper( tuple ),
+                           new KnowledgeHelper( this.rule,
+                                                tuple ),
                            applicationData );
         }
         catch ( Exception e )
         {
             throw new ConsequenceException( e,
-                                            tuple.getRule( ) );
+                                            this.rule );
         }
     }
 
     /**
      * Retrieve the expression.
-     * 
+     *
      * @return The expression.
      */
     public String getBlock()

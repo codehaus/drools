@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.24 2004-11-28 07:40:23 simon Exp $
+ * $Id: Tuple.java,v 1.25 2004-11-29 11:37:45 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -69,6 +69,7 @@ public interface Tuple
      * object.
      *
      * @return Rule
+     * @deprecated Find some other way to get it :-)
      */
     Rule getRule();
 

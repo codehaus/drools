@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: KnowledgeHelper.java,v 1.11 2004-11-24 13:41:20 dbarnett Exp $
+ * $Id: KnowledgeHelper.java,v 1.12 2004-11-29 11:37:44 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,15 +42,24 @@ package org.drools.spi;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
+import org.drools.rule.Rule;
 
 import java.util.List;
 
 public class KnowledgeHelper
 {
-    private Tuple tuple;
+    private final Rule  rule;
+    private final Tuple tuple;
 
-    public KnowledgeHelper(Tuple tuple)
+    public KnowledgeHelper( Tuple tuple )
     {
+        this( tuple.getRule( ), tuple );
+    }
+
+    public KnowledgeHelper( Rule rule,
+                            Tuple tuple )
+    {
+        this.rule = rule;
         this.tuple = tuple;
     }
 
@@ -85,7 +94,7 @@ public class KnowledgeHelper
 
     public String getRuleName()
     {
-        return this.tuple.getRule( ).getName( );
+        return this.rule.getName( );
     }
 
     public List getObjects()
