@@ -29,6 +29,11 @@ public class RuleSet
         this.rules = Collections.EMPTY_MAP;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
     /** Retrieve the name of this <code>RuleSet</code>.
      *
      *  @return The name of this <code>RuleSet</code>.
