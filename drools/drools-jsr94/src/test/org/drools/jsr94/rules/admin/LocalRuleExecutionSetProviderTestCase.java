@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.7 2004-06-29 15:44:22 n_alex Exp $
+ $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.8 2004-07-21 15:55:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -84,7 +84,7 @@ public class LocalRuleExecutionSetProviderTestCase extends RuleEngineTestBase {
         InputStream rulesStream = org.drools.jsr94.rules.RuleEngineTestBase.class.getResourceAsStream(bindUri);
         RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesStream, null);
         assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-        assertEquals("number of rules", 2, ruleSet.getRules().size());
+        assertEquals("number of rules", 1, ruleSet.getRules().size());
     }
     
     public void testCreateFromObject()
@@ -98,7 +98,7 @@ public class LocalRuleExecutionSetProviderTestCase extends RuleEngineTestBase {
             RuleSet ruleSet = new RuleSetReader().read( in );
             RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(ruleSet, null);
             assertEquals("rule set name", "Sisters Rules", ruleExecutionSet.getName());
-            assertEquals("number of rules", 2, ruleExecutionSet.getRules().size());
+            assertEquals("number of rules", 1, ruleExecutionSet.getRules().size());
         }
         catch (IOException e) {
             fail("Couldn't create the RuleExecutionSet. Test threw an IOException.");
@@ -124,6 +124,6 @@ public class LocalRuleExecutionSetProviderTestCase extends RuleEngineTestBase {
         Reader ruleReader = new InputStreamReader(org.drools.jsr94.rules.RuleEngineTestBase.class.getResourceAsStream(bindUri));
         RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(ruleReader, null);
         assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-        assertEquals("number of rules", 2, ruleSet.getRules().size());
+        assertEquals("number of rules", 1, ruleSet.getRules().size());
    }
 }

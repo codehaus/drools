@@ -12,24 +12,12 @@
           <java:class> org.drools.jsr94.rules.Person </java:class>
         </parameter>
 
+        <!--<java:condition> person.getName().compareTo( sister.getName() ) &gt; 0</java:condition>-->
         <java:condition> person.hasSister( sister ) </java:condition>
 
         <java:consequence>
-            drools.assertObject( person + ": I like cheese" );
-            drools.assertObject( "bob says: " + person + " and " + sister + " are sisters" );
+            drools.assertObject( person + " and " + sister + " are sisters" );
         </java:consequence>
-    </rule>
-
-    <rule name="Message Received">
-        <parameter identifier="message">
-            <java:class> java.lang.String </java:class>
-        </parameter>
-
-        <java:condition> message.startsWith( "bob says:" ) </java:condition>
-
-        <java:consequence>
-        </java:consequence>
-
     </rule>
 
 </rule-set>

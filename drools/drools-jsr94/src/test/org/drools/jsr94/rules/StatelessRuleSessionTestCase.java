@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionTestCase.java,v 1.4 2004-04-02 23:03:18 n_alex Exp $
+ $Id: StatelessRuleSessionTestCase.java,v 1.5 2004-07-21 15:55:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -86,28 +86,37 @@ public class StatelessRuleSessionTestCase extends TestCase {
         Person bob = new Person("bob");
         inObjects.add(bob);
 
-        Person rebecca = new Person("rebecca");
-        rebecca.addSister("jeannie");
-        inObjects.add(rebecca);
-
         Person jeannie = new Person("jeannie");
         jeannie.addSister("rebecca");
         inObjects.add(jeannie);
 
+        Person rebecca = new Person("rebecca");
+        rebecca.addSister("jeannie");
+        inObjects.add(rebecca);
+
+        System.err.println( "-------" );
+
         // execute the rules
         List outList = statelessSession.executeRules(inObjects);
 
-        assertEquals("incorrect size", 7, outList.size());
+        System.err.println( "-------" );
 
-        assertTrue("where is bob", outList.contains(bob));
-        assertTrue("where is rebecca", outList.contains(rebecca));
-        assertTrue("where is jeannie", outList.contains(jeannie));
+        assertEquals("incorrect size", 5, outList.size());
 
-        assertTrue(outList.contains("bob says: rebecca and jeannie are sisters"));
-        assertTrue(outList.contains("bob says: jeannie and rebecca are sisters"));
+        assertContains( outList,
+                        bob );
 
-        assertTrue(outList.contains("rebecca: I like cheese"));
-        assertTrue(outList.contains("jeannie: I like cheese"));
+        assertContains( outList,
+                        rebecca );
+
+        assertContains( outList,
+                        jeannie );
+
+        assertContains( outList,
+                        "rebecca and jeannie are sisters" );
+
+        assertContains( outList,
+                        "jeannie and rebecca are sisters" );
 
         statelessSession.release();
     }
@@ -149,5 +158,15 @@ public class StatelessRuleSessionTestCase extends TestCase {
 
         public void reset() {
         }
+    }
+
+    protected void assertContains(List expected,
+                                  Object object)
+    {
+        if ( expected.contains( object ) ) {
+            return;
+        }
+
+        fail( object + " not in " + expected );
     }
 }

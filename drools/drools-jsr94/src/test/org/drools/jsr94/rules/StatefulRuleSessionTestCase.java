@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionTestCase.java,v 1.3 2004-04-02 23:03:18 n_alex Exp $
+ $Id: StatefulRuleSessionTestCase.java,v 1.4 2004-07-21 15:55:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -161,17 +161,14 @@ public class StatefulRuleSessionTestCase extends RuleEngineTestBase {
         // execute the rules
         statefulSession.executeRules();
         List outList = statefulSession.getObjects();
-        assertEquals("incorrect size", 7, outList.size());
+        assertEquals("incorrect size", 5, outList.size());
 
         assertTrue("where is bob", outList.contains(bob));
         assertTrue("where is rebecca", outList.contains(rebecca));
         assertTrue("where is jeannie", outList.contains(jeannie));
 
-        assertTrue(outList.contains("bob says: rebecca and jeannie are sisters"));
-        assertTrue(outList.contains("bob says: jeannie and rebecca are sisters"));
-
-        assertTrue(outList.contains("rebecca: I like cheese"));
-        assertTrue(outList.contains("jeannie: I like cheese"));
+        assertTrue(outList.contains("rebecca and jeannie are sisters"));
+        assertTrue(outList.contains("jeannie and rebecca are sisters"));
 
         statefulSession.release();
     }

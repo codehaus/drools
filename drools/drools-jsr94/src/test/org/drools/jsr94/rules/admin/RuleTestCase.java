@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleTestCase.java,v 1.3 2004-04-04 02:54:56 n_alex Exp $
+ $Id: RuleTestCase.java,v 1.4 2004-07-21 15:55:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -82,14 +82,10 @@ public class RuleTestCase extends RuleEngineTestBase {
        InputStream in = org.drools.jsr94.rules.RuleEngineTestBase.class.getResourceAsStream(bindUri);
        RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(in, null);
        List rules = ruleExecutionSet.getRules();
-       assertEquals("number of rules", 2, rules.size());
+       assertEquals("number of rules", 1, rules.size());
 
        Rule rule01 = (Rule)ruleExecutionSet.getRules().get(0);
        assertEquals("rule name", "Find Sisters", rule01.getName());
        assertNull("rule description", rule01.getDescription());
-
-       Rule rule02 = (Rule)ruleExecutionSet.getRules().get(1);
-       assertEquals("rule name", "Message Received", rule02.getName());
-       assertNull("rule description", rule02.getDescription());
    }
 }

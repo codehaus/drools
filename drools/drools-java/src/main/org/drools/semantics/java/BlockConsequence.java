@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.18 2004-07-20 21:23:29 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.19 2004-07-21 15:55:20 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -52,10 +52,15 @@ import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 import net.janino.ScriptEvaluator;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.Comparator;
+import java.util.Collections;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
@@ -66,7 +71,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.18 2004-07-20 21:23:29 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.19 2004-07-21 15:55:20 bob Exp $
  */
 public class BlockConsequence extends Interp
     implements Consequence
@@ -146,8 +151,23 @@ public class BlockConsequence extends Interp
     {
         try
         {
-            Declaration[] params = (Declaration[]) tuple.getDeclarations().toArray(Declaration.EMPTY_ARRAY) ;
-            if (code == null) compile(tuple, params);
+            List decls = new ArrayList( tuple.getDeclarations() );
+
+            Collections.sort( decls,
+                              new Comparator() {
+                                  public int compare(Object left,
+                                                     Object right) {
+                                      return ((Declaration)left).getIdentifier().compareTo( ((Declaration)right).getIdentifier() );
+                                  }
+                                  
+                              } );
+
+            
+            Declaration[] params = (Declaration[]) decls.toArray(Declaration.EMPTY_ARRAY) ;
+
+            if ( code == null ) {
+                compile(tuple, params);
+            }
             
             Object[] paramValues = new Object[ params.length + 2];
 

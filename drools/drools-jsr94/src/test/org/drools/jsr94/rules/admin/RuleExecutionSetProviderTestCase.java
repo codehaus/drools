@@ -121,7 +121,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
         {
             RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(element, null);
             assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-            assertEquals("number of rules", 2, ruleSet.getRules().size());
+            assertEquals("number of rules", 1, ruleSet.getRules().size());
         }
         else
         {
@@ -136,7 +136,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
     {
         RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet(this.ruleSet, null);
         assertEquals("rule set name", "Sisters Rules", ruleExecutionSet.getName());
-        assertEquals("number of rules", 2, ruleExecutionSet.getRules().size());
+        assertEquals("number of rules", 1, ruleExecutionSet.getRules().size());
     }
 
     /**
@@ -147,7 +147,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
         String rulesUri = RuleEngineTestBase.class.getResource(bindUri).toExternalForm();
         RuleExecutionSet ruleSet = ruleSetProvider.createRuleExecutionSet(rulesUri, null);
         assertEquals("rule set name", "Sisters Rules", ruleSet.getName());
-        assertEquals("number of rules", 2, ruleSet.getRules().size());
+        assertEquals("number of rules", 1, ruleSet.getRules().size());
     }
 
     public void testIncompatibleSerializableCreation() throws Exception
