@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciNative.java,v 1.5 2004-11-12 17:11:15 simon Exp $
+ * $Id: FibonacciNative.java,v 1.6 2004-11-17 16:29:37 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -203,9 +203,31 @@ public class FibonacciNative
         };
         bootstrap2Rule.addCondition( conditionBootstrap2B );
 
-        // Add the Consequence to the Bootstrap2 Rule.
-        // It's identical to the Bootstrap1 Consequence.
-        bootstrap2Rule.setConsequence( bootstrapConsequence );
+        // Build and Add the Consequence to the Bootstrap2 Rule
+        // <java:consequence>
+        //   f.setValue( 1 );
+        //   System.err.println( f.getSequence() + " == " + f.getValue() );
+        //   drools.modifyObject( f );
+        // </java:consequence>
+        final Consequence bootstrapConsequence2 = new Consequence( )
+        {
+            public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
+            {
+                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                f.setValue( 1 );
+                System.err.println( f.getSequence( ) + " == " + f.getValue( ) );
+
+                try
+                {
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
+                }
+                catch ( FactException e )
+                {
+                    throw new ConsequenceException( e );
+                }
+            }
+        };
+        bootstrap2Rule.setConsequence( bootstrapConsequence2 );
         ruleSet.addRule( bootstrap2Rule );
 
         // <rule name="Recurse" salience="10">
