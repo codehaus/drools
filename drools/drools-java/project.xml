@@ -255,10 +255,13 @@
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
-<!--
                 <include>**/*TestCase.java</include>
--->
             </includes>
+            <excludes>
+                <exclude>**/DroolsBenchmarkTestCase.java</exclude>
+                <!-- so far we've only implemented LocalRuleExecutionSetProvider -->
+                <exclude>**/RuleExecutionSetProviderTestCase.java</exclude>
+            </excludes>
             <resources>
                 <resource>
                     <directory>src/java/test</directory>
