@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.30 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: JoinNode.java,v 1.31 2004-11-25 17:53:53 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -256,7 +256,7 @@ class JoinNode extends TupleSource
        
         JoinMemory memory = workingMemory.getJoinMemory( this );
         
-        TupleSet newJoined = memory.modifyLeftTuples( trigger,workingMemory );
+        TupleSet newJoined = memory.modifyLeftTuples( trigger, newTuples, workingMemory );
         
         if (!newJoined.isEmpty())
         {
@@ -290,7 +290,7 @@ class JoinNode extends TupleSource
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
 
-        TupleSet newJoined = memory.modifyRightTuples( trigger, workingMemory );       
+        TupleSet newJoined = memory.modifyRightTuples( trigger, newTuples, workingMemory );       
 
         if (!newJoined.isEmpty())
         {
