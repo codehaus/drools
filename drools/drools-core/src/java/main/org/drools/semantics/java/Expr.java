@@ -10,67 +10,23 @@ import bsh.EvalError;
 import java.util.Set;
 import java.util.Iterator;
 
-public class Expr
+public class Expr extends Interp
 {
     private Declaration[] requiredDecls;
-    private String expr;
-
-    private Interpreter interp;
 
     protected Expr()
     {
         this.requiredDecls = null;
-        this.expr          = null;
-    }
-
-    public Object evaluate(Tuple tuple) throws EvalError
-    {
-        try
-        {
-            setUpInterpreter( tuple );
-
-            return this.interp.eval( getExpression() );
-        }
-        finally
-        {
-            cleanUpInterpreter( tuple );
-        }
     }
 
     public String getExpression()
     {
-        return this.expr;
+        return getText();
     }
 
-    protected void setUpInterpreter(Tuple tuple) throws EvalError
+    protected void setExpression(String expr)
     {
-        Set         decls    = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-            
-            this.interp.set( eachDecl.getIdentifier(),
-                             tuple.get( eachDecl ) );
-        }
-    }
-
-    protected void cleanUpInterpreter(Tuple tuple) throws EvalError
-    {
-        Set         decls    = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-            
-            this.interp.unset( eachDecl.getIdentifier() );
-        }
+        setText( expr );
     }
 
     public void configure(String expr,
@@ -88,7 +44,7 @@ public class Expr
             throw new ConfigurationException( e );
         }
 
-        this.expr = expr;
+        setExpression( expr );
     }
 
     public Declaration[] getRequiredTupleMembers()
