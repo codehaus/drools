@@ -40,10 +40,14 @@
   <mailingLists>
     <mailingList>
       <name>drools interest</name>
+      <subscribe>http://lists.werken.com/mailman/listinfo/drools-interest</subscribe>
+      <unsubscribe>http://lists.werken.com/mailman/listinfo/drools-interest</unsubscribe>
       <archive>http://lists.werken.com/pipermail/drools-interest/</archive>
     </mailingList>
     <mailingList>
       <name>drools cvs messages</name>
+      <subscribe>http://lists.werken.com/mailman/listinfo/drools-cvs</subscribe>
+      <unsubscribe>http://lists.werken.com/mailman/listinfo/drools-cvs</unsubscribe>
       <archive>http://lists.werken.com/pipermail/drools-cvs/</archive>
     </mailingList>
   </mailingLists>
