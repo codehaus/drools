@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.5 2003-11-29 02:50:50 bob Exp $
+ $Id: BlockConsequence.java,v 1.6 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,11 +54,14 @@ import org.python.core.Py;
 import org.python.core.PyDictionary;
 import org.python.core.PyString;
 
+import java.util.Map;
+import java.util.Iterator;
+
 /** Python block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.5 2003-11-29 02:50:50 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.6 2004-06-11 23:31:27 mproctor Exp $
  */
 public class BlockConsequence
     extends Exec
@@ -102,9 +105,16 @@ public class BlockConsequence
         dict.setdefault( new PyString( "__drools_working_memory" ),
                          Py.java2py( workingMemory ) );
 
-        dict.setdefault( new PyString( "appData" ),
-                         Py.java2py( workingMemory.getApplicationData() ) );
-        
+        Map appData = workingMemory.getApplicationDataMap();
+        for (Iterator iterator = appData.keySet().iterator(); iterator.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            String key = (String)entry.getKey();
+
+            dict.setdefault(new PyString(key),
+                            Py.java2py( entry.getValue() ) );
+        }
+
         try
         {
             execute( dict );

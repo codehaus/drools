@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.22 2004-06-05 10:55:45 mproctor Exp $
+ $Id: WorkingMemory.java,v 1.23 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools;
  */
 
 import java.util.List;
+import java.util.Map;
 
 import org.drools.event.WorkingMemoryEventListener;
 
@@ -78,14 +79,37 @@ public interface WorkingMemory
     /** Retrieve the application data that is associated with
      *  this memory.
      *
-     *  @return The application data or <code>null</code> if
-     *  no data has been set for this memory.
+     *  @return The application data under the name "appData" or
+     *          <code>null</code> if no data has been set for this memory.
+     *
+     * @deprecated use form which takes String argument
      */
     Object getApplicationData();
 
+    /** Retrieve all of the set application data in this memory
+     * 
+     *  @return the application data as a Map
+     */
+    public Map getApplicationDataMap();
+
+    /** Set a specific piece of application data in this working memory
+     *  
+     *  @param name the name under which to populate the data
+     *  @param value the application data
+     */
+    public void setApplicationData(String name, Object value);
+
+    /** Retrieve a specific piece of application data by name
+     *  
+     *  @return application data or null if nothing is set under this name
+     */
+    public Object getApplicationData(String name);
+
     /** Set the application data associated with this memory.
      *
-     *  @param appData The application data for this memory.
+     *  @param appData The application data for this memory. Will be populated
+     *         under the "appData" name
+     *  @deprecated use form which takes String argument
      */
     void setApplicationData(Object appData);
 

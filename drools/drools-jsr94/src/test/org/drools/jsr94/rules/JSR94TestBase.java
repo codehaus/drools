@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TestBase.java,v 1.4 2004-06-06 02:31:50 n_alex Exp $
+ $Id: JSR94TestBase.java,v 1.5 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 

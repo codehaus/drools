@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.14 2004-03-24 21:42:23 bob Exp $
+ $Id: BlockConsequence.java,v 1.15 2004-06-11 23:31:27 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,16 +48,18 @@ package org.drools.semantics.java;
 
 import bsh.NameSpace;
 import org.drools.WorkingMemory;
-import org.drools.rule.Declaration;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
+
+import java.util.Map;
+import java.util.Iterator;
 
 /** Java block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.14 2004-03-24 21:42:23 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.15 2004-06-11 23:31:27 mproctor Exp $
  */
 public class BlockConsequence
     extends Interp
@@ -107,12 +109,13 @@ public class BlockConsequence
             ns.setVariable( "drools$tuple",
                             tuple, false);
 
-             ns.importCommands("org.drools.semantics.java.bsh");
+            ns.importCommands("org.drools.semantics.java.bsh");
 
-            //beanshell 2.0 does not like null values in setVariable
-            if (workingMemory.getApplicationData() != null) {
-                ns.setVariable( "appData",
-                                workingMemory.getApplicationData(), false);
+            Map appData = workingMemory.getApplicationDataMap();
+            for (Iterator iterator = appData.entrySet().iterator(); iterator.hasNext();)
+            {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                ns.setVariable((String)entry.getKey(), entry.getValue(), false);
             }
             evaluate( ns );
         }
