@@ -8,6 +8,7 @@ import org.drools.rule.RuleSet;
 
 import org.drools.io.RuleSetLoader;
 
+import java.util.HashMap;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -46,10 +47,19 @@ public class Sisters
                 ruleBase.addRuleSet( eachRuleSet );
             }
 
+
+            // Create some application specific data that will 
+            // be needed by our consequence.
+
+            HashMap map = new HashMap();
+            map.put( "message", "This came from the appData HashMap" );
+
             // Create a [org.drools.WorkingMemory] to be the
             // container for your facts
             
             WorkingMemory workingMemory = ruleBase.createWorkingMemory();
+            workingMemory.setApplicationData( map );
+
 
             try
             {

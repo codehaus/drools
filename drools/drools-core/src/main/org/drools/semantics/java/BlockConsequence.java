@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.7 2002-08-26 23:04:34 bob Exp $
+ $Id: BlockConsequence.java,v 1.8 2003-03-04 05:09:39 kaz Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import bsh.NameSpace;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.7 2002-08-26 23:04:34 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.8 2003-03-04 05:09:39 kaz Exp $
  */
 public class BlockConsequence extends Interp implements ConfigurableConsequence
 {
@@ -119,6 +119,8 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
      *
      *  @throws ConsequenceException If an error occurs while
      *          attempting to invoke the consequence.
+     *  @throws NullPointerException If the working memory is
+     *          <code>null</code>.
      */
     public void invoke(Tuple tuple,
                        WorkingMemory workingMemory) throws ConsequenceException
@@ -129,6 +131,9 @@ public class BlockConsequence extends Interp implements ConfigurableConsequence
 
             ns.setVariable( "drools$working$memory",
                             workingMemory );
+
+            ns.setVariable( "appData",
+                            workingMemory.getApplicationData() );
             
             evaluate( ns );
         }

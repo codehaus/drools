@@ -93,6 +93,15 @@
     </developer>
 
     <developer>
+      <name>Pete Kazmier</name>
+      <id>kaz</id>
+      <email>pete-codehaus-dev@kazmier.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
       <name>James Roome</name>
       <email>refux@hotmail.com</email>
       <roles>

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.12 2002-07-28 13:55:46 bob Exp $
+ $Id: WorkingMemory.java,v 1.13 2003-03-04 05:09:38 kaz Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -78,6 +78,9 @@ public class WorkingMemory
     /** Flag to determine if a rule is currently being fired. */
     private boolean firing;
 
+    /** Application data which is associated with this memory. */
+    private Object applicationData;
+    
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -98,6 +101,26 @@ public class WorkingMemory
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Retrieve the application data that is associated with
+     *  this memory.
+     *
+     *  @return The application data or <code>null</code> if
+     *  no data has been set for this memory.
+     */
+    public Object getApplicationData()
+    {
+        return this.applicationData;
+    }
+
+    /** Set the application data associated with this memory.
+     *
+     *  @param appData The application data for this memory.
+     */
+    public void setApplicationData( Object appData )
+    {
+        this.applicationData = appData;
+    }
+    
     /** Retrieve the rule-firing <code>Agenda</code> for
      *  this <code>WorkingMemory</code>.
      *

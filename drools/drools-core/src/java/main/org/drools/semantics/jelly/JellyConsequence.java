@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequence.java,v 1.5 2002-08-28 20:24:59 bob Exp $
+ $Id: JellyConsequence.java,v 1.6 2003-03-04 05:09:39 kaz Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirteR</a>
  *
- *  @version $Id: JellyConsequence.java,v 1.5 2002-08-28 20:24:59 bob Exp $
+ *  @version $Id: JellyConsequence.java,v 1.6 2003-03-04 05:09:39 kaz Exp $
  */
 public class JellyConsequence implements Consequence
 {
@@ -139,6 +139,9 @@ public class JellyConsequence implements Consequence
             context.setVariable( "org.drools.working-memory",
                                  workingMemory );
 
+            context.setVariable( "appData",
+                                 workingMemory.getApplicationData() );
+            
             this.script.run( context,
                              this.output  );
         }

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.2 2002-08-28 03:00:34 bob Exp $
+ $Id: BlockConsequence.java,v 1.3 2003-03-04 05:09:39 kaz Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,13 +51,17 @@ import org.drools.smf.ConfigurableConsequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
+import org.python.core.Py;
+import org.python.core.PyDictionary;
+import org.python.core.PyString;
+
 import org.python.core.PyDictionary;
 
 /** Python block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.2 2002-08-28 03:00:34 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.3 2003-03-04 05:09:39 kaz Exp $
  */
 public class BlockConsequence extends Exec implements ConfigurableConsequence
 {
@@ -102,6 +106,12 @@ public class BlockConsequence extends Exec implements ConfigurableConsequence
     {
         PyDictionary dict = setUpDictionary( tuple );
 
+        dict.setdefault( new PyString( "__drools_working_memory" ),
+                         Py.java2py( workingMemory ) );
+
+        dict.setdefault( new PyString( "appData" ),
+                         Py.java2py( workingMemory.getApplicationData() ) );
+        
         try
         {
             execute( dict );
