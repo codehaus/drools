@@ -33,6 +33,11 @@ class TupleSet
                          tuple );
     }
 
+    public void removeTuple(Map key)
+    {
+        this.tuples.remove( key );
+    }
+
     public Set getTuples()
     {
         return new HashSet( this.tuples.values() );
