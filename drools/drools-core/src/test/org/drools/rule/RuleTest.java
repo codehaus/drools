@@ -143,7 +143,7 @@ public class RuleTest
         assertNull( rule.getDeclaration( "betty" ) );
     }
 
-    public void testDocumenation()
+    public void testDocumentation()
         throws Exception
     {
         Rule rule = new Rule( "test-rule" );
