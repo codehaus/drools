@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.69 2004-12-06 16:11:40 simon Exp $
+ * $Id: Builder.java,v 1.70 2004-12-06 16:15:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -383,8 +383,9 @@ public class Builder
 
         leafIter.remove( );
 
-        leafNodes.add( new JoinNode( left,
-                                     right ) );
+        attachNode( new JoinNode( left,
+                                  right ),
+                    leafNodes );
 
         return true;
     }
@@ -432,8 +433,9 @@ public class Builder
                         leafNodes.remove( left );
                         leafNodes.remove( right );
 
-                        leafNodes.add( new JoinNode( left,
-                                                     right ) );
+                        attachNode( new JoinNode( left,
+                                                  right ),
+                                    leafNodes );
 
                         performedJoin = true;
 
