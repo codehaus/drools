@@ -18,20 +18,20 @@ to get the next one, starting from 0 and 1:\\
 \section {Making Drools work}
 \subsection {Loading Drools rule(s)}
 Notice when specifying a rules location, it doesn't have to be local.  
-\lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=14,lastline=15}
+\\ \lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=14,lastline=15}
 
 \subsection {How does Drools find my objects}
 Drools isn't magic.
 It needs to know where to find the objects to inspect. 
 This also gives the programmer more flexibility, you can pick and choose what the rules engine should look at. 
-\lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=16,lastline=23}
+\\ \lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=16,lastline=23}
 
 \subsection {Telling Drools to start}
 Drools is now running. 
 Notice, that the next lines which are run are not lines 26 or 27. 
 Drools will start calling your event handlers, i.e. rules.
 All of your rules will run, then the program will continue on to the next lines.
-\lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=24,lastline=27}
+\\ \lstLine {../../../drools-examples/src/main/org/drools/examples/fibonacci/FibonacciExample.java} {FibonacciExample.java} {firstline=24,lastline=27}
 
 
 
@@ -232,7 +232,7 @@ Please note that \textcolor{CarnationPink} {Belladonna} is female.  This will be
 
 
 
-%\lstset{basicstyle=\tiny,numbers=left,frame=single,fancyvrb=true,keywordstyle=\color{blue}}
+\lstset{basicstyle=\tiny,numbers=left,frame=single,fancyvrb=true,keywordstyle=\color{blue}}
 \section{Java Code}
 
 
@@ -240,16 +240,16 @@ Please note that \textcolor{CarnationPink} {Belladonna} is female.  This will be
 \cleardoublepage
 \section {Sample Code}
 \subsection {Person}
-%\lst {../java/examples/familyTree/Person.java} {Person code}
+\lst {../../../drools-examples/src/main/org/drools/examples/familyTree/Person.java} {Person code}
 \cleardoublepage
 \subsection {Main}
-%\lst {../java/examples/familyTree/Main.java} {Main code}
+\lst {../../../drools-examples/src/main/org/drools/examples/familyTree/Main.java} {Main code}
 
 
 
 
 \cleardoublepage
 \subsection{Source code of Family Tree.drl}
-%\lst {../java/examples/familyTree/familyTree.drl} {FamilyTree DRL}
+\lst {../../../drools-examples/src/main/org/drools/examples/familyTree/familyTree.drl} {FamilyTree DRL}
 
 
