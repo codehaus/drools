@@ -1,10 +1,10 @@
 package org.drools.io;
 
 /*
- $Id: RuleBaseBuilder.java,v 1.3 2004-06-13 23:31:47 mproctor Exp $
+ $Id: RuleBaseBuilder.java,v 1.4 2004-06-25 01:56:17 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.io;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.io;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import java.io.InputStream;
@@ -51,7 +51,7 @@ import java.io.Reader;
 import java.net.URL;
 
 import org.drools.RuleBase;
-import org.drools.conflict.SalienceConflictResolver;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 
@@ -70,7 +70,7 @@ import org.drools.spi.ConflictResolver;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseBuilder.java,v 1.3 2004-06-13 23:31:47 mproctor Exp $
+ *  @version $Id: RuleBaseBuilder.java,v 1.4 2004-06-25 01:56:17 mproctor Exp $
  */
 
 
@@ -80,11 +80,11 @@ public class RuleBaseBuilder
 {
 	/**
 	 * Builds a RuleBase from a URL using the default ConflictResolver
-	 * 
-	 * This is a convenience method and calls 
+	 *
+	 * This is a convenience method and calls
 	 * public static RuleBase buildFromUrl(URL url, ConflictResolver resolver)
-	 * passing the SalienceConflictResolver
-	 * 
+	 * passing the DefaultConflictResolver
+	 *
 	 * @param url
 	 * @return RuleBase
 	 * @throws Exception
@@ -92,17 +92,17 @@ public class RuleBaseBuilder
 	public static RuleBase buildFromUrl(URL url)
 		throws Exception
 	{
-		return buildFromUrl(url, SalienceConflictResolver.getInstance());				
+		return buildFromUrl(url, DefaultConflictResolver.getInstance());
 	}
-	
+
 	/**
 	 * Builds a RuleBase from a URL using the given ConflictResolver
-	 *  
+	 *
 	 * @para url
      * @param resolver
 	 * @return RuleBase
 	 * @throws Exception
-	 */	
+	 */
     public static RuleBase buildFromUrl(URL url, ConflictResolver resolver)
         throws Exception
     {
@@ -120,27 +120,27 @@ public class RuleBaseBuilder
 
 	/**
 	 * Builds a RuleBase from an InputStream using the default ConflictResolver
-	 * 
-	 * This is a convenience method and calls 
+	 *
+	 * This is a convenience method and calls
 	 * public static RuleBase buildFromInputStream(InputStream in, ConflictResolver resolver)
-	 * passing the SalienceConflictResolver
-	 * 
+	 * passing the DefaultConflictResolver
+	 *
 	 * @param in
 	 * @return ruleBase
 	 * @throws Exception
-	 */    
+	 */
     public static RuleBase buildFromInputStream(InputStream in)
-    	throws Exception 
+    	throws Exception
 	{
-		return buildFromInputStream(in, SalienceConflictResolver.getInstance()); 
-	}    
+		return buildFromInputStream(in, DefaultConflictResolver.getInstance());
+	}
 
 
-    
-    
+
+
     /**
      * Builds a RuleBase from an InputStream using the default ConflictResolver
-     * 
+     *
      * @param in
      * @param resolver
      * @return ruleBase
@@ -154,7 +154,7 @@ public class RuleBaseBuilder
         RuleSet ruleSet = reader.read( in );
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
-        builder.setConflictResolver(resolver);        
+        builder.setConflictResolver(resolver);
 
         builder.addRuleSet( ruleSet );
 
@@ -163,29 +163,29 @@ public class RuleBaseBuilder
 
 	/**
 	 * Builds a RuleBase from a Reader using the default ConflictResolver
-	 * 
-	 * This is a convenience method and calls 
+	 *
+	 * This is a convenience method and calls
 	 * public static RuleBase buildFromReader(Reader in, ConflictResolver resolver)
-	 * passing the SalienceConflictResolver
-	 * 
+	 * passing the DefaultConflictResolver
+	 *
 	 * @param in
 	 * @return ruleBase
 	 * @throws Exception
-	 */       
+	 */
     public static RuleBase buildFromReader(Reader in)
     	throws Exception
-    {   
-    	return buildFromReader(in, SalienceConflictResolver.getInstance());
+    {
+    	return buildFromReader(in, DefaultConflictResolver.getInstance());
     }
 
     /**
      * Builds a RuleBase from a Reader using the given ConflictResolver
-     * 
+     *
      * @param in
      * @param resolver
      * @return ruleBase
      * @throws Exception
-     */    
+     */
     public static RuleBase buildFromReader(Reader in, ConflictResolver resolver)
         throws Exception
     {
@@ -194,7 +194,7 @@ public class RuleBaseBuilder
         RuleSet ruleSet = reader.read( in );
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder();
-        builder.setConflictResolver(resolver);        
+        builder.setConflictResolver(resolver);
 
         builder.addRuleSet( ruleSet );
 
