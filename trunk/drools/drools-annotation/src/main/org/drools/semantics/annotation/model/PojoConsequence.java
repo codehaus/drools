@@ -14,7 +14,7 @@ class PojoConsequence implements Consequence
         this.ruleMethod = ruleMethod;
     }
 
-    public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+    public void invoke( Tuple tuple ) throws ConsequenceException
     {
         try
         {
@@ -25,7 +25,7 @@ class PojoConsequence implements Consequence
             throw new ConsequenceException( e );
         }
     }
-    
+
     public String toString() {
         return ruleMethod.toString();
     }
