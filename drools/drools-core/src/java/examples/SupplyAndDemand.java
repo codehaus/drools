@@ -22,14 +22,79 @@ public class SupplyAndDemand
 
         try
         {
+            // First, construct an empty RuleBase to be the
+            // container for your rule logic.
+
             RuleBase ruleBase = new RuleBase();
+            
+            // Then, use the [org.drools.semantic.java.RuleLoader]
+            // static method to load a rule-set from a local File.
             
             RuleLoader.load( ruleBase,
                              new File( args[0] ) );
 
-            WorkingMemory memory = ruleBase.createWorkingMemory();
+            // Create a [org.drools.WorkingMemory] to be the
+            // container for your facts
+            
+            WorkingMemory workingMemory = ruleBase.createWorkingMemory();
 
-            runDemo( memory );
+            // Create some fact objects.
+
+            Buyer buyer1 = new Buyer( "buyer-1",
+                                      100,
+                                      9.99 );
+
+            Buyer buyer2 = new Buyer( "buyer-2",
+                                      20,
+                                      15.00 );
+
+            Seller seller1 = new Seller( "seller-1",
+                                         50,
+                                         9.99 );
+
+            Seller seller2 = new Seller ( "seller-2",
+                                          75,
+                                          15.00 );
+
+            Seller seller3 = new Seller( "seller-3",
+                                         20,
+                                         5.00 );
+
+            System.err.println( "----------------------------------------" );
+            System.err.println( "    PRE" );
+            System.err.println( "----------------------------------------" );
+            System.err.println( buyer1 );
+            System.err.println( buyer2 );
+            System.err.println( seller1 );
+            System.err.println( seller2 );
+            System.err.println( seller3 );
+
+            System.err.println( "----------------------------------------" );
+
+            try
+            {
+                // Now, simply assert them into the [org.drools.WorkingMemory]
+                // and let the logic engine do the rest.
+
+                workingMemory.assertObject( buyer1 );
+                workingMemory.assertObject( buyer2 );
+                workingMemory.assertObject( seller1 );
+                workingMemory.assertObject( seller2 );
+                workingMemory.assertObject( seller3 );
+            }
+            catch (AssertionException e)
+            {
+                e.printStackTrace();
+            }
+
+            System.err.println( "----------------------------------------" );
+            System.err.println( "    POST" );
+            System.err.println( "----------------------------------------" );
+            System.err.println( buyer1 );
+            System.err.println( buyer2 );
+            System.err.println( seller1 );
+            System.err.println( seller2 );
+            System.err.println( seller3 );
         }
         catch (DroolsException e)
         {
@@ -39,60 +104,5 @@ public class SupplyAndDemand
         {
             e.printStackTrace();
         }
-    }
-
-    private static void runDemo(WorkingMemory memory)
-    {
-        Buyer buyer1 = new Buyer( "buyer-1",
-                                  100,
-                                  9.99 );
-
-        Buyer buyer2 = new Buyer( "buyer-2",
-                                  20,
-                                  15.00 );
-
-        Seller seller1 = new Seller( "seller-1",
-                                     50,
-                                     9.99 );
-
-        Seller seller2 = new Seller ( "seller-2",
-                                      75,
-                                      12.85 );
-
-        Seller seller3 = new Seller( "seller-3",
-                                     20,
-                                     5.00 );
-
-        System.err.println( "----------------------------------------" );
-        System.err.println( "    PRE" );
-        System.err.println( "----------------------------------------" );
-        System.err.println( buyer1 );
-        System.err.println( buyer2 );
-        System.err.println( seller1 );
-        System.err.println( seller2 );
-        System.err.println( seller3 );
-
-        System.err.println( "----------------------------------------" );
-        try
-        {
-            memory.assertObject( buyer1 );
-            memory.assertObject( buyer2 );
-            memory.assertObject( seller1 );
-            memory.assertObject( seller2 );
-            memory.assertObject( seller3 );
-        }
-        catch (AssertionException e)
-        {
-            e.printStackTrace();
-        }
-
-        System.err.println( "----------------------------------------" );
-        System.err.println( "    POST" );
-        System.err.println( "----------------------------------------" );
-        System.err.println( buyer1 );
-        System.err.println( buyer2 );
-        System.err.println( seller1 );
-        System.err.println( seller2 );
-        System.err.println( seller3 );
     }
 }

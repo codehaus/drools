@@ -13,20 +13,21 @@
 
 		<when>
 			<cond>
-				seller.getQuantity() > 0
+				seller.getQuantity() &gt; 0
 			</cond>
 			<cond>
-				buyer.getDesiredQuantity() > 0 
+				buyer.getDesiredQuantity() &gt; 0 
 			</cond>
 			<cond>
-				buyer.getPrice() >= seller.getPrice()
+				seller.getPrice() &lt;= buyer.getPrice()
 			</cond>
 		</when>
 
 		<then>
 			int qty = buyer.buy( seller.sell( buyer.getDesiredQuantity() ) );
+			double price = seller.getPrice();
 
-			System.err.println( buyer.getName() + " bought " + qty + " from " + seller.getName() );
+			System.err.println( buyer.getName() + " bought " + qty + " from " + seller.getName() + " at " + price + " each.");
 
 			System.err.println( buyer );
 			System.err.println( seller );
