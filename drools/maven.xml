@@ -38,9 +38,9 @@
     <goal name="clean-all" prereqs="clean-all:prepare">
       <attainGoal name="multiproject:clean"/>
       <attainGoal name="clean"/>
-      </goal>
+    </goal>
 
-      <goal name="clean-all:prepare">
+    <goal name="clean-all:prepare">
       <mkdir dir="${maven.build.dir}"/>
       <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-core-${pom.currentVersion}.jar"/>

@@ -4,7 +4,7 @@ import org.drools.semantics.annotation.DroolsParameter;
 import org.drools.semantics.annotation.*;
 
 @DroolsRule
-class DebugRule {
+public class DebugRule {
 
     @DroolsConsequence
     public void consequence(@DroolsParameter("object") Object object) {

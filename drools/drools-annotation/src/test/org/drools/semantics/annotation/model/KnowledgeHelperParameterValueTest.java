@@ -3,12 +3,13 @@ package org.drools.semantics.annotation.model;
 import junit.framework.TestCase;
 
 import org.drools.rule.Rule;
-import org.drools.semantics.annotation.DroolsContext;
+import org.drools.spi.DefaultKnowledgeHelper;
+import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
 
-public class DroolsParameterValueTest extends TestCase
+public class KnowledgeHelperParameterValueTest extends TestCase
 {
     private EasymockContainer mocks = new EasymockContainer( );
 
@@ -19,7 +20,7 @@ public class DroolsParameterValueTest extends TestCase
     {
         try
         {
-            DroolsContextParameterValue value = new DroolsContextParameterValue( null );
+            KnowledgeHelperParameterValue value = new KnowledgeHelperParameterValue( null );
             fail( "expected IllegalArgumentException" );
         }
         catch (IllegalArgumentException e)
@@ -30,13 +31,13 @@ public class DroolsParameterValueTest extends TestCase
 
     public void testGetValue( )
     {
-        DroolsContextParameterValue value = new DroolsContextParameterValue( mockRule.object );
+        KnowledgeHelperParameterValue value = new KnowledgeHelperParameterValue( mockRule.object );
         mocks.replay( );
 
-        DroolsContext drools = value.getValue( mockTuple.object );
+        KnowledgeHelper drools = value.getValue( mockTuple.object );
 
         // TODO Asserting the instanceof is a bit weak.
-        assertTrue( drools instanceof KnowledgeHelperDroolsContext );
+        assertTrue( drools instanceof DefaultKnowledgeHelper);
         mocks.verify( );
     }
 }
