@@ -72,6 +72,21 @@
         <move file="${maven.dist.bin.assembly.dir}/${maven.final.name}.jar" todir="${maven.dist.bin.assembly.dir}/lib"/>
     </postGoal>
 
+    <!--
+        dist:prepare-src-filesystem
+        copy additional stuff to src assembly dir
+    -->
+    <postGoal name="dist:prepare-src-filesystem">
+
+        <!-- copy sun jars to src-assembly common-lib -->
+        <mkdir dir="${maven.dist.src.assembly.dir}/common-lib"/>
+        <copy todir="${maven.dist.src.assembly.dir}/common-lib" flatten="true">
+            <fileset dir="${basedir}/common-lib">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+    </postGoal>
+
     <!-- goals ***************************************************************************************************** -->
 
     <!--
