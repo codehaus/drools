@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ConsequenceException.java,v 1.2 2003-11-19 21:31:12 bob Exp $
+ $Id: ConsequenceException.java,v 1.3 2004-09-13 08:28:14 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,7 @@ package org.drools.spi;
  */
 
 import org.drools.AssertionException;
+import org.drools.rule.Rule;
 
 /** Indicates an error during a <code>Consequence</code> invokation.
  *
@@ -57,6 +58,7 @@ import org.drools.AssertionException;
 public class ConsequenceException
     extends AssertionException
 {
+    private Rule rule;
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -76,4 +78,24 @@ public class ConsequenceException
     {
         super( rootCause );
     }
+
+    /** Construct with a root cause.
+    *
+    *  @param rootCause The root cause of this exception.
+    */
+   public ConsequenceException(Throwable rootCause, Rule rule)
+   {
+       super( rootCause );
+       this.rule = rule;
+   }
+   
+   public void setRule(Rule rule)
+   {
+       this.rule = rule;
+   }
+   
+   public Rule getRule()
+   {
+       return this.rule;
+   }
 }
