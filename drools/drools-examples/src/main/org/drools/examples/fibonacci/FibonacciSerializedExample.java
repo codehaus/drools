@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciSerializedExample.java,v 1.6 2004-12-04 14:59:45 simon Exp $
+ * $Id: FibonacciSerializedExample.java,v 1.7 2004-12-16 19:17:30 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,21 +40,26 @@ package org.drools.examples.fibonacci;
  *
  */
 
-import org.drools.FactHandle;
-import org.drools.RuleBase;
-import org.drools.WorkingMemory;
-import org.drools.io.RuleBaseLoader;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
+import org.drools.DroolsException;
+import org.drools.FactHandle;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.io.RuleBaseLoader;
+import org.xml.sax.SAXException;
+
 public class FibonacciSerializedExample
 {
-    private static WorkingMemory getWorkingMemory(RuleBase ruleBase) throws Exception
+    private static WorkingMemory getWorkingMemory(RuleBase ruleBase)
+        throws IOException,
+               ClassNotFoundException
     {
         // Serialize to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream( );
@@ -66,14 +71,15 @@ public class FibonacciSerializedExample
         byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
         WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
         in.close( );
         return workingMemoryOut;
     }
 
-    private static WorkingMemory serializeWorkingMemory(WorkingMemory workingMemoryIn) throws Exception
+    private static WorkingMemory serializeWorkingMemory(WorkingMemory workingMemoryIn)
+        throws IOException,
+               ClassNotFoundException
     {
         // Serialize to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream( );
@@ -85,14 +91,16 @@ public class FibonacciSerializedExample
         byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(
-                                                new ByteArrayInputStream( bytes ) );
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
         WorkingMemory workingMemoryOut = ( WorkingMemory ) in.readObject( );
         in.close( );
         return workingMemoryOut;
     }
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args) throws DroolsException,
+                                                  SAXException,
+                                                  IOException,
+                                                  ClassNotFoundException
     {
         if ( args.length != 1 )
         {

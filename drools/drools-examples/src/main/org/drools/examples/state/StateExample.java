@@ -1,7 +1,7 @@
 package org.drools.examples.state;
 
 /*
- * $Id: StateExample.java,v 1.5 2004-12-04 14:59:45 simon Exp $
+ * $Id: StateExample.java,v 1.6 2004-12-16 19:17:31 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,20 @@ package org.drools.examples.state;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.net.URL;
+
+import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
-
-import java.net.URL;
+import org.xml.sax.SAXException;
 
 public class StateExample
 {
-    public static void main( String[] args ) throws Exception
+    public static void main( String[] args ) throws DroolsException,
+                                                    SAXException,
+                                                    IOException
     {
         if ( args.length != 1 )
         {

@@ -1,7 +1,7 @@
 package org.drools.examples.benchmarks.waltz;
 
 /*
- * $Id: WaltzBenchmark.java,v 1.1 2004-12-15 15:13:41 dbarnett Exp $
+ * $Id: WaltzBenchmark.java,v 1.2 2004-12-16 19:17:30 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.drools.DroolsException;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
@@ -64,6 +65,7 @@ import org.drools.examples.benchmarks.waltz.model.Stage;
 import org.drools.io.RuleBaseLoader;
 import org.drools.reteoo.Dumper;
 import org.drools.spi.ConflictResolver;
+import org.xml.sax.SAXException;
 
 /**
  * A Drools implementation of the Waltz benchmark,
@@ -104,7 +106,10 @@ public class WaltzBenchmark
      * @param args if an argument is provided,
      *             it is used as the name of the *.dat data file to use.
      */
-    public static void main( String[] args ) throws Exception
+    public static void main( String[] args )
+        throws DroolsException,
+               IOException,
+               SAXException
     {
         String datFile = "waltz0.dat";
         if ( args.length > 0 )
@@ -126,7 +131,10 @@ public class WaltzBenchmark
      *
      * @param datFile the input data file
      */
-    public WaltzBenchmark( String datFile ) throws Exception
+    public WaltzBenchmark( String datFile )
+        throws DroolsException,
+               IOException,
+               SAXException
     {
         System.out.println( "Loading DRL: " + DRL_FILE + "..." );
         RuleBase ruleBase = RuleBaseLoader.loadFromUrl(

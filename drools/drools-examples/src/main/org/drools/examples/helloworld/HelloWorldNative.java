@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldNative.java,v 1.6 2004-11-23 22:12:33 dbarnett Exp $
+ * $Id: HelloWorldNative.java,v 1.7 2004-12-16 19:17:30 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,7 @@ package org.drools.examples.helloworld;
  *
  */
 
+import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.event.DebugWorkingMemoryEventListener;
@@ -63,7 +64,7 @@ import org.drools.spi.Tuple;
 
 public class HelloWorldNative
 {
-    public static void main( String[] args ) throws Exception
+    public static void main( String[] args ) throws DroolsException
     {
         Rule helloRule = new Rule( "Hello World" );
         Rule goodbyeRule = new Rule( "Goodbye Cruel World" );
