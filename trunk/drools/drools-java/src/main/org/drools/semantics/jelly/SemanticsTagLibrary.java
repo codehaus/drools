@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.3 2002-08-28 20:24:59 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.4 2002-08-29 14:49:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,15 +49,13 @@ package org.drools.semantics.jelly;
 import org.apache.commons.jelly.impl.DynamicTagLibrary;
 import org.apache.commons.jelly.Tag;
 
-import org.xml.sax.Attributes;
-
 import java.util.Map;
 
 /** Custom Jelly semantics tag library.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.3 2002-08-28 20:24:59 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.4 2002-08-29 14:49:48 bob Exp $
  */
 public class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -72,7 +70,11 @@ public class SemanticsTagLibrary extends DynamicTagLibrary
     /** Creates a new script to execute the given tag name and attributes.
      *
      *  @param name Tag name.
-     *  @param attributes The attributes.
+     *
+     *  @return The new tag.
+     *
+     *  @throws Exception If an error occurs while attempting to
+     *          create the tag for the specified name.
      */
     public Tag createTag(String name) throws Exception
     {
