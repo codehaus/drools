@@ -22,6 +22,7 @@
 \usepackage{fancyvrb}
 \usepackage{listings}
 \usepackage{makeidx}
+\usepackage[nottoc]{tocbibind}
 
 \usepackage [dvips] {graphicx}
 \usepackage{wrapfig}
@@ -235,16 +236,16 @@
 \end{flushright}
 \end{titlepage} 
 
-\include{preface}
-
-\tableofcontents
-\listoffigures
-
 {
+
 \renewcommand{\chaptername}{}
 \renewcommand{\thechapter}{}
 \renewcommand{\thesection}{}
 \renewcommand{\thepage}{\roman{page}}
+
+\include{preface}
+\tableofcontents
+\listoffigures
 
 \include{acknowledgements}
 \include{about}
@@ -310,6 +311,6 @@
 \printindex
 }
 
-\include{colophon}
+%\include{colophon}
 
 \end{document}
