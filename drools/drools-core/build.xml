@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.36 2003-05-23 14:31:26 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.37 2003-05-27 09:33:10 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
     <property name="basename" value="drools"/>
-    <property name="version" value="2.0-beta-11-SNAPSHOT"/>
+    <property name="version" value="2.0-beta-11-dev-1"/>
 
     <property name="jarname" value="${basename}-${version}"/>
     <property name="rarname" value="${basename}-jsr94-${version}"/>
