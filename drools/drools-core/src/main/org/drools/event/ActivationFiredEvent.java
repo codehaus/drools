@@ -36,4 +36,9 @@ public class ActivationFiredEvent
     {
         return this.tuple;
     }
+
+    public String toString()
+    {
+        return "[ActivationFired: rule=" + this.tuple.getRule().getName() + "; tuple=" + this.tuple + "]";
+    }
 }

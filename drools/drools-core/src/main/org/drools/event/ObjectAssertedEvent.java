@@ -28,4 +28,9 @@ public class ObjectAssertedEvent
     {
         return this.object;
     }
+
+    public String toString()
+    {
+        return "[ObjectAsserted: handle=" + this.handle + "; object=" + this.object + "]";
+    }
 }

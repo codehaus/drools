@@ -47,5 +47,10 @@ public class ConditionTestedEvent
     {
         return this.passed;
     }
+
+    public String toString()
+    {
+        return "[ConditionTested: rule=" + this.rule.getName() + "; condition=" + this.condition + "; passed=" + this.passed + "; tuple=" + this.tuple + "]";
+    }
 }
 

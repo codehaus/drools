@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.21 2004-06-03 20:47:08 mproctor Exp $
+ $Id: ReteTuple.java,v 1.22 2004-06-15 18:04:23 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ import java.util.HashSet;
  *  
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.21 2004-06-03 20:47:08 mproctor Exp $ 
+ *  @version $Id: ReteTuple.java,v 1.22 2004-06-15 18:04:23 bob Exp $ 
  */
 class ReteTuple
     implements Tuple
@@ -139,9 +139,16 @@ class ReteTuple
     }
     */
     
+    /*
     public String toString()
     {
         return "[Tuple: key=" + this.key + "; columns=" + this.columns + "; o2h=" + this.objectToHandle + "]";
+    }
+    */
+
+    public String toString()
+    {
+        return "{" + this.columns + "}";
     }
 
     // ------------------------------------------------------------
