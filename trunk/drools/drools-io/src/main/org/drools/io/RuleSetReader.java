@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.27 2004-11-03 23:04:02 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.26 2004-11-03 22:54:36 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.27 2004-11-03 23:04:02 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -149,6 +149,7 @@ public class RuleSetReader extends DefaultHandler
         localNameMap.put( "parameter", new ParameterHandler( this ) );
         localNameMap.put( "declaration", new DeclarationHandler( this ) );
         localNameMap.put( "class", new ObjectTypeHandler( this ) );
+        localNameMap.put( "class-field", new ObjectTypeHandler( this ) );
         localNameMap.put( "condition", new ConditionHandler( this ) );
         localNameMap.put( "duration", new DurationHandler( this ) );
         localNameMap.put( "extractor", new ExtractionHandler( this ) );
