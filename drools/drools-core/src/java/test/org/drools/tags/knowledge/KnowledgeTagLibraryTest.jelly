@@ -113,7 +113,7 @@
 
   <test:case name="testLoadRules_Valid">
     <rule-base var="testLoadRules_Valid">
-      <load-rules uri="file:///${basedir}/src/java/test/org/drools/io/RuleSetLoaderTest-2.drl"/>
+      <load-rules file="${basedir}/src/java/test/org/drools/io/RuleSetLoaderTest-2.drl"/>
     </rule-base>
   </test:case>
   
@@ -126,7 +126,7 @@
   <test:case name="testAssert">
 
     <rule-base var="rulebase_testAssert">
-      <load-rules uri="file:///${basedir}/src/java/test/org/drools/io/RuleSetLoaderTest-2.drl"/>
+      <load-rules file="${basedir}/src/java/test/org/drools/io/RuleSetLoaderTest-2.drl"/>
     </rule-base>
 
     <knowledge rules="${rulebase_testAssert}">
