@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: DefaultConflictResolver.java,v 1.4 2004-06-26 17:54:53 mproctor Exp $
+ $Id: DefaultConflictResolver.java,v 1.5 2004-06-27 12:31:16 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -108,7 +108,7 @@ public class DefaultConflictResolver implements ConflictResolver, Serializable
 			conflictResolvers = new ArrayList( );
 			conflictResolvers.add( SalienceConflictResolver.getInstance( ) );
 			conflictResolvers.add( ComplexityConflictResolver.getInstance( ) );
-			//conflictResolvers.add(BreadthConflictResolver.getInstance());
+			conflictResolvers.add( BreadthConflictResolver.getInstance());
 			conflictResolvers.add( LoadOrderConflictResolver.getInstance( ) );
 		}
 	}

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: AgendaItem.java,v 1.10 2003-12-05 04:26:23 bob Exp $
+ $Id: AgendaItem.java,v 1.11 2004-06-27 12:31:17 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -70,6 +70,11 @@ class AgendaItem
 
     /** The rule. */
     private Rule      rule;
+    
+    //** The Counter */
+    private static long counter;
+    
+    private long activationNumber;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -85,6 +90,7 @@ class AgendaItem
     {
         this.tuple    = tuple;
         this.rule     = rule;
+        this.activationNumber = counter++; 
     }
 
     // ------------------------------------------------------------
@@ -151,6 +157,11 @@ class AgendaItem
     {
         getRule().getConsequence().invoke( getTuple(),
                                            workingMemory );
+    }
+    
+    public long getActivationNumber() 
+    {
+    	return this.activationNumber;
     }
 
     public String toString()

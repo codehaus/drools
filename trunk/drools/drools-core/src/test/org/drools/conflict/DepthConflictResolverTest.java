@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
-$Id: DefaultConflictResolverTest.java,v 1.4 2004-06-27 12:31:17 mproctor Exp $
+$Id: DepthConflictResolverTest.java,v 1.1 2004-06-27 12:31:17 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -52,12 +52,10 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.drools.rule.InstrumentedRule;
-import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
-import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.MockTuple;
 
-public class DefaultConflictResolverTest extends TestCase
+public class DepthConflictResolverTest extends TestCase
 {
 	private ConflictResolver conflictResolver;
 
@@ -78,33 +76,22 @@ public class DefaultConflictResolverTest extends TestCase
 	private LinkedList items;
 	private List conflictItems;
 
-	public DefaultConflictResolverTest( String name )
+	public DepthConflictResolverTest( String name )
 	{
 		super( name );
 	}
 
 	public void setUp()
 	{
-		this.conflictResolver = DefaultConflictResolver.getInstance( );
+		this.conflictResolver = DepthConflictResolver.getInstance( );
 		items = new LinkedList( );
 
 		brieRule = new InstrumentedRule( "brie" );
-		brieRule.isValid( true );
-
 		camembertRule = new InstrumentedRule( "camembert" );
-		camembertRule.isValid( true );
-
 		stiltonRule = new InstrumentedRule( "stilton" );
-		stiltonRule.isValid( true );
-
 		cheddarRule = new InstrumentedRule( "cheddar" );
-		cheddarRule.isValid( true );
-
 		fetaRule = new InstrumentedRule( "feta" );
-		fetaRule.isValid( true );
-
 		mozzarellaRule = new InstrumentedRule( "mozzarella" );
-		mozzarellaRule.isValid( true );
 
 		brie = new MockAgendaItem( new MockTuple( ), brieRule );
 		camembert = new MockAgendaItem( new MockTuple( ), camembertRule );
@@ -143,144 +130,56 @@ public class DefaultConflictResolverTest extends TestCase
 		assertEquals( "brie", item.getRule( ).getName( ) );
 	}
 
-	public void testInsertsWithConflicts() throws Exception
+	public void testInsertsNoConflicts()
 	{
 		MockAgendaItem item;
-		RuleSet ruleSet;
 		items.clear( );
-		ruleSet = new RuleSet( "cheese board" );
 
-		brieRule.setSalience( 0 );
-		fetaRule.setSalience( 0 );
-		camembertRule.setSalience( 0 );
-
+		//try ascending
 		conflictItems = this.conflictResolver.insert( brie, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( feta, items );
 		assertNull( conflictItems );
 		conflictItems = this.conflictResolver.insert( camembert, items );
 		assertNull( conflictItems );
-
-		assertEquals( "feta", ((MockAgendaItem) items.get( 0 )).getRule( )
-				.getName( ) );
-		assertEquals( "camembert", ((MockAgendaItem) items.get( 1 )).getRule( )
-				.getName( ) );
-		assertEquals( "brie", ((MockAgendaItem) items.get( 2 )).getRule( )
-				.getName( ) );
-
-		items.clear( );
-
-		brieRule.setSalience( 1 );
-		fetaRule.setSalience( 1 );
-		camembertRule.setSalience( 2 );
-		stiltonRule.setSalience( 3 );
-		cheddarRule.setSalience( 3 );
-		mozzarellaRule.setSalience( 4 );
-
-		//one condition
-		brieRule.addCondition( new InstrumentedCondition( ) );
-		//one condition
-		fetaRule.addCondition( new InstrumentedCondition( ) );
-		//one condition
-		cheddarRule.addCondition( new InstrumentedCondition( ) );
-		//two conditions
-		stiltonRule.addCondition( new InstrumentedCondition( ) );
-		stiltonRule.addCondition( new InstrumentedCondition( ) );
-
-		ruleSet.addRule( mozzarellaRule );
-		ruleSet.addRule( camembertRule );
-		ruleSet.addRule( cheddarRule );
-		ruleSet.addRule( brieRule );
-		ruleSet.addRule( stiltonRule );
-		ruleSet.addRule( fetaRule );
-
 		conflictItems = this.conflictResolver.insert( stilton, items );
 		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( mozzarella, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( cheddar, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( camembert, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( brie, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( feta, items );
-		assertNull( conflictItems );
 
-		assertEquals( "mozzarella", ((MockAgendaItem) items.get( 0 )).getRule( )
-				.getName( ) );
-		assertEquals( "stilton", ((MockAgendaItem) items.get( 1 )).getRule( )
-				.getName( ) );
-		assertEquals( "cheddar", ((MockAgendaItem) items.get( 2 )).getRule( )
-				.getName( ) );
-		assertEquals( "camembert", ((MockAgendaItem) items.get( 3 )).getRule( )
-				.getName( ) );
-		assertEquals( "feta", ((MockAgendaItem) items.get( 4 )).getRule( )
-				.getName( ) );
-		assertEquals( "brie", ((MockAgendaItem) items.get( 5 )).getRule( )
-				.getName( ) );
+		item = (MockAgendaItem) items.get( 0 );
+		assertEquals( "brie", item.getRule( ).getName( ) );
+		item = (MockAgendaItem) items.get( 2 );
+		assertEquals( "stilton", item.getRule( ).getName( ) );
+		item = (MockAgendaItem) items.get( 1 );
+		assertEquals( "camembert", item.getRule( ).getName( ) );
 
-
-		tearDown( );
-		setUp( );
+		//try descending
 		items.clear( );
-		ruleSet = new RuleSet( "cheese board" );
-
-		brieRule.setSalience( 1 );
-		fetaRule.setSalience( 3 );
-		camembertRule.setSalience( 3 );
-		stiltonRule.setSalience( 3 );
-		cheddarRule.setSalience( 4 );
-		mozzarellaRule.setSalience( 4 );
-
-		//one condition
-		cheddarRule.addCondition( new InstrumentedCondition( ) );
-		//one condition
-		mozzarellaRule.addCondition( new InstrumentedCondition( ) );
-
-		//one condition
-		camembertRule.addCondition( new InstrumentedCondition( ) );
-		//two conditions
-		fetaRule.addCondition( new InstrumentedCondition( ) );
-		fetaRule.addCondition( new InstrumentedCondition( ) );
-
-		//three conditions
-		stiltonRule.addCondition( new InstrumentedCondition( ) );
-		stiltonRule.addCondition( new InstrumentedCondition( ) );
-		stiltonRule.addCondition( new InstrumentedCondition( ) );
-
-		ruleSet.addRule( stiltonRule );
-		ruleSet.addRule( mozzarellaRule );
-		ruleSet.addRule( camembertRule );
-		ruleSet.addRule( cheddarRule );
-		ruleSet.addRule( fetaRule );
-		ruleSet.addRule( brieRule );
-
 		conflictItems = this.conflictResolver.insert( stilton, items );
 		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( mozzarella, items );
-		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( cheddar, items );
+		conflictItems = this.conflictResolver.insert( camembert, items );
 		assertNull( conflictItems );
 		conflictItems = this.conflictResolver.insert( brie, items );
 		assertNull( conflictItems );
-		conflictItems = this.conflictResolver.insert( feta, items );
-		assertNull( conflictItems );
+
+		item = (MockAgendaItem) items.get( 0 );
+		assertEquals( "brie", item.getRule( ).getName( ) );
+		item = (MockAgendaItem) items.get( 2 );
+		assertEquals( "stilton", item.getRule( ).getName( ) );
+		item = (MockAgendaItem) items.get( 1 );
+		assertEquals( "camembert", item.getRule( ).getName( ) );
+
+		//try mixed order
+		items.clear( );
 		conflictItems = this.conflictResolver.insert( camembert, items );
 		assertNull( conflictItems );
+		conflictItems = this.conflictResolver.insert( stilton, items );
+		assertNull( conflictItems );
+		conflictItems = this.conflictResolver.insert( brie, items );
+		assertNull( conflictItems );
 
-		assertEquals( "mozzarella", ((MockAgendaItem) items.get( 0 )).getRule( )
-				.getName( ) );
-		assertEquals( "cheddar", ((MockAgendaItem) items.get( 1 )).getRule( )
-				.getName( ) );
-		assertEquals( "stilton", ((MockAgendaItem) items.get( 2 )).getRule( )
-				.getName( ) );
-		assertEquals( "feta", ((MockAgendaItem) items.get( 3 )).getRule( )
-				.getName( ) );
-		assertEquals( "camembert", ((MockAgendaItem) items.get( 4 )).getRule( )
-				.getName( ) );
-		assertEquals( "brie", ((MockAgendaItem) items.get( 5 )).getRule( )
-				.getName( ) );
-
+		item = (MockAgendaItem) items.get( 0 );
+		assertEquals( "brie", item.getRule( ).getName( ) );
+		item = (MockAgendaItem) items.get( 2 );
+		assertEquals( "stilton", item.getRule( ).getName( ) );
+		item = (MockAgendaItem) items.get( 1 );
+		assertEquals( "camembert", item.getRule( ).getName( ) );
 	}
 }
