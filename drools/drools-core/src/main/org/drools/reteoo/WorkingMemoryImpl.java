@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.32 2004-11-06 03:29:24 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.33 2004-11-06 04:08:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -68,7 +68,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.32 2004-11-06 03:29:24 mproctor Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.33 2004-11-06 04:08:42 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -216,6 +216,15 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         return this.agenda;
     }
+   /**
+     * Clear the Agenda
+     *
+     * @return The <code>Agenda</code>.
+     */
+    public void clearAgenda()
+    {
+        this.agenda.clearAgenda();
+    }
 
     /**
      * @see WorkingMemory
@@ -341,15 +350,15 @@ class WorkingMemoryImpl implements WorkingMemory
             putObject( handle, object );
 
             this.ruleBase.assertObject( handle, object, this );
-            if (!this.listeners.isEmpty())
+            if ( !this.listeners.isEmpty( ) )
             {
                 ObjectAssertedEvent objectAssertedEvent =  new ObjectAssertedEvent(this, handle, object);
-                Iterator iter = this.listeners.iterator();
+                Iterator iter = this.listeners.iterator( );
                 WorkingMemoryEventListener listener;
                 while ( iter.hasNext() )
                 {
-                    listener = (WorkingMemoryEventListener) iter.next();
-                    listener.objectAsserted(objectAssertedEvent);
+                    listener = ( WorkingMemoryEventListener ) iter.next( );
+                    listener.objectAsserted( objectAssertedEvent );
                 }
             }
         }
@@ -378,15 +387,15 @@ class WorkingMemoryImpl implements WorkingMemory
         this.ruleBase.retractObject( handle, this );
 
         this.handles.remove( this.objects.remove( handle ) );
-        if (!this.listeners.isEmpty())
+        if ( !this.listeners.isEmpty( ) )
         {
-            ObjectRetractedEvent objectRetractedEvent =  new ObjectRetractedEvent(this, handle);
-            Iterator iter = getListeners().iterator();
+            ObjectRetractedEvent objectRetractedEvent =  new ObjectRetractedEvent( this, handle );
+            Iterator iter = getListeners( ).iterator( );
             WorkingMemoryEventListener listener;
-            while ( iter.hasNext() )
+            while ( iter.hasNext( ) )
             {
-                listener = (WorkingMemoryEventListener) iter.next();
-                listener.objectRetracted(objectRetractedEvent);
+                listener = ( WorkingMemoryEventListener ) iter.next( );
+                listener.objectRetracted( objectRetractedEvent );
             }
         }
     }
@@ -408,15 +417,15 @@ class WorkingMemoryImpl implements WorkingMemory
         this.handles.put( object, handle );
 
         this.ruleBase.modifyObject( handle, object, this );
-        if (!this.listeners.isEmpty())
+        if ( !this.listeners.isEmpty( ) )
         {
-            ObjectModifiedEvent objectModifiedEvent =  new ObjectModifiedEvent(this, handle, object);
-            Iterator iter = getListeners().iterator();
+            ObjectModifiedEvent objectModifiedEvent =  new ObjectModifiedEvent( this, handle, object );
+            Iterator iter = getListeners( ).iterator( );
             WorkingMemoryEventListener listener;
-            while ( iter.hasNext() )
+            while ( iter.hasNext( ) )
             {
-                listener = (WorkingMemoryEventListener) iter.next();
-                listener.objectModified(objectModifiedEvent);
+                listener = ( WorkingMemoryEventListener ) iter.next( );
+                listener.objectModified( objectModifiedEvent );
             }
         }
     }

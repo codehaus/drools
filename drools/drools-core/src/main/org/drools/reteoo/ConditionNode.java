@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.21 2004-11-06 03:29:24 mproctor Exp $
+ * $Id: ConditionNode.java,v 1.22 2004-11-06 04:08:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -154,16 +154,16 @@ class ConditionNode extends TupleSource implements TupleSink
         Condition condition = getCondition( );
         boolean isAllowed = condition.isAllowed( tuple );
 
-            List listeners = workingMemory.getListeners();
-            if (!listeners.isEmpty())
+            List listeners = workingMemory.getListeners( );
+            if ( !listeners.isEmpty( ) )
             {
                 ConditionTestedEvent conditionTestedEvent =  new ConditionTestedEvent(workingMemory, tuple.getRule(), condition, tuple, isAllowed);
-                Iterator iter = listeners.iterator();
+                Iterator iter = listeners.iterator( );
                 WorkingMemoryEventListener listener;
                 while ( iter.hasNext() )
                 {
-                    listener = (WorkingMemoryEventListener) iter.next();
-                    listener.conditionTested(conditionTestedEvent);
+                    listener = ( WorkingMemoryEventListener ) iter.next( );
+                    listener.conditionTested( conditionTestedEvent );
                 }
             }
 
@@ -212,7 +212,7 @@ class ConditionNode extends TupleSource implements TupleSink
         Iterator iter;
         WorkingMemoryEventListener listener;
         boolean isAllowed;
-        List listeners = workingMemory.getListeners();
+        List listeners = workingMemory.getListeners( );
         while ( tupleIter.hasNext( ) )
         {
             eachTuple = ( ReteTuple ) tupleIter.next( );
@@ -220,14 +220,14 @@ class ConditionNode extends TupleSource implements TupleSink
             isAllowed = condition.isAllowed( eachTuple );
 
 
-            if (!listeners.isEmpty())
+            if ( !listeners.isEmpty( ) )
             {
                 conditionTestedEvent =  new ConditionTestedEvent(workingMemory, eachTuple.getRule(), condition, eachTuple, isAllowed);
-                iter = listeners.iterator();
-                while ( iter.hasNext() )
+                iter = listeners.iterator( );
+                while ( iter.hasNext( ) )
                 {
-                    listener = (WorkingMemoryEventListener) iter.next();
-                    listener.conditionTested(conditionTestedEvent);
+                    listener = ( WorkingMemoryEventListener ) iter.next( );
+                    listener.conditionTested( conditionTestedEvent );
                 }
             }
 

@@ -33,6 +33,11 @@ public class DebugWorkingMemoryEventListener implements
         System.err.println( event );
     }
 
+    public void activationCancelled(ActivationCancelledEvent event)
+    {
+        System.err.println( event );
+    }
+
     public void activationFired(ActivationFiredEvent event)
     {
         System.err.println( event );
