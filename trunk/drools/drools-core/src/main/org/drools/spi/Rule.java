@@ -1,5 +1,50 @@
-
 package org.drools.spi;
+
+/*
+ $Id: Rule.java,v 1.7 2002-07-27 01:50:17 bob Exp $
+
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ 
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+    statements and notices.  Redistributions must also contain a
+    copy of this document.
+ 
+ 2. Redistributions in binary form must reproduce the
+    above copyright notice, this list of conditions and the
+    following disclaimer in the documentation and/or other
+    materials provided with the distribution.
+ 
+ 3. The name "drools" must not be used to endorse or promote
+    products derived from this Software without prior written
+    permission of The Werken Company.  For written permission,
+    please contact bob@werken.com.
+ 
+ 4. Products derived from this Software may not be called "drools"
+    nor may "drools" appear in their names without prior written
+    permission of The Werken Company. "drools" is a registered
+    trademark of The Werken Company.
+ 
+ 5. Due credit should be given to The Werken Company.
+    (http://drools.werken.com/).
+ 
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ */
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,26 +56,51 @@ import java.util.Collections;
  *  that represent a match for this rule.  The <code>Action</code>
  *  gets fired when the <code>Conditions</code> match.
  *
- *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class Rule
 {
-    private static int STATE_DECL  = 1;
-    private static int STATE_OTHER = 2;
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    /** State indicating declaration configuration. */
+    private static final int STATE_DECL  = 1;
+
+    /** State indicating other configuration. */
+    private static final int STATE_OTHER = 2;
     
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Current config stated. */
     private int state;
 
+    /** Name of the rule. */
     private String name;
 
-    private Set    parameterDeclarations;
-    private Set    localDeclarations;
+    /** Formal parameter decls of the rule. */
+    private Set parameterDeclarations;
 
-    private Set    filterConditions;
-    private Set    assignmentConditions;
+    /** Other local decls of the rule. */
+    private Set localDeclarations;
 
+    /** Filter conditions. */
+    private Set filterConditions;
+
+    /** Assignment conditions. */
+    private Set assignmentConditions;
+
+    /** Action. */
     private Action action;
 
-    private long   duration;
+    /** Truthness duration. */
+    private long duration;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
     /** Construct.
      *
@@ -49,23 +119,21 @@ public class Rule
         this.assignmentConditions  = Collections.EMPTY_SET;
     }
 
-    /** Produce output suitable for debugging.
+    /** Set the truthness duration.
+     *
+     *  @param seconds The number of seconds the rule
+     *         must hold true in order to fire.
      */
-    public String toString()
-    {
-        return "[Rule: name='" + this.name
-            + "'; paramDecls=" + this.parameterDeclarations
-            + "; localDecls=" + this.localDeclarations
-            + "; filterConds=" + this.filterConditions
-            + "; assignConds=" + this.assignmentConditions
-            + "]";
-    }
-
     public void setDuration(long seconds)
     {
         this.duration = seconds;
     }
 
+    /** Retrieve the truthness duration.
+     *
+     *  @return The number of seconds the rule must
+     *          hold true in order to fire.
+     */
     public long getDuration()
     {
         return this.duration;
@@ -177,6 +245,11 @@ public class Rule
         }
     }
 
+    /** Add a local declaration no accounted for in the
+     *  formal parameter list.
+     *
+     *  @param declaration The local declaration.
+     */
     private void addLocalDeclaration(Declaration declaration)
     {
         setState( STATE_OTHER );
@@ -287,4 +360,23 @@ public class Rule
     {
         return this.action;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Produce a debug string.
+     *
+     *  @return The debug string.
+     */
+    public String toString()
+    {
+        return "[Rule: name='" + this.name
+            + "'; paramDecls=" + this.parameterDeclarations
+            + "; localDecls=" + this.localDeclarations
+            + "; filterConds=" + this.filterConditions
+            + "; assignConds=" + this.assignmentConditions
+            + "]";
+    }
+
 }
