@@ -133,6 +133,12 @@ div#banner {
   margin-bottom:10px;
 }
 
+small {
+	font-family: courier;
+	color:#777777;
+	text-transform: lowercase;
+}
+
 
 #breadcrumbs {
     border: 1px solid #777777;
@@ -140,11 +146,12 @@ div#banner {
 
 #breadcrumbs {
  background-color: #dddddd;
- color: #000;
  }
 
 #breadcrumbs td {
 	border: none;
+	color: #777777;
+	padding-left: 1em;
 }
 
 #source {
