@@ -214,4 +214,11 @@ JAVADOC=javadoc
 
 export JAVA JAVAC JAR JAVADOC
 
-do_$1
+if [ -z $* ] ; then
+  do_
+else
+  for target in $* ; do
+    do_$target
+  done
+fi
+
