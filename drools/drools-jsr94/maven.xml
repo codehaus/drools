@@ -15,14 +15,15 @@
         dist:build-bin
         copy additional stuff to bin assembly dir
     -->
+<!--
     <preGoal name="test:test">
-        <!-- ${maven.test.dest} is not available here ??? -->
         <copy toDir="${maven.build.dir}/test-classes">
-            <fileset dir="${basedir}/src/java/main/">
+            <fileset dir="${basedir}/src/main/">
                 <include name="**/*.xml"/>
             </fileset>
         </copy>
     </preGoal>
+-->
 
     <!-- post goals ************************************************************************************************ -->
 
