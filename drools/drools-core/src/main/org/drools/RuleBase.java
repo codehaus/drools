@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.23 2003-10-30 15:08:59 bob Exp $
+ $Id: RuleBase.java,v 1.24 2003-11-19 21:31:09 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,20 @@ import org.drools.rule.RuleSet;
 
 import java.io.Serializable;
 
+/** Active collection of <code>Rule</code>s.
+ *
+ *  <p>
+ *  From a <code>RuleBase</code> many <code>WorkingMemory</code> rule
+ *  sessions may be instantiated. Additionally, it may be inspected to
+ *  determine which <code>RuleSet</code>s it contains.
+ *  </p>
+ *  
+ *  @see WorkingMemory
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuleBase.java,v 1.24 2003-11-19 21:31:09 bob Exp $
+ */
 public interface RuleBase
     extends Serializable
 {
@@ -80,5 +94,9 @@ public interface RuleBase
      */
     WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy);
 
+    /** Retrieve the contained <code>RuleSet</code>s.
+     *
+     *  @return The rule sets.
+     */
     RuleSet[] getRuleSets();
 }
