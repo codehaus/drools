@@ -40,7 +40,7 @@ public class RootNode
      *  @param object The object to assert.
      *  @param workingMemory The working memory session.
      *
-     *  @throws DroolsException if an error occurs during assertion.
+     *  @throws AssertionException if an error occurs during assertion.
      */
     public void assertObject(Object object,
                              WorkingMemory workingMemory) throws AssertionException
@@ -63,7 +63,7 @@ public class RootNode
      *  @param object The object to retract.
      *  @param workingMemory The working memory session.
      *
-     *  @throws DroolsException if an error occurs during assertion.
+     *  @throws RetractionException if an error occurs during retraction.
      */
     public void retractObject(Object object,
                              WorkingMemory workingMemory) throws RetractionException
@@ -90,7 +90,7 @@ public class RootNode
      *  @param object The object to modify.
      *  @param workingMemory The working memory session.
      *
-     *  @throws DroolsException if an error occurs during assertion.
+     *  @throws FactException if an error occurs during modification.
      */
     public void modifyObject(Object object,
                              WorkingMemory workingMemory) throws FactException

@@ -124,7 +124,7 @@ public class WorkingMemory
      *
      *  @param object The object to modify.
      *
-     *  @throws ModificationException if an error occurs during modification.
+     *  @throws FactException if an error occurs during modification.
      */
     public void modifyObject(Object object) throws FactException
     {
