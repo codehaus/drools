@@ -1,7 +1,7 @@
-package org.drools.smf;
+package org.drools.spi;
 
 /*
- $Id: ActionTag.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticComponent.java,v 1.1 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,58 +46,12 @@ package org.drools.smf;
  
  */
 
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
-
-/** Defines an <code>Action</code>.
- *
- *  @see org.drools.spi.Action
+/** Semantic component marker.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: SemanticComponent.java,v 1.1 2002-08-17 05:49:22 bob Exp $
  */
-public class ActionTag extends SemanticComponentTagSupport
+public interface SemanticComponent
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    public ActionTag()
-    {
-        // intentionally left blank.
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.apache.commons.jelly.Tag
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Perform this tag.
-     *
-     *  @param output The output sink.
-     *
-     *  @throws Exception If an error occurs while attempting
-     *          to perform this tag.
-     */
-    public void doTag(XMLOutput output) throws Exception
-    {
-        checkAttributes();
-
-        SimpleSemanticModule module = getCurrentSemanticModule();
-
-        if ( module == null )
-        {
-            throw new JellyException( "<action> tag can only be used within a <semantic-module>" );
-        }
-
-        Class actionClass = Class.forName( getClassname() );
-
-        module.addAction( getName(),
-                          actionClass );
-    }
 }
-

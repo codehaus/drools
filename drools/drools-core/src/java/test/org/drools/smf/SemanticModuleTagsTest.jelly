@@ -24,9 +24,9 @@
     <module uri="http://drools.org/semantics/test"/>
   </test:case>
 
-  <test:case name="action_NoModule">
+  <test:case name="consequence_NoModule">
     <j:catch var="e">
-      <action/>
+      <consequence/>
     </j:catch>
     <test:assert test="${e != null}"> Should have thrown JellyException: not within module</test:assert> 
   </test:case>
@@ -110,39 +110,39 @@
 
   <!-- 
     ||
-    ||    <action>
+    ||    <consequence>
     ||
     -->
 
-  <test:case name="action_NoName">
+  <test:case name="consequence_NoName">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
-        <action classname="org.drools.spi.Action"/>
+        <consequence classname="org.drools.spi.Consequence"/>
 
       </j:catch>
       <test:assert test="${e != null}"> Should have thrown MissingAttributeException: name</test:assert> 
     </module>
   </test:case>
 
-  <test:case name="action_NoClassname">
+  <test:case name="consequence_NoClassname">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
-        <action name="testAction"/>
+        <consequence name="testConsequence"/>
 
       </j:catch>
       <test:assert test="${e != null}"> Should have thrown MissingAttributeException: classname</test:assert> 
     </module>
   </test:case>
 
-  <test:case name="action_Valid">
+  <test:case name="consequence_Valid">
     <module uri="http://drools.org/semantics/test">
 
-      <action name="testAction"
-            classname="org.drools.spi.Action"/>
+      <consequence name="testConsequence"
+            classname="org.drools.spi.Consequence"/>
 
-     <test:assert test="${semantic_module.getActionNames().contains('testAction')}"/>
+     <test:assert test="${semantic_module.getConsequenceNames().contains('testConsequence')}"/>
 
     </module> 
   </test:case>

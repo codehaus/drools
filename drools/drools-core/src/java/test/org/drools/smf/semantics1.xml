@@ -6,10 +6,13 @@
   <type name="testType"
         classname="org.drools.spi.ObjectType"/>
 
+  <condition name="testCondition" 
+             classname="org.drools.spi.Condition"/>
+
   <extractor name="testExtractor"
              classname="org.drools.spi.FactExtractor"/>
 
-  <action name="testAction"
-          classname="org.drools.spi.Action"/>
+  <consequence name="testConsequence"
+          classname="org.drools.spi.Consequence"/>
 
 </module>

@@ -1,7 +1,7 @@
 package org.drools.semantic.java;
 
 /*
- $Id: JavaObjectType.java,v 1.5 2002-08-02 14:10:33 bob Exp $
+ $Id: JavaObjectType.java,v 1.6 2002-08-17 05:49:22 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -134,5 +134,4 @@ public class JavaObjectType implements ObjectType
     {
         return "[JavaObjectType: class=" + getObjectClass() +"]";
     }
-
 }
