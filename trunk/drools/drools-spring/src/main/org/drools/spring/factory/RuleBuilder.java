@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.drools.DroolsException;
 import org.drools.rule.Rule;
 import org.drools.spring.metadata.ArgumentMetadata;
@@ -44,6 +46,8 @@ public class RuleBuilder {
 
     // ---- ---- ----
 
+    private static Log log = LogFactory.getLog(RuleBuilder.class);
+
     public Rule buildRule(Rule rule, Object pojo) throws DroolsException {
         List conditionRuleReflectMethods = new ArrayList();
 
@@ -52,6 +56,9 @@ public class RuleBuilder {
             Method pojoMethod = pojoMethods[i];
             MethodMetadata methodMedata = methodMetadataSource.getMethodMetadata(pojoMethod);
             if (methodMedata == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("No metadata for method " + pojoMethod.toString());
+                }
                 continue;
             }
 
@@ -62,11 +69,12 @@ public class RuleBuilder {
                 assertReturnType(pojoMethod, boolean.class);
                 rule.addCondition(
                         new PojoCondition(new RuleReflectMethod(rule, pojo, pojoMethod, arguments)));
+                log.info("Condition method added to rule: " + pojoMethod.toString());
 
             } else if (methodMedata.getMethodType() == MethodMetadata.CONSEQUENCE) {
                 conditionRuleReflectMethods.add(
                         new RuleReflectMethod(rule, pojo, pojoMethod, arguments));
-
+                log.info("Consequence method added to rule: " + pojoMethod.toString());
             }
         }
 

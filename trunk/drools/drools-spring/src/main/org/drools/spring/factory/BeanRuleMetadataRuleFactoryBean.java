@@ -50,10 +50,6 @@ public class BeanRuleMetadataRuleFactoryBean extends AbstractRuleFactoryBean imp
 
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
-        validateProperties();
-    }
-
-    private void validateProperties() {
         if (methodMetadataSource == null) {
             throw new IllegalArgumentException("'methodMetadataSource' property not specified");
         }

@@ -32,11 +32,6 @@ public class RuleBaseFactoryBean implements FactoryBean, InitializingBean {
     }
 
     public void afterPropertiesSet() throws Exception {
-        validateProperties();
-        createObject();
-    }
-
-    private void validateProperties() {
         if (ruleSets == null || ruleSets.isEmpty()) {
             throw new IllegalArgumentException("ruleSets property not specified or is empty");
         }
@@ -49,7 +44,7 @@ public class RuleBaseFactoryBean implements FactoryBean, InitializingBean {
         }
     }
 
-    private void createObject() throws DroolsException {
+    private RuleBase createObject() throws DroolsException {
         RuleBaseBuilder builder = new RuleBaseBuilder();
         if (conflictResolver != null) {
             builder.setConflictResolver(conflictResolver);
@@ -61,7 +56,7 @@ public class RuleBaseFactoryBean implements FactoryBean, InitializingBean {
             RuleSet ruleSet = (RuleSet) iter.next();
             builder.addRuleSet(ruleSet);
         }
-        ruleBase = builder.build();
+        return builder.build();
     }
 
     public Class getObjectType() {
@@ -73,6 +68,9 @@ public class RuleBaseFactoryBean implements FactoryBean, InitializingBean {
     }
 
     public Object getObject() throws Exception {
+        if (ruleBase == null) {
+            ruleBase = createObject();
+        }
         return ruleBase;
     }
 }

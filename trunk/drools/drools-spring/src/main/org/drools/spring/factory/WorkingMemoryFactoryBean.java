@@ -25,24 +25,20 @@ public class WorkingMemoryFactoryBean implements FactoryBean, InitializingBean {
     }
 
     public void afterPropertiesSet() throws Exception {
-        validateProperties();
-        createObject();
-    }
-
-    private void validateProperties() {
         if (ruleBase == null) {
             throw new IllegalArgumentException("ruleBase property not specified");
         }
     }
 
-    private void createObject() {
-        workingMemory = ruleBase.newWorkingMemory();
+    private WorkingMemory createObject() {
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
         if (applicationData != null) {
             for (Iterator iter = applicationData.entrySet().iterator(); iter.hasNext();) {
                 Map.Entry entry = (Entry) iter.next();
                 workingMemory.setApplicationData((String)entry.getKey(), entry.getValue());
             }
         }
+        return workingMemory;
     }
 
     public Class getObjectType() {
@@ -54,6 +50,9 @@ public class WorkingMemoryFactoryBean implements FactoryBean, InitializingBean {
     }
 
     public Object getObject() throws Exception {
+        if (workingMemory == null) {
+            workingMemory = createObject();
+        }
         return workingMemory;
     }
 }

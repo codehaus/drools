@@ -24,10 +24,6 @@ public class BasicRuleFactoryBean extends AbstractRuleFactoryBean {
 
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
-        validateProperties();
-    }
-
-    private void validateProperties() {
         if (ruleMetadataSource == null) {
             throw new IllegalArgumentException("'ruleMetadataSource' property not specified");
         }
