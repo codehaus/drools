@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.35 2004-10-17 02:22:06 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.36 2004-10-20 13:41:26 bob Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ import java.util.HashSet;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.35 2004-10-17 02:22:06 mproctor Exp $
+ * @version $Id: ReteTuple.java,v 1.36 2004-10-20 13:41:26 bob Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -306,7 +306,7 @@ class ReteTuple implements Tuple, Serializable
      */
     public FactHandle getFactHandleForObject(Object object)
     {
-        return ( FactHandle ) this.objectToHandle.get( object );
+        return (FactHandle) this.objectToHandle.get( object );
     }
 
     public Rule getRule()
