@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleKey.java,v 1.12 2004-08-05 10:15:44 mproctor Exp $
+ $Id: TupleKey.java,v 1.13 2004-09-11 13:00:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -231,6 +231,11 @@ class TupleKey implements Serializable
         return false;
     }
 
+    public Iterator iterator()
+    {
+        return this.columns.keySet().iterator();
+    }
+    
     /** @see Object
      */
     public int hashCode()

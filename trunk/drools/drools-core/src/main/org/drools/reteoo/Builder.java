@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.42 2004-07-05 21:51:36 mproctor Exp $
+ $Id: Builder.java,v 1.43 2004-09-11 13:00:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -310,7 +310,7 @@ public class Builder
         TupleSource tupleSource = null;
 
         ConditionNode conditionNode = null;
-
+        int order = 0;
         while ( condIter.hasNext() )
         {
             eachCond = (Condition) condIter.next();
@@ -326,7 +326,8 @@ public class Builder
             condIter.remove();
 
             conditionNode = new ConditionNode( tupleSource,
-                                                   eachCond );
+                                               eachCond,
+                                               order);
 
             leafNodes.remove( tupleSource );
             leafNodes.add( conditionNode );

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Tuple.java,v 1.10 2004-06-18 19:03:37 n_alex Exp $
+ $Id: Tuple.java,v 1.11 2004-09-11 13:00:10 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.drools.rule.Declaration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Tuple.java,v 1.10 2004-06-18 19:03:37 n_alex Exp $
+ *  @version $Id: Tuple.java,v 1.11 2004-09-11 13:00:10 mproctor Exp $
  */
 public interface Tuple
 {
@@ -110,4 +110,10 @@ public interface Tuple
      * @return WorkingMemory
      */
     WorkingMemory getWorkingMemory();
+    
+    long getMostRecentFactTimeStamp();
+    
+    long getLeastRecentFactTimeStamp();
+
+    long getConditionTimeStamp(int i);
 }
