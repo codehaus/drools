@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94WorkingMemory.java,v 1.4 2003-05-23 18:48:05 tdiesler Exp $
+ $Id: JSR94WorkingMemory.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -70,9 +70,9 @@ public class JSR94WorkingMemory extends WorkingMemory
      *
      *  @param ruleBase The rule base with which this memory is associated.
      */
-    JSR94WorkingMemory(RuleBase ruleBase)
+    JSR94WorkingMemory( RuleBase ruleBase )
     {
-        super(ruleBase);
+        super( ruleBase );
     }
 
     /**
@@ -89,10 +89,10 @@ public class JSR94WorkingMemory extends WorkingMemory
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public synchronized void assertObject(Object object) throws AssertionException
+    public synchronized void assertObject( Object object ) throws AssertionException
     {
-        objectList.add(object);
-        super.assertObject(object);
+        objectList.add( object );
+        super.assertObject( object );
     }
 
     /** Retract a fact object from this working memory.
@@ -101,9 +101,9 @@ public class JSR94WorkingMemory extends WorkingMemory
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public synchronized void retractObject(Object object) throws RetractionException
+    public synchronized void retractObject( Object object ) throws RetractionException
     {
-        super.retractObject(object);
-        objectList.remove(object);
+        super.retractObject( object );
+        objectList.remove( object );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
+ $Id: RuleExecutionSetImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -94,19 +94,19 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     /**
      * Adds a rule the the drool <code>RuleBase</code>.
      */
-    void addRule(Rule droolRule) throws RuleIntegrationException
+    void addRule( Rule droolRule ) throws RuleIntegrationException
     {
 
-        ruleBase.addRule(droolRule);
+        ruleBase.addRule( droolRule );
 
         String name = droolRule.getName();
-        ruleList.add(new RuleImpl(name, null));
+        ruleList.add( new RuleImpl( name, null ) );
     }
 
     /**
      * Sets the name for this rule set.
      */
-    void setName(String name)
+    void setName( String name )
     {
         this.name = name;
     }
@@ -114,7 +114,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     /**
      * Sets the description for this rule set.
      */
-    void setDescription(String description)
+    void setDescription( String description )
     {
         this.description = description;
     }
@@ -128,16 +128,16 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         ObjectFilter objectFilter = null;
 
         // instanciate the current object filter
-        if (filterName != null)
+        if ( filterName != null )
         {
             try
             {
-                Class filterClass = Class.forName(filterName);
+                Class filterClass = Class.forName( filterName );
                 return (ObjectFilter) filterClass.newInstance();
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                throw new RuntimeException(ex.toString());
+                throw new RuntimeException( ex.toString() );
             }
         }
 
@@ -155,17 +155,17 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         return description;
     }
 
-    public Object getProperty(Object key)
+    public Object getProperty( Object key )
     {
-        return props.get(key);
+        return props.get( key );
     }
 
-    public void setProperty(Object key, Object val)
+    public void setProperty( Object key, Object val )
     {
-        props.put(key, val);
+        props.put( key, val );
     }
 
-    public void setDefaultObjectFilter(String objectFilterClassname)
+    public void setDefaultObjectFilter( String objectFilterClassname )
     {
         this.filterName = objectFilterClassname;
     }

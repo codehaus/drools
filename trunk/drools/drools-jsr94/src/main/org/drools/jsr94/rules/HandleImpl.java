@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: HandleImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
+ $Id: HandleImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -68,7 +68,7 @@ public class HandleImpl implements Handle, Serializable
      * Hide constructor, use getInstance.
      *
      */
-    HandleImpl(BigInteger handleid)
+    HandleImpl( BigInteger handleid )
     {
         this.handleid = handleid;
     }
@@ -76,12 +76,12 @@ public class HandleImpl implements Handle, Serializable
     /**
      * Returns true if the two handles are equal.
      */
-    public boolean equals(Object obj)
+    public boolean equals( Object obj )
     {
-        if (this == obj) return true;
-        if (!(obj instanceof HandleImpl)) return false;
+        if ( this == obj ) return true;
+        if ( !( obj instanceof HandleImpl ) ) return false;
         HandleImpl handle = (HandleImpl) obj;
-        if (!handleid.equals(handle.handleid)) return false;
+        if ( !handleid.equals( handle.handleid ) ) return false;
         return true;
     }
 

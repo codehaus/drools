@@ -24,9 +24,9 @@ public class TransactionalWorkingMemoryImpl extends TransactionalWorkingMemory
      *
      *  @param ruleBase The rule base with which this memory is associated.
      */
-    TransactionalWorkingMemoryImpl(RuleBase ruleBase)
+    TransactionalWorkingMemoryImpl( RuleBase ruleBase )
     {
-        super(ruleBase);
+        super( ruleBase );
     }
 
     /** Assert a new fact object into this working memory.
@@ -35,10 +35,10 @@ public class TransactionalWorkingMemoryImpl extends TransactionalWorkingMemory
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public synchronized void assertObject(Object object) throws AssertionException
+    public synchronized void assertObject( Object object ) throws AssertionException
     {
-        super.assertObject(object);
-        objectList.add(object);
+        super.assertObject( object );
+        objectList.add( object );
     }
 
     /** Retract a fact object from this working memory.
@@ -47,9 +47,9 @@ public class TransactionalWorkingMemoryImpl extends TransactionalWorkingMemory
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public synchronized void retractObject(Object object) throws RetractionException
+    public synchronized void retractObject( Object object ) throws RetractionException
     {
-        super.retractObject(object);
-        objectList.remove(object);
+        super.retractObject( object );
+        objectList.remove( object );
     }
 }

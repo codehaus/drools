@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TransactionalWorkingMemory.java,v 1.4 2003-05-23 21:05:44 tdiesler Exp $
+ $Id: JSR94TransactionalWorkingMemory.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,16 +71,16 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
     private Map objectMap = new SequencedHashMap();
 
     // the next handle id
-    private static BigInteger nextHandleid = new BigInteger("1");
+    private static BigInteger nextHandleid = new BigInteger( "1" );
 
     /**
      * Construct a new transactional working memory for a ruleBase.
      *
      *  @param ruleBase The rule base with which this memory is associated.
      */
-    JSR94TransactionalWorkingMemory(RuleBase ruleBase)
+    JSR94TransactionalWorkingMemory( RuleBase ruleBase )
     {
-        super(ruleBase);
+        super( ruleBase );
     }
 
     /**
@@ -88,8 +88,8 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      */
     Handle getNextHandle()
     {
-        Handle handle = new HandleImpl(nextHandleid);
-        nextHandleid = nextHandleid.add(new BigInteger("1"));
+        Handle handle = new HandleImpl( nextHandleid );
+        nextHandleid = nextHandleid.add( new BigInteger( "1" ) );
         return handle;
     }
 
@@ -110,9 +110,9 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
     }
 
 
-    Object getObject(Handle handle)
+    Object getObject( Handle handle )
     {
-        return objectMap.get(handle);
+        return objectMap.get( handle );
     }
 
     /**
@@ -120,10 +120,10 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    void assertObjectForHandle(Handle handle, Object object) throws AssertionException
+    void assertObjectForHandle( Handle handle, Object object ) throws AssertionException
     {
-        objectMap.put(handle, object);
-        super.assertObject(object);
+        objectMap.put( handle, object );
+        super.assertObject( object );
     }
 
     /**
@@ -133,12 +133,12 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    void removeObjectForHandle(Handle handle) throws RetractionException, InvalidRuleSessionException
+    void removeObjectForHandle( Handle handle ) throws RetractionException, InvalidRuleSessionException
     {
-        Object object = objectMap.get(handle);
-        if (object == null) throw new InvalidRuleSessionException("invalid handle: " + handle);
-        super.retractObject(object);
-        objectMap.remove(handle);
+        Object object = objectMap.get( handle );
+        if ( object == null ) throw new InvalidRuleSessionException( "invalid handle: " + handle );
+        super.retractObject( object );
+        objectMap.remove( handle );
     }
 
     /**
@@ -150,11 +150,11 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public void assertObject(Object object) throws AssertionException
+    public void assertObject( Object object ) throws AssertionException
     {
         Handle handle = getNextHandle();
-        objectMap.put(handle, object);
-        super.assertObject(object);
+        objectMap.put( handle, object );
+        super.assertObject( object );
     }
 
     /** Retract a fact object from this working memory.
@@ -163,19 +163,19 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public void retractObject(Object object) throws RetractionException
+    public void retractObject( Object object ) throws RetractionException
     {
-        super.retractObject(object);
+        super.retractObject( object );
 
         // Note: this is really bad, for each removal we have to scan the entire map.
         // Any other ways?
         Iterator itKeys = objectMap.keySet().iterator();
-        while (itKeys.hasNext())
+        while ( itKeys.hasNext() )
         {
             Handle handle = (Handle) itKeys.next();
-            if (objectMap.get(handle) == object)
+            if ( objectMap.get( handle ) == object )
             {
-                objectMap.remove(handle);
+                objectMap.remove( handle );
                 break;
             }
         }

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorImpl.java,v 1.4 2003-05-26 16:10:36 tdiesler Exp $
+ $Id: RuleAdministratorImpl.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,7 +66,7 @@ public class RuleAdministratorImpl implements RuleAdministrator
      *
      * @see RuleAdministrator
      */
-    public RuleExecutionSetProvider getRuleExecutionSetProvider(Map properties)
+    public RuleExecutionSetProvider getRuleExecutionSetProvider( Map properties )
     {
         return new RuleExecutionSetProviderImpl();
     }
@@ -76,7 +76,7 @@ public class RuleAdministratorImpl implements RuleAdministrator
      *
      * @see RuleAdministrator#getLocalRuleExecutionSetProvider
      */
-    public LocalRuleExecutionSetProvider getLocalRuleExecutionSetProvider(Map properties)
+    public LocalRuleExecutionSetProvider getLocalRuleExecutionSetProvider( Map properties )
     {
         return new LocalRuleExecutionSetProviderImpl();
     }
@@ -86,18 +86,18 @@ public class RuleAdministratorImpl implements RuleAdministrator
      *
      * @see RuleAdministrator#registerRuleExecutionSet
      */
-    public void registerRuleExecutionSet(String bindUri, RuleExecutionSet ruleExecutionSet, Map properties) throws RuleExecutionSetRegisterException
+    public void registerRuleExecutionSet( String bindUri, RuleExecutionSet ruleExecutionSet, Map properties ) throws RuleExecutionSetRegisterException
     {
 
         try
         {
             //Note: an existing RuleExecutionSet is simply replaced
             RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-            repository.registerRuleExecutionSet(bindUri, ruleExecutionSet);
+            repository.registerRuleExecutionSet( bindUri, ruleExecutionSet );
         }
-        catch (Exception ex)
+        catch ( Exception ex )
         {
-            throw new RuleExecutionSetRegisterException("cannot register rule set", ex);
+            throw new RuleExecutionSetRegisterException( "cannot register rule set", ex );
         }
     }
 
@@ -106,21 +106,21 @@ public class RuleAdministratorImpl implements RuleAdministrator
      *
      * @see RuleAdministrator#unregisterRuleExecutionSet
      */
-    public void unregisterRuleExecutionSet(String bindUri, Map properties) throws RuleExecutionSetUnregisterException
+    public void unregisterRuleExecutionSet( String bindUri, Map properties ) throws RuleExecutionSetUnregisterException
     {
 
         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
 
-        if (repository.getRuleExecutionSet(bindUri) == null)
-            throw new RuleExecutionSetUnregisterException("no execution set bound to: " + bindUri);
+        if ( repository.getRuleExecutionSet( bindUri ) == null )
+            throw new RuleExecutionSetUnregisterException( "no execution set bound to: " + bindUri );
 
         try
         {
-            repository.unregisterRuleExecutionSet(bindUri);
+            repository.unregisterRuleExecutionSet( bindUri );
         }
-        catch (Exception ex)
+        catch ( Exception ex )
         {
-            throw new RuleExecutionSetUnregisterException("cannot unregister rule set", ex);
+            throw new RuleExecutionSetUnregisterException( "cannot unregister rule set", ex );
         }
     }
 }
