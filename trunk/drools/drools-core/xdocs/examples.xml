@@ -1,4 +1,21 @@
+<?xml version="1.0"?>
+<document>
 
+  <properties>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+    <title>CVS</title>
+  </properties>
+
+  <body>
+    <section name="Example Java Semantics Rules">
+
+      <p>
+      Here is a simple trouble-ticket escalation example.  The driver
+      for this example is <a href="./xref/escalation/Escalation.html">Escalation.java</a>
+      and the trouble-ticket class is <a href="./xref/escalation/TroubleTicket.html">TroubleTicket.java</a>.
+      </p>
+
+<source><![CDATA[
 <rules xmlns="http://drools.org/rules">
 
   <semantics module="org.drools.semantics.java"/>
@@ -27,7 +44,9 @@
 
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
           System.err.println( "** Escalating trouble ticket for bob, because he's special" );
+
           ticket.setStatus( escalation.TroubleTicket.NOTIFIED );
+
           modifyObject( ticket );
 
         </java:consequence>
@@ -56,7 +75,9 @@
           System.err.println( "----------------------------------------" );
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
           System.err.println( "** ticket == " + ticket );
+
           ticket.setStatus( escalation.TroubleTicket.NOTIFIED );
+
           System.err.println( "** Escalating trouble ticket from NEW to NOTIFIED after 2 seconds" );
           System.err.println( "** ticket == " + ticket );
           System.err.println( "----------------------------------------" );
@@ -89,7 +110,9 @@
           System.err.println( "----------------------------------------" );
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
           System.err.println( "** ticket == " + ticket );
+
           ticket.setStatus( escalation.TroubleTicket.NULL );
+
           System.err.println( "** Escalating trouble ticket from NOTIFIED to /dev/null after 5 seconds" );
           System.err.println( "** ticket == " + ticket );
           System.err.println( "----------------------------------------" );
@@ -103,4 +126,9 @@
   </rule-set>
 
 </rules>
+]]></source>
+    </section>
+  </body>
+
+</document>
 

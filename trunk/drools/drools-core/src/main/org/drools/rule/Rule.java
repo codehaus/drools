@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.12 2002-08-20 05:06:24 bob Exp $
+ $Id: Rule.java,v 1.13 2002-08-22 07:42:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,8 @@ package org.drools.rule;
 
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
+import org.drools.spi.Duration;
+import org.drools.spi.Tuple;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -65,7 +67,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.12 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: Rule.java,v 1.13 2002-08-22 07:42:39 bob Exp $
  */
 public class Rule
 {
@@ -92,7 +94,7 @@ public class Rule
     private Consequence consequence;
 
     /** Truthness duration. */
-    private long duration;
+    private Duration duration;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -120,17 +122,33 @@ public class Rule
      */
     public void setDuration(long seconds)
     {
-        this.duration = seconds;
+        this.duration = new FixedDuration( seconds );
+    }
+
+    /** Set the truthness duration.
+     *
+     *  @param duration The truth duration.
+     */
+    public void setDuration(Duration duration)
+    {
+        this.duration = duration;
     }
 
     /** Retrieve the truthness duration.
      *
+     *  @param tuple The tuple.
+     *
      *  @return The number of seconds the rule must
      *          hold true in order to fire.
      */
-    public long getDuration()
+    public long getDuration(Tuple tuple)
     {
-        return this.duration;
+        if ( this.duration == null )
+        {
+            return 0;
+        }
+
+        return this.duration.getDuration( tuple );
     }
 
     /** Determine if this rule is internally consistent and valid.

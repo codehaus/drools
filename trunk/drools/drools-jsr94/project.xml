@@ -95,6 +95,7 @@
       <id>antlr</id>
       <version>2.7.1</version>
       <jar>antlrall-2.7.1.jar</jar>
+      <url>http://antlr.org/</url>
     </dependency>
 
     <dependency>
@@ -106,6 +107,7 @@
     <dependency>
       <id>commons-beanutils</id>
       <version>1.4-dev</version>
+      <url>http://jakarta.apache.org/commons/beanutils/</url>
     </dependency>
 
     <dependency>
@@ -122,6 +124,7 @@
     <dependency>
       <id>commons-jexl</id>
       <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/sandbox/jexl/</url>
     </dependency>
 
     <dependency>
@@ -150,6 +153,7 @@
     <dependency>
       <id>junit</id>
       <version>3.7</version>
+      <url>http://junit.org/</url>
     </dependency>
 
     <dependency>
@@ -161,6 +165,7 @@
     <dependency>
       <id>velocity</id>
       <version>1.4-dev</version>
+      <url>http://jakarta.apache.org/velocity/</url>
     </dependency>
 
     <dependency>

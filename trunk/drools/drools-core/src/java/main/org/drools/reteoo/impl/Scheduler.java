@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: Scheduler.java,v 1.2 2002-08-10 19:34:32 bob Exp $
+ $Id: Scheduler.java,v 1.3 2002-08-22 07:42:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -118,7 +118,7 @@ class Scheduler
     {
         Date now = new Date();
 
-        Date then = new Date( now.getTime() + ( item.getRule().getDuration() * 1000 ) );
+        Date then = new Date( now.getTime() + ( item.getRule().getDuration( item.getTuple() ) * 1000 ) );
 
         try
         {

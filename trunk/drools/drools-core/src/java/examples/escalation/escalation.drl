@@ -43,14 +43,9 @@
         <java:condition>ticket.getStatus() == escalation.TroubleTicket.NEW</java:condition>
       </condition> 
 
-      <!--
       <duration>
-        <days></days>
-        <hours></hours>
-        <minutes></minutes>
-        <seconds></seconds>
+        <fixed-duration seconds="2"/>
       </duration>
-      -->
 
       <consequence>
         <java:consequence>
@@ -81,11 +76,9 @@
         <java:condition>ticket.getStatus() == escalation.TroubleTicket.NOTIFIED</java:condition>
       </condition>
 
-      <!--
       <duration>
-        <seconds>5</seconds>
+        <fixed-duration seconds="5"/>
       </duration>
-      -->
 
       <consequence>
         <java:consequence>
