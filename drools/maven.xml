@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project
     default="default"
     xmlns:ant="jelly:ant"
@@ -79,5 +79,64 @@
         eof="remove"/>
     </goal>
 
+    <!--
+      Extracts all the drools-*.jar files to temp/drools-all except the drools-smftest module
+      and the drools.conf files. Each drools.conf is then extracted out to
+      its own directory temp/drools-conf/<semantic name> where they are all concatenated
+      into a single drools-conf file under the temp/drools-all/META-INF.
+      The entire contents of temp/drools-all is then jarred up and the
+      temp directory deleted.
+    -->
+
+    <goal name="drools-all">
+      <ant:unjar dest="temp/drools-all">
+        <patternset>
+            <exclude name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-*.jar"/>
+            <exclude name="**/drools-smftest.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/groovy">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-groovy-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/java">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-java-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:unjar dest="temp/drools-conf/python">
+        <patternset>
+            <include name="**/drools.conf"/>
+        </patternset>
+        <fileset dir=".">
+            <include name="**/drools-python-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:concat destfile="temp/drools-all/META-INF/drools.conf" force="yes">
+        <fileset dir="temp/drools-conf" includes="**/drools.conf" />
+      </ant:concat>
+
+      <ant:mkdir dir="target"/>
+
+      <ant:jar destfile="target/drools-all-${pom.currentVersion}.jar" basedir="temp/drools-all"/>
+
+      <ant:delete includeEmptyDirs="true">
+        <fileset dir="temp"/>
+      </ant:delete>
+    </goal>
 </project>
 
