@@ -1,0 +1,23 @@
+"camembert"
+<!--drools-test--!> // 1
+"I have %i bites of %s left" % (camembert.getBitesLeft(), camembert.getName())
+<!--drools-test--!> // 2
+"I have %i bites of %s left" % (stilton.getBitesLeft(), stilton.getName())
+<!--drools-test--!> // 3
+camembert.getBitesLeft()
+<!--drools-test--!> // 4
+camembert.getBitesLeft() + stilton.getBitesLeft()
+<!--drools-test--!> // 5
+from org.drools.smf import SMFTestFrameWork
+from org.drools.smf.SMFTestFrameWork import Cheese
+if camembert.getBitesLeft() + stilton.getBitesLeft() == 6:
+	return Cheese("cheddar")
+else:
+	return Cheese("mozzerella")
+<!--drools-test--!> // 6
+from org.drools.smf import SMFTestFrameWork
+from org.drools.smf.SMFTestFrameWork import Cheese
+if camembert.getBitesLeft() + stilton.getBitesLeft() == 6:
+	return Cheese("cheddar")
+else:
+	return Cheese("mozzerella")
