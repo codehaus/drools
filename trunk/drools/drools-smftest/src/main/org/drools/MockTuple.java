@@ -4,7 +4,6 @@ import org.drools.FactHandle;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-
 import org.drools.spi.Tuple;
 
 import java.util.Set;
@@ -17,6 +16,10 @@ public class MockTuple implements Tuple
     private WorkingMemory workingMemory;
 
     private Map tuple;
+    
+    private long mostRecentTimeStamp;
+    private long leastRecentTimeStamp;    
+    private long[] conditionTimeStamps;
 
     public MockTuple()
     {
@@ -64,4 +67,44 @@ public class MockTuple implements Tuple
     {
         return this.workingMemory;
     }
+    
+    public void setMostRecentFactTimeStamp(long timeStamp)
+    {
+        this.mostRecentTimeStamp = timeStamp;
+    }
+
+    public void setLeastRecentFactTimeStamp(long timeStamp)
+    {
+        this.leastRecentTimeStamp = timeStamp;
+    }
+
+    public void setConditionTimeStamps(long[] timeStamps)
+    {
+        this.conditionTimeStamps = timeStamps;
+    }    
+
+    public long getMostRecentFactTimeStamp()
+    {
+        return this.mostRecentTimeStamp;
+    }
+
+    public long getLeastRecentFactTimeStamp()
+    {
+        return this.leastRecentTimeStamp;
+    }
+ 
+    public void setConditionTimeStamp(int order, long timeStamp)
+    {
+        this.conditionTimeStamps[order] = timeStamp;
+    }    
+
+    public long getConditionTimeStamp(int order)
+    {
+        return this.conditionTimeStamps[order];
+    }        
+
+    public long[] getConditionTimeStamps()
+    {
+        return this.conditionTimeStamps;
+    }    
 }
