@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.30 2004-11-06 04:08:42 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.31 2004-11-06 04:36:45 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -76,16 +76,6 @@ public interface WorkingMemory extends Serializable
     public List getListeners();
 
     /**
-     * Retrieve the application data that is associated with this memory.
-     *
-     * @return The application data under the name "appData" or
-     *         <code>null</code> if no data has been set for this memory.
-     *
-     * @deprecated use form which takes String argument
-     */
-    Object getApplicationData();
-
-    /**
      * Retrieve all of the set application data in this memory
      *
      * @return the application data as a Map
@@ -106,15 +96,6 @@ public interface WorkingMemory extends Serializable
      * @return application data or null if nothing is set under this name
      */
     public Object getApplicationData(String name);
-
-    /**
-     * Set the application data associated with this memory.
-     *
-     * @param appData The application data for this memory. Will be populated
-     *        under the "appData" name
-     * @deprecated use form which takes String argument
-     */
-    void setApplicationData(Object appData);
 
     /**
      * Retrieve the <code>RuleBase</code> of this working memory.
