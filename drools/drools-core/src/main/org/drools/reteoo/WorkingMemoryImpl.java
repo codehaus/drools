@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.54 2004-11-28 05:55:46 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.55 2004-11-28 07:40:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -580,7 +580,7 @@ class WorkingMemoryImpl
 
         if ( memory == null )
         {
-            memory = new JoinMemory( node.getCommonDeclarations( ) );
+            memory = new JoinMemory( node.getTupleDeclarations( ), node.getCommonDeclarations( ) );
 
             this.joinMemories.put( node,
                                    memory );

@@ -6,7 +6,6 @@ import org.drools.spi.Tuple;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class MockTuple implements Tuple
 {
@@ -35,11 +34,6 @@ public class MockTuple implements Tuple
     public void put(Declaration declaration, Object value)
     {
         this.tuple.put( declaration, value );
-    }
-
-    public Set getDeclarations()
-    {
-        return this.tuple.keySet( );
     }
 
     public FactHandle getFactHandleForObject(Object object)

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.9 2004-11-16 13:37:53 simon Exp $
+ * $Id: Interp.java,v 1.10 2004-11-28 07:40:23 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,7 +66,7 @@ import java.util.Set;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Interp.java,v 1.9 2004-11-16 13:37:53 simon Exp $
+ * @version $Id: Interp.java,v 1.10 2004-11-28 07:40:23 simon Exp $
  */
 public class Interp implements Serializable
 {
@@ -158,12 +158,12 @@ public class Interp implements Serializable
      */
     protected Binding setUpDictionary(Tuple tuple)
     {
-        Set decls = tuple.getDeclarations( );
         Binding dict = new Binding( );
-
-        for ( Iterator declIter = decls.iterator( ); declIter.hasNext( ); )
+        Declaration eachDecl;
+        Iterator declIter = tuple.getRule( ).getAllDeclarations( ).iterator( );
+        while ( declIter.hasNext( ) )
         {
-            Declaration eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = ( Declaration ) declIter.next( );
 
             dict.setVariable( eachDecl.getIdentifier( ).intern( ), tuple.get( eachDecl ) );
         }
@@ -196,7 +196,7 @@ public class Interp implements Serializable
                                                                 .getContextClassLoader( ) );
         Class clazz = loader.parseClass( codeSource );
 
-        return ( ( Script ) clazz.newInstance( ) );
+        return ( Script ) clazz.newInstance( );
     }
 
     /**

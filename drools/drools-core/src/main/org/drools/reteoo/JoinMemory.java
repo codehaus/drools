@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.43 2004-11-28 06:45:24 simon Exp $
+ * $Id: JoinMemory.java,v 1.44 2004-11-28 07:40:23 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -70,8 +70,11 @@ class JoinMemory
     /** Right-side tuples. */
     private final TupleSet rightTuples;
 
+    /** Tuple column declarations. */
+    private final Set tupleDeclarations;
+
     /** Join column declarations. */
-    private final Set joinDeclarations;
+    private final Set commonDeclarations;
 
     // ------------------------------------------------------------
     // Constructors
@@ -80,13 +83,15 @@ class JoinMemory
     /**
      * Construct.
      *
+     * @param tupleDeclarations
      * @param commonDeclarations
      */
-    JoinMemory(Set commonDeclarations)
+    JoinMemory(Set tupleDeclarations, Set commonDeclarations)
     {
         this.leftTuples = new TupleSet( );
         this.rightTuples = new TupleSet( );
-        this.joinDeclarations = commonDeclarations;
+        this.tupleDeclarations = tupleDeclarations;
+        this.commonDeclarations = commonDeclarations;
     }
 
     // ------------------------------------------------------------
@@ -128,9 +133,6 @@ class JoinMemory
     Set addLeftTuple(ReteTuple tuple)
     {
         this.leftTuples.addTuple( tuple );
-        /*
-         * joins.add(attemptJoin( tuple, this.rightTuples ));
-         */
 
         return attemptJoin( tuple,
                             this.rightTuples );
@@ -153,9 +155,6 @@ class JoinMemory
     {
         this.rightTuples.addTuple( tuple );
 
-        /*
-         * joins.add(attemptJoin( tuple, this.rightTuples ));
-         */
         return attemptJoin( tuple,
                             this.leftTuples );
     }
@@ -286,16 +285,13 @@ class JoinMemory
     {
         Set joinedTuples = Collections.EMPTY_SET;
 
-        ReteTuple eachTuple;
         ReteTuple joinedTuple;
 
         Iterator tupleIter = tupleSet.iterator( );
         while ( tupleIter.hasNext( ) )
         {
-            eachTuple = (ReteTuple) tupleIter.next( );
-
             joinedTuple = attemptJoin( tuple,
-                                       eachTuple );
+                                       (ReteTuple) tupleIter.next( ) );
 
             if ( joinedTuple != null )
             {
@@ -314,7 +310,7 @@ class JoinMemory
     private ReteTuple attemptJoin(ReteTuple left,
                                   ReteTuple right)
     {
-        Iterator declIter = this.joinDeclarations.iterator( );
+        Iterator declIter = this.commonDeclarations.iterator( );
         Declaration eachDecl;
 
         FactHandle leftHandle;
@@ -370,13 +366,13 @@ class JoinMemory
     {
         System.err.println( "----" );
         ReteTuple tuple;
-        Set tuples = leftTuples.getTuples( );
+        Set tuples = this.leftTuples.getTuples( );
         Iterator it1 = tuples.iterator( );
         while ( it1.hasNext( ) )
         {
             tuple = (ReteTuple) it1.next( );
             System.err.println( "tuple" );
-            Set decls = tuple.getDeclarations( );
+            Set decls = this.tupleDeclarations;
             Iterator it2 = decls.iterator( );
             while ( it2.hasNext( ) )
             {
@@ -387,12 +383,12 @@ class JoinMemory
             }
         }
 
-        tuples = rightTuples.getTuples( );
+        tuples = this.rightTuples.getTuples( );
         it1 = tuples.iterator( );
         while ( it1.hasNext( ) )
         {
             tuple = (ReteTuple) it1.next( );
-            Set decls = tuple.getDeclarations( );
+            Set decls = this.tupleDeclarations;
             Iterator it2 = decls.iterator( );
             while ( it2.hasNext( ) )
             {
