@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.42 2004-10-30 16:13:31 simon Exp $
+ * $Id: ReteTuple.java,v 1.43 2004-11-02 10:15:37 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import java.util.Collections;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.42 2004-10-30 16:13:31 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.43 2004-11-02 10:15:37 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -211,13 +211,13 @@ class ReteTuple implements Tuple, Serializable
     public long getMostRecentFactTimeStamp()
     {
         FactHandleImpl mostRecentFact = getMostRecentFact( );
-        return ( mostRecentFact != null ) ? mostRecentFact.getRecency() : -1;
+        return mostRecentFact != null ? mostRecentFact.getRecency() : -1;
     }
 
     public long getLeastRecentFactTimeStamp()
     {
         FactHandleImpl leastRecentFact = getLeastRecentFact();
-        return ( leastRecentFact != null ) ? leastRecentFact.getRecency() : -1;
+        return leastRecentFact != null ? leastRecentFact.getRecency() : -1;
     }
 
     private FactHandleImpl getMostRecentFact()

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.34 2004-10-31 12:30:10 simon Exp $
+ * $Id: Agenda.java,v 1.35 2004-11-02 10:15:33 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -164,7 +164,7 @@ class Agenda implements Serializable
         }
 
         Iterator itemIter = this.items.iterator( );
-        AgendaItem eachItem = null;
+        AgendaItem eachItem;
 
         while ( itemIter.hasNext( ) )
         {
@@ -180,7 +180,6 @@ class Agenda implements Serializable
         }
 
         itemIter = this.scheduledItems.iterator( );
-        eachItem = null;
 
         while ( itemIter.hasNext( ) )
         {
@@ -207,8 +206,8 @@ class Agenda implements Serializable
     void modifyAgenda(FactHandle trigger, TupleSet newTuples, Rule rule)
     {
         Iterator itemIter = this.items.iterator( );
-        AgendaItem eachItem = null;
-        ReteTuple eachTuple = null;
+        AgendaItem eachItem;
+        ReteTuple eachTuple;
 
         while ( itemIter.hasNext( ) )
         {
@@ -236,7 +235,6 @@ class Agenda implements Serializable
         }
 
         itemIter = this.scheduledItems.iterator( );
-        eachItem = null;
 
         while ( itemIter.hasNext( ) )
         {

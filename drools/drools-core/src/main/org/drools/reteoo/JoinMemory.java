@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.28 2004-10-30 00:00:59 simon Exp $
+ * $Id: JoinMemory.java,v 1.29 2004-11-02 10:15:36 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -110,15 +110,11 @@ class JoinMemory implements Serializable
     {
         try
         {
-            ReteTuple eachTuple = null;
-
             Iterator tupleIter = leftTuples.iterator();
 
             while ( tupleIter.hasNext() )
             {
-                eachTuple = ( ReteTuple ) tupleIter.next();
-
-                if ( eachTuple.dependsOn( handle ) )
+                if ( ( ( ReteTuple ) tupleIter.next() ).dependsOn( handle ) )
                 {
                     tupleIter.remove();
                 }
@@ -128,9 +124,7 @@ class JoinMemory implements Serializable
 
             while ( tupleIter.hasNext() )
             {
-                eachTuple = ( ReteTuple ) tupleIter.next();
-
-                if ( eachTuple.dependsOn( handle ) )
+                if ( ( ( ReteTuple ) tupleIter.next() ).dependsOn( handle ) )
                 {
                     tupleIter.remove();
                 }
@@ -150,13 +144,10 @@ class JoinMemory implements Serializable
     protected void retractTuples( Set keys )
     {
         Iterator keyIter = keys.iterator();
-        TupleKey eachKey = null;
 
         while ( keyIter.hasNext() )
         {
-            eachKey = ( TupleKey ) keyIter.next();
-
-            retractTuples( eachKey );
+            retractTuples( ( TupleKey ) keyIter.next() );
         }
     }
 
@@ -180,13 +171,10 @@ class JoinMemory implements Serializable
      */
     private void retractTuples( TupleKey key, Iterator tupleIter )
     {
-        ReteTuple eachTuple = null;
 
         while ( tupleIter.hasNext() )
         {
-            eachTuple = ( ReteTuple ) tupleIter.next();
-
-            if ( eachTuple.getKey().containsAll( key ) )
+            if ( ( ( ReteTuple ) tupleIter.next() ).getKey().containsAll( key ) )
             {
                 tupleIter.remove();
             }
@@ -205,8 +193,7 @@ class JoinMemory implements Serializable
                                      TupleSet newTuples,
                                      WorkingMemoryImpl workingMemory ) throws FactException
     {
-        modifyTuples( trigger, newTuples, getLeftTuples(), getRightTuples(),
-                workingMemory );
+        modifyTuples( trigger, newTuples, getLeftTuples(), getRightTuples(), workingMemory );
     }
 
     /**
@@ -221,8 +208,7 @@ class JoinMemory implements Serializable
                                       TupleSet newTuples,
                                       WorkingMemoryImpl workingMemory ) throws FactException
     {
-        modifyTuples( trigger, newTuples, getRightTuples(), getLeftTuples(),
-                workingMemory );
+        modifyTuples( trigger, newTuples, getRightTuples(), getLeftTuples(), workingMemory );
     }
 
     /**
@@ -243,7 +229,9 @@ class JoinMemory implements Serializable
     {
         ReteTuple tuple;
 
-        for ( Iterator tupleIter = thisSideTuples.iterator(); tupleIter.hasNext(); )
+        Iterator tupleIter = thisSideTuples.iterator();
+
+        while ( tupleIter.hasNext() )
         {
             tuple = ( ReteTuple ) tupleIter.next();
 
@@ -255,7 +243,9 @@ class JoinMemory implements Serializable
 
         TupleSet newJoined = new TupleSet();
 
-        for ( Iterator tupleIter = newTuples.iterator(); tupleIter.hasNext(); )
+        tupleIter = newTuples.iterator();
+
+        while ( tupleIter.hasNext() )
         {
             tuple = ( ReteTuple ) tupleIter.next();
 
@@ -364,8 +354,8 @@ class JoinMemory implements Serializable
     {
         Set joinedTuples = Collections.EMPTY_SET;
 
-        ReteTuple eachTuple = null;
-        ReteTuple joinedTuple = null;
+        ReteTuple eachTuple;
+        ReteTuple joinedTuple;
 
         while ( tupleIter.hasNext() )
         {
@@ -395,10 +385,10 @@ class JoinMemory implements Serializable
     protected ReteTuple attemptJoin( ReteTuple left, ReteTuple right )
     {
         Iterator declIter = getJoinDeclarationIterator();
-        Declaration eachDecl = null;
+        Declaration eachDecl;
 
-        FactHandle leftHandle = null;
-        FactHandle rightHandle = null;
+        FactHandle leftHandle;
+        FactHandle rightHandle;
 
         while ( declIter.hasNext() )
         {
@@ -432,9 +422,7 @@ class JoinMemory implements Serializable
             }
         }
 
-        ReteTuple joinedTuple = new JoinTuple( left, right );
-
-        return joinedTuple;
+        return new JoinTuple( left, right );
 
     }
 
