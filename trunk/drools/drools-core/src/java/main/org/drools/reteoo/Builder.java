@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.19 2002-08-18 19:17:50 bob Exp $
+ $Id: Builder.java,v 1.20 2002-08-20 18:33:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package org.drools.reteoo;
  
  */
 
+import org.drools.RuleIntegrationException;
 import org.drools.reteoo.impl.ReteImpl;
 import org.drools.reteoo.impl.ObjectTypeNodeImpl;
 import org.drools.reteoo.impl.ParameterNodeImpl;
@@ -119,10 +120,10 @@ public class Builder
      *
      *  @param rule The rule to add.
      *
-     *  @throws ReteConstructionException if an error prevents complete
+     *  @throws RuleIntegrationException if an error prevents complete
      *          construction of the network for the <code>Rule</code>.
      */
-    public void addRule(Rule rule) throws ReteConstructionException
+    public void addRule(Rule rule) throws RuleIntegrationException
     {
         Set factExtracts = new HashSet( rule.getExtractions() );
         Set conds        = new HashSet( rule.getConditions() );

@@ -27,7 +27,7 @@
 
   <siteAddress>drools.werken.com</siteAddress>
   <siteDirectory>/www/drools.werken.com</siteDirectory>
-  <issueTrackingUrl>http://jira.werken.com:8181/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
+  <issueTrackingUrl>http://jira.werken.com/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
@@ -59,7 +59,9 @@
       <id>bob</id>
       <email>bob@werken.com</email>
       <organization>The Werken Company</organization>
-      <role>Founder</role>
+      <roles>
+        <role>Founder</role>
+      </roles>
     </developer>
 
     <developer>
