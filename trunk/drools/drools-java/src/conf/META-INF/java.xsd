@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://drools.org/semantics/java"
            elementFormDefault="qualified"
            xmlns:java="http://drools.org/semantics/java"
-           xmlns:rules="http://drools.org/rules">
+           xmlns:rules="http://drools.org/rules"
+           >
 
-  <xs:import namespace="http://drools.org/rules"/>
+  <xs:import namespace="http://drools.org/rules" schemaLocation="rules.xsd" />
 
   <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport"/>
 
