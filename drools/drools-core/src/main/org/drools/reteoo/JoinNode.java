@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.31 2004-11-25 17:53:53 mproctor Exp $
+ * $Id: JoinNode.java,v 1.32 2004-11-29 06:28:56 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,22 +40,22 @@ package org.drools.reteoo;
  *
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  * A two-input Rete-OO <i>join node </i>.
- * 
+ *
  * @see org.drools.reteoo.TupleSource
  * @see org.drools.reteoo.TupleSink
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class JoinNode extends TupleSource
@@ -82,7 +82,7 @@ class JoinNode extends TupleSource
 
     /**
      * Construct.
-     * 
+     *
      * @param leftInput
      *            The left input <code>TupleSource</code>.
      * @param rightInput
@@ -119,9 +119,8 @@ class JoinNode extends TupleSource
         Set commonDeclarations = new HashSet( );
 
         Set leftDecls = leftInput.getTupleDeclarations( );
-        Set rightDecls = rightInput.getTupleDeclarations( );
 
-        Iterator declIter = rightDecls.iterator( );
+        Iterator declIter = rightInput.getTupleDeclarations( ).iterator( );
         Declaration eachDecl;
 
         while ( declIter.hasNext( ) )
@@ -144,7 +143,7 @@ class JoinNode extends TupleSource
     /**
      * Retrieve the set of common <code>Declarations</code> across the two
      * input <code>TupleSources</code>.
-     * 
+     *
      * @return The <code>Set</code> of common <code>Declarations</code>.
      */
     public Set getCommonDeclarations()
@@ -154,41 +153,33 @@ class JoinNode extends TupleSource
 
     /**
      * Propagate joined asserted tuples.
-     * 
-     * @param joinedTuples
-     *            The tuples to propagate.
-     * @param workingMemory
-     *            The working memory session.
-     * 
-     * @throws AssertionException
-     *             If an errors occurs while asserting.
+     *
+     * @param joinedTuples The tuples to propagate.
+     * @param workingMemory The working memory session.
+     * @throws AssertionException If an errors occurs while asserting.
      */
-    void propagateAssertTuples(Set joinedTuples,
-                               WorkingMemoryImpl workingMemory) throws AssertionException
+    private void propagateAssertTuples( TupleSet joinedTuples,
+                                        WorkingMemoryImpl workingMemory ) throws AssertionException
     {
         Iterator tupleIter = joinedTuples.iterator( );
         while ( tupleIter.hasNext( ) )
         {
-            propagateAssertTuple( (ReteTuple) tupleIter.next( ),
+            propagateAssertTuple( ( ReteTuple ) tupleIter.next( ),
                                   workingMemory );
         }
     }
 
     /**
      * Assert a new <code>Tuple</code> from the left input.
-     * 
-     * @param tuple
-     *            The <code>Tuple</code> being asserted.
-     * @param workingMemory
-     *            The working memory seesion.
-     * 
-     * @throws AssertionException
-     *             If an error occurs while asserting.
+     *
+     * @param tuple The <code>Tuple</code> being asserted.
+     * @param workingMemory The working memory seesion.
+     * @throws AssertionException If an error occurs while asserting.
      */
-    void assertLeftTuple(ReteTuple tuple,
-                         WorkingMemoryImpl workingMemory) throws AssertionException
+    void assertLeftTuple( ReteTuple tuple,
+                          WorkingMemoryImpl workingMemory ) throws AssertionException
     {
-        Set joinedTuples = workingMemory.getJoinMemory( this ).addLeftTuple( tuple );
+        TupleSet joinedTuples = workingMemory.getJoinMemory( this ).addLeftTuple( tuple );
 
         if ( !joinedTuples.isEmpty( ) )
         {
@@ -199,19 +190,15 @@ class JoinNode extends TupleSource
 
     /**
      * Assert a new <code>Tuple</code> from the right input.
-     * 
-     * @param tuple
-     *            The <code>Tuple</code> being asserted.
-     * @param workingMemory
-     *            The working memory seesion.
-     * 
-     * @throws AssertionException
-     *             If an error occurs while asserting.
+     *
+     * @param tuple The <code>Tuple</code> being asserted.
+     * @param workingMemory The working memory seesion.
+     * @throws AssertionException If an error occurs while asserting.
      */
-    void assertRightTuple(ReteTuple tuple,
-                          WorkingMemoryImpl workingMemory) throws AssertionException
+    void assertRightTuple( ReteTuple tuple,
+                           WorkingMemoryImpl workingMemory ) throws AssertionException
     {
-        Set joinedTuples = workingMemory.getJoinMemory( this ).addRightTuple( tuple );
+        TupleSet joinedTuples = workingMemory.getJoinMemory( this ).addRightTuple( tuple );
 
         if ( !joinedTuples.isEmpty( ) )
         {
@@ -222,22 +209,19 @@ class JoinNode extends TupleSource
 
     /**
      * Retract tuples.
-     * 
-     * @param key
-     *            The tuple key.
-     * @param workingMemory
-     *            The working memory seesion.
-     * 
-     * @throws RetractionException
-     *             If an error occurs while retracting.
+     *
+     * @param key The tuple key.
+     * @param workingMemory The working memory seesion.
+     * @throws RetractionException If an error occurs while retracting.
      */
-    public void retractTuples(TupleKey key,
-                              WorkingMemoryImpl workingMemory) throws RetractionException
+    public void retractTuples( TupleKey key,
+                               WorkingMemoryImpl workingMemory ) throws RetractionException
     {
-        workingMemory.getJoinMemory( this ).retractTuples( key );
-
-        propagateRetractTuples( key,
-                                workingMemory );
+        if ( workingMemory.getJoinMemory( this ).retractTuples( key ) )
+        {
+            propagateRetractTuples( key,
+                                    workingMemory );
+        }
     }
 
     /**
@@ -249,29 +233,33 @@ class JoinNode extends TupleSource
      *
      * @throws FactException If an error occurs while modifying.
      */
-    void modifyLeftTuples(FactHandle trigger,
-                          TupleSet newTuples,
-                          WorkingMemoryImpl workingMemory) throws FactException
+    void modifyLeftTuples( FactHandle trigger,
+                           TupleSet newTuples,
+                           WorkingMemoryImpl workingMemory ) throws FactException
     {
-       
+
         JoinMemory memory = workingMemory.getJoinMemory( this );
-        
-        TupleSet newJoined = memory.modifyLeftTuples( trigger, newTuples, workingMemory );
-        
-        if (!newJoined.isEmpty())
+
+        TupleSet newJoined = memory.modifyLeftTuples( trigger,
+                                                      newTuples,
+                                                      workingMemory );
+
+        if ( !newJoined.isEmpty( ) )
         {
             //newJoined is not empty then we need to propogated modified tuples
-            propagateModifyTuples( trigger, newJoined, workingMemory );
-        } 
-        else 
+            propagateModifyTuples( trigger,
+                                   newJoined,
+                                   workingMemory );
+        }
+        else
         {
             //newJoined is empty, must be a new branch assert as normal
             Iterator tupleIter = newTuples.iterator( );
             while ( tupleIter.hasNext( ) )
             {
-                assertLeftTuple( (ReteTuple) tupleIter.next( ),
+                assertLeftTuple( ( ReteTuple ) tupleIter.next( ),
                                   workingMemory );
-            }            
+            }
         }
     }
 
@@ -284,31 +272,35 @@ class JoinNode extends TupleSource
      *
      * @throws FactException If an error occurs while modifying.
      */
-    void modifyRightTuples(FactHandle trigger,
-                           TupleSet newTuples,
-                           WorkingMemoryImpl workingMemory) throws FactException
+    void modifyRightTuples( FactHandle trigger,
+                            TupleSet newTuples,
+                            WorkingMemoryImpl workingMemory ) throws FactException
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
 
-        TupleSet newJoined = memory.modifyRightTuples( trigger, newTuples, workingMemory );       
+        TupleSet newJoined = memory.modifyRightTuples( trigger,
+                                                       newTuples,
+                                                       workingMemory );
 
-        if (!newJoined.isEmpty())
+        if ( !newJoined.isEmpty( ) )
         {
-            //newJoined is not empty then we need to propogated modified tuples            
-            propagateModifyTuples( trigger, newJoined, workingMemory );
-        } 
-        else 
+            //newJoined is not empty then we need to propogated modified tuples
+            propagateModifyTuples( trigger,
+                                   newJoined,
+                                   workingMemory );
+        }
+        else
         {
-            //newJoined is empty, must be a new branch assert as normal            
+            //newJoined is empty, must be a new branch assert as normal
             Iterator tupleIter = newTuples.iterator( );
             while ( tupleIter.hasNext( ) )
             {
-                assertRightTuple( (ReteTuple) tupleIter.next( ),
+                assertRightTuple( ( ReteTuple ) tupleIter.next( ),
                                   workingMemory );
-            }            
+            }
         }
-    }    
-    
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // org.drools.reteoo.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -316,9 +308,9 @@ class JoinNode extends TupleSource
     /**
      * Retrieve the <code>Set</code> of <code>Declaration</code>s. in the
      * propagated <code>Tuples</code>.
-     * 
+     *
      * @see Declaration
-     * 
+     *
      * @return The <code>Set</code> of <code>Declarations</code> in progated
      *         <code>Tuples</code>.
      */
