@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: LongSemaphore.java,v 1.1 2004-12-21 00:24:37 mproctor Exp $
+ * $Id: LongSemaphore.java,v 1.2 2005-02-02 01:23:49 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,6 +55,12 @@ public class LongSemaphore
     {
         this.identifier = identifier;
     }
+    
+    public LongSemaphore(String identifier, long value)
+    {
+        this.identifier = identifier;
+        this.value = value;
+    }    
     
     /* (non-Javadoc)
      * @see org.drools.spi.Semaphore#getIdentifier()
