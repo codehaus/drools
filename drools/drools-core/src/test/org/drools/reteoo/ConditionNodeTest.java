@@ -50,7 +50,7 @@ public class ConditionNodeTest extends TestCase
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
-        node.setTupleSink( sink );
+        node.addTupleSink( sink );
 
         try
         {
@@ -81,7 +81,7 @@ public class ConditionNodeTest extends TestCase
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
-        node.setTupleSink( sink );
+        node.addTupleSink( sink );
 
         try
         {

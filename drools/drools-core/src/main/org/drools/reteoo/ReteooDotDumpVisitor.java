@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooDotDumpVisitor.java,v 1.6 2004-11-28 05:55:46 simon Exp $
+ * $Id: ReteooDotDumpVisitor.java,v 1.7 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -68,7 +68,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
     private static final String INDENT = "    ";
 
     /** The PrintStream where the DOT output will be written. */
-    private PrintStream out = null;
+    private final PrintStream out;
 
     /**
      * Keeps track of visited JoinNode DOT IDs. This mapping allows the visitor
@@ -79,7 +79,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
     private Set visitedNodes = new HashSet( );
 
     /** Counter used to produce distinct DOT IDs for Null Nodes. */
-    private int nullDotId = 0;
+    private int nullDotId;
 
     /**
      * Constructor.
@@ -105,7 +105,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
      */
     public void visitNull()
     {
-        makeNode( "NULL" + (nullDotId++),
+        makeNode( "NULL" + nullDotId++,
                   NULL_STRING );
     }
 
@@ -156,14 +156,22 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
      */
     public void visitParameterNode(ParameterNode node)
     {
+        makeTupleSourceNode( node, "ParameterNode", "TupleSource", "decl: " + format( node.getDeclaration( ) ) );
+    }
+
+    private void makeTupleSourceNode( TupleSource node, String nodeType, String tupleType, String label )
+    {
         makeNode( node,
-                  "ParameterNode",
-                  "TupleSource",
-                  "decl: " + format( node.getDeclaration( ) ) );
-        Object nextNode = node.getTupleSink( );
-        makeEdge( node,
-                  nextNode );
-        visitNode( nextNode );
+                  nodeType,
+                  tupleType,
+                  label );
+        for ( Iterator i = node.getTupleSinks( ).iterator(); i.hasNext(); )
+        {
+            Object nextNode = i.next();
+            makeEdge( node,
+                      nextNode );
+            visitNode( nextNode );
+        }
     }
 
     /**
@@ -172,15 +180,11 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
      */
     public void visitConditionNode(ConditionNode node)
     {
-        makeNode( node,
+        makeTupleSourceNode( node,
                   "ConditionNode",
                   "TupleSource/TupleSink",
                   "condition: " + node.getCondition( ) + newline + format( node.getTupleDeclarations( ),
                                                                            "tuple" ) );
-        Object nextNode = node.getTupleSink( );
-        makeEdge( node,
-                  nextNode );
-        visitNode( nextNode );
     }
 
     /**
@@ -192,7 +196,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
         makeNode( node,
                   "JoinNodeInput",
                   "TupleSink",
-                  ((node.getSide( ) == JoinNodeInput.LEFT) ? "LEFT" : "RIGHT") );
+                  node.getSide( ) == JoinNodeInput.LEFT ? "LEFT" : "RIGHT" );
         Object nextNode = node.getJoinNode( );
         makeEdge( node,
                   nextNode );
@@ -205,16 +209,12 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
      */
     public void visitJoinNode(JoinNode node)
     {
-        makeNode( node,
+        makeTupleSourceNode( node,
                   "JoinNode",
                   "TupleSource",
                   format( node.getCommonDeclarations( ),
                           "common" ) + newline + format( node.getTupleDeclarations( ),
                                                          "tuple" ) );
-        Object nextNode = node.getTupleSink( );
-        makeEdge( node,
-                  nextNode );
-        visitNode( nextNode );
     }
 
     /**
@@ -262,7 +262,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
                           String label)
     {
         makeNode( object,
-                  nodeType + "@" + dotId( object ) + newline + ((null == tupleType) ? ("") : ("(" + tupleType + ")" + newline)) + label );
+                  nodeType + "@" + dotId( object ) + newline + (null == tupleType ? "" : "(" + tupleType + ")" + newline ) + label );
     }
 
     /**
@@ -298,7 +298,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
     private String format(Set declarationSet,
                           String declString)
     {
-        if ( (null == declarationSet) || (declarationSet.isEmpty( )) )
+        if ( declarationSet.isEmpty( ) )
         {
             return "No " + declString + " declarations";
         }
@@ -321,7 +321,7 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
      */
     private static String format(Declaration declaration)
     {
-        return (null == declaration) ? NULL_STRING : declaration.getIdentifier( ) + " (" + declaration.getObjectType( ) + ")";
+        return null == declaration ? NULL_STRING : declaration.getIdentifier( ) + " (" + declaration.getObjectType( ) + ")";
     }
 
     /**

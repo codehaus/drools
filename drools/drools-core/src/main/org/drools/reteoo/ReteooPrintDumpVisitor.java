@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooPrintDumpVisitor.java,v 1.8 2004-11-28 05:55:46 simon Exp $
+ * $Id: ReteooPrintDumpVisitor.java,v 1.9 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -123,7 +123,13 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         visit( parameterNode.getDeclaration( ) );
         buffer.append( indent ).append( "tupleSink:" );
         buffer.append( newline );
-        visit( parameterNode.getTupleSink( ) );
+
+        Iterator it = parameterNode.getTupleSinks( ).iterator( );
+        depth++;
+        while ( it.hasNext() )
+        {
+            visit( it.next() );
+        }
         depth = scopedDepth;
     }
 
@@ -155,8 +161,12 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         buffer.append( indent ).append( "tupleSink:" );
         buffer.append( newline );
         int scopedDepth = depth;
+        Iterator it = conditionNode.getTupleSinks( ).iterator( );
         depth++;
-        visit( conditionNode.getTupleSink( ) );
+        while ( it.hasNext() )
+        {
+            visit( it.next() );
+        }
         depth = scopedDepth;
     }
 
@@ -170,9 +180,14 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         buffer.append( indent ).append( joinNodeInput.toString( ) );
         buffer.append( newline );
         int scopedDepth = depth;
+        Iterator it = joinNodeInput.getJoinNode( ).getTupleSinks( ).iterator( );
         depth++;
-        visit( joinNodeInput.getJoinNode( ).getTupleSink( ) );
+        while ( it.hasNext() )
+        {
+            visit( it.next() );
+        }
         depth = scopedDepth;
+
     }
 
     public void visitTerminalNode(TerminalNode terminalNode)

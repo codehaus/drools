@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSink.java,v 1.21 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: TupleSink.java,v 1.22 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,9 +50,9 @@ import java.io.Serializable;
 /**
  * Receiver of propagated <code>ReteTuple</code> s from a
  * <code>TupleSource</code>.
- * 
+ *
  * @see TupleSource
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 interface TupleSink
@@ -61,12 +61,12 @@ interface TupleSink
 {
     /**
      * Assert a new <code>Tuple</code>.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> being asserted.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws AssertionException
      *             If an error occurs while asserting.
      */
@@ -75,12 +75,12 @@ interface TupleSink
 
     /**
      * Retract tuples.
-     * 
+     *
      * @param key
      *            The tuple key.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws RetractionException
      *             If an error occurs while retracting.
      */
@@ -89,18 +89,18 @@ interface TupleSink
 
     /**
      * Modify tuples.
-     * 
+     *
      * @param trigger
      *            The root fact object handle.
-     * @param newTuples
+     * @param modifyTuples
      *            Modification replacement tuples.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws FactException
      *             If an error occurs while modifying.
      */
     void modifyTuples(FactHandle trigger,
-                      TupleSet newTuples,
+                      TupleSet modifyTuples,
                       WorkingMemoryImpl workingMemory) throws FactException;
 }

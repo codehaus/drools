@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.30 2004-12-04 02:27:20 simon Exp $
+ * $Id: ConditionNode.java,v 1.31 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,7 +47,6 @@ import org.drools.RetractionException;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -101,7 +100,7 @@ class ConditionNode extends TupleSource
 
         if ( tupleSource != null )
         {
-            this.tupleSource.setTupleSink( this );
+            this.tupleSource.addTupleSink( this );
         }
     }
 
@@ -150,18 +149,15 @@ class ConditionNode extends TupleSource
     public void assertTuple(ReteTuple tuple,
                             WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        Condition condition = getCondition( );
-        boolean isAllowed = condition.isAllowed( tuple );
+        boolean allowed = this.condition.isAllowed( tuple );
 
         workingMemory.getEventSupport( ).fireConditionTested( this.rule,
-                                                              condition,
+                                                              this.condition,
                                                               tuple,
-                                                              isAllowed );
+                                                              allowed );
 
-        if ( isAllowed )
+        if ( allowed )
         {
-            // tuple.setConditionTimeStamp( order,
-            // workingMemory.getConditionTimeStamp() );
             propagateAssertTuple( tuple,
                                   workingMemory );
         }
@@ -187,53 +183,46 @@ class ConditionNode extends TupleSource
      * Modify tuples.
      *
      * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
+     * @param modifyTuples Modification replacement tuples.
      * @param workingMemory The working memory session.
      *
      * @throws FactException If an error occurs while modifying.
      */
     public void modifyTuples(FactHandle trigger,
-                             TupleSet newTuples,
+                             TupleSet modifyTuples,
                              WorkingMemoryImpl workingMemory) throws FactException
     {
-        Set retractedKeys = new HashSet( );
-
-        Iterator tupleIter = newTuples.iterator( );
+        TupleSet allowedTuples = new TupleSet( );
+        Iterator tupleIter = modifyTuples.iterator( );
         ReteTuple eachTuple;
-        TupleKey eachKey;
 
-        Condition condition = getCondition( );
-        boolean isAllowed;
+        boolean allowed;
         while ( tupleIter.hasNext( ) )
         {
             eachTuple = (ReteTuple) tupleIter.next( );
 
-            isAllowed = condition.isAllowed( eachTuple );
+            allowed = this.condition.isAllowed( eachTuple );
 
             workingMemory.getEventSupport( ).fireConditionTested( this.rule,
-                                                                  condition,
+                                                                  this.condition,
                                                                   eachTuple,
-                                                                  isAllowed );
+                                                                  allowed );
 
-            if ( !isAllowed )
+            if ( allowed )
             {
-                tupleIter.remove( );
-
-                eachKey = eachTuple.getKey( );
-
-                if ( retractedKeys.add( eachKey ) )
-                {
-                    propagateRetractTuples( eachKey,
-                                            workingMemory );
-
-                }
+                allowedTuples.addTuple( eachTuple );
+            }
+            else
+            {
+                propagateRetractTuples( eachTuple.getKey( ),
+                                        workingMemory );
             }
         }
 
-        if ( !newTuples.isEmpty( ) )
+        if ( !allowedTuples.isEmpty( ) )
         {
             propagateModifyTuples( trigger,
-                                   newTuples,
+                                   allowedTuples,
                                    workingMemory );
         }
     }

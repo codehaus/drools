@@ -15,7 +15,7 @@ public class TupleSourceTest extends TestCase
         TupleSource source = new MockTupleSource( );
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
-        source.setTupleSink( sink );
+        source.addTupleSink( sink );
 
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );

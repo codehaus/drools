@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.36 2004-11-22 02:38:38 simon Exp $
+ * $Id: TerminalNode.java,v 1.37 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -80,7 +80,7 @@ final class TerminalNode
     {
         this.rule = rule;
 
-        inputSource.setTupleSink( this );
+        inputSource.addTupleSink( this );
     }
 
     // ------------------------------------------------------------
@@ -139,17 +139,17 @@ final class TerminalNode
      *
      * @param trigger
      *            The root fact object handle.
-     * @param newTuples
+     * @param modifyTuples
      *            Modification replacement tuples.
      * @param workingMemory
      *            The working memory session.
      */
     public void modifyTuples(FactHandle trigger,
-                             TupleSet newTuples,
+                             TupleSet modifyTuples,
                              WorkingMemoryImpl workingMemory)
     {
         workingMemory.getAgenda( ).modifyAgenda( trigger,
-                                                 newTuples,
+                                                 modifyTuples,
                                                  this.rule );
     }
 

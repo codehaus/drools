@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNodeInput.java,v 1.16 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: JoinNodeInput.java,v 1.17 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,9 +47,9 @@ import org.drools.RetractionException;
 
 /**
  * Input <code>TupleSinkImpl</code> for a <code>JoinNodeImpl</code>.
- * 
+ *
  * @see JoinNode
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class JoinNodeInput
@@ -82,7 +82,7 @@ class JoinNodeInput
 
     /**
      * Construct.
-     * 
+     *
      * @param joinNode
      *            Join node.
      * @param side
@@ -113,7 +113,7 @@ class JoinNodeInput
 
     /**
      * Retrieve the side marker.
-     * 
+     *
      * @return The side marker.
      */
     int getSide()
@@ -123,7 +123,7 @@ class JoinNodeInput
 
     /**
      * Retrieve the destination join node.
-     * 
+     *
      * @return The join node.
      */
     JoinNode getJoinNode()
@@ -137,12 +137,12 @@ class JoinNodeInput
 
     /**
      * Assert a new <code>Tuple</code>.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> being asserted.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws AssertionException
      *             If an error occurs while asserting.
      */
@@ -163,12 +163,12 @@ class JoinNodeInput
 
     /**
      * Retract tuples.
-     * 
+     *
      * @param key
      *            The tuple key.
      * @param workingMemory
      *            The working memory seesion.
-     * 
+     *
      * @throws RetractionException
      *             If an error occurs while retracting.
      */
@@ -180,31 +180,31 @@ class JoinNodeInput
     }
     /**
      * Modify tuples.
-     * 
+     *
      * @param trigger
      *            The root fact object handle.
-     * @param newTuples
+     * @param modifyTuples
      *            Modification replacement tuples.
      * @param workingMemory
      *            The working memory session.
-     * 
+     *
      * @throws FactException
      *             If an error occurs while modifying.
      */
     public void modifyTuples(FactHandle trigger,
-                             TupleSet newTuples,
+                             TupleSet modifyTuples,
                              WorkingMemoryImpl workingMemory) throws FactException
     {
         if ( this.side == LEFT )
         {
             getJoinNode( ).modifyLeftTuples( trigger,
-                                             newTuples,
+                                             modifyTuples,
                                              workingMemory );
         }
         else
         {
             getJoinNode( ).modifyRightTuples( trigger,
-                                              newTuples,
+                                              modifyTuples,
                                               workingMemory );
         }
     }

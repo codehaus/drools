@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.24 2004-12-03 03:26:17 simon Exp $
+ * $Id: TupleSource.java,v 1.25 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,8 @@ import org.drools.FactHandle;
 import org.drools.RetractionException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -69,7 +71,7 @@ abstract class TupleSource
     // ------------------------------------------------------------
 
     /** The destination for <code>Tuples</code>. */
-    private TupleSink tupleSink;
+    private List tupleSinks = new ArrayList( 1 );
 
     // ------------------------------------------------------------
     // Constructors
@@ -88,14 +90,17 @@ abstract class TupleSource
     // ------------------------------------------------------------
 
     /**
-     * Set the <code>TupleSink</code> that receives <code>Tuples</code>
+     * Adds the <code>TupleSink</code> so that it may receive <code>Tuples</code>
      * propagated from this <code>TupleSource</code>.
      *
      * @param tupleSink The <code>TupleSink</code> to receive propagated <code>Tuples</code>.
      */
-    protected void setTupleSink(TupleSink tupleSink)
+    protected void addTupleSink(TupleSink tupleSink)
     {
-        this.tupleSink = tupleSink;
+        if ( !this.tupleSinks.contains( tupleSink ) )
+        {
+            this.tupleSinks.add( tupleSink );
+        }
     }
 
     /**
@@ -110,8 +115,12 @@ abstract class TupleSource
     protected void propagateAssertTuple(ReteTuple tuple,
                                         WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        this.tupleSink.assertTuple( tuple,
-                                    workingMemory );
+        int size = this.tupleSinks.size( );
+        for ( int i = 0; i < size; i++ )
+        {
+            ( ( TupleSink ) this.tupleSinks.get( i ) ).assertTuple( tuple,
+                                                                    workingMemory );
+        }
     }
 
     /**
@@ -127,8 +136,12 @@ abstract class TupleSource
     protected void propagateRetractTuples(TupleKey key,
                                           WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        this.tupleSink.retractTuples( key,
-                                      workingMemory );
+        int size = this.tupleSinks.size( );
+        for ( int i = 0; i < size; i++ )
+        {
+            ( ( TupleSink ) this.tupleSinks.get( i ) ).retractTuples( key,
+                                                                      workingMemory );
+        }
     }
 
     /**
@@ -136,18 +149,22 @@ abstract class TupleSource
      * <code>TupleSink</code>.
      *
      * @param trigger The modification trigger object handle.
-     * @param newTuples Modification replacement tuples.
+     * @param modifyTuples Modification replacement tuples.
      * @param workingMemory The working memory session.
      *
      * @throws FactException If an error occurs while attempting modification.
      */
     protected void propagateModifyTuples(FactHandle trigger,
-                                         TupleSet newTuples,
+                                         TupleSet modifyTuples,
                                          WorkingMemoryImpl workingMemory) throws FactException
     {
-        this.tupleSink.modifyTuples( trigger,
-                                     newTuples,
-                                     workingMemory );
+        int size = this.tupleSinks.size( );
+        for ( int i = 0; i < size; i++ )
+        {
+            ( ( TupleSink ) this.tupleSinks.get( i ) ).modifyTuples( trigger,
+                                                                     modifyTuples,
+                                                                     workingMemory );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -155,15 +172,15 @@ abstract class TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
-     * Retrieve the <code>TupleSink</code> that receives propagated
+     * Retrieve the <code>TupleSinks</code> that receive propagated
      * <code>Tuples</code>.
      *
-     * @return The <code>TupleSink</code> that receives propagated
+     * @return The <code>TupleSinks</code> that receive propagated
      *         <code>Tuples</code>.
      */
-    public TupleSink getTupleSink()
+    public List getTupleSinks()
     {
-        return this.tupleSink;
+        return this.tupleSinks;
     }
 
     /**

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.64 2004-12-04 02:27:19 simon Exp $
+ * $Id: Builder.java,v 1.65 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -125,8 +125,7 @@ public class Builder
     /**
      * Set the <code>FactHandleFactory</code>.
      *
-     * @param factHandleFactory
-     *            The fact handle factory.
+     * @param factHandleFactory The fact handle factory.
      */
     public void setFactHandleFactory(FactHandleFactory factHandleFactory)
     {
@@ -136,8 +135,7 @@ public class Builder
     /**
      * Set the <code>ConflictResolver</code>.
      *
-     * @param conflictResolver
-     *            The conflict resolver.
+     * @param conflictResolver The conflict resolver.
      */
     public void setConflictResolver(ConflictResolver conflictResolver)
     {
@@ -147,15 +145,14 @@ public class Builder
     /**
      * Add a <code>RuleSet</code> to the network.
      *
-     * @param ruleSet
-     *            The rule-set to add.
+     * @param ruleSet The rule-set to add.
      *
      * @throws RuleIntegrationException
      *             if an error prevents complete construction of the network for
      *             the <code>Rule</code>.
      */
-    public void addRuleSet(RuleSet ruleSet) throws RuleIntegrationException,
-                                           RuleSetIntegrationException
+    public void addRuleSet(RuleSet ruleSet)
+            throws RuleIntegrationException, RuleSetIntegrationException
     {
         this.ruleSets.add( ruleSet );
 
@@ -165,8 +162,8 @@ public class Builder
         Class type;
         while ( it.hasNext( ) )
         {
-            identifier = (String) it.next( );
-            type = (Class) newApplicationData.get( identifier );
+            identifier = ( String ) it.next( );
+            type = ( Class ) newApplicationData.get( identifier );
             if ( this.applicationData.containsKey( identifier ) && !this.applicationData.get( identifier ).equals( type ) )
             {
                 throw new RuleSetIntegrationException( ruleSet );
@@ -186,8 +183,7 @@ public class Builder
     /**
      * Add a <code>Rule</code> to the network.
      *
-     * @param rule
-     *            The rule to add.
+     * @param rule The rule to add.
      *
      * @throws RuleIntegrationException
      *             if an error prevents complete construction of the network for
@@ -253,8 +249,7 @@ public class Builder
      * Create the <code>ParameterNode</code> s for the <code>Rule</code>,
      * and link into the network.
      *
-     * @param rule
-     *            The rule.
+     * @param rule The rule.
      *
      * @return A <code>Set</code> of <code>ParameterNodes</code> created and
      *         linked into the network.
@@ -269,8 +264,9 @@ public class Builder
         {
             eachDecl = (Declaration) declIter.next( );
 
-            leafNodes.add( new ParameterNode( this.rete.getOrCreateObjectTypeNode( eachDecl.getObjectType( ) ),
-                                              eachDecl ) );
+            ObjectTypeNode objectTypeNode = this.rete.getOrCreateObjectTypeNode( eachDecl.getObjectType( ) );
+
+            leafNodes.add( objectTypeNode.getOrCreateParameterNode( eachDecl ) );
         }
 
         return leafNodes;
@@ -290,7 +286,9 @@ public class Builder
      * @param conds Set of <code>Conditions</code> to attempt attaching.
      * @param leafNodes The leaf node.
      */
-    void attachConditions( Rule rule, List conds, List leafNodes )
+    private void attachConditions( Rule rule,
+                                   List conds,
+                                   List leafNodes )
     {
         Iterator condIter = conds.iterator( );
         Condition eachCond;
@@ -310,7 +308,6 @@ public class Builder
 
             condIter.remove( );
 
-            leafNodes.remove( tupleSource );
             leafNodes.add( new ConditionNode( rule,
                                               tupleSource,
                                               eachCond ) );
@@ -321,10 +318,8 @@ public class Builder
      * Join two arbitrary leaves in order to satisfy a filter that currently
      * cannot be applied.
      *
-     * @param conds
-     *            The filter conditions remaining.
-     * @param leafNodes
-     *            Available leaf nodes.
+     * @param conds The filter conditions remaining.
+     * @param leafNodes Available leaf nodes.
      *
      * @return <code>true</code> if a join was possible, otherwise,
      *         <code>false</code>.
@@ -339,8 +334,7 @@ public class Builder
      * Join two arbitrary leaves in order to satisfy a filter that currently
      * cannot be applied.
      *
-     * @param leafNodes
-     *            Available leaf nodes.
+     * @param leafNodes Available leaf nodes.
      *
      * @return <code>true</code> if successfully joined some nodes, otherwise
      *         <code>false</code>.
@@ -381,8 +375,7 @@ public class Builder
      * joining <code>JoinNode</code>.
      * </p>
      *
-     * @param leafNodes
-     *            The current attachable leaf nodes of the network.
+     * @param leafNodes The current attachable leaf nodes of the network.
      *
      * @return <code>true</code> if at least one <code>JoinNode</code> was
      *         created, else <code>false</code>.
@@ -429,10 +422,8 @@ public class Builder
     /**
      * Determine if two <code>TupleSource</code> s can be joined.
      *
-     * @param left
-     *            The left tuple source
-     * @param right
-     *            The right tuple source
+     * @param left The left tuple source
+     * @param right The right tuple source
      *
      * @return <code>true</code> if they can be joined (they share at least
      *         one common member declaration), else <code>false</code>.
@@ -456,12 +447,10 @@ public class Builder
 
     /**
      * Locate a <code>TupleSource</code> suitable for attaching the
-     * <code>Condition</code>.
+     * <code>Condition</code> and remove it.
      *
-     * @param condition
-     *            The <code>Condition</code> to attach.
-     * @param sources
-     *            Candidate <code>TupleSources</code>.
+     * @param condition The <code>Condition</code> to attach.
+     * @param sources Candidate <code>TupleSources</code>.
      *
      * @return Matching <code>TupleSource</code> if a suitable one can be
      *         found, else <code>null</code>.
@@ -479,6 +468,7 @@ public class Builder
             if ( matches( condition,
                           eachSource.getTupleDeclarations( ) ) )
             {
+                sourceIter.remove( );
                 return eachSource;
             }
         }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.28 2004-12-04 02:06:23 simon Exp $
+ * $Id: Declaration.java,v 1.29 2004-12-05 01:53:53 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -146,23 +146,23 @@ public class Declaration
     {
         return this.index;
     }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null || getClass( ) != object.getClass( ) )
-        {
-            return false;
-        }
-
-        Declaration other = ( Declaration ) object;
-
-        return this.index == other.index
-               && this.identifier.equals( other.identifier )
-               && this.objectType.equals( other.objectType );
-    }
+//
+//    public boolean equals( Object object )
+//    {
+//        if ( this == object )
+//        {
+//            return true;
+//        }
+//
+//        if ( object == null || getClass( ) != object.getClass( ) )
+//        {
+//            return false;
+//        }
+//
+//        Declaration other = ( Declaration ) object;
+//
+//        return this.index == other.index
+//               && this.identifier.equals( other.identifier )
+//               && this.objectType.equals( other.objectType );
+//    }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.37 2004-12-04 02:27:20 simon Exp $
+ * $Id: JoinNode.java,v 1.38 2004-12-05 01:53:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -95,9 +95,9 @@ class JoinNode extends TupleSource
         this.tupleDeclarations = determineTupleDeclarations( );
         this.commonDeclarations = determineCommonDeclarations( );
 
-        leftInput.setTupleSink( new JoinNodeInput( this,
+        leftInput.addTupleSink( new JoinNodeInput( this,
                                                    JoinNodeInput.LEFT ) );
-        rightInput.setTupleSink( new JoinNodeInput( this,
+        rightInput.addTupleSink( new JoinNodeInput( this,
                                                     JoinNodeInput.RIGHT ) );
     }
 
@@ -226,7 +226,7 @@ class JoinNode extends TupleSource
     public void retractTuples( TupleKey key,
                                WorkingMemoryImpl workingMemory ) throws RetractionException
     {
-        if ( workingMemory.getJoinMemory( this ).retractTuples( key ) )
+        if ( workingMemory.getJoinMemory( this ).removeTuples( key ) )
         {
             propagateRetractTuples( key,
                                     workingMemory );
