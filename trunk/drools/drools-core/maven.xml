@@ -1,5 +1,9 @@
 
-<project default="java:jar" xmlns:jxr="jxr">
+<project default="java:jar" xmlns:jxr="jxr" xmlns:j="jelly:core">
+
+    <goal name="ant:generate-build">
+      <echo>ant build not supported</echo>
+    </goal>
 
     <postGoal name="clover">
       <copy tofile="${basedir}/target/docs/clover/style.css"
@@ -20,6 +24,19 @@
         </fileset>
       </copy>
     </preGoal>
+
+    <goal name="drools:get-deps">
+      <mkdir dir="${basedir}/lib"/>
+
+      <copy todir="${basedir}/lib"
+            flatten="true">
+        <fileset dir="${maven.repo.local}">
+          <j:forEach var="dep" items="${pom.dependencies}">
+            <include name="${dep.projectId}/jars/${dep.jar}"/>  
+          </j:forEach>
+        </fileset>
+      </copy>
+    </goal>
 
     <goal name="drools:examples">
       <attainGoal name="drools:example-escalation"/>
