@@ -1,5 +1,5 @@
 /*
- * $Id: RuleBaseContext.java,v 1.1 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: RuleBaseContext.java,v 1.2 2004-12-16 19:12:38 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,7 @@ public class RuleBaseContext implements Serializable
 {
     private transient Map map = new HashMap( );
 
-    private void readObject(ObjectInputStream stream) throws Exception
+    private void readObject(ObjectInputStream stream)
     {
         map = new HashMap( );
     }    
