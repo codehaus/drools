@@ -207,6 +207,12 @@
         </dependency>
 
         <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+            <url>http://www.junit.org/</url>
+        </dependency>
+
+        <dependency>
             <id>jython</id>
             <version>SNAPSHOT</version>
             <url>http://jython.org/</url>
