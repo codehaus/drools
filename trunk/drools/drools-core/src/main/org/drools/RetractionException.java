@@ -1,9 +1,9 @@
 package org.drools;
 
 /*
- * $Id: RetractionException.java,v 1.10 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: RetractionException.java,v 1.11 2004-12-06 04:51:36 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -22,9 +22,10 @@ package org.drools;
  *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a trademark of The Werken Company.
+ * Company. "drools" is a registered trademark of The Werken Company.
  *
- * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 5. Due credit should be given to The Werken Company.
+ * (http://drools.werken.com/).
  *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -43,9 +44,9 @@ package org.drools;
 /**
  * Indicates an error while retracting a <i>root fact object </i> from a
  * <code>WorkingMemory</code>.
- * 
+ *
  * @see WorkingMemory#retractObject
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 public class RetractionException extends FactException
@@ -57,18 +58,18 @@ public class RetractionException extends FactException
     /**
      * Construct.
      */
-    public RetractionException()
+    public RetractionException( )
     {
         // intentionally left blank
     }
 
     /**
      * Construct with a root cause.
-     * 
+     *
      * @param rootCause
      *            The root cause of this exception.
      */
-    public RetractionException(Throwable rootCause)
+    public RetractionException( Throwable rootCause )
     {
         super( rootCause );
     }

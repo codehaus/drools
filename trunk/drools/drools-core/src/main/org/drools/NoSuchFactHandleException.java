@@ -1,9 +1,9 @@
 package org.drools;
 
 /*
- * $Id: NoSuchFactHandleException.java,v 1.2 2004-11-19 02:12:12 mproctor Exp $
+ * $Id: NoSuchFactHandleException.java,v 1.3 2004-12-06 04:51:36 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -22,9 +22,10 @@ package org.drools;
  *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a trademark of The Werken Company.
+ * Company. "drools" is a registered trademark of The Werken Company.
  *
- * 5. Due credit should be given to The Werken Company. (http://werken.com/)
+ * 5. Due credit should be given to The Werken Company.
+ * (http://drools.werken.com/).
  *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -43,12 +44,12 @@ package org.drools;
 /**
  * Indicates an attempt to retract, modify or retrieve a fact object that is no
  * longer present.
- * 
+ *
  * @see FactHandle
  * @see WorkingMemory#getFactHandle
- * 
+ *
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- * 
+ *
  * @version $Id: NoSuchFactObjectException.java,v 1.3 2003/11/19 21:31:09 bob
  *          Exp $
  */
@@ -65,18 +66,18 @@ public class NoSuchFactHandleException extends FactException
     // Constructors
     // ----------------------------------------------------------------------
 
-    public NoSuchFactHandleException()
+    public NoSuchFactHandleException( )
     {
         this.object = null;
     }
 
     /**
      * Construct.
-     * 
+     *
      * @param object
      *            The invalid fact object.
      */
-    public NoSuchFactHandleException(Object object)
+    public NoSuchFactHandleException( Object object )
     {
         this.object = object;
     }
@@ -87,10 +88,10 @@ public class NoSuchFactHandleException extends FactException
 
     /**
      * Retrieve the invalid Object.
-     * 
+     *
      * @return The invalid fact object.
      */
-    public Object getObject()
+    public Object getObject( )
     {
         return this.object;
     }
@@ -100,7 +101,7 @@ public class NoSuchFactHandleException extends FactException
     /**
      * @see Throwable
      */
-    public String getMessage()
+    public String getMessage( )
     {
         if ( this.object == null )
         {
