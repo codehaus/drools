@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: ExtractorTag.java,v 1.3 2002-08-19 00:38:43 bob Exp $
+ $Id: ExtractorTag.java,v 1.4 2002-09-19 06:58:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -93,7 +93,7 @@ public class ExtractorTag extends SemanticComponentTagSupport
 
         if ( module == null )
         {
-            throw new JellyException( "<action> tag can only be used within a <semantic-module>" );
+            throw new JellyException( "Only allowed within a module" );
         }
 
         Class extractClass = Class.forName( getClassname() );

@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 
-<test:suite xmlns:j="jelly:core" 
+<test:suite trim="on" 
+            xmlns:j="jelly:core" 
             xmlns:test="jelly:junit"
             xmlns="jelly:org.drools.tags.semantics.SemanticsTagLibrary">
 
   <!-- 
-    ||
     ||    <module>
-    ||
     -->
 
   <test:case name="testModule_NoUri">
@@ -32,17 +31,13 @@
   </test:case>
 
   <!-- 
-    ||
     ||    <type>
-    ||
     -->
 
   <test:case name="testObjectType_NoName">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
-
         <type classname="org.drools.spi.ObjectType"/>
-
       </j:catch>
       <test:assert test="${e != null}"> Should have thrown MissingAttributeException: name</test:assert> 
     </module>
@@ -51,9 +46,7 @@
   <test:case name="testObjectType_NoClassname">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
-
         <type name="testType"/>
-
       </j:catch>
       <test:assert test="${e != null}"> Should have thrown MissingAttributeException: classname</test:assert> 
     </module>
@@ -61,20 +54,67 @@
 
   <test:case name="testObjectType_Valid">
     <module uri="http://drools.org/semantics/test" var="semantic_module">
-
       <type name="testType"
             classname="org.drools.semantics.java.ClassObjectType"/>
-
-     <test:assert test="${semantic_module.getObjectTypeNames().contains('testType')}"/>
-
+     <test:assert test="${semantic_module.getObjectTypeNames().contains('testType')}">contains testType</test:assert>
     </module> 
   </test:case>
 
+  <test:case name="testObjectType_NoModule">
+    <j:catch var="e">
+      <type name="testType"
+            classname="org.drools.semantics.java.ClassObjectType"/>
+    </j:catch> 
+    <test:assert 
+          test="${(e != null) and ( e.reason == 'Only allowed within a module' )}">not in module</test:assert>
+  </test:case>
+
   <!-- 
-    ||
-    ||    <extractor>
-    ||
+    ||    <condition>
     -->
+
+  <test:case name="testCondition_NoNamae">
+    <module uri="http://drools.org/semantics/test"> 
+      <j:catch var="e">
+        <condition classname="org.drools.spi.ObjectType"/>
+      </j:catch>
+      <test:assert 
+            test="${(e != null) and (e.missingAttribute == 'name')}">missing-attr: name</test:assert>
+    </module>
+  </test:case>
+
+  <test:case name="testCondition_NoClassname">
+    <module uri="http://drools.org/semantics/test"> 
+      <j:catch var="e">
+        <condition name="testCondition"/>
+      </j:catch>
+      <test:assert 
+            test="${(e != null) and (e.missingAttribute == 'classname')}">missing-attr: classname</test:assert>
+    </module>
+  </test:case>
+
+  <test:case name="testCondition_Valid">
+    <module uri="http://drools.org/semantics/test" var="semantic_module">
+      <condition name="testCondition"
+                 classname="org.drools.semantics.java.ExprCondition"/>
+     <test:assert test="${semantic_module.conditionNames.contains('testCondition')}">contains testCondition</test:assert>
+    </module> 
+  </test:case>
+
+  <test:case name="testCondition_NoModule">
+    <j:catch var="e">
+      <condition name="testCondition"
+                 classname="org.drools.semantics.java.ExprCondition"/>
+    </j:catch> 
+    <test:assert 
+          test="${(e != null) and ( e.reason == 'Only allowed within a module' )}">not in module</test:assert>
+  </test:case>
+
+
+  <!-- 
+    ||    <extractor>
+    -->
+
   <test:case name="testExtractor_NoName">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
@@ -108,10 +148,16 @@
     </module> 
   </test:case>
 
+  <test:case name="testExtractor_NoModule">
+    <j:catch var="e">
+      <extractor name="testExtractor" classname="org.drools.semantics.java.ExprExtractor"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and ( e.reason == 'Only allowed within a module' )}">not in module</test:assert>
+  </test:case>
+
   <!-- 
-    ||
     ||    <consequence>
-    ||
     -->
 
   <test:case name="testConsequence_NoName">
@@ -145,5 +191,14 @@
      <test:assert test="${semantic_module.getConsequenceNames().contains('testConsequence')}"/>
 
     </module> 
+  </test:case>
+
+  <test:case name="testConsequence_NoModule">
+    <j:catch var="e">
+      <consequence name="testConsequence"
+            classname="org.drools.spi.Consequence"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and ( e.reason == 'Only allowed within a module' )}">not in module</test:assert>
   </test:case>
 </test:suite>

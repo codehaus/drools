@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprAnalyzer.java,v 1.4 2002-08-22 05:15:26 bob Exp $
+ $Id: ExprAnalyzer.java,v 1.5 2002-09-19 06:58:00 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExprAnalyzer.java,v 1.4 2002-08-22 05:15:26 bob Exp $
+ *  @version $Id: ExprAnalyzer.java,v 1.5 2002-09-19 06:58:00 bob Exp $
  */
 public class ExprAnalyzer
 {
@@ -131,14 +131,7 @@ public class ExprAnalyzer
 
         treeParser.init();
 
-        if ( ast.getType() == JavaTokenTypes.ASSIGN )
-        {
-            treeParser.assignmentCondition( ast );
-        }
-        else
-        {
-            treeParser.exprCondition( ast );
-        }
+        treeParser.exprCondition( ast );
 
         Set availDeclSet = new HashSet();
 

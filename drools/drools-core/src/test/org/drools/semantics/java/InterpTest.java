@@ -2,6 +2,7 @@ package org.drools.semantics.java;
 
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
+import org.drools.spi.ObjectType;
 
 import bsh.EvalError;
 import bsh.NameSpace;
@@ -81,5 +82,32 @@ public class InterpTest extends TestCase
         {
             // expected and correct
         }
+    }
+
+    public void testSetUpNameSpace() throws Exception
+    {
+        MockTuple tuple = new MockTuple();
+
+        tuple.put( new Declaration( new ClassObjectType( org.drools.DroolsException.class ),
+                                    "a" ),
+                   null );
+
+        tuple.put( new Declaration( new ClassObjectType( org.drools.AssertionException.class ),
+                                    "b" ),
+                   null );
+
+        tuple.put( new Declaration( new ObjectType() { public boolean matches(Object o) { return false; } },
+                                    "c" ),
+                   null );
+
+        NameSpace ns = this.interp.setUpNameSpace( tuple );
+
+        assertSame( org.drools.DroolsException.class,
+                    ns.getClass( "DroolsException" ) );
+
+        assertSame( org.drools.AssertionException.class,
+                    ns.getClass( "AssertionException" ) );
+
+        assertNull( ns.getClass( "RetractionException" ) );
     }
 }
