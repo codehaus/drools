@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.46 2004-11-21 12:33:52 simon Exp $
+ * $Id: Agenda.java,v 1.47 2004-11-29 11:37:44 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -278,22 +278,19 @@ class Agenda
      */
     void clearAgenda()
     {
-        Tuple tuple;
+        AgendaItem eachItem;
 
         //Remove all items in the Agenda and fire a Cancelled event for each
         Iterator iter = this.items.iterator( );
         while ( iter.hasNext( ) )
         {
-            tuple = ( (AgendaItem) iter.next( ) ).getTuple( );
+            eachItem = ( AgendaItem ) iter.next( );
 
             iter.remove( );
 
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
-                                                                           tuple );
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ).getConsequence( ),
+                                                                           eachItem.getTuple( ) );
         }
-
-
-        AgendaItem eachItem;
 
         iter = this.scheduledItems.iterator( );
 
@@ -302,14 +299,12 @@ class Agenda
         {
             eachItem = (AgendaItem) iter.next( );
 
-            tuple = eachItem.getTuple( );
-
             cancelItem( eachItem );
 
             iter.remove( );
 
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( tuple.getRule( ).getConsequence( ),
-                                                                           tuple );
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ).getConsequence( ),
+                                                                           eachItem.getTuple( ) );
         }
     }
 

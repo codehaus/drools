@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprCondition.java,v 1.26 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: ExprCondition.java,v 1.27 2004-11-29 11:37:45 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,24 +41,17 @@ package org.drools.semantics.java;
  *
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
-import org.drools.rule.Rule;
 
 import javax.naming.ConfigurationException;
-
-import java.io.ObjectInputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Java expression semantics <code>Condition</code>.
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
- *
- * @version $Id: ExprCondition.java,v 1.26 2004-11-28 20:01:12 mproctor Exp $
  */
 public class ExprCondition extends Expr implements Condition
 {
@@ -70,7 +63,7 @@ public class ExprCondition extends Expr implements Condition
      * Construct.
      *
      * @param expr The expression.
-     * @param availDecls The available declarations.
+     * @param rule The rule.
      *
      * @throws ConfigurationException If an error occurs while attempting to
      *         perform configuration.
@@ -79,7 +72,6 @@ public class ExprCondition extends Expr implements Condition
     {
         super( expr, rule );
     }
-        
 
     // ------------------------------------------------------------
     //     Instance methods
@@ -108,7 +100,8 @@ public class ExprCondition extends Expr implements Condition
         }
         catch ( net.janino.Scanner.LocatedException e )
         {
-            throw new ConditionException( e, tuple.getRule( ),
+            throw new ConditionException( e,
+                                          getRule( ),
                                           this.getExpression( ) );
         }
         catch (CompilationException e)
@@ -121,7 +114,7 @@ public class ExprCondition extends Expr implements Condition
         catch (Exception e)
         {
             throw new ConditionException( e,
-                                          tuple.getRule( ),
+                                          getRule( ),
                                           this.getExpression( ) );
         }
     }
