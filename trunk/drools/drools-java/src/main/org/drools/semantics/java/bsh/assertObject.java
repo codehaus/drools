@@ -1,7 +1,7 @@
 package org.drools.semantics.java.bsh;
 
 /*
- $Id: assertObject.java,v 1.2 2004-03-22 21:20:55 bob Exp $
+ $Id: assertObject.java,v 1.3 2004-06-20 16:07:10 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -64,11 +64,10 @@ public class assertObject
     /** Invoke the command.
      *
      *  @param interp The bsh interpreter.
-     *  @param namespace The bsh namespace.
+     *  @param callstack the callstack.
      *  @param object The object to assert.
      *
      *  @throws EvalError If a bsh evaluation error occurs.
-     *  @throws AssertionException If there is a RETE fact assertion exception.
      */
     public static void invoke(Interpreter interp,
                               CallStack callstack,
