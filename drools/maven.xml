@@ -6,13 +6,17 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <!--
-    <goal name="damagecontrol">
-      <attainGoal name="multiproject:clean"/>
-      ${pom.getPluginContext( "maven-multiproject-plugin" ).setVariable( "goal", "jar:jar" )}
+    <postGoal name="jar:jar">
+      <echo>basedir: ${basedir}</echo>
+      <copy todir="${basedir}/../target/" 
+            file="${maven.build.dir}/${maven.final.name}.jar"/>
+    </postGoal>
+
+    <goal name="jar-all">
+      <mkdir dir="${basedir}/target"/>
+      <j:set var="goal" value="jar:jar"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
-    -->
 
     <goal name="damagecontrol">
       <ant:delete includeEmptyDirs="true" verbose="true">
@@ -49,14 +53,28 @@
         <ant:pathelement path="drools-groovy/src/main"/>
         <ant:pathelement path="drools-python/src/main"/>
         <ant:pathelement path="drools-smftest/src/main"/>
-        <ant:pathelement path="drools-examples/src/main"/>
       </ant:path>
 
       <maven:addPath id="maven.compile.src.set"
                   refid="uber.compile.src.set"/>
+
+      <ant:path id="extra.dependency.path">
+        <fileset dir="lib/">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="target/">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="target/dependencies/">
+          <include name="*.jar"/>
+        </fileset>
+      </ant:path>
+
+      <maven:addPath id="maven.dependency.classpath"
+                  refid="extra.dependency.path"/>
     </goal>
 
-    <goal name="javadoc-all">
+    <goal name="javadoc-all" prereqs="jar-all,drools:get-deps">
       <attainGoal name="tweak-compile.src.set"/>
       <attainGoal name="javadoc"/>
       <ant:echo level="info" message="Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
@@ -168,10 +186,15 @@
 		<!--
 			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 		-->
-    <goal name="drools-dist" prereqs="javadoc-all">
-      <copy todir="./lib" flatten="true">
-        <fileset dir="." includes="**/drools-*.jar" />
-      </copy>
+    <goal name="drools:dist-prepare" prereqs="clean-all">
+      <ant:mkdir dir="target/dist/"/>
+    </goal>
+
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
+      <!-- intentionally left blank -->
+    </goal>
+
+    <goal name="drools:dist-bin" prereqs="javadoc-all">
 
       <zip destfile="target/drools-${pom.currentVersion}.zip">
     		 <zipfileset dir="target/docs" prefix="docs" />
@@ -182,20 +205,14 @@
     		 <tarfileset dir="target/docs" prefix="docs" />
     		 <tarfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </tar>
-		</goal>
+    </goal>
 
 
 		<!--
 			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
 			and all dependencies
 		-->
-    <goal name="drools-deps-dist" prereqs="javadoc-all">
-      <copy todir="./lib" flatten="true">
-        <fileset dir="." includes="**/drools-*.jar" />
-      </copy>
-
-      <j:set var="goal" value="get-deps"/>
-      <attainGoal name="multiproject:goal"/>
+    <goal name="drools:dist-bin-withdeps" prereqs="javadoc-all">
 
       <zip destfile="target/drools-deps-${pom.currentVersion}.zip">
     		 <zipfileset dir="target/docs" prefix="docs" />
@@ -216,7 +233,7 @@
 		<!--
 			creates .zip and .tar.gz of drools source
 		-->
-    <goal name="drools-src-dist">
+    <goal name="drools:dist-src" prereqs="javadoc-all">
       <zip destfile="target/drools-src-${pom.currentVersion}.zip"
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="." />
@@ -225,6 +242,12 @@
            compression="gzip"
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="." />
+    </goal>
+
+    <goal name="drools:get-deps">
+      <mkdir dir="${basedir}/target/dependencies/"/>
+      <j:set var="goal" value="get-deps"/>
+      <attainGoal name="multiproject:goal"/>
     </goal>
 </project>
 
