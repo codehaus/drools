@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: TestWorkingMemoryEventListener.java,v 1.1 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: TestWorkingMemoryEventListener.java,v 1.2 2004-11-15 23:06:07 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ import java.io.Serializable;
 import org.drools.event.*;
 
 public class TestWorkingMemoryEventListener
-     implements WorkingMemoryEventListener, Serializable
+     implements WorkingMemoryEventListener, Serializable     
 {
 
     public int asserted;

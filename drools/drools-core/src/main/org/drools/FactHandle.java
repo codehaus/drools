@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: FactHandle.java,v 1.9 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: FactHandle.java,v 1.10 2004-11-15 23:06:07 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -47,7 +47,7 @@ package org.drools;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: FactHandle.java,v 1.9 2004-09-17 00:14:06 mproctor Exp $
+ * @version $Id: FactHandle.java,v 1.10 2004-11-15 23:06:07 mproctor Exp $
  */
 
 import java.io.Serializable;
@@ -60,4 +60,6 @@ public interface FactHandle extends Serializable
      * @return The external string form.
      */
     String toExternalForm();
+    
+    public long getId();
 }

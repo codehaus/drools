@@ -12,6 +12,10 @@ public class NoSuchFactObjectExceptionTest extends TestCase
             {
                 return "cheese";
             }
+            public long getId()
+            {
+                return 1;
+            }            
         };
 
         NoSuchFactObjectException e = new NoSuchFactObjectException( handle );

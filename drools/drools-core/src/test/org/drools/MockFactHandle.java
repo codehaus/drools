@@ -28,4 +28,9 @@ public class MockFactHandle implements FactHandle
 
         return false;
     }
+    
+    public long getId()
+    {
+        return this.id;
+    }
 }

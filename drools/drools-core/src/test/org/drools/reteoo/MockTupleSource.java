@@ -10,7 +10,7 @@ public class MockTupleSource extends TupleSource
     private Set declarations;
 
     public MockTupleSource()
-    {
+    {        
         this.declarations = new HashSet( );
     }
 
