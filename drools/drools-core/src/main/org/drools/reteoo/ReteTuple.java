@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.27 2004-09-11 13:00:08 mproctor Exp $
+ $Id: ReteTuple.java,v 1.28 2004-09-16 16:34:57 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -65,7 +65,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.27 2004-09-11 13:00:08 mproctor Exp $
+ *  @version $Id: ReteTuple.java,v 1.28 2004-09-16 16:34:57 mproctor Exp $
  */
 class ReteTuple
     implements Tuple,
@@ -125,9 +125,9 @@ class ReteTuple
         this.columns        = new HashMap( that.columns );
         this.objectToHandle = new HashMap( that.objectToHandle );
 
-        this.mostRecentFact = (FactHandleImpl) getMostRecentFact();
-        this.leastRecentFact = (FactHandleImpl) getLeastRecentFact();
-        this.conditionTimeStamps = getConditionTimeStamps();      
+        this.mostRecentFact = (FactHandleImpl) that.getMostRecentFact();
+        this.leastRecentFact = (FactHandleImpl) that.getLeastRecentFact();
+        this.conditionTimeStamps = that.getConditionTimeStamps();      
     }
 
     /** Construct a simple 1-column tuple.
