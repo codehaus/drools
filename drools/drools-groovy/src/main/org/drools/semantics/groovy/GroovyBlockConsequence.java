@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequence.java,v 1.1 2004-12-08 22:46:06 simon Exp $
+ * $Id: GroovyBlockConsequence.java,v 1.2 2004-12-29 16:13:08 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -97,7 +97,7 @@ public class GroovyBlockConsequence extends GroovyInterp implements Consequence
     public void invoke( Tuple tuple,
                         WorkingMemory workingMemory ) throws ConsequenceException
     {
-        Binding dict = setUpDictionary( tuple );
+        Binding dict = setUpDictionary( tuple, getRule( ).getParameterDeclarations( ).iterator( ) );
 
         dict.setVariable( "__drools_working_memory", workingMemory );
         Map appData = workingMemory.getApplicationDataMap( );

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyCondition.java,v 1.3 2004-12-08 23:23:19 simon Exp $
+ * $Id: GroovyCondition.java,v 1.4 2004-12-29 16:13:08 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,9 @@ package org.drools.semantics.groovy;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import groovy.lang.Binding;
 import org.drools.rule.Declaration;
@@ -94,7 +97,7 @@ public class GroovyCondition extends GroovyInterp implements Condition
      */
     public Object evaluate( Tuple tuple )
     {
-        Binding dict = setUpDictionary( tuple );
+        Binding dict = setUpDictionary( tuple, declarationIterator( ) );
 
         return evaluate( dict );
     }
@@ -179,4 +182,38 @@ public class GroovyCondition extends GroovyInterp implements Condition
 
         return this.getText().equals( ( ( GroovyInterp ) object ).getText( ) );
     }
+
+    /**
+     * GroovyInterp needs a declaration iterator.
+     * BlockConsequence uses the Iterator from Set.
+     * So we emulate Iterator here so GroovyInterp can be used for both.
+     * @return
+     */
+    public Iterator declarationIterator( ) 
+    {
+        return new Iterator()
+        {
+            private int index=0;
+            
+            public void remove()
+            {
+                //null;
+            }
+            
+            public boolean hasNext()
+            {
+                return (index < requiredDeclarations.length);
+            }            
+            
+            public Object next()
+            {
+                if ( !hasNext( ) )
+                {
+                    throw new NoSuchElementException( );
+                }
+                return requiredDeclarations[this.index++];
+            }
+            
+        };
+    }    
 }
