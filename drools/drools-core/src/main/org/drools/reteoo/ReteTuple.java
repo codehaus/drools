@@ -65,15 +65,6 @@ class ReteTuple
                       value );
     }
 
-    ReteTuple(Declaration declaration,
-              FactHandle handle)
-    {
-        this();
-        putKeyColumn( declaration,
-                      handle,
-                      null );
-    }
-
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
@@ -183,18 +174,5 @@ class ReteTuple
     public FactHandle getFactHandleForObject(Object object)
     {
         return this.keyColumns.getRootFactHandle( object );
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[ReteTuple: key=" + this.keyColumns + "; others=" + this.otherColumns + "]";
     }
 }

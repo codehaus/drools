@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collection;
 import java.util.Iterator;
 
 /** A composite key to match tuples.
@@ -25,7 +26,6 @@ class TupleKey
     private Map columns;
 
     /** Root fact object handles. */
-    //private Set rootFactHandles;
     private Map rootFactHandles;
 
     // ------------------------------------------------------------
@@ -149,51 +149,6 @@ class TupleKey
         return this.columns.keySet();
     }
 
-    /** Determine if this key is a super-set of another key.
-     *  
-     *  @param that The key to test for subset.
-     *
-     *  @return <code>true</code> if this key is a super-set of
-     *          the specified parameter key, otherwise <code>false</code>.
-     */
-    /*
-    public boolean containsAll(TupleKey that)
-    {
-        Iterator    declIter = that.columns.keySet().iterator(); 
-        Declaration eachDecl = null;
-
-        Object thisValue = null;
-        Object thatValue = null;
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-
-            thisValue = this.get( eachDecl );
-            thatValue = that.get( eachDecl );
-
-            if ( thisValue == null
-                 && 
-                 thatValue == null )
-            {
-                continue;
-            }
-            else if (thisValue == null
-                     ||
-                     thatValue == null )
-            {
-                return false;
-            }
-            else if ( ! thisValue.equals( thatValue ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    */
-
     public boolean containsAll(TupleKey that)
     {
         return this.rootFactHandles.values().containsAll( that.rootFactHandles.values() );
@@ -212,9 +167,21 @@ class TupleKey
      */
     public boolean equals(Object thatObj)
     {
-        TupleKey that = (TupleKey) thatObj;
+        if ( thatObj instanceof TupleKey )
+        {
+            TupleKey that = (TupleKey) thatObj;
 
-        return this.columns.equals( that.columns );
+            Collection thisKeys = this.rootFactHandles.values();
+            Collection thatKeys = that.rootFactHandles.values();
+
+            boolean result = ( thisKeys.size() == thatKeys.size()
+                               &&
+                               thisKeys.containsAll( thatKeys ) );
+
+            return result;
+        }
+        
+        return false;
     }
 
     /** Retrieve the hash-code for this key.
@@ -223,17 +190,6 @@ class TupleKey
      */
     public int hashCode()
     {
-        return this.columns.hashCode();
-    }
-
-    /** Produce a debug string.
-     *
-     *  @return The debug string.
-     */
-    public String toString()
-    {
-        return "[TupleKey: columns=" + this.columns
-            + "; handles=" + this.rootFactHandles
-            + "]";
+        return new HashSet( this.rootFactHandles.values() ).hashCode();
     }
 }
