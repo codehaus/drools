@@ -3,9 +3,9 @@ package org.drools.reteoo.impl;
 
 import org.drools.AssertionException;
 import org.drools.rule.Declaration;
-import org.drools.spi.FilterCondition;
-import org.drools.spi.TrueFilterCondition;
-import org.drools.spi.FalseFilterCondition;
+import org.drools.spi.Condition;
+import org.drools.spi.TrueCondition;
+import org.drools.spi.FalseCondition;
 import org.drools.semantic.java.JavaObjectType;
 
 import junit.framework.TestCase;
@@ -13,11 +13,11 @@ import junit.framework.TestCase;
 import java.util.List;
 import java.util.Set;
 
-public class FilterNodeTest extends TestCase
+public class ConditionNodeImplTest extends TestCase
 {
     private ReteTuple tuple;
 
-    public FilterNodeTest(String name)
+    public ConditionNodeImplTest(String name)
     {
         super( name );
     }
@@ -31,13 +31,13 @@ public class FilterNodeTest extends TestCase
     {
     }
 
-    /** If a FilterCondition allows an incoming Object, then
+    /** If a condition allows an incoming Object, then
      *  the Object MUST be propagated.
      */
     public void testAllowed()
     {
-        FilterNodeImpl node = new FilterNodeImpl( null,
-                                                  new TrueFilterCondition() );
+        ConditionNodeImpl node = new ConditionNodeImpl( null,
+                                                  new TrueCondition() );
                                          
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
@@ -66,13 +66,13 @@ public class FilterNodeTest extends TestCase
         }
     }
 
-    /** If a FilterCondition does not allow an incoming Object,
+    /** If a Condition does not allow an incoming Object,
      *  then the object MUST NOT be propagated.
      */
     public void testNotAllowed()
     {
-        FilterNodeImpl node = new FilterNodeImpl( null,
-                                                  new FalseFilterCondition() );
+        ConditionNodeImpl node = new ConditionNodeImpl( null,
+                                                  new FalseCondition() );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
@@ -107,10 +107,10 @@ public class FilterNodeTest extends TestCase
         ParameterNodeImpl paramNode = new ParameterNodeImpl( null,
                                                              decl );
 
-        FilterNodeImpl filterNode = new FilterNodeImpl( paramNode,
+        ConditionNodeImpl condNode = new ConditionNodeImpl( paramNode,
                                                         null );
 
-        Set decls = filterNode.getTupleDeclarations();
+        Set decls = condNode.getTupleDeclarations();
 
         assertEquals( 1,
                       decls.size() );

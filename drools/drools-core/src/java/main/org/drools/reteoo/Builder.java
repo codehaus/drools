@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.15 2002-08-01 19:27:10 bob Exp $
+ $Id: Builder.java,v 1.16 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package org.drools.reteoo;
 import org.drools.reteoo.impl.ReteImpl;
 import org.drools.reteoo.impl.ObjectTypeNodeImpl;
 import org.drools.reteoo.impl.ParameterNodeImpl;
-import org.drools.reteoo.impl.FilterNodeImpl;
+import org.drools.reteoo.impl.ConditionNodeImpl;
 import org.drools.reteoo.impl.JoinNodeImpl;
 import org.drools.reteoo.impl.FactExtractionNodeImpl;
 import org.drools.reteoo.impl.TerminalNodeImpl;
@@ -58,7 +58,6 @@ import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 import org.drools.rule.FactExtraction;
 import org.drools.spi.ObjectType;
-import org.drools.spi.FilterCondition;
 import org.drools.spi.Condition;
 
 import java.util.Set;
@@ -71,7 +70,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @task Make joinForFilter actually be intelligent enough to
+ *  @task Make joinForCondition actually be intelligent enough to
  *        build optimal joins.  Currently using forgy's original
  *        description of 2-input nodes, which I feel (but don't
  *        know for sure, is sub-optimal.
@@ -126,7 +125,7 @@ public class Builder
     public void addRule(Rule rule) throws ReteConstructionException
     {
         Set factExtracts = new HashSet( rule.getFactExtractions() );
-        Set filterConds  = new HashSet( rule.getFilterConditions() );
+        Set conds        = new HashSet( rule.getConditions() );
 
         Set leafNodes = null;
 
@@ -141,10 +140,10 @@ public class Builder
             performedJoin   = false;
             attachedExtract = false;
 
-            if ( ! filterConds.isEmpty() )
+            if ( ! conds.isEmpty() )
             {
-                attachFilterConditions( filterConds,
-                                        leafNodes );
+                attachConditions( conds,
+                                  leafNodes );
             }
 
             attachedExtract = attachFactExtractions( factExtracts,
@@ -156,10 +155,10 @@ public class Builder
                  &&
                  ! attachedExtract
                  &&
-                 ! filterConds.isEmpty())
+                 ! conds.isEmpty())
             {
-                joinForFilter( filterConds,
-                               leafNodes );
+                joinForCondition( conds,
+                                  leafNodes );
             }
         }
         while ( ! leafNodes.isEmpty() 
@@ -216,34 +215,34 @@ public class Builder
     }
     
 
-    /** Create and attach <code>FilterCondition</code>s to the network.
+    /** Create and attach <code>Condition</code>s to the network.
      *
      *  <p>
      *  It may not be possible to satisfy all filder conditions
      *  on the first pass.  This method removes satisfied conditions
-     *  from the <code>filterCond</code> parameter, and leaves
+     *  from the <code>Condition</code> parameter, and leaves
      *  unsatisfied ones in the <code>Set</code>.
      *  </p>
      *
-     *  @param filterConds Set of <code>FilterConditions</code>
+     *  @param conds Set of <code>Conditions</code>
      *         to attempt attaching.
      *  @param leafNodes The current attachable leaf nodes
      *         of the network.
      */
-    protected void attachFilterConditions(Set filterConds,
-                                          Set leafNodes)
+    protected void attachConditions(Set conds,
+                                    Set leafNodes)
     {
-        Iterator        condIter    = filterConds.iterator();
-        FilterCondition eachCond    = null;
+        Iterator        condIter    = conds.iterator();
+        Condition       eachCond    = null;
         TupleSourceImpl tupleSource = null;
 
-        FilterNode filterNode = null;
+        ConditionNode conditionNode = null;
 
         while ( condIter.hasNext() )
         {
-            eachCond = (FilterCondition) condIter.next();
+            eachCond = (Condition) condIter.next();
 
-            tupleSource = findMatchingTupleSourceForFiltering( eachCond,
+            tupleSource = findMatchingTupleSourceForCondition( eachCond,
                                                                leafNodes );
 
             if ( tupleSource == null )
@@ -253,25 +252,25 @@ public class Builder
 
             condIter.remove();
 
-            filterNode = new FilterNodeImpl( tupleSource,
-                                             eachCond );
+            conditionNode = new ConditionNodeImpl( tupleSource,
+                                                   eachCond );
 
             leafNodes.remove( tupleSource );
-            leafNodes.add( filterNode );
+            leafNodes.add( conditionNode );
         }
     }
 
     /** Join two arbitrary leaves in order to satisfy a filter
      *  that currently cannot be applied.
      *
-     *  @param filterConds The filter conditions remaining.
+     *  @param conds The filter conditions remaining.
      *  @param leafNodes Available leaf nodes.
      *
      *  @return <code>true</code> if a join was possible,
      *          otherwise, <code>false</code>.
      */
-    protected boolean joinForFilter(Set filterConds,
-                                    Set leafNodes)
+    protected boolean joinForCondition(Set conds,
+                                       Set leafNodes)
     {
         Iterator leafIter = leafNodes.iterator();
 
@@ -456,7 +455,7 @@ public class Builder
     }
 
     /** Locate a <code>TupleSource</code> suitable for attaching
-     *  the <code>FilterCondition</code>.
+     *  the <code>Condition</code>.
      *
      *  @param condition The <code>Condition</code> to attach.
      *  @param sources Candidate <code>TupleSources</code>.
@@ -464,8 +463,8 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSourceImpl findMatchingTupleSourceForFiltering(FilterCondition condition,
-                                                              Set sources)
+    protected TupleSourceImpl findMatchingTupleSourceForCondition(Condition condition,
+                                                                  Set sources)
     {
         Iterator        sourceIter = sources.iterator();
         TupleSourceImpl eachSource = null;

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FilterException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
+ $Id: ConditionException.java,v 1.1 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,11 +50,11 @@ import org.drools.AssertionException;
 
 /** Indicates an error while applying a <code>FilterCondition<code>.
  *
- *  @see FilterCondition
+ *  @see Condition
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FilterException extends AssertionException
+public class ConditionException extends AssertionException
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -62,7 +62,7 @@ public class FilterException extends AssertionException
 
     /** Construct.
      */
-    public FilterException()
+    public ConditionException()
     {
         // intentionally left blank
     }
@@ -71,7 +71,7 @@ public class FilterException extends AssertionException
      *
      *  @param rootCause The root cause of this exception.
      */
-    public FilterException(Throwable rootCause)
+    public ConditionException(Throwable rootCause)
     {
         super( rootCause );
     }

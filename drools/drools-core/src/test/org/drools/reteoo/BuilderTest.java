@@ -7,7 +7,7 @@ import org.drools.rule.Declaration;
 import org.drools.rule.FactExtraction;
 import org.drools.rule.DeclarationAlreadyCompleteException;
 import org.drools.spi.ObjectType;
-import org.drools.spi.InstrumentedFilterCondition;
+import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedFactExtractor;
 import org.drools.semantic.java.JavaObjectType;
 
@@ -104,22 +104,22 @@ public class BuilderTest extends TestCase
     {
         Set decls = new HashSet();
 
-        InstrumentedFilterCondition filterCond = new InstrumentedFilterCondition();
+        InstrumentedCondition cond = new InstrumentedCondition();
 
-        filterCond.addDeclaration( this.stringDecl );
-        filterCond.addDeclaration( this.objectDecl );
+        cond.addDeclaration( this.stringDecl );
+        cond.addDeclaration( this.objectDecl );
 
-        assertTrue( ! this.builder.matches( filterCond,
+        assertTrue( ! this.builder.matches( cond,
                                             decls ) );
 
         decls.add( this.stringDecl );
 
-        assertTrue( ! this.builder.matches( filterCond,
+        assertTrue( ! this.builder.matches( cond,
                                             decls ) );
 
         decls.add( this.objectDecl );
 
-        assertTrue( this.builder.matches( filterCond,
+        assertTrue( this.builder.matches( cond,
                                           decls ) );
     }
 
@@ -194,7 +194,7 @@ public class BuilderTest extends TestCase
                     found );
     }
 
-    public void testFindMatchingTupleSourceForFiltering()
+    public void testFindMatchingTupleSourceForCondition()
     {
         Set sources = new HashSet();
 
@@ -209,13 +209,13 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        InstrumentedFilterCondition filterCond = new InstrumentedFilterCondition();
+        InstrumentedCondition cond = new InstrumentedCondition();
 
-        filterCond.addDeclaration( this.stringDecl );
+        cond.addDeclaration( this.stringDecl );
 
         TupleSource found = null;
 
-        found = this.builder.findMatchingTupleSourceForFiltering( filterCond,
+        found = this.builder.findMatchingTupleSourceForCondition( cond,
                                                                   sources );
 
         assertNotNull( found );
@@ -232,7 +232,7 @@ public class BuilderTest extends TestCase
 
         source.addTupleDeclaration( this.objectDecl );
 
-        found = this.builder.findMatchingTupleSourceForFiltering( filterCond,
+        found = this.builder.findMatchingTupleSourceForCondition( cond,
                                                                   sources );
 
         assertNull( found );
@@ -240,7 +240,7 @@ public class BuilderTest extends TestCase
         // ----------------------------------------
         // ----------------------------------------
 
-        filterCond.addDeclaration( this.objectDecl );
+        cond.addDeclaration( this.objectDecl );
 
         sources.clear();
 
@@ -251,7 +251,7 @@ public class BuilderTest extends TestCase
 
         sources.add( source );
 
-        found = this.builder.findMatchingTupleSourceForFiltering( filterCond,
+        found = this.builder.findMatchingTupleSourceForCondition( cond,
                                                                   sources );
 
         assertNotNull( found );

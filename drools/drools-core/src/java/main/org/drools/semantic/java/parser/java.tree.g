@@ -286,7 +286,7 @@ assignmentCondition
 			expr)
 	;	
 
-filterCondition
+exprCondition
 	:
 		expr
 	;

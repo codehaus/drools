@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: FilterNodeImpl.java,v 1.3 2002-07-30 19:52:56 bob Exp $
+ $Id: ConditionNodeImpl.java,v 1.1 2002-08-01 20:38:46 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,8 +50,8 @@ import org.drools.WorkingMemory;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
-import org.drools.reteoo.FilterNode;
-import org.drools.spi.FilterCondition;
+import org.drools.reteoo.ConditionNode;
+import org.drools.spi.Condition;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -60,25 +60,25 @@ import java.util.Iterator;
 /** Node which filters <code>ReteTuple</code>s.
  *
  *  <p>
- *  Using a semantic <code>FilterCondition</code>, this node
+ *  Using a semantic <code>Condition</code>, this node
  *  may allow or disallow <code>Tuples</code> to proceed
  *  further through the Rete-OO network.
  *  </p>
  *
- *  @see FilterNode
- *  @see FilterCondition
+ *  @see ConditionNode
+ *  @see Condition
  *  @see ReteTuple
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FilterNodeImpl extends TupleSourceImpl implements FilterNode, TupleSinkImpl
+public class ConditionNodeImpl extends TupleSourceImpl implements ConditionNode, TupleSinkImpl
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The semantic <code>FilterCondition</code>. */
-    private FilterCondition filterCondition;
+    /** The semantic <code>Condition</code>. */
+    private Condition condition;
 
     /** The source of incoming <code>Tuples</code>. */
     private TupleSourceImpl tupleSource;
@@ -90,13 +90,13 @@ public class FilterNodeImpl extends TupleSourceImpl implements FilterNode, Tuple
     /** Construct.
      *
      *  @param tupleSource The source of incoming <code>Tuples</code>.
-     *  @param filterCondition The semantic <code>FilterCondition</code>.
+     *  @param condition The semantic <code>Condition</code>.
      */
-    public FilterNodeImpl(TupleSourceImpl tupleSource,
-                          FilterCondition filterCondition)
+    public ConditionNodeImpl(TupleSourceImpl tupleSource,
+                             Condition condition)
     {
-        this.filterCondition = filterCondition;
-        this.tupleSource     = tupleSource;
+        this.condition   = condition;
+        this.tupleSource = tupleSource;
 
         if ( tupleSource != null )
         {
@@ -108,14 +108,14 @@ public class FilterNodeImpl extends TupleSourceImpl implements FilterNode, Tuple
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>FilterCondition</code> associated
+    /** Retrieve the <code>Condition</code> associated
      *  with this node.
      *
-     *  @return The <code>FilterCondition</code>.
+     *  @return The <code>Condition</code>.
      */
-    public FilterCondition getFilterCondition()
+    public Condition getCondition()
     {
-        return this.filterCondition;
+        return this.condition;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -149,7 +149,7 @@ public class FilterNodeImpl extends TupleSourceImpl implements FilterNode, Tuple
                             ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
-        if ( getFilterCondition().isAllowed( tuple ) )
+        if ( getCondition().isAllowed( tuple ) )
         {
             propagateAssertTuple( tuple,
                                   workingMemory );
@@ -193,7 +193,7 @@ public class FilterNodeImpl extends TupleSourceImpl implements FilterNode, Tuple
         {
             eachTuple = (ReteTuple) tupleIter.next();
 
-            if ( ! getFilterCondition().isAllowed( eachTuple ) )
+            if ( ! getCondition().isAllowed( eachTuple ) )
             {
                 tupleIter.remove();
                 retractedKeys.add( eachTuple.getKey() );
@@ -218,6 +218,6 @@ public class FilterNodeImpl extends TupleSourceImpl implements FilterNode, Tuple
 
     public String toString()
     {
-        return "[FilterNodeImpl: filterCond=" + this.filterCondition + "]";
+        return "[ConditionNodeImpl: cond=" + this.condition + "]";
     }
 }

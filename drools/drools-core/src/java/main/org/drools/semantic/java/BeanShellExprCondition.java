@@ -2,8 +2,8 @@
 package org.drools.semantic.java;
 
 import org.drools.rule.Declaration;
-import org.drools.spi.FilterCondition;
-import org.drools.spi.FilterException;
+import org.drools.spi.Condition;
+import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
 
 import bsh.Interpreter;
@@ -12,15 +12,15 @@ import bsh.EvalError;
 import java.util.Set;
 import java.util.Iterator;
 
-/** {@link FilterCondition} using <a href="http://beanshell.org/">BeanShell</a>
+/** {@link ConditionException} using <a href="http://beanshell.org/">BeanShell</a>
  *  for evaluation.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
-public class BeanShellFilterCondition implements FilterCondition
+public class BeanShellExprCondition implements Condition
 {
     /** The BeanShell expression. */
-    private String        filterExpr;
+    private String        condExpr;
 
     /** Variables referenced by the expression. */
     private Declaration[] requiredTupleMembers;
@@ -36,13 +36,13 @@ public class BeanShellFilterCondition implements FilterCondition
      *  will be thrown at run-time.
      *  </p>
      *
-     *  @param filterExpr The filtering expression.
+     *  @param condExpr The condition expression.
      *  @param requiredTupleMembers Set of variables referenced.
      */
-    public BeanShellFilterCondition(String filterExpr,
-                                    Set requiredTupleMembers)
+    public BeanShellExprCondition(String condExpr,
+                                  Set requiredTupleMembers)
     {
-        this.filterExpr           = filterExpr;
+        this.condExpr           = condExpr;
         this.requiredTupleMembers = new Declaration[ requiredTupleMembers.size() ];
 
         Iterator declIter = requiredTupleMembers.iterator();
@@ -60,7 +60,7 @@ public class BeanShellFilterCondition implements FilterCondition
 
     public String toString()
     {
-        return this.filterExpr;
+        return this.condExpr;
     }
     
     /** Initialize the BeanShell interpreter. 
@@ -70,13 +70,13 @@ public class BeanShellFilterCondition implements FilterCondition
         this.interp = new Interpreter();
     }
 
-    /** Retrieve the BeanShell filtering expression.
+    /** Retrieve the BeanShell condition expression.
      *
-     *  @return The filtering expression.
+     *  @return The condition expression.
      */
-    public String getFilterExpr()
+    public String getCondExpr()
     {
-        return this.filterExpr;
+        return this.condExpr;
     }
 
     public Declaration[] getRequiredTupleMembers()
@@ -84,9 +84,9 @@ public class BeanShellFilterCondition implements FilterCondition
         return this.requiredTupleMembers;
     }
 
-    public boolean isAllowed(Tuple tuple) throws FilterException
+    public boolean isAllowed(Tuple tuple) throws ConditionException
     {
-        System.err.println( this.filterExpr + " --> " + tuple );
+        System.err.println( this.condExpr + " --> " + tuple );
 
         boolean result = false;
 
@@ -95,7 +95,7 @@ public class BeanShellFilterCondition implements FilterCondition
             BeanShellUtil.setUpInterpreter( this.interp,
                                             tuple );
 
-            Object resultObj = this.interp.eval( getFilterExpr() );
+            Object resultObj = this.interp.eval( getCondExpr() );
             
             if ( resultObj instanceof Boolean )
             {
@@ -121,7 +121,7 @@ public class BeanShellFilterCondition implements FilterCondition
         catch (EvalError e)
         {
             initializeInterpreter();
-            throw new FilterException( e );
+            throw new ConditionException( e );
         }
 
         return result;
