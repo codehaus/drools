@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.51 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: Rule.java,v 1.52 2004-12-07 13:58:50 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,11 +43,13 @@ package org.drools.rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +75,7 @@ public class Rule
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
-    
+
     private RuleSet ruleSet;
 
     /** Name of the rule. */
@@ -104,7 +106,7 @@ public class Rule
     private boolean noLoop;
 
     private Set imports;
-    
+
     private Map applicationData;
 
     // ------------------------------------------------------------
@@ -122,8 +124,8 @@ public class Rule
         this.name = name;
         this.ruleSet = ruleSet;
         this.imports = Collections.EMPTY_SET;
-    }    
-    
+    }
+
     /**
      * Construct.
      *
@@ -244,7 +246,7 @@ public class Rule
     {
         return this.ruleSet;
     }
-    
+
     /**
      * Retrieve the name of this rule.
      *
@@ -418,6 +420,24 @@ public class Rule
         return this.imports;
     }
 
+    public Set getImports( Class clazz )
+    {
+        Set imports = new HashSet();
+
+        Iterator i = this.imports.iterator();
+        ImportEntry importEntry;
+        while ( i.hasNext() )
+        {
+            importEntry = ( ImportEntry ) i.next();
+            if ( clazz.isInstance( importEntry ) )
+            {
+                imports.add( importEntry.getImportEntry() );
+            }
+        }
+
+        return imports;
+    }
+
     public void setApplicationData(Map applicationData)
     {
         this.applicationData = applicationData;
@@ -426,7 +446,7 @@ public class Rule
     public Map getApplicationData()
     {
         return this.applicationData;
-    }    
+    }
 
     public String dump(String indent)
     {
