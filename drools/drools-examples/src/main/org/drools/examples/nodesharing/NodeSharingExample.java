@@ -1,7 +1,7 @@
 package org.drools.examples.nodesharing;
 
 /*
-* $Id: NodeSharingExample.java,v 1.1 2004-12-09 00:22:48 simon Exp $
+* $Id: NodeSharingExample.java,v 1.2 2004-12-09 00:37:15 simon Exp $
 *
 * Copyright 2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -41,6 +41,7 @@ package org.drools.examples.nodesharing;
 */
 
 import org.drools.RuleBase;
+import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
 import org.drools.reteoo.Dumper;
 
@@ -58,5 +59,14 @@ public class NodeSharingExample
         System.out.println( "DUMP TO DOT" );
         System.out.println( "---------" );
         dumper.dumpReteToDot( System.out );
+
+        WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
+
+        for ( int i = 0; i < 10; i++ )
+        {
+            workingMemory.assertObject( new Integer( i ) );
+        }
+
+        workingMemory.fireAllRules( );
     }
 }
