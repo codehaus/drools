@@ -165,23 +165,25 @@
             <fileset dir="${maven.src.dir}/java/main"/>
         </copy>
 
-        <java classname="antlr.Tool" fork="true">
-            <classpath>
-                <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
-            </classpath>
-            <arg value="-o"/>
-            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/"/>
-            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.g"/>
-        </java>
+        <antcall target="processAntlrGrammars"/>
 
-        <java classname="antlr.Tool" fork="true">
-            <classpath>
+    </target>
+
+    <target name="processAntlrGrammars">
+
+        <antlr target="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.g">
+            <classpath id="antlr.tools">
                 <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
             </classpath>
-            <arg value="-o"/>
-            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/"/>
-            <arg value="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.tree.g"/>
-        </java>
+        </antlr>
+
+        <antlr target="${maven.prepareSourceDirectory}/org/drools/semantic/java/parser/java.tree.g">
+            <classpath refid="antlr.tools"/>
+	<!--
+                <pathelement location="${lib.repo}/antlrall-2.7.1.jar"/>
+            </classpath>
+	-->
+        </antlr>
 
     </target>
 
