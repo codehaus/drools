@@ -1,6 +1,6 @@
 package org.drools.util;
 /*
-* $Id: PrimitiveLongStack.java,v 1.3 2004-11-16 14:35:33 simon Exp $
+* $Id: PrimitiveLongStack.java,v 1.4 2004-11-16 22:51:16 mproctor Exp $
 *
 * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 *
@@ -39,75 +39,77 @@ package org.drools.util;
 *
 */
 
-public class PrimitiveLongStack
+import java.io.Serializable;
+
+public class PrimitiveLongStack implements Serializable
 {
-    private final int bucketSize;
-    private int currentNodeId;
-    private HeapNode currentNode;
+    private final int tableSize;
+    private int currentPageId;
+    private Page currentPage;
 
     public PrimitiveLongStack()
     {
         this(256);
     }
 
-    public PrimitiveLongStack(int bucketSize)
+    public PrimitiveLongStack(int tableSize)
     {
-        this.bucketSize = bucketSize;
-        this.currentNodeId = 0;
+        this.tableSize = tableSize;
+        this.currentPageId = 0;
 
         //instantiate the first node
         //previous sibling of first node is null
         //next sibling of last node is null
-        this.currentNode = new HeapNode( null, this.currentNodeId, this.bucketSize );
+        this.currentPage = new Page( null, this.currentPageId, this.tableSize );
     }
 
     public void push( long value )
     {
-        if (this.currentNode.getPosition() == this.bucketSize-1)
+        if (this.currentPage.getPosition() == this.tableSize-1)
         {
 
-            HeapNode node = new HeapNode( this.currentNode, ++this.currentNodeId, this.bucketSize );
-            this.currentNode = node;
+            Page node = new Page( this.currentPage, ++this.currentPageId, this.tableSize );
+            this.currentPage = node;
         }
 
-        this.currentNode.push(value);
+        this.currentPage.push(value);
     }
 
 
     public long pop()
     {
-        if (this.currentNode.getPosition() == -1)
+        if (this.currentPage.getPosition() == -1)
         {
-            if (this.currentNodeId == 0)
+            if (this.currentPageId == 0)
             {
                 throw new RuntimeException("Unable to pop");
             }
 
-            HeapNode node = this.currentNode;
-            this.currentNode = node.getPreviousSibling();
-            this.currentNodeId--;
+            Page node = this.currentPage;
+            this.currentPage = node.getPreviousSibling();
+            this.currentPageId--;
             node.remove();
 
         }
 
-        return this.currentNode.pop();
+        return this.currentPage.pop();
     }
 
     public boolean isEmpty()
     {
-        return this.currentNodeId == 0 && this.currentNode.getPosition( ) == -1;
+        return this.currentPageId == 0 && this.currentPage.getPosition( ) == -1;
     }
 
-    private static final class HeapNode
+    private static final class Page implements Serializable
     {
-        private final int nodeId;
-        private HeapNode nextSibling;
-        private HeapNode previousSibling;
-        private long[] branch;
+        private final int pageId;
+        private Page nextSibling;
+        private Page previousSibling;
+        private long[] table;
         private int lastKey;
 
 
-        HeapNode(HeapNode previousSibling, int nodeId, int bucketSize )
+        Page(Page previousSibling, int nodeId, int tableSize )
         {
             // create bi-directional link
             this.previousSibling = previousSibling;
@@ -115,41 +117,41 @@ public class PrimitiveLongStack
             {
                 this.previousSibling.setNextSibling( this );
             }
-            this.nodeId = nodeId;
+            this.pageId = nodeId;
             lastKey = -1;
 
             //initiate tree;
-            this.branch = new long[ bucketSize ];
+            this.table = new long[ tableSize ];
         }
 
         public int getNodeId()
         {
-            return this.nodeId;
+            return this.pageId;
         }
 
-        void setNextSibling(HeapNode nextSibling)
+        void setNextSibling(Page nextSibling)
         {
             this.nextSibling = nextSibling;
         }
 
-        public HeapNode getNextSibling()
+        public Page getNextSibling()
         {
             return this.nextSibling;
         }
 
-        public HeapNode getPreviousSibling()
+        public Page getPreviousSibling()
         {
             return this.previousSibling;
         }
 
         public long pop()
         {
-            return this.branch[ this.lastKey-- ];
+            return this.table[ this.lastKey-- ];
         }
 
         public void push(long value )
         {
-            this.branch[ ++this.lastKey ] = value;
+            this.table[ ++this.lastKey ] = value;
         }
 
         public int getPosition()
@@ -161,7 +163,7 @@ public class PrimitiveLongStack
         {
             previousSibling.setNextSibling(null);
             this.previousSibling = null;
-            this.branch = null;
+            this.table = null;
         }
     }
 }

@@ -10,4 +10,11 @@ public class DefaultFactHandleFactory implements FactHandleFactory
     {
         return new FactHandleImpl( ++this.counter );
     }
+    
+    public FactHandle newFactHandle(long id)
+    {
+        return new FactHandleImpl( id );
+    }    
+    
 }
+
