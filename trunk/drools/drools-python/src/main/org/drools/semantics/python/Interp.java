@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.10 2004-08-15 17:40:00 mproctor Exp $
+ $Id: Interp.java,v 1.11 2004-08-26 14:28:12 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -50,8 +50,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Hashtable;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -78,7 +76,7 @@ import org.python.util.PythonInterpreter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.10 2004-08-15 17:40:00 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.11 2004-08-26 14:28:12 dbarnett Exp $
  */
 public class Interp
 {
@@ -125,9 +123,6 @@ public class Interp
                      String type)
     {
         this.text = stripOuterIndention(text);
-
-
-        this.text = text;
 
         this.node = (modType) parser.parse( this.text,
                                             type );
@@ -312,10 +307,7 @@ public class Interp
      */
     protected PyDictionary setUpDictionary(Tuple tuple) throws Exception
     {
-        Hashtable table = new Hashtable();
-
         Set decls   = tuple.getDeclarations();
-        Set types   = new HashSet();
 
         Iterator    declIter = decls.iterator();
         Declaration eachDecl = null;
