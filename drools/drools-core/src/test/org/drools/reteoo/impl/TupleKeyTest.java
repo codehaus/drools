@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.rule.Declaration;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -24,10 +24,10 @@ public class TupleKeyTest extends TestCase
     {
         this.key = new TupleKey();
 
-        this.decl1 = new Declaration( new ClassObjectType( Object.class ),
+        this.decl1 = new Declaration( new MockObjectType(),
                                       "declOne" );
 
-        this.decl2 = new Declaration( new ClassObjectType( Object.class ),
+        this.decl2 = new Declaration( new MockObjectType(),
                                       "declTwo" );
 
         this.obj1 = new Object();

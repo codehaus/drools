@@ -3,7 +3,7 @@ package org.drools.reteoo.impl;
 import org.drools.AssertionException;
 import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import org.drools.spi.InstrumentedExtractor;
 
@@ -14,6 +14,9 @@ import java.util.List;
 
 public class ExtractionNodeImplTest extends TestCase
 {
+    private Declaration stringDecl;
+    private Declaration objectDecl;
+
     public ExtractionNodeImplTest(String name)
     {
         super( name );
@@ -21,7 +24,11 @@ public class ExtractionNodeImplTest extends TestCase
 
     public void setUp()
     {
+        this.stringDecl = new Declaration( new MockObjectType(),
+                                                  "string" );
 
+        this.objectDecl = new Declaration( new MockObjectType(),
+                                                  "object" );
     }
 
     public void tearDown()
@@ -31,12 +38,6 @@ public class ExtractionNodeImplTest extends TestCase
 
     public void testGetTupleDeclarations()
     {
-        Declaration stringDecl = new Declaration( new ClassObjectType( String.class ),
-                                                  "string" );
-
-        Declaration objectDecl = new Declaration( new ClassObjectType( Object.class),
-                                                  "object" );
-
         MockTupleSource source = new MockTupleSource();
 
         source.addTupleDeclaration( stringDecl );
@@ -56,12 +57,6 @@ public class ExtractionNodeImplTest extends TestCase
 
     public void testAssertTuple()
     {
-        Declaration stringDecl = new Declaration( new ClassObjectType( String.class ),
-                                                  "string" );
-
-        Declaration objectDecl = new Declaration( new ClassObjectType( Object.class),
-                                                  "object" );
-
         MockTupleSource source = new MockTupleSource();
 
         source.addTupleDeclaration( objectDecl );

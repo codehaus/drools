@@ -6,7 +6,7 @@ import org.drools.rule.Declaration;
 import org.drools.spi.Condition;
 import org.drools.spi.TrueCondition;
 import org.drools.spi.FalseCondition;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -37,7 +37,7 @@ public class ConditionNodeImplTest extends TestCase
     public void testAllowed()
     {
         ConditionNodeImpl node = new ConditionNodeImpl( null,
-                                                  new TrueCondition() );
+                                                        new TrueCondition() );
                                          
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
@@ -71,7 +71,7 @@ public class ConditionNodeImplTest extends TestCase
     public void testNotAllowed()
     {
         ConditionNodeImpl node = new ConditionNodeImpl( null,
-                                                  new FalseCondition() );
+                                                        new FalseCondition() );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
@@ -99,7 +99,7 @@ public class ConditionNodeImplTest extends TestCase
      */
     public void testGetTupleDeclarations()
     {
-        Declaration decl = new Declaration( new ClassObjectType( String.class ),
+        Declaration decl = new Declaration( new MockObjectType( Object.class ),
                                             "object" );
 
         ParameterNodeImpl paramNode = new ParameterNodeImpl( null,
