@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.28 2004-11-16 11:15:38 mproctor Exp $
+ * $Id: ExtractionNode.java,v 1.29 2004-11-16 12:12:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -160,7 +160,7 @@ class ExtractionNode extends TupleSource implements TupleSink
         Object value = getExtractor( ).extractFact( tuple );
         FactHandle handle = workingMemory.newFactHandle();
         workingMemory.putObject(handle, value);
-        
+
         // Extractions should never evaluate to null
         // Extractions with same target should be of same type and value
         if ( value == null || !checkExtractorOk( value, tuple ) )
@@ -169,7 +169,7 @@ class ExtractionNode extends TupleSource implements TupleSink
             return;
         }
 
-        propagateAssertTuple( new ReteTuple( tuple, handle, getTargetDeclaration( ), value ), workingMemory );
+        propagateAssertTuple( new ReteTuple( tuple, handle, getTargetDeclaration( ) ), workingMemory );
     }
 
     /**

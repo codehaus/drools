@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.45 2004-11-16 11:15:39 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.46 2004-11-16 12:12:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -64,8 +64,6 @@ import java.util.Map;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- *
- * @version $Id: WorkingMemoryImpl.java,v 1.45 2004-11-16 11:15:39 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -74,30 +72,30 @@ class WorkingMemoryImpl implements WorkingMemory
     // ------------------------------------------------------------
 
     /** The actual memory for the <code>JoinNode</code>s. */
-    private final Map           joinMemories                = new HashMap( );
+    private final Map               joinMemories            = new HashMap( );
 
     /** Application data which is associated with this memory. */
-    private final Map           applicationData             = new HashMap( );
+    private final Map               applicationData         = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final PrimitiveLongMap  objects                     = new PrimitiveLongMap( 32, 8 );
+    private final PrimitiveLongMap  objects                 = new PrimitiveLongMap( 32, 8 );
 
     /** Object-to-handle mapping. */
-    private final Map           handles                     = new IdentityMap( );
+    private final Map               handles                 = new IdentityMap( );
 
     /** The eventSupport */
     private final WorkingMemoryEventSupport eventSupport    = new WorkingMemoryEventSupport( this );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
-    private final RuleBaseImpl  ruleBase;
+    private final RuleBaseImpl      ruleBase;
 
     /** Rule-firing agenda. */
-    private final Agenda        agenda;
+    private final Agenda            agenda;
 
     /** Flag to determine if a rule is currently being fired. */
-    private boolean             firing;
+    private boolean                 firing;
 
-    private long                conditionCounter;
+    private long                    conditionCounter;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -252,7 +250,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public Object getObject(FactHandle handle) throws NoSuchFactObjectException
     {
-        Object object = this.objects.get( handle.getId() );
+        Object object = this.objects.get( ( ( FactHandleImpl) handle ).getId( ) );
 
         if ( object == null )
         {
@@ -276,12 +274,11 @@ class WorkingMemoryImpl implements WorkingMemory
 
         return factHandle;
     }
-    
+
     public List getFactHandles()
     {
-
-      return new ArrayList( this.handles.values() );
-    }    
+      return new ArrayList( this.handles.values( ) );
+    }
 
     /**
      * @see WorkingMemory
@@ -318,13 +315,13 @@ class WorkingMemoryImpl implements WorkingMemory
         return new ArrayList( this.objects.keySet( ) );
     }
     */
-    
+
     /**
      * @see WorkingMemory
      */
     public boolean containsObject(FactHandle handle)
     {
-        return this.objects.containsKey( handle.getId() );
+        return this.objects.containsKey( ( ( FactHandleImpl ) handle ).getId( ) );
     }
 
     /**
@@ -356,15 +353,15 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     void putObject(FactHandle handle, Object object)
     {
-        this.objects.put( handle.getId(), object );
+        this.objects.put( ( ( FactHandleImpl ) handle ).getId( ), object );
 
         this.handles.put( object, handle );
     }
 
     void removeObject(FactHandle handle)
     {
-        this.handles.remove( this.objects.remove( handle.getId() ) );
-    }    
+        this.handles.remove( this.objects.remove( ( ( FactHandleImpl ) handle ).getId( ) ) );
+    }
 
     /**
      * @see WorkingMemory
@@ -383,7 +380,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized void modifyObject(FactHandle handle, Object object) throws FactException
     {
-        Object original = this.objects.put( handle.getId(), object );
+        Object original = this.objects.put( ( ( FactHandleImpl ) handle ).getId( ), object );
 
         if ( object == null )
         {

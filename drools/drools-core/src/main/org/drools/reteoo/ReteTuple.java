@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.49 2004-11-16 11:15:38 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.50 2004-11-16 12:12:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,10 +50,7 @@ import org.drools.spi.Tuple;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -106,10 +103,7 @@ class ReteTuple implements Tuple, Serializable
         this.declarations.addAll( right.declarations );
     }
 
-    ReteTuple(ReteTuple that,
-              FactHandle handle,
-              Declaration declaration,
-              Object value)
+    ReteTuple( ReteTuple that, FactHandle handle, Declaration declaration )
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
@@ -119,11 +113,7 @@ class ReteTuple implements Tuple, Serializable
         this.declarations.add( declaration );
     }
 
-    ReteTuple(WorkingMemory workingMemory,
-              Rule rule,
-              Declaration declaration,
-              FactHandle handle,
-              Object value)
+    ReteTuple( WorkingMemory workingMemory, Rule rule, Declaration declaration, FactHandle handle )
     {
         this.workingMemory = workingMemory;
         this.rule = rule;
@@ -170,18 +160,18 @@ class ReteTuple implements Tuple, Serializable
      */
     public Object get(Declaration declaration)
     {
-        try 
+        FactHandle handle = this.key.get( declaration );
+        if ( handle != null )
         {
-            FactHandle handle = this.key.get(declaration);
-            if (handle == null)
+            try
             {
-                return null;
+                return this.workingMemory.getObject( handle );
             }
-          return this.workingMemory.getObject(handle);
-        } catch (NoSuchFactObjectException e)
-        {
-            return null;
-        }        
+            catch ( NoSuchFactObjectException e )
+            {
+            }
+        }
+        return null;
     }
 
     /**
@@ -192,38 +182,19 @@ class ReteTuple implements Tuple, Serializable
         return this.declarations;
     }
 
-    /*
-    public Map getObjectFactMapping()
-    {
-        Map objects = new HashMap(this.declarations.size(), 1);
-        Iterator it = this.declarations.iterator();
-        Declaration declaration;
-        while (it.hasNext())
-        {
-            declaration = (Declaration) it.next();
-            objects.put(get(declaration), this.key.get(declaration));
-        }
-        return objects;
-    }       
-    */
-
     /**
      * @see Tuple
      */
     public FactHandle getFactHandleForObject(Object object)
     {
-        FactHandle factHandle;
         try
         {
-            factHandle = this.workingMemory.getFactHandle( object );
-
+            return this.workingMemory.getFactHandle( object );
         }
         catch ( NoSuchFactHandleException e )
         {
-            factHandle = null;
+            return null;
         }
-
-        return factHandle;
     }
 
     public Rule getRule()
