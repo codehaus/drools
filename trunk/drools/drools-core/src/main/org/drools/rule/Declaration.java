@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.24 2004-11-19 02:14:17 mproctor Exp $
+ * $Id: Declaration.java,v 1.25 2004-11-30 00:32:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,10 +46,10 @@ import java.io.Serializable;
 
 /**
  * A typed, named variable for <code>Condition</code> evaluation.
- * 
+ *
  * @see ObjectType
  * @see org.drools.spi.Condition
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -79,7 +79,7 @@ public class Declaration
 
     /**
      * Construct.
-     * 
+     *
      * @param identifier
      *            The name of the variable.
      * @param objectType
@@ -102,7 +102,7 @@ public class Declaration
 
     /**
      * Retrieve the <code>ObjectType</code>.
-     * 
+     *
      * @return The object-type.
      */
     public ObjectType getObjectType()
@@ -118,7 +118,7 @@ public class Declaration
 
     /**
      * Retrieve the variable's identifier.
-     * 
+     *
      * @return The variable's identifier.
      */
     public String getIdentifier()
@@ -135,7 +135,7 @@ public class Declaration
 
     public int compareTo(Object object)
     {
-        return this.order - ((Declaration) object).order;
+        return this.order - ( ( Declaration ) object).order;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -143,5 +143,10 @@ public class Declaration
     public String toString()
     {
         return "[Declaration: " + this.identifier + "]";
+    }
+
+    public int hashCode()
+    {
+        return this.order;
     }
 }

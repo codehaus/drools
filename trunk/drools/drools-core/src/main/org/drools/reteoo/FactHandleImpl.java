@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: FactHandleImpl.java,v 1.16 2004-11-28 05:02:38 simon Exp $
+ * $Id: FactHandleImpl.java,v 1.17 2004-11-30 00:32:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -89,16 +89,16 @@ public class FactHandleImpl
     /**
      * @see Object
      */
-    public boolean equals(Object thatObj)
+    public boolean equals(Object object)
     {
-        if ( this == thatObj )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( thatObj instanceof FactHandleImpl )
+        if ( object instanceof FactHandleImpl )
         {
-            return ((FactHandleImpl) thatObj).id == this.id;
+            return this.id == ( ( FactHandleImpl ) object ).id;
         }
 
         return false;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.48 2004-11-29 13:20:52 simon Exp $
+ * $Id: JoinMemory.java,v 1.49 2004-11-30 00:32:54 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,6 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.rule.Declaration;
 
@@ -85,7 +84,8 @@ class JoinMemory
      * @param tupleDeclarations
      * @param commonDeclarations
      */
-    JoinMemory(Set tupleDeclarations, Set commonDeclarations)
+    JoinMemory( Set tupleDeclarations,
+                Set commonDeclarations )
     {
         this.leftTuples = new TupleSet( );
         this.rightTuples = new TupleSet( );
@@ -179,42 +179,27 @@ class JoinMemory
      * Modify tuples on the left-side.
      *
      * @param trigger Triggering object handle.
-     * @param workingMemory The working memory session.
      * @return The newly joined tuples.
-     * @throws FactException if an error occurs during modification.
      */
 
-    protected TupleSet modifyLeftTuples(FactHandle trigger,
-                                        TupleSet newTuples,
-                                        WorkingMemoryImpl workingMemory) throws FactException
+    TupleSet modifyLeftTuples( FactHandle trigger )
     {
         return modifyTuples( trigger,
-                             newTuples,
                              getLeftTuples( ),
-                             getRightTuples( ),
-                             workingMemory );
+                             getRightTuples( ) );
     }
 
     /**
      * Modify tuples on the right-side.
      *
-     * @param trigger
-     *            Triggering object handle.
-     * @param workingMemory
-     *            The working memory session.
+     * @param trigger Triggering object handle.
      * @return The newly joined tuples.
-     * @throws FactException
-     *             if an error occurs during modification.
      */
-    protected TupleSet modifyRightTuples(FactHandle trigger,
-                                         TupleSet newTuples,
-                                         WorkingMemoryImpl workingMemory) throws FactException
+    TupleSet modifyRightTuples( FactHandle trigger )
     {
         return modifyTuples( trigger,
-                             newTuples,
                              getRightTuples( ),
-                             getLeftTuples( ),
-                             workingMemory );
+                             getLeftTuples( ) );
     }
 
     /**
@@ -223,15 +208,11 @@ class JoinMemory
      * @param trigger Triggering object handle.
      * @param thisSideTuples The tuples on the side that's receiving the modifications.
      * @param thatSideTuples The tuples on the side that's <b>not </b> receiving the modifications.
-     * @param workingMemory The working memory session.
      * @return The newly joined tuples.
-     * @throws FactException if an error occurs during modification.
      */
-    protected TupleSet modifyTuples( FactHandle trigger,
-                                     TupleSet newTuples,
-                                     TupleSet thisSideTuples,
-                                     TupleSet thatSideTuples,
-                                     WorkingMemoryImpl workingMemory ) throws FactException
+    private TupleSet modifyTuples( FactHandle trigger,
+                                   TupleSet thisSideTuples,
+                                   TupleSet thatSideTuples )
     {
         ReteTuple tuple;
         TupleSet newJoined = new TupleSet( );
@@ -251,7 +232,6 @@ class JoinMemory
         }
 
         return newJoined;
-
     }
 
     /**
@@ -332,14 +312,12 @@ class JoinMemory
     {
         System.err.println( "----" );
         ReteTuple tuple;
-        Collection tuples = this.leftTuples.getTuples( );
-        Iterator it1 = tuples.iterator( );
+        Iterator it1 = this.leftTuples.getTuples( ).iterator( );
         while ( it1.hasNext( ) )
         {
             tuple = (ReteTuple) it1.next( );
             System.err.println( "tuple" );
-            Set decls = this.tupleDeclarations;
-            Iterator it2 = decls.iterator( );
+            Iterator it2 = this.tupleDeclarations.iterator( );
             while ( it2.hasNext( ) )
             {
                 Declaration decl = (Declaration) it2.next( );
@@ -349,13 +327,12 @@ class JoinMemory
             }
         }
 
-        tuples = this.rightTuples.getTuples( );
+        Collection tuples = this.rightTuples.getTuples( );
         it1 = tuples.iterator( );
         while ( it1.hasNext( ) )
         {
             tuple = (ReteTuple) it1.next( );
-            Set decls = this.tupleDeclarations;
-            Iterator it2 = decls.iterator( );
+            Iterator it2 = this.tupleDeclarations.iterator( );
             while ( it2.hasNext( ) )
             {
                 Declaration decl = (Declaration) it2.next( );
