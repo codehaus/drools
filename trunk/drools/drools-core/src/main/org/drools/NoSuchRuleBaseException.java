@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: NoSuchRuleBaseException.java,v 1.3 2002-08-13 04:12:26 bob Exp $
+ $Id: NoSuchRuleBaseException.java,v 1.4 2003-03-01 23:59:08 kaz Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,7 +67,7 @@ public class NoSuchRuleBaseException extends DroolsException
      */
     public NoSuchRuleBaseException(String uri)
     {
-        // intentionally left blank.
+        this.uri = uri;
     }
 
     // ------------------------------------------------------------
