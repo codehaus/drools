@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ParameterHandler.java,v 1.2 2004-11-12 17:11:15 simon Exp $
+ * $Id: ParameterHandler.java,v 1.3 2004-11-13 13:46:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -82,7 +82,15 @@ class ParameterHandler extends BaseAbstractHandler implements Handler
                     ruleSetReader.getLocator( ) );
         }
 
-        return rule.addParameterDeclaration( identifier.trim( ), null );
+        identifier = identifier.trim( );
+
+        if ( rule.getDeclaration( identifier ) != null )
+        {
+            throw new SAXParseException( "'" + identifier + "' is already defined",
+                    ruleSetReader.getLocator( ) );
+        }
+
+        return rule.addParameterDeclaration( identifier, null );
     }
 
     public Object end( String uri, String localName ) throws SAXException

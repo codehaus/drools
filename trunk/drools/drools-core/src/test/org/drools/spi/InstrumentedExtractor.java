@@ -1,10 +1,10 @@
 package org.drools.spi;
 
+import org.drools.rule.Declaration;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.drools.rule.Declaration;
 
 public class InstrumentedExtractor implements Extractor
 {
@@ -25,7 +25,7 @@ public class InstrumentedExtractor implements Extractor
 
     public Declaration[] getRequiredTupleMembers()
     {
-        Declaration[] declArray = new Declaration[this.decls.size( )];
+        Declaration[] declArray = new Declaration[ this.decls.size( ) ];
 
         Iterator declIter = this.decls.iterator( );
 

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DeclarationHandler.java,v 1.3 2004-11-13 01:43:06 simon Exp $
+ * $Id: DeclarationHandler.java,v 1.4 2004-11-13 13:46:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,9 +50,6 @@ import java.util.HashSet;
 
 /**
  * @author mproctor
- *
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
  */
 class DeclarationHandler extends BaseAbstractHandler implements Handler
 {
@@ -86,7 +83,15 @@ class DeclarationHandler extends BaseAbstractHandler implements Handler
                     ruleSetReader.getLocator( ) );
         }
 
-        return rule.addLocalDeclaration( identifier.trim( ), null );
+        identifier = identifier.trim( );
+
+        if ( rule.getDeclaration( identifier ) != null )
+        {
+            throw new SAXParseException( "'" + identifier + "' is already defined",
+                    ruleSetReader.getLocator( ) );
+        }
+
+        return rule.addLocalDeclaration( identifier, null );
     }
 
     public Object end( String uri, String localName ) throws SAXException
