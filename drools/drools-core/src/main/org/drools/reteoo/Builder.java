@@ -12,20 +12,41 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/** Builds the Rete-OO network for a {@link org.drools.spi.RuleSet}.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class Builder
 {
     private RootNode rootNode;
 
+    /** Construct a <code>Builder</code> against an existing
+     *  {@link RootNode} in the network.
+     *
+     *  @param rootNode The network to add on to.
+     */
     public Builder(RootNode rootNode)
     {
         this.rootNode = rootNode;
     }
 
+    /** Retrieve the <code>RootNode</code> this <code>Builder</code>
+     *  appends to.
+     *
+     *  @return The <code>RootNode</code>.
+     */
     public RootNode getRootNode()
     {
         return this.rootNode;
     }
 
+    /** Add a {@link Rule} to the network.
+     *
+     *  @param rule The rule to add.
+     *
+     *  @throws ReteConstructionException if an error prevents complete
+     *          construction of the network for the <code>Rule</code>.
+     */
     public void addRule(Rule rule) throws ReteConstructionException
     {
         Set assignmentConds = new HashSet( rule.getAssignmentConditions() );
@@ -76,6 +97,14 @@ public class Builder
                                                   rule.getAction() );
     }
 
+    /** Create the {@link ParameterNode}s for the <code>Rule</code>,
+     *  and link into the network.
+     *
+     *  @param rule The rule.
+     *
+     *  @return A <code>Set</code> of <code>ParameterNodes</code> created
+     *          and linked into the network.
+     */
     protected Set createParameterNodes(Rule rule)
     {
         Set attachableNodes = new HashSet();
@@ -106,9 +135,24 @@ public class Builder
 
         return attachableNodes;
     }
+    
 
+    /** Create and attach {@link FilterCondition}s to the network.
+     *
+     *  <p>
+     *  It may not be possible to satisfy all filder conditions
+     *  on the first pass.  This method removes satisfied conditions
+     *  from the <code>filterCond</code> parameter, and leaves
+     *  unsatisfied ones in the <code>Set</code>.
+     *  </p>
+     *
+     *  @param filterConds Set of <code>FilterConditions</code>
+     *         to attempt attaching.
+     *  @param attachableNodes The current attachable leaf nodes
+     *         of the network.
+     */
     protected void attachFilterConditions(Set filterConds,
-                                             Set attachableNodes)
+                                          Set attachableNodes)
     {
         Iterator        condIter    = filterConds.iterator();
         FilterCondition eachCond    = null;
@@ -139,6 +183,24 @@ public class Builder
         }
     }
 
+    /** Create and attach {@link JoinNode}s to the network.
+     *
+     *  <p>
+     *  It may not be possible to join all <code>attachableNodes</code>.
+     *  </p>
+     *
+     *  <p>
+     *  Any <code>attachabeNodes</code> member that particiates
+     *  in a <i>join</i> is removed from the <code>attachableNodes</code>
+     *  collection, and replaced by the joining <code>JoinNode</code>.
+     *  </p>
+     *
+     *  @param attachableNodes The current attachable leaf nodes of
+     *         the network.
+     *
+     *  @return <code>true</code> if at least one <code>JoinNode</code>
+     *          was created, else <code>false</code>.
+     */
     protected boolean createJoinNodes(Set attachableNodes)
     {
         // System.err.println( "ENTER joinNodes" );
@@ -198,6 +260,12 @@ public class Builder
         return performedJoin;
     }
 
+    /** Determine if two {@link TupleSource}s can be joined.
+     *
+     *  @return <code>true</code> if they can be joined (they share
+     *          at least one common member declaration), else
+     *          <code>false</code>.
+     */
     protected boolean canBeJoined(TupleSource left,
                                   TupleSource right)
     {
@@ -215,6 +283,19 @@ public class Builder
         return false;
     }
 
+    /** Create and attach {@link AssignmentCondition}s to the network.
+     *
+     *  <p>
+     *  It may not be possible to satisfy all <code>assignmentConds</code>,
+     *  in which case, unsatisfied conditions will remain in the <code>Set</code>
+     *  passed in as <code>assignmentConds</code>.
+     *  </p>
+     *
+     *  @param assignmentConds Set of <code>AssignmentConditions</code> to
+     *         attach to the network.
+     *  @param attachableNodes The current attachable leaf nodes of
+     *         the network.
+     */
     protected boolean attachAssignmentConditions(Set assignmentConds,
                                                  Set attachableNodes)
     {
@@ -265,7 +346,16 @@ public class Builder
         return attached;
     }
 
-    protected TupleSource findMatchingTupleSourceForFiltering(Condition condition,
+    /** Locate a <code>TupleSource</code> suitable for attaching
+     *  the <code>FilterCondition</code>.
+     *
+     *  @param condition The <code>Condition</code> to attach.
+     *  @param sources Candidate <code>TupleSources</code>.
+     *
+     *  @return Matching <code>TupleSource</code> if a suitable one
+     *          can be found, else <code>null</code>.
+     */
+    protected TupleSource findMatchingTupleSourceForFiltering(FilterCondition condition,
                                                               Set sources)
     {
         Iterator    sourceIter = sources.iterator();
@@ -289,6 +379,15 @@ public class Builder
         return null;
     }
 
+    /** Locate a <code>TupleSource</code> suitable for attaching
+     *  the <code>AssignmentCondition</code>.
+     *
+     *  @param condition The <code>Condition</code> to attach.
+     *  @param sources Candidate <code>TupleSources</code>.
+     *
+     *  @return Matching <code>TupleSource</code> if a suitable one
+     *          can be found, else <code>null</code>.
+     */
     protected TupleSource findMatchingTupleSourceForAssignment(AssignmentCondition condition,
                                                                Set sources)
     {
@@ -321,6 +420,16 @@ public class Builder
         return null;
     }
 
+    /** Determine if a set of <code>Declarations</code> match those
+     *  required by a <code>Condition</code>.
+     *
+     *  @param condition The <code>Condition</code>.
+     *  @param declarations The set of <code>Declarations</code> to compare against.
+     *
+     *  @return <code>true</code> if the set of <code>Declarations</code> is a
+     *          super-set of the <code>Declarations</code> required by the
+     *          <code>Condition</code>.
+     */
     protected boolean matches(Condition condition,
                               Set declarations)
     {

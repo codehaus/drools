@@ -16,6 +16,10 @@ import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.HashMap;
 
+/** Reads Java XML ruleset files, producing a {@link RuleSet}.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class RuleSetReader
 {
     private SAXReader reader;
@@ -26,6 +30,14 @@ public class RuleSetReader
 
     private Map           decls;
 
+    /** Construct.
+     *
+     *  <p>
+     *  A <code>RuleSetReader</code> may be re-used repeatedly,
+     *  but may <b>not</b> be used by two threads simultaneously.
+     *  It is not synchronized nor re-entrant.
+     *  </p>
+     */
     public RuleSetReader()
     {
         this.importManager = new ImportManager();
@@ -91,6 +103,16 @@ public class RuleSetReader
         return this.ruleSet;
     }
 
+    /** Read a Java ruleset XML file from a URL.
+     *
+     *  @param url The URL of the XML ruleset.
+     *
+     *  @return The resulting {@link RuleSet}.
+     *
+     *  @throws RuleSetReaderException if an error occurs
+     *          while reading or parsing the file, or
+     *          constructing the ruleset or rules.
+     */
     public RuleSet read(URL url) throws RuleSetReaderException
     {
         getImportManager().reset();
@@ -110,6 +132,16 @@ public class RuleSetReader
         return getRuleSet();
     }
 
+    /** Read a Java ruleset XML file from a local file.
+     *
+     *  @param file The File of the XML ruleset.
+     *
+     *  @return The resulting {@link RuleSet}.
+     *
+     *  @throws RuleSetReaderException if an error occurs
+     *          while reading or parsing the file, or
+     *          constructing the ruleset or rules.
+     */
     public RuleSet read(File file) throws MalformedURLException, RuleSetReaderException
     {
         return read( file.toURL() );

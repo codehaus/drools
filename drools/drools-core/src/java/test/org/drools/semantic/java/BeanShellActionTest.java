@@ -65,7 +65,7 @@ public class BeanShellActionTest extends TestCase
         {
             STATUS = false;
 
-            BeanShellAction action = new BeanShellAction( "import *;BeanShellActionTest.STATUS = true;" );
+            BeanShellAction action = new BeanShellAction( "import org.drools.semantic.java.BeanShellActionTest; BeanShellActionTest.STATUS = true;" );
             
             action.invoke( tuple,
                            null );
@@ -101,7 +101,7 @@ public class BeanShellActionTest extends TestCase
         {
             STATUS = false;
 
-            BeanShellAction action = new BeanShellAction( "import *;BeanShellActionTest.RETURN_1 = string; BeanShellActionTest.RETURN_2 = object;" );
+            BeanShellAction action = new BeanShellAction( "import org.drools.semantic.java.BeanShellActionTest; BeanShellActionTest.RETURN_1 = string; BeanShellActionTest.RETURN_2 = object;" );
             
             action.invoke( tuple,
                            null );

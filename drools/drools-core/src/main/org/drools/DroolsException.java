@@ -30,11 +30,6 @@ public class DroolsException extends Exception
         this.rootCause = rootCause;
     }
 
-    public DroolsException(String msg)
-    {
-        super( msg );
-    }
-
     /** Get the root cause, if any.
      *
      *  @return The root cause of this exception, as a

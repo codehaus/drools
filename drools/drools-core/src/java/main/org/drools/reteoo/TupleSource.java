@@ -25,6 +25,13 @@ public abstract class TupleSource
     /** The destination for <code>Tuples</code>. */
     private TupleSink tupleSink;
 
+    /** Construct.
+     */
+    protected TupleSource()
+    {
+        // intentionally left blank.
+    }
+
     /** Retrieve the <code>Set</code> of {@link Declaration}s
      *  in the propagated <code>Tuples</code>.
      *

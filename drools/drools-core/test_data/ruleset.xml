@@ -17,10 +17,10 @@
 		</when>
 
 		<then>
-			System.err.println( " ********** START " );
-			System.err.println( "doc1: " + doc1 );
-			System.err.println( "doc2: " + doc2 );
-			System.err.println( " ********** END " );
+			import org.drools.semantic.java.io.RuleSetReaderTest;
+
+			RuleSetReaderTest.RETURN_doc1 = doc1;
+			RuleSetReaderTest.RETURN_doc2 = doc2;
 		</then>
 	</rule>
 

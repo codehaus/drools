@@ -12,13 +12,33 @@ import bsh.EvalError;
 import java.util.Set;
 import java.util.Iterator;
 
+/** {@link FilterCondition} using <a href="http://beanshell.org/">BeanShell</a>
+ *  for evaluation.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class BeanShellFilterCondition implements FilterCondition
 {
+    /** The BeanShell expression. */
     private String        filterExpr;
+
+    /** Variables referenced by the expression. */
     private Declaration[] requiredTupleMembers;
 
+    /** The beanshell interpreter. */
     private Interpreter   interp;
 
+    /** Construct.
+     *
+     *  <p>
+     *  The expression used to construct this <b>must</b> produce
+     *  a <b>boolean</b> result, else a {@link NonBooleanExpressionException}
+     *  will be thrown at run-time.
+     *  </p>
+     *
+     *  @param filterExpr The filtering expression.
+     *  @param requiredTupleMembers Set of variables referenced.
+     */
     public BeanShellFilterCondition(String filterExpr,
                                     Set requiredTupleMembers)
     {
@@ -37,11 +57,17 @@ public class BeanShellFilterCondition implements FilterCondition
         initializeInterpreter();
     }
 
+    /** Initialize the BeanShell interpreter. 
+     */
     private void initializeInterpreter()
     {
         this.interp = new Interpreter();
     }
 
+    /** Retrieve the BeanShell filtering expression.
+     *
+     *  @return The filtering expression.
+     */
     public String getFilterExpr()
     {
         return this.filterExpr;

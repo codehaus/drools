@@ -41,6 +41,10 @@ public class ParameterTuple extends ReteTuple
         return this.object;
     }
 
+    /** Retrieve the root fact object <code>Declaration</code>.
+     *
+     *  @return The <code>Declaration</code>.
+     */
     public Declaration getParameterDeclaration()
     {
         return this.declaration;

@@ -186,6 +186,14 @@ public class JoinMemory
         return joinedTuples;
     }
 
+    /** Attempt to join two <code>Tuples</code>.
+     *
+     *  @param left The left-side <code>Tuple</code>.
+     *  @param right The right-side <code>Tuple</code>.
+     *
+     *  @return A newly joined <code>Tuple</code> if a join
+     *          is possible, else <code>null</code>.
+     */
     protected Tuple attemptJoin(Tuple left,
                                 Tuple right)
     {

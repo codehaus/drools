@@ -57,6 +57,8 @@ public class Declaration
                  this.identifier.equals( that.identifier ) );
     }
 
+    /** Produce output suitable for debugging.
+     */
     public String toString()
     {
         return "[Declaration: identifier='" + getIdentifier() + "'; objectType=" + getObjectType() + "]";

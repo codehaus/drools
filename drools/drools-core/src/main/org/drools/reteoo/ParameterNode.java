@@ -31,6 +31,11 @@ public class ParameterNode extends TupleSource
 {
     private Declaration declaration;
 
+    /** Construct.
+     *
+     *  @param inputNode The <code>ObjectTypeNode</code> input to this.
+     *  @param declaration The root fact object {@link Declaration}.
+     */
     public ParameterNode(ObjectTypeNode inputNode,
                          Declaration declaration)
     {
@@ -42,6 +47,10 @@ public class ParameterNode extends TupleSource
         }
     }
 
+    /** Retrieve the root fact object <code>Declaration</code>.
+     *
+     *  @return The <code>Declaration</code>.
+     */
     public Declaration getDeclaration()
     {
         return this.declaration;

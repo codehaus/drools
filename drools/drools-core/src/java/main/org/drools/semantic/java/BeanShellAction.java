@@ -13,11 +13,23 @@ import bsh.EvalError;
 import java.util.Set;
 import java.util.Iterator;
 
+/** Rule {@link Action} using <a hef="http://beanshell.org/">BeanShell</a>
+ *  for execution.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class BeanShellAction implements Action
 {
+    /** The BeanShell script. */
     private String      script;
+
+    /** The BeanShell interpreter. */
     private Interpreter interp;
 
+    /** Construct.
+     *
+     *  @param script The BeanShell script to execute.
+     */
     public BeanShellAction(String script)
     {
         this.script = script;
@@ -25,11 +37,17 @@ public class BeanShellAction implements Action
         initializeInterpreter();
     }
 
+    /** Initialize the interpreter
+     */
     private void initializeInterpreter()
     {
         this.interp = new Interpreter();
     }
 
+    /** Retrieve the BeanShell script.
+     *
+     *  @return The script.
+     */
     public String getScript()
     {
         return this.script;
