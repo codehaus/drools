@@ -18,7 +18,11 @@ public final class FactArgumentMetadata implements ArgumentMetadata {
         if (parameterClass == null) {
             throw new IllegalArgumentException("parameterClass must not be null");
         }
-        this.identifier = identifier;
+        if (identifier == null || identifier.trim().length() == 0) {
+            this.identifier = getDefaultIdentifier(parameterClass);
+        } else {
+            this.identifier = identifier;
+        }
         this.parameterClass = parameterClass;
     }
 
@@ -31,9 +35,6 @@ public final class FactArgumentMetadata implements ArgumentMetadata {
     }
 
     public Argument createArgument(Rule rule) throws DroolsException {
-        if (identifier == null || identifier.trim().length() == 0) {
-            identifier = getDefaultIdentifier(parameterClass);
-        }
         Declaration declaration = rule.getParameterDeclaration(identifier);
         if (declaration == null) {
             ClassObjectType objectType = new ClassObjectType(parameterClass);

@@ -64,7 +64,6 @@ public class RuleBuilder {
                         new PojoCondition(new RuleReflectMethod(rule, pojo, pojoMethod, arguments)));
 
             } else if (methodMedata.getMethodType() == MethodMetadata.CONSEQUENCE) {
-                assertReturnType(pojoMethod, void.class);
                 conditionRuleReflectMethods.add(
                         new RuleReflectMethod(rule, pojo, pojoMethod, arguments));
 

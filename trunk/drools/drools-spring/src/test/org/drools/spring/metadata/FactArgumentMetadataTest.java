@@ -35,7 +35,7 @@ public class FactArgumentMetadataTest extends TestCase {
 
     public void testNewWithNullIdentifier() {
         FactArgumentMetadata metadata = new FactArgumentMetadata(null, String.class);
-        assertNull(metadata.getIdentifier());
+        assertEquals(FactArgumentMetadata.getDefaultIdentifier(String.class), metadata.getIdentifier());
         assertSame(String.class, metadata.getParameterClass());
     }
 

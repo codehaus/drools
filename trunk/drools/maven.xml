@@ -488,6 +488,11 @@
         <j:otherwise>
           <u:tokenize var="projects" delim=",">${drools.jdk5.projects}</u:tokenize>
           <j:forEach var="jdk5.project.file" items="${projects}">
+              <ant:echo>
++-------------------------------------------------
+| Executing JDK5 Project: ${jdk5.project.file}
++-------------------------------------------------
+              </ant:echo>
               <ant:java
                 classname="com.werken.forehead.Forehead"
                 jvm="${drools.jdk5.home}/bin/java"

@@ -17,7 +17,7 @@ import org.drools.spi.Consequence;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 import org.drools.spring.factory.RuleBuilder;
-import org.drools.spring.metadata.ApplicationDataArgumentMetadata;
+import org.drools.spring.metadata.DataArgumentMetadata;
 import org.drools.spring.metadata.ArgumentMetadata;
 import org.drools.spring.metadata.ArgumentMetadataSource;
 import org.drools.spring.metadata.FactArgumentMetadata;
@@ -108,7 +108,7 @@ public class RuleBuilderTest extends TestCase {
                 });
                 conditionTwoArgumentMetadata = new ArgumentMetadata[]{
                         new FactArgumentMetadata(null, long.class),
-                        new ApplicationDataArgumentMetadata("value", int.class)
+                        new DataArgumentMetadata("value", int.class)
                 };
                 expectedDeclarationObjectTypes.add(new ClassObjectType(long.class));
                 expectedConditionMethodNames.add(conditionTwoMethod.getName());
@@ -132,7 +132,7 @@ public class RuleBuilderTest extends TestCase {
                 consequenceTwoArgumentMetadata = new ArgumentMetadata[]{
                         new FactArgumentMetadata(null, Object.class),
                         new FactArgumentMetadata(null, long.class),
-                        new ApplicationDataArgumentMetadata("value", int.class),
+                        new DataArgumentMetadata("value", int.class),
                         new KnowledgeHelperArgumentMetadata()
                 };
                 expectedDeclarationObjectTypes.add(new ClassObjectType(Object.class));
