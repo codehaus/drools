@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.28 2004-11-15 07:11:54 simon Exp $
+ * $Id: JoinNode.java,v 1.29 2004-11-16 09:17:46 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -90,8 +90,8 @@ class JoinNode extends TupleSource
         this.rightInput = rightInput;
         this.commonDeclarations = determineCommonDeclarations( );
 
-        leftInput.setTupleSink( getLeftNodeInput( ) );
-        rightInput.setTupleSink( getRightNodeInput( ) );
+        leftInput.setTupleSink( new JoinNodeInput( this, JoinNodeInput.LEFT ) );
+        rightInput.setTupleSink( new JoinNodeInput( this, JoinNodeInput.RIGHT ) );
     }
 
     public String toString()
@@ -147,26 +147,6 @@ class JoinNode extends TupleSource
     }
 
     /**
-     * Retrieve the left input <code>TupleSource</code>.
-     *
-     * @return The left input <code>TupleSource</code>.
-     */
-    public TupleSource getLeftInput()
-    {
-        return this.leftInput;
-    }
-
-    /**
-     * Retrieve the right input <code>TupleSource</code>.
-     *
-     * @return The right input <code>TupleSource</code>.
-     */
-    public TupleSource getRightInput()
-    {
-        return this.rightInput;
-    }
-
-    /**
      * Propagate joined asserted tuples.
      *
      * @param joinedTuples The tuples to propagate.
@@ -177,13 +157,9 @@ class JoinNode extends TupleSource
     void propagateAssertTuples(Set joinedTuples, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Iterator tupleIter = joinedTuples.iterator( );
-        ReteTuple eachTuple;
-
         while ( tupleIter.hasNext( ) )
         {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            propagateAssertTuple( eachTuple, workingMemory );
+            propagateAssertTuple( ( ReteTuple ) tupleIter.next( ), workingMemory );
         }
     }
 
@@ -197,15 +173,12 @@ class JoinNode extends TupleSource
      */
     void assertLeftTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        JoinMemory memory = workingMemory.getJoinMemory( this );
-        Set joinedTuples = memory.addLeftTuple( tuple );
+        Set joinedTuples = workingMemory.getJoinMemory( this ).addLeftTuple( tuple );
 
-        if ( joinedTuples.isEmpty( ) )
+        if ( !joinedTuples.isEmpty( ) )
         {
-            return;
+            propagateAssertTuples( joinedTuples, workingMemory );
         }
-
-        propagateAssertTuples( joinedTuples, workingMemory );
     }
 
     /**
@@ -218,35 +191,12 @@ class JoinNode extends TupleSource
      */
     void assertRightTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        JoinMemory memory = workingMemory.getJoinMemory( this );
-        Set joinedTuples = memory.addRightTuple( tuple );
+        Set joinedTuples = workingMemory.getJoinMemory( this ).addRightTuple( tuple );
 
-        if ( joinedTuples.isEmpty( ) )
+        if ( !joinedTuples.isEmpty( ) )
         {
-            return;
+            propagateAssertTuples( joinedTuples, workingMemory );
         }
-
-        propagateAssertTuples( joinedTuples, workingMemory );
-    }
-
-    /**
-     * Retrieve the node input for the left side.
-     *
-     * @return The node input for the left side.
-     */
-    JoinNodeInput getLeftNodeInput()
-    {
-        return new JoinNodeInput( this, JoinNodeInput.LEFT );
-    }
-
-    /**
-     * Retrieve the node input for the right side.
-     *
-     * @return The node input for the right side.
-     */
-    JoinNodeInput getRightNodeInput()
-    {
-        return new JoinNodeInput( this, JoinNodeInput.RIGHT );
     }
 
     /**
@@ -259,9 +209,7 @@ class JoinNode extends TupleSource
      */
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        JoinMemory memory = workingMemory.getJoinMemory( this );
-
-        memory.retractTuples( key );
+        workingMemory.getJoinMemory( this ).retractTuples( key );
 
         propagateRetractTuples( key, workingMemory );
     }
@@ -283,8 +231,8 @@ class JoinNode extends TupleSource
     {
         Set decls = new HashSet( );
 
-        decls.addAll( getLeftInput( ).getTupleDeclarations( ) );
-        decls.addAll( getRightInput( ).getTupleDeclarations( ) );
+        decls.addAll( leftInput.getTupleDeclarations( ) );
+        decls.addAll( rightInput.getTupleDeclarations( ) );
 
         return decls;
     }
