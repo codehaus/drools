@@ -2,10 +2,7 @@ package org.drools.examples.familyTree;
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.DroolsException;
-import org.drools.AssertionException;
-import org.drools.rule.RuleSet;
-import org.drools.io.RuleSetLoader;
+import org.drools.io.RuleBaseBuilder;
 
 import java.io.*;
 import java.util.*;
@@ -62,67 +59,23 @@ public final class Main {
 		return Balbo;
         }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
-        try
-        {
             // First, construct an empty RuleBase to be the
             // container for your rule logic.
 
-            RuleBase ruleBase = new RuleBase();
-            
-            // Then, use the [org.drools.semantic.java.RuleLoader]
-            // static method to load a rule-set from a local File.
-            
-
-            RuleSetLoader loader = new RuleSetLoader();
-
             URL url = Main.class.getResource( "familyTree.drl" );
+            RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( url );
 
-            System.err.println( "loading: " + url );
-
-            List ruleSets = loader.load( url );
-
-            Iterator ruleSetIter = ruleSets.iterator();
-            RuleSet  eachRuleSet = null;
-
-            while ( ruleSetIter.hasNext() )
-            {
-                eachRuleSet = (RuleSet) ruleSetIter.next();
-
-                ruleBase.addRuleSet( eachRuleSet );
-            }
 
             // Create a [org.drools.WorkingMemory] to be the
             // container for your facts
             
-            final WorkingMemory workingMemory = ruleBase.createWorkingMemory();
-
-            try
-            {
-                              
+            final WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
                 // Now, simply assert them into the [org.drools.WorkingMemory]
                 // and let the logic engine do the rest.
 
                 workingMemory.assertObject( getFamilyTree(workingMemory) );
-            }
-            catch (AssertionException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        catch (DroolsException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }
