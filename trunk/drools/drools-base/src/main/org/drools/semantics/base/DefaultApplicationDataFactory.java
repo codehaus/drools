@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: DefaultApplicationDataFactory.java,v 1.1 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: DefaultApplicationDataFactory.java,v 1.2 2004-12-06 00:45:30 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,7 +50,7 @@ public class DefaultApplicationDataFactory
     implements
     ApplicationDataFactory
 {
-    public ApplicationData newApplicationData(Configuration config) throws FactoryException
+    public ApplicationData newApplicationData( Configuration config ) throws FactoryException
     {
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
@@ -60,9 +60,11 @@ public class DefaultApplicationDataFactory
         {
             clazz = cl.loadClass( config.getText( ) );
         }
-        catch ( Exception e )
+        catch ( ClassNotFoundException e )
         {
-            throw new FactoryException( "Cannot find class [" + config.getText( ) + "] for application data identifier [" + config.getAttribute("identifier")+ "]" );
+            throw new FactoryException(
+                "Cannot find class [" + config.getText( ) + "] for application "
+                + "data identifier [" + config.getAttribute( "identifier" ) + "]" );
         }
 
         return new ApplicationData( config.getAttribute( "identifier" ),

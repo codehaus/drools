@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.3 2004-11-16 14:35:32 simon Exp $
+ * $Id: ClassFieldObjectType.java,v 1.4 2004-12-06 00:45:30 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools.semantics.base;
 
 import org.drools.spi.ObjectType;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -50,7 +51,7 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.3 2004-11-16 14:35:32 simon Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.4 2004-12-06 00:45:30 dbarnett Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
@@ -74,9 +75,9 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      *
      * @param objectTypeClass Java object class.
      */
-    public ClassFieldObjectType(Class objectTypeClass, String fieldName, String fieldValue)
+    public ClassFieldObjectType( Class objectTypeClass, String fieldName, String fieldValue )
     {
-        super(objectTypeClass);
+        super( objectTypeClass );
         this.objectFieldName = fieldName;
         this.objectFieldValue = fieldValue;
     }
@@ -86,7 +87,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      *
      * @return The Java object class.
      */
-    public String getFieldName()
+    public String getFieldName( )
     {
         return this.objectFieldName;
     }
@@ -96,7 +97,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      *
      * @return The Java object class.
      */
-    public String getFieldValue()
+    public String getFieldValue( )
     {
         return this.objectFieldValue;
     }
@@ -114,35 +115,46 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      * @return <code>true</code> if the <code>Object</code> matches this
      *         object type, else <code>false</code>.
      */
-    public boolean matches(Object object)
+    public boolean matches( Object object )
     {
-        if (!getType( ).isInstance( object )) return false;
-
-        if (this.getterMethod == null )
+        if ( !this.getType( ).isInstance( object ) )
         {
-            String fieldName = getFieldName( );
-            String fieldGetter = "get" + fieldName.toUpperCase().charAt(0)
-                                 + fieldName.substring(1);
+            return false;
+        }
+
+        if ( this.getterMethod == null )
+        {
+            String fieldName = this.getFieldName( );
+            String fieldGetter = "get" + fieldName.toUpperCase( ).charAt( 0 )
+                                 + fieldName.substring( 1 );
             try
             {
-                getterMethod = getType( ).getMethod(fieldGetter, null);
+                this.getterMethod = getType( ).getMethod( fieldGetter, null );
             }
-            catch (Exception e)
+            catch ( NoSuchMethodException e )
             {
                 // shouldn't happen, this is checked in factory
+                return false;
             }
         }
+        
+        boolean result;
         try
         {
-            return getterMethod.invoke(object, null).equals( getFieldValue() );
+            result = this.getterMethod.invoke( object, null ).equals( this.getFieldValue( ) );
         }
-        catch (Exception e)
+        catch ( IllegalAccessException e )
         {
-               // shouldn't happen, this is checked in factory
+            // shouldn't happen, this is checked in factory
+            result = false;
+        }
+        catch ( InvocationTargetException e )
+        {
+            // shouldn't happen, this is checked in factory
+            result = false;
         }
 
-        return false;
-
+        return result;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -157,9 +169,9 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      * @return <code>true</code> if <code>thatObj</code> is equal to this,
      *         otherwise <code>false</code>.
      */
-    public boolean equals(Object thatObj)
+    public boolean equals( Object thatObj )
     {
-        if (this == thatObj)
+        if ( this == thatObj )
         {
             return true;
         }
@@ -180,15 +192,15 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
      *
      * @return The hash.
      */
-    public int hashCode()
+    public int hashCode( )
     {
-        return getType( ).hashCode( ) ^ getFieldName().hashCode( ) ^ getFieldValue().hashCode();
+        return getType( ).hashCode( ) ^ getFieldName().hashCode( ) ^ getFieldValue( ).hashCode( );
     }
 
-    public String toString()
+    public String toString( )
     {
         String fieldName = getFieldName( );
-        return getType( ).getName( ) + ".get" + fieldName.toUpperCase().charAt(0)
-               + fieldName.substring(1) + "(\"" + getFieldValue( ) + "\")";
+        return getType( ).getName( ) + ".get" + fieldName.toUpperCase( ).charAt( 0 )
+               + fieldName.substring( 1 ) + "(\"" + getFieldValue( ) + "\")";
     }
 }
