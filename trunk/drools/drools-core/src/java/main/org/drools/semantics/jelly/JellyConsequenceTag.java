@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequenceTag.java,v 1.3 2002-08-29 14:49:48 bob Exp $
+ $Id: JellyConsequenceTag.java,v 1.4 2002-11-19 16:21:07 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyConsequenceTag.java,v 1.3 2002-08-29 14:49:48 bob Exp $
+ *  @version $Id: JellyConsequenceTag.java,v 1.4 2002-11-19 16:21:07 bob Exp $
  */
 public class JellyConsequenceTag extends TagSupport implements DynaTag
 {
@@ -115,5 +115,10 @@ public class JellyConsequenceTag extends TagSupport implements DynaTag
                              Object value)
     {
         // intentionally left blank
+    }
+
+    public Class getAttributeType(String name)
+    {
+        return Object.class;
     }
 }
