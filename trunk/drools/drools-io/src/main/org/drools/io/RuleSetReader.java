@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.19 2004-09-17 00:25:09 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.20 2004-09-23 23:14:06 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -87,7 +87,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.19 2004-09-17 00:25:09 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.20 2004-09-23 23:14:06 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -674,6 +674,7 @@ public class RuleSetReader extends DefaultHandler
     protected void startRule(Rule rule, Attributes attrs) throws SAXException
     {
         String salienceStr = attrs.getValue( "salience" );
+        String noLoopStr = attrs.getValue("no-loop");
         String ruleDesc = attrs.getValue( "description" );
 
         if ( !( salienceStr == null || salienceStr.trim( ).equals( "" ) ) )
@@ -693,6 +694,25 @@ public class RuleSetReader extends DefaultHandler
                                              getLocator( ) );
             }
         }
+
+        if ( !( noLoopStr == null || noLoopStr.trim( ).equals( "" ) ) )
+        {
+            try
+            {
+                boolean noLoop = new Boolean( noLoopStr.trim( ) ).booleanValue();
+                rule.setNoLoop( noLoop );
+            }
+            catch ( NumberFormatException e )
+            {
+                throw new SAXParseException(
+                                             "invalid boolean value for 'no-loop' attribute: "
+                                                                                                                                                                                    + salienceStr
+                                                                                                                                                                                                 .trim( ),
+                                             getLocator( ) );
+            }
+        }        
+
+        
 
         if ( !( ruleDesc == null || ruleDesc.trim( ).equals( "" ) ) )
         {
