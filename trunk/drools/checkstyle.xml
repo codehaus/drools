@@ -198,36 +198,38 @@
         <module name="UpperEll"/>
 
 	<!-- Programming Practice -->
-        <module name="ReturnCountCheck"/> 
-        <module name="AbstractClassNameCheck"/> 
-        <module name="NestedTryDepthCheck"/> 
-        <module name="NestedIfDepthCheck"/> 
-        <module name="IllegalCatchCheck"/> 
-        <module name="ThrowsCountCheck"/> 
-        <module name="IllegalTypeCheck"/> 
-        <module name="IllegalTokenCheck"/> 
-        <module name="ParameterAssignmentCheck"/> 
-        <module name="PackageDeclarationCheck"/> 
-        <module name="MutableExceptionCheck"/> 
-        <module name="BooleanExpressionComplexityCheck"/> 
-        <module name="CyclomaticComplexityCheck"/> 
-        <module name="NPathComplexityCheck"/> 
-        <module name="ExecutableStatementCountCheck"/> 
-        <module name="ClassFanOutComplexityCheck"/> 
-        <module name="ClassDataAbstractionCouplingCheck"> 
+        <module name="ReturnCount"/> 
+        <module name="AbstractClassName"/> 
+        <module name="NestedTryDepth"/> 
+        <module name="NestedIfDepth"/> 
+        <module name="IllegalCatch"/> 
+        <module name="ThrowsCount"> 
+	    <property name="max" value="2"/>
+	</module>
+        <module name="IllegalType"/> 
+        <module name="IllegalToken"/> 
+        <module name="ParameterAssignment"/> 
+        <module name="PackageDeclaration"/> 
+        <module name="MutableException"/> 
+        <module name="BooleanExpressionComplexity"/> 
+        <module name="CyclomaticComplexity"/> 
+        <module name="NPathComplexity"/> 
+        <module name="ExecutableStatementCount"/> 
+        <module name="ClassFanOutComplexity"/> 
+        <module name="ClassDataAbstractionCoupling"> 
             <property name="max" value="10"/> 
         </module> 
 
 	<!--
 	Looks like we will need Simon's own CheckStyle Check JAR to use these:
 	http://www.redhillconsulting.com.au/blogs/simon/archives/000137.html
-	<module name="au.com.redhillconsulting.jamaica.tools.checkstyle.FinalFieldCheck"/>
-        <module name="au.com.redhillconsulting.jamaica.tools.checkstyle.ReturnFromCatchCheck"/> 
-        <module name="au.com.redhillconsulting.jamaica.tools.checkstyle.ReturnFromFinallyCheck"/> 
+	<module name="au.com.redhillconsulting.jamaica.tools.checkstyle.FinalField"/>
+        <module name="au.com.redhillconsulting.jamaica.tools.checkstyle.ReturnFromCatch"/> 
+        <module name="au.com.redhillconsulting.jamaica.tools.checkstyle.ReturnFromFinally"/> 
 	-->
 	<!--
 	I have no idea where this check is supposed to come from:
-        <module name="IllegalThrowsCheck"/> 
+        <module name="IllegalThrows"/> 
 	-->
 
     </module>
