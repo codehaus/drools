@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.25 2004-11-30 00:32:54 simon Exp $
+ * $Id: TupleSet.java,v 1.26 2004-11-30 05:31:09 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -73,6 +73,18 @@ class TupleSet
     TupleSet()
     {
         this.tuples = new HashMap( );
+    }
+
+    /**
+     * Construct.
+     * @param initialCapacity The initial capacity of the set.
+     * @param loadFactor The load factor of the set.
+     */
+    TupleSet( int initialCapacity,
+              float loadFactor )
+    {
+        this.tuples = new HashMap( initialCapacity,
+                                   loadFactor );
     }
 
     /**

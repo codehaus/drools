@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.34 2004-11-30 00:32:54 simon Exp $
+ * $Id: JoinNode.java,v 1.35 2004-11-30 05:31:09 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -70,10 +71,10 @@ class JoinNode extends TupleSource
     /** The right input <code>TupleSource</code>. */
     private final TupleSource rightInput;
 
-    /**
-     * A <code>Set</code> of <code>Declarations</code> common to both left
-     * and right input sources.
-     */
+    /** <code>Declarations</code> in both left and right input sources combined. */
+    private final Set tupleDeclarations;
+
+    /** <code>Declarations</code> common to both left and right input sources. */
     private final Set commonDeclarations;
 
     // ------------------------------------------------------------
@@ -93,6 +94,7 @@ class JoinNode extends TupleSource
     {
         this.leftInput = leftInput;
         this.rightInput = rightInput;
+        this.tupleDeclarations = determineTupleDeclarations( );
         this.commonDeclarations = determineCommonDeclarations( );
 
         leftInput.setTupleSink( new JoinNodeInput( this,
@@ -103,7 +105,7 @@ class JoinNode extends TupleSource
 
     public String toString()
     {
-        return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + getTupleDeclarations( ) + "]";
+        return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + this.tupleDeclarations + "]";
     }
 
     // ------------------------------------------------------------
@@ -116,24 +118,11 @@ class JoinNode extends TupleSource
      */
     private Set determineCommonDeclarations()
     {
-        Set commonDeclarations = new HashSet( );
+        Set commonDeclarations = new HashSet( leftInput.getTupleDeclarations( ) );
 
-        Set leftDecls = leftInput.getTupleDeclarations( );
+        commonDeclarations.retainAll( rightInput.getTupleDeclarations( ) );
 
-        Iterator declIter = rightInput.getTupleDeclarations( ).iterator( );
-        Declaration eachDecl;
-
-        while ( declIter.hasNext( ) )
-        {
-            eachDecl = (Declaration) declIter.next( );
-
-            if ( leftDecls.contains( eachDecl ) )
-            {
-                commonDeclarations.add( eachDecl );
-            }
-        }
-
-        return commonDeclarations;
+        return commonDeclarations.isEmpty( ) ? Collections.EMPTY_SET : Collections.unmodifiableSet( commonDeclarations );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -312,11 +301,15 @@ class JoinNode extends TupleSource
      */
     public Set getTupleDeclarations()
     {
-        Set decls = new HashSet( );
+        return this.tupleDeclarations;
+    }
 
-        decls.addAll( leftInput.getTupleDeclarations( ) );
+    private Set determineTupleDeclarations()
+    {
+        Set decls = new HashSet( leftInput.getTupleDeclarations( ) );
+
         decls.addAll( rightInput.getTupleDeclarations( ) );
 
-        return decls;
+        return Collections.unmodifiableSet( decls );
     }
 }

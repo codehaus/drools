@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.49 2004-11-30 00:32:54 simon Exp $
+ * $Id: JoinMemory.java,v 1.50 2004-11-30 05:31:09 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -244,7 +244,7 @@ class JoinMemory
     private TupleSet attemptJoin( ReteTuple tuple,
                                   TupleSet tupleSet )
     {
-        TupleSet newJoined = new TupleSet( );
+        TupleSet newJoined = new TupleSet( tupleSet.size( ), 1 );
 
         attemptJoin( tuple,
                      tupleSet,
