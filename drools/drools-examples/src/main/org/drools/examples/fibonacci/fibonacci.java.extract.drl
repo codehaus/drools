@@ -13,13 +13,13 @@
       <java:class>java.lang.Integer</java:class>
     </declaration>
 
-    <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>    
+    <java:extractor target="sequence">new Integer(f.getSequence())</java:extractor>
 
     <declaration identifier="value" >
       <java:class>java.lang.Long</java:class>
     </declaration>
 
-    <java:extractor target="value">new Long(f.getSequence())</java:extractor>
+    <java:extractor target="value">new Long(f.getValue())</java:extractor>
 
     <java:condition>sequence.intValue() == 1</java:condition>
     <java:condition>value.longValue() == -1</java:condition>
