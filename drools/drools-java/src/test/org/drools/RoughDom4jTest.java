@@ -79,7 +79,7 @@ public class RoughDom4jTest extends TestCase
             rule.addParameterDeclaration( doc2 );
 
             Declaration id = new Declaration( new JavaObjectType( String.class ),
-                                              "name" );
+                                              "id" );
             
             FactExtractor aExtract = new Dom4jXPathFactExtractor( doc1,
                                                                   new XPath( "string(/a/@id)" ) );
