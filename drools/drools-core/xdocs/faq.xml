@@ -13,7 +13,7 @@
     
     <subsection name="What is drools?">
       <p>
-      <b>drools</b> is a dynamic rules engine for Java, based upon the
+      <code>drools</code> is a dynamic rules engine for Java, based upon the
       Rete/Rete-OO algorithm and supported by a pluggable semantics modules.
       </p>
     </subsection>
