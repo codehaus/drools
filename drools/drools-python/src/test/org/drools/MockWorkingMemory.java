@@ -101,6 +101,11 @@ public class MockWorkingMemory
         return null;
     }
 
+    public List getFactHandles()
+    {
+        return null;
+    }
+
     public boolean containsObject(FactHandle handle)
     {
         return false;

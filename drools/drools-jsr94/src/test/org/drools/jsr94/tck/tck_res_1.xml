@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rule-set name="RuleExecutionSet1"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java">
+
+    <rule name="Rule1" description="Rule #1">
+        <parameter identifier="customer">
+            <java:class>org.jcp.jsr94.tck.model.Customer</java:class>
+        </parameter>
+        <parameter identifier="invoice">
+            <java:class>org.jcp.jsr94.tck.model.Invoice</java:class>
+        </parameter>
+
+        <java:condition><![CDATA[
+            customer.getCreditLimit() > invoice.getAmount()
+        ]]></java:condition>
+        <java:condition><![CDATA[
+            "unpaid".equals(invoice.getStatus())
+        ]]></java:condition>
+
+        <java:consequence>
+            customer.setCreditLimit(customer.getCreditLimit() - invoice.getAmount());
+            invoice.setStatus("paid");
+	    System.out.println("The credit limit of the customer is " + customer.getCreditLimit());
+	    System.out.println("The status of the invoice is " + invoice.getStatus());
+        </java:consequence>
+    </rule>
+
+</rule-set>
+

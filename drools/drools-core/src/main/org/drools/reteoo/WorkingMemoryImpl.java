@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.15 2004-06-25 02:10:36 mproctor Exp $
+ $Id: WorkingMemoryImpl.java,v 1.16 2004-07-06 20:16:40 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -65,7 +65,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: WorkingMemoryImpl.java,v 1.15 2004-06-25 02:10:36 mproctor Exp $
+ *  @version $Id: WorkingMemoryImpl.java,v 1.16 2004-07-06 20:16:40 dbarnett Exp $
  */
 class WorkingMemoryImpl
     implements WorkingMemory
@@ -313,6 +313,13 @@ class WorkingMemoryImpl
     public List getObjects()
     {
         return new ArrayList( this.objects.values() );
+    }
+
+    /** @see WorkingMemory
+     */
+    public List getFactHandles()
+    {
+        return new ArrayList( this.objects.keySet() );
     }
 
     /** @see WorkingMemory
