@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.33 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: TupleKey.java,v 1.34 2004-12-15 20:58:01 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -88,7 +88,7 @@ class TupleKey
                     FactHandle handle)
     {
         this.handles = new FactHandleList( declaration.getIndex( ),
-                                           ( FactHandleImpl ) handle );
+                                           handle );
     }
 
     public String toString()
