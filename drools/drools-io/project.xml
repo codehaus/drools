@@ -67,7 +67,7 @@
     </dependencies>
 
     <build>
-        <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
+        <nagEmailAddress>scm@drools.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/main</sourceDirectory>
         <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
         <integrationUnitTestSourceDirectory/>
