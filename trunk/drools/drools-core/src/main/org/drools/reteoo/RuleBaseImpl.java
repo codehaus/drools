@@ -50,19 +50,19 @@ public class RuleBaseImpl
         return this.rete;
     }
 
-    public void assertObject(FactHandle handle,
-                             Object object,
-                             WorkingMemoryImpl workingMemory)
+    void assertObject(FactHandle handle,
+                      Object object,
+                      WorkingMemoryImpl workingMemory)
         throws FactException
     {
         getRete().assertObject( handle,
                                 object,
                                 workingMemory );
     }
-
-    public void retractObject(FactHandle handle,
-                              Object object,
-                              WorkingMemoryImpl workingMemory)
+    
+    void retractObject(FactHandle handle,
+                       Object object,
+                       WorkingMemoryImpl workingMemory)
         throws FactException
     {
         getRete().retractObject( handle,
@@ -70,9 +70,9 @@ public class RuleBaseImpl
                                  workingMemory );
     }
 
-    public void modifyObject(FactHandle handle,
-                             Object object,
-                             WorkingMemoryImpl workingMemory)
+    void modifyObject(FactHandle handle,
+                      Object object,
+                      WorkingMemoryImpl workingMemory)
         throws FactException
     {
         getRete().modifyObject( handle,

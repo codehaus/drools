@@ -11,7 +11,7 @@ import org.drools.FactException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface TupleSink
+interface TupleSink
 {
     /** Assert a new <code>Tuple</code>.
      *

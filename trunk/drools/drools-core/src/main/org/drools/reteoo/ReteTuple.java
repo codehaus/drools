@@ -15,7 +15,7 @@ import java.util.HashSet;
  *  
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ReteTuple
+class ReteTuple
     implements Tuple
 {
     // ------------------------------------------------------------

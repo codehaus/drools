@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.27 2003-10-28 05:00:39 bob Exp $
+ $Id: Builder.java,v 1.28 2003-10-28 06:18:48 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -195,7 +195,7 @@ public class Builder
      *  @return A <code>Set</code> of <code>ParameterNodes</code> created
      *          and linked into the network.
      */
-    protected Set createParameterNodes(Rule rule)
+    Set createParameterNodes(Rule rule)
     {
         Set leafNodes = new HashSet();
 
@@ -241,8 +241,8 @@ public class Builder
      *  @param leafNodes The current attachable leaf nodes
      *         of the network.
      */
-    protected void attachConditions(Set conds,
-                                    Set leafNodes)
+    void attachConditions(Set conds,
+                          Set leafNodes)
     {
         Iterator        condIter    = conds.iterator();
         Condition       eachCond    = null;
@@ -281,8 +281,8 @@ public class Builder
      *  @return <code>true</code> if a join was possible,
      *          otherwise, <code>false</code>.
      */
-    protected boolean joinForCondition(Set conds,
-                                       Set leafNodes)
+    boolean joinForCondition(Set conds,
+                             Set leafNodes)
     {
         return joinArbitrary( leafNodes );
     }
@@ -292,7 +292,7 @@ public class Builder
      *
      *  @param leafNodes Available leaf nodes.
      */
-    protected boolean joinArbitrary(Set leafNodes)
+    boolean joinArbitrary(Set leafNodes)
     {
         Iterator leafIter = leafNodes.iterator();
 
@@ -335,7 +335,7 @@ public class Builder
      *  @return <code>true</code> if at least one <code>JoinNode</code>
      *          was created, else <code>false</code>.
      */
-    protected boolean createJoinNodes(Set leafNodes)
+    boolean createJoinNodes(Set leafNodes)
     {
         boolean performedJoin = false;
 
@@ -398,8 +398,8 @@ public class Builder
      *          at least one common member declaration), else
      *          <code>false</code>.
      */
-    protected boolean canBeJoined(TupleSource left,
-                                  TupleSource right)
+    boolean canBeJoined(TupleSource left,
+                        TupleSource right)
     {
         Set      leftDecls     = left.getTupleDeclarations();
         Iterator rightDeclIter = right.getTupleDeclarations().iterator();
@@ -431,8 +431,8 @@ public class Builder
      *  @return <code>true</code> if fact extractions have been
      *          attached, otherwise <code>false</code>.
      */
-    protected boolean attachExtractions(Set factExtracts,
-                                        Set leafNodes)
+    boolean attachExtractions(Set factExtracts,
+                              Set leafNodes)
     {
         boolean attached      = false;
         boolean cycleAttached = false;
@@ -490,8 +490,8 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSource findMatchingTupleSourceForCondition(Condition condition,
-                                                                  Set sources)
+    TupleSource findMatchingTupleSourceForCondition(Condition condition,
+                                                    Set sources)
     {
         Iterator        sourceIter = sources.iterator();
         TupleSource eachSource = null;
@@ -523,8 +523,8 @@ public class Builder
      *  @return Matching <code>TupleSource</code> if a suitable one
      *          can be found, else <code>null</code>.
      */
-    protected TupleSource findMatchingTupleSourceForExtraction(Extraction extract,
-                                                                   Set sources)
+    TupleSource findMatchingTupleSourceForExtraction(Extraction extract,
+                                                     Set sources)
     {
         Declaration targetDecl = extract.getTargetDeclaration();
 
@@ -564,8 +564,8 @@ public class Builder
      *          super-set of the <code>Declarations</code> required by the
      *          <code>Condition</code>.
      */
-    protected boolean matches(Condition condition,
-                              Set declarations)
+    boolean matches(Condition condition,
+                    Set declarations)
     {
         return matches( condition.getRequiredTupleMembers(),
                         declarations );
@@ -581,8 +581,8 @@ public class Builder
      *          super-set of the <code>Declarations</code> required by the
      *          <code>Condition</code>.
      */
-    protected boolean matches(Extraction extract,
-                              Set declarations)
+    boolean matches(Extraction extract,
+                    Set declarations)
     {
         return matches( extract.getRequiredTupleMembers(),
                         declarations );
@@ -598,8 +598,8 @@ public class Builder
      *          super-set of the <code>Declarations</code> required by the
      *          <code>Condition</code>.
      */
-    protected boolean matches(Declaration[] requiredDecls,
-                              Set declarations)
+    boolean matches(Declaration[] requiredDecls,
+                    Set declarations)
     {
         for ( int i = 0 ; i < requiredDecls.length ; ++i )
         {
