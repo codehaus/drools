@@ -97,15 +97,4 @@
       </java>
     </goal>
 
-    <postGoal name="jxr:generate">
-      <jxr:jxr
-        basedir="${basedir}"
-        sourceDir="./src/java/examples"
-        destDir="${maven.jxr.destdir}"
-        javadocDir="${maven.javadoc.destdir}"
-        imageFolder="${basedir}/xdocs/images/folder.gif"
-        imageFile="${basedir}/xdocs/images/file.gif">
-      </jxr:jxr>
-    </postGoal>
-
 </project>
