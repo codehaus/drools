@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Tuple.java,v 1.9 2004-03-26 15:16:28 bob Exp $
+ $Id: Tuple.java,v 1.10 2004-06-18 19:03:37 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -53,13 +53,14 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 
-/** A mapping of <code>Declaration</code>s to current fact values.
+/**
+ * A mapping of <code>Declaration</code>s to current fact values.
  *
  *  @see Declaration
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Tuple.java,v 1.9 2004-03-26 15:16:28 bob Exp $
+ *  @version $Id: Tuple.java,v 1.10 2004-06-18 19:03:37 n_alex Exp $
  */
 public interface Tuple
 {
@@ -96,7 +97,17 @@ public interface Tuple
      */
     FactHandle getFactHandleForObject(Object object);
 
+    /**
+     * Returns a reference to the <code>Rule</code> associated
+     * with this object.
+     * @return Rule
+     */
     Rule getRule();
 
+    /**
+     * Returns a reference to the <code>WorkingMemory</code>
+     * associated with this object.
+     * @return WorkingMemory
+     */
     WorkingMemory getWorkingMemory();
 }

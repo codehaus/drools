@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: Configuration.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ $Id: Configuration.java,v 1.2 2004-06-18 19:03:37 n_alex Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -55,14 +55,9 @@ package org.drools.smf;
  *  may contain attributes, children and text.
  *  </p>
  *
- *  @see ConfigurableObjectType
- *  @see ConfigurableCondition
- *  @see ConfigurableExtractor
- *  @see ConfigurableConsequence
- *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Configuration.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ *  @version $Id: Configuration.java,v 1.2 2004-06-18 19:03:37 n_alex Exp $
  */
 public interface Configuration
 {
