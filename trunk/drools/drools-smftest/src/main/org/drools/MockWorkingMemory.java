@@ -2,6 +2,7 @@ package org.drools;
 
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.spi.AgendaFilter;
+import org.drools.spi.AsyncExceptionHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -144,5 +145,10 @@ public class MockWorkingMemory implements WorkingMemory
     public void modifyObject(FactHandle handle, Object object) throws FactException
     {
         //
+    }
+
+    public void setAsyncExceptionHandler(AsyncExceptionHandler handler)
+    {
+        
     }
 }
