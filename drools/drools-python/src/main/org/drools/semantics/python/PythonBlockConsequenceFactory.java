@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
-* $Id: PythonBlockConsequenceFactory.java,v 1.1 2004-12-07 15:17:10 simon Exp $
+* $Id: PythonBlockConsequenceFactory.java,v 1.2 2004-12-08 23:07:50 simon Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -61,7 +61,7 @@ public class PythonBlockConsequenceFactory
     public Consequence newConsequence( Configuration config,
                                        Rule rule ) throws FactoryException
     {
-        return new BlockConsequence( config.getText( ),
+        return new PythonBlockConsequence( config.getText( ),
                                      rule );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: ExprCondition.java,v 1.14 2004-12-07 15:44:36 simon Exp $
+ * $Id: PythonCondition.java,v 1.1 2004-12-08 23:07:50 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,32 +41,46 @@ package org.drools.semantics.python;
  *
  */
 
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
+import org.python.core.PyObject;
+import org.python.core.__builtin__;
 
 /**
  * Python expression semantics <code>Condition</code>.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- *
- * @version $Id: ExprCondition.java,v 1.14 2004-12-07 15:44:36 simon Exp $
  */
-public class ExprCondition extends Eval implements Condition
+public class PythonCondition extends PythonInterp implements Condition
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Required declarations. */
+    private Declaration[] requiredDeclarations;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param expr The expression.
      */
-    public ExprCondition( String expr, Rule rule ) throws Exception
+    public PythonCondition( String text,
+                            Rule rule ) throws Exception
     {
-        super( expr, rule );
+        super( text,
+               rule,
+               "eval" );
+
+        ExprAnalyzer analyzer = new ExprAnalyzer();
+
+        this.requiredDeclarations = analyzer.analyze( getNode( ),
+                                                      rule.getParameterDeclarations( ) );
     }
 
     // ------------------------------------------------------------
@@ -88,11 +102,16 @@ public class ExprCondition extends Eval implements Condition
      *
      * @throws ConditionException if an error occurs during filtering.
      */
-    public boolean isAllowed(Tuple tuple) throws ConditionException
+    public boolean isAllowed( Tuple tuple ) throws ConditionException
     {
         try
         {
-            Object answer = evaluate( tuple );
+
+            PyObject result = __builtin__.eval( getCode( ),
+                                                setUpDictionary( tuple ),
+                                                getGlobals( ) );
+
+            Object answer = result.__tojava__( Object.class );
 
             if ( !( answer instanceof Number ) )
             {
@@ -107,6 +126,16 @@ public class ExprCondition extends Eval implements Condition
                                           getRule( ),
                                           getText( ) );
         }
+    }
+
+    /**
+     * Retrieve the array of <code>Declaration</code> s required by this condition to perform its duties.
+     *
+     * @return The array of <code>Declarations</code> expected on incoming <code>Tuples</code>.
+     */
+    public Declaration[] getRequiredTupleMembers()
+    {
+        return this.requiredDeclarations;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,6 +157,6 @@ public class ExprCondition extends Eval implements Condition
             return false;
         }
 
-        return this.getText( ).equals( ( ( Interp ) object ).getText( ) );
+        return this.getText( ).equals( ( ( PythonInterp ) object ).getText( ) );
     }
 }
