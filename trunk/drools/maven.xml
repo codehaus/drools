@@ -153,5 +153,33 @@
         <fileset dir="temp"/>
       </ant:delete>
     </goal>
+
+    <goal name="drools-dist">
+      <copy todir="./lib" flatten="true">
+        <fileset dir=".">
+          <include name="**/drools-*.jar"/>
+        </fileset>
+      </copy>
+
+      <zip destfile="target/drools-${pom.currentVersion}.zip"
+           excludes=".metadata/**, clover/**, **/target/**"
+           basedir="." />
+
+      <tar destfile="target/drools-${pom.currentVersion}.tar.gz"
+           compression="gzip"
+           excludes=".metadata/**, clover/**, **/target/**"
+           basedir="." />
+    </goal>
+
+    <goal name="drools-src-dist">
+      <zip destfile="target/drools-src-${pom.currentVersion}.zip"
+           excludes=".metadata/**, clover/**, **/target/**, lib/**"
+           basedir="." />
+
+      <tar destfile="target/drools-src-${pom.currentVersion}.tar.gz"
+           compression="gzip"
+           excludes=".metadata/**, clover/**, **/target/**, lib/**"
+           basedir="." />
+    </goal>
 </project>
 
