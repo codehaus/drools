@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.31 2004-09-17 00:52:44 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.32 2004-09-17 00:59:56 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -59,7 +59,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: ReteTuple.java,v 1.31 2004-09-17 00:52:44 mproctor Exp $
+ * @version $Id: ReteTuple.java,v 1.32 2004-09-17 00:59:56 mproctor Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -193,7 +193,7 @@ class ReteTuple implements Tuple, Serializable
         this.objectToHandle.putAll( that.objectToHandle );
         this.isChanged = true;
 
-        long[] conditionTimeStamps = getConditionTimeStamps( );
+        long[] conditionTimeStamps = that.getConditionTimeStamps( );
         for ( int i = 0; i < conditionTimeStamps.length; i++ )
         {
             if ( conditionTimeStamps[i] > 0 )
