@@ -74,8 +74,13 @@ public class WorkingMemory
         getRuleBase().assertObject( object,
                                     this );
 
-        Agenda agenda = getAgenda();
+        fireAgenda();
+    }
 
+    private void fireAgenda() throws AssertionException
+    {
+        Agenda agenda = getAgenda();
+        
         // If we're already firing a rule, then it'll pick up
         // the firing for any other assertObject(..) that get
         // nested inside, avoiding concurrent-modification
@@ -107,8 +112,6 @@ public class WorkingMemory
      */
     public void retractObject(Object object) throws RetractionException
     {
-        getAgenda().retractObject( object );
-
         getRuleBase().retractObject( object,
                                      this );
     }
@@ -123,12 +126,12 @@ public class WorkingMemory
      *
      *  @throws ModificationException if an error occurs during modification.
      */
-    public void modifyObject(Object object) throws ModificationException
+    public void modifyObject(Object object) throws FactException
     {
-        getAgenda().modifyObject( object );
-
         getRuleBase().modifyObject( object,
                                     this );
+
+        fireAgenda();
     }
 
     /** Retrieve the {@link JoinMemory} for a particular {@link JoinNode}.

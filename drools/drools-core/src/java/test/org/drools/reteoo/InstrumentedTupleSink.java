@@ -43,6 +43,14 @@ public class InstrumentedTupleSink implements TupleSink
         this.retractedKeys.add( key );
     }
 
+    public void modifyTuples(TupleSource tupleSource,
+                             Object trigger,
+                             TupleSet tupleSet,
+                             WorkingMemory workingMemory)
+    {
+
+    }
+
     public List getRetractedObjects()
     {
         return this.retractedObjects;
@@ -52,4 +60,5 @@ public class InstrumentedTupleSink implements TupleSink
     {
         return this.retractedKeys;
     }
+
 }

@@ -84,6 +84,20 @@ public class TerminalNode implements TupleSink
     public void retractTuples(TupleKey key,
                               WorkingMemory workingMemory) 
     {
+        Agenda agenda = workingMemory.getAgenda();
 
+        agenda.removeFromAgenda( key,
+                                 getAction() );
+    }
+
+    public void modifyTuples(TupleSource tupleSource,
+                             Object trigger,
+                             TupleSet newTuples,
+                             WorkingMemory workingMemory)
+    {
+        Agenda agenda = workingMemory.getAgenda();
+
+        agenda.modifyAgenda( newTuples,
+                             getAction() );
     }
 }

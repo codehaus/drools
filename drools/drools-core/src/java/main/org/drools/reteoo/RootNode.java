@@ -2,6 +2,7 @@
 package org.drools.reteoo;
 
 import org.drools.WorkingMemory;
+import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.ModificationException;
@@ -92,7 +93,7 @@ public class RootNode
      *  @throws DroolsException if an error occurs during assertion.
      */
     public void modifyObject(Object object,
-                             WorkingMemory workingMemory) throws ModificationException
+                             WorkingMemory workingMemory) throws FactException
     {
         Iterator       nodeIter = getObjectTypeNodeIterator();
         ObjectTypeNode eachNode = null;
