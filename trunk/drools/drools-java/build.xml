@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: build.xml,v 1.45 2003-07-04 14:44:58 tdiesler Exp $ -->
+<!-- $Id: build.xml,v 1.46 2003-08-19 22:18:08 tdiesler Exp $ -->
 
 <project default="jar" name="drools" basedir=".">
 
@@ -300,9 +300,7 @@
         <get dest="${libdir}/commons-logging-1.0.3.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-logging/jars/commons-logging-1.0.3.jar"/>
         <get dest="${libdir}/dom4j-1.4.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/dom4j/jars/dom4j-1.4.jar"/>
         <get dest="${libdir}/junit-3.8.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar"/>
-        <!-- copied/renamed jython to our common-lib (also removed the oro classes)
-        <get dest="${libdir}/jython-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jython/jars/jython-SNAPSHOT.jar"/>
-        -->
+        <get dest="${libdir}/jython-20020827-no-oro.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jython/jars/jython-20020827-no-oro.jar"/>
         <get dest="${libdir}/oro-2.0.7.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/oro/jars/oro-2.0.7.jar"/>
         <get dest="${libdir}/xerces-2.3.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-2.3.0.jar"/>
         <get dest="${libdir}/xml-apis-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xml-apis/jars/xml-apis-2.0.2.jar"/>
