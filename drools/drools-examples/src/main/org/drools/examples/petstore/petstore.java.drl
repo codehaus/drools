@@ -6,8 +6,8 @@
 
 
     <!-- assert each item in the shopping cart into the Working Memory -->
-    <rule name="Explode Cart">
-        <parameter identifier="cart" salience="20">
+    <rule name="Explode Cart" salience="20">
+        <parameter identifier="cart">
             <java:class>org.drools.examples.petstore.ShoppingCart</java:class>
         </parameter>
 
