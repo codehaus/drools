@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: BlockConsequenceFactory.java,v 1.5 2004-11-29 12:14:43 simon Exp $
+ * $Id: GroovyBlockConsequenceFactory.java,v 1.1 2004-12-07 15:17:10 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,11 +47,13 @@ import org.drools.smf.ConsequenceFactory;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Consequence;
 
-public class BlockConsequenceFactory implements ConsequenceFactory
+public class GroovyBlockConsequenceFactory
+    implements
+    ConsequenceFactory
 {
-    private static final BlockConsequenceFactory INSTANCE = new BlockConsequenceFactory( );
+    private static final GroovyBlockConsequenceFactory INSTANCE = new GroovyBlockConsequenceFactory( );
 
-    public static BlockConsequenceFactory getInstance()
+    public static GroovyBlockConsequenceFactory getInstance()
     {
         return INSTANCE;
     }
