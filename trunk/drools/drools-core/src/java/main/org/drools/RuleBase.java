@@ -7,6 +7,8 @@ import org.drools.reteoo.ReteConstructionException;
 import org.drools.spi.Rule;
 import org.drools.spi.RuleSet;
 
+import java.util.Iterator;
+
 /** Collection of {@link Rule}s.
  *
  *  @author <a href="bob@werken.com">bob@werken.com</a>
@@ -21,6 +23,32 @@ public class RuleBase
     public RuleBase()
     {
         this.rootNode = new RootNode();
+    }
+
+    /** Add a <code>RuleSet</code> of <code>Rules</code> to this <code>RuleBase</code>.
+     *
+     *  <p>
+     *  A <code>RuleSet</code> may be added to multiple <code>RuleBases</code>.
+     *  Any changes to a <code>RuleSet</code> or its component <code>Rule</code>
+     *  once it has been added are ignored.
+     *  </p>
+     *
+     *  @param ruleSet The <code>RuleSet</code> to add.
+     *
+     *  @throws ReteConstructionException If a member rule does not allow for
+     *          complete and correct integration into the underlying Rete network.
+     */
+    public void addRuleSet(RuleSet ruleSet) throws ReteConstructionException
+    {
+        Iterator ruleIter = ruleSet.getRuleIterator();
+        Rule     eachRule = null;
+
+        while ( ruleIter.hasNext() )
+        {
+            eachRule = (Rule) ruleIter.next();
+
+            addRule( eachRule );
+        }
     }
 
     /** Add a <code>Rule</code> to this <code>RuleBase</code>.

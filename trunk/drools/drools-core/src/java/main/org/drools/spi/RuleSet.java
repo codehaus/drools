@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 /** Collection of related {@link Rule}s.
  *
@@ -104,5 +105,10 @@ public class RuleSet
     public Collection getRules()
     {
         return this.rules.values();
+    }
+
+    public Iterator getRuleIterator()
+    {
+        return this.rules.values().iterator();
     }
 }
