@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.13 2004-07-04 11:59:56 mproctor Exp $
+ $Id: Expr.java,v 1.14 2004-07-20 21:23:29 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -45,11 +45,13 @@ package org.drools.semantics.java;
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
  */
-
-import bsh.NameSpace;
-import bsh.Interpreter;
+import net.janino.ScriptEvaluator;
+import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelper;
 
 import org.drools.rule.Declaration;
+
+import java.lang.reflect.InvocationTargetException;
 
 /** Base class for expression-based Java semantic components.
  *
@@ -58,7 +60,7 @@ import org.drools.rule.Declaration;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.13 2004-07-04 11:59:56 mproctor Exp $
+ *  @version $Id: Expr.java,v 1.14 2004-07-20 21:23:29 mproctor Exp $
  */
 public class Expr
     extends Interp
@@ -70,8 +72,6 @@ public class Expr
     /** Empty declaration array. */
     private static final Declaration[] EMPTY_DECLS = new Declaration[0];
 
-    private static int counter = 0;
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -79,9 +79,9 @@ public class Expr
     /** Required declarations. */
     private Declaration[] requiredDecls;
 
-    private String methodName;
+    private ScriptEvaluator code;
 
-    private NameSpace ns;
+    private Class returnType;
 
     protected Expr()
         throws Exception
@@ -102,13 +102,14 @@ public class Expr
      *          attempting to perform configuration.
      */
     protected Expr(String expr,
-                   Declaration[] availDecls)
+                   Declaration[] availDecls, Class returnType)
         throws Exception
     {
+        super(expr);
+
+        this.returnType = returnType;
         this.requiredDecls = analyze( expr,
                                       availDecls );
-
-        setText( expr );
     }
 
     // ------------------------------------------------------------
@@ -124,55 +125,44 @@ public class Expr
         return getText();
     }
 
-    public void setText(String text)
+    private void compile(Tuple tuple) throws Exception
     {
-        this.methodName = "drools$expression$" + (++counter);
+        String[] paramNames = new String[this.requiredDecls.length + 2];
+        Class[] paramTypes = new Class[this.requiredDecls.length + 2];
+        String expr = getPreparedText(tuple, this.requiredDecls, paramNames, paramTypes);
 
-        this.ns = new NameSpace( getInterpreter().getClassManager(), "" );
-
-        this.ns.importCommands( "bsh" );
-
-        StringBuffer method = new StringBuffer();
-
-        method.append( methodName + "(" );
-
-        Declaration[] params = getRequiredTupleMembers();
-
-        for ( int i = 0 ; i < params.length ; ++i ) {
-            if ( i > 0 ) {
-                method.append( "," );
-            }
-            method.append( ((ClassObjectType)params[i].getObjectType()).getType().getName() );
-            method.append( " " + params[i].getIdentifier() );
-        }
-
-        method.append( ")" );
-
-        method.append( "{" );
-        method.append( "return " + text + ";" );
-        method.append( "}" );
-
-        try
+        //try
+        //{
+        code = new ScriptEvaluator( expr,
+                                    returnType,
+                                    paramNames,
+                                    paramTypes );
+        //}
+        /*
+        catch (net.janino.Java.CompileException e)
         {
-            getInterpreter().eval( method.toString(), ns );
+          throw e;
         }
-        catch (Exception e)
+        catch (net.janino.Parser.ParseException e)
         {
-            e.printStackTrace();
+          throw e;
         }
-
-        super.setText( text );
+        catch (net.janino.Scanner.ScanException e)
+        {
+          throw e;
+        }
+        catch (java.io.IOException e)
+        {
+          throw e;
+        }
+        */
     }
 
-    protected String getMethodName()
-    {
-        return this.methodName;
-    }
-
-    protected NameSpace getNameSpace()
-    {
-        return this.ns;
-    }
+   public Object evaluate(Object[] paramValues, Tuple tuple) throws Exception
+   {
+        if (code == null) compile(tuple);
+        return code.evaluate(paramValues);
+   }
 
     protected Declaration[] analyze(String expr,
                                     Declaration[] available)
@@ -192,5 +182,10 @@ public class Expr
     public Declaration[] getRequiredTupleMembers()
     {
         return this.requiredDecls;
+    }
+
+    public Class getReturnType()
+    {
+        return this.returnType;
     }
 }

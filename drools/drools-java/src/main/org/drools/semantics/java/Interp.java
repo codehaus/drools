@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.15 2004-07-04 11:59:56 mproctor Exp $
+ $Id: Interp.java,v 1.16 2004-07-20 21:23:29 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,18 +46,20 @@ package org.drools.semantics.java;
 
  */
 
-import bsh.EvalError;
-import bsh.UtilEvalError;
-import bsh.Interpreter;
-import bsh.NameSpace;
 import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
+import org.drools.WorkingMemory;
+
+import net.janino.EvaluatorBase;
+
+import java.lang.reflect.InvocationTargetException;
 
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import java.io.Serializable;
 
@@ -69,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.15 2004-07-04 11:59:56 mproctor Exp $
+ *  @version $Id: Interp.java,v 1.16 2004-07-20 21:23:29 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -78,64 +80,149 @@ public class Interp implements Serializable
     // ------------------------------------------------------------
 
     /** Interpreted text. */
+    private String imports;
     private String text;
 
-    /** BeanShell interpreter. */
-    private Interpreter interp;
+    private String newline = System.getProperty("line.separator");
+
+    //private EvaluatorBase code;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
+     *
      */
     protected Interp()
     {
-        this.interp = new Interpreter();
-        this.text = null;
     }
+
+
+    protected Interp(String text)
+   {
+        StringTokenizer st = new StringTokenizer(text, newline, true);
+        int i = 0;
+        int k = 0;
+        //get last import
+        while (st.hasMoreTokens())
+        {
+            if (st.nextToken().trim().startsWith("import"))
+            {
+                i++;
+            }
+            k++;
+        }
+
+        StringBuffer newImports = new StringBuffer();
+        StringBuffer newText = new StringBuffer();
+        st = new StringTokenizer(text, newline, true);
+        int j = 0;
+        while (st.hasMoreTokens())
+        {
+            if ((i != 0)&&(j <= i+1))
+            //if (j <= i)
+            {
+                newImports.append(st.nextToken());
+            } else
+            {
+                newText.append(st.nextToken());
+            }
+            j++;
+        }
+        newImports.append(newline);
+        this.imports = newImports.toString();
+        if (this instanceof Expr)
+        {
+            this.text = "return (" + newText.toString().trim() + ");" + newline;
+        }
+        else if (this instanceof BlockConsequence)
+        {
+            this.text = newText.toString();
+        }
+    }
+
+    //protected void setCode(EvaluatorBase code)
+    //{
+    //    this.code = code;
+    //}
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    protected Interpreter getInterpreter()
+    public String getPreparedText(Tuple tuple, Declaration[] availDecls, String[] paramNames, Class[] paramTypes)
     {
-        return this.interp;
+        WorkingMemory workingMemory = tuple.getWorkingMemory();
+        Map appData = workingMemory.getApplicationDataMap();
+        StringBuffer buffer = new StringBuffer();
+        ObjectType objectType = null;
+        Declaration eachDecl = null;
+        Declaration[] params = availDecls;
+
+        paramNames[0] = "drools";
+        paramTypes[0] = KnowledgeHelper.class;
+        paramNames[1] = "applicationData";
+        paramTypes[1] = Map.class;
+
+        String type;
+        int nestedClassPosition;
+        for ( int i = 0 ; i < params.length; i++ ) {
+            eachDecl = params[i];
+            objectType = eachDecl.getObjectType();
+            paramNames[i + 2] = eachDecl.getIdentifier();
+            paramTypes[i + 2] = ((ClassObjectType)objectType).getType();
+            //Import classes for each of the declarations
+            if ( objectType instanceof ClassObjectType )
+            {
+                type = ((ClassObjectType)objectType).getType().getName();
+
+                nestedClassPosition = type.indexOf('$');
+                if (nestedClassPosition != -1)
+                {
+                    type = type.substring(0, nestedClassPosition);
+                }
+                buffer.append("import " + type + ";" + newline);
+            }
+        }
+
+        Set keys = appData.keySet();
+        Iterator it = keys.iterator();
+        String key;
+        Object object;
+        while (it.hasNext())
+        {
+            object = appData.get(it.next());
+            type = object.getClass().getName();
+
+            nestedClassPosition = type.indexOf('$');
+            if (nestedClassPosition != -1)
+            {
+                type = type.substring(0, nestedClassPosition);
+            }
+            buffer.append("import " + object.getClass().getName() + ";" + newline);
+        }
+
+        buffer.append(imports);
+        it = keys.iterator();
+        while (it.hasNext())
+        {
+            key = (String) it.next();
+            //only do the cast if variable exists in the block
+            if (text.indexOf(key) != -1)
+            {
+                object = appData.get(key);
+                buffer.append(object.getClass().getName());
+                buffer.append(" " + key + " ");
+                buffer.append("= (" + object.getClass().getName() + ")applicationData.get(\"" + key + "\");" + newline);
+            }
+        }
+
+        String returnText = buffer.append(text).toString();
+        System.out.println("prepared" + returnText);
+        return returnText;
     }
-
-    /** Evaluate.
-     *
-     *  @param tuple Tuple containing variable bindings.
-     *
-     *  @return The result of evaluation.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to evaluate.
-     */
-    public Object evaluate(Tuple tuple) throws EvalError, UtilEvalError
-    {
-        NameSpace ns = setUpNameSpace( tuple );
-
-        return evaluate( ns );
-    }
-
-    /** Evaluate.
-     *
-     *  @param ns The evaluation namespace.
-     *
-     *  @return The result of evaluation.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to evaluate.
-     */
-    protected Object evaluate(NameSpace ns) throws EvalError
-    {
-        return this.interp.eval( getText(),
-                                 ns );
-    }
-
-    /** Retrieve the text to evaluate.
+     /** Retrieve the text to evaluate.
      *
      *  @return The text to evaluate.
      */
@@ -144,82 +231,17 @@ public class Interp implements Serializable
         return this.text;
     }
 
-    /** Set the text to evaluate.
-     *
-     *  @param text The text.
-     */
-    protected void setText(String text)
-    {
-        this.text = text;
-    }
-
-    /** Configure a <code>NameSpace</code> using a <code>Tuple</code>
-     *  for variable bindings.
-     *
-     *  @param tuple Tuple containing variable bindings.
-     *
-     *  @return The namespace
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to bind variables.
-     */
-    protected NameSpace setUpNameSpace(Tuple tuple) throws UtilEvalError, EvalError
-    {
-        return setUpNameSpace( tuple,
-                               null );
-    }
-
-    protected NameSpace setUpNameSpace(Tuple tuple,
-                                       NameSpace parent) throws UtilEvalError, EvalError
-    {
-        NameSpace ns = new NameSpace( parent, interp.getClassManager(),  "" );
-
-        Set         decls    = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-
-        ObjectType objectType = null;
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-
-            ns.setVariable( eachDecl.getIdentifier().intern(),
-                            tuple.get( eachDecl ), false );
-
-            objectType = eachDecl.getObjectType();
-
-            if ( objectType instanceof ClassObjectType )
-            {
-                ns.importClass( ((ClassObjectType)objectType).getType().getName() );
-            }
-        }
-
-        ns.setVariable( "drools".intern(),
-                        new KnowledgeHelper( tuple ),
-                        false );
-
-        Map appData = tuple.getWorkingMemory().getApplicationDataMap();
-
-        for (Iterator iterator = appData.entrySet().iterator(); iterator.hasNext();)
-        {
-            Map.Entry entry = (Map.Entry) iterator.next();
-
-            String key = (String) entry.getKey();
-
-            ns.setVariable(key.intern(),
-                           entry.getValue(),
-                           false);
-        }
-
-        // evaluate( ns );
-
-        return ns;
-    }
+    /** Retrieve the imports for the evaluation
+    *
+    *  @return The imports for evaluation.
+    */
+   public String getImports()
+   {
+       return this.imports;
+   }
 
     public String toString()
     {
-        return "[[ " + this.text + " ]]";
+        return "[[ " + this.imports + this.text + " ]]";
     }
 }

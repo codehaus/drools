@@ -27,6 +27,7 @@ public class ExprConditionFactory
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             throw new FactoryException( e );
         }
     }

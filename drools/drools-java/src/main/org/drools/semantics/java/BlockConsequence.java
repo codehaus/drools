@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.17 2004-06-20 17:38:38 mproctor Exp $
+ $Id: BlockConsequence.java,v 1.18 2004-07-20 21:23:29 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,25 +46,35 @@ package org.drools.semantics.java;
 
  */
 
-import bsh.NameSpace;
 import org.drools.WorkingMemory;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
+import net.janino.ScriptEvaluator;
 
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.drools.rule.Declaration;
+import org.drools.spi.ObjectType;
+
+import org.drools.spi.KnowledgeHelper;
 
 /** Java block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.17 2004-06-20 17:38:38 mproctor Exp $
+ *  @version $Id: BlockConsequence.java,v 1.18 2004-07-20 21:23:29 mproctor Exp $
  */
-public class BlockConsequence
-    extends Interp
+public class BlockConsequence extends Interp
     implements Consequence
 {
+    /** Interpreted text. */
+    private String newline = System.getProperty("line.separator");    
+
+    private ScriptEvaluator code;
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -73,10 +83,45 @@ public class BlockConsequence
      *
      *  @param block The statement block.
      */
-    public BlockConsequence(String block)
+    public BlockConsequence(String block,
+                            Declaration[] availDecls)
+        throws Exception
     {
-        setText( block );
+        super(block);
     }
+
+    private void compile(Tuple tuple, Declaration[] availDecls) throws Exception
+    {
+        String[] paramNames = new String[availDecls.length + 2];
+        Class[] paramTypes = new Class[availDecls.length + 2];        
+        String block = getPreparedText(tuple, availDecls, paramNames, paramTypes);
+
+        //try
+        //{
+            //System.out.println(block);
+            code = new ScriptEvaluator(block, Void.TYPE, paramNames, paramTypes, new Class[] {Exception.class});
+        //}
+        /*
+        catch (net.janino.Java.CompileException e)
+        {
+          throw e;
+        }
+        catch (net.janino.Parser.ParseException e)
+        {
+          throw e;
+        }
+        catch (net.janino.Scanner.ScanException e)
+        {
+          throw e;
+        }
+        catch (java.io.IOException e)
+        {
+          throw e;
+        }
+        */
+    }
+
+
 
     // ------------------------------------------------------------
     //     Instance methods
@@ -101,27 +146,31 @@ public class BlockConsequence
     {
         try
         {
-            /*
-            NameSpace ns = setUpNameSpace( tuple );
+            Declaration[] params = (Declaration[]) tuple.getDeclarations().toArray(Declaration.EMPTY_ARRAY) ;
+            if (code == null) compile(tuple, params);
+            
+            Object[] paramValues = new Object[ params.length + 2];
 
-            ns.setVariable( "drools$working$memory",
-                            workingMemory, false);
-
-            ns.setVariable( "drools$tuple",
-                            tuple, false);
-
-            Map appData = workingMemory.getApplicationDataMap();
-            for (Iterator iterator = appData.entrySet().iterator(); iterator.hasNext();)
-            {
-                Map.Entry entry = (Map.Entry) iterator.next();
-                ns.setVariable((String)entry.getKey(), entry.getValue(), false);
+            paramValues[0] = new KnowledgeHelper( tuple );
+            paramValues[1] = workingMemory.getApplicationDataMap();
+            
+            for ( int i = 0 ; i < params.length ; i++ ) {
+                paramValues[i + 2] = tuple.get( params[i] );
             }
-            */
-            evaluate( tuple );
+            code.evaluate( paramValues );
         }
         catch (Exception e)
         {
             throw new ConsequenceException( e );
         }
     }
+
+    /** Retrieve the expression.
+    *
+    *  @return The expression.
+    */
+   public String getBlock()
+   {
+       return getText();
+   }
 }

@@ -20,6 +20,14 @@ public class BlockConsequenceFactory
                                       Declaration[] availDecls)
         throws FactoryException
     {
-        return new BlockConsequence( config.getText() );
+        try
+        {
+            return new BlockConsequence( config.getText(),
+                                          availDecls );
+        }
+        catch (Exception e)
+        {
+            throw new FactoryException( e );
+        }
     }
 }
