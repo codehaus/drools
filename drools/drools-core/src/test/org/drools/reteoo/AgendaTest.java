@@ -3,40 +3,35 @@ package org.drools.reteoo;
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.MockObjectType;
 
 /**
- *
  * @author mproctor
- *
- * @todo remove schedule items
- * @todo add/remove schedule items
- *
  */
 
 public class AgendaTest extends DroolsTestCase
 {
     public void testAddToAgenda() throws Exception
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
         WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
         final Agenda agenda = workingMemory.getAgenda( );
 
-        Rule rule = new Rule( "test-rule" );
+        final Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
             public void invoke(org.drools.spi.Tuple tuple, WorkingMemory workingMemory )
             {
-                agenda.addToAgenda( ( ReteTuple ) tuple, tuple.getRule( ) );
+                agenda.addToAgenda( ( ReteTuple ) tuple,
+                                    rule );
             }
         } );
 
@@ -77,8 +72,8 @@ public class AgendaTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
         final Agenda agenda = workingMemory.getAgenda( );
 
-        Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        final Rule rule = new Rule( "test-rule" );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
@@ -86,7 +81,8 @@ public class AgendaTest extends DroolsTestCase
             public void invoke(org.drools.spi.Tuple tuple,
                                WorkingMemory workingMemory)
             {
-                agenda.addToAgenda( ( ReteTuple ) tuple, tuple.getRule( ) );
+                agenda.addToAgenda( ( ReteTuple ) tuple,
+                                    rule );
             }
         } );
         //add condition
@@ -150,8 +146,8 @@ public class AgendaTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
         final Agenda agenda = workingMemory.getAgenda( );
 
-        Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        final Rule rule = new Rule( "test-rule" );
+        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         //add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
@@ -159,7 +155,8 @@ public class AgendaTest extends DroolsTestCase
             public void invoke(org.drools.spi.Tuple tuple,
                                WorkingMemory workingMemory)
             {
-                agenda.addToAgenda( ( ReteTuple ) tuple, tuple.getRule( ) );
+                agenda.addToAgenda( ( ReteTuple ) tuple,
+                                    rule );
                 workingMemory.clearAgenda();
             }
         } );
