@@ -34,7 +34,7 @@ public class InstrumentedParameterNode extends ParameterNode
 
     public InstrumentedParameterNode(ObjectTypeNode inputNode, Declaration decl)
     {
-        super( rule, inputNode, decl );
+        super( inputNode, decl );
 
         this.assertedObjects = new ArrayList( );
         this.retractedObjects = new ArrayList( );

@@ -30,7 +30,7 @@ public class ParameterNodeTest extends DroolsTestCase
 
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        ParameterNode node = new ParameterNode( rule, null, paramDecl );
+        ParameterNode node = new ParameterNode( null, paramDecl );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
@@ -64,7 +64,7 @@ public class ParameterNodeTest extends DroolsTestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition() );
 
-        ParameterNode node = new ParameterNode( rule, null, paramDecl );
+        ParameterNode node = new ParameterNode( null, paramDecl );
 
         Set decls = node.getTupleDeclarations( );
 

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.26 2004-11-21 12:33:52 simon Exp $
+ * $Id: ConditionNode.java,v 1.27 2004-11-29 12:50:32 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 
 import java.util.HashSet;
@@ -72,6 +73,9 @@ class ConditionNode extends TupleSource
     // Instance members
     // ------------------------------------------------------------
 
+    /** The <code>Rule</code>. */
+    private final Rule rule;
+
     /** The semantic <code>Condition</code>. */
     private final Condition condition;
 
@@ -88,15 +92,13 @@ class ConditionNode extends TupleSource
     /**
      * Construct.
      *
-     * @param tupleSource
-     *            The source of incoming <code>Tuples</code>.
+     * @param rule The rule
+     * @param tupleSource The source of incoming <code>Tuples</code>.
      * @param condition
-     *            The semantic <code>Condition</code>.
      */
-    ConditionNode(TupleSource tupleSource,
-                  Condition condition,
-                  int order)
+    ConditionNode( Rule rule, TupleSource tupleSource, Condition condition, int order )
     {
+        this.rule = rule;
         this.condition = condition;
         this.tupleSource = tupleSource;
         this.order = order;
@@ -158,7 +160,7 @@ class ConditionNode extends TupleSource
         Condition condition = getCondition( );
         boolean isAllowed = condition.isAllowed( tuple );
 
-        workingMemory.getEventSupport( ).fireConditionTested( tuple.getRule( ),
+        workingMemory.getEventSupport( ).fireConditionTested( this.rule,
                                                               condition,
                                                               tuple,
                                                               isAllowed );
@@ -222,7 +224,7 @@ class ConditionNode extends TupleSource
 
             isAllowed = condition.isAllowed( eachTuple );
 
-            workingMemory.getEventSupport( ).fireConditionTested( eachTuple.getRule( ),
+            workingMemory.getEventSupport( ).fireConditionTested( this.rule,
                                                                   condition,
                                                                   eachTuple,
                                                                   isAllowed );

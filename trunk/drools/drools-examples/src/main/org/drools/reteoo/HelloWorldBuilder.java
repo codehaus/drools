@@ -38,8 +38,7 @@ public class HelloWorldBuilder
             for ( Iterator j = rule.getParameterDeclarations( ).iterator( ); j.hasNext( ); )
             {
                 declaration = ( Declaration ) j.next();
-                parameterNode = new ParameterNode( rule,
-                                                   rete.getOrCreateObjectTypeNode( declaration.getObjectType( ) ),
+                parameterNode = new ParameterNode( rete.getOrCreateObjectTypeNode( declaration.getObjectType( ) ),
                                                    declaration );
 
                 List conditions = rule.getConditions( );
@@ -52,7 +51,7 @@ public class HelloWorldBuilder
                 {
                     for ( int k = 0; k < conditions.size( ); k++ )
                     {
-                        TerminalNode terminal = new TerminalNode( new ConditionNode( parameterNode,
+                        TerminalNode terminal = new TerminalNode( new ConditionNode( rule, parameterNode,
                                                                                      ( Condition ) conditions.get( k ),
                                                                                      k ),
                                                                   rule );

@@ -21,7 +21,7 @@ public class AgendaItemTest extends DroolsTestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( null, rule, decl, handle );
+        ReteTuple tuple = new ReteTuple( null, decl, handle );
 
         AgendaItem item = new AgendaItem( tuple, rule );
 
@@ -46,7 +46,7 @@ public class AgendaItemTest extends DroolsTestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( null, rule, decl, handle );
+        ReteTuple tuple = new ReteTuple( null, decl, handle );
 
         AgendaItem item = new AgendaItem( tuple, rule );
 
@@ -55,7 +55,7 @@ public class AgendaItemTest extends DroolsTestCase
         assertTrue( item.dependsOn( handle ) );
         assertFalse( item.dependsOn( new FactHandleImpl( 2 ) ) );
 
-        ReteTuple newTuple = new ReteTuple( null, rule, decl, handle );
+        ReteTuple newTuple = new ReteTuple( null, decl, handle );
 
         item.setTuple( newTuple );
 
@@ -76,7 +76,7 @@ public class AgendaItemTest extends DroolsTestCase
 
         Declaration decl = rule.addParameterDeclaration( "cheese", new MockObjectType( true ) );
 
-        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), rule, decl, handle );
+        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), decl, handle );
 
         InstrumentedConsequence consequence = new InstrumentedConsequence( );
 

@@ -33,7 +33,7 @@ public class ConditionNodeTest extends TestCase
 
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-        this.tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), rule );
+        this.tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ) );
     }
 
     public void tearDown()
@@ -46,7 +46,7 @@ public class ConditionNodeTest extends TestCase
      */
     public void testAllowed()
     {
-        ConditionNode node = new ConditionNode( null, new TrueCondition( ), 0 );
+        ConditionNode node = new ConditionNode( rule, null, new TrueCondition( ), 0 );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
@@ -77,7 +77,7 @@ public class ConditionNodeTest extends TestCase
      */
     public void testNotAllowed()
     {
-        ConditionNode node = new ConditionNode( null, new FalseCondition( ), 0 );
+        ConditionNode node = new ConditionNode( rule, null, new FalseCondition( ), 0 );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
@@ -105,9 +105,9 @@ public class ConditionNodeTest extends TestCase
     {
         Declaration decl = this.rule.addParameterDeclaration( "object", new MockObjectType( Object.class ) );
 
-        ParameterNode paramNode = new ParameterNode( null, null, decl );
+        ParameterNode paramNode = new ParameterNode( null, decl );
 
-        ConditionNode condNode = new ConditionNode( paramNode, null, 0 );
+        ConditionNode condNode = new ConditionNode( rule, paramNode, null, 0 );
 
         Set decls = condNode.getTupleDeclarations( );
 
