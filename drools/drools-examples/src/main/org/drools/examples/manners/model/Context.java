@@ -1,7 +1,7 @@
-package org.drools.examples.model;
+package org.drools.examples.manners.model;
 
 /*
- * $Id: Context.java,v 1.3 2004-11-07 18:41:45 mproctor Exp $
+ * $Id: Context.java,v 1.4 2004-11-07 18:58:48 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,9 +41,7 @@ package org.drools.examples.model;
  *
  */
 
-import java.io.Serializable;
-
-public class Context  implements Serializable
+public class Context
 {
     private String state;
 

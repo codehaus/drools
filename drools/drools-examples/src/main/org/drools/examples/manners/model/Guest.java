@@ -1,6 +1,7 @@
-package org.drools.examples.model;
+package org.drools.examples.manners.model;
+
 /*
- * $Id: Guest.java,v 1.3 2004-11-07 18:41:45 mproctor Exp $
+ * $Id: Guest.java,v 1.4 2004-11-07 18:58:48 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,9 +44,8 @@ package org.drools.examples.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
 
-public class Guest implements Serializable
+public class Guest
 {
     private String name;
 
