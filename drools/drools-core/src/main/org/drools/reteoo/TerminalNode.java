@@ -109,13 +109,4 @@ class TerminalNode
                              newTuples,
                              getRule() );
     }
-
-    /** Return a string representation of this object.
-     *
-     * @return a String
-     */
-    public String toString()
-    {
-      return "[TerminalNodeImpl: rule=" + rule + "]";
-    }
 }
