@@ -1,7 +1,6 @@
 package org.drools.util;
-
 /*
-* $Id: PrimitiveLongMap.java,v 1.2 2004-11-14 00:40:45 simon Exp $
+* $Id: PrimitiveLongMap.java,v 1.3 2004-11-15 00:17:54 mproctor Exp $
 *
 * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 *
@@ -40,30 +39,37 @@ package org.drools.util;
 *
 */
 
+
+/**
+ *
+ * @author Mark Proctor
+ */
 public class PrimitiveLongMap
 {
     private final int indexIntervals;
     private final int intervalShifts;
-    private final int bucketSize;
+    private final int midIntervalPoint;
+    private final int tableSize;
     private final int shifts;
     private final int doubleShifts;
-    private final TopNode firstTopNode;
-    private long lastKey;
-    private int lastTopNodeId;
-    private TopNode[] topNodeIndex;
-    private TopNode lastTopNode;
+    private final Page firstPage;
+    private Page lastPage;
+    private int lastPageId;
+    private long maxKey;
+    private Page[] pageIndex;
+
 
     public PrimitiveLongMap()
     {
         this(32, 8);
     }
 
-    public PrimitiveLongMap(int bucketSize)
+    public PrimitiveLongMap(int tableSize)
     {
-        this(bucketSize, 8);
+        this(tableSize, 8);
     }
 
-    public PrimitiveLongMap(int bucketSize, int indexIntervals )
+    public PrimitiveLongMap(int tableSize, int indexIntervals )
     {
         //determine number of shifts for intervals
         int i = 1;
@@ -76,126 +82,198 @@ public class PrimitiveLongMap
         this.indexIntervals = size;
         this.intervalShifts = i;
 
-        //determine number of shifts for bucketSize
+        //determine number of shifts for tableSize
         i = 1;
         size = 2;
-        while ( size < bucketSize )
+        while ( size < tableSize )
         {
             size = size << 1;
             ++i;
         }
-        this.bucketSize = size;
+        this.tableSize = size;
         this.shifts = i;
         this.doubleShifts = this.shifts << 1;
 
-        this.lastKey = 0;
-        this.lastTopNodeId = 0;
+        //determine mid point of an interval
+        this.midIntervalPoint = ((this.tableSize << this.shifts) << this.intervalShifts) >> 1;
 
-        //instantiate the first node
-        //previous sibling of first node is null
-        //next sibling of last node is null
-        this.firstTopNode = new TopNode( null, this.lastTopNodeId, this.bucketSize );
+        this.lastPageId = 0;
+
+        //instantiate the first page
+        //previous sibling of first page is null
+        //next sibling of last page is null
+        this.firstPage = new Page( null, this.lastPageId, this.tableSize );
+        this.maxKey = this.lastPageId + 1 << this.doubleShifts;
         //create an index of one
-        topNodeIndex = new TopNode[]{this.firstTopNode};
+        pageIndex = new Page[]{this.firstPage};
 
-        //our first node is also our last node
-        this.lastTopNode = this.firstTopNode;
+        //our first page is also our last page
+        this.lastPage = this.firstPage;
     }
 
-    public boolean put(long key, Object value )
+    public Object put(long key, Object value )
     {
-        //keys must be created linearly
-        //if the id is greater+1 than the
-        //highest recorded key then
-        //return false
-        if ( key > this.lastKey + 1 )
+        //determine Page
+        int pageId = (int) key >> this.doubleShifts;
+        Page page = null;
+
+        //if pageId is lastNodeId use lastNode reference
+        if (pageId == this.lastPageId)
         {
-            return false;
+            page = this.lastPage;
+        }
+        //if pageId is zero use first page reference
+        else if (pageId == 0)
+        {
+            page = this.firstPage;
+        }
+        //if pageId is greater than lastTopNodeId need to expand
+        else if ( pageId > this.lastPageId )
+        {
+            page = expandPages(pageId);
+        }
+        else
+        {
+           page = findPage(pageId, key);
         }
 
-        //determine TopNode
-        long nodeId = key >> this.doubleShifts;
-        TopNode node;
-        if ( nodeId > this.lastTopNodeId )
-        {
-            node = new TopNode( this.lastTopNode, ++this.lastTopNodeId, this.bucketSize );
-            this.lastTopNode = node;
+        Object oldValue =  page.put( key, value );
 
-            //expand index if new TopNode matches interval
-            if ( node.getNodeId( ) % this.indexIntervals == 0 )
+        if ((this.lastPageId != 0) && this.lastPage.isEmpty())
+        {
+            page = shrinkPages(this.lastPageId);
+        }
+
+        return oldValue;
+    }
+
+    public Object remove(long key)
+    {
+        if (key >= this.maxKey)
+        {
+            return null;
+        }
+        return put(key, null);
+    }
+
+
+    public Object get(long key)
+    {
+        if (key >= this.maxKey)
+        {
+            return null;
+        }
+        //determine TopNode
+        int pageId = (int) key >> this.doubleShifts;
+
+
+        return findPage(pageId, key).get( key );
+    }
+
+    /**
+     * Expand index to accomodate given pageId
+     * Create empty TopNodes
+     */
+    public Page expandPages(int toPageId)
+    {
+        for (int x = this.lastPageId; x < toPageId; x++)
+        {
+            this.lastPage = new Page( this.lastPage, ++this.lastPageId, this.tableSize );
+            //index interval, so expand index
+            if ( this.lastPage.getPageId( ) % this.indexIntervals == 0 )
             {
-                expandIndex( );
+                int newSize = this.pageIndex.length + 1;
+                resizeIndex(newSize);
+                this.pageIndex[newSize - 1] = this.lastPage;
+            }
+        }
+        this.maxKey = (this.lastPageId + 1 << this.doubleShifts) - 1;
+        return  this.lastPage;
+    }
+
+    /**
+     * Expand index to accomodate given pageId
+     * Create empty TopNodes
+     */
+    public Page shrinkPages(int toPageId)
+    {
+        for (int x = this.lastPageId; x >= toPageId; x--)
+        {
+            Page page = this.lastPage.getPreviousSibling();
+            page.setNextSibling(null);
+            this.lastPage.clear();
+            this.lastPage = page;
+            this.lastPageId = page.getPageId();
+            if ( (page.getPageId( ) % this.indexIntervals == 0) && (page.getPageId( ) != 0))
+            {
+                int newSize = this.pageIndex.length - 1;
+                resizeIndex(newSize);
+                this.pageIndex[newSize - 1] = page;
+            }
+        }
+        return  this.lastPage;
+    }
+
+    public void resizeIndex(int newSize)
+    {
+        int oldSize = this.pageIndex.length;
+        Page[ ] newIndex = new Page[newSize];
+        System.arraycopy( this.pageIndex, 0, newIndex, 0, newSize -1);
+        this.pageIndex = newIndex;
+    }
+
+    private Page findPage(int pageId, long key)
+    {
+        Page page;
+        //determine offset
+        int offset = (int) pageId >> intervalShifts;
+        //are we before or after the halfway point of an index interval
+        if ((offset != (this.pageIndex.length-1))&&((key - (offset << intervalShifts << this.doubleShifts)) > this.midIntervalPoint))
+        {
+            //after so go to next node index and go backwards
+            page = this.pageIndex[ offset + 1];
+            while (page.getPageId() != pageId)
+            {
+                page = page.getPreviousSibling() ;
             }
         }
         else
         {
-            // get nearest node from index
-            node = topNodeIndex[(int) Math.abs( nodeId >> intervalShifts )];
-
-            //find node
-            for ( int x = node.getNodeId( ); x < nodeId; x++ )
+            //before so go to node index and go forwards
+            page = pageIndex[ offset ];
+            while (page.getPageId() != pageId)
             {
-                node = node.getNextSibling( );
+                page = page.getNextSibling();
             }
         }
-
-        //hold a reference to new id, if we have created a new key id
-        if ( key > lastKey )
-        {
-            this.lastKey = key;
-        }
-
-        return node.put( key, value );
+        return page;
     }
 
-    public Object get(long key)
+
+    private static class Page
     {
-        //determine TopNode
-        long nodeId = key >> this.doubleShifts;
-
-        // get nearest node from index
-        TopNode node = topNodeIndex[(int) Math.abs( nodeId >> intervalShifts )];
-
-        //find node
-        for ( int x = node.getNodeId( ); x < nodeId; x++ )
-        {
-            node = node.getNextSibling( );
-        }
-
-        return node.get( key );
-    }
-
-    public void expandIndex()
-    {
-        //expand the index by 1 node
-        int size = this.topNodeIndex.length;
-        TopNode[] newIndex = new TopNode[size + 1];
-        System.arraycopy( this.topNodeIndex, 0, newIndex, 0, size );
-        newIndex[ size] = this.lastTopNode;
-        this.topNodeIndex = newIndex;
-    }
-
-    static class TopNode
-    {
-        private final TopNode previousSibling;
-        private final Object[][] branch;
-        private final int nodeSize;
-        private final int nodeId;
+        private final int pageSize;
+        private final int pageId;
         private final int shifts;
-        private TopNode nextSibling;
+        private final int tableSize;
+        private Page nextSibling;
+        private Page previousSibling;
+        private Object[][] tables;
+        private int filledSlots;
 
-        TopNode(TopNode previousSibling, int nodeId, int bucketSize )
+
+        Page(Page previousSibling, int pageId, int tableSize )
         {
             //determine number of shifts
             int i = 1;
             int size = 2;
-            while ( size < bucketSize )
+            while ( size < tableSize )
             {
                 size = size << 1;
                 ++i;
             }
-            //make sure bucket size is valid
-            bucketSize = size;
+            //make sure table size is valid
+            this.tableSize = size;
             this.shifts = i;
 
             // create bi-directional link
@@ -204,64 +282,108 @@ public class PrimitiveLongMap
             {
                 this.previousSibling.setNextSibling( this );
             }
-            this.nodeId = nodeId;
-            this.nodeSize = bucketSize * bucketSize;
-
-            //initiate tree;
-            this.branch = new Object[ bucketSize ][ bucketSize ];
+            this.pageId = pageId;
+            this.pageSize = tableSize << this.shifts;
         }
 
-        public int getNodeId()
+        public int getPageId()
         {
-            return this.nodeId;
+            return this.pageId;
         }
 
-        void setNextSibling(TopNode nextSibling)
+        void setNextSibling(Page nextSibling)
         {
             this.nextSibling = nextSibling;
         }
 
-        public TopNode getNextSibling()
+        public Page getNextSibling()
         {
             return this.nextSibling;
         }
 
-        public TopNode getPreviousSibling()
+        void setPreviousSibling(Page previousSibling)
+        {
+            this.previousSibling = previousSibling;
+        }
+
+        public Page getPreviousSibling()
         {
             return this.previousSibling;
         }
 
         public Object get(long key)
         {
+            if (this.tables == null)
+            {
+                return null;
+            }
             //normalise key
-            key = key - this.nodeSize * this.nodeId;
+            key = key - (this.pageSize * this.pageId);
 
-            //determine branch number
-            int branchNumber = (int) Math.abs( key >> this.shifts );
+            //determine page
+            int page = (int) key >> this.shifts;
 
             //determine offset
-            int offset = branchNumber << this.shifts;
+            int offset = page << this.shifts;
 
-            //get leaf position
-            int leaf = (int) key - offset;
-            return this.branch[ branchNumber ][ leaf ];
+            //tables[page][slot]
+            return this.tables[ page ][ (int) key - offset ];
         }
 
-        public boolean put(long key, Object value )
+        public Object put(long key, Object newValue )
         {
-            //normalise key
-            key = key - this.nodeSize * this.nodeId;
+            if (this.tables == null)
+            {
+                //initiate tree;
+                this.tables = new Object[ this.tableSize ][ this.tableSize ];
+            }
 
-            //determine branch number
-            int branchNumber = (int) Math.abs( key >> this.shifts );
+            //normalise key
+            key = key - (this.pageSize * this.pageId);
+
+            //determine page
+            int table = (int) key >> this.shifts;
 
             //determine offset
-            int offset = branchNumber << this.shifts;
+            int offset = table << this.shifts;
 
-            //get leaf position
-            int leaf = (int) key - offset;
-            this.branch[ branchNumber ][ leaf ] = value;
-            return true;
+            //determine slot
+            int slot = (int) key - offset;
+
+            //get old value
+            Object oldValue = this.tables[ table ][ slot ];                                                                    
+            this.tables[ table ][ slot ] = newValue;
+
+            //update number of empty cells for TopNode
+            if ((oldValue == null)&&(newValue != null))
+            {
+                this.filledSlots++;
+            } 
+            else if ((oldValue != null)&&(newValue == null))
+            {
+                this.filledSlots--;
+            }
+
+            //if this page contains no values then null the array
+            //to allow it to be garbage collected
+            if (this.filledSlots == 0)
+            {
+                this.tables = null;
+            }
+
+            return oldValue;
+        }
+
+        public boolean isEmpty()
+        {
+            return (this.filledSlots != 0) ? false : true;
+        }
+
+        void clear()
+        {
+            this.previousSibling = null;
+            this.nextSibling = null;
+            this.tables = null;
         }
     }
 }
