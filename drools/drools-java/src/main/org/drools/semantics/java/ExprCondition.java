@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.4 2002-08-19 00:31:42 bob Exp $
+ $Id: ExprCondition.java,v 1.5 2002-08-19 04:30:49 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,9 @@ package org.drools.semantics.java;
  
  */
 
+import org.drools.rule.Declaration;
 import org.drools.smf.ConfigurableCondition;
+import org.drools.smf.ConfigurationException;
 import org.drools.spi.Tuple;
 import org.drools.spi.ConditionException;
 
@@ -56,7 +58,7 @@ import bsh.EvalError;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.4 2002-08-19 00:31:42 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.5 2002-08-19 04:30:49 bob Exp $
  */
 public class ExprCondition extends Expr implements ConfigurableCondition
 {
@@ -66,7 +68,7 @@ public class ExprCondition extends Expr implements ConfigurableCondition
 
     /** Construct, partially.
      *
-     *  @see Expr#setExpression
+     *  @see Expr#configure
      */
     public ExprCondition()
     {
@@ -76,10 +78,16 @@ public class ExprCondition extends Expr implements ConfigurableCondition
     /** Construct.
      *
      *  @param expr The expression.
+     *  @param availDecls The available declarations.
+     *
+     *  @throws ConfigurationException If an error occurs while
+     *          attempting to perform configuration.
      */
-    public ExprCondition(String expr)
+    public ExprCondition(String expr,
+                         Declaration[] availDecls) throws ConfigurationException
     {
-        setExpression( expr );
+        super( expr,
+                   availDecls );
     }
 
     // ------------------------------------------------------------
@@ -111,7 +119,7 @@ public class ExprCondition extends Expr implements ConfigurableCondition
                 return ((Boolean)result).booleanValue();
             }
         }
-        catch (EvalError e)
+        catch (Exception e)
         {
             throw new ConditionException( e );
         }

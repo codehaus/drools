@@ -59,6 +59,27 @@ public class ExprTest extends TestCase
         this.expr = null;
     }
 
+    public void testConstruct_Fully() throws Exception
+    {
+        Expr expr = new Expr( "a + b + d",
+                              this.allDecls );
+
+        Declaration[] decls = expr.getRequiredTupleMembers();
+
+        assertEquals( 3,
+                      decls.length );
+
+        assertContains( decls,
+                        this.a );
+
+        assertContains( decls,
+                        this.b );
+
+        assertContains( decls,
+                        this.d );
+        
+    }
+
     public void testConfigure_None() throws Exception
     {
         this.expr.configure( "10 + 20",
