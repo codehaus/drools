@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ExprCondition.java,v 1.22 2004-10-17 00:01:39 mproctor Exp $
+ * $Id: ExprCondition.java,v 1.23 2004-11-07 22:39:43 bob Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -53,7 +53,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  * 
- * @version $Id: ExprCondition.java,v 1.22 2004-10-17 00:01:39 mproctor Exp $
+ * @version $Id: ExprCondition.java,v 1.23 2004-11-07 22:39:43 bob Exp $
  */
 public class ExprCondition extends Expr implements Condition
 {
@@ -110,9 +110,17 @@ public class ExprCondition extends Expr implements Condition
             throw new ConditionException( e, tuple.getRule( ),
                                           this.getExpression( ) );
         }
-        catch ( Exception e )
+        catch (CompilationException e)
         {
-            throw new ConditionException( e, tuple.getRule( ),
+            System.err.println( "[" + e.getText() + "]" );
+            throw new ConditionException( e.getMessage(),
+                                          e.getRule(),
+                                          e.getText() );
+        }
+        catch (Exception e)
+        {
+            throw new ConditionException( e,
+                                          tuple.getRule( ),
                                           this.getExpression( ) );
         }
     }
