@@ -31,22 +31,6 @@
           </xs:complexType>
         </xs:element>
 
-
-        <!--
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="declaration" minOccurs="0" maxOccurs="unbounded" >
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element ref="rules:abstractClass"/>
-                </xs:sequence>
-                <xs:attribute name="identifier"     use="required" type="xs:string"/>
-              </xs:complexType>
-            </xs:element>
-          <xs:element ref="rules:abstractExtractor" minOccurs="0" maxOccurs="unbounded" />
-        </xs:choice>
-        -->
-
-
         <xs:element ref="rules:abstractCondition" minOccurs="0" maxOccurs="unbounded" />
 
         <xs:element name="duration" minOccurs="0" >
@@ -72,32 +56,6 @@
       <xs:selector xpath="rules:rule" />
       <xs:field xpath="@name" />
     </xs:key>
-
-    <!-- Extractor targets should be unique -->
-    <!--
-    <xs:key name="extractorTarget">
-      <xs:selector xpath="rules:abstractExtractor" />
-      <xs:field xpath="@target" />
-    </xs:key>    
-    -->
-
-    <!-- make sure extractor targets are valid
-         local declarations  -->
-    <!--
-    <xs:key name="identifierKey">
-      <xs:selector xpath="rules:declaration" />
-      <xs:field xpath="@identifier" />
-    </xs:key>
-    -->
-
-    <!--
-    <xs:keyref name="targetToIdentifier"
-               refer="rules:identifierKey">
-      <xs:selector xpath="rules:extractor" />
-      <xs:field xpath="@target" />
-    </xs:keyref>
-    -->
-
   </xs:element>
 
   <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
@@ -115,26 +73,11 @@
 
   <!-- Abstract Definitions for sementic to create concrete implementations -->
 
-  <!-- ensures that extractors always extend from te same type -->
-  <!--
-  <xs:complexType name="extractorType">
-    <xs:complexContent>
-      <xs:extension base="xs:anyType">
-        <xs:attribute name="target" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  -->
-
   <xs:element name="abstractImport"      type="xs:anyType"           abstract="true"/>
 
   <xs:element name="abstractClass"       type="xs:anyType"           abstract="true"/>
 
   <xs:element name="abstractClassField"  type="xs:anyType"           abstract="true"/>
-
-<!--
-  <xs:element name="abstractExtractor"   type="rules:extractorType"  abstract="true" />
--->
 
   <xs:element name="abstractCondition"   type="xs:anyType"           abstract="true"/>
 

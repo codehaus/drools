@@ -4,9 +4,6 @@
     <s:condition name="condition"
                  classname="org.drools.semantics.python.ExprCondition"/>
 
-    <s:extractor name="extractor"
-                 classname="org.drools.semantics.python.ExprExtractor"/>
-
     <s:consequence name="consequence"
                    classname="org.drools.semantics.python.BlockConsequence"/>
 

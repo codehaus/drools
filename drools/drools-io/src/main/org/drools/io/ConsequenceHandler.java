@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConsequenceHandler.java,v 1.2 2004-11-23 22:10:30 dbarnett Exp $
+ * $Id: ConsequenceHandler.java,v 1.3 2004-11-28 06:45:25 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,8 +39,6 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import java.util.HashSet;
-
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
@@ -50,14 +48,15 @@ import org.drools.smf.SemanticModule;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
-import org.drools.spi.Extractor;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import java.util.HashSet;
+
 /**
  * @author mproctor
- * 
+ *
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
@@ -66,7 +65,7 @@ class ConsequenceHandler extends BaseAbstractHandler implements Handler
     ConsequenceHandler( RuleSetReader ruleSetReader )
     {
         this.ruleSetReader = ruleSetReader;
-        
+
         if ( (this.validParents == null) && (validPeers == null) )
         {
             this.validParents = new HashSet( );
@@ -75,7 +74,6 @@ class ConsequenceHandler extends BaseAbstractHandler implements Handler
             this.validPeers = new HashSet( );
             this.validPeers.add( Duration.class );
             this.validPeers.add( Condition.class );
-            this.validPeers.add( Extractor.class );
             this.validPeers.add( Declaration.class );
 
             this.allowNesting = false;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.59 2004-11-28 05:55:46 simon Exp $
+ * $Id: Builder.java,v 1.60 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,7 +44,6 @@ import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
-import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
@@ -467,42 +466,6 @@ public class Builder
     }
 
     /**
-     * Locate a <code>TupleSource</code> suitable for attaching the
-     * <code>Extraction</code>.
-     *
-     * @param extract
-     *            The <code>Extraction</code> to attach.
-     * @param sources
-     *            Candidate <code>TupleSources</code>.
-     *
-     * @return Matching <code>TupleSource</code> if a suitable one can be
-     *         found, else <code>null</code>.
-     */
-    TupleSource findMatchingTupleSourceForExtraction(Extraction extract,
-                                                     List sources)
-    {
-        // TODO: Can this line go?
-        // Declaration targetDecl = extract.getTargetDeclaration( );
-
-        Iterator sourceIter = sources.iterator( );
-        TupleSource eachSource;
-
-
-        while ( sourceIter.hasNext( ) )
-        {
-            eachSource = (TupleSource) sourceIter.next( );
-
-            if ( matches( extract,
-                          eachSource.getTupleDeclarations( ) ) )
-            {
-                return eachSource;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Determine if a set of <code>Declarations</code> match those required by
      * a <code>Condition</code>.
      *
@@ -520,26 +483,6 @@ public class Builder
     {
         return containsAll( declarations,
                             condition.getRequiredTupleMembers( ) );
-    }
-
-    /**
-     * Determine if a set of <code>Declarations</code> match those required by
-     * a <code>Extraction</code>.
-     *
-     * @param extract
-     *            The <code>Extraction</code>.
-     * @param declarations
-     *            The set of <code>Declarations</code> to compare against.
-     *
-     * @return <code>true</code> if the set of <code>Declarations</code> is
-     *         a super-set of the <code>Declarations</code> required by the
-     *         <code>Condition</code>.
-     */
-    boolean matches(Extraction extract,
-                    Set declarations)
-    {
-        return containsAll( declarations,
-                            extract.getRequiredTupleMembers( ) );
     }
 
     /**

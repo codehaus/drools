@@ -40,8 +40,6 @@ public class RuleTest extends DroolsTestCase
 
         assertLength( 0, rule.getAllDeclarations( ) );
 
-        assertLength( 0, rule.getExtractions( ) );
-
         assertLength( 0, rule.getConditions( ) );
 
         assertNull( rule.getConsequence( ) );
@@ -83,8 +81,6 @@ public class RuleTest extends DroolsTestCase
         Declaration paramDecl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         Declaration localDecl = rule.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
-        rule.addExtraction( "localVar", null );
 
         List paramDecls = rule.getParameterDeclarations( );
         assertLength( 1, paramDecls );
@@ -205,9 +201,6 @@ public class RuleTest extends DroolsTestCase
         rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         rule.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
-        rule.addExtraction( "localVar", null );
-
 
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );

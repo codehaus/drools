@@ -10,7 +10,7 @@
     <title>Frequently-Asked Questions</title>
 
     <section name="General">
-    
+
     <subsection name="What is drools?">
       <p>
       <code>drools</code> is a dynamic rules engine for Java, based upon the
@@ -44,7 +44,7 @@
 
     <subsection name="What's Rete-OO?">
       <p>
-      Rete-OO is Bob McWhirter's adaptation of Charles Forgy's original Rete 
+      Rete-OO is Bob McWhirter's adaptation of Charles Forgy's original Rete
       algorithm,
       tailored for object-oriented constructs.  The base algorithm
       is the same, but extra nodes in the network have been created.
@@ -56,14 +56,14 @@
     <subsection name="How do the graphs differ?">
       <p>
       In Rete, all 1-input/1-output nodes were conditions which
-      filtered passing tuples.  
+      filtered passing tuples.
       </p>
 
       <p>
         <img src="./images/rete.gif" />
       </p>
       <p>
-      Rete-OO adds two other types of 1-input/1-output node: the <i>parameter</i> and 
+      Rete-OO adds two other types of 1-input/1-output node: the <i>parameter</i> and
       <i>extraction</i> nodes.
       </p>
 
@@ -103,7 +103,7 @@
 
       <p>
       A <a href="./apidocs/org/drools/smf/SemanticModule.html">SemanticModule</a>
-      simply aggregates and packages a collection of 
+      simply aggregates and packages a collection of
       <a href="./apidocs/org/drools/spi/SemanticComponent.html">SemanticComponents</a>.
       The semantic components simply define the concepts of "object type",
       "fact extraction" and "filter condition" that are used by the Rete-OO engine.
@@ -112,16 +112,15 @@
     </subsection>
 
     <subsection name="What's a Semantic Componet?">
-      <p> 
+      <p>
       The Rete-OO algorithm works in terms of abstract interfaces to
-      to various semantic-implying components, such as 
-      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectType</a>,
-      <a href="./apidocs/org/drools/spi/Condition.html">Condition</a> and
-      <a href="./apidocs/org/drools/spi/Extractor.html">Extractor</a>.
-      Each semantic component has a very minimal interface that is 
+      to various semantic-implying components, such as
+      <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectType</a> and
+      <a href="./apidocs/org/drools/spi/Condition.html">Condition</a>
+      Each semantic component has a very minimal interface that is
       implemented in order to inject application-specific semantics
       into the core algorithmic engine.
-      </p> 
+      </p>
     </subsection>
 
     </section>

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Eval.java,v 1.10 2004-11-28 02:22:18 simon Exp $
+ * $Id: Eval.java,v 1.11 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,7 +52,6 @@ import java.util.List;
  * Base class for Groovy based semantic components.
  *
  * @see ExprCondition
- * @see ExprExtractor
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Eval.java,v 1.15 2004-11-28 02:22:18 simon Exp $
+ * $Id: Eval.java,v 1.16 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,12 +54,11 @@ import java.util.List;
  * Base class for Jython expression-based Python semantic components.
  *
  * @see ExprCondition
- * @see ExprExtractor
- *
+ *s
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Eval.java,v 1.15 2004-11-28 02:22:18 simon Exp $
+ * @version $Id: Eval.java,v 1.16 2004-11-28 06:45:24 simon Exp $
  */
 public class Eval extends Interp
 {

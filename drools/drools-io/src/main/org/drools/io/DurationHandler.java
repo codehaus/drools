@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DurationHandler.java,v 1.3 2004-11-28 02:22:18 simon Exp $
+ * $Id: DurationHandler.java,v 1.4 2004-11-28 06:45:25 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,6 @@ package org.drools.io;
  *
  */
 import org.drools.rule.Declaration;
-import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
@@ -70,7 +69,6 @@ class DurationHandler extends BaseAbstractHandler implements Handler
 
             this.validPeers = new HashSet( );
             this.validPeers.add( Declaration.class );
-            this.validPeers.add( Extraction.class );
             this.validPeers.add( Condition.class );
 
             this.allowNesting = false;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseTest.java,v 1.9 2004-11-17 15:01:10 dbarnett Exp $
+ * $Id: RuleBaseTest.java,v 1.10 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,14 @@ package org.drools.reteoo;
  *
  */
 
+import org.drools.DroolsTestCase;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
+import org.drools.spi.MockObjectType;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
@@ -47,15 +55,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.List;
-
-import org.drools.DroolsTestCase;
-import org.drools.RuleBase;
-import org.drools.WorkingMemory;
-import org.drools.conflict.DefaultConflictResolver;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
-import org.drools.spi.InstrumentedExtractor;
-import org.drools.spi.MockObjectType;
 
 public class RuleBaseTest extends DroolsTestCase
 {
@@ -65,8 +64,6 @@ public class RuleBaseTest extends DroolsTestCase
         rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         rule1.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
-        rule1.addExtraction( "localVar", new InstrumentedExtractor() );
 
         //add consequence
         rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -82,8 +79,6 @@ public class RuleBaseTest extends DroolsTestCase
         rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         rule2.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
-        rule2.addExtraction( "localVar", new InstrumentedExtractor( ) );
 
         //add consequence
         rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
@@ -115,12 +110,12 @@ public class RuleBaseTest extends DroolsTestCase
         ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
         in.readObject( );
         in.close( );
-        
+
         // JSR-94 Tests
         // Reset the session. [ruleSession.reset();]
         WorkingMemory newWorkingMemory = ruleBase.newWorkingMemory( );
         assertNotNull("WMNotNullTest ", newWorkingMemory);
-        
+
         // Retrieve all the objects, nothing should be here. The
         // reset should have taken care of the removal.
         // [ruleSession.getObjects();]

@@ -1,31 +1,31 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReader.java,v 1.5 2004-11-03 22:54:36 mproctor Exp $
- * 
+ * $Id: SemanticsReader.java,v 1.6 2004-11-28 06:45:25 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,7 +37,7 @@ package org.drools.smf;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import java.io.InputStream;
@@ -47,10 +47,10 @@ import java.util.Properties;
 
 /**
  * Loader of <code>SemanticModule</code> s from a set of properties.
- * 
+ *
  * <p>
  * The required properties are:
- * 
+ *
  * <ul>
  * <li><code>module.uri=<i>uri</i></code>: To denote the URI of the
  * module.</li>
@@ -58,15 +58,15 @@ import java.util.Properties;
  * component to associate a tag with the component.
  * </ul>
  * </p>
- * 
+ *
  * <p>
  * Instances of <code>SemanticsReader</code> are re-entrant and thread-safe.
  * The singleton may be used simultaneously by multiple threads.
  * </p>
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: SemanticsReader.java,v 1.5 2004-11-03 22:54:36 mproctor Exp $
+ *
+ * @version $Id: SemanticsReader.java,v 1.6 2004-11-28 06:45:25 simon Exp $
  */
 public class SemanticsReader
 {
@@ -83,7 +83,7 @@ public class SemanticsReader
 
     /**
      * Retrieve the singleton instance.
-     * 
+     *
      * @return The singleton instance.
      */
     public static SemanticsReader getInstance()
@@ -109,11 +109,11 @@ public class SemanticsReader
 
     /**
      * Read a semantic module descriptor from a <code>URL</code>.
-     * 
+     *
      * @param url The descriptor URL.
-     * 
+     *
      * @return The loaded semantic module.
-     * 
+     *
      * @throws Exception If an error occurs while loading the module.
      */
     public SemanticModule read(URL url) throws Exception
@@ -132,11 +132,11 @@ public class SemanticsReader
 
     /**
      * Read a semantic module descriptor from an <code>InputStream</code>.
-     * 
+     *
      * @param in The descriptor input stream.
-     * 
+     *
      * @return The loaded semantic module.
-     * 
+     *
      * @throws Exception If an error occurs while loading the module.
      */
     public SemanticModule read(InputStream in) throws Exception
@@ -215,13 +215,6 @@ public class SemanticsReader
 
                 module.addConditionFactory( componentName, factory );
             }
-            else if ( "Extractor".equals( type ) )
-            {
-                ExtractorFactory factory = ( ExtractorFactory ) factoryClass
-                                                                            .newInstance( );
-
-                module.addExtractorFactory( componentName, factory );
-            }
             else if ( "Consequence".equals( type ) )
             {
                 ConsequenceFactory factory = ( ConsequenceFactory ) factoryClass
@@ -235,14 +228,14 @@ public class SemanticsReader
                                                                           .newInstance( );
 
                 module.addDurationFactory( componentName, factory );
-            }   
+            }
             else if ( "ImportEntry".equals( type ) )
             {
                 ImportEntryFactory factory = ( ImportEntryFactory ) factoryClass
                                                                           .newInstance( );
 
                 module.addImportEntryFactory( componentName, factory );
-            }              
+            }
             else
             {
                 throw new Exception( "unknown type '" + type + "'" );

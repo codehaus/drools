@@ -1,31 +1,31 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticModule.java,v 1.5 2004-11-03 22:54:36 mproctor Exp $
- * 
+ * $Id: SimpleSemanticModule.java,v 1.6 2004-11-28 06:45:25 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,7 +37,7 @@ package org.drools.smf;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import java.util.HashMap;
@@ -46,9 +46,9 @@ import java.util.Set;
 
 /**
  * Simple implementation of a Semantic Module.
- * 
+ *
  * @see org.drools.spi
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 public class SimpleSemanticModule implements SemanticModule
@@ -69,16 +69,13 @@ public class SimpleSemanticModule implements SemanticModule
     /** Condition factories. */
     private Map    conditionFactories;
 
-    /** Extractor factories. */
-    private Map    extractorFactories;
-
     /** Consequence factories. */
     private Map    consequenceFactories;
 
     private Map    durationFactories;
-    
+
     /** Imports factories */
-    private Map    importEntryFactories;    
+    private Map    importEntryFactories;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -86,7 +83,7 @@ public class SimpleSemanticModule implements SemanticModule
 
     /**
      * Construct with a URI.
-     * 
+     *
      * @param uri The URI the identifies this semantic module.
      */
     public SimpleSemanticModule(String uri)
@@ -96,10 +93,9 @@ public class SimpleSemanticModule implements SemanticModule
         this.ruleFactories = new HashMap( );
         this.objectTypeFactories = new HashMap( );
         this.conditionFactories = new HashMap( );
-        this.extractorFactories = new HashMap( );
         this.consequenceFactories = new HashMap( );
         this.durationFactories = new HashMap( );
-        this.importEntryFactories = new HashMap( );        
+        this.importEntryFactories = new HashMap( );
     }
 
     // ------------------------------------------------------------
@@ -134,10 +130,10 @@ public class SimpleSemanticModule implements SemanticModule
 
     /**
      * Add a semantic <code>ObjectTypeFactory</code>.
-     * 
+     *
      * @param name The object type name.
      * @param factory The object type factory.
-     *  
+     *
      */
     public void addObjectTypeFactory(String name, ObjectTypeFactory factory)
     {
@@ -162,7 +158,7 @@ public class SimpleSemanticModule implements SemanticModule
 
     /**
      * Add a semantic <code>ConditionFactory</code>.
-     * 
+     *
      * @param name The condition name.
      * @param factory The condition factory.
      */
@@ -188,35 +184,8 @@ public class SimpleSemanticModule implements SemanticModule
     }
 
     /**
-     * Add a semantic <code>ExtractorFactory</code>.
-     * 
-     * @param name The extractor name.
-     * @param factory The extractor factory.
-     */
-    public void addExtractorFactory(String name, ExtractorFactory factory)
-    {
-        this.extractorFactories.put( name, factory );
-    }
-
-    /**
-     * @see SemanticModule
-     */
-    public ExtractorFactory getExtractorFactory(String name)
-    {
-        return ( ExtractorFactory ) this.extractorFactories.get( name );
-    }
-
-    /**
-     * @see SemanticModule
-     */
-    public Set getExtractorFactoryNames()
-    {
-        return this.extractorFactories.keySet( );
-    }
-
-    /**
      * Add a semantic <code>ConsequenceFactory</code>.
-     * 
+     *
      * @param name The consequence name.
      * @param factory The consequence factory.
      */
@@ -269,5 +238,5 @@ public class SimpleSemanticModule implements SemanticModule
     public Set getImportEntryFactoryNames()
     {
         return this.importEntryFactories.keySet( );
-    }     
+    }
 }

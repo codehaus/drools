@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.36 2004-11-26 14:58:03 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.37 2004-11-28 06:45:25 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.36 2004-11-26 14:58:03 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.37 2004-11-28 06:45:25 simon Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -151,7 +151,6 @@ public class RuleSetReader extends DefaultHandler
         localNameMap.put( "class-field", new ObjectTypeHandler( this ) );
         localNameMap.put( "condition", new ConditionHandler( this ) );
         localNameMap.put( "duration", new DurationHandler( this ) );
-        //localNameMap.put( "extractor", new ExtractionHandler( this ) );
         localNameMap.put( "consequence", new ConsequenceHandler( this ) );
 
     }
@@ -667,9 +666,9 @@ public class RuleSetReader extends DefaultHandler
         }
         if (index != -1)
         {
-            xsd = systemId.substring(index+1);            
-        } 
-        else 
+            xsd = systemId.substring(index+1);
+        }
+        else
         {
             xsd = systemId;
         }
@@ -697,7 +696,7 @@ public class RuleSetReader extends DefaultHandler
         }
         catch (Exception e)
         {
-        }        
+        }
 
         //Try looking at root of classpath
         try

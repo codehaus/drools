@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaSemanticTest.java,v 1.6 2004-11-17 15:06:17 dbarnett Exp $
+ * $Id: JavaSemanticTest.java,v 1.7 2004-11-28 06:45:25 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,15 @@ package org.drools.semantics.java;
  *
  */
 
+import org.drools.smf.SMFTestFrameWork;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.drools.smf.SMFTestFrameWork;
 
 /**
  * Extends SMFTestFrameWork specifying the Java Semantic Module. The
  * SMFTestFramework base class then loads the Java test data files, extracts the
- * tests for condition, extractors and consequences and executes them.
+ * tests for conditions and consequences and executes them.
  */
 public class JavaSemanticTest extends SMFTestFrameWork
 {
@@ -59,9 +59,9 @@ public class JavaSemanticTest extends SMFTestFrameWork
 
     public void setUp( ) throws Exception
     {
-        Set imports = new HashSet( );               
+        Set imports = new HashSet( );
         imports.add(new JavaImportEntry( "java.math.*" ) );
-        imports.add(new JavaImportEntry( "org.drools.smf.SMFTestFrameWork" ) );                 
+        imports.add(new JavaImportEntry( "org.drools.smf.SMFTestFrameWork" ) );
         super.setUp( "java", imports );
     }
 }
