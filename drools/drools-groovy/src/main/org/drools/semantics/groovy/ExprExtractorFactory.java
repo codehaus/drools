@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprExtractorFactory.java,v 1.3 2004-09-17 00:36:28 mproctor Exp $
+ * $Id: ExprExtractorFactory.java,v 1.4 2004-10-24 00:59:11 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,6 +42,7 @@ package org.drools.semantics.groovy;
  */
 
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ExtractorFactory;
 import org.drools.smf.FactoryException;
@@ -57,11 +58,11 @@ public class ExprExtractorFactory implements ExtractorFactory
         return INSTANCE;
     }
 
-    public Extractor newExtractor(Configuration config, Declaration[] availDecls) throws FactoryException
+    public Extractor newExtractor(Configuration config, Rule rule) throws FactoryException
     {
         try
         {
-            return new ExprExtractor( config.getText( ), availDecls );
+            return new ExprExtractor( config.getText( ), rule.getImports(), rule.getAllDeclarations());
         }
         catch ( Exception e )
         {

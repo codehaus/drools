@@ -15,3 +15,5 @@ import org.drools.smf.SMFTestFrameWork.Cheese;
 (camembert.getBitesLeft() + stilton.getBitesLeft() == 6) ? new Cheese("cheddar") : new Cheese("mozzerella")
 <!--drools-test--!> // 7
 SMFTestFrameWork.extractionExceptionTest()
+<!--drools-test--!> // 8
+new BigInteger("1").toString() + new Cheese("brie").getName()

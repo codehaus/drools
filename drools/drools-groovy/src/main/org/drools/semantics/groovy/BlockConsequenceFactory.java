@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: BlockConsequenceFactory.java,v 1.3 2004-09-17 00:36:28 mproctor Exp $
+ * $Id: BlockConsequenceFactory.java,v 1.4 2004-10-24 00:59:11 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,7 +41,7 @@ package org.drools.semantics.groovy;
  *  
  */
 
-import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ConsequenceFactory;
 import org.drools.smf.FactoryException;
@@ -58,8 +58,8 @@ public class BlockConsequenceFactory implements ConsequenceFactory
     }
 
     public Consequence newConsequence(Configuration config,
-                                      Declaration[] availDecls) throws FactoryException
+                                      Rule rule) throws FactoryException
     {
-        return new BlockConsequence( config.getText( ) );
+        return new BlockConsequence( config.getText( ), rule.getImports() );
     }
 }
