@@ -1,7 +1,7 @@
 
 package org.drools.semantic.java;
 
-import org.drools.reteoo.ReteTuple;
+import org.drools.reteoo.impl.ReteTuple;
 
 import org.drools.spi.Declaration;
 import org.drools.spi.Tuple;
