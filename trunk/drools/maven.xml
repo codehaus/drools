@@ -214,7 +214,7 @@
                              includes="drools-*.jar"/>
     		 <zipfileset dir="${basedir}" 
                              prefix="drools-${pom.currentVersion}" 
-                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+                             includes="*.txt"/>
       </zip>
 
       <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}.tar.gz" compression="gzip">
@@ -225,7 +225,7 @@
                              includes="drools-*.jar"/>
     		 <tarfileset dir="${basedir}/" 
                              prefix="drools-${pom.currentVersion}" 
-                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+                             includes="*.txt"/>
       </tar>
     </goal>
 
@@ -246,7 +246,7 @@
                              includes="drools-*.jar"/>
     		 <zipfileset dir="${basedir}" 
                              prefix="drools-${pom.currentVersion}" 
-                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+                             includes="*.txt"/>
       </zip>
 
       <tar destfile="${basedir}/target/dist/drools-deps-${pom.currentVersion}.tar.gz" compression="gzip">
@@ -259,7 +259,7 @@
                              includes="drools-*.jar"/>
     		 <tarfileset dir="${basedir}" 
                              prefix="drools-${pom.currentVersion}" 
-                             excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+                             excludes="*.txt"/>
       </tar>
     </goal>
 
@@ -273,7 +273,7 @@
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="${basedir}" />
 
-      <tar destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.tar.gz"
+      <tar destfile="${basedir}/target/dist/drools-src-${pom.currentVersion}.tar.gz" 
            compression="gzip"
            prefix="drools-${pom.currentVersion}"
            excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
