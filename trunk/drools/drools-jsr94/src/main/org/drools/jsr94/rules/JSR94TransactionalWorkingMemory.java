@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TransactionalWorkingMemory.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
+ $Id: JSR94TransactionalWorkingMemory.java,v 1.4 2003-05-23 21:05:44 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,6 +46,7 @@ package org.drools.jsr94.rules;
 
  */
 
+import org.apache.commons.collections.SequencedHashMap;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.RuleBase;
@@ -55,7 +56,6 @@ import javax.rules.Handle;
 import javax.rules.InvalidRuleSessionException;
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -68,7 +68,7 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
 {
 
     // list of Handles
-    private Map objectMap = new HashMap();
+    private Map objectMap = new SequencedHashMap();
 
     // the next handle id
     private static BigInteger nextHandleid = new BigInteger("1");
@@ -122,8 +122,8 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      */
     void assertObjectForHandle(Handle handle, Object object) throws AssertionException
     {
-        super.assertObject(object);
         objectMap.put(handle, object);
+        super.assertObject(object);
     }
 
     /**
@@ -152,10 +152,9 @@ public class JSR94TransactionalWorkingMemory extends TransactionalWorkingMemory
      */
     public void assertObject(Object object) throws AssertionException
     {
-        super.assertObject(object);
-
         Handle handle = getNextHandle();
         objectMap.put(handle, object);
+        super.assertObject(object);
     }
 
     /** Retract a fact object from this working memory.
