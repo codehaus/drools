@@ -3,7 +3,7 @@ package org.drools.reteoo.impl;
 
 import org.drools.AssertionException;
 import org.drools.RetractionException;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -26,8 +26,8 @@ public class ReteImplTest extends TestCase
     {
         this.rete = new ReteImpl();
 
-        this.objectTypeNode = new InstrumentedObjectTypeNode( new ClassObjectType( Object.class ) );
-        this.stringTypeNode = new InstrumentedObjectTypeNode( new ClassObjectType( String.class ) );
+        this.objectTypeNode = new InstrumentedObjectTypeNode( new MockObjectType() );
+        this.stringTypeNode = new InstrumentedObjectTypeNode( new MockObjectType() );
 
         this.rete.addObjectTypeNode( this.objectTypeNode );
         this.rete.addObjectTypeNode( this.stringTypeNode );

@@ -4,7 +4,7 @@ package org.drools.reteoo.impl;
 import org.drools.AssertionException;
 import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -22,7 +22,7 @@ public class ParameterNodeImplTest extends TestCase
 
     public void setUp()
     {
-        this.decl = new Declaration( new ClassObjectType( String.class ),
+        this.decl = new Declaration( new MockObjectType(),
                                      "object" );
     }
 

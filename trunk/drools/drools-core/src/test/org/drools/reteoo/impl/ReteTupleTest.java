@@ -3,7 +3,7 @@ package org.drools.reteoo.impl;
 import junit.framework.TestCase;
 
 import org.drools.rule.Declaration;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import java.util.Map;
 
@@ -21,10 +21,10 @@ public class ReteTupleTest extends TestCase
 
     public void setUp()
     {
-        this.rootDecl = new Declaration( new ClassObjectType( Object.class ),
-                                      "rootObj" );
+        this.rootDecl = new Declaration( new MockObjectType(),
+                                         "rootObj" );
 
-        this.otherDecl = new Declaration( new ClassObjectType( Object.class ),
+        this.otherDecl = new Declaration( new MockObjectType(),
                                           "rootObj" );
 
         this.rootObj = new Object();
@@ -41,9 +41,14 @@ public class ReteTupleTest extends TestCase
         this.otherObj = null;
     }
 
+    public void testNothing()
+    {
+        // intentionally left blank
+    }
+
+    /*
     public void testConstruct_WithKey()
     {
-        /*
         ReteTuple tuple = new ReteTuple( this.rootDecl,
                                          this.rootObj );
                                          
@@ -52,12 +57,10 @@ public class ReteTupleTest extends TestCase
 
         assertTrue( tuple.getKey().containsDeclaration( this.rootDecl ) );
         assertTrue( tuple.getKey().containsRootFactObject( this.rootObj ) );
-        */
     }
 
     public void testDependsOn()
     {
-        /*
         ReteTuple tuple = new ReteTuple( this.rootDecl,
                                          this.rootObj );
 
@@ -66,12 +69,10 @@ public class ReteTupleTest extends TestCase
 
         assertTrue( tuple.dependsOn( this.rootObj ) );
         assertTrue( ! tuple.dependsOn( this.otherObj ) );
-        */
     }
 
     public void testGetOtherColumns()
     {
-        /*
         ReteTuple tuple = new ReteTuple( this.rootDecl,
                                          this.rootObj );
 
@@ -88,7 +89,7 @@ public class ReteTupleTest extends TestCase
 
         assertSame( this.otherObj,
                     otherCols.get( this.otherDecl ) );
-        */
     }
+    */
 
 }

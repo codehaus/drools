@@ -1,4 +1,3 @@
-
 package org.drools.reteoo;
 
 import org.drools.reteoo.impl.ReteImpl;
@@ -8,7 +7,7 @@ import org.drools.rule.Extraction;
 import org.drools.spi.ObjectType;
 import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedExtractor;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -39,8 +38,8 @@ public class BuilderTest extends TestCase
         this.rete     = new ReteImpl();
         this.builder  = new Builder( this.rete );
 
-        this.stringType = new ClassObjectType( String.class );
-        this.objectType = new ClassObjectType( Object.class );
+        this.stringType = new MockObjectType();
+        this.objectType = new MockObjectType();
 
         this.rule1 = new Rule( "cheese" );
 

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 import org.drools.rule.Declaration;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -19,10 +19,10 @@ public class ParameterTupleTest extends TestCase
 
     public void setUp()
     {
-        this.decl = new Declaration( new ClassObjectType( Object.class ),
+        this.decl = new Declaration( new MockObjectType( String.class ),
                                      "decl" );
 
-        this.otherDecl = new Declaration( new ClassObjectType( Object.class ),
+        this.otherDecl = new Declaration( new MockObjectType( String.class ),
                                           "otherDecl" );
     }
 
