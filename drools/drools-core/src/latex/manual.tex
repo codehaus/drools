@@ -208,10 +208,11 @@
     \clearpage\thispagestyle{empty}
 {
     \refstepcounter{part}
+    \addcontentsline{toc}{part}{Part \Roman{part} #1}
     \usefont{OT1}{phv}{b}{n}\selectfont
     \rule{0pt}{3in}
 
-    {\noindent\Huge\partname\ \arabic{part} }
+    {\noindent\Huge\partname\ \Roman{part}1}
 
     \noindent\rule{\textwidth}{1pt}
 
