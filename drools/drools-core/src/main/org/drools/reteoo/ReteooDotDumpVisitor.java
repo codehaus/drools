@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooDotDumpVisitor.java,v 1.7 2004-12-05 01:53:52 simon Exp $
+ * $Id: ReteooDotDumpVisitor.java,v 1.8 2004-12-05 23:15:25 dbarnett Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -271,7 +271,8 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
     private void makeNode(Object object,
                           String label)
     {
-        out.println( INDENT + "\"" + dotId( object ) + "\" [label=\"" + format( label ) + "\"];" );
+        out.println( INDENT + "\"" + dotId( object ) + "\" " +
+            "[" + getStyle( object ) + ", label=\"" + format( label ) + "\"];" );
     }
 
     /**
@@ -364,5 +365,58 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
         }
 
         return buffer.toString( );
+    }
+
+    /**
+     * Returns the desired Node shape for the given object.
+     * 
+     * @param node The Rete graph Node to be formatted
+     * 
+     * @return a DOT style-string for the given Node
+     */
+    private String getStyle( Object node )
+    {
+        String style;
+        
+        if ( node instanceof Rete )
+        {
+            // Preferably this would be a "rectangle" with rounded sides
+            // but GraphViz doesn't support "rounded" & "filled" on one node.
+            style = "style=\"filled\", shape=\"ellipse\"";
+        }
+        else if ( node instanceof ObjectTypeNode )
+        {
+            style = "style=\"filled\", fillcolor=\"cyan4\", shape=\"rectangle\"";
+        }
+        else if ( node instanceof ParameterNode )
+        {
+            style = "style=\"filled\", fillcolor=\"cyan3\", shape=\"rectangle\"";
+        }
+        else if ( node instanceof ConditionNode )
+        {
+            style = "style=\"filled\", fillcolor=\"yellow3\", shape=\"diamond\"";
+        }
+        else if ( node instanceof JoinNodeInput )
+        {
+            style = "style=\"filled\", fillcolor=\"chartreuse\", shape=\"invtriangle\"";
+        }
+        else if ( node instanceof JoinNode )
+        {
+            style = "style=\"filled\", fillcolor=\"green\", shape=\"invtrapezium\"";
+        }
+        else if ( node instanceof TerminalNode )
+        {
+            // Preferably this would be a "rectangle" with rounded sides
+            // but GraphViz doesn't support "rounded" & "filled" on one node.
+            style = "style=\"filled\", shape=\"ellipse\"";
+        }
+        else
+        {
+            // Preferably this would be a "rectangle" with rounded sides
+            // but GraphViz doesn't support "rounded" & "filled" on one node.
+            style = "style=\"filled\", fillcolor=\"yellow3\", shape=\"ellipse\"";
+        }
+        
+        return style;
     }
 }
