@@ -29,5 +29,3 @@ formats.
 --
 bob mcwhirter
 bob@werken.com
-
-
