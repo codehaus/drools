@@ -67,6 +67,15 @@ public class FishMonger
                 cart.addItem( new CartItem( "tropical fish",
                                             12.99 ) );
 
+                cart.addItem( new CartItem( "tropical fish",
+                                            12.99 ) );
+
+                cart.addItem( new CartItem( "tropical fish",
+                                            12.99 ) );
+
+                cart.addItem( new CartItem( "tropical fish",
+                                            12.99 ) );
+
                 if ( false )
                 {
                     cart.addItem( new CartItem( "tropical fish food",
