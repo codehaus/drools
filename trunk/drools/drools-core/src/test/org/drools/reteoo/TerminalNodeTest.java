@@ -74,7 +74,7 @@ public class TerminalNodeTest extends DroolsTestCase
 
         TerminalNode node = new TerminalNode( new MockTupleSource( ), rule );
 
-        TupleKey key = new TupleKey( );
+        TupleKey key = TupleKey.EMPTY;
 
         node.retractTuples( key, memory );
 

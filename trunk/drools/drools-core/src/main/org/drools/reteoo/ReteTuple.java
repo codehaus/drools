@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.41 2004-10-30 12:43:28 simon Exp $
+ * $Id: ReteTuple.java,v 1.42 2004-10-30 16:13:31 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import java.util.Collections;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.41 2004-10-30 12:43:28 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.42 2004-10-30 16:13:31 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -100,7 +100,8 @@ class ReteTuple implements Tuple, Serializable
         this.workingMemory = left.workingMemory;
         this.rule = left.rule;
         this.key = new TupleKey( left.key, right.key );
-        this.objects = new HashMap( left.objects );
+        this.objects = new HashMap( left.objects.size( ) + right.objects.size( ), 1 );
+        this.objects.putAll( left.objects );
         this.objects.putAll( right.objects );
     }
 
@@ -111,7 +112,8 @@ class ReteTuple implements Tuple, Serializable
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
         this.key = new TupleKey( that.key );
-        this.objects = new HashMap( that.objects );
+        this.objects = new HashMap( that.objects.size( ) + 1, 1 );
+        this.objects.putAll( that.objects );
         this.objects.put( declaration, value );
     }
 

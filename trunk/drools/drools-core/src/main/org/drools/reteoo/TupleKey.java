@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.18 2004-10-30 12:43:28 simon Exp $
+ * $Id: TupleKey.java,v 1.19 2004-10-30 16:13:31 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,10 +45,10 @@ import org.drools.rule.Declaration;
 import org.drools.spi.Tuple;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Collections;
 
 /**
  * A composite key to match tuples.
@@ -75,19 +75,21 @@ class TupleKey implements Serializable
     //     Constructors
     // ------------------------------------------------------------
 
-    public TupleKey()
+    private TupleKey()
     {
         handles = Collections.EMPTY_MAP;
     }
 
     public TupleKey(TupleKey that)
     {
-        handles = new HashMap( that.handles );
+        handles = new HashMap( that.handles.size( ), 1 );
+        handles.putAll( that.handles );
     }
 
     public TupleKey(TupleKey left, TupleKey right)
     {
-        this( left );
+        handles = new HashMap( left.handles.size( ) + right.handles.size( ), 1 );
+        this.handles.putAll( left.handles );
         this.handles.putAll( right.handles );
     }
 
