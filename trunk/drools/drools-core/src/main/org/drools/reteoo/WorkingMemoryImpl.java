@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.50 2004-11-24 14:09:11 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.51 2004-11-24 16:16:13 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -82,21 +82,12 @@ class WorkingMemoryImpl
 
     /** Handle-to-object mapping. */
     private final PrimitiveLongMap objects = new PrimitiveLongMap( 32,
-                                                                   8 );
-    
-    /** Extraction handle factory */
-    private final FactHandleFactory extractionHandleFactory = new ExtractionHandleFactory();
-    
-    /** Handle-to-object mapping. */
-    private final PrimitiveLongMap extractions = new PrimitiveLongMap( 32,
-                                                                   8 );
+                                                                   8 ); 
     
     /** Object-to-handle mapping. */
     private final Map handles = new IdentityMap( );
     private final PrimitiveLongStack factHandlePool = new PrimitiveLongStack( );
     
-    private final PrimitiveLongStack extractionHandlePool = new PrimitiveLongStack( );
-
     /** The eventSupport */
     private final WorkingMemoryEventSupport eventSupport = new WorkingMemoryEventSupport( this );
 
@@ -163,23 +154,6 @@ class WorkingMemoryImpl
             return this.ruleBase.getFactHandleFactory( ).newFactHandle( );
         }
     }
-
-    /**
-     * Create a new <code>FactHandle</code>.
-     * 
-     * @return The new fact handle.
-     */
-    FactHandle newExtractionHandle()
-    {
-        if ( !this.extractionHandlePool.isEmpty( ) )
-        {
-            return this.extractionHandleFactory.newFactHandle( this.extractionHandlePool.pop( ) );
-        }
-        else
-        {
-            return this.extractionHandleFactory.newFactHandle( );
-        }
-    }    
 
     /**
      * @see WorkingMemory
@@ -306,21 +280,6 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public Object getExtraction(FactHandle handle) throws NoSuchFactObjectException
-    {
-        Object object = this.extractions.get( ((FactHandleImpl) handle).getId( ) );
-
-        if ( object == null )
-        {
-            throw new NoSuchFactObjectException( handle );
-        }
-
-        return object;
-    }    
-
-    /**
-     * @see WorkingMemory
-     */
     public FactHandle getFactHandle(Object object) throws NoSuchFactHandleException
     {
         FactHandle factHandle = (FactHandle) this.handles.get( object );
@@ -335,7 +294,6 @@ class WorkingMemoryImpl
 
     public List getFactHandles()
     {
-        System.err.println(new ArrayList( this.handles.values( ) ) );
         return new ArrayList( this.handles.values( ) );
     }
 
@@ -425,23 +383,6 @@ class WorkingMemoryImpl
         return oldValue;
     }
 
-    /**
-     * Associate an object with its handle.
-     * 
-     * @param handle
-     *            The handle.
-     * @param object
-     *            The object.
-     */
-    Object putExtraction(FactHandle handle,
-                         Object object)
-    {
-        Object oldValue = this.extractions.put( ((FactHandleImpl) handle).getId( ),
-                                            object );
-
-        return oldValue;
-    }    
-
     Object removeObject(FactHandle handle)
     {
         Object object = this.objects.remove( ((FactHandleImpl) handle).getId( ) );
@@ -451,16 +392,7 @@ class WorkingMemoryImpl
         return object;
     }
 
-    Object removeExtraction(FactHandle handle)
-    {
-        Object object = this.extractions.remove( ((FactHandleImpl) handle).getId( ) );        
-        
-        this.extractionHandlePool.push( ((FactHandleImpl) handle).getId( ) );
-
-        ((FactHandleImpl) handle).invalidate();  
-        
-        return object;
-    }    
+ 
 
     /**
      * @see WorkingMemory
