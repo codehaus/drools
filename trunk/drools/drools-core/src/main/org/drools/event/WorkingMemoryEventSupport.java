@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.2 2004-11-19 02:13:15 mproctor Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.3 2004-11-29 11:57:49 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,18 +40,17 @@ package org.drools.event;
  *
  */
 
-import org.drools.WorkingMemory;
 import org.drools.FactHandle;
+import org.drools.WorkingMemory;
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Tuple;
-import org.drools.spi.Consequence;
-import org.drools.rule.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Collections;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
@@ -164,8 +163,8 @@ public class WorkingMemoryEventSupport
         }
     }
 
-    public void fireActivationCreated(Consequence consequence,
-                                      Tuple tuple)
+    public void fireActivationCreated( Rule rule,
+                                       Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -173,7 +172,7 @@ public class WorkingMemoryEventSupport
         }
 
         ActivationCreatedEvent event = new ActivationCreatedEvent( this.workingMemory,
-                                                                   consequence,
+                                                                   rule,
                                                                    tuple );
 
         Iterator iter = this.listeners.iterator( );
@@ -183,8 +182,8 @@ public class WorkingMemoryEventSupport
         }
     }
 
-    public void fireActivationCancelled(Consequence consequence,
-                                        Tuple tuple)
+    public void fireActivationCancelled( Rule rule,
+                                         Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -192,7 +191,7 @@ public class WorkingMemoryEventSupport
         }
 
         ActivationCancelledEvent event = new ActivationCancelledEvent( this.workingMemory,
-                                                                       consequence,
+                                                                       rule,
                                                                        tuple );
 
         Iterator iter = this.listeners.iterator( );
@@ -202,8 +201,8 @@ public class WorkingMemoryEventSupport
         }
     }
 
-    public void fireActivationFired(Consequence consequence,
-                                    Tuple tuple)
+    public void fireActivationFired( Rule rule,
+                                     Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
@@ -211,7 +210,7 @@ public class WorkingMemoryEventSupport
         }
 
         ActivationFiredEvent event = new ActivationFiredEvent( this.workingMemory,
-                                                               consequence,
+                                                               rule,
                                                                tuple );
 
         Iterator iter = this.listeners.iterator( );

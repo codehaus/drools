@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.47 2004-11-29 11:37:44 simon Exp $
+ * $Id: Agenda.java,v 1.48 2004-11-29 11:57:49 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -158,7 +158,7 @@ class Agenda
             this.items.add( item );
         }
 
-        workingMemory.getEventSupport( ).fireActivationCreated( rule.getConsequence( ),
+        workingMemory.getEventSupport( ).fireActivationCreated( rule,
                                                                 tuple );
     }
 
@@ -192,7 +192,7 @@ class Agenda
 
                 itemIter.remove( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule.getConsequence( ),
+                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
                                                                                tuple );
             }
         }
@@ -211,7 +211,7 @@ class Agenda
 
                 itemIter.remove( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule.getConsequence( ),
+                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
                                                                                tuple );
             }
         }
@@ -288,7 +288,7 @@ class Agenda
 
             iter.remove( );
 
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ).getConsequence( ),
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
                                                                            eachItem.getTuple( ) );
         }
 
@@ -303,7 +303,7 @@ class Agenda
 
             iter.remove( );
 
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ).getConsequence( ),
+            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
                                                                            eachItem.getTuple( ) );
         }
     }

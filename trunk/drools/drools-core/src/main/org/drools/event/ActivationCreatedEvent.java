@@ -1,28 +1,29 @@
 package org.drools.event;
 
 import org.drools.WorkingMemory;
+import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.Tuple;
 
 public class ActivationCreatedEvent extends WorkingMemoryEvent
 {
-    private final Consequence consequence;
+    private final Rule rule;
 
     private final Tuple tuple;
 
     public ActivationCreatedEvent(WorkingMemory workingMemory,
-                                  Consequence consequence,
+                                  Rule rule,
                                   Tuple tuple)
     {
         super( workingMemory );
 
-        this.consequence = consequence;
+        this.rule = rule;
         this.tuple = tuple;
     }
 
     public Consequence getConsequence()
     {
-        return this.consequence;
+        return this.rule.getConsequence( );
     }
 
     public Tuple getTuple()
@@ -32,6 +33,6 @@ public class ActivationCreatedEvent extends WorkingMemoryEvent
 
     public String toString()
     {
-        return "[ActivationCreated: rule=" + this.tuple.getRule( ).getName( ) + "; tuple=" + this.tuple + "]";
+        return "[ActivationCreated: rule=" + this.rule.getName( ) + "; tuple=" + this.tuple + "]";
     }
 }
