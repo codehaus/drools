@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.20 2004-11-16 14:35:33 simon Exp $
+ * $Id: Interp.java,v 1.21 2004-11-23 05:32:55 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Interp.java,v 1.20 2004-11-16 14:35:33 simon Exp $
+ * @version $Id: Interp.java,v 1.21 2004-11-23 05:32:55 dbarnett Exp $
  */
 public class Interp
 {
@@ -167,7 +167,7 @@ public class Interp
         } catch (Exception e)
         {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException( e.getLocalizedMessage( ) );
         }
     }
 
@@ -262,7 +262,7 @@ public class Interp
                     }
 
                     if ( line.length( ) < indent.length( )
-                         || !line.matches( "^" + indent + ".*" ) )
+                         || !line.startsWith( indent ) )
                     {
                         // This can catch some poorly indented Python syntax
                         throw new RuntimeException( "Bad Text Indention: Line "
@@ -273,8 +273,11 @@ public class Interp
                     }
 
                     // Remove the outer most indention from the line
-                    unindentedText.append( line.replaceFirst( "^" + indent, "" )
-                                           + LINE_SEPARATOR );
+                    if ( line.startsWith( indent ) )
+                    {
+                        unindentedText.append( line.substring( indent.length( ) ) );
+                    }
+                    unindentedText.append( LINE_SEPARATOR );
                 }
             }
             catch ( IOException e )
@@ -294,10 +297,8 @@ public class Interp
         {
             // [TODO]
             // The whole point of this try/catch block is to ensure that
-            // exceptions
-            // make it out to the user; it seems something is swallowing
-            // everything
-            // except RuntimeExceptions.
+            // exceptions make it out to the user; it seems something is
+            // swallowing everything except RuntimeExceptions.
             if ( e instanceof RuntimeException )
             {
                 throw ( RuntimeException ) e;
@@ -317,7 +318,21 @@ public class Interp
      */
     private static String formatForException(String text)
     {
-        return text.replaceAll( "\t", "{{tab}}" ).replace( ' ', '.' );
+        StringBuffer sbuf = new StringBuffer( text.length( ) * 2 );
+        for ( int i = 0, max = text.length(); i < max; i++ )
+        {
+            final char nextChar = text.charAt( i );
+            if ( '\t' == nextChar )
+            {
+                sbuf.append( "{{tab}}" );
+            }
+            else
+            {
+                sbuf.append( nextChar );
+            }
+        }
+        
+        return sbuf.toString( );
     }
 
     // ------------------------------------------------------------
@@ -471,3 +486,4 @@ public class Interp
         return dict;
     }
 }
+

@@ -1,7 +1,7 @@
 package org.drools.examples.petstore;
 
 /*
- * $Id: PetStoreUI.java,v 1.2 2004-09-17 00:37:57 mproctor Exp $
+ * $Id: PetStoreUI.java,v 1.3 2004-11-23 05:31:47 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -100,7 +100,7 @@ public class PetStoreUI extends JPanel
 
         //create top half of split panel and add to parent
         JPanel topHalf = new JPanel( );
-        topHalf.setLayout( new BoxLayout( topHalf, BoxLayout.LINE_AXIS ) );
+        topHalf.setLayout( new BoxLayout( topHalf, BoxLayout.X_AXIS ) );
         topHalf.setBorder( BorderFactory.createEmptyBorder( 5, 5, 0, 5 ) );
         topHalf.setMinimumSize( new Dimension( 400, 50 ) );
         topHalf.setPreferredSize( new Dimension( 450, 250 ) );
@@ -160,7 +160,7 @@ public class PetStoreUI extends JPanel
         button.addMouseListener( new CheckoutButtonHandler( ) );
         button.setActionCommand( "checkout" );
         checkoutPane.add( button );
-        bottomHalf.add( checkoutPane, BorderLayout.PAGE_START );
+        bottomHalf.add( checkoutPane, BorderLayout.NORTH );
 
         button = new JButton( "Reset" );
         button.setVerticalTextPosition( AbstractButton.CENTER );
@@ -169,7 +169,7 @@ public class PetStoreUI extends JPanel
         button.addMouseListener( new ResetButtonHandler( ) );
         button.setActionCommand( "reset" );
         checkoutPane.add( button );
-        bottomHalf.add( checkoutPane, BorderLayout.PAGE_START );
+        bottomHalf.add( checkoutPane, BorderLayout.NORTH );
 
         //Create output area, imbed in scroll area an add to bottomHalf parent
         //Scope is at instance level so it can be easily referenced from other
@@ -189,13 +189,10 @@ public class PetStoreUI extends JPanel
      */
     public void createAndShowGUI()
     {
-        //Make sure we have nice window decorations.
-        JFrame.setDefaultLookAndFeelDecorated( true );
-
         //Create and set up the window.
         JFrame frame = new JFrame( "Pet Store Demo" );
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-
+        
         setOpaque( true );
         frame.setContentPane( this );
 
