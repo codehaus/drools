@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DefaultSemanticsRepository.java,v 1.6 2004-10-28 22:11:50 mproctor Exp $
+ * $Id: DefaultSemanticsRepository.java,v 1.7 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
     // ----------------------------------------------------------------------
 
     /** Singleton instance, lazily initialized. */
-    private static SemanticsRepository INSTANCE = null;
+    private static SemanticsRepository INSTANCE;
 
     // ----------------------------------------------------------------------
     //     Class methods

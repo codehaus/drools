@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.40 2004-11-26 14:58:03 mproctor Exp $
+ * $Id: JoinMemory.java,v 1.41 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -252,8 +252,6 @@ class JoinMemory
                                     WorkingMemoryImpl workingMemory) throws FactException
     {
         ReteTuple tuple;
-        ReteTuple oldTuple;
-        
         TupleSet newJoined = new TupleSet( );
 
         Iterator tupleIter = thisSideTuples.iterator( );

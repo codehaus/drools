@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersExample.java,v 1.4 2004-11-25 17:34:24 dbarnett Exp $
+ * $Id: MannersExample.java,v 1.5 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,7 +55,7 @@ import java.util.List;
 public class MannersExample extends MannersBase
 {
     /** Drools working memory. */
-    private WorkingMemory workingMemory = null;
+    private WorkingMemory workingMemory;
 
     public static void main( String[] args ) throws Exception
     {

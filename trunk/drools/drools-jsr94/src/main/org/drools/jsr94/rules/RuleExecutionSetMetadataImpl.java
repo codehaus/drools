@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleExecutionSetMetadataImpl.java,v 1.6 2004-11-27 00:59:54 dbarnett Exp $
+ * $Id: RuleExecutionSetMetadataImpl.java,v 1.7 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,13 +53,13 @@ import javax.rules.RuleExecutionSetMetadata;
 public class RuleExecutionSetMetadataImpl implements RuleExecutionSetMetadata
 {
     /** The URI for this <code>RuleExecutionSet</code>. */
-    private String uri = null;
+    private final String uri;
 
     /** The name of this RuleExecutionSet. */
-    private String name = null;
+    private final String name;
 
     /** The description of this <code>RuleExecutionSet</code>. */
-    private String description = null;
+    private final String description;
 
     /**
      * Constructs an instance of <code>RuleExecutionSetMetadata</code>.

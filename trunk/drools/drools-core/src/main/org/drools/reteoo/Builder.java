@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.57 2004-11-28 02:22:18 simon Exp $
+ * $Id: Builder.java,v 1.58 2004-11-28 03:34:05 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -317,8 +317,8 @@ public class Builder
      * @return <code>true</code> if a join was possible, otherwise,
      *         <code>false</code>.
      */
-    boolean joinForCondition(List conds,
-                             List leafNodes)
+    private boolean joinForCondition(List conds,
+                                     List leafNodes)
     {
         return joinArbitrary( leafNodes );
     }
@@ -333,7 +333,7 @@ public class Builder
      * @return <code>true</code> if successfully joined some nodes, otherwise
      *         <code>false</code>.
      */
-    boolean joinArbitrary(List leafNodes)
+    private boolean joinArbitrary(List leafNodes)
     {
         Iterator leafIter = leafNodes.iterator( );
 
@@ -375,7 +375,7 @@ public class Builder
      * @return <code>true</code> if at least one <code>JoinNode</code> was
      *         created, else <code>false</code>.
      */
-    boolean createJoinNodes(List leafNodes)
+    private boolean createJoinNodes(List leafNodes)
     {
         boolean performedJoin = false;
 
@@ -425,8 +425,8 @@ public class Builder
      * @return <code>true</code> if they can be joined (they share at least
      *         one common member declaration), else <code>false</code>.
      */
-    boolean canBeJoined(TupleSource left,
-                        TupleSource right)
+    private boolean canBeJoined(TupleSource left,
+                                TupleSource right)
     {
         Set leftDecls = left.getTupleDeclarations( );
         Iterator rightDeclIter = right.getTupleDeclarations( ).iterator( );
@@ -459,9 +459,9 @@ public class Builder
      * @return <code>true</code> if fact extractions have been attached,
      *         otherwise <code>false</code>.
      */
-    boolean attachExtractions(Rule rule,
-                              List factExtracts,
-                              List leafNodes)
+    private boolean attachExtractions(Rule rule,
+                                      List factExtracts,
+                                      List leafNodes)
     {
         boolean attached = false;
         boolean cycleAttached;
@@ -492,10 +492,9 @@ public class Builder
 
                 targetDeclaration = eachExtract.getTargetDeclaration( );
 
-                List paramDeclarations = rule.getParameterDeclarations( );
                 boolean isParameter = false;
 
-                Iterator it = paramDeclarations.iterator();
+                Iterator it = rule.getParameterDeclarations( ).iterator( );
                 while ( !isParameter && it.hasNext( ) )
                 {
                     if ( it.next( ).equals( targetDeclaration ) )
@@ -578,16 +577,13 @@ public class Builder
         Iterator sourceIter = sources.iterator( );
         TupleSource eachSource;
 
-        Set decls;
 
         while ( sourceIter.hasNext( ) )
         {
             eachSource = (TupleSource) sourceIter.next( );
 
-            decls = eachSource.getTupleDeclarations( );
-
             if ( matches( extract,
-                          decls ) )
+                          eachSource.getTupleDeclarations( ) ) )
             {
                 return eachSource;
             }
