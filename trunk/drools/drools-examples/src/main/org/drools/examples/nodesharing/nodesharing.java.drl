@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<rule-set name="NodeSharing"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+  <java:import>java.lang.String</java:import>
+
+  <rule name="Rule A">
+    <parameter identifier="x">
+      <class>String</class>
+    </parameter>
+    <parameter identifier="y">
+      <class>String</class>
+    </parameter>
+    <parameter identifier="z">
+      <class>String</class>
+    </parameter>
+
+    <java:consequence>
+      System.out.println(x + y + z);
+    </java:consequence>
+  </rule>
+
+  <rule name="Rule B">
+      <parameter identifier="x">
+          <class>String</class>
+      </parameter>
+      <parameter identifier="y">
+          <class>String</class>
+      </parameter>
+
+      <java:consequence>
+      System.out.println(x + y);
+      </java:consequence>
+  </rule>
+
+</rule-set>
