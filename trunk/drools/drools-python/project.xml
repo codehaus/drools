@@ -46,9 +46,11 @@
 		<includes>
 		  <include>**/*Test.java</include>
 		</includes>
+<!--
 		<excludes>
 		  <exclude>**/PythonSemanticTest.java</exclude>
 		</excludes>
+-->
             <resources>
                 <resource>
                     <directory>src/test/data</directory>
