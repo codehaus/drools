@@ -21,7 +21,7 @@ public class ExtractionNodeTest extends TestCase
     {
         this.rule = new Rule( getName() );
         this.stringDecl = this.rule.addLocalDeclaration( "string", new MockObjectType( ) );
-        this.objectDecl = this.rule.addLocalDeclaration( "object", new MockObjectType( ) );
+        this.objectDecl = this.rule.addLocalDeclaration( "object", new MockObjectType( ) );        
     }
 
     public void tearDown()
@@ -37,7 +37,7 @@ public class ExtractionNodeTest extends TestCase
 
         source.addTupleDeclaration( stringDecl );
 
-        ExtractionNode extractNode = new ExtractionNode( source, objectDecl, null );
+        ExtractionNode extractNode = new ExtractionNode( source, objectDecl, null, false);
 
         Set decls = extractNode.getTupleDeclarations( );
 
@@ -53,7 +53,7 @@ public class ExtractionNodeTest extends TestCase
 
         source.addTupleDeclaration( objectDecl );
 
-        ExtractionNode extractNode = new ExtractionNode( source, stringDecl, new InstrumentedExtractor( "cheese" ) );
+        ExtractionNode extractNode = new ExtractionNode( source, stringDecl, new InstrumentedExtractor( "cheese" ), false );
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
@@ -67,7 +67,7 @@ public class ExtractionNodeTest extends TestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule, paramDecl, new FactHandleImpl( 1 ) );
+        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), rule, paramDecl, new FactHandleImpl( 1 ) );
 
         try
         {

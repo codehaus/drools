@@ -28,7 +28,7 @@ public class TupleSourceTest extends TestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( workingMemory, rule );
+        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) workingMemory, rule );
 
         try
         {

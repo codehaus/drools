@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.55 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: Builder.java,v 1.56 2004-11-24 14:09:11 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,10 +52,12 @@ import org.drools.spi.ConflictResolver;
 import org.drools.spi.ObjectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -177,7 +179,7 @@ public class Builder
     {
         Set factExtracts = new HashSet( rule.getExtractions( ) );
         List conds = new LinkedList( rule.getConditions( ) );
-        Set leafNodes = createParameterNodes( rule );
+        Set leafNodes = createParameterNodes( rule );        
 
         boolean performedJoin;
         boolean attachedExtract;
@@ -193,7 +195,8 @@ public class Builder
                                   leafNodes );
             }
 
-            attachedExtract = attachExtractions( factExtracts,
+            attachedExtract = attachExtractions( rule,
+                                                 factExtracts,
                                                  leafNodes );
 
             performedJoin = createJoinNodes( leafNodes );
@@ -479,11 +482,14 @@ public class Builder
      * @return <code>true</code> if fact extractions have been attached,
      *         otherwise <code>false</code>.
      */
-    boolean attachExtractions(Set factExtracts,
+    boolean attachExtractions(Rule rule,
+                              Set factExtracts,
                               Set leafNodes)
     {
         boolean attached = false;
         boolean cycleAttached;
+        Declaration targetDeclaration;
+
 
         do
         {
@@ -508,10 +514,25 @@ public class Builder
 
                 extractIter.remove( );
 
-                extractNode = new ExtractionNode( tupleSource,
-                                                  eachExtract.getTargetDeclaration( ),
-                                                  eachExtract.getExtractor( ) );
+                targetDeclaration = eachExtract.getTargetDeclaration( );
 
+                Set paramDeclarations = rule.getParameterDeclarations();
+                boolean isParameter = false;
+
+                Iterator it = paramDeclarations.iterator();
+                while ((isParameter == false) && (it.hasNext()))
+                {                    
+                    if (it.next().equals(targetDeclaration))
+                    {
+                        isParameter = true;
+                    }
+                }
+                
+                
+                extractNode = new ExtractionNode( tupleSource,
+                                                  targetDeclaration,
+                                                  eachExtract.getExtractor( ),
+                                                  isParameter);
                 leafNodes.remove( tupleSource );
                 leafNodes.add( extractNode );
 
