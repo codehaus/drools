@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetProviderImpl.java,v 1.17 2004-12-04 04:33:58 dbarnett Exp $
+ * $Id: RuleExecutionSetProviderImpl.java,v 1.18 2004-12-05 20:37:06 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ package org.drools.jsr94.rules.admin;
 import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
 import org.drools.smf.DefaultSemanticsRepository;
+import org.drools.smf.SemanticsReaderException;
 import org.w3c.dom.Element;
 
 import javax.rules.admin.RuleExecutionSet;
@@ -99,14 +100,20 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         // Prepare the DOM source
         Source source = new DOMSource( ruleExecutionSetElement );
 
+        // Create a reader to handle the SAX events
         RuleSetReader reader;
         try
         {
-            // Create a reader to handle the SAX events
             reader =
                 new RuleSetReader( DefaultSemanticsRepository.getInstance( ) );
         }
-        catch ( Exception e )
+        catch ( SemanticsReaderException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "Couldn't get an instance of the DefaultSemanticsRepository: "
+                + e );
+        }
+        catch ( IOException e )
         {
             throw new RuleExecutionSetCreateException(
                 "Couldn't get an instance of the DefaultSemanticsRepository: "
@@ -124,8 +131,6 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
 
             // Traverse the DOM tree
             xformer.transform( source, result );
-//            System.out.println( result.toString( ) );
-
         }
         catch ( TransformerException e )
         {
@@ -216,14 +221,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         {
             if ( in != null )
             {
-                try
-                {
-                    in.close( );
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
+                in.close( );
             }
         }
     }

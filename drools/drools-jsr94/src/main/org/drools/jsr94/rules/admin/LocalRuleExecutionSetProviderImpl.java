@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.18 2004-12-04 04:33:58 dbarnett Exp $
+ * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.19 2004-12-05 20:37:06 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,8 @@ import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.drools.RuleIntegrationException;
+import org.drools.RuleSetIntegrationException;
 import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
 import org.xml.sax.SAXException;
@@ -202,11 +204,28 @@ public class LocalRuleExecutionSetProviderImpl
      * @param properties additional properties used to create the
      *        RuleExecutionSet implementation. May be <code>null</code>.
      *
+     * @throws RuleExecutionSetCreateException
+     *         on rule execution set creation error.
+     *
      * @return The created <code>RuleExecutionSet</code>.
      */
     private RuleExecutionSet createRuleExecutionSet(
-        RuleSet ruleSet, Map properties )
+            RuleSet ruleSet, Map properties )
+        throws RuleExecutionSetCreateException
     {
-        return new RuleExecutionSetImpl( ruleSet, properties );
+        try
+        {
+            return new RuleExecutionSetImpl( ruleSet, properties );
+        }
+        catch ( RuleIntegrationException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "Failed to create RuleExecutionSet", e );
+        }
+        catch ( RuleSetIntegrationException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "Failed to create RuleExecutionSet", e );
+        }
     }
 }
