@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: ComplexityConflictResolver.java,v 1.3 2004-06-26 15:10:56 mproctor Exp $
+ $Id: ComplexityConflictResolver.java,v 1.4 2004-06-26 17:54:53 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -49,6 +49,8 @@ package org.drools.conflict;
 import java.util.List;
 import java.util.ListIterator;
 
+import java.io.Serializable;
+
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -66,7 +68,7 @@ import org.drools.spi.ConflictResolver;
  * @version $Id: SalienceConflictResolver.java,v 1.3 2004/06/25 02:46:39
  *          mproctor Exp $
  */
-public class ComplexityConflictResolver implements ConflictResolver
+public class ComplexityConflictResolver implements ConflictResolver, Serializable
 {
 	// ----------------------------------------------------------------------
 	//     Class members
