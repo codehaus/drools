@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.8 2004-12-04 07:11:33 simon Exp $
+ * $Id: RuleBaseBuilder.java,v 1.9 2004-12-04 07:15:50 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,7 +55,7 @@ import java.net.URL;
  * <p>
  * The <code>RuleBaseBuilder</code> integrates the added <code>RuleSet</code>
  * s into the <b>Rete</b> network. <code>RuleBaseBuilder</code> is thread-safe
- * and as such may be may be used to build multiple <code>RuleBase</code> s
+ * and as such may be used to build multiple <code>RuleBase</code> s
  * simultaneously by multiple threads.
  * </p>
  *
