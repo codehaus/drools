@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: WorkingMemoryImpl.java,v 1.6 2003-11-19 21:31:10 bob Exp $
+ $Id: WorkingMemoryImpl.java,v 1.7 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -56,11 +56,15 @@ import org.drools.conflict.SalienceConflictResolutionStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
 
+/** Implementation of <code>WorkingMemory</code>.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: WorkingMemoryImpl.java,v 1.7 2003-11-21 04:18:13 bob Exp $
+ */
 class WorkingMemoryImpl
     implements WorkingMemory
 {
@@ -83,20 +87,31 @@ class WorkingMemoryImpl
     /** Application data which is associated with this memory. */
     private Object applicationData;
 
+    /** Handle-to-object mapping. */
     private Map objects;
 
+    /** Handle counter. */
     private long handleCounter;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param ruleBase The backing rule-base.
+     */
     public WorkingMemoryImpl(RuleBaseImpl ruleBase)
     {
         this( ruleBase,
               SalienceConflictResolutionStrategy.getInstance() );
     }
     
+    /** Construct.
+     *
+     *  @param ruleBase The backing rule-base.
+     *  @param conflictResolution The conflict-resolution strategy.
+     */
     public WorkingMemoryImpl(RuleBaseImpl ruleBase,
                              ConflictResolutionStrategy conflictResolution)
     {
@@ -113,25 +128,23 @@ class WorkingMemoryImpl
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Create a new <code>FactHandle</code>.
+     *
+     *  @return The new fact handle.
+     */
     protected FactHandle newFactHandle()
     {
         return new FactHandleImpl( ++this.handleCounter );
     }
 
-    /** Retrieve the application data that is associated with
-     *  this memory.
-     *
-     *  @return The application data or <code>null</code> if
-     *  no data has been set for this memory.
+    /** @see WorkingMemory
      */
     public Object getApplicationData()
     {
         return this.applicationData;
     }
 
-    /** Set the application data associated with this memory.
-     *
-     *  @param appData The application data for this memory.
+    /** @see WorkingMemory
      */
     public void setApplicationData(Object appData)
     {
@@ -143,21 +156,20 @@ class WorkingMemoryImpl
      *
      *  @return The <code>Agenda</code>.
      */
-    public Agenda getAgenda()
+    protected Agenda getAgenda()
     {
         return this.agenda;
     }
 
-    /** Retrieve the <code>RuleBase</code>
-     *  of this working memory.
-     *
-     *  @return The <code>RuleBase</code>.
+    /** @see WorkingMemory
      */
     public RuleBase getRuleBase()
     {
         return this.ruleBase;
     }
 
+    /** @see WorkingMemory
+     */
     public synchronized void fireAllRules()
         throws FactException
     {
@@ -186,6 +198,8 @@ class WorkingMemoryImpl
         }
     }
 
+    /** @see WorkingMemory
+     */
     public Object getObject(FactHandle handle)
         throws NoSuchFactObjectException
     {
@@ -197,16 +211,22 @@ class WorkingMemoryImpl
         return this.objects.get( handle );
     }
 
+    /** @see WorkingMemory
+     */
     public List getObjects()
     {
         return new ArrayList( this.objects.values() );
     }
 
+    /** @see WorkingMemory
+     */
     public boolean containsObject(FactHandle handle)
     {
         return this.objects.containsKey( handle );
     }
 
+    /** @see WorkingMemory
+     */
     public synchronized FactHandle assertObject(Object object)
         throws FactException
     {
@@ -222,6 +242,11 @@ class WorkingMemoryImpl
         return handle;
     }
 
+    /** Associate an object with its handle.
+     *
+     *  @param handle The handle.
+     *  @param object The object.
+     */
     void putObject(FactHandle handle,
                    Object object)
     {
@@ -229,6 +254,8 @@ class WorkingMemoryImpl
                           object );
     }
 
+    /** @see WorkingMemory
+     */
     public synchronized void retractObject(FactHandle handle)
         throws FactException
     {
@@ -238,6 +265,8 @@ class WorkingMemoryImpl
         this.objects.remove( handle );
     }
 
+    /** @see WorkingMemory
+     */
     public synchronized void modifyObject(FactHandle handle,
                                           Object object)
         throws FactException
@@ -274,10 +303,5 @@ class WorkingMemoryImpl
         }
 
         return memory;
-    }
-
-    public synchronized Collection getRootFactObjects()
-    {
-        return new HashSet( this.objects.values() );
     }
 }

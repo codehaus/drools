@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ConflictResolutionComparator.java,v 1.3 2003-11-19 21:31:10 bob Exp $
+ $Id: ConflictResolutionComparator.java,v 1.4 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -51,17 +51,39 @@ import org.drools.spi.Activation;
 
 import java.util.Comparator;
 
+/** Adaptor to wrap a <code>ConflictResolutionStrategy</code> as a
+ *  <code>Comparator</code>.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ConflictResolutionComparator.java,v 1.4 2003-11-21 04:18:13 bob Exp $
+ */
 class ConflictResolutionComparator
     implements Comparator
 {
+    // ----------------------------------------------------------------------
+    //     Instance members
+    // ----------------------------------------------------------------------
+
+    /** Wrapped strategy. */
     private ConflictResolutionStrategy strategy;
 
+    // ----------------------------------------------------------------------
+    //     Constructors
+    // ----------------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param strategy Strategy to wrap.
+     */
     public ConflictResolutionComparator(ConflictResolutionStrategy strategy)
     {
         this.strategy = strategy;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // ----------------------------------------------------------------------
+    //     Instance methods
+    // ----------------------------------------------------------------------
 
     /** @see Comparable
      */

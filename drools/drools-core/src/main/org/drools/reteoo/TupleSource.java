@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSource.java,v 1.15 2003-11-19 21:31:10 bob Exp $
+ $Id: TupleSource.java,v 1.16 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -184,5 +184,9 @@ abstract class TupleSource
         return this.tupleSink;
     }
 
+    /** Retrieve the available tuple <code>Declaration</code>s.
+     *
+     *  @return The available tuple declarations.
+     */
     public abstract Set getTupleDeclarations();
 }

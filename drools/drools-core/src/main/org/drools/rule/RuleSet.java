@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.6 2003-11-19 21:31:11 bob Exp $
+ $Id: RuleSet.java,v 1.7 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -55,7 +55,9 @@ import java.util.HashSet;
  *
  *  @see Rule
  *
- *  @author <a href="mail:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mail:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuleSet.java,v 1.7 2003-11-21 04:18:13 bob Exp $
  */
 public class RuleSet
 {
@@ -63,15 +65,17 @@ public class RuleSet
     //     Constants
     // ------------------------------------------------------------
 
+    /** Empty <code>RuleSet</code> array. */
     public static final RuleSet[] EMPTY_ARRAY = new RuleSet[0];
 
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The name of the ruleset. */
+    /** Name of the ruleset. */
     private String name;
 
+    /** Documentation. */
     private String documentation;
 
     /** Set of all rule-names in this <code>RuleSet</code>. */
@@ -108,11 +112,19 @@ public class RuleSet
         return this.name;
     }
 
+    /** Set the documentation.
+     *
+     *  @param documentation The documentation.
+     */
     public void setDocumentation(String documentation)
     {
         this.documentation = documentation;
     }
 
+    /** Retrieve the documentation.
+     *
+     *  @return The documentation or <code>null</code> if none.
+     */
     public String getDocumentation()
     {
         return this.documentation;

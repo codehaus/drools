@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.12 2003-11-19 21:31:10 bob Exp $
+ $Id: ObjectTypeNode.java,v 1.13 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -152,10 +152,11 @@ class ObjectTypeNode
     /** Assert a new fact object into this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
+     *  @param handle The fact handle.
      *  @param object The object to assert.
      *  @param workingMemory The working memory session.
      *
-     *  @throws AssertionException if an error occurs during assertion.
+     *  @throws FactException if an error occurs during assertion.
      */
     void assertObject(FactHandle handle,
                       Object object,
@@ -185,10 +186,10 @@ class ObjectTypeNode
     /** Retract a fact object from this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
-     *  @param object The object to retract.
+     *  @param handle The handle of the fact to retract.
      *  @param workingMemory The working memory session.
      *
-     *  @throws RetractionException if an error occurs during assertion.
+     *  @throws FactException if an error occurs during assertion.
      */
     void retractObject(FactHandle handle,
                        WorkingMemoryImpl workingMemory)
@@ -222,7 +223,8 @@ class ObjectTypeNode
      *  a fact object is semantically equivelent to retracting and
      *  re-asserting it.
      *
-     *  @param object The object to modify.
+     *  @param handle The fact handle.
+     *  @param object The modified value object.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException if an error occurs during assertion.

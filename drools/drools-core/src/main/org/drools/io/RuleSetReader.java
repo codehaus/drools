@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.6 2003-11-19 21:31:10 bob Exp $
+ $Id: RuleSetReader.java,v 1.7 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -83,30 +83,79 @@ import java.util.LinkedList;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+/** <code>RuleSet</code> loader.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuleSetReader.java,v 1.7 2003-11-21 04:18:13 bob Exp $
+ */
 public class RuleSetReader
     extends DefaultHandler
 {
+    // ----------------------------------------------------------------------
+    //     Constants
+    // ----------------------------------------------------------------------
+
+    /** Namespace URI for the general tags. */
     public static final String RULES_NAMESPACE_URI = "http://drools.org/rules";
 
+    // ----------------------------------------------------------------------
+    //     Instance members
+    // ----------------------------------------------------------------------
+
+    /** SAX parser. */
     private SAXParser parser;
+
+    /** Locator for errors. */
     private Locator locator;
 
+    /** Current rule-set being built. */
     private RuleSet ruleSet;
+
+    /** Current rule. */
     private Rule rule;
+
+    /** Current declaration. */
     private Declaration declaration;
+
+    /** Current object-type. */
     private ObjectType objectType;
+
+    /** Current extraction. */
     private Extraction extraction;
+
+    /** Current condition. */
     private Condition condition;
+
+    /** Current consequence. */
     private Consequence consequence;
 
+    /** Stack of configurations. */
     private LinkedList configurationStack;
+
+    /** Current configuration text. */
     private StringBuffer characters;
 
+    /** Start-tag functors. */
     private Map starters;
+
+    /** End-tag functors. */
     private Map enders;
 
+    /** Repository of semantic modules. */
     private SemanticsRepository repo;
 
+    // ----------------------------------------------------------------------
+    //     Constructors
+    // ----------------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  <p>
+     *  Uses the default JAXP SAX parser and the default classpath-based
+     *  <code>DefaultSemanticModule</code>.
+     *  </p>
+     */
     public RuleSetReader()
     {
         this.starters           = new HashMap();
@@ -205,12 +254,25 @@ public class RuleSetReader
                    } );
     }
 
+    /** Construct.
+     *
+     *  <p>
+     *  Uses the default classpath-based <code>DefaultSemanticModule</code>.
+     *  </p>
+     *
+     *  @param parser The SAX parser.
+     */
     public RuleSetReader(SAXParser parser)
     {
         this();
         this.parser = parser;
     }
 
+    /** Construct.
+     *
+     *  @param repo The semantics repository.
+     *  @param parser The SAX parser.
+     */
     public RuleSetReader(SemanticsRepository repo,
                          SAXParser parser)
     {
@@ -218,37 +280,84 @@ public class RuleSetReader
         this.repo = repo;
     }
 
+    /** Construct.
+     *
+     *  @param repo The semantics repository.
+     */
     public RuleSetReader(SemanticsRepository repo)
     {
         this();
         this.repo = repo;
     }
 
+    // ----------------------------------------------------------------------
+    //     Instance methods
+    // ----------------------------------------------------------------------
 
+    /** Read a <code>RuleSet</code> from a <code>URL</code>.
+     *
+     *  @param url The rule-set URL.
+     *
+     *  @return The rule-set.
+     *
+     *  @throws Exception If an error occurs during the parse.
+     */
     public RuleSet read(URL url)
         throws Exception
     {
         return read( new InputSource( url.toExternalForm() ) );
     }
 
+    /** Read a <code>RuleSet</code> from a <code>Reader</code>.
+     *
+     *  @param reader The reader containing the rule-set.
+     *
+     *  @return The rule-set.
+     *
+     *  @throws Exception If an error occurs during the parse.
+     */
     public RuleSet read(Reader reader)
         throws Exception
     {
         return read( new InputSource( reader ) );
     }
 
+    /** Read a <code>RuleSet</code> from an <code>InputStream</code>.
+     *
+     *  @param inputStream The input-stream containing the rule-set.
+     *
+     *  @return The rule-set.
+     *
+     *  @throws Exception If an error occurs during the parse.
+     */
     public RuleSet read(InputStream inputStream)
         throws Exception
     {
         return read( new InputSource( inputStream ) );
     }
 
+    /** Read a <code>RuleSet</code> from a URL.
+     *
+     *  @param url The rule-set URL.
+     *
+     *  @return The rule-set.
+     *
+     *  @throws Exception If an error occurs during the parse.
+     */
     public RuleSet read(String url)
         throws Exception
     {
         return read( new InputSource( url ) );
     }
 
+    /** Read a <code>RuleSet</code> from an <code>InputSource</code>.
+     *
+     *  @param in The rule-set input-source.
+     *
+     *  @return The rule-set.
+     *
+     *  @throws Exception If an error occurs during the parse.
+     */
     public RuleSet read(InputSource in)
         throws Exception
     {
@@ -278,16 +387,24 @@ public class RuleSetReader
         return this.ruleSet;
     }
 
+    /** @see org.xml.sax.ContentHandler
+     */
     public void setLocator(Locator locator)
     {
         this.locator = locator;
     }
 
+    /** Get the <code>Locator</code>.
+     *
+     *  @return The locator.
+     */
     public Locator getLocator()
     {
         return this.locator;
     }
 
+    /** @see org.xml.sax.ContentHandler
+     */
     public void startElement(String uri,
                              String localName,
                              String qname,
@@ -347,6 +464,8 @@ public class RuleSetReader
         }
     }
 
+    /** @see org.xml.sax.ContentHandler
+     */
     public void endElement(String uri,
                            String localName,
                            String qname)
@@ -388,6 +507,12 @@ public class RuleSetReader
         }
     }
 
+    /** Start a &lt;rule-set&gt;.
+     *
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startRuleSet(Attributes attrs)
         throws SAXException
     {
@@ -410,12 +535,22 @@ public class RuleSetReader
         this.ruleSet = new RuleSet( ruleSetName.trim() );
     }
 
+    /** End a &lt;rule-set&gt;.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endRuleSet()
         throws SAXException
     {
         // nothing
     }
     
+    /** Start a &lt;rule&gt;.
+     *
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startRule(Attributes attrs)
         throws SAXException
     {
@@ -463,6 +598,10 @@ public class RuleSetReader
         }
     }
 
+    /** End a &lt;rule&gt;.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endRule()
         throws SAXException
     {
@@ -479,6 +618,12 @@ public class RuleSetReader
         }
     }
 
+    /** Start a &lt;parameter&gt;.
+     *
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startParameter(Attributes attrs)
         throws SAXException
     {
@@ -486,6 +631,10 @@ public class RuleSetReader
                                      attrs );
     }
 
+    /** End a &lt;parameter&gt;.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endParameter()
         throws SAXException
     {
@@ -500,6 +649,12 @@ public class RuleSetReader
         this.declaration = null;
     }
 
+    /** Start a &lt;declaration&gt;.
+     *
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startDeclaration(Attributes attrs)
         throws SAXException
     {
@@ -507,6 +662,10 @@ public class RuleSetReader
                                      attrs );
     }
 
+    /** End a &lt;declaration&gt;.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endDeclaration()
         throws SAXException
     {
@@ -521,6 +680,13 @@ public class RuleSetReader
         this.declaration = null;
     }
 
+    /** Start a &lt;parameter&gt; or &lt;declaration&gt;.
+     *
+     *  @param tagName Tag name.
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     private void startParameterOrDeclaration(String tagName,
                                              Attributes attrs)
         throws SAXException
@@ -545,6 +711,14 @@ public class RuleSetReader
         this.declaration = new Declaration( identifier.trim() );
     }
 
+    /** Start an object-type.
+     *
+     *  @param uri Tag URI.
+     *  @param localName Tag name.
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startObjectType(String uri,
                                    String localName,
                                    Attributes attrs)
@@ -590,6 +764,10 @@ public class RuleSetReader
         }
     }
 
+    /** End object-type.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endObjectType()
         throws SAXException
     {
@@ -619,6 +797,14 @@ public class RuleSetReader
         this.objectType = null;
     }
 
+    /** Start an extraction.
+     *
+     *  @param module Semantic module.
+     *  @param localName Tag name.
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startExtraction(SemanticModule module,
                                    String localName,
                                    Attributes attrs)
@@ -674,6 +860,10 @@ public class RuleSetReader
         }
     }
 
+    /** End an extraction.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endExtraction()
         throws SAXException
     {
@@ -700,6 +890,14 @@ public class RuleSetReader
         this.extraction = null;
     }
 
+    /** Start a condition.
+     *
+     *  @param module Semantic module.
+     *  @param name Tag name.
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startCondition(SemanticModule module,
                                   String name,
                                   Attributes attrs)
@@ -735,6 +933,10 @@ public class RuleSetReader
                             attrs );
     }
 
+    /** End a condition.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endCondition()
         throws SAXException
     {
@@ -762,6 +964,14 @@ public class RuleSetReader
         this.condition = null;
     }
 
+    /** Start a consequence.
+     *
+     *  @param module Semantic module.
+     *  @param name Tag name.
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startConsequence(SemanticModule module,
                                     String name,
                                     Attributes attrs)
@@ -797,6 +1007,10 @@ public class RuleSetReader
                             attrs );
     }
 
+    /** End a consequence.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void endConsequence()
         throws SAXException
     {
@@ -823,6 +1037,13 @@ public class RuleSetReader
         this.consequence = null;
     }
 
+    /** Start a configuration node.
+     *
+     *  @param name Tag name.
+     *  @param attrs Tag attributes.
+     *
+     *  @throws SAXException If an error occurs during parse.
+     */
     protected void startConfiguration(String name,
                                       Attributes attrs)
         throws SAXException
@@ -851,6 +1072,8 @@ public class RuleSetReader
         //this.configurationStack.addLast( config );
     }
 
+    /** @see org.xml.sax.ContentHandler
+     */
     public void characters(char[] chars,
                            int start,
                            int len)
@@ -865,6 +1088,10 @@ public class RuleSetReader
         }
     }
 
+    /** End a configuration node.
+     *
+     *  @return The configuration.
+     */
     protected Configuration endConfiguration()
     {
         // System.err.println( "endConfiguration() " + this.configurationStack.size() );
@@ -874,12 +1101,25 @@ public class RuleSetReader
         return config;
     }
 
+    /** Lookup a <code>Starter</code> functor.
+     *
+     *  @param uri Tag uri.
+     *  @param name Tag name.
+     *
+     *  @return The starter.
+     */
     Starter lookupStarter(String uri,
                           String name)
     {
         return (Starter) this.starters.get( uri + ">" + name );
     }
 
+    /** Bind a <code>Starter</code> functor.
+     *
+     *  @param uri Tag uri.
+     *  @param name Tag name.
+     *  @param starter Starter.
+     */
     void bindStarter(String uri,
                      String name,
                      Starter starter)
@@ -888,12 +1128,25 @@ public class RuleSetReader
                            starter );
     }
 
+    /** Lookup an <code>Ender</code> functor.
+     *
+     *  @param uri Tag uri.
+     *  @param name Tag name.
+     *
+     *  @return The starter.
+     */
     Ender lookupEnder(String uri,
                       String name)
     {
         return (Ender) this.enders.get( uri + ">" + name );
     }
 
+    /** Bind a <code>Ender</code> functor.
+     *
+     *  @param uri Tag uri.
+     *  @param name Tag name.
+     *  @param ender Ender.
+     */
     void bindEnder(String uri,
                    String name,
                    Ender ender)
@@ -902,14 +1155,30 @@ public class RuleSetReader
                          ender );
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Starter functor.
+     */
     abstract static class Starter
     {
+        /** Start tag.
+         *
+         *  @param attrs Tag attributes.
+         *
+         *  @throws SAXException If an error occurs during parse.
+         */
         abstract void start(Attributes attrs)
             throws SAXException;
     }
 
+    /** Starter functor.
+     */
     abstract static class Ender
     {
+        /** End tag.
+         *
+         *  @throws SAXException If an error occurs during parse.
+         */
         abstract void end()
             throws SAXException;
     }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.14 2003-11-19 21:31:10 bob Exp $
+ $Id: JoinNode.java,v 1.15 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -330,14 +330,5 @@ class JoinNode
         decls.addAll( getRightInput().getTupleDeclarations() );
 
         return decls;
-    }
-
-    /** Return a string representation of this object.
-     *
-     * @return a String
-     */
-    public String toString()
-    {
-      return "[JoinNodeImpl: leftInput=" + leftInput + ",rightInput=" + rightInput + ",commonDeclarations=" + commonDeclarations + "]";
     }
 }

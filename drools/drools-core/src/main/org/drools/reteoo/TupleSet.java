@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSet.java,v 1.10 2003-11-19 21:31:10 bob Exp $
+ $Id: TupleSet.java,v 1.11 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,6 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /** A set of <code>Tuple<code>s indexed by <code>TupleKey<code>s.
  *
@@ -320,11 +319,8 @@ class TupleSet
         /** Retrieve the element in the next position.
          *
          *  @return The element in the next position.
-         *
-         *  @throws NoSuchElementException If there exists no element
-         *          in the next position.
          */
-        public Object next() throws NoSuchElementException
+        public Object next() 
         {
             return this.tuples.get( this.keyIter.next() );
         }

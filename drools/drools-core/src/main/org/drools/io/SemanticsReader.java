@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: SemanticsReader.java,v 1.2 2003-11-19 21:31:10 bob Exp $
+ $Id: SemanticsReader.java,v 1.3 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -58,13 +58,72 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.Enumeration;
 
+/** Loader of <code>SemanticModule</code>s from a set of properties. 
+ *
+ *  <p>
+ *  The required properties are:
+ *
+ *  <ul>
+ *    <li><code>module.uri=<i>uri</i></code>: To denote the URI of the module.</li>
+ *    <li><code><i>tagname</i>=<i>classname</i></code>. For each semantic component
+ *      to associate a tag with the component.
+ *  </ul>
+ *  </p>
+ *
+ *  <p>
+ *  Instances of <code>SemanticsReader</code> are re-entrant and thread-safe.  The
+ *  singleton may be used simultaneously by multiple threads.
+ *  </p>
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: SemanticsReader.java,v 1.3 2003-11-21 04:18:13 bob Exp $
+ */
 public class SemanticsReader
 {
-    public SemanticsReader()
-    {
+    // ----------------------------------------------------------------------
+    //     Class members
+    // ----------------------------------------------------------------------
 
+    /** Singleton instance. */
+    private static final SemanticsReader INSTANCE = new SemanticsReader();
+
+    // ----------------------------------------------------------------------
+    //     Class methods
+    // ----------------------------------------------------------------------
+
+    /** Retrieve the singleton instance.
+     *
+     *  @return The singleton instance.
+     */
+    public static SemanticsReader getInstance()
+    {
+        return INSTANCE;
     }
 
+    // ----------------------------------------------------------------------
+    //     Constructors
+    // ----------------------------------------------------------------------
+
+    /** Construct.
+     */
+    public SemanticsReader()
+    {
+        // intentionally left blank
+    }
+
+    // ----------------------------------------------------------------------
+    //     Instance methods
+    // ----------------------------------------------------------------------
+
+    /** Read a semantic module descriptor from a <code>URL</code>.
+     *
+     *  @param url The descriptor URL.
+     *
+     *  @return The loaded semantic module.
+     *
+     *  @throws Exception If an error occurs while loading the module.
+     */
     public SemanticModule read(URL url)
         throws Exception
     {
@@ -80,6 +139,14 @@ public class SemanticsReader
         }
     }
 
+    /** Read a semantic module descriptor from an <code>InputStream</code>.
+     *
+     *  @param in The descriptor input stream.
+     *
+     *  @return The loaded semantic module.
+     *
+     *  @throws Exception If an error occurs while loading the module.
+     */
     public SemanticModule read(InputStream in)
         throws Exception
     {

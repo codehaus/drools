@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleKey.java,v 1.8 2003-11-19 21:31:10 bob Exp $
+ $Id: TupleKey.java,v 1.9 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
-import java.util.Iterator;
 
 /** A composite key to match tuples.
  *
@@ -86,6 +85,10 @@ class TupleKey
         this.rootFactHandles = new HashMap();
     }
 
+    /** Construct.
+     *
+     *  @param handle The fact handle.
+     */
     public TupleKey(FactHandle handle)
     {
         this();
@@ -107,6 +110,10 @@ class TupleKey
     //
     // ------------------------------------------------------------
 
+    /** Add a root fact handle.
+     *
+     *  @param handle The handle
+     */
     void addRootFactHandle(FactHandle handle)
     {
         this.rootFactHandles.put( new Object(),
@@ -126,6 +133,7 @@ class TupleKey
     /** Put a value for a declaration.
      *
      *  @param declaration Column declaration.
+     *  @param handle The handle.
      *  @param value The value.
      */
     public void put(Declaration declaration,
@@ -165,20 +173,34 @@ class TupleKey
 
     /** Determine if this key contains the specified root fact object.
      *
-     *  @param object The object to test.
+     *  @param handle The fact-handle to test.
      *
-     *  @return <code>true</code> if this key contains the 
-     *          specified root fact object, otherwise
-     *          <code>false</code>.
+     *  @return <code>true</code> if this key contains the specified root
+     *          fact-handle, otherwise <code>false</code>.
      */
     public boolean containsRootFactHandle(FactHandle handle)
     {
         return this.rootFactHandles.values().contains( handle );
     }
 
-    public FactHandle getRootFactHandle(Object value)
+    /** Retrieve the <code>FactHandle</code> for a given object.
+     *
+     *  <p>
+     *  Within a consequence of a rule, if the desire is to
+     *  retract or modify a root fact this method provides a
+     *  way to retrieve the <code>FactHandle</code>.
+     *  Facts that are <b>not</b> root fact objects have no
+     *  handle.
+     *  </p>
+     *
+     *  @param object The object.
+     *
+     *  @return The fact-handle or <code>null</code> if the
+     *          supplied object is not a root fact object.
+     */
+    public FactHandle getRootFactHandle(Object object)
     {
-        return (FactHandle) this.rootFactHandles.get( value );
+        return (FactHandle) this.rootFactHandles.get( object );
     }
 
     /** Retrieve the number of columns in this key.
@@ -201,21 +223,21 @@ class TupleKey
         return this.columns.keySet();
     }
 
+    /** Determine if the specified key is a subset of this key.
+     *
+     *  @param that The key to compare.
+     *
+     *  @return <code>true</code> if the specified key is a subset
+     *          of this key.
+     */
     public boolean containsAll(TupleKey that)
     {
         return this.rootFactHandles.values().containsAll( that.rootFactHandles.values() );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Determine if this key is semantically equal to another.
-     *
-     *  @param thatObj The object to compare.
-     *
-     *  @return <code>true</code> if the two objects are semantically
-     *          equal, otherwise <code>false</code>.
+    /** @see Object
      */
     public boolean equals(Object thatObj)
     {
@@ -236,9 +258,7 @@ class TupleKey
         return false;
     }
 
-    /** Retrieve the hash-code for this key.
-     *
-     *  @return The hash-code.
+    /** @see Object
      */
     public int hashCode()
     {

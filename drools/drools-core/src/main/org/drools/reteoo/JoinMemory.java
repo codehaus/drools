@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinMemory.java,v 1.17 2003-11-19 21:31:10 bob Exp $
+ $Id: JoinMemory.java,v 1.18 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -99,7 +99,7 @@ class JoinMemory
 
     /** Retract an object from this memory.
      *
-     *  @param object The object to retract.
+     *  @param handle The handle for the fact to retract.
      */
     protected void retractObject(FactHandle handle)
     {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.7 2003-11-19 21:31:10 bob Exp $
+ $Id: RuleBaseImpl.java,v 1.8 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -53,6 +53,12 @@ import org.drools.FactException;
 import org.drools.spi.ConflictResolutionStrategy;
 import org.drools.rule.RuleSet;
 
+/** Implementation of <code>RuleBase</code>.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuleBaseImpl.java,v 1.8 2003-11-21 04:18:13 bob Exp $
+ */
 class RuleBaseImpl
     implements RuleBase
 {
@@ -63,6 +69,7 @@ class RuleBaseImpl
     /** The root Rete-OO for this <code>RuleBase</code>. */
     private Rete rete;
 
+    /** Integrated rule-sets. */
     private RuleSet[] ruleSets;
 
     // ------------------------------------------------------------
@@ -70,6 +77,9 @@ class RuleBaseImpl
     // ------------------------------------------------------------
 
     /** Construct.
+     *
+     *  @param rete The rete network.
+     *  @param ruleSets The rule-sets integrated into the rete.
      */
     RuleBaseImpl(Rete rete,
                  RuleSet[] ruleSets)
@@ -89,12 +99,16 @@ class RuleBaseImpl
         return new WorkingMemoryImpl( this );
     }
 
+    /** @see RuleBase
+     */
     public WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy)
     {
         return new WorkingMemoryImpl( this,
                                       strategy );
     }
 
+    /** @see RuleBase
+     */
     public RuleSet[] getRuleSets()
     {
         return this.ruleSets;
@@ -109,6 +123,14 @@ class RuleBaseImpl
         return this.rete;
     }
 
+    /** Assert a fact object.
+     *
+     *  @param handle The handle.
+     *  @param object The fact.
+     *  @param workingMemory The working-memory.
+     *
+     *  @throws FactException If an error occurs while performing the assertion.
+     */
     void assertObject(FactHandle handle,
                       Object object,
                       WorkingMemoryImpl workingMemory)
@@ -119,6 +141,13 @@ class RuleBaseImpl
                                 workingMemory );
     }
     
+    /** Retract a fact object.
+     *
+     *  @param handle The handle.
+     *  @param workingMemory The working-memory.
+     *
+     *  @throws FactException If an error occurs while performing the retraction.
+     */
     void retractObject(FactHandle handle,
                        WorkingMemoryImpl workingMemory)
         throws FactException
@@ -127,6 +156,14 @@ class RuleBaseImpl
                                  workingMemory );
     }
 
+    /** Modify a fact object.
+     *
+     *  @param handle The handle.
+     *  @param object The fact.
+     *  @param workingMemory The working-memory.
+     *
+     *  @throws FactException If an error occurs while performing the modification.
+     */
     void modifyObject(FactHandle handle,
                       Object object,
                       WorkingMemoryImpl workingMemory)
