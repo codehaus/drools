@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: MultiRepository.java,v 1.1 2002-07-31 20:51:03 bob Exp $
+ $Id: MultiRepository.java,v 1.2 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,20 +50,53 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/** Aggregating <code>RuleBaseRepository</code> that searches
+ *  multiple repositories, in order.
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class MultiRepository implements RuleBaseRepository
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Ordered list of repositories. */
     private List repositories;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
     public MultiRepository()
     {
         this.repositories = new ArrayList();
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Add a repository to the end of the search list.
+     *
+     *  @param repository The repository to add.
+     */
     public void addRepository(RuleBaseRepository repository)
     {
         this.repositories.add( repository );
     }
 
+    /** Retrieve a <code>RuleBase</code> by URI.
+     *
+     *  @param uri The identifying URI of the <code>RuleBase</code>.
+     *
+     *  @return The located <code>RuleBase</code>.
+     *
+     *  @throws NoSuchRuleBaseException If no <code>RuleBase</code>
+     *          can be located.
+     */
     public RuleBase lookupRuleBase(String uri) throws NoSuchRuleBaseException
     {
         Iterator           repoIter = this.repositories.iterator();

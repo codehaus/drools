@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: FactExtraction.java,v 1.2 2002-08-01 20:38:46 bob Exp $
+ $Id: FactExtraction.java,v 1.3 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,6 @@ package org.drools.rule;
  */
 
 import org.drools.spi.FactExtractor;
-import org.drools.spi.Condition;
 
 /** A <code>Condition</code> representing a <i>consistent assignment</i>
  *  as defined by the Rete-OO algorithm.

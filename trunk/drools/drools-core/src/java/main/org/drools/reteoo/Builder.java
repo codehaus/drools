@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.16 2002-08-01 20:38:46 bob Exp $
+ $Id: Builder.java,v 1.17 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -94,7 +94,7 @@ public class Builder
     /** Construct a <code>Builder</code> against an existing
      *  <code>Rete</code> network.
      *
-     *  @param rootNode The network to add on to.
+     *  @param rete The network to add to.
      */
     public Builder(Rete rete)
     {
@@ -396,7 +396,7 @@ public class Builder
      *  passed in as <code>assignmentConds</code>.
      *  </p>
      *
-     *  @param assignmentConds Set of <code>AssignmentConditions</code> to
+     *  @param factExtracts Set of <code>FactExtractions</code> to
      *         attach to the network.
      *  @param leafNodes The current attachable leaf nodes of
      *         the network.
@@ -490,7 +490,7 @@ public class Builder
     /** Locate a <code>TupleSource</code> suitable for attaching
      *  the <code>FactExtraction</code>.
      *
-     *  @param condition The <code>Condition</code> to attach.
+     *  @param extract The <code>FactExtraction</code> to attach.
      *  @param sources Candidate <code>TupleSources</code>.
      *
      *  @return Matching <code>TupleSource</code> if a suitable one
@@ -544,6 +544,16 @@ public class Builder
                         declarations );
     }
 
+    /** Determine if a set of <code>Declarations</code> match those
+     *  required by a <code>FactExtraction</code>.
+     *
+     *  @param extract The <code>FactExtraction</code>.
+     *  @param declarations The set of <code>Declarations</code> to compare against.
+     *
+     *  @return <code>true</code> if the set of <code>Declarations</code> is a
+     *          super-set of the <code>Declarations</code> required by the
+     *          <code>Condition</code>.
+     */
     protected boolean matches(FactExtraction extract,
                               Set declarations)
     {
@@ -551,6 +561,16 @@ public class Builder
                         declarations );
     }
 
+    /** Determine if a set of <code>Declarations</code> is a super
+     *  set of required <code>Declarations</code>
+     *
+     *  @param requiredDecls The required <code>Declarations</code>.
+     *  @param declarations The set of <code>Declarations</code> to compare against.
+     *
+     *  @return <code>true</code> if the set of <code>Declarations</code> is a
+     *          super-set of the <code>Declarations</code> required by the
+     *          <code>Condition</code>.
+     */
     protected boolean matches(Declaration[] requiredDecls,
                               Set declarations)
     {

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ConditionNodeImpl.java,v 1.1 2002-08-01 20:38:46 bob Exp $
+ $Id: ConditionNodeImpl.java,v 1.2 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -216,6 +216,14 @@ public class ConditionNodeImpl extends TupleSourceImpl implements ConditionNode,
         }
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Produce a debug string.
+     *
+     *  @return The debug string.
+     */
     public String toString()
     {
         return "[ConditionNodeImpl: cond=" + this.condition + "]";

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: SimpleRepository.java,v 1.1 2002-07-31 20:51:03 bob Exp $
+ $Id: SimpleRepository.java,v 1.2 2002-08-01 21:00:21 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,15 +49,38 @@ package org.drools;
 import java.util.Map;
 import java.util.HashMap;
 
+/** Simple in-memory <code>RuleBaseRepository</code>.
+ *
+ *  @see RuleBaseRepository
+ *  @see RuleBase
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class SimpleRepository implements RuleBaseRepository
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** RuleBases indexed by URI.*/
     private Map ruleBases;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
     public SimpleRepository()
     {
         this.ruleBases = new HashMap();
     }
 
+    /** Register a <code>RuleBase</code> with a URI.
+     *
+     *  @param uri The URI key.
+     *  @param ruleBase The <code>RuleBase</code> to register.
+     */
     public void registerRuleBase(String uri,
                                  RuleBase ruleBase)
     {
@@ -65,6 +88,15 @@ public class SimpleRepository implements RuleBaseRepository
                             ruleBase );
     }
 
+    /** Retrieve a <code>RuleBase</code> by URI.
+     *
+     *  @param uri The identifying URI of the <code>RuleBase</code>.
+     *
+     *  @return The located <code>RuleBase</code>.
+     *
+     *  @throws NoSuchRuleBaseException If no <code>RuleBase</code>
+     *          can be located.
+     */
     public RuleBase lookupRuleBase(String uri) throws NoSuchRuleBaseException
     {
         RuleBase ruleBase = (RuleBase) this.ruleBases.get( uri );
