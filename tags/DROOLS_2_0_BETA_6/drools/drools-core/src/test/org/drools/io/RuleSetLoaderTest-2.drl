@@ -1,0 +1,74 @@
+<rules xmlns="http://drools.org/rules"
+       xmlns:java="http://drools.org/semantics/java">
+
+  <!--
+	||
+	||     semantics
+	||
+	-->
+
+  <semantics module="org.drools.semantics.java"/>
+
+  <!--
+	||
+	||     ruleset.1
+	||
+	-->
+
+  <rule-set name="ruleset.1">
+    <rule name="rule.1.1">
+      <parameter identifier="str">
+        <java:class type="java.lang.String"/>
+      </parameter>
+      <parameter identifier="maxLen">
+        <java:class type="java.lang.Integer"/>
+      </parameter>
+      <declaration identifier="strLen">
+        <java:class type="java.lang.Integer"/>
+      </declaration>
+      <extraction target="strLen">
+        <java:extractor>str.length()</java:extractor>
+      </extraction>
+      <condition>
+        <java:condition>strLen &gt; 5</java:condition>
+      </condition>
+      <condition>
+        <java:condition>strLen &lt; maxLen</java:condition>
+      </condition>
+      <consequence>
+        <java:consequence>
+          System.err.println( "str: " + str );
+          System.err.println( "strLen: " + strLen );
+          System.err.println( "maxLen: " + maxLen );
+        </java:consequence>
+      </consequence>
+    </rule>
+  </rule-set>
+
+  <!--
+	||
+	||     ruleset.2
+	||
+	-->
+
+  <rule-set name="ruleset.2">
+    <!-- intentionally left blank -->
+  </rule-set>
+
+  <rule-set name="ruleset.3">      
+    <rule name="rule.3.1">
+      <parameter identifier="str">
+        <java:class type="java.lang.String"/>
+      </parameter>
+      <condition>
+        <java:condition>true</java:condition>
+      </condition>
+      <consequence>
+        <java:consequence>
+          System.err.println( "saw a string: \"" + str + "\"" );
+        </java:consequence>
+      </consequence>
+    </rule>
+  </rule-set>
+
+</rules>
