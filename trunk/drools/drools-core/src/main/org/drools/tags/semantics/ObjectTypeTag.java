@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: ObjectTypeTag.java,v 1.1 2002-08-18 16:42:58 bob Exp $
+ $Id: ObjectTypeTag.java,v 1.2 2002-09-19 06:58:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -93,7 +93,7 @@ public class ObjectTypeTag extends SemanticComponentTagSupport
 
         if ( module == null )
         {
-            throw new JellyException( "<action> tag can only be used within a <semantic-module>" );
+            throw new JellyException( "Only allowed within a module" );
         }
 
         Class objectTypeClass = Class.forName( getClassname() );

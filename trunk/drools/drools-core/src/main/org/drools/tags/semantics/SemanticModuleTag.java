@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: SemanticModuleTag.java,v 1.2 2002-08-18 23:24:48 bob Exp $
+ $Id: SemanticModuleTag.java,v 1.3 2002-09-19 06:58:01 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -151,16 +151,16 @@ public class SemanticModuleTag extends SemanticsTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        if ( this.uri == null )
+        if ( getUri() == null )
         {
             throw new MissingAttributeException( "uri" );
         }
 
-        this.module = new SimpleSemanticModule( this.uri );
+        this.module = new SimpleSemanticModule( getUri() );
 
-        if ( this.var != null )
+        if ( getVar() != null )
         {
-            getContext().setVariable( this.var,
+            getContext().setVariable( getVar(),
                                       this.module );
         }
 

@@ -24,9 +24,4 @@ public class MockTupleSource extends TupleSourceImpl
     {
         return this.declarations;
     }
-
-    public String toString()
-    {
-        return "[MockTupleSource: tuple-decls=" + getTupleDeclarations() + "]";
-    }
 }

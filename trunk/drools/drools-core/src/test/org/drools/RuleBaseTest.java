@@ -31,4 +31,14 @@ public class RuleBaseTest extends TestCase
         assertSame( this.ruleBase,
                     memory.getRuleBase() );
     }
+
+    public void testCreateTransactionalWorkingMemory()
+    {
+        TransactionalWorkingMemory memory = this.ruleBase.createTransactionalWorkingMemory();
+
+        assertNotNull( memory );
+
+        assertSame( this.ruleBase,
+                    memory.getRuleBase() );
+    }
 }

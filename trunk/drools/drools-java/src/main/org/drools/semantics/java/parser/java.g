@@ -121,9 +121,10 @@ consistentAssignmentExpression
 
 ruleCondition
 	:
-			consistentAssignmentExpression
-		|	inclusiveOrExpression
+		inclusiveOrExpression
 	;
+//			consistentAssignmentExpression
+//		|	inclusiveOrExpression
 
 
 // Package statement: "package" followed by an identifier.
