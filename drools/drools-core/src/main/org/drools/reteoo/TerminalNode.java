@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.32 2004-11-03 11:54:20 simon Exp $
+ * $Id: TerminalNode.java,v 1.33 2004-11-03 14:27:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ final class TerminalNode implements TupleSink
     // ------------------------------------------------------------
 
     /** The rule to invoke upon match. */
-    private Rule rule;
+    private final Rule rule;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -106,9 +106,7 @@ final class TerminalNode implements TupleSink
      */
     public void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        Agenda agenda = workingMemory.getAgenda( );
-
-        agenda.addToAgenda( tuple, getRule( ) );
+        workingMemory.getAgenda( ).addToAgenda( tuple, getRule( ) );
     }
 
     /**
@@ -119,9 +117,7 @@ final class TerminalNode implements TupleSink
      */
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory)
     {
-        Agenda agenda = workingMemory.getAgenda( );
-
-        agenda.removeFromAgenda( key, getRule( ) );
+        workingMemory.getAgenda( ).removeFromAgenda( key, getRule( ) );
     }
 
     /**
@@ -135,9 +131,7 @@ final class TerminalNode implements TupleSink
                              TupleSet newTuples,
                              WorkingMemoryImpl workingMemory)
     {
-        Agenda agenda = workingMemory.getAgenda( );
-
-        agenda.modifyAgenda( trigger, newTuples, getRule( ) );
+        workingMemory.getAgenda( ).modifyAgenda( trigger, newTuples, getRule( ) );
     }
 
     public String toString()

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.22 2004-10-31 12:25:48 simon Exp $
+ * $Id: ExtractionNode.java,v 1.23 2004-11-03 14:27:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -163,14 +163,12 @@ class ExtractionNode extends TupleSource implements TupleSink
 
         // Extractions should never evaluate to null
         // Extractions with same target should be of same type and value
-        if ((value == null)||(!checkExtractorOk(value, tuple)))
+        if ( value == null || !checkExtractorOk( value, tuple ) )
         {
             return;
         }
 
-        ReteTuple newTuple = new ReteTuple( tuple, getTargetDeclaration( ), value );
-
-        propagateAssertTuple( newTuple, workingMemory );
+        propagateAssertTuple( new ReteTuple( tuple, getTargetDeclaration( ), value ), workingMemory );
     }
 
     /**
@@ -202,8 +200,8 @@ class ExtractionNode extends TupleSource implements TupleSink
         Set retractedKeys = new HashSet( );
 
         Iterator tupleIter = newTuples.iterator( );
-        ReteTuple eachTuple = null;
-        TupleKey eachKey = null;
+        ReteTuple eachTuple;
+        TupleKey eachKey;
 
         while ( tupleIter.hasNext( ) )
         {
@@ -230,14 +228,13 @@ class ExtractionNode extends TupleSource implements TupleSink
      * @param tuple
      * @return
      */
-    boolean checkExtractorOk(Object value, ReteTuple tuple)
+    private boolean checkExtractorOk(Object value, ReteTuple tuple)
     {
-        Set otherTargetDecls = tuple.getDeclarations( );
         Declaration decl = this.targetDeclaration;
 
-        if ((otherTargetDecls != null)&&otherTargetDecls.contains(decl))
+        if ( tuple.getDeclarations( ).contains( decl ) )
         {
-            if (!value.equals(tuple.get(decl)))
+            if ( !value.equals( tuple.get( decl ) ) )
             {
                 return false;
             }

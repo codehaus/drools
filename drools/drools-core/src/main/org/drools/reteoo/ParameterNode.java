@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.30 2004-11-03 11:54:20 simon Exp $
+ * $Id: ParameterNode.java,v 1.31 2004-11-03 14:27:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -166,9 +166,7 @@ class ParameterNode extends TupleSource
         ReteTuple tuple = new ReteTuple( workingMemory, this.rule,
                                          getDeclaration( ), handle, object );
 
-        TupleSet tupleSet = new TupleSet( tuple );
-
-        propagateModifyTuples( handle, tupleSet, workingMemory );
+        propagateModifyTuples( handle, new TupleSet( tuple ), workingMemory );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
