@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprCondition.java,v 1.2 2004-06-11 09:53:22 ckl Exp $
+ $Id: ClassObjectType.java,v 1.1 2004-06-11 09:53:22 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,61 +46,99 @@ package org.drools.semantics.groovy;
  
  */
 
-import org.drools.rule.Declaration;
-import org.drools.spi.Condition;
-import org.drools.spi.ConditionException;
-import org.drools.spi.Tuple;
+import org.drools.spi.ObjectType;
 
-/** Groovy expression semantics <code>Condition</code>.
+/** Java class semantics <code>ObjectType</code>.
+ * 
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- *  @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
- *
- *  @version $Id: ExprCondition.java,v 1.2 2004-06-11 09:53:22 ckl Exp $
+ *  @version $Id: ClassObjectType.java,v 1.1 2004-06-11 09:53:22 ckl Exp $
  */
-public class ExprCondition extends Eval implements Condition {
+public class ClassObjectType
+    implements ObjectType
+{
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Java object class. */
+    private Class objectTypeClass;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
-     *  @param expr The expression.
+     *  @param objectTypeClass Java object class.
      */
-    public ExprCondition(String expr, Declaration[] availDecls) throws Exception {
-        super(expr, availDecls);
+    public ClassObjectType(Class objectTypeClass)
+    {
+        this.objectTypeClass = objectTypeClass;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.spi.Condition
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Determine if the supplied <code>Tuple</code> is allowed
-     *  by this condition.
+    /** Return the Java object class.
      *
-     *  @param tuple The <code>Tuple</code> to test.
-     *
-     *  @return <code>true</code> if the <code>Tuple</code>
-     *          passes this condition, else <code>false</code>.
-     *
-     *  @throws ConditionException if an error occurs during filtering.
+     *  @return The Java object class.
      */
-    public boolean isAllowed(Tuple tuple) throws ConditionException {
-        try {
-            Object answer = evaluate(tuple);
+    public Class getType()
+    {
+        return this.objectTypeClass;
+    }
 
-            if (!(answer instanceof Boolean)) {
-                throw new NonBooleanExprException(getText());
-            }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.spi.ObjectType
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-            return ((Boolean) answer).booleanValue();
+    /** Determine if the passed <code>Object</code>
+     *  belongs to the object type defined by this
+     *  <code>objectType</code> instance.
+     *
+     *  @param object The <code>Object</code> to test.
+     *
+     *  @return <code>true</code> if the <code>Object</code>
+     *          matches this object type, else <code>false</code>.
+     */
+    public boolean matches(Object object)
+    {
+        return getType().isInstance( object );
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Determine if another object is equal to this.
+     *
+     *  @param thatObj The object to test.
+     *
+     *  @return <code>true</code> if <code>thatObj</code> is equal
+     *          to this, otherwise <code>false</code>.
+     */
+    public boolean equals(Object thatObj)
+    {
+        if ( thatObj == null
+             ||
+             ( ! ( thatObj instanceof ClassObjectType ) ) )
+        {
+            return false;
         }
-        catch (RuntimeException e) {
-            throw new ConditionException(e);
-        }
+             
+        ClassObjectType that = (ClassObjectType) thatObj;
+
+        return ( getType().equals( that.getType() ) );
+    }
+
+    /** Produce the hash of this object.
+     *
+     *  @return The hash.
+     */
+    public int hashCode()
+    {
+        return getType().hashCode();
     }
 }
