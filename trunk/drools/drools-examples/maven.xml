@@ -1,4 +1,8 @@
-<project default="jar:jar">
+<project default="jar:jar" xmlns:j="jelly:core">
+
+
+		<goal name="get-deps">
+    </goal>
 
 <!-- Fibonacci Examples -->
     <goal name="fibonacci-java" prereqs="jar:jar">
@@ -19,7 +23,7 @@
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
-	  <arg value="fibonacci.java.extract.drl"/>
+        <arg value="fibonacci.java.extract.drl"/>
       </java>
     </goal>
 
