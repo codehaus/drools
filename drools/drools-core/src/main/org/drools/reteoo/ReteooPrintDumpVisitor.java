@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooPrintDumpVisitor.java,v 1.7 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ReteooPrintDumpVisitor.java,v 1.8 2004-11-28 05:55:46 simon Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -106,7 +106,7 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         depth++;
         while ( it.hasNext( ) )
         {
-            visit( (ParameterNode) it.next( ) );
+            visit( it.next( ) );
         }
         depth = scopedDepth;
     }
@@ -160,24 +160,6 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
         depth = scopedDepth;
     }
 
-    public void visitExtractionNode(ExtractionNode extractionNode)
-    {
-        String indent = getIndent( depth );
-        buffer.append( indent ).append( "ExtractionNode" );
-        buffer.append( newline );
-        buffer.append( indent ).append( "-------------" );
-        buffer.append( newline );
-        buffer.append( indent ).append( "extraction: " );
-        buffer.append( extractionNode.toString( ) );
-        buffer.append( newline );
-        buffer.append( indent ).append( "tupleSink:" );
-        buffer.append( newline );
-        int scopedDepth = depth;
-        depth++;
-        visit( extractionNode.getTupleSink( ) );
-        depth = scopedDepth;
-    }
-
     public void visitJoinNodeInput(JoinNodeInput joinNodeInput)
     {
         String indent = getIndent( depth );
@@ -206,14 +188,12 @@ public class ReteooPrintDumpVisitor extends ReflectiveVisitor
 
     public void visitObject(Object object)
     {
-        String indent = getIndent( depth );
         buffer.append( "no visitor implementation for : " + object.getClass( ) + " : " + object );
         buffer.append( newline );
     }
 
     public void visitNull()
     {
-        String indent = getIndent( depth );
         buffer.append( "unable to visit null objects" );
         buffer.append( newline );
     }

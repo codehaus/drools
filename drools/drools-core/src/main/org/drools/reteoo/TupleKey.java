@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.26 2004-11-21 13:51:52 simon Exp $
+ * $Id: TupleKey.java,v 1.27 2004-11-28 05:55:46 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,6 +49,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A composite key to match tuples.
@@ -204,6 +205,12 @@ class TupleKey
         }
 
         return leastRecent;
+    }
+
+    // TODO: Remove this at some stage when ReteTuple no longer needs it
+    public Set getDeclarations()
+    {
+        return this.handles.keySet();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

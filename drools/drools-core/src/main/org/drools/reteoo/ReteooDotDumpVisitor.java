@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteooDotDumpVisitor.java,v 1.5 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ReteooDotDumpVisitor.java,v 1.6 2004-11-28 05:55:46 simon Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,10 +53,10 @@ import java.util.Set;
 
 /**
  * Produces a graph in GraphViz DOT format.
- * 
+ *
  * @see http://www.research.att.com/sw/tools/graphviz/
  * @see http://www.pixelglow.com/graphviz/
- * 
+ *
  * @author Andy Barnett
  */
 public class ReteooDotDumpVisitor extends ReflectiveVisitor
@@ -177,23 +177,6 @@ public class ReteooDotDumpVisitor extends ReflectiveVisitor
                   "TupleSource/TupleSink",
                   "condition: " + node.getCondition( ) + newline + format( node.getTupleDeclarations( ),
                                                                            "tuple" ) );
-        Object nextNode = node.getTupleSink( );
-        makeEdge( node,
-                  nextNode );
-        visitNode( nextNode );
-    }
-
-    /**
-     * ExtractionNode displays its extractor and target declaration and tuple
-     * Declarations and then visits its TupleSink.
-     */
-    public void visitExtractionNode(ExtractionNode node)
-    {
-        makeNode( node,
-                  "ExtractionNode",
-                  "TupleSource/TupleSink",
-                  "extractor: " + node.getExtractor( ) + newline + "targetDecl: " + format( node.getTargetDeclaration( ) ) + newline + format( node.getTupleDeclarations( ),
-                                                                                                                                               "tuple" ) );
         Object nextNode = node.getTupleSink( );
         makeEdge( node,
                   nextNode );

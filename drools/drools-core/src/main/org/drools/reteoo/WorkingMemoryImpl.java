@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.53 2004-11-28 00:58:44 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.54 2004-11-28 05:55:46 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -110,8 +110,6 @@ class WorkingMemoryImpl
 
     /** Flag to determine if a rule is currently being fired. */
     private boolean firing;
-
-    private long conditionCounter;
 
     // ------------------------------------------------------------
     // Constructors
@@ -589,11 +587,6 @@ class WorkingMemoryImpl
         }
 
         return memory;
-    }
-
-    public long getConditionTimeStamp()
-    {
-        return this.conditionCounter++;
     }
 
     public WorkingMemoryEventSupport getEventSupport()
