@@ -198,5 +198,7 @@ public class RuleSetLoaderTest extends TestCase
 
         assertEquals( "ruleset.2",
                       ruleSet.getName() );
+
+        assertTrue( ruleSet.getRules().isEmpty() );
     }
 }
