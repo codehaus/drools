@@ -1,0 +1,72 @@
+
+<rules xmlns="http://drools.org/rules"
+       xmlns:know="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary">
+
+  <semantics module="org.drools.semantics.java"/>
+  <semantics module="org.drools.semantics.jelly"/>
+
+  <rule-set name="Sisters Rules"
+           xmlns:java="http://drools.org/semantics/java"
+           xmlns:jelly="http://drools.org/semantics/jelly">
+
+    <rule name="Find Sisters">
+
+      <parameter identifier="person">
+        <java:class type="sisters.Person"/>
+      </parameter>
+
+      <parameter identifier="sister">
+        <java:class type="sisters.Person"/>
+      </parameter>
+
+      <condition>
+        <java:condition>person.hasSister( sister )</java:condition>
+      </condition>
+
+      <consequence>
+
+        <jelly:consequence>
+         
+          This is some jelly:  
+             person: ${person}
+             sister: ${sister}
+
+          Getting message from appData:
+          ${appData.get( "message" )}
+
+          <know:assert fact="${person}: I like cheese"/>
+          <know:assert fact="bob says: ${person} and ${sister} are sisters"/>
+
+        </jelly:consequence>
+
+      </consequence>
+
+    </rule>
+
+    <rule name="Message Received">
+      <parameter identifier="message">
+        <java:class type="java.lang.String"/>
+      </parameter>
+
+      <condition>
+        <java:condition>
+          message.startsWith( "bob says:" );
+        </java:condition>
+      </condition>
+
+      <consequence>
+        <java:consequence>
+            System.err.println( "Getting message from appData." );
+            System.err.println( appData.get("message") );
+            System.err.println();
+            System.err.println( "Message from bob received." );
+            System.err.println( message );
+        </java:consequence>
+      </consequence>
+
+    </rule>
+
+  </rule-set>
+
+</rules>
+
