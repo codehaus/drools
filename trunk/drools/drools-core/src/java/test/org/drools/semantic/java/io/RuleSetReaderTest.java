@@ -18,6 +18,9 @@ import java.net.MalformedURLException;
 
 public class RuleSetReaderTest extends TestCase
 {
+    public static Document RETURN_doc1;
+    public static Document RETURN_doc2;
+
     public RuleSetReaderTest(String name)
     {
         super( name );
@@ -25,14 +28,21 @@ public class RuleSetReaderTest extends TestCase
 
     public void setUp()
     {
+        RETURN_doc1 = null;
+        RETURN_doc2 = null;
     }
 
     public void tearDown()
     {
+        RETURN_doc1 = null;
+        RETURN_doc2 = null;
     }
 
     public void testHighLevel()
     {
+        RETURN_doc1 = null;
+        RETURN_doc2 = null;
+
         RuleSetReader reader = new RuleSetReader();
 
         try
@@ -55,6 +65,11 @@ public class RuleSetReaderTest extends TestCase
             memory.assertObject( doc1 );
             memory.assertObject( doc2 );
 
+            assertSame( RETURN_doc1,
+                        doc1 );
+
+            assertSame( RETURN_doc2,
+                        doc2 );
         }
         catch (MalformedURLException e)
         {

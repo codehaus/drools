@@ -28,6 +28,10 @@ import java.net.MalformedURLException;
 
 public class RoughDom4jTest extends TestCase
 {
+    public static Document RETURN_doc1;
+    public static Document RETURN_doc2;
+    public static String RETURN_id;
+
     private Document doc1;
     private Document doc2;
 
@@ -53,16 +57,28 @@ public class RoughDom4jTest extends TestCase
         {
             fail( e.toString() );
         }
+
+        RETURN_doc1 = null;
+        RETURN_doc2 = null;
+        RETURN_id = null;
     }
 
     public void tearDown()
     {
         this.doc1 = null;
         this.doc2 = null;
+
+        RETURN_doc1 = null;
+        RETURN_doc2 = null;
+        RETURN_id = null;
     }
 
     public void testNothing()
     {
+        RETURN_doc1 = null;
+        RETURN_doc2 = null;
+        RETURN_id = null;
+
         RuleBase ruleBase = new RuleBase();
 
         Rule rule = new Rule( "rough" );
@@ -101,6 +117,12 @@ public class RoughDom4jTest extends TestCase
 
             memory.assertObject( this.doc1 );
             memory.assertObject( this.doc2 );
+
+            assertSame( this.doc1,
+                        RETURN_doc1 );
+
+            assertSame( this.doc2,
+                        RETURN_doc2 );
         }
         catch (DeclarationAlreadyCompleteException e)
         {
@@ -139,10 +161,9 @@ class MyAction implements Action
     public void invoke(Tuple tuple,
                        WorkingMemory workingMemory)
     {
-        System.err.println( "RULE MATCH" );
-        System.err.println( "doc1 -> " + tuple.get( this.doc1 ) );
-        System.err.println( "doc2 -> " + tuple.get( this.doc2 ) );
-        System.err.println( "id   -> " + tuple.get( this.id ) );
+        RoughDom4jTest.RETURN_doc1 = (Document) tuple.get( this.doc1 );
+        RoughDom4jTest.RETURN_doc2 = (Document) tuple.get( this.doc2 );
+        RoughDom4jTest.RETURN_id   = (String)   tuple.get( this.id );
     }
 }
 

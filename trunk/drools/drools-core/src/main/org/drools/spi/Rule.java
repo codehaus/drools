@@ -47,6 +47,8 @@ public class Rule
         this.assignmentConditions  = Collections.EMPTY_SET;
     }
 
+    /** Produce output suitable for debugging.
+     */
     public String toString()
     {
         return "[Rule: name='" + this.name
@@ -88,20 +90,37 @@ public class Rule
                        getAssignmentConditions().isEmpty() ) ) );
     }
 
+    /** Check the validity of this rule, and throw exceptions if
+     *  it failed validity tests.
+     *
+     *  <p>
+     *  Possibly exceptions include:
+     *  </p>
+     * 
+     *  <pre>
+     *      NoParameterDeclarationException
+     *      NoConditionException
+     *  </pre>
+     *
+     *  <p>
+     *  A <code>Rule</code> must include at least one
+     *  parameter declaration and one condition.
+     *  </p>
+     *
+     *  @throws InvalidRuleException if this rule is in any way invalid.
+     */
     public void checkValidity() throws InvalidRuleException
     {
         if ( getParameterDeclarations().isEmpty() )
         {
-            throw new InvalidRuleException( this,
-                                            "No parameter declarations." );
+            throw new NoParameterDeclarationException( this );
         }
 
         if ( getFilterConditions().isEmpty()
              &&
              getAssignmentConditions().isEmpty() )
         {
-            throw new InvalidRuleException( this,
-                                            "No conditions." );
+            throw new NoConditionException( this );
         }
     }
 

@@ -12,13 +12,27 @@ import bsh.EvalError;
 import java.util.Set;
 import java.util.Iterator;
 
+/** A {@link FactExtractor} using <a href="http://beanshell.org/">BeanShell</a>
+ *  to perform run-time fact extraction.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class BeanShellFactExtractor implements FactExtractor
 {
-    private String expression;
+    /** The expression to extract the fact. */
+    private String        expression;
+
+    /** The members referenced by the expression. */
     private Declaration[] requiredTupleMembers;
 
+    /** The BeanShell interpreter. */
     private Interpreter interp;
 
+    /** Construct.
+     *
+     *  @param expression The fact extraction expression.
+     *  @param requiredTupleMembers Set of variables referenced.
+     */
     public BeanShellFactExtractor(String expression,
                                   Set requiredTupleMembers)
     {
@@ -38,6 +52,8 @@ public class BeanShellFactExtractor implements FactExtractor
         initializeInterpreter();
     }
 
+    /** Initialize the BeanShell interpreter.
+     */
     private void initializeInterpreter()
     {
         this.interp = new Interpreter();
@@ -48,6 +64,10 @@ public class BeanShellFactExtractor implements FactExtractor
         return this.requiredTupleMembers;
     }
 
+    /** Retrieve the fact-extraction BeanShell expression.
+     *
+     *  @return The fact-extraction expression.
+     */
     public String getExpression()
     {
         return this.expression;

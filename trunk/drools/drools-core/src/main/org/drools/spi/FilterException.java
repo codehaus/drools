@@ -23,5 +23,4 @@ public class FilterException extends AssertionException
     {
         super( rootCause );
     }
-
 }

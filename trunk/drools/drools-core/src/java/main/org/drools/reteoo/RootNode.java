@@ -143,11 +143,25 @@ public class RootNode
         return this.objectTypeNodes.values().iterator();
     }
 
+    /** Retrieve an {@link ObjectTypeNode} keyed by {@link ObjectType}.
+     *
+     *  @param objectType The <code>ObjectType</code> key.
+     *
+     *  @return The matching <code>ObjectTypeNode</code> if one has already
+     *          been created, else <code>null</code>.
+     */
     protected ObjectTypeNode getObjectTypeNode(ObjectType objectType)
     {
         return (ObjectTypeNode) this.objectTypeNodes.get( objectType );
     }
 
+    /** Retrieve an {@link ObjectTypeNode} keyed by {@link ObjectType},
+     *  creating one, if necessary.
+     *
+     *  @param objectType The <code>ObjectType</code> key.
+     *
+     *  @return The matching <code>ObjectTypeNode</code>.
+     */
     protected ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)
     {
         ObjectTypeNode node = getObjectTypeNode( objectType );

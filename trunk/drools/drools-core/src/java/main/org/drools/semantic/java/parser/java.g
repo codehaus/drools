@@ -3,98 +3,20 @@ header
 		package org.drools.semantic.java.parser;
 }
 
-/** Java 1.3 Recognizer
+/** Java 1.3 Recognizer.
  *
- * Run 'java Main [-showtree] directory-full-of-java-files'
- *
- * [The -showtree option pops up a Swing frame that shows
- *  the AST constructed from the parser.]
+ *  This grammar is in the PUBLIC DOMAIN
  * 
- * Run 'java Main <directory full of java files>'
+ *	@author John Mitchell		johnm@non.net
+ *	@author Terence Parr		parrt@magelang.com
+ *	@author John Lilley			jlilley@empathy.com
+ *	@author Scott Stanchfield	thetick@magelang.com
+ *	@author Markus Mohnen       mohnen@informatik.rwth-aachen.de
+ *  @author Peter Williams      pete.williams@sun.com
+ *  @author Allan Jacobs        Allan.Jacobs@eng.sun.com
+ *  @author Steve Messick       messick@redhills.com
  *
- * Contributing authors:
- *		John Mitchell		johnm@non.net
- *		Terence Parr		parrt@magelang.com
- *		John Lilley			jlilley@empathy.com
- *		Scott Stanchfield	thetick@magelang.com
- *		Markus Mohnen       mohnen@informatik.rwth-aachen.de
- *      Peter Williams      pete.williams@sun.com
- *      Allan Jacobs        Allan.Jacobs@eng.sun.com
- *      Steve Messick       messick@redhills.com
- *
- * Version 1.00 December 9, 1997 -- initial release
- * Version 1.01 December 10, 1997
- *		fixed bug in octal def (0..7 not 0..8)
- * Version 1.10 August 1998 (parrt)
- *		added tree construction
- *		fixed definition of WS,comments for mac,pc,unix newlines
- *		added unary plus
- * Version 1.11 (Nov 20, 1998)
- *		Added "shutup" option to turn off last ambig warning.
- *		Fixed inner class def to allow named class defs as statements
- *		synchronized requires compound not simple statement
- *		add [] after builtInType DOT class in primaryExpression
- *		"const" is reserved but not valid..removed from modifiers
- * Version 1.12 (Feb 2, 1999)
- *		Changed LITERAL_xxx to xxx in tree grammar.
- *		Updated java.g to use tokens {...} now for 2.6.0 (new feature).
- *
- * Version 1.13 (Apr 23, 1999)
- *		Didn't have (stat)? for else clause in tree parser.
- *		Didn't gen ASTs for interface extends.  Updated tree parser too.
- *		Updated to 2.6.0.
- * Version 1.14 (Jun 20, 1999)
- *		Allowed final/abstract on local classes.
- *		Removed local interfaces from methods
- *		Put instanceof precedence where it belongs...in relationalExpr
- *			It also had expr not type as arg; fixed it.
- *		Missing ! on SEMI in classBlock
- *		fixed: (expr) + "string" was parsed incorrectly (+ as unary plus).
- *		fixed: didn't like Object[].class in parser or tree parser
- * Version 1.15 (Jun 26, 1999)
- *		Screwed up rule with instanceof in it. :(  Fixed.
- *		Tree parser didn't like (expr).something; fixed.
- *		Allowed multiple inheritance in tree grammar. oops.
- * Version 1.16 (August 22, 1999)
- *		Extending an interface built a wacky tree: had extra EXTENDS.
- *		Tree grammar didn't allow multiple superinterfaces.
- *		Tree grammar didn't allow empty var initializer: {}
- * Version 1.17 (October 12, 1999)
- *		ESC lexer rule allowed 399 max not 377 max.
- *		java.tree.g didn't handle the expression of synchronized
- *		statements.
- * Version 1.18 (August 12, 2001)
- *      Terence updated to Java 2 Version 1.3 by observing/combining work of
- *      Allan Jacobs and Steve Messick.  Handles 1.3 src.
- *		Summary:
- *		o  primary didn't include boolean.class kind of thing
- *      o  constructor calls parsed explicitly now:
- * 		   see explicitConstructorInvocation
- *		o  add strictfp modifier
- *      o  missing objBlock after new expression in tree grammar
- *		o  merged local class definition alternatives, moved after declaration
- *		o  fixed problem with ClassName.super.field
- *      o  reordered some alternatives to make things more efficient
- *		o  long and double constants were not differentiated from int/float
- *		o  whitespace rule was inefficient: matched only one char
- *		o  add an examples directory with some nasty 1.3 cases
- *		o  made Main.java use buffered IO and a Reader for Unicode support
- *		o  supports UNICODE?
- *		   Using Unicode charVocabulay makes code file big, but only
- *		   in the bitsets at the end. I need to make ANTLR generate
- *		   unicode bitsets more efficiently.
- *
- * class Test {
- *   public static void main( String args[] ) {
- *     if (boolean.class.equals(boolean.class)) {
- *       System.out.println("works");
- *     }
- *   }
- * }
- *
- * This grammar is in the PUBLIC DOMAIN
  */
-
 class JavaRecognizer extends Parser;
 options {
 	k = 2;                           // two token lookahead
@@ -1044,10 +966,20 @@ constant
 	|	NUM_DOUBLE
 	;
 
-
-//----------------------------------------------------------------------------
-// The Java scanner
-//----------------------------------------------------------------------------
+/** Java 1.3 Lexer.
+ *
+ *  This grammar is in the PUBLIC DOMAIN
+ * 
+ *	@author John Mitchell		johnm@non.net
+ *	@author Terence Parr		parrt@magelang.com
+ *	@author John Lilley			jlilley@empathy.com
+ *	@author Scott Stanchfield	thetick@magelang.com
+ *	@author Markus Mohnen       mohnen@informatik.rwth-aachen.de
+ *  @author Peter Williams      pete.williams@sun.com
+ *  @author Allan Jacobs        Allan.Jacobs@eng.sun.com
+ *  @author Steve Messick       messick@redhills.com
+ *
+ */
 class JavaLexer extends Lexer;
 
 options {

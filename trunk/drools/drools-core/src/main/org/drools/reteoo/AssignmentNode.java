@@ -11,6 +11,10 @@ import org.drools.spi.FactExtractor;
 import java.util.Set;
 import java.util.HashSet;
 
+/** <i>Consistent-Assignment</i> node in the Rete-OO network.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class AssignmentNode extends TupleSource implements TupleSink
 {
     private Set           tupleDeclarations;
@@ -39,11 +43,21 @@ public class AssignmentNode extends TupleSource implements TupleSink
         return this.tupleDeclarations;
     }
 
+    /** Retrieve the {@link Declaration} which is the target of
+     *  the assignment.
+     *
+     *  @return The target <code>Declaration</code>.
+     */
     public Declaration getTargetDeclaration()
     {
         return this.targetDeclaration;
     }
 
+    /** Retrieve the {@link FactExtractor} used to generate the
+     *  right-hand-side value for the assignment.
+     *
+     *  @return The <code>FactExtrator</code>.
+     */
     public FactExtractor getFactExtractor()
     {
         return this.factExtractor;

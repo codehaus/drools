@@ -6,11 +6,19 @@ header
 	import java.util.ArrayList;	
 }
 
-/** Java 1.3 AST Recognizer Grammar
+/** Java 1.3 AST Recognizer.
  *
- * Author: (see java.g preamble)
+ *  This grammar is in the PUBLIC DOMAIN
+ * 
+ *	@author John Mitchell		johnm@non.net
+ *	@author Terence Parr		parrt@magelang.com
+ *	@author John Lilley			jlilley@empathy.com
+ *	@author Scott Stanchfield	thetick@magelang.com
+ *	@author Markus Mohnen       mohnen@informatik.rwth-aachen.de
+ *  @author Peter Williams      pete.williams@sun.com
+ *  @author Allan Jacobs        Allan.Jacobs@eng.sun.com
+ *  @author Steve Messick       messick@redhills.com
  *
- * This grammar is in the PUBLIC DOMAIN
  */
 class JavaTreeParser extends TreeParser;
 

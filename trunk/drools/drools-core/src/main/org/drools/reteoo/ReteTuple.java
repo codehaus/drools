@@ -48,6 +48,11 @@ public class ReteTuple implements Tuple
         return this.tuple.get( declaration );
     }
 
+    /** Put the entire contents of another <code>Tuple</code>
+     *  into this <code>Tuple</code>.
+     *
+     *  @param tuple The source <code>Tuple</code>.
+     */
     public void putAll(Tuple tuple)
     {
         Set decls = tuple.getDeclarations();
@@ -69,6 +74,8 @@ public class ReteTuple implements Tuple
         return tuple.keySet();
     }
 
+    /** Produce output suitable for debugging.
+     */
     public String toString()
     {
         return "[ReteTuple: tuple=" + this.tuple + "]";

@@ -29,6 +29,10 @@ public class RuleSet
         this.rules = Collections.EMPTY_MAP;
     }
 
+    /** Set the name of this <code>RuleSet</code>
+     *
+     *  @param name The name of this <code>RuleSet</code>
+     */
     public void setName(String name)
     {
         this.name = name;
@@ -116,6 +120,12 @@ public class RuleSet
         return this.rules.values();
     }
 
+    /** Retrieve an <code>Iterator</code> of all <code>Rules</code>
+     *  in this <code>RuleSet</code>.
+     *
+     *  @return A <code>Iterator</code> over all <code>Rules</code>
+     *          in this <code>RuleSet</code>.
+     */
     public Iterator getRuleIterator()
     {
         return this.rules.values().iterator();
