@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.38 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.39 2004-12-04 04:33:02 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,6 +59,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -75,7 +76,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.38 2004-11-28 20:01:12 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.39 2004-12-04 04:33:02 dbarnett Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -229,7 +230,8 @@ public class RuleSetReader extends DefaultHandler
      * @throws Exception
      *             If an error occurs during the parse.
      */
-    public RuleSet read( Reader reader ) throws Exception
+    public RuleSet read( Reader reader )
+        throws SAXException, ParserConfigurationException, IOException
     {
         return read( new InputSource( reader ) );
     }
@@ -245,7 +247,8 @@ public class RuleSetReader extends DefaultHandler
      * @throws Exception
      *             If an error occurs during the parse.
      */
-    public RuleSet read( InputStream inputStream ) throws Exception
+    public RuleSet read( InputStream inputStream )
+        throws SAXException, ParserConfigurationException, IOException
     {
         return read( new InputSource( inputStream ) );
     }
@@ -261,7 +264,8 @@ public class RuleSetReader extends DefaultHandler
      * @throws Exception
      *             If an error occurs during the parse.
      */
-    public RuleSet read( String url ) throws Exception
+    public RuleSet read( String url )
+        throws SAXException, ParserConfigurationException, IOException
     {
         return read( new InputSource( url ) );
     }
@@ -277,7 +281,8 @@ public class RuleSetReader extends DefaultHandler
      * @throws Exception
      *             If an error occurs during the parse.
      */
-    public RuleSet read( InputSource in ) throws Exception
+    public RuleSet read( InputSource in )
+        throws SAXException, ParserConfigurationException, IOException
     {
         SAXParser parser;
 
