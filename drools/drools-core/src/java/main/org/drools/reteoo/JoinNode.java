@@ -60,7 +60,7 @@ public class JoinNode extends TupleSource implements TupleSink
         this.commonDeclarations = new HashSet();
 
         Set leftDecls = leftInput.getTupleDeclarations();
-        Set rightDecls = leftInput.getTupleDeclarations();
+        Set rightDecls = rightInput.getTupleDeclarations();
 
         Iterator    declIter = rightDecls.iterator();
         Declaration eachDecl = null;

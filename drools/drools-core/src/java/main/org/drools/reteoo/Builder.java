@@ -39,7 +39,7 @@ public class Builder
         
         attachableNodes = createParameterNodes( rule );
 
-        System.err.println( " 1->" + attachableNodes );
+        // System.err.println( " 1->" + attachableNodes );
 
         do 
         {
@@ -52,16 +52,16 @@ public class Builder
                                         attachableNodes );
             }
 
-            System.err.println( " 2->" + attachableNodes );
+            // System.err.println( " 2->" + attachableNodes );
 
             attachAssign = attachAssignmentConditions( assignmentConds,
                                                        attachableNodes );
 
-            System.err.println( " 3->" + attachableNodes );
+            // System.err.println( " 3->" + attachableNodes );
 
             performedJoin = createJoinNodes( attachableNodes );
 
-            System.err.println( " 4->" + attachableNodes );
+            // System.err.println( " 4->" + attachableNodes );
         }
         while ( ! attachableNodes.isEmpty() 
                 &&
@@ -141,7 +141,7 @@ public class Builder
 
     protected boolean createJoinNodes(Set attachableNodes)
     {
-        System.err.println( "ENTER joinNodes" );
+        // System.err.println( "ENTER joinNodes" );
         boolean performedJoin = false;
 
         Object[] leftNodes  = attachableNodes.toArray();
@@ -186,15 +186,15 @@ public class Builder
 
                     performedJoin = true;
 
-                    System.err.println( joinNode + " from " + left + " and " + right );
-                    System.err.println( attachableNodes );
+                    // System.err.println( joinNode + " from " + left + " and " + right );
+                    // System.err.println( attachableNodes );
 
                     continue outter;
                 }
             }
         }
 
-        System.err.println( "EXIT joinNodes" );
+        // System.err.println( "EXIT joinNodes" );
         return performedJoin;
     }
 
@@ -304,7 +304,7 @@ public class Builder
             eachSource = (TupleSource) sourceIter.next();
 
             decls = eachSource.getTupleDeclarations();
-            System.err.println( "decls -> " + decls );
+            // System.err.println( "decls -> " + decls );
 
             if ( decls.contains( targetDecl ) )
             {
