@@ -4,16 +4,18 @@ import org.drools.FactHandle;
 
 public class DefaultFactHandleFactory implements FactHandleFactory
 {
-    private long counter;
+    private long idCounter;
+    
+    private long recencyCounter;
 
     public FactHandle newFactHandle()
     {
-        return new FactHandleImpl( ++this.counter );
+        return new FactHandleImpl( ++idCounter,  ++recencyCounter);
     }
     
     public FactHandle newFactHandle(long id)
     {
-        return new FactHandleImpl( id );
+        return new FactHandleImpl( id, ++recencyCounter );
     }    
     
 }
