@@ -1,0 +1,10 @@
+<project default="jar:jar">
+
+    <!-- post goals ************************************************************************************************ -->
+
+    <postGoal name="clover">
+        <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
+            file="${basedir}/target/docs/clover/pkgs-summary.html"/>
+    </postGoal>
+
+</project>
