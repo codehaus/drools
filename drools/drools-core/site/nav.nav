@@ -1,6 +1,0 @@
-=Core Engine
-client.html|Client API
-admin.html|Administrative API
-conflict.html|Conflict Resolution Strategies
-spi.html|Semantics Provider Interface
-assembly.html|Rule Assembly API
