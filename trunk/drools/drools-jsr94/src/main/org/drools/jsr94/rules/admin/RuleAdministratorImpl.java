@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorImpl.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleAdministratorImpl.java,v 1.6 2004-04-02 22:24:26 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,11 +56,11 @@ import java.util.Map;
  *
  * @see RuleAdministrator
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 public class RuleAdministratorImpl implements RuleAdministrator
 {
-
     /**
      * Returns a <code>RemoteRuleExecutionSetProvider</code> implementation.
      *
@@ -88,16 +88,15 @@ public class RuleAdministratorImpl implements RuleAdministrator
      */
     public void registerRuleExecutionSet( String bindUri, RuleExecutionSet ruleExecutionSet, Map properties ) throws RuleExecutionSetRegisterException
     {
-
         try
         {
-            //Note: an existing RuleExecutionSet is simply replaced
+            // Note: an existing RuleExecutionSet is simply replaced
             RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
             repository.registerRuleExecutionSet( bindUri, ruleExecutionSet );
         }
         catch ( Exception ex )
         {
-            throw new RuleExecutionSetRegisterException( "cannot register rule set", ex );
+            throw new RuleExecutionSetRegisterException( "cannot register rule execution set", ex );
         }
     }
 
@@ -108,7 +107,6 @@ public class RuleAdministratorImpl implements RuleAdministrator
      */
     public void unregisterRuleExecutionSet( String bindUri, Map properties ) throws RuleExecutionSetUnregisterException
     {
-
         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
 
         if ( repository.getRuleExecutionSet( bindUri ) == null )
