@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.34 2004-11-16 09:10:49 simon Exp $
+ * $Id: JoinMemory.java,v 1.35 2004-11-16 11:37:12 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -97,27 +97,9 @@ class JoinMemory implements Serializable
      */
     void retractTuples( TupleKey key )
     {
-        retractTuples( key, this.leftTuples );
+        this.leftTuples.removeAllTuples( key );
 
-        retractTuples( key, this.rightTuples );
-    }
-
-    /**
-     * Retract tuples from this memory.
-     *
-     * @param key       The key for the tuples to be removed.
-     * @param tupleSet  The tuples to be removed.
-     */
-    private void retractTuples( TupleKey key, TupleSet tupleSet )
-    {
-        Iterator tupleIter = tupleSet.iterator( );
-        while ( tupleIter.hasNext() )
-        {
-            if ( ( ( ReteTuple ) tupleIter.next() ).getKey().containsAll( key ) )
-            {
-                tupleIter.remove();
-            }
-        }
+        this.rightTuples.removeAllTuples( key );
     }
 
     /**
