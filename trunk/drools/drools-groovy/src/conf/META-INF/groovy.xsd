@@ -9,16 +9,6 @@
 
   <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport"/>
 
-   <!--
-   <xs:element name="extractor" substitutionGroup="rules:abstractExtractor">
-     <xs:complexType>
-       <xs:complexContent>
-         <xs:extension base="rules:extractorType" />
-       </xs:complexContent>
-     </xs:complexType>
-   </xs:element>
-   -->
-
   <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
 
   <xs:element name="condition"   type="xs:string" substitutionGroup="rules:abstractCondition"/>

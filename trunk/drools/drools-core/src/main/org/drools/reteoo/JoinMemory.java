@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.42 2004-11-28 05:55:46 simon Exp $
+ * $Id: JoinMemory.java,v 1.43 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -262,10 +262,6 @@ class JoinMemory
 
             if ( tuple.dependsOn( trigger ) )
             {
-                //nasty hack to propagate extractions
-                //we can move to centralised extractions
-                //when a JoinMemory can specify which extractions to retract
-                //tuple.updateExtractions(newTuples.getTuple(tuple.getKey()));
                 newJoined.addAllTuples( attemptJoin( tuple,
                                                      thatSideTuples ) );
             }
@@ -328,13 +324,6 @@ class JoinMemory
         {
             eachDecl = (Declaration) declIter.next( );
 
-            if ( !checkExtractorJoinsOk( eachDecl,
-                                         left,
-                                         right ) )
-            {
-                return null;
-            }
-
             leftHandle = left.getKey( ).get( eachDecl );
             rightHandle = right.getKey( ).get( eachDecl );
 
@@ -361,31 +350,6 @@ class JoinMemory
         return new ReteTuple( left,
                               right );
 
-    }
-
-    /**
-     * For targets shared by extractors the extracted fact should be the same.
-     * If the given declaration is a targetDeclaration for one it must be for
-     * the other, as its a common declaration.
-     *
-     * @param decl
-     * @param left
-     * @param right
-     * @return
-     */
-    private boolean checkExtractorJoinsOk(Declaration decl,
-                                          ReteTuple left,
-                                          ReteTuple right)
-    {
-        Object leftValue = left.get( decl );
-        Object rightValue = right.get( decl );
-
-        if ( leftValue == null )
-        {
-            return rightValue == null;
-        }
-
-        return leftValue.equals( rightValue );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.29 2004-11-28 02:22:18 simon Exp $
+ * $Id: Expr.java,v 1.30 2004-11-28 06:45:25 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,11 +59,8 @@ import java.util.List;
  * Base class for expression-based Java semantic components.
  *
  * @see ExprCondition
- * @see ExprExtractor
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- *
- * @version $Id: Expr.java,v 1.29 2004-11-28 02:22:18 simon Exp $
  */
 public class Expr implements Serializable
 {
@@ -75,8 +72,6 @@ public class Expr implements Serializable
     private Declaration[]              requiredDecls;
 
     private transient ConditionScript  conditionScript;
-
-    private transient ExtractorScript  extractorScript;
 
     private String                     expr;
 
@@ -106,10 +101,6 @@ public class Expr implements Serializable
     protected Expr(String expr, List availDecls) throws Exception
     {
         if ( this instanceof ExprCondition )
-        {
-            this.expr = "return (" + expr + ");";
-        }
-        if ( this instanceof ExprExtractor )
         {
             this.expr = "return (" + expr + ");";
         }
@@ -179,43 +170,6 @@ public class Expr implements Serializable
 
     }
 
-    public Object evaluateExtractor(Tuple tuple) throws Exception
-    {
-        Declaration[] params = this.requiredDecls;
-        Map applicationData = tuple.getWorkingMemory( ).getApplicationDataMap( );
-
-        if ( extractorScript == null )
-        {
-            Set imports = new HashSet();
-            if (tuple.getRule().getImports() != null)
-            {
-                Iterator it = tuple.getRule().getImports().iterator();
-                ImportEntry importEntry;
-                while (it.hasNext())
-                {
-                    importEntry = (ImportEntry) it.next();
-                    if (importEntry instanceof JavaImportEntry)
-                    {
-                        imports.add(importEntry.getImportEntry());
-                    }
-                }
-            }
-            extractorScript = ( ExtractorScript ) DroolsScriptEvaluator
-                                                                       .compile(
-                                                                                 this.expr,
-                                                                                 ExtractorScript.class,
-                                                                                 scriptParamNames,
-                                                                                 params,
-                                                                                 applicationData,
-                                                                                 imports);
-        }
-
-        return extractorScript.invoke( tuple, this.requiredDecls,
-                                       new KnowledgeHelper( tuple ),
-                                       tuple.getWorkingMemory( )
-                                            .getApplicationDataMap( ) );
-    }
-
     protected List analyze(String expr, List available) throws Exception
     {
         ExprAnalyzer analyzer = new ExprAnalyzer( );
@@ -241,13 +195,4 @@ public class Expr implements Serializable
                               KnowledgeHelper drools,
                               Map applicationData) throws Exception;
     }
-
-    public interface ExtractorScript extends Serializable
-    {
-        public Object invoke(Tuple tuple,
-                             Declaration[] decls,
-                             KnowledgeHelper drools,
-                             Map applicationData) throws Exception;
-    }
-
 }

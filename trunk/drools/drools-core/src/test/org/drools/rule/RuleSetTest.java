@@ -119,8 +119,6 @@ public class RuleSetTest extends DroolsTestCase
 
         rule1.addLocalDeclaration( "localVar", new MockObjectType( true ) );
 
-        rule1.addExtraction( "localVar", null );
-
         //add consequence
         rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
@@ -136,8 +134,6 @@ public class RuleSetTest extends DroolsTestCase
         rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
 
         rule2.addLocalDeclaration( "localVar", new MockObjectType( true ) );
-
-        rule2.addExtraction( "localVar", null );
 
         //add consequence
         rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );

@@ -5,11 +5,10 @@ import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
-import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -65,22 +64,6 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
         assertSame( module.getConditionFactory( "mockCheese" ), factory );
 
         assertEquals( module.getConditionFactoryNames( ).size( ), 1 );
-
-    }
-
-    public void testAddGetExtractorFactory()
-    {
-
-        SimpleSemanticModule module = new SimpleSemanticModule(
-                                                                "http://cheese.org" );
-
-        ExtractorFactory factory = new MockExtractorFactory( );
-
-        module.addExtractorFactory( "mockCheese", factory );
-
-        assertSame( module.getExtractorFactory( "mockCheese" ), factory );
-
-        assertEquals( module.getExtractorFactoryNames( ).size( ), 1 );
 
     }
 
@@ -144,18 +127,6 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
     {
 
         public Condition newCondition(Configuration c, Rule rule)
-        {
-
-            return null;
-
-        }
-
-    }
-
-    private class MockExtractorFactory implements ExtractorFactory
-    {
-
-        public Extractor newExtractor(Configuration c, Rule rule)
         {
 
             return null;

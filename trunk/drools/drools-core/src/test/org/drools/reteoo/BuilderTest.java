@@ -2,19 +2,16 @@ package org.drools.reteoo;
 
 import junit.framework.TestCase;
 import org.drools.rule.Declaration;
-import org.drools.rule.Extraction;
-import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedCondition;
-import org.drools.spi.InstrumentedExtractor;
 import org.drools.spi.MockObjectType;
 import org.drools.spi.ObjectType;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class BuilderTest extends TestCase
 {
@@ -86,104 +83,6 @@ public class BuilderTest extends TestCase
         decls.add( this.objectDecl );
 
         assertTrue( this.builder.matches( cond, decls ) );
-    }
-
-    public void testFindMatchingTupleSourceForExtraction() throws Exception
-    {
-        List sources = new LinkedList( );
-
-        MockTupleSource source;
-
-        InstrumentedExtractor extractor;
-
-        Extraction extract;
-
-        TupleSource found;
-
-        // ----------------------------------------
-        // ----------------------------------------
-
-        source = new MockTupleSource( );
-
-        source.addTupleDeclaration( this.objectDecl );
-
-        sources.add( source );
-
-        extractor = new InstrumentedExtractor( );
-
-        extractor.addDeclaration( this.stringDecl );
-
-        try
-        {
-          rule1.addExtraction( "object", extractor );
-          fail("Extractor cannot target a parameter");
-        } catch (InvalidRuleException e)
-        {
-
-        }
-
-        Declaration localObjectDecl = this.rule1.addLocalDeclaration("localObject", this.objectType);
-        source.addTupleDeclaration( localObjectDecl );
-
-        extract = rule1.addExtraction( "localObject", extractor );
-
-        try
-        {
-            extract = rule1.addExtraction( "localObject", extractor );
-            fail("Extractor cannot target the same local declaration twice");
-        } catch (InvalidRuleException e)
-        {
-
-        }
-
-        found = this.builder.findMatchingTupleSourceForExtraction( extract, sources );
-
-        //sources contains objectsDecl, not stringDecl
-        //So extractor is not able to find a match for its stringDecl
-        assertNull( found );
-
-        // ----------------------------------------
-        // ----------------------------------------
-
-        sources.clear( );
-
-        source = new MockTupleSource( );
-
-        source.addTupleDeclaration( this.objectDecl );
-
-        source.addTupleDeclaration( this.stringDecl );
-
-        sources.add( source );
-
-        found = this.builder.findMatchingTupleSourceForExtraction( extract,
-                                                                   sources );
-
-        //sources contains stringDecl and objectDecl
-        //So extractor finds a match to its stringDecl
-        assertNotNull( found );
-
-        assertSame( source, found );
-
-        // ----------------------------------------
-        // ----------------------------------------
-
-        sources.clear( );
-
-        source = new MockTupleSource( );
-
-        source.addTupleDeclaration( this.stringDecl );
-
-        sources.add( source );
-
-        found = this.builder.findMatchingTupleSourceForExtraction( extract,
-                                                                   sources );
-
-        //sources contains stringDecl
-        //So extractor finds a match to its stringDecl
-
-        assertNotNull( found );
-
-        assertSame( source, found );
     }
 
     public void testFindMatchingTupleSourceForCondition()

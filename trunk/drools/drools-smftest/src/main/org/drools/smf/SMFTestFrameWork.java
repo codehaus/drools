@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.20 2004-11-17 15:04:49 dbarnett Exp $
+ * $Id: SMFTestFrameWork.java,v 1.21 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,8 +50,6 @@ import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.ExtractionException;
-import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
 
@@ -77,20 +75,19 @@ import java.util.Set;
  * public void setUp() throws Exception { super.setUp("java"); } }
  *
  * Each class that extends SMFTestFrameWork must create 3 data files;
- * conditions.data, extractors.data, consequences.data. Each file is read
+ * conditions.data, consequences.data. Each file is read
  * depending the testType, a List of the specified tests extracted from the
  * file; usig the delimeter <!--drools-test--!>to seperate each test block.
  *
  * Each testType has a corresponding private helper method to instantiate a
- * Condition, Extractor, Consequence for each test using the specified
- * parameters
+ * Condition, Consequence for each test using the specified parameters
  */
 public abstract class SMFTestFrameWork extends TestCase
 {
     /** The List of tests extracted from the data file */
     private List tests;
 
-    /** The test type; conditions, extractors, consequences */
+    /** The test type; conditions, consequences */
     private String testType;
 
     /** The SemanticModule implementation return from the SemanticRepository */
@@ -117,7 +114,6 @@ public abstract class SMFTestFrameWork extends TestCase
     public void setUp( String semantic, Set imports ) throws Exception
     {
         if (    !"conditions".equals( testType )
-             && !"extractors".equals( testType )
              && !"consequences".equals( testType ) )
         {
             return;
@@ -315,167 +311,6 @@ public abstract class SMFTestFrameWork extends TestCase
     }
 
     /**
-     * Tests each of the extracted tests from extractors.data
-     */
-    public void testExtractors( ) throws Exception
-    {
-        Rule rule = new InstrumentedRule( "Test Rule 1" );
-
-        MockTuple tuple;
-        ObjectTypeFactory objectTypeFactory =
-            module.getObjectTypeFactory( "class" );
-
-        // Cheese ObjectType
-        MockConfiguration cheeseConfiguration =
-            new MockConfiguration( "cheeseConfig" );
-        cheeseConfiguration.setText( Cheese.class.getName( ) );
-        ObjectType cheeseType =
-            objectTypeFactory.newObjectType( cheeseConfiguration, null );
-
-        // Integer ObjectType
-        MockConfiguration integerConfiguration =
-            new MockConfiguration( "integerConfig" );
-        integerConfiguration.setText( Integer.class.getName( ) );
-        ObjectType integerType =
-            objectTypeFactory.newObjectType( integerConfiguration, null );
-
-        // Declarations
-        Declaration camembertDecl =
-            rule.addLocalDeclaration( "camembert", cheeseType );
-        Declaration stiltonDecl =
-            rule.addLocalDeclaration( "stilton", cheeseType );
-        Declaration integerDecl =
-            rule.addLocalDeclaration( "bitesLeft", integerType );
-
-        // Setup
-        int testNumber = 0;
-        tuple = new MockTuple( );
-        rule.setImports(new HashSet());
-        tuple.setRule( rule );
-        tuple.setWorkingMemory( new MockWorkingMemory( ) );
-
-        // The Tests
-
-        // 0
-        assertEquals( "camembert",
-                      ( String ) testExtractor( testNumber++,
-                                                "java.lang.String", tuple,
-                                                new Declaration[]{}, rule ) );
-
-        // 1
-        Cheese camembert = new Cheese( "camembert" );
-        tuple.put( camembertDecl, camembert );
-        assertEquals(
-                      "I have 3 bites of camembert left",
-                      ( String ) testExtractor(
-                                                testNumber++,
-                                                "java.lang.String",
-                                                tuple,
-                                                new Declaration[]{camembertDecl},
-                                                rule ) );
-
-        // 2
-        Cheese stilton = new Cheese( "stilton" );
-        tuple.put( stiltonDecl, stilton );
-        assertEquals( "I have 3 bites of stilton left",
-                      ( String ) testExtractor( testNumber++,
-                                                "java.lang.String", tuple,
-                                                new Declaration[]{
-                                                    camembertDecl, stiltonDecl},
-                                                rule ) );
-
-        // 3
-        tuple.put( integerDecl, new Integer( camembert.getBitesLeft( ) ) );
-        assertEquals( new Integer( 3 ),
-                      testExtractor( testNumber++, "java.lang.Integer", tuple,
-                                     new Declaration[]{camembertDecl,
-                                     stiltonDecl, integerDecl}, rule ) );
-
-        // 4
-        tuple.put( integerDecl, new Integer( stilton.getBitesLeft( ) ) );
-        assertEquals( new Integer( 6 ),
-                      testExtractor( testNumber++, "java.lang.Integer", tuple,
-                                     new Declaration[]{camembertDecl,
-                                     stiltonDecl, integerDecl}, rule ) );
-
-        // 5
-        assertEquals( new Cheese( "cheddar" ),
-                      testExtractor( testNumber++,
-                                     "org.drools.smf.SMFTestFrameWork$Cheese",
-                                     tuple, new Declaration[]{camembertDecl,
-                                     stiltonDecl}, rule ) );
-
-        // 6
-        camembert.eatCheese( );
-        assertEquals( new Cheese( "mozzerella" ),
-                      testExtractor( testNumber++,
-                                     "org.drools.smf.SMFTestFrameWork$Cheese",
-                                     tuple, new Declaration[]{camembertDecl,
-                                     stiltonDecl}, rule ) );
-
-        // 7
-        //test exceptions
-        rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports(new HashSet());
-        tuple.setRule( rule );
-        try
-        {
-            testExtractor( testNumber++, "java.lang.Boolean", tuple,
-                           new Declaration[]{camembertDecl}, rule );
-            fail( "Condition should throw an exception" );
-        }
-        catch ( ExtractionException e )
-        {
-            assertEquals( rule, e.getRule( ) );
-            assertEquals( tests.get( testNumber - 1 ), e.getExpr( ) );
-        }
-
-        //8
-        //test imports
-        tuple = new MockTuple( );
-        rule = new InstrumentedRule( "Test Rule 1" );
-        rule.setImports( this.imports );
-        tuple.setRule( rule );
-        WorkingMemory workingMemory = new MockWorkingMemory( );
-        tuple.setWorkingMemory( workingMemory );
-
-        assertEquals( "1brie",
-                      testExtractor( testNumber++,
-                                     "java.lang.String",
-                                     tuple, new Declaration[]{},
-                                     rule ) );
-    }
-
-    /**
-     * private helper method to test each of the extracted extractors
-     */
-    private Object testExtractor( int testNumber,
-                                  String returnType,
-                                  Tuple tuple,
-                                  Declaration[] decls,
-                                  Rule rule ) throws Exception
-
-    {
-        ((InstrumentedRule) rule).setDeclarations(decls);
-
-        ExtractorFactory extractorFactory =
-            module.getExtractorFactory( "extractor" );
-        MockConfiguration extractorConfiguration =
-            new MockConfiguration( "test" + testNumber );
-        extractorConfiguration.setAttribute( "javaClass", returnType );
-        extractorConfiguration.setText( ( String ) tests.get( testNumber ) );
-        Extractor extractor =
-            extractorFactory.newExtractor( extractorConfiguration, rule );
-        Object fact = extractor.extractFact( tuple );
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-        if ( !cl.loadClass( returnType ).isInstance( fact ) )
-        {
-            fail( "Incorrect return type for Extractor" );
-        }
-        return fact;
-    }
-
-    /**
      * Tests each of the extracted tests from consequences.data
      */
     public void testConsequences( ) throws Exception
@@ -618,11 +453,6 @@ public abstract class SMFTestFrameWork extends TestCase
     public static boolean conditionExceptionTest( ) throws Exception
     {
         throw new Exception( "this is a condition exception" );
-    }
-
-    public static Boolean extractionExceptionTest( ) throws Exception
-    {
-        throw new Exception( "this is an extraction exception" );
     }
 
     public static void consequenceExceptionTest( ) throws Exception

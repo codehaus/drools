@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DeclarationHandler.java,v 1.5 2004-11-28 02:22:18 simon Exp $
+ * $Id: DeclarationHandler.java,v 1.6 2004-11-28 06:45:25 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,8 @@ package org.drools.io;
  *
  */
 import org.drools.rule.Declaration;
-import org.drools.rule.Extraction;
-import org.drools.rule.Rule;
 import org.drools.rule.InvalidRuleException;
+import org.drools.rule.Rule;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -65,7 +64,6 @@ class DeclarationHandler extends BaseAbstractHandler implements Handler
 
             this.validPeers = new HashSet( );
             this.validPeers.add( Declaration.class );
-            this.validPeers.add( Extraction.class );
 
             this.allowNesting = false;
         }

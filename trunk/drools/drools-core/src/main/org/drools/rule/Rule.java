@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.48 2004-11-28 02:22:18 simon Exp $
+ * $Id: Rule.java,v 1.49 2004-11-28 06:45:24 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,7 +43,6 @@ package org.drools.rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
-import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
@@ -95,9 +94,6 @@ public class Rule
 
     /** Conditions. */
     private final List conditions = new ArrayList( );
-
-    /** Extractions */
-    private final List extractions = new ArrayList( );
 
     /** Consequence. */
     private Consequence consequence;
@@ -199,7 +195,7 @@ public class Rule
      */
     public boolean isValid()
     {
-        return !(getParameterDeclarations( ).isEmpty( ) || getConditions( ).isEmpty( ) || getExtractions( ).isEmpty( )) && getConsequence( ) != null;
+        return !( getParameterDeclarations( ).isEmpty( ) || getConditions( ).isEmpty( ) ) && getConsequence( ) != null;
     }
 
     /**
@@ -330,44 +326,6 @@ public class Rule
     }
 
     /**
-     * Add a consistent <code>Extraction</code> to this rule.
-     *
-     * @param identifier
-     *            The declaration identifier.
-     * @param extractor
-     *            The extractor.
-     * @return extraction the <code>Extraction</code> to add.
-     */
-    public Extraction addExtraction(String identifier,
-                                    Extractor extractor) throws InvalidRuleException
-    {
-
-        // check extractor doesn't target a parameter
-        if ( getParameterDeclaration( identifier ) != null )
-        {
-            throw new InvalidRuleException( this );
-        }
-
-        // check identifer is not an existing targetted local declaration
-        Iterator it = this.extractions.iterator( );
-        while ( it.hasNext( ) )
-        {
-            if ( ( (Extraction) it.next( ) ).getTargetDeclaration( ).getIdentifier( ).equals( identifier ) )
-            {
-                throw new InvalidRuleException( this );
-            }
-        }
-
-        // Create the new extraction
-        Extraction extraction = new Extraction( getDeclaration( identifier ),
-                                                extractor );
-
-        this.extractions.add( extraction );
-
-        return extraction;
-    }
-
-    /**
      * Retrieve a <code>Declaration</code> by identifier.
      *
      * @param identifier
@@ -441,17 +399,6 @@ public class Rule
     }
 
     /**
-     * Retrieve the <code>Set</code> of <code>Extractions</code> for this
-     * rule.
-     *
-     * @return The <code>Set</code> of <code>Extractions</code>.
-     */
-    public List getExtractions()
-    {
-        return Collections.unmodifiableList( this.extractions );
-    }
-
-    /**
      * Set the <code>Consequence</code> that is associated with the successful
      * match of this rule.
      *
@@ -514,11 +461,6 @@ public class Rule
         buffer.append( "\n" );
 
         for ( Iterator i = this.allDeclarations.iterator( ); i.hasNext( ); )
-        {
-            buffer.append( indent ).append( i.next( ) );
-        }
-
-        for ( Iterator i = this.extractions.iterator( ); i.hasNext( ); )
         {
             buffer.append( indent ).append( i.next( ) );
         }
