@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.3 2004-11-29 11:57:49 simon Exp $
+ * $Id: WorkingMemoryEventSupport.java,v 1.4 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,6 @@ import org.drools.spi.Tuple;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -59,7 +58,7 @@ public class WorkingMemoryEventSupport
     implements
     Serializable
 {
-    private final List listeners = new ArrayList( );
+    private final List          listeners       = new ArrayList( );
     private final WorkingMemory workingMemory;
 
     public WorkingMemoryEventSupport(WorkingMemory workingMemory)
@@ -97,10 +96,9 @@ public class WorkingMemoryEventSupport
                                                              handle,
                                                              object );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size( ) - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).objectAsserted( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectAsserted( event );
         }
     }
 
@@ -116,10 +114,9 @@ public class WorkingMemoryEventSupport
                                                              handle,
                                                              object );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size() - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).objectModified( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectModified( event );
         }
     }
 
@@ -133,10 +130,9 @@ public class WorkingMemoryEventSupport
         ObjectRetractedEvent event = new ObjectRetractedEvent( this.workingMemory,
                                                                handle );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size() - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).objectRetracted( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).objectRetracted( event );
         }
     }
 
@@ -156,10 +152,9 @@ public class WorkingMemoryEventSupport
                                                                tuple,
                                                                result );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size() - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).conditionTested( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).conditionTested( event );
         }
     }
 
@@ -175,10 +170,9 @@ public class WorkingMemoryEventSupport
                                                                    rule,
                                                                    tuple );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size() - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).activationCreated( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationCreated( event );
         }
     }
 
@@ -194,10 +188,9 @@ public class WorkingMemoryEventSupport
                                                                        rule,
                                                                        tuple );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size() - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).activationCancelled( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationCancelled( event );
         }
     }
 
@@ -213,10 +206,9 @@ public class WorkingMemoryEventSupport
                                                                rule,
                                                                tuple );
 
-        Iterator iter = this.listeners.iterator( );
-        while ( iter.hasNext( ) )
+        for ( int i = this.listeners.size() - 1; i >= 0; i-- )
         {
-            ((WorkingMemoryEventListener) iter.next( )).activationFired( event );
+            ( ( WorkingMemoryEventListener ) this.listeners.get( i ) ).activationFired( event );
         }
     }
 }

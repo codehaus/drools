@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.33 2004-11-29 12:14:44 simon Exp $
+ * $Id: Expr.java,v 1.34 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -195,5 +195,25 @@ public class Expr
     protected Rule getRule()
     {
         return this.rule;
+    }
+
+    public int hashCode()
+    {
+        return this.expr.hashCode();
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object instanceof Expr )
+        {
+            return this.expr.equals( ( ( Expr ) object ).expr );
+        }
+
+        return false;
     }
 }
