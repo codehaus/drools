@@ -1,91 +1,13 @@
 
 <project default="drools:build" xmlns:j="jelly:core">
 
-    <!-- pre goals ************************************************************************************************* -->
-
-    <postGoal name="dist:prepare-bin-filesystem">
-
-        <!-- copy drools bin stuff to bin-assembly/bin -->
-        <mkdir dir="${maven.dist.bin.assembly.dir}/bin"/>
-        <copy todir="${maven.dist.bin.assembly.dir}/bin">
-            <fileset dir="${maven.src.dir}/bin" includes="*.*"/>
-        </copy>
-
-        <!-- copy jboss stuff to bin-assembly/etc -->
-        <mkdir dir="${maven.dist.bin.assembly.dir}/etc"/>
-        <copy file="${maven.src.dir}/etc/drools-jsr94-ds.xml" todir="${maven.dist.bin.assembly.dir}/etc"/>
-        <copy file="${maven.build.dir}/${maven.final.name}.rar" todir="${maven.dist.bin.assembly.dir}/etc"/>
-
-        <!-- copy drools jars to bin-assembly lib -->
-        <mkdir dir="${maven.dist.bin.assembly.dir}/lib"/>
-        <copy todir="${maven.dist.bin.assembly.dir}/lib" flatten="true">
-            <fileset dir="${maven.build.dir}/lib">
-                <j:forEach var="dep" items="${pom.dependencies}">
-                    <j:if test="${dep.getProperty('bin_dist')=='true'}">
-                        <include name="${dep.artifact}"/>
-                    </j:if>
-                </j:forEach>
-            </fileset>
-        </copy>
-
-        <!-- move drools jar to bin-assembly lib -->
-        <move file="${maven.dist.bin.assembly.dir}/${maven.final.name}.jar" todir="${maven.dist.bin.assembly.dir}/lib"/>
-    </postGoal>
-
-    <!--
-        dist:prepare-src-filesystem
-        copy additional stuff to src assembly dir
-    -->
-    <postGoal name="dist:prepare-src-filesystem">
-
-        <!-- copy sun jars to src-assembly common-lib -->
-        <mkdir dir="${maven.dist.src.assembly.dir}/common-lib"/>
-        <copy todir="${maven.dist.src.assembly.dir}/common-lib" flatten="true">
-            <fileset dir="${basedir}/common-lib">
-                <include name="*.jar"/>
-            </fileset>
-        </copy>
-    </postGoal>
-
-    <!-- goals ***************************************************************************************************** -->
-
-    <!--
-        ant:generate-build
-        ant build not supported
-    -->
-    <goal name="ant:generate-build">
-        <echo>ant build not supported</echo>
-    </goal>
-
     <!--
         drools:build
         build all of drools
     -->
-    <goal name="drools:build" prereqs="jar:jar, drools:rar, drools:war"
+
+    <goal name="drools:build" prereqs="jar:jar, drools:rar">
         description="build all of drools">
-    </goal>
-
-    <!--
-        drools:deploy-catalina
-        deploy drools to catalina
-    -->
-    <goal name="drools:deploy-catalina" prereqs="drools:war"
-        description="deploy drools to catalina">
-
-        <delete dir="${maven.catalina.home}/webapps/drools"/>
-        <copy file="${maven.build.dir}/${maven.final.name}-examples.war" tofile="${maven.catalina.home}/webapps/drools.war"/>
-    </goal>
-
-    <!--
-        drools:deploy-jboss
-        deploy drools to jboss
-    -->
-    <goal name="drools:deploy-jboss" prereqs="drools:rar, drools:war"
-        description="deploy drools to jboss">
-
-        <copy file="${maven.build.dir}/${maven.final.name}.rar" todir="${maven.jboss.home}/server/default/deploy"/>
-        <copy file="${maven.src.dir}/etc/drools-jsr94-ds.xml" todir="${maven.jboss.home}/server/default/deploy"/>
-        <copy file="${maven.build.dir}/${maven.final.name}-examples.war" tofile="${maven.jboss.home}/server/default/deploy/drools.war"/>
     </goal>
 
     <!--
@@ -99,43 +21,9 @@
             <fileset dir="${maven.build.dir}">
                 <include name="${maven.final.name}.jar"/>
             </fileset>
-            <fileset dir="${maven.build.dir}/lib">
-                <j:forEach var="dep" items="${pom.dependencies}">
-                    <j:if test="${dep.getProperty('rar_bundle')=='true'}">
-                        <include name="${dep.artifact}"/>
-                    </j:if>
-                </j:forEach>
-            </fileset>
             <metainf dir="${maven.src.dir}/etc" includes="ra.xml"/>
         </jar>
 
-    </goal>
-
-    <!--
-        drools:war
-        build the war file that demonstrates drools through JSR94
-    -->
-    <goal name="drools:war" prereqs="jar:jar"
-        description="build the war file that demonstrates drools through JSR94">
-
-        <war destfile="${maven.build.dir}/${maven.final.name}-examples.war"
-            webxml="${maven.src.dir}/webapp/web-inf/web.xml">
-            <fileset dir="${maven.src.dir}/webapp">
-                <include name="**/*.*"/>
-                <exclude name="**/web.xml"/>
-            </fileset>
-            <lib dir="${maven.build.dir}/lib">
-                <j:forEach var="dep" items="${pom.dependencies}">
-                    <j:if test="${dep.getProperty('war_bundle')=='true'}">
-                        <include name="${dep.artifact}"/>
-                    </j:if>
-                </j:forEach>
-            </lib>
-            <lib dir="${maven.build.dir}">
-                <include name="${maven.final.name}-examples.jar"/>
-                <include name="${maven.final.name}.jar"/>
-            </lib>
-        </war>
     </goal>
 
 </project>
