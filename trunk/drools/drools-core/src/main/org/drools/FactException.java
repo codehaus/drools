@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: FactException.java,v 1.6 2004-11-07 22:39:43 bob Exp $
+ * $Id: FactException.java,v 1.7 2004-11-19 02:12:12 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,7 +48,7 @@ package org.drools;
 public class FactException extends DroolsException
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -62,7 +62,8 @@ public class FactException extends DroolsException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause.
+     * @param rootCause
+     *            The root cause.
      */
     public FactException(Throwable rootCause)
     {

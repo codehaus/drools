@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.29 2004-11-16 09:17:46 simon Exp $
+ * $Id: JoinNode.java,v 1.30 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,68 +40,74 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.rule.Declaration;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.drools.AssertionException;
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.RetractionException;
+import org.drools.rule.Declaration;
+
 /**
  * A two-input Rete-OO <i>join node </i>.
- *
+ * 
  * @see org.drools.reteoo.TupleSource
  * @see org.drools.reteoo.TupleSink
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class JoinNode extends TupleSource
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The left input <code>TupleSource</code>. */
-    private final TupleSource   leftInput;
+    private final TupleSource leftInput;
 
     /** The right input <code>TupleSource</code>. */
-    private final TupleSource   rightInput;
+    private final TupleSource rightInput;
 
     /**
      * A <code>Set</code> of <code>Declarations</code> common to both left
      * and right input sources.
      */
-    private final Set           commonDeclarations;
+    private final Set commonDeclarations;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param leftInput The left input <code>TupleSource</code>.
-     * @param rightInput The right input <code>TupleSource</code>.
+     * 
+     * @param leftInput
+     *            The left input <code>TupleSource</code>.
+     * @param rightInput
+     *            The right input <code>TupleSource</code>.
      */
-    public JoinNode(TupleSource leftInput, TupleSource rightInput)
+    public JoinNode(TupleSource leftInput,
+                    TupleSource rightInput)
     {
         this.leftInput = leftInput;
         this.rightInput = rightInput;
         this.commonDeclarations = determineCommonDeclarations( );
 
-        leftInput.setTupleSink( new JoinNodeInput( this, JoinNodeInput.LEFT ) );
-        rightInput.setTupleSink( new JoinNodeInput( this, JoinNodeInput.RIGHT ) );
+        leftInput.setTupleSink( new JoinNodeInput( this,
+                                                   JoinNodeInput.LEFT ) );
+        rightInput.setTupleSink( new JoinNodeInput( this,
+                                                    JoinNodeInput.RIGHT ) );
     }
 
     public String toString()
     {
-        return "[JoinNode: common=" + this.commonDeclarations + "; decls="
-               + getTupleDeclarations( ) + "]";
+        return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + getTupleDeclarations( ) + "]";
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
@@ -120,7 +126,7 @@ class JoinNode extends TupleSource
 
         while ( declIter.hasNext( ) )
         {
-            eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = (Declaration) declIter.next( );
 
             if ( leftDecls.contains( eachDecl ) )
             {
@@ -132,13 +138,13 @@ class JoinNode extends TupleSource
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.reteoo.JoinNode
+    // org.drools.reteoo.JoinNode
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Retrieve the set of common <code>Declarations</code> across the two
      * input <code>TupleSources</code>.
-     *
+     * 
      * @return The <code>Set</code> of common <code>Declarations</code>.
      */
     public Set getCommonDeclarations()
@@ -148,82 +154,171 @@ class JoinNode extends TupleSource
 
     /**
      * Propagate joined asserted tuples.
-     *
-     * @param joinedTuples The tuples to propagate.
-     * @param workingMemory The working memory session.
-     *
-     * @throws AssertionException If an errors occurs while asserting.
+     * 
+     * @param joinedTuples
+     *            The tuples to propagate.
+     * @param workingMemory
+     *            The working memory session.
+     * 
+     * @throws AssertionException
+     *             If an errors occurs while asserting.
      */
-    void propagateAssertTuples(Set joinedTuples, WorkingMemoryImpl workingMemory) throws AssertionException
+    void propagateAssertTuples(Set joinedTuples,
+                               WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Iterator tupleIter = joinedTuples.iterator( );
         while ( tupleIter.hasNext( ) )
         {
-            propagateAssertTuple( ( ReteTuple ) tupleIter.next( ), workingMemory );
+            propagateAssertTuple( (ReteTuple) tupleIter.next( ),
+                                  workingMemory );
         }
     }
 
     /**
      * Assert a new <code>Tuple</code> from the left input.
-     *
-     * @param tuple The <code>Tuple</code> being asserted.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws AssertionException If an error occurs while asserting.
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> being asserted.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws AssertionException
+     *             If an error occurs while asserting.
      */
-    void assertLeftTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
+    void assertLeftTuple(ReteTuple tuple,
+                         WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Set joinedTuples = workingMemory.getJoinMemory( this ).addLeftTuple( tuple );
 
         if ( !joinedTuples.isEmpty( ) )
         {
-            propagateAssertTuples( joinedTuples, workingMemory );
+            propagateAssertTuples( joinedTuples,
+                                   workingMemory );
         }
     }
 
     /**
      * Assert a new <code>Tuple</code> from the right input.
-     *
-     * @param tuple The <code>Tuple</code> being asserted.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws AssertionException If an error occurs while asserting.
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> being asserted.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws AssertionException
+     *             If an error occurs while asserting.
      */
-    void assertRightTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
+    void assertRightTuple(ReteTuple tuple,
+                          WorkingMemoryImpl workingMemory) throws AssertionException
     {
         Set joinedTuples = workingMemory.getJoinMemory( this ).addRightTuple( tuple );
 
         if ( !joinedTuples.isEmpty( ) )
         {
-            propagateAssertTuples( joinedTuples, workingMemory );
+            propagateAssertTuples( joinedTuples,
+                                   workingMemory );
         }
     }
 
     /**
      * Retract tuples.
-     *
-     * @param key The tuple key.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws RetractionException If an error occurs while retracting.
+     * 
+     * @param key
+     *            The tuple key.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws RetractionException
+     *             If an error occurs while retracting.
      */
-    public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException
+    public void retractTuples(TupleKey key,
+                              WorkingMemoryImpl workingMemory) throws RetractionException
     {
         workingMemory.getJoinMemory( this ).retractTuples( key );
 
-        propagateRetractTuples( key, workingMemory );
+        propagateRetractTuples( key,
+                                workingMemory );
     }
 
+    /**
+     * Modify tuples from the left input.
+     *
+     * @param trigger The root fact object handle.
+     * @param newTuples Modification replacement tuples.
+     * @param workingMemory The working memory session.
+     *
+     * @throws FactException If an error occurs while modifying.
+     */
+    void modifyLeftTuples(FactHandle trigger,
+                          TupleSet newTuples,
+                          WorkingMemoryImpl workingMemory) throws FactException
+    {
+       
+        JoinMemory memory = workingMemory.getJoinMemory( this );
+        
+        TupleSet newJoined = memory.modifyLeftTuples( trigger,workingMemory );
+        
+        if (!newJoined.isEmpty())
+        {
+            //newJoined is not empty then we need to propogated modified tuples
+            propagateModifyTuples( trigger, newJoined, workingMemory );
+        } 
+        else 
+        {
+            //newJoined is empty, must be a new branch assert as normal
+            Iterator tupleIter = newTuples.iterator( );
+            while ( tupleIter.hasNext( ) )
+            {
+                assertLeftTuple( (ReteTuple) tupleIter.next( ),
+                                  workingMemory );
+            }            
+        }
+    }
+
+    /**
+     * Modify tuples from the right input.
+     *
+     * @param trigger The root fact object handle.
+     * @param newTuples Modification replacement tuples.
+     * @param workingMemory The working memory session.
+     *
+     * @throws FactException If an error occurs while modifying.
+     */
+    void modifyRightTuples(FactHandle trigger,
+                           TupleSet newTuples,
+                           WorkingMemoryImpl workingMemory) throws FactException
+    {
+        JoinMemory memory = workingMemory.getJoinMemory( this );
+
+        TupleSet newJoined = memory.modifyRightTuples( trigger, workingMemory );       
+
+        if (!newJoined.isEmpty())
+        {
+            //newJoined is not empty then we need to propogated modified tuples            
+            propagateModifyTuples( trigger, newJoined, workingMemory );
+        } 
+        else 
+        {
+            //newJoined is empty, must be a new branch assert as normal            
+            Iterator tupleIter = newTuples.iterator( );
+            while ( tupleIter.hasNext( ) )
+            {
+                assertRightTuple( (ReteTuple) tupleIter.next( ),
+                                  workingMemory );
+            }            
+        }
+    }    
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.reteoo.TupleSource
+    // org.drools.reteoo.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Retrieve the <code>Set</code> of <code>Declaration</code>s. in the
      * propagated <code>Tuples</code>.
-     *
+     * 
      * @see Declaration
-     *
+     * 
      * @return The <code>Set</code> of <code>Declarations</code> in progated
      *         <code>Tuples</code>.
      */

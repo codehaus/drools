@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Dumper.java,v 1.7 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: Dumper.java,v 1.8 2004-11-19 02:13:46 mproctor Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -49,7 +49,7 @@ import org.drools.RuleBase;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Dumper.java,v 1.7 2004-09-17 00:14:10 mproctor Exp $
+ * @version $Id: Dumper.java,v 1.8 2004-11-19 02:13:46 mproctor Exp $
  */
 public class Dumper
 {
@@ -57,17 +57,20 @@ public class Dumper
 
     public Dumper(RuleBase ruleBase)
     {
-        this.ruleBase = ( RuleBaseImpl ) ruleBase;
+        this.ruleBase = (RuleBaseImpl) ruleBase;
     }
 
     public void dumpRete(PrintStream out)
     {
-        dumpRete( out, "  " );
+        dumpRete( out,
+                  "  " );
     }
 
-    public void dumpRete(PrintStream out, String indent)
+    public void dumpRete(PrintStream out,
+                         String indent)
     {
-        new ReteooPrintDumpVisitor( out, indent ).visit( ruleBase );
+        new ReteooPrintDumpVisitor( out,
+                                    indent ).visit( ruleBase );
     }
 
     /**

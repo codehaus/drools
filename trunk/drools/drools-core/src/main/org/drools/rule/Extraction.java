@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Extraction.java,v 1.14 2004-11-13 01:43:07 simon Exp $
+ * $Id: Extraction.java,v 1.15 2004-11-19 02:14:17 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,50 +47,55 @@ import java.io.Serializable;
 /**
  * A <code>Condition</code> representing a <i>consistent assignment </i> as
  * defined by the Rete-OO algorithm.
- *
+ * 
  * The assignment occurs through the process of extracting a new fact from
  * existing facts.
- *
+ * 
  * @see Extractor
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class Extraction implements Serializable
+public class Extraction
+    implements
+    Serializable
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The target of the assignment. */
-    private final Declaration   targetDeclaration;
+    private final Declaration targetDeclaration;
 
     /** Extractor to acquire value for assignment. */
     // TODO: Make this final. This will require rejigging the RuleBuilder stuff.
-    private Extractor           extractor;
+    private Extractor extractor;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param targetDeclaration The target of this assignment.
-     * @param extractor Value generator for the assignment.
+     * 
+     * @param targetDeclaration
+     *            The target of this assignment.
+     * @param extractor
+     *            Value generator for the assignment.
      */
-    Extraction(Declaration targetDeclaration, Extractor extractor)
+    Extraction(Declaration targetDeclaration,
+               Extractor extractor)
     {
         this.targetDeclaration = targetDeclaration;
         this.extractor = extractor;
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the <code>Declaration</code> for the target of the assignment.
-     *
+     * 
      * @return The target's <code>Declaration</code>
      */
     public Declaration getTargetDeclaration()
@@ -101,7 +106,7 @@ public class Extraction implements Serializable
     /**
      * Retrieve the <code>Extractor</code> responsible for generating the
      * assignment value.
-     *
+     * 
      * @return The <code>Extractor</code>.
      */
     public Extractor getExtractor()
@@ -110,19 +115,19 @@ public class Extraction implements Serializable
     }
 
     // TODO: Get rid of this
-    public void setExtractor( Extractor extractor )
+    public void setExtractor(Extractor extractor)
     {
         this.extractor = extractor;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.spi.Condition
+    // org.drools.spi.Condition
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Retrieve the array of <code>Declaration</code> s required by this
      * condition to perform its duties.
-     *
+     * 
      * @return The array of <code>Declarations</code> expected on incoming
      *         <code>Tuple</code>s.
      */
@@ -145,7 +150,7 @@ public class Extraction implements Serializable
      * declarations = extractor.getRequiredTupleMembers(); for (int i = 0; i <
      * declarations.length; i++) { buffer.append(declarations[i].dump(indent + "
      * ")); }
-     *
+     * 
      * return buffer.toString(); }
      */
 

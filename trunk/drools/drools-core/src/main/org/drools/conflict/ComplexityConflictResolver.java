@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: ComplexityConflictResolver.java,v 1.9 2004-11-13 01:43:07 simon Exp $
+ * $Id: ComplexityConflictResolver.java,v 1.10 2004-11-19 02:12:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,31 +47,32 @@ import org.drools.spi.ConflictResolver;
 /**
  * <code>ConflictResolver</code> that uses the numConditions of rules to
  * resolve conflict.
- *
+ * 
  * @see #getInstance
  * @see Rule#getConditionSize
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- *
- * @version $Id: ComplexityConflictResolver.java,v 1.9 2004-11-13 01:43:07 simon Exp $
+ * 
+ * @version $Id: ComplexityConflictResolver.java,v 1.9 2004/11/13 01:43:07 simon
+ *          Exp $
  */
 public class ComplexityConflictResolver extends AbstractConflictResolver
 {
     // ----------------------------------------------------------------------
-    //     Class members
+    // Class members
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
     private static final ComplexityConflictResolver INSTANCE = new ComplexityConflictResolver( );
 
     // ----------------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ----------------------------------------------------------------------
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
      */
     public static ConflictResolver getInstance()
@@ -80,7 +81,7 @@ public class ComplexityConflictResolver extends AbstractConflictResolver
     }
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
@@ -96,7 +97,8 @@ public class ComplexityConflictResolver extends AbstractConflictResolver
     /**
      * @see ConflictResolver
      */
-    public int compare(Activation lhs, Activation rhs)
+    public int compare(Activation lhs,
+                       Activation rhs)
     {
         return rhs.getRule( ).getConditions( ).size( ) - lhs.getRule( ).getConditions( ).size( );
     }

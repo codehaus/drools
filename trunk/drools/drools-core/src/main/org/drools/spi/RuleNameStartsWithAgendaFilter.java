@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameStartsWithAgendaFilter.java,v 1.1 2004-11-08 16:22:04 simon Exp $
+ * $Id: RuleNameStartsWithAgendaFilter.java,v 1.2 2004-11-19 02:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,19 +42,22 @@ package org.drools.spi;
 
 /**
  * Filters activations based on a specified rule name prefix.
- * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
+ * 
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-public class RuleNameStartsWithAgendaFilter implements AgendaFilter
+public class RuleNameStartsWithAgendaFilter
+    implements
+    AgendaFilter
 {
     private final String prefix;
 
-    public RuleNameStartsWithAgendaFilter( String prefix )
+    public RuleNameStartsWithAgendaFilter(String prefix)
     {
         this.prefix = prefix;
     }
 
-    public boolean accept( Activation activation )
+    public boolean accept(Activation activation)
     {
-        return activation.getRule().getName().startsWith( this.prefix );
+        return activation.getRule( ).getName( ).startsWith( this.prefix );
     }
 }

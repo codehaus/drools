@@ -20,25 +20,31 @@ import org.drools.util.ResettableIterator;
 
 /**
  * Provides an implementation of an empty map iterator.
- *
+ * 
  * @since Commons Collections 3.1
- * @version $Revision: 1.1 $ $Date: 2004-11-07 12:10:18 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public class EmptyMapIterator extends AbstractEmptyIterator implements MapIterator, ResettableIterator {
+public class EmptyMapIterator extends AbstractEmptyIterator
+    implements
+    MapIterator,
+    ResettableIterator
+{
 
     /**
      * Singleton instance of the iterator.
+     * 
      * @since Commons Collections 3.1
      */
-    public static final MapIterator INSTANCE = new EmptyMapIterator();
+    public static final MapIterator INSTANCE = new EmptyMapIterator( );
 
     /**
      * Constructor.
      */
-    protected EmptyMapIterator() {
-        super();
+    protected EmptyMapIterator()
+    {
+        super( );
     }
 
 }

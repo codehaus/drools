@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: FixedDuration.java,v 1.3 2004-09-17 00:14:11 mproctor Exp $
+ * $Id: FixedDuration.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,19 +51,21 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: FixedDuration.java,v 1.3 2004-09-17 00:14:11 mproctor Exp $
+ * @version $Id: FixedDuration.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
  */
-public class FixedDuration implements Duration
+public class FixedDuration
+    implements
+    Duration
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Duration, in seconds. */
     private long duration;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -77,7 +79,8 @@ public class FixedDuration implements Duration
     /**
      * Construct.
      * 
-     * @param seconds Number of seconds.
+     * @param seconds
+     *            Number of seconds.
      */
     public FixedDuration(long seconds)
     {
@@ -85,13 +88,14 @@ public class FixedDuration implements Duration
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Add seconds.
      * 
-     * @param seconds Number of seconds.
+     * @param seconds
+     *            Number of seconds.
      */
     public void addSeconds(long seconds)
     {
@@ -101,41 +105,45 @@ public class FixedDuration implements Duration
     /**
      * Add minutes.
      * 
-     * @param minutes Number of minutes.
+     * @param minutes
+     *            Number of minutes.
      */
     public void addMinutes(long minutes)
     {
-        this.duration += ( minutes * 60 );
+        this.duration += (minutes * 60);
     }
 
     /**
      * Add hours.
      * 
-     * @param hours Number of hours.
+     * @param hours
+     *            Number of hours.
      */
     public void addHours(long hours)
     {
-        this.duration += ( hours * 60 * 60 );
+        this.duration += (hours * 60 * 60);
     }
 
     /**
      * Add days.
      * 
-     * @param days Number of days.
+     * @param days
+     *            Number of days.
      */
     public void addDays(long days)
     {
-        this.duration += ( days * 60 * 60 * 24 );
+        this.duration += (days * 60 * 60 * 24);
     }
 
     /**
      * Add weeks.
      * 
-     * @param weeks Number of weeks.
+     * @param weeks
+     *            Number of weeks.
      */
     public void addWeeks(long weeks)
     {
-        this.duration += ( weeks * 60 * 60 * 24 * 7 );
+        this.duration += (weeks * 60 * 60 * 24 * 7);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

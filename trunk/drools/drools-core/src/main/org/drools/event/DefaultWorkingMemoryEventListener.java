@@ -1,7 +1,8 @@
 package org.drools.event;
 
-public class DefaultWorkingMemoryEventListener implements
-                                              WorkingMemoryEventListener
+public class DefaultWorkingMemoryEventListener
+    implements
+    WorkingMemoryEventListener
 {
     public DefaultWorkingMemoryEventListener()
     {

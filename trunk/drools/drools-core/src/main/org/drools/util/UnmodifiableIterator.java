@@ -21,58 +21,72 @@ import org.drools.util.Unmodifiable;
 
 /**
  * Decorates an iterator such that it cannot be modified.
- *
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-15 23:06:07 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public final class UnmodifiableIterator implements Iterator, Unmodifiable {
+public final class UnmodifiableIterator
+    implements
+    Iterator,
+    Unmodifiable
+{
 
     /** The iterator being decorated */
     private Iterator iterator;
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Decorates the specified iterator such that it cannot be modified.
      * <p>
      * If the iterator is already unmodifiable it is returned directly.
-     *
-     * @param iterator  the iterator to decorate
-     * @throws IllegalArgumentException if the iterator is null
+     * 
+     * @param iterator
+     *            the iterator to decorate
+     * @throws IllegalArgumentException
+     *             if the iterator is null
      */
-    public static Iterator decorate(Iterator iterator) {
-        if (iterator == null) {
-            throw new IllegalArgumentException("Iterator must not be null");
+    public static Iterator decorate(Iterator iterator)
+    {
+        if ( iterator == null )
+        {
+            throw new IllegalArgumentException( "Iterator must not be null" );
         }
-        if (iterator instanceof Unmodifiable) {
+        if ( iterator instanceof Unmodifiable )
+        {
             return iterator;
         }
-        return new UnmodifiableIterator(iterator);
+        return new UnmodifiableIterator( iterator );
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Constructor.
-     *
-     * @param iterator  the iterator to decorate
+     * 
+     * @param iterator
+     *            the iterator to decorate
      */
-    private UnmodifiableIterator(Iterator iterator) {
-        super();
+    private UnmodifiableIterator(Iterator iterator)
+    {
+        super( );
         this.iterator = iterator;
     }
 
-    //-----------------------------------------------------------------------
-    public boolean hasNext() {
-        return iterator.hasNext();
+    // -----------------------------------------------------------------------
+    public boolean hasNext()
+    {
+        return iterator.hasNext( );
     }
 
-    public Object next() {
-        return iterator.next();
+    public Object next()
+    {
+        return iterator.next( );
     }
 
-    public void remove() {
-        throw new UnsupportedOperationException("remove() is not supported");
+    public void remove()
+    {
+        throw new UnsupportedOperationException( "remove() is not supported" );
     }
 
 }

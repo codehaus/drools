@@ -1,7 +1,8 @@
 package org.drools.event;
 
-public class DebugWorkingMemoryEventListener implements
-                                            WorkingMemoryEventListener
+public class DebugWorkingMemoryEventListener
+    implements
+    WorkingMemoryEventListener
 {
     public DebugWorkingMemoryEventListener()
     {

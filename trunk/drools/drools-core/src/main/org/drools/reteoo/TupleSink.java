@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSink.java,v 1.20 2004-11-09 09:03:35 simon Exp $
+ * $Id: TupleSink.java,v 1.21 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,8 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
+import org.drools.FactException;
+import org.drools.FactHandle;
 import org.drools.RetractionException;
 
 import java.io.Serializable;
@@ -48,30 +50,57 @@ import java.io.Serializable;
 /**
  * Receiver of propagated <code>ReteTuple</code> s from a
  * <code>TupleSource</code>.
- *
+ * 
  * @see TupleSource
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-interface TupleSink extends Serializable
+interface TupleSink
+    extends
+    Serializable
 {
     /**
      * Assert a new <code>Tuple</code>.
-     *
-     * @param tuple The <code>Tuple</code> being asserted.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws AssertionException If an error occurs while asserting.
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> being asserted.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws AssertionException
+     *             If an error occurs while asserting.
      */
-    void assertTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException;
+    void assertTuple(ReteTuple tuple,
+                     WorkingMemoryImpl workingMemory) throws AssertionException;
 
     /**
      * Retract tuples.
-     *
-     * @param key The tuple key.
-     * @param workingMemory The working memory seesion.
-     *
-     * @throws RetractionException If an error occurs while retracting.
+     * 
+     * @param key
+     *            The tuple key.
+     * @param workingMemory
+     *            The working memory seesion.
+     * 
+     * @throws RetractionException
+     *             If an error occurs while retracting.
      */
-    void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory) throws RetractionException;
+    void retractTuples(TupleKey key,
+                       WorkingMemoryImpl workingMemory) throws RetractionException;
+
+    /**
+     * Modify tuples.
+     * 
+     * @param trigger
+     *            The root fact object handle.
+     * @param newTuples
+     *            Modification replacement tuples.
+     * @param workingMemory
+     *            The working memory session.
+     * 
+     * @throws FactException
+     *             If an error occurs while modifying.
+     */
+    void modifyTuples(FactHandle trigger,
+                      TupleSet newTuples,
+                      WorkingMemoryImpl workingMemory) throws FactException;
 }

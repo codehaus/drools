@@ -28,100 +28,127 @@ import org.drools.util.UnmodifiableListIterator;
  * Decorates another <code>List</code> to ensure it can't be altered.
  * <p>
  * This class is Serializable from Commons Collections 3.1.
- *
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-15 23:06:07 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public final class UnmodifiableList
-        extends AbstractSerializableListDecorator
-        implements Unmodifiable {
+public final class UnmodifiableList extends AbstractSerializableListDecorator
+    implements
+    Unmodifiable
+{
 
     /** Serialization version */
     private static final long serialVersionUID = 6595182819922443652L;
 
     /**
      * Factory method to create an unmodifiable list.
-     *
-     * @param list  the list to decorate, must not be null
-     * @throws IllegalArgumentException if list is null
+     * 
+     * @param list
+     *            the list to decorate, must not be null
+     * @throws IllegalArgumentException
+     *             if list is null
      */
-    public static List decorate(List list) {
-        if (list instanceof Unmodifiable) {
+    public static List decorate(List list)
+    {
+        if ( list instanceof Unmodifiable )
+        {
             return list;
         }
-        return new UnmodifiableList(list);
+        return new UnmodifiableList( list );
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Constructor that wraps (not copies).
-     *
-     * @param list  the list to decorate, must not be null
-     * @throws IllegalArgumentException if list is null
+     * 
+     * @param list
+     *            the list to decorate, must not be null
+     * @throws IllegalArgumentException
+     *             if list is null
      */
-    private UnmodifiableList(List list) {
-        super(list);
+    private UnmodifiableList(List list)
+    {
+        super( list );
     }
 
-    //-----------------------------------------------------------------------
-    public Iterator iterator() {
-        return UnmodifiableIterator.decorate(getCollection().iterator());
+    // -----------------------------------------------------------------------
+    public Iterator iterator()
+    {
+        return UnmodifiableIterator.decorate( getCollection( ).iterator( ) );
     }
 
-    public boolean add(Object object) {
-        throw new UnsupportedOperationException();
+    public boolean add(Object object)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public boolean addAll(Collection coll) {
-        throw new UnsupportedOperationException();
+    public boolean addAll(Collection coll)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public void clear() {
-        throw new UnsupportedOperationException();
+    public void clear()
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public boolean remove(Object object) {
-        throw new UnsupportedOperationException();
+    public boolean remove(Object object)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public boolean removeAll(Collection coll) {
-        throw new UnsupportedOperationException();
+    public boolean removeAll(Collection coll)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public boolean retainAll(Collection coll) {
-        throw new UnsupportedOperationException();
+    public boolean retainAll(Collection coll)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    //-----------------------------------------------------------------------
-    public ListIterator listIterator() {
-        return UnmodifiableListIterator.decorate(getList().listIterator());
+    // -----------------------------------------------------------------------
+    public ListIterator listIterator()
+    {
+        return UnmodifiableListIterator.decorate( getList( ).listIterator( ) );
     }
 
-    public ListIterator listIterator(int index) {
-        return UnmodifiableListIterator.decorate(getList().listIterator(index));
+    public ListIterator listIterator(int index)
+    {
+        return UnmodifiableListIterator.decorate( getList( ).listIterator( index ) );
     }
 
-    public void add(int index, Object object) {
-        throw new UnsupportedOperationException();
+    public void add(int index,
+                    Object object)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public boolean addAll(int index, Collection coll) {
-        throw new UnsupportedOperationException();
+    public boolean addAll(int index,
+                          Collection coll)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public Object remove(int index) {
-        throw new UnsupportedOperationException();
+    public Object remove(int index)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public Object set(int index, Object object) {
-        throw new UnsupportedOperationException();
+    public Object set(int index,
+                      Object object)
+    {
+        throw new UnsupportedOperationException( );
     }
 
-    public List subList(int fromIndex, int toIndex) {
-        List sub = getList().subList(fromIndex, toIndex);
-        return new UnmodifiableList(sub);
+    public List subList(int fromIndex,
+                        int toIndex)
+    {
+        List sub = getList( ).subList( fromIndex,
+                                       toIndex );
+        return new UnmodifiableList( sub );
     }
 
 }

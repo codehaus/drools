@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.31 2004-10-22 15:20:50 simon Exp $
+ * $Id: RuleBase.java,v 1.32 2004-11-19 02:12:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,47 +47,49 @@ import java.io.Serializable;
 
 /**
  * Active collection of <code>Rule</code>s.
- *
+ * 
  * <p>
  * From a <code>RuleBase</code> many <code>WorkingMemory</code> rule
  * sessions may be instantiated. Additionally, it may be inspected to determine
  * which <code>RuleSet</code> s it contains.
  * </p>
- *
+ * 
  * @see WorkingMemory
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleBase.java,v 1.31 2004-10-22 15:20:50 simon Exp $
+ * 
+ * @version $Id: RuleBase.java,v 1.32 2004-11-19 02:12:12 mproctor Exp $
  */
-public interface RuleBase extends Serializable
+public interface RuleBase
+    extends
+    Serializable
 {
     /**
      * Create a new <code>WorkingMemory</code> session for this
      * <code>RuleBase</code>.
-     *
+     * 
      * <p>
      * The created <code>WorkingMemory</code> uses the default conflict
      * resolution strategy.
      * </p>
-     *
+     * 
      * @see WorkingMemory
      * @see org.drools.conflict.DefaultConflictResolver
-     *
+     * 
      * @return A newly initialized <code>WorkingMemory</code>.
      */
     WorkingMemory newWorkingMemory();
 
     /**
      * Retrieve the <code>ConflictResolver</code>.
-     *
+     * 
      * @return The conflict resolution strategy.
      */
     ConflictResolver getConflictResolver();
 
     /**
      * Retrieve the <code>FactHandleFactor</code>.
-     *
+     * 
      * @return The fact handle factory.
      */
     FactHandleFactory getFactHandleFactory();

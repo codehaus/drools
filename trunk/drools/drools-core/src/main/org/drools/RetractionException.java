@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RetractionException.java,v 1.8 2004-11-07 12:10:17 mproctor Exp $
+ * $Id: RetractionException.java,v 1.9 2004-11-19 02:12:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,15 +43,15 @@ package org.drools;
 /**
  * Indicates an error while retracting a <i>root fact object </i> from a
  * <code>WorkingMemory</code>.
- *
+ * 
  * @see WorkingMemory#retractObject
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 public class RetractionException extends FactException
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -64,8 +64,9 @@ public class RetractionException extends FactException
 
     /**
      * Construct with a root cause.
-     *
-     * @param rootCause The root cause of this exception.
+     * 
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public RetractionException(Throwable rootCause)
     {

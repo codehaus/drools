@@ -21,17 +21,20 @@ import java.util.Iterator;
  * Defines an iterator that can be reset back to an initial state.
  * <p>
  * This interface allows an iterator to be repeatedly reused.
- *
+ * 
  * @since Commons Collections 3.0
- * @version $Revision: 1.1 $ $Date: 2004-11-07 12:10:18 $
- *
+ * @version $Revision: 1.2 $ $Date: 2004-11-19 02:15:18 $
+ * 
  * @author Stephen Colebourne
  */
-public interface ResettableIterator extends Iterator {
+public interface ResettableIterator
+    extends
+    Iterator
+{
 
     /**
-     * Resets the iterator back to the position at which the iterator
-     * was created.
+     * Resets the iterator back to the position at which the iterator was
+     * created.
      */
     public void reset();
 

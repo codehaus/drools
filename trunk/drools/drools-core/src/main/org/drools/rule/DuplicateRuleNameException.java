@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: DuplicateRuleNameException.java,v 1.3 2004-09-17 00:14:11 mproctor Exp $
+ * $Id: DuplicateRuleNameException.java,v 1.4 2004-11-19 02:14:17 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -52,29 +52,31 @@ package org.drools.rule;
 public class DuplicateRuleNameException extends RuleConstructionException
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The rule-set. */
     private RuleSet ruleSet;
 
     /** The member rule. */
-    private Rule    originalRule;
+    private Rule originalRule;
 
     /** The conflicting rule. */
-    private Rule    conflictingRule;
+    private Rule conflictingRule;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      * 
-     * @param ruleSet The <code>RuleSet</code>.
-     * @param originalRule The <code>Rule</code> already in the
-     *        <code>RuleSet</code>.
-     * @param conflictingRule The new, conflicting <code>Rule</code>.
+     * @param ruleSet
+     *            The <code>RuleSet</code>.
+     * @param originalRule
+     *            The <code>Rule</code> already in the <code>RuleSet</code>.
+     * @param conflictingRule
+     *            The new, conflicting <code>Rule</code>.
      */
     public DuplicateRuleNameException(RuleSet ruleSet,
                                       Rule originalRule,
@@ -86,7 +88,7 @@ public class DuplicateRuleNameException extends RuleConstructionException
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**

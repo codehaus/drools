@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConditionException.java,v 1.5 2004-11-07 22:39:43 bob Exp $
+ * $Id: ConditionException.java,v 1.6 2004-11-19 02:14:48 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -56,7 +56,7 @@ public class ConditionException extends AssertionException
     private String info;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -75,7 +75,8 @@ public class ConditionException extends AssertionException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public ConditionException(Throwable rootCause)
     {
@@ -99,7 +100,8 @@ public class ConditionException extends AssertionException
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public ConditionException(Throwable rootCause,
                               Rule rule,
@@ -120,13 +122,14 @@ public class ConditionException extends AssertionException
         return this.rule;
     }
 
-    /** Set arbitrary extra information about the condition.
-     *
-     *  <p>
-     *  The info property may be used to communicate the actual
-     *  expression text or other information in the case that
-     *  Condition does not have expression text.
-     *  </p>
+    /**
+     * Set arbitrary extra information about the condition.
+     * 
+     * <p>
+     * The info property may be used to communicate the actual expression text
+     * or other information in the case that Condition does not have expression
+     * text.
+     * </p>
      */
     public void setInfo(String info)
     {

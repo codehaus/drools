@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: CompositeConflictResolver.java,v 1.3 2004-11-15 07:11:54 simon Exp $
+ * $Id: CompositeConflictResolver.java,v 1.4 2004-11-19 02:12:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,24 +46,24 @@ import org.drools.spi.Tuple;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
- *
+ * 
  * <p>
  * Since a fact or set of facts may activate multiple rules, a
  * <code>ConflictResolutionStrategy</code> is used to provide priority
  * ordering of conflicting rules.
  * </p>
- *
+ * 
  * @see Activation
  * @see Tuple
  * @see org.drools.rule.Rule
- *
+ * 
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
 public class CompositeConflictResolver extends AbstractConflictResolver
 {
     private final ConflictResolver[] components;
 
-    public CompositeConflictResolver( ConflictResolver[] components)
+    public CompositeConflictResolver(ConflictResolver[] components)
     {
         this.components = components;
     }
@@ -71,13 +71,15 @@ public class CompositeConflictResolver extends AbstractConflictResolver
     /**
      * @see AbstractConflictResolver
      */
-    public final int compare(Activation lhs, Activation rhs)
+    public final int compare(Activation lhs,
+                             Activation rhs)
     {
         int result = 0;
 
         for ( int i = 0; result == 0 && i < this.components.length; ++i )
         {
-            result = this.components[i].compare( lhs, rhs );
+            result = this.components[i].compare( lhs,
+                                                 rhs );
         }
 
         return result;

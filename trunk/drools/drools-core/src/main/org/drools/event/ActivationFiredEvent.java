@@ -6,9 +6,9 @@ import org.drools.spi.Tuple;
 
 public class ActivationFiredEvent extends WorkingMemoryEvent
 {
-    private Consequence   consequence;
+    private Consequence consequence;
 
-    private Tuple         tuple;
+    private Tuple tuple;
 
     public ActivationFiredEvent(WorkingMemory workingMemory,
                                 Consequence consequence,
@@ -32,7 +32,6 @@ public class ActivationFiredEvent extends WorkingMemoryEvent
 
     public String toString()
     {
-        return "[ActivationFired: rule=" + this.tuple.getRule( ).getName( )
-               + "; tuple=" + this.tuple + "]";
+        return "[ActivationFired: rule=" + this.tuple.getRule( ).getName( ) + "; tuple=" + this.tuple + "]";
     }
 }

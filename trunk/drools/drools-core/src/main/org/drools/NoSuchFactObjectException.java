@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: NoSuchFactObjectException.java,v 1.6 2004-10-27 22:46:56 simon Exp $
+ * $Id: NoSuchFactObjectException.java,v 1.7 2004-11-19 02:12:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,28 +43,28 @@ package org.drools;
 /**
  * Indicates an attempt to retract, modify or retrieve a fact object that is no
  * longer present.
- *
+ * 
  * @see FactHandle
  * @see WorkingMemory#assertObject
  * @see WorkingMemory#retractObject
  * @see WorkingMemory#getObject
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
+ * 
  * @version $Id: NoSuchFactObjectException.java,v 1.3 2003/11/19 21:31:09 bob
  *          Exp $
  */
 public class NoSuchFactObjectException extends FactException
 {
     // ----------------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ----------------------------------------------------------------------
 
     /** Invalid fact handle. */
     private final FactHandle handle;
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     public NoSuchFactObjectException()
@@ -74,8 +74,9 @@ public class NoSuchFactObjectException extends FactException
 
     /**
      * Construct.
-     *
-     * @param handle The invalid fact handle.
+     * 
+     * @param handle
+     *            The invalid fact handle.
      */
     public NoSuchFactObjectException(FactHandle handle)
     {
@@ -83,12 +84,12 @@ public class NoSuchFactObjectException extends FactException
     }
 
     // ----------------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ----------------------------------------------------------------------
 
     /**
      * Retrieve the invalid <code>FactHandle</code>.
-     *
+     * 
      * @return The invalid fact handle.
      */
     public FactHandle getFactHandle()
@@ -111,4 +112,3 @@ public class NoSuchFactObjectException extends FactException
         return "no such fact object for handle: " + getFactHandle( ).toExternalForm( );
     }
 }
-

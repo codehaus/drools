@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Consequence.java,v 1.7 2004-09-17 00:14:13 mproctor Exp $
+ * $Id: Consequence.java,v 1.8 2004-11-19 02:14:48 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -49,17 +49,22 @@ import org.drools.WorkingMemory;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public interface Consequence extends SemanticComponent
+public interface Consequence
+    extends
+    SemanticComponent
 {
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
      * 
-     * @param tuple The matching tuple.
-     * @param workingMemory The working memory session.
+     * @param tuple
+     *            The matching tuple.
+     * @param workingMemory
+     *            The working memory session.
      * 
-     * @throws ConsequenceException If an error occurs while attempting to
-     *         invoke the consequence.
+     * @throws ConsequenceException
+     *             If an error occurs while attempting to invoke the
+     *             consequence.
      */
-    void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException;
+    void invoke(Tuple tuple,
+                WorkingMemory workingMemory) throws ConsequenceException;
 }
-

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: FactHandle.java,v 1.14 2004-11-16 12:13:00 simon Exp $
+ * $Id: FactHandle.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,11 +50,13 @@ package org.drools;
 
 import java.io.Serializable;
 
-public interface FactHandle extends Serializable
+public interface FactHandle
+    extends
+    Serializable
 {
     /**
      * Convert this handle to an external representation.
-     *
+     * 
      * @return The external string form.
      */
     String toExternalForm();

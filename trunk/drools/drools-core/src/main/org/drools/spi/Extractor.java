@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Extractor.java,v 1.6 2004-11-13 01:43:07 simon Exp $
+ * $Id: Extractor.java,v 1.7 2004-11-19 02:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,19 +44,21 @@ import org.drools.rule.Declaration;
 
 /**
  * Extracts new facts from existing facts.
- *
+ * 
  * @see Tuple
  * @see org.drools.rule.Declaration
  * @see org.drools.rule.Extraction
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public interface Extractor extends SemanticComponent
+public interface Extractor
+    extends
+    SemanticComponent
 {
     /**
      * Retrieve the array of <code>Declaration</code> objects required by this
      * <code>Extractor</code> to perform its duties.
-     *
+     * 
      * @return The array of <code>Declarations</code> expected on incoming
      *         <code>Tuple</code>s.
      */
@@ -64,13 +66,14 @@ public interface Extractor extends SemanticComponent
 
     /**
      * Extract a new fact from the incoming <code>Tuple</code>
-     *
-     * @param tuple The source data tuple.
-     *
+     * 
+     * @param tuple
+     *            The source data tuple.
+     * 
      * @return The newly extract fact object.
-     *
-     * @throws ExtractionException if an error occurs during fact extraction
-     *         activities.
+     * 
+     * @throws ExtractionException
+     *             if an error occurs during fact extraction activities.
      */
     Object extractFact(Tuple tuple) throws ExtractionException;
 }

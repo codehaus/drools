@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: DroolsException.java,v 1.14 2004-09-17 00:14:06 mproctor Exp $
+ * $Id: DroolsException.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,19 +48,19 @@ import java.io.PrintWriter;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: DroolsException.java,v 1.14 2004-09-17 00:14:06 mproctor Exp $
+ * @version $Id: DroolsException.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
  */
 public class DroolsException extends Exception
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Root cause, if any. */
     private Throwable rootCause;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -73,7 +73,8 @@ public class DroolsException extends Exception
     /**
      * Construct with a message.
      * 
-     * @param msg The message.
+     * @param msg
+     *            The message.
      */
     public DroolsException(String msg)
     {
@@ -83,7 +84,8 @@ public class DroolsException extends Exception
     /**
      * Construct with a root cause.
      * 
-     * @param rootCause The root cause of this exception.
+     * @param rootCause
+     *            The root cause of this exception.
      */
     public DroolsException(Throwable rootCause)
     {
@@ -91,7 +93,7 @@ public class DroolsException extends Exception
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
@@ -106,7 +108,7 @@ public class DroolsException extends Exception
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     java.lang.Exception
+    // java.lang.Exception
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
@@ -176,7 +178,8 @@ public class DroolsException extends Exception
     /**
      * Print the stack trace.
      * 
-     * @param s The output sink.
+     * @param s
+     *            The output sink.
      */
     public void printStackTrace(PrintStream s)
     {
@@ -194,7 +197,8 @@ public class DroolsException extends Exception
     /**
      * Print the stack trace.
      * 
-     * @param s The output sink.
+     * @param s
+     *            The output sink.
      */
     public void printStackTrace(PrintWriter s)
     {

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: DefaultConflictResolver.java,v 1.10 2004-11-15 07:11:54 simon Exp $
+ * $Id: DefaultConflictResolver.java,v 1.11 2004-11-19 02:12:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,44 +46,39 @@ import org.drools.spi.Tuple;
 
 /**
  * Strategy for resolving conflicts amongst multiple rules.
- *
+ * 
  * <p>
  * Since a fact or set of facts may activate multiple rules, a
  * <code>ConflictResolutionStrategy</code> is used to provide priority
  * ordering of conflicting rules.
  * </p>
- *
+ * 
  * @see Activation
  * @see Tuple
  * @see org.drools.rule.Rule
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
 public class DefaultConflictResolver extends CompositeConflictResolver
 {
     // ----------------------------------------------------------------------
-    //     Class members
+    // Class members
     // ----------------------------------------------------------------------
 
-    private static final ConflictResolver[]         CONFLICT_RESOLVERS = new ConflictResolver[]
-    {
-        SalienceConflictResolver.getInstance( ),
-        RecencyConflictResolver.getInstance( ),
-        ComplexityConflictResolver.getInstance( ),
-        LoadOrderConflictResolver.getInstance( )
-    };
+    private static final ConflictResolver[] CONFLICT_RESOLVERS = new ConflictResolver[]{SalienceConflictResolver.getInstance( ), RecencyConflictResolver.getInstance( ), ComplexityConflictResolver.getInstance( ),
+                                                                                        LoadOrderConflictResolver.getInstance( )};
 
     /** Singleton instance. */
-    private static final DefaultConflictResolver    INSTANCE = new DefaultConflictResolver();
+    private static final DefaultConflictResolver INSTANCE = new DefaultConflictResolver( );
 
     // ----------------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ----------------------------------------------------------------------
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
      */
     public static ConflictResolver getInstance()

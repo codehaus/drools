@@ -8,7 +8,7 @@ import org.drools.WorkingMemory;
 public class InstrumentedConsequence implements Consequence
 {
     private List invokedTuples;
-
+    
     public InstrumentedConsequence()
     {
         super( );

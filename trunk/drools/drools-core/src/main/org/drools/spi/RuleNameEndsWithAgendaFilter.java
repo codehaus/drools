@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: RuleNameEndsWithAgendaFilter.java,v 1.1 2004-11-08 16:22:04 simon Exp $
+ * $Id: RuleNameEndsWithAgendaFilter.java,v 1.2 2004-11-19 02:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,19 +42,22 @@ package org.drools.spi;
 
 /**
  * Filters activations based on a specified rule name suffix.
- * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
+ * 
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-public class RuleNameEndsWithAgendaFilter implements AgendaFilter
+public class RuleNameEndsWithAgendaFilter
+    implements
+    AgendaFilter
 {
     private final String suffix;
 
-    public RuleNameEndsWithAgendaFilter( String suffix )
+    public RuleNameEndsWithAgendaFilter(String suffix)
     {
         this.suffix = suffix;
     }
 
-    public boolean accept( Activation activation )
+    public boolean accept(Activation activation)
     {
-        return activation.getRule().getName().endsWith( this.suffix );
+        return activation.getRule( ).getName( ).endsWith( this.suffix );
     }
 }

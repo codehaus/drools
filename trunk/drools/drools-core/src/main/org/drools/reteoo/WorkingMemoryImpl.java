@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.47 2004-11-16 22:51:15 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.48 2004-11-19 02:13:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,60 +62,65 @@ import java.util.Map;
 
 /**
  * Implementation of <code>WorkingMemory</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-class WorkingMemoryImpl implements WorkingMemory
+class WorkingMemoryImpl
+    implements
+    WorkingMemory
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The actual memory for the <code>JoinNode</code>s. */
-    private final Map               joinMemories            = new HashMap( );
+    private final Map joinMemories = new HashMap( );
 
     /** Application data which is associated with this memory. */
-    private final Map               applicationData         = new HashMap( );
+    private final Map applicationData = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final PrimitiveLongMap  objects                 = new PrimitiveLongMap( 32, 8 );
+    private final PrimitiveLongMap objects = new PrimitiveLongMap( 32,
+                                                                   8 );
 
     /** Object-to-handle mapping. */
-    private final Map               handles                 = new IdentityMap( );
-    private final PrimitiveLongStack  handlePool            = new PrimitiveLongStack( );
+    private final Map handles = new IdentityMap( );
+    private final PrimitiveLongStack handlePool = new PrimitiveLongStack( );
 
     /** The eventSupport */
-    private final WorkingMemoryEventSupport eventSupport    = new WorkingMemoryEventSupport( this );
+    private final WorkingMemoryEventSupport eventSupport = new WorkingMemoryEventSupport( this );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
-    private final RuleBaseImpl      ruleBase;
+    private final RuleBaseImpl ruleBase;
 
     /** Rule-firing agenda. */
-    private final Agenda            agenda;
+    private final Agenda agenda;
 
     /** Flag to determine if a rule is currently being fired. */
-    private boolean                 firing;
+    private boolean firing;
 
-    private long                    conditionCounter;
+    private long conditionCounter;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param ruleBase The backing rule-base.
+     * 
+     * @param ruleBase
+     *            The backing rule-base.
      */
-    public WorkingMemoryImpl( RuleBaseImpl ruleBase )
+    public WorkingMemoryImpl(RuleBaseImpl ruleBase)
     {
         this.ruleBase = ruleBase;
-        this.agenda = new Agenda( this, ruleBase.getConflictResolver( ) );
+        this.agenda = new Agenda( this,
+                                  ruleBase.getConflictResolver( ) );
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     public void addEventListener(WorkingMemoryEventListener listener)
@@ -135,18 +140,18 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Create a new <code>FactHandle</code>.
-     *
+     * 
      * @return The new fact handle.
      */
     FactHandle newFactHandle()
     {
-        if (!this.handlePool.isEmpty())
+        if ( !this.handlePool.isEmpty( ) )
         {
-            return this.ruleBase.getFactHandleFactory().newFactHandle( this.handlePool.pop() );
+            return this.ruleBase.getFactHandleFactory( ).newFactHandle( this.handlePool.pop( ) );
         }
-        else 
+        else
         {
-            return this.ruleBase.getFactHandleFactory().newFactHandle( );
+            return this.ruleBase.getFactHandleFactory( ).newFactHandle( );
         }
     }
 
@@ -165,7 +170,8 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public void setApplicationData(Object appData)
     {
-        this.applicationData.put( "appData", appData );
+        this.applicationData.put( "appData",
+                                  appData );
     }
 
     /**
@@ -179,9 +185,11 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * @see WorkingMemory
      */
-    public void setApplicationData(String name, Object value)
+    public void setApplicationData(String name,
+                                   Object value)
     {
-        this.applicationData.put( name, value );
+        this.applicationData.put( name,
+                                  value );
     }
 
     /**
@@ -195,7 +203,7 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * Retrieve the rule-firing <code>Agenda</code> for this
      * <code>WorkingMemory</code>.
-     *
+     * 
      * @return The <code>Agenda</code>.
      */
     protected Agenda getAgenda()
@@ -208,7 +216,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public void clearAgenda()
     {
-        this.agenda.clearAgenda();
+        this.agenda.clearAgenda( );
     }
 
     /**
@@ -251,7 +259,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized void fireAllRules() throws FactException
     {
-        fireAllRules(null);
+        fireAllRules( null );
     }
 
     /**
@@ -259,7 +267,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public Object getObject(FactHandle handle) throws NoSuchFactObjectException
     {
-        Object object = this.objects.get( ( ( FactHandleImpl) handle ).getId( ) );
+        Object object = this.objects.get( ((FactHandleImpl) handle).getId( ) );
 
         if ( object == null )
         {
@@ -274,7 +282,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public FactHandle getFactHandle(Object object) throws NoSuchFactHandleException
     {
-        FactHandle factHandle = ( FactHandle ) this.handles.get( object );
+        FactHandle factHandle = (FactHandle) this.handles.get( object );
 
         if ( object == null )
         {
@@ -286,7 +294,8 @@ class WorkingMemoryImpl implements WorkingMemory
 
     public List getFactHandles()
     {
-      return new ArrayList( this.handles.values( ) );
+        System.err.println(new ArrayList( this.handles.values( ) ) );
+        return new ArrayList( this.handles.values( ) );
     }
 
     /**
@@ -299,12 +308,12 @@ class WorkingMemoryImpl implements WorkingMemory
 
     public List getObjects(Class objectClass)
     {
-        List matching = new LinkedList();
+        List matching = new LinkedList( );
         Iterator objIter = this.objects.values( ).iterator( );
         Object obj;
         while ( objIter.hasNext( ) )
         {
-            obj = objIter.next();
+            obj = objIter.next( );
 
             if ( objectClass.isInstance( obj ) )
             {
@@ -319,18 +328,15 @@ class WorkingMemoryImpl implements WorkingMemory
      * @see WorkingMemory
      */
     /*
-    public List getFactHandles()
-    {
-        return new ArrayList( this.objects.keySet( ) );
-    }
-    */
+     * public List getFactHandles() { return new ArrayList( this.objects.keySet( ) ); }
+     */
 
     /**
      * @see WorkingMemory
      */
     public boolean containsObject(FactHandle handle)
     {
-        return this.objects.containsKey( ( ( FactHandleImpl ) handle ).getId( ) );
+        return this.objects.containsKey( ((FactHandleImpl) handle).getId( ) );
     }
 
     /**
@@ -338,17 +344,21 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized FactHandle assertObject(Object object) throws FactException
     {
-        FactHandle handle = ( FactHandle ) this.handles.get( object );
+        FactHandle handle = (FactHandle) this.handles.get( object );
 
         if ( handle == null )
         {
             handle = newFactHandle( );
 
-            putObject( handle, object );
+            putObject( handle,
+                       object );
 
-            this.ruleBase.assertObject( handle, object, this );
+            this.ruleBase.assertObject( handle,
+                                        object,
+                                        this );
 
-            this.eventSupport.fireObjectAsserted( handle, object );
+            this.eventSupport.fireObjectAsserted( handle,
+                                                  object );
         }
 
         return handle;
@@ -356,20 +366,31 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Associate an object with its handle.
-     *
-     * @param handle The handle.
-     * @param object The object.
+     * 
+     * @param handle
+     *            The handle.
+     * @param object
+     *            The object.
      */
-    void putObject(FactHandle handle, Object object)
+    Object putObject(FactHandle handle,
+                     Object object)
     {
-        this.objects.put( ( ( FactHandleImpl ) handle ).getId( ), object );
+        Object oldValue = this.objects.put( ((FactHandleImpl) handle).getId( ),
+                                            object );
 
-        this.handles.put( object, handle );
+        this.handles.put( object,
+                          handle );
+
+        return oldValue;
     }
 
-    void removeObject(FactHandle handle)
+    Object removeObject(FactHandle handle)
     {
-        this.handles.remove( this.objects.remove( ( ( FactHandleImpl ) handle ).getId( ) ) );
+        Object object = this.objects.remove( ((FactHandleImpl) handle).getId( ) );
+        
+        this.handles.remove( object  );
+        
+        return object;
     }
 
     /**
@@ -377,55 +398,62 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized void retractObject(FactHandle handle) throws FactException
     {
-        this.ruleBase.retractObject( handle, this );
+        this.ruleBase.retractObject( handle,
+                                     this );
 
-        removeObject(handle);
-        
-        this.handlePool.push(((FactHandleImpl) handle).getId());
+        removeObject( handle );
+
+        this.handlePool.push( ((FactHandleImpl) handle).getId( ) );
 
         this.eventSupport.fireObjectRetracted( handle );
+
+        ((FactHandleImpl) handle).invalidate();        
     }
 
     /**
      * @see WorkingMemory
      */
-    public synchronized void modifyObject(FactHandle handle, Object object) throws FactException
+    public synchronized void modifyObject(FactHandle handle,
+                                          Object object) throws FactException
     {
-        Object original = this.objects.put( ( ( FactHandleImpl ) handle ).getId( ), object );
+        Object originalObject = removeObject(handle);
 
-        if ( object == null )
+        if ( originalObject == null )
         {
             throw new NoSuchFactObjectException( handle );
         }
+        
+        putObject( handle,
+                    object );
+        
 
-        this.handles.remove( original );
+        this.ruleBase.modifyObject( handle,
+                                    object,
+                                    this );
 
-        this.handles.put( object, handle );
-
-        this.ruleBase.retractObject( handle, this );
-
-        this.ruleBase.assertObject( handle, object, this );
-
-        this.eventSupport.fireObjectModified( handle, object );
+        this.eventSupport.fireObjectModified( handle,
+                                              object );
     }
 
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
      * <code>JoinNode</code>.
-     *
-     * @param node The <code>JoinNode</code> key.
-     *
+     * 
+     * @param node
+     *            The <code>JoinNode</code> key.
+     * 
      * @return The node's memory.
      */
     public JoinMemory getJoinMemory(JoinNode node)
     {
-        JoinMemory memory = ( JoinMemory ) this.joinMemories.get( node );
+        JoinMemory memory = (JoinMemory) this.joinMemories.get( node );
 
         if ( memory == null )
         {
             memory = new JoinMemory( node.getCommonDeclarations( ) );
 
-            this.joinMemories.put( node, memory );
+            this.joinMemories.put( node,
+                                   memory );
         }
 
         return memory;
@@ -440,4 +468,15 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         return eventSupport;
     }
+
+    public void dumpMemory()
+    {
+        Iterator it = this.joinMemories.keySet().iterator();
+        while (it.hasNext())
+        {
+            JoinMemory memory = (JoinMemory) this.joinMemories.get(it.next());
+            memory.dump();
+        }
+        
+    }     
 }

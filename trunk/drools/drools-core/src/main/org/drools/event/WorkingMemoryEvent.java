@@ -13,7 +13,6 @@ public class WorkingMemoryEvent extends EventObject
 
     public final WorkingMemory getWorkingMemory()
     {
-        return ( WorkingMemory ) getSource( );
+        return (WorkingMemory) getSource( );
     }
 }
-

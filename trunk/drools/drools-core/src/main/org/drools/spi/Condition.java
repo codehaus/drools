@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Condition.java,v 1.11 2004-11-13 01:43:07 simon Exp $
+ * $Id: Condition.java,v 1.12 2004-11-19 02:14:48 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,17 +44,19 @@ import org.drools.rule.Declaration;
 
 /**
  * A <code>Condition</code> that filters facts.
- *
+ * 
  * @see Tuple
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public interface Condition extends SemanticComponent
+public interface Condition
+    extends
+    SemanticComponent
 {
     /**
      * Retrieve the array of <code>Declaration</code> s required by this
      * condition to perform its duties.
-     *
+     * 
      * @return The array of <code>Declarations</code> expected on incoming
      *         <code>Tuples</code>.
      */
@@ -63,14 +65,15 @@ public interface Condition extends SemanticComponent
     /**
      * Determine if the supplied <code>Tuple</code> is allowed by this
      * condition.
-     *
-     * @param tuple The <code>Tuple</code> to test.
-     *
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> to test.
+     * 
      * @return <code>true</code> if the <code>Tuple</code> passes this
      *         condition, else <code>false</code>.
-     *
-     * @throws ConditionException if an error occurs during filtering.
+     * 
+     * @throws ConditionException
+     *             if an error occurs during filtering.
      */
     boolean isAllowed(Tuple tuple) throws ConditionException;
 }
-
