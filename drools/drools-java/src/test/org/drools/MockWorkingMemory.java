@@ -82,6 +82,16 @@ public class MockWorkingMemory implements WorkingMemory
         this.setApplicationData( "appData", appData );
     }
 
+   /**
+     * Clear the Agenda
+     *
+     * @return The <code>Agenda</code>.
+     */
+    public void clearAgenda()
+    {
+        //
+    }
+
     public RuleBase getRuleBase()
     {
         return null;

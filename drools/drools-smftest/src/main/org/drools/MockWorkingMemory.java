@@ -41,11 +41,6 @@ public class MockWorkingMemory implements WorkingMemory
         return null;
     }
 
-    public Object getApplicationData()
-    {
-        return appData.get( "appData" );
-    }
-
     /**
      * Retrieve all of the set application data in this memory
      *
@@ -60,7 +55,7 @@ public class MockWorkingMemory implements WorkingMemory
      * Set a specific piece of application data in this working memory
      *
      * @param name the name under which to populate the data
-     * @param value the application data
+    * @param value the application data
      */
     public void setApplicationData(String name, Object value)
     {
@@ -77,9 +72,16 @@ public class MockWorkingMemory implements WorkingMemory
         return appData.get( name );
     }
 
-    public void setApplicationData(Object appData)
+
+
+   /**
+     * Clear the Agenda
+     *
+     * @return The <code>Agenda</code>.
+     */
+    public void clearAgenda()
     {
-        this.setApplicationData( "appData", appData );
+        //
     }
 
     public RuleBase getRuleBase()

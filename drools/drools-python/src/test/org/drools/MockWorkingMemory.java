@@ -32,6 +32,16 @@ public class MockWorkingMemory implements WorkingMemory
     }
 
     /**
+     * Clear the Agenda
+     *
+     * @return The <code>Agenda</code>.
+     */
+    public void clearAgenda()
+    {
+        //
+    }
+
+    /**
      * Returns a read-only list of listeners
      *
      * @return listeners
