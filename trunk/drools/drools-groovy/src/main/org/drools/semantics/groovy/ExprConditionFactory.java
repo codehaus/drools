@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprConditionFactory.java,v 1.5 2004-11-28 14:44:28 simon Exp $
+ * $Id: ExprConditionFactory.java,v 1.6 2004-11-29 12:14:43 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,8 +61,7 @@ public class ExprConditionFactory implements ConditionFactory
         try
         {
             return new ExprCondition( config.getText( ),
-                                      rule.getImports( ),
-                                      rule.getParameterDeclarations( ) );
+                                      rule );
         }
         catch ( Exception e )
         {

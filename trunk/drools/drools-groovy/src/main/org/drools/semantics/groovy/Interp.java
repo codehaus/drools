@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.11 2004-11-28 14:44:28 simon Exp $
+ * $Id: Interp.java,v 1.12 2004-11-29 12:14:43 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import groovy.lang.GroovyCodeSource;
 import groovy.lang.Script;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
@@ -55,7 +56,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Base class for Groovy based semantic components.
@@ -66,7 +66,7 @@ import java.util.Set;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Interp.java,v 1.11 2004-11-28 14:44:28 simon Exp $
+ * @version $Id: Interp.java,v 1.12 2004-11-29 12:14:43 simon Exp $
  */
 public class Interp implements Serializable
 {
@@ -76,9 +76,12 @@ public class Interp implements Serializable
     // ------------------------------------------------------------
 
     /** Text. */
-    private String text;
+    private final String text;
 
-    private Script code;
+    /** The rule. */
+    private final Rule rule;
+
+    private transient Script code;
 
     private String newline = System.getProperty( "line.separator" );
 
@@ -89,26 +92,23 @@ public class Interp implements Serializable
     /**
      * Construct.
      */
-    protected Interp( String text, Set imports )
+    protected Interp( String text, Rule rule )
     {
+        this.rule = rule;
         this.text = text;
         try
         {
-            StringBuffer newText = new StringBuffer();
-            if (imports != null)
+            StringBuffer newText = new StringBuffer( );
+            Iterator it = rule.getImports( ).iterator();
+            while (it.hasNext())
             {
-                Iterator it =imports.iterator();
-
-                while (it.hasNext())
+                ImportEntry importEntry = (ImportEntry) it.next();
+                if (importEntry instanceof GroovyImportEntry)
                 {
-                    ImportEntry importEntry = (ImportEntry) it.next();
-                    if (importEntry instanceof GroovyImportEntry)
-                    {
-                        newText.append("import ");
-                        newText.append(importEntry.getImportEntry());
-                        newText.append(";");
-                        newText.append(newline);
-                    }
+                    newText.append("import ");
+                    newText.append(importEntry.getImportEntry());
+                    newText.append(";");
+                    newText.append(newline);
                 }
             }
             newText.append(text);
@@ -118,15 +118,6 @@ public class Interp implements Serializable
         {
             e.printStackTrace( );
         }
-    }
-
-    /**
-     * Default constructor - required for serialization
-     */
-    protected Interp()
-    {
-        text = null;
-        code = null;
     }
 
     // ------------------------------------------------------------
@@ -148,6 +139,11 @@ public class Interp implements Serializable
         return this.code;
     }
 
+    protected Rule getRule()
+    {
+        return this.rule;
+    }
+
     /**
      * Configure a <code>ScriptContext</code> using a <code>Tuple</code> for
      * variable bindings.
@@ -160,7 +156,7 @@ public class Interp implements Serializable
     {
         Binding dict = new Binding( );
         Declaration eachDecl;
-        Iterator declIter = tuple.getRule( ).getParameterDeclarations( ).iterator( );
+        Iterator declIter = this.rule.getParameterDeclarations( ).iterator( );
         while ( declIter.hasNext( ) )
         {
             eachDecl = ( Declaration ) declIter.next( );
@@ -170,7 +166,7 @@ public class Interp implements Serializable
 
         WorkingMemory workingMemory = tuple.getWorkingMemory( );
 
-        dict.setVariable( "drools".intern( ), new KnowledgeHelper( tuple ) );
+        dict.setVariable( "drools".intern( ), new KnowledgeHelper( this.rule, tuple ) );
 
         Map appDataMap = workingMemory.getApplicationDataMap( );
 
@@ -185,7 +181,7 @@ public class Interp implements Serializable
         return dict;
     }
 
-    protected Script buildScript(String text) throws Exception
+    private Script buildScript(String text) throws Exception
     {
         GroovyCodeSource codeSource = new GroovyCodeSource( text,
                                                             "groovy.script",

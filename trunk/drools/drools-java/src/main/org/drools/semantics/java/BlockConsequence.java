@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: BlockConsequence.java,v 1.40 2004-11-29 11:37:45 simon Exp $
+ * $Id: BlockConsequence.java,v 1.41 2004-11-29 12:14:44 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -85,10 +85,8 @@ public class BlockConsequence
     /**
      * Construct.
      *
-     * @param block
-     *            The statement block.
-     * @param block
-     *            The available delcarations.
+     * @param block The statement block.
+     * @param rule The rule.
      */
     public BlockConsequence(String block,
                             Rule rule) throws Exception

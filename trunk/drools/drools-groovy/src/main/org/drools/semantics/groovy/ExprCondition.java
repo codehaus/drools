@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprCondition.java,v 1.9 2004-11-28 02:22:18 simon Exp $
+ * $Id: ExprCondition.java,v 1.10 2004-11-29 12:14:43 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,20 +41,16 @@ package org.drools.semantics.groovy;
  *
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
-
-import java.util.Set;
-import java.util.List;
 
 /**
  * Groovy expression semantics <code>Condition</code>.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
- *
- * @version $Id: ExprCondition.java,v 1.9 2004-11-28 02:22:18 simon Exp $
  */
 public class ExprCondition extends Eval implements Condition
 {
@@ -66,18 +62,12 @@ public class ExprCondition extends Eval implements Condition
      * Construct.
      *
      * @param expr The expression.
+     * @param rule The rule.
      */
-    public ExprCondition(String expr, Set imports, List availDecls) throws Exception
+    public ExprCondition(String expr,
+                         Rule rule ) throws Exception
     {
-        super( expr, imports, availDecls );
-    }
-
-    /**
-     * Default constructor - required for serialization
-     */
-    public ExprCondition()
-    {
-        super( );
+        super( expr, rule );
     }
 
     // ------------------------------------------------------------
@@ -114,7 +104,9 @@ public class ExprCondition extends Eval implements Condition
         }
         catch ( RuntimeException e )
         {
-            throw new ConditionException( e, tuple.getRule( ), this.getText( ) );
+            throw new ConditionException( e,
+                                          getRule( ),
+                                          this.getText( ) );
         }
     }
 }

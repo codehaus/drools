@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: KnowledgeHelper.java,v 1.12 2004-11-29 11:37:44 simon Exp $
+ * $Id: KnowledgeHelper.java,v 1.13 2004-11-29 12:14:44 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,9 @@ public class KnowledgeHelper
     private final Rule  rule;
     private final Tuple tuple;
 
+    /**
+     * @deprecated Use {@link KnowledgeHelper(Rule, Tuple)} instead.
+     */
     public KnowledgeHelper( Tuple tuple )
     {
         this( tuple.getRule( ), tuple );

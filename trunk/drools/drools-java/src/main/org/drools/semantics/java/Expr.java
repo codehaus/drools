@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: Expr.java,v 1.32 2004-11-29 11:37:45 simon Exp $
+ * $Id: Expr.java,v 1.33 2004-11-29 12:14:44 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,11 +84,6 @@ public class Expr
 
     private transient ConditionScript conditionScript;
 
-    // protected Expr() throws Exception
-    // {
-    // super();
-    // }
-
     // ------------------------------------------------------------
     // Constants
     // ------------------------------------------------------------
@@ -102,7 +97,7 @@ public class Expr
      * @throws ConfigurationException If an error occurs while attempting to perform configuration.
      */
     protected Expr( String expr,
-                    Rule rule) throws Exception
+                    Rule rule ) throws Exception
     {
         this.expr = "return (" + expr + ");";
         this.rule = rule;
