@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.37 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: JoinMemory.java,v 1.38 2004-11-21 12:33:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,7 +52,7 @@ import java.util.Set;
 
 /**
  * Memory for left and right inputs of a <code>JoinNode</code>.
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @see ReteTuple
  */
@@ -70,9 +70,6 @@ class JoinMemory
     /** Right-side tuples. */
     private final TupleSet rightTuples;
 
-    /** join tuples. */
-    private final Set joins;
-
     /** Join column declarations. */
     private final Set joinDeclarations;
 
@@ -82,14 +79,13 @@ class JoinMemory
 
     /**
      * Construct.
-     * 
+     *
      * @param commonDeclarations
      */
     JoinMemory(Set commonDeclarations)
     {
         this.leftTuples = new TupleSet( );
         this.rightTuples = new TupleSet( );
-        this.joins = new HashSet( );
         this.joinDeclarations = commonDeclarations;
     }
 
@@ -99,7 +95,7 @@ class JoinMemory
 
     /**
      * Retract tuples from this memory.
-     * 
+     *
      * @param key
      *            The key for the tuples to be removed.
      */
@@ -120,7 +116,7 @@ class JoinMemory
      * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
      * left input to the left side of this memory, and attempt to join to
      * existing <code>Tuples</code> in the right side.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> to add to the left side memory.
      * @return A <code>List</code> of <code>Tuples</code> successfully
@@ -144,7 +140,7 @@ class JoinMemory
      * Add a <code>ReteTuple</code> received from the <code>JoinNode's</code>
      * right input to the right side of this memory, and attempt to join to
      * existing <code>Tuples</code> in the left side.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> to add to the right side memory.
      * @return A <code>List</code> of <code>Tuples</code> successfully
@@ -167,7 +163,7 @@ class JoinMemory
     /**
      * Retrieve the <code>List</code> of <code>Tuples</code> held in the
      * left side memory.
-     * 
+     *
      * @return The <code>List</code> of <code>Tuples</code> help in the left
      *         side memory.
      */
@@ -179,7 +175,7 @@ class JoinMemory
     /**
      * Retrieve the <code>List</code> of <code>Tuples</code> held in the
      * right side memory.
-     * 
+     *
      * @return The <code>List</code> of <code>Tuples</code> help in the
      *         right side memory.
      */
@@ -190,11 +186,9 @@ class JoinMemory
 
     /**
      * Modify tuples on the left-side.
-     * 
+     *
      * @param trigger
      *            Triggering object handle.
-     * @param newTuples
-     *            Modification replacement tuples.
      * @param workingMemory
      *            The working memory session.
      * @return The newly joined tuples.
@@ -213,11 +207,9 @@ class JoinMemory
 
     /**
      * Modify tuples on the right-side.
-     * 
+     *
      * @param trigger
      *            Triggering object handle.
-     * @param newTuples
-     *            Modification replacement tuples.
      * @param workingMemory
      *            The working memory session.
      * @return The newly joined tuples.
@@ -235,11 +227,9 @@ class JoinMemory
 
     /**
      * Modify tuples
-     * 
+     *
      * @param trigger
      *            Triggering object handle.
-     * @param newTuples
-     *            Modification replacement tuples.
      * @param thisSideTuples
      *            The tuples on the side that's receiving the modifications.
      * @param thatSideTuples
@@ -280,7 +270,7 @@ class JoinMemory
     /**
      * Attempt to join the <code>tuple</code> against the tuples available
      * through the <code>tupleIterator</code>.
-     * 
+     *
      * @param tuple
      *            The <code>Tuple</code> to attempt joining.
      * @param tupleSet
@@ -320,14 +310,11 @@ class JoinMemory
     private ReteTuple attemptJoin(ReteTuple left,
                                   ReteTuple right)
     {
-        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) left.getWorkingMemory( );
         Iterator declIter = this.joinDeclarations.iterator( );
         Declaration eachDecl;
 
         FactHandle leftHandle;
         FactHandle rightHandle;
-        Object leftValue;
-        Object rightValue;
 
         while ( declIter.hasNext( ) )
         {
@@ -372,7 +359,7 @@ class JoinMemory
      * For targets shared by extractors the extracted fact should be the same.
      * If the given declaration is a targetDeclaration for one it must be for
      * the other, as its a common declaration.
-     * 
+     *
      * @param decl
      * @param left
      * @param right
@@ -399,7 +386,7 @@ class JoinMemory
 
     /**
      * Produce debug string.
-     * 
+     *
      * @return The debug string.
      */
     public String toString()
