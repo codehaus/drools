@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: BlockConsequence.java,v 1.1 2002-08-27 20:10:23 bob Exp $
+ $Id: BlockConsequence.java,v 1.2 2002-08-28 03:00:34 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.python.core.PyDictionary;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.1 2002-08-27 20:10:23 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.2 2002-08-28 03:00:34 bob Exp $
  */
 public class BlockConsequence extends Exec implements ConfigurableConsequence
 {
@@ -102,7 +102,14 @@ public class BlockConsequence extends Exec implements ConfigurableConsequence
     {
         PyDictionary dict = setUpDictionary( tuple );
 
-        execute( dict );
+        try
+        {
+            execute( dict );
+        }
+        catch (Exception e)
+        {
+            throw new ConsequenceException( e );
+        }
     }
 }
 
