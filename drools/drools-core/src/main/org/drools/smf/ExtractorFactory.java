@@ -5,7 +5,7 @@ import org.drools.spi.Extractor;
 
 public interface ExtractorFactory
 {
-    Extractor newExtractor(Declaration[] availDecls,
-                           Configuration config)
+    Extractor newExtractor(Configuration config,
+                           Declaration[] availDecls)
         throws FactoryException;
 }

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.11 2003-12-11 14:47:55 bob Exp $
+ $Id: RuleSetReader.java,v 1.12 2003-12-30 03:54:50 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -88,7 +88,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.11 2003-12-11 14:47:55 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.12 2003-12-30 03:54:50 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -901,8 +901,8 @@ public class RuleSetReader
 
         try
         {
-            Extractor extractor = factory.newExtractor( this.rule.getAllDeclarations(),
-                                                        config );
+            Extractor extractor = factory.newExtractor( config,
+                                                        this.rule.getAllDeclarations() );
             
             this.extraction.setExtractor( extractor );
             
@@ -955,8 +955,8 @@ public class RuleSetReader
 
         try
         {
-            Condition condition = factory.newCondition( this.rule.getAllDeclarations(),
-                                                        config );
+            Condition condition = factory.newCondition( config,
+                                                        this.rule.getAllDeclarations() );
             
             this.rule.addCondition( condition );
         }
