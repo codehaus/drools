@@ -1,0 +1,24 @@
+Email Engine Example
+
+The examples shows how to use a user configuration file in xml along 
+with the drools system.  A good reason for using an xml config file
+is to seperate the offline processing from say an online web application, 
+but this example also shows how to safely generate drools rules 
+from XML using XSLT processing.  Because the configuration file
+can be validated and the processing uses a standard XSLT script the
+final system is IMHO safer than a custom written drools rules 
+generator.
+
+The example loads the users xml configuration file and dynamically 
+creates the java/xml drools rules.  Then the system creates a 
+working rule-engine memory, adds the dynamic rules and asserts
+a set of inbound emails.  You should run the example from the 
+folder containing build.xml using:
+   ./build.pl examples.email_engine
+
+If you have any questions or comments feel free to email the drools
+mailing list or contact directly me at martin.hald@bigfoot.com.
+
+Have fun! 
+
+-m
