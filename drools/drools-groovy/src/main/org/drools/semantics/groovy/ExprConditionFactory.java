@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- $Id: ExprConditionFactory.java,v 1.1 2003-12-09 19:54:06 jstrachan Exp $
+ $Id: ExprConditionFactory.java,v 1.2 2003-12-30 22:14:53 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,9 @@ public class ExprConditionFactory implements ConditionFactory {
         return INSTANCE;
     }
 
-    public Condition newCondition(Declaration[] availDecls, Configuration config) throws FactoryException {
+    public Condition newCondition(Configuration config,
+                                  Declaration[] availDecls)
+        throws FactoryException {
         try {
             return new ExprCondition(config.getText(), availDecls);
         }
