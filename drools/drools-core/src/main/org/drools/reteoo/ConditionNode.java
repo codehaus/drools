@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ConditionNode.java,v 1.7 2004-07-05 21:18:43 mproctor Exp $
+ $Id: ConditionNode.java,v 1.8 2004-07-05 21:51:36 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -237,10 +237,10 @@ class ConditionNode
         StringBuffer buffer = new StringBuffer();
         buffer.append(indent + "ConditionNode\n");
         buffer.append(indent + "-------------\n");
-        buffer.append(indent + "tupleSink:\n");
-        buffer.append(getTupleSink().dump(indent + " "));
         buffer.append(indent + "condition:\n");
         buffer.append(indent + condition + "\n");
+        buffer.append(indent + "tupleSink:\n");
+        buffer.append(getTupleSink().dump(indent + " "));
         return buffer.toString();
     }
 }

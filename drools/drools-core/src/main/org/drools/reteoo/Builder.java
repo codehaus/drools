@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.41 2004-06-29 16:01:31 n_alex Exp $
+ $Id: Builder.java,v 1.42 2004-07-05 21:51:36 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -510,7 +510,6 @@ public class Builder
             TupleSource tupleSource = null;
 
             ExtractionNode extractNode = null;
-
             while ( extractIter.hasNext() )
             {
                 eachExtract = (Extraction) extractIter.next();
