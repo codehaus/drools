@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Eval.java,v 1.8 2004-11-13 01:43:06 simon Exp $
+ * $Id: Eval.java,v 1.9 2004-11-16 13:37:52 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ public class Eval extends Interp
      */
     protected Eval(String text, Set imports, Set availDecls) throws Exception
     {
-        super( text, imports, "eval" );
+        super( text, imports );
 
         ExprAnalyzer analyzer = new ExprAnalyzer( );
 

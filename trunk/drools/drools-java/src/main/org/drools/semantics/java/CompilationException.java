@@ -6,11 +6,11 @@ import org.drools.rule.Rule;
 public class CompilationException
     extends DroolsException
 {
-    private Rule rule;
-    private String text;
-    private int lineNumber;
-    private int columnNumber;
-    private String errorMessage;
+    private final Rule rule;
+    private final String text;
+    private final int lineNumber;
+    private final int columnNumber;
+    private final String errorMessage;
 
     public CompilationException(Rule rule,
                                 String text,
@@ -20,6 +20,9 @@ public class CompilationException
     {
         this.rule = rule;
         this.text = text;
+        this.lineNumber = lineNumber;
+        this.columnNumber = columnNumber;
+        this.errorMessage = errorMessage;
     }
 
     public Rule getRule()
