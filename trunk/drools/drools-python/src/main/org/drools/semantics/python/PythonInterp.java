@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.6 2005-01-26 16:14:40 mproctor Exp $
+ * $Id: PythonInterp.java,v 1.7 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,11 +52,10 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.semantics.base.ClassObjectType;
-import org.drools.spi.Functions;
 import org.drools.spi.DefaultKnowledgeHelper;
+import org.drools.spi.Functions;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
-import org.drools.spi.DefaultKnowledgeHelper;
 import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;

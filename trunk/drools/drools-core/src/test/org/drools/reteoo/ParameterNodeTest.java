@@ -1,14 +1,14 @@
 package org.drools.reteoo;
 
+import java.util.List;
+import java.util.Set;
+
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
 import org.drools.spi.Tuple;
-
-import java.util.List;
-import java.util.Set;
 
 public class ParameterNodeTest extends DroolsTestCase
 {

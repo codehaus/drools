@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonExprAnalyzer.java,v 1.1 2004-12-08 23:23:19 simon Exp $
+ * $Id: PythonExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,13 +41,13 @@ package org.drools.semantics.python;
  *
  */
 
-import org.drools.rule.Declaration;
-import org.python.parser.ast.modType;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.drools.rule.Declaration;
+import org.python.parser.ast.modType;
 
 /**
  * Analyzes python expressions for all mentioned variables.

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: MockAgendaItem.java,v 1.1 2004-11-08 16:22:04 simon Exp $
+ * $Id: MockAgendaItem.java,v 1.2 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,13 +45,15 @@ import org.drools.rule.Rule;
 
 /**
  * Item entry in the <code>Agenda</code>.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class MockAgendaItem implements Activation
+public class MockAgendaItem
+    implements
+    Activation
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The tuple. */
@@ -60,22 +62,25 @@ public class MockAgendaItem implements Activation
     /** The rule. */
     private Rule        rule;
 
-    //** The Counter */
+    // ** The Counter */
     private static long counter;
 
     private long        activationNumber;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param tuple The tuple.
-     * @param rule The rule.
+     * 
+     * @param tuple
+     *            The tuple.
+     * @param rule
+     *            The rule.
      */
-    public MockAgendaItem(MockTuple tuple, Rule rule)
+    public MockAgendaItem(MockTuple tuple,
+                          Rule rule)
     {
         this.tuple = tuple;
         this.rule = rule;
@@ -83,12 +88,12 @@ public class MockAgendaItem implements Activation
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the rule.
-     *
+     * 
      * @return The rule.
      */
     public Rule getRule()
@@ -98,8 +103,9 @@ public class MockAgendaItem implements Activation
 
     /**
      * Set the tuple.
-     *
-     * @param tuple The tuple.
+     * 
+     * @param tuple
+     *            The tuple.
      */
     void setTuple(MockTuple tuple)
     {
@@ -108,7 +114,7 @@ public class MockAgendaItem implements Activation
 
     /**
      * Retrieve the tuple.
-     *
+     * 
      * @return The tuple.
      */
     public Tuple getTuple()
@@ -118,15 +124,16 @@ public class MockAgendaItem implements Activation
 
     /**
      * Fire this item.
-     *
-     * @param workingMemory The working memory context.
-     *
-     * @throws ConsequenceException If an error occurs while attempting to fire
-     *         the consequence.
+     * 
+     * @param workingMemory
+     *            The working memory context.
+     * 
+     * @throws ConsequenceException
+     *             If an error occurs while attempting to fire the consequence.
      */
     void fire(WorkingMemory workingMemory) throws ConsequenceException
     {
-        getRule( ).getConsequence( ).invoke( getTuple( ), workingMemory );
+        getRule( ).getConsequence( ).invoke( getTuple( ) );
     }
 
     public long getActivationNumber()

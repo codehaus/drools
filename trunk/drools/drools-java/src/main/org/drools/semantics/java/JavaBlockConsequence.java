@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.5 2005-01-26 16:14:40 mproctor Exp $
+ * $Id: JavaBlockConsequence.java,v 1.6 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,19 +41,17 @@ package org.drools.semantics.java;
  *
  */
 
-import org.drools.WorkingMemory;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.DefaultKnowledgeHelper;
-import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
-
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
+import org.drools.spi.Tuple;
 
 /**
  * Java block semantics <code>Consequence</code>.
@@ -121,20 +119,19 @@ public class JavaBlockConsequence
      *             If an error occurs while attempting to invoke the
      *             consequence.
      */
-    public void invoke(Tuple tuple,
-                       WorkingMemory workingMemory) throws ConsequenceException
+    public void invoke(Tuple tuple) throws ConsequenceException
     {
         try
         {
-            if (this.script == null)
+            if ( this.script == null )
             {
                 this.script = compile( );
             }
             this.script.invoke( tuple,
-                           this.declarations,
-                           new DefaultKnowledgeHelper( this.rule,
-                                                tuple ),
-                           tuple.getWorkingMemory( ).getApplicationDataMap( ) );
+                                this.declarations,
+                                new DefaultKnowledgeHelper( this.rule,
+                                                            tuple ),
+                                tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }
         catch ( Exception e )
         {
@@ -143,7 +140,7 @@ public class JavaBlockConsequence
         }
     }
 
-    private Script compile( ) throws Exception
+    private Script compile() throws Exception
     {
         return (Script) JavaCompiler.compile( this.rule,
                                               this.className,

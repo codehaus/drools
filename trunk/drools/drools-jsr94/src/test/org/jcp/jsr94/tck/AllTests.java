@@ -9,12 +9,7 @@
 package org.jcp.jsr94.tck;
 
 // java imports
-import org.jcp.jsr94.tck.admin.*;
-
-// internal imports
-
-// external imports
-import junit.framework.*;
+import junit.framework.Test;import junit.framework.TestSuite;import org.jcp.jsr94.tck.admin.LocalRuleExecutionSetProviderTest;import org.jcp.jsr94.tck.admin.RuleAdministrationExceptionTest;import org.jcp.jsr94.tck.admin.RuleAdministratorTest;import org.jcp.jsr94.tck.admin.RuleExecutionSetCreateExceptionTest;import org.jcp.jsr94.tck.admin.RuleExecutionSetDeregistrationExceptionTest;import org.jcp.jsr94.tck.admin.RuleExecutionSetProviderTest;import org.jcp.jsr94.tck.admin.RuleExecutionSetRegisterExceptionTest;import org.jcp.jsr94.tck.admin.RuleExecutionSetTest;import org.jcp.jsr94.tck.admin.RuleTest;
 
 /**
  * Run all the test suites in the Test Compatability Kit.

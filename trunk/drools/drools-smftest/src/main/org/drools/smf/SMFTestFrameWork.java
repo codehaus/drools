@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.28 2005-01-23 18:16:20 mproctor Exp $
+ * $Id: SMFTestFrameWork.java,v 1.29 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,7 +40,18 @@ package org.drools.smf;
  *
  */
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import junit.framework.TestCase;
+
 import org.drools.MockWorkingMemory;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
@@ -55,54 +66,44 @@ import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
 import org.drools.spi.Tuple;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * @author mproctor
- *
+ * 
  * SMTTestFrameWork is a base class for unit testing Semantic Implementations
  * The semantic implementation unit test simply needs to extend this class along
  * with setup method that instructs SMFTEstFrameWork which semantic url to
  * instantiate for testing. public class JavaSemanticTest extends
  * SMFTestFrameWork { public JavaSemanticTest( String name ) { super( name ); }
- *
+ * 
  * public void setUp() throws Exception { super.setUp("java"); } }
- *
+ * 
  * Each class that extends SMFTestFrameWork must create 3 data files;
  * conditions.data, consequences.data. Each file is read depending the testType,
  * a List of the specified tests extracted from the file; usig the delimeter
  * <!--drools-test--!>to seperate each test block.
- *
+ * 
  * Each testType has a corresponding private helper method to instantiate a
  * Condition, Consequence for each test using the specified parameters
  */
 public abstract class SMFTestFrameWork extends TestCase
 {
     /** The List of tests extracted from the data file */
-    private List tests;
+    private List                tests;
 
     /** The test type; conditions, consequences */
-    private String testType;
+    private String              testType;
 
     /** The SemanticModule implementation return from the SemanticRepository */
-    private SemanticModule module;
+    private SemanticModule      module;
 
     /** The SemanticRepository */
     private SemanticsRepository repository;
 
-    private String newline = System.getProperty( "line.separator" );
+    private String              newline = System.getProperty( "line.separator" );
 
-    private Set imports;
-    
-    private RuleBaseContext ruleBaseContext;
+    private Set                 imports;
+
+    private RuleBaseContext     ruleBaseContext;
 
     public SMFTestFrameWork(String name)
     {
@@ -149,7 +150,7 @@ public abstract class SMFTestFrameWork extends TestCase
         module = this.repository.lookupSemanticModule( "http://drools.org/semantics/" + semantic );
 
         this.imports = imports;
-        
+
         this.ruleBaseContext = new RuleBaseContext( );
 
     }
@@ -166,14 +167,16 @@ public abstract class SMFTestFrameWork extends TestCase
         MockConfiguration cheeseConfiguration = new MockConfiguration( "test1" );
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory( "class" );
-        
-        final RuleSet ruleSet = new RuleSet("test RuleSet", this.ruleBaseContext);
-        final Rule rule = new Rule( "Test Rule 1", ruleSet );
+
+        final RuleSet ruleSet = new RuleSet( "test RuleSet",
+                                             this.ruleBaseContext );
+        final Rule rule = new Rule( "Test Rule 1",
+                                    ruleSet );
         ObjectType cheeseType = objectTypeFactory.newObjectType( this.ruleBaseContext,
-                                                                 cheeseConfiguration,                                                                 
+                                                                 cheeseConfiguration,
                                                                  new HashSet( ) );
 
-        tuple = new MockTuple( );        
+        tuple = new MockTuple( );
         rule.setImports( new HashSet( ) );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
@@ -364,8 +367,10 @@ public abstract class SMFTestFrameWork extends TestCase
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory( "class" );
 
-        final RuleSet ruleSet = new RuleSet("test RuleSet", this.ruleBaseContext);        
-        Rule rule = new Rule( "Test Rule 1", ruleSet  );        
+        final RuleSet ruleSet = new RuleSet( "test RuleSet",
+                                             this.ruleBaseContext );
+        Rule rule = new Rule( "Test Rule 1",
+                              ruleSet );
         ObjectType cheeseType = objectTypeFactory.newObjectType( this.ruleBaseContext,
                                                                  cheeseConfiguration,
                                                                  null );
@@ -446,8 +451,9 @@ public abstract class SMFTestFrameWork extends TestCase
                       ((Integer) map.get( "bites" )).intValue( ) );
 
         // 4
-        // test exceptions        
-        rule = new Rule( "Test Rule 1", ruleSet );
+        // test exceptions
+        rule = new Rule( "Test Rule 1",
+                         ruleSet );
         rule.setImports( this.imports );
         tuple.setRule( rule );
         try
@@ -466,7 +472,8 @@ public abstract class SMFTestFrameWork extends TestCase
         // 7
         // test imports
         tuple = new MockTuple( );
-        rule = new Rule( "Test Rule 1", ruleSet );
+        rule = new Rule( "Test Rule 1",
+                         ruleSet );
         rule.setImports( this.imports );
         tuple.setRule( rule );
         workingMemory = new MockWorkingMemory( );
@@ -496,8 +503,7 @@ public abstract class SMFTestFrameWork extends TestCase
         Consequence consequence = consequenceFactory.newConsequence( rule,
                                                                      this.ruleBaseContext,
                                                                      consequenceConfiguration );
-        consequence.invoke( tuple,
-                            tuple.getWorkingMemory( ) );
+        consequence.invoke( tuple );
     }
 
     public static boolean conditionExceptionTest() throws Exception
@@ -517,7 +523,7 @@ public abstract class SMFTestFrameWork extends TestCase
     {
         private String name;
 
-        private int bitesLeft = 3;
+        private int    bitesLeft = 3;
 
         public Cheese(String name)
         {
@@ -551,7 +557,7 @@ public abstract class SMFTestFrameWork extends TestCase
                 return false;
             }
 
-            return this.name.equals( ( ( Cheese ) object ).name );
+            return this.name.equals( ((Cheese) object).name );
         }
 
         public int hashCode()

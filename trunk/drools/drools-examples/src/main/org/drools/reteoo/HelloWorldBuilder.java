@@ -1,13 +1,13 @@
 package org.drools.reteoo;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.drools.RuleBase;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * This simple Rete builder and it create a completely unoptimised Rete, ie not

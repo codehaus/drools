@@ -1,13 +1,13 @@
 package org.drools;
 
-import org.drools.event.WorkingMemoryEventListener;
-import org.drools.spi.AgendaFilter;
-import org.drools.spi.AsyncExceptionHandler;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.drools.event.WorkingMemoryEventListener;
+import org.drools.spi.AgendaFilter;
+import org.drools.spi.AsyncExceptionHandler;
 
 public class MockWorkingMemory implements WorkingMemory
 {

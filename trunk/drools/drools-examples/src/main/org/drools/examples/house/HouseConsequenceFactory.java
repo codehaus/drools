@@ -1,6 +1,5 @@
 package org.drools.examples.house;
 
-import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
@@ -59,8 +58,7 @@ public class HouseConsequenceFactory
                 {
                     consequence = new Consequence( )
                     {
-                        public void invoke(Tuple tuple,
-                                           WorkingMemory workingMemory) throws ConsequenceException
+                        public void invoke(Tuple tuple) throws ConsequenceException
                         {
                             Heating heating = (Heating) tuple.get( heatingDeclaration );
                             heating.heatingOn( room );
@@ -71,8 +69,7 @@ public class HouseConsequenceFactory
                 {
                     consequence = new Consequence( )
                     {
-                        public void invoke(Tuple tuple,
-                                           WorkingMemory workingMemory) throws ConsequenceException
+                        public void invoke(Tuple tuple) throws ConsequenceException
                         {
                             Heating heating = (Heating) tuple.get( heatingDeclaration );
                             heating.heatingOff( room );

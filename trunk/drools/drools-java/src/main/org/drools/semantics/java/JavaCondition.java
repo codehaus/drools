@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.9 2005-02-02 02:03:07 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.10 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,19 +41,20 @@ package org.drools.semantics.java;
  *
  */
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+import javax.naming.ConfigurationException;
+
 import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.DefaultKnowledgeHelper;
-import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
-
-import javax.naming.ConfigurationException;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
+import org.drools.spi.Tuple;
 
 /**
  * Java expression semantics <code>Condition</code>.

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.4 2005-01-11 21:55:45 mproctor Exp $
+ * $Id: RuleBaseLoader.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,21 +40,19 @@ package org.drools.io;
  *
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+
 import org.drools.IntegrationException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
-import org.drools.RuleIntegrationException;
-import org.drools.RuleSetIntegrationException;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.RuleBaseContext;
 import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URL;
 
 /**
  * Convenience methods for loading a <code>RuleBase</code>.

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyCondition.java,v 1.4 2004-12-29 16:13:08 mproctor Exp $
+ * $Id: GroovyCondition.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,10 +41,11 @@ package org.drools.semantics.groovy;
  *
  */
 
+import groovy.lang.Binding;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import groovy.lang.Binding;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;

@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersExample.java,v 1.7 2004-12-04 14:59:45 simon Exp $
+ * $Id: MannersExample.java,v 1.8 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,13 +40,13 @@ package org.drools.examples.manners;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * An example of executing a rulebase with Drools without

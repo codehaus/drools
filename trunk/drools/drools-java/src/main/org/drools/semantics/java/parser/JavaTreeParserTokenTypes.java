@@ -2,9 +2,7 @@
 
 	package org.drools.semantics.java.parser;
 
-	import java.util.List;	
-	import java.util.ArrayList;	
-
+	
 public interface JavaTreeParserTokenTypes {
 	int EOF = 1;
 	int NULL_TREE_LOOKAHEAD = 3;

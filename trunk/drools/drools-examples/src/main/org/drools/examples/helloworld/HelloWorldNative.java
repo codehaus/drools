@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldNative.java,v 1.7 2004-12-16 19:17:30 dbarnett Exp $
+ * $Id: HelloWorldNative.java,v 1.8 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -64,39 +64,37 @@ import org.drools.spi.Tuple;
 
 public class HelloWorldNative
 {
-    public static void main( String[] args ) throws DroolsException
+    public static void main(String[] args) throws DroolsException
     {
         Rule helloRule = new Rule( "Hello World" );
         Rule goodbyeRule = new Rule( "Goodbye Cruel World" );
         Rule debugRule = new Rule( "Debug" );
 
         /*
-         * Reuse the Java semantics ObjectType
-         * so Drools can identify String and Object
+         * Reuse the Java semantics ObjectType so Drools can identify String and
+         * Object
          */
         ClassObjectType StringType = new ClassObjectType( String.class );
         ClassObjectType ObjectType = new ClassObjectType( Object.class );
 
         /*
-         * Build the declaration and specify it
-         * as a parameter of the hello Rule
+         * Build the declaration and specify it as a parameter of the hello Rule
          */
-        final Declaration helloDeclaration =
-            helloRule.addParameterDeclaration( "hello", StringType );
+        final Declaration helloDeclaration = helloRule.addParameterDeclaration( "hello",
+                                                                                StringType );
 
         /*
-         * Build the declaration and specify it
-         * as a parameter of the goodbye Rule
+         * Build the declaration and specify it as a parameter of the goodbye
+         * Rule
          */
-        final Declaration goodbyeDeclaration =
-            goodbyeRule.addParameterDeclaration( "goodbye",  StringType );
+        final Declaration goodbyeDeclaration = goodbyeRule.addParameterDeclaration( "goodbye",
+                                                                                    StringType );
 
         /*
-         * Build the declaration and specify it
-         * as a parameter of the debug Rule
+         * Build the declaration and specify it as a parameter of the debug Rule
          */
-        final Declaration debugDeclaration =
-            debugRule.addParameterDeclaration( "object",  ObjectType );
+        final Declaration debugDeclaration = debugRule.addParameterDeclaration( "object",
+                                                                                ObjectType );
 
         /*
          * Build and Add the Condition to the hello Rule
@@ -105,7 +103,7 @@ public class HelloWorldNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                String hello = ( String ) tuple.get( helloDeclaration );
+                String hello = (String) tuple.get( helloDeclaration );
                 if ( hello == null ) return false;
                 if ( hello.equals( "Hello" ) ) return true;
                 return false;
@@ -113,11 +111,11 @@ public class HelloWorldNative
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[] { helloDeclaration };
+                return new Declaration[]{helloDeclaration};
             }
         };
         helloRule.addCondition( conditionHello );
-        
+
         /*
          * Build and Add the Condition to the goodbye Rule
          */
@@ -125,7 +123,7 @@ public class HelloWorldNative
         {
             public boolean isAllowed(Tuple tuple)
             {
-                String goodbye = ( String ) tuple.get( goodbyeDeclaration );
+                String goodbye = (String) tuple.get( goodbyeDeclaration );
                 if ( goodbye == null ) return false;
                 if ( goodbye.equals( "Goodbye" ) ) return true;
                 return false;
@@ -133,7 +131,7 @@ public class HelloWorldNative
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[] { goodbyeDeclaration };
+                return new Declaration[]{goodbyeDeclaration};
             }
         };
         goodbyeRule.addCondition( conditionGoodbye );
@@ -145,9 +143,9 @@ public class HelloWorldNative
          */
         Consequence helloConsequence = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory )
+            public void invoke(Tuple tuple)
             {
-                String hello = ( String ) tuple.get( helloDeclaration );
+                String hello = (String) tuple.get( helloDeclaration );
                 System.out.println( hello + " World" );
             }
         };
@@ -158,9 +156,9 @@ public class HelloWorldNative
          */
         Consequence goodbyeConsequence = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory )
+            public void invoke(Tuple tuple)
             {
-                String goodbye = ( String ) tuple.get( goodbyeDeclaration );
+                String goodbye = (String) tuple.get( goodbyeDeclaration );
                 System.out.println( goodbye + " Cruel World" );
             }
         };
@@ -171,7 +169,7 @@ public class HelloWorldNative
          */
         Consequence debugConsequence = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory )
+            public void invoke(Tuple tuple)
             {
                 Object object = tuple.get( debugDeclaration );
                 System.out.println( "Asserted object: " + object );
@@ -194,8 +192,7 @@ public class HelloWorldNative
         System.out.println( "FIRE RULES(Hello)" );
         System.out.println( "----------" );
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
-        workingMemory.addEventListener(
-            new DebugWorkingMemoryEventListener( ) );
+        workingMemory.addEventListener( new DebugWorkingMemoryEventListener( ) );
         workingMemory.assertObject( "Hello" );
         workingMemory.fireAllRules( );
 
@@ -204,8 +201,7 @@ public class HelloWorldNative
         System.out.println( "FIRE RULES(GoodBye)" );
         System.out.println( "----------" );
         workingMemory = ruleBase.newWorkingMemory( );
-        workingMemory.addEventListener(
-            new DebugWorkingMemoryEventListener( ) );
+        workingMemory.addEventListener( new DebugWorkingMemoryEventListener( ) );
         workingMemory.assertObject( "Goodbye" );
         workingMemory.fireAllRules( );
     }

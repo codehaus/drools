@@ -41,19 +41,19 @@ package org.drools.conflict;
  *
  */
 
-import org.drools.DroolsTestCase;
-import org.drools.util.PriorityQueue;
-import org.drools.rule.InstrumentedRule;
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.MockTuple;
-import org.drools.spi.MockAgendaItem;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+
+import org.drools.DroolsTestCase;
+import org.drools.rule.InstrumentedRule;
+import org.drools.spi.ConflictResolver;
+import org.drools.spi.MockAgendaItem;
+import org.drools.spi.MockTuple;
+import org.drools.util.PriorityQueue;
 
 public class FifoConflictResolverTest extends DroolsTestCase
 {

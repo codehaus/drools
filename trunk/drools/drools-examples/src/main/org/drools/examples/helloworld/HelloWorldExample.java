@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldExample.java,v 1.8 2004-12-16 19:17:30 dbarnett Exp $
+ * $Id: HelloWorldExample.java,v 1.9 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,7 +47,6 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.event.DebugWorkingMemoryEventListener;
 import org.drools.io.RuleBaseLoader;
-import org.drools.reteoo.Dumper;
 import org.xml.sax.SAXException;
 
 public class HelloWorldExample

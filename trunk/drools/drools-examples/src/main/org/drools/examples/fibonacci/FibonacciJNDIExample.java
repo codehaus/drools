@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciJNDIExample.java,v 1.6 2004-12-16 19:17:30 dbarnett Exp $
+ * $Id: FibonacciJNDIExample.java,v 1.7 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,15 +42,15 @@ package org.drools.examples.fibonacci;
 
 import java.io.IOException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
 import org.xml.sax.SAXException;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 public class FibonacciJNDIExample
 {

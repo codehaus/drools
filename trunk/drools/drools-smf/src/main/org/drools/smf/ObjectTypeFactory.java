@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ObjectTypeFactory.java,v 1.6 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: ObjectTypeFactory.java,v 1.7 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,9 +43,8 @@ package org.drools.smf;
 
 import java.util.Set;
 
-import org.drools.rule.Rule;
-import org.drools.spi.RuleBaseContext;
 import org.drools.spi.ObjectType;
+import org.drools.spi.RuleBaseContext;
 
 public interface ObjectTypeFactory
 {

@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersBase.java,v 1.6 2004-11-15 07:32:34 simon Exp $
+ * $Id: MannersBase.java,v 1.7 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,11 +40,6 @@ package org.drools.examples.manners;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.drools.examples.manners.model.Context;
-import org.drools.examples.manners.model.Guest;
-import org.drools.examples.manners.model.LastSeat;
-import org.drools.examples.manners.model.Seat;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -58,6 +53,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
+
+import org.drools.examples.manners.model.Context;
+import org.drools.examples.manners.model.Guest;
+import org.drools.examples.manners.model.LastSeat;
+import org.drools.examples.manners.model.Seat;
 
 /**
  * Miss Manners is a program which handles the problem of finding an acceptable

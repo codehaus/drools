@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
- * $Id: FactorConsequence.java,v 1.4 2004-11-12 17:11:16 simon Exp $
+ * $Id: FactorConsequence.java,v 1.5 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,25 +39,27 @@ package org.drools.examples.primefactors;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.Consequence;
 import org.drools.spi.Tuple;
 
-public class FactorConsequence implements Consequence
+public class FactorConsequence
+    implements
+    Consequence
 {
     private final Declaration numberDecl;
-    private final int prime;
+    private final int         prime;
 
-    public FactorConsequence(Declaration numberDecl, int prime)
+    public FactorConsequence(Declaration numberDecl,
+                             int prime)
     {
         this.numberDecl = numberDecl;
         this.prime = prime;
     }
 
-    public void invoke(Tuple tuple, WorkingMemory workingMemory)
+    public void invoke(Tuple tuple)
     {
-        Number number = ( Number ) tuple.get( this.numberDecl );
+        Number number = (Number) tuple.get( this.numberDecl );
 
         do
         {
@@ -72,4 +74,3 @@ public class FactorConsequence implements Consequence
         return "Factor out " + prime + "'s";
     }
 }
-

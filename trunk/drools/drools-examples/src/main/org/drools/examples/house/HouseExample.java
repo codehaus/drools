@@ -4,7 +4,6 @@ import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
-import org.drools.reteoo.Dumper;
 
 
 public class HouseExample

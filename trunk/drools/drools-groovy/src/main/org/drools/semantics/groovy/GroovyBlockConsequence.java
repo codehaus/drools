@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequence.java,v 1.2 2004-12-29 16:13:08 mproctor Exp $
+ * $Id: GroovyBlockConsequence.java,v 1.3 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,78 +42,84 @@ package org.drools.semantics.groovy;
  */
 
 import groovy.lang.Binding;
-import org.drools.WorkingMemory;
+
+import java.util.Iterator;
+import java.util.Map;
+
 import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
-import java.util.Iterator;
-import java.util.Map;
-
 /**
  * Groovy block semantics <code>Consequence</code>.
- *
+ * 
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  */
-public class GroovyBlockConsequence extends GroovyInterp implements Consequence
+public class GroovyBlockConsequence extends GroovyInterp
+    implements
+    Consequence
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     *
-     * @param text The block text.
-     * @param rule The rule.
+     * 
+     * @param text
+     *            The block text.
+     * @param rule
+     *            The rule.
      */
-    public GroovyBlockConsequence( String text,
-                                   Rule rule )
+    public GroovyBlockConsequence(String text,
+                                  Rule rule)
     {
         super( text,
                rule );
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.spi.Consequence
+    // org.drools.spi.Consequence
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     *
-     * @param tuple The matching tuple.
-     * @param workingMemory The working memory session.
-     *
-     * @throws ConsequenceException If an error occurs while attempting to
-     *         invoke the consequence.
+     * 
+     * @param tuple
+     *            The matching tuple.
+     * @param workingMemory
+     *            The working memory session.
+     * 
+     * @throws ConsequenceException
+     *             If an error occurs while attempting to invoke the
+     *             consequence.
      */
-    public void invoke( Tuple tuple,
-                        WorkingMemory workingMemory ) throws ConsequenceException
+    public void invoke(Tuple tuple) throws ConsequenceException
     {
-        Binding dict = setUpDictionary( tuple, getRule( ).getParameterDeclarations( ).iterator( ) );
+        Binding dict = setUpDictionary( tuple,
+                                        getRule( ).getParameterDeclarations( ).iterator( ) );
 
-        dict.setVariable( "__drools_working_memory", workingMemory );
-        Map appData = workingMemory.getApplicationDataMap( );
+        Map appData = tuple.getWorkingMemory( ).getApplicationDataMap( );
         Map.Entry entry;
-        for ( Iterator iterator = appData.entrySet( ).iterator( ); iterator.hasNext(); )
+        for ( Iterator iterator = appData.entrySet( ).iterator( ); iterator.hasNext( ); )
         {
-            entry = ( Map.Entry ) iterator.next( );
-            dict.setVariable( ( String ) entry.getKey( ),
+            entry = (Map.Entry) iterator.next( );
+            dict.setVariable( (String) entry.getKey( ),
                               entry.getValue( ) );
         }
 
         try
         {
-            //ScriptContext globals = new ScriptContext();
-            getCode().setBinding( dict );
-            getCode().run();
+            // ScriptContext globals = new ScriptContext();
+            getCode( ).setBinding( dict );
+            getCode( ).run( );
         }
         catch ( Exception e )
         {

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Consequence.java,v 1.8 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: Consequence.java,v 1.9 2005-02-04 02:13:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,7 +40,6 @@ package org.drools.spi;
  *  
  */
 
-import org.drools.WorkingMemory;
 
 /**
  * Consequence to be fired upon successful match of a <code>Rule</code>.
@@ -65,6 +64,5 @@ public interface Consequence
      *             If an error occurs while attempting to invoke the
      *             consequence.
      */
-    void invoke(Tuple tuple,
-                WorkingMemory workingMemory) throws ConsequenceException;
+    void invoke(Tuple tuple) throws ConsequenceException;
 }

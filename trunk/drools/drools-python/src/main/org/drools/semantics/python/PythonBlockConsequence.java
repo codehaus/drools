@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonBlockConsequence.java,v 1.2 2004-12-29 15:55:09 mproctor Exp $
+ * $Id: PythonBlockConsequence.java,v 1.3 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.semantics.python;
  *
  */
 
-import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
@@ -50,20 +49,22 @@ import org.python.core.Py;
 
 /**
  * Python block semantics <code>Consequence</code>.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class PythonBlockConsequence extends PythonInterp implements Consequence
+public class PythonBlockConsequence extends PythonInterp
+    implements
+    Consequence
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      */
-    protected PythonBlockConsequence( String text,
-                                      Rule rule )
+    protected PythonBlockConsequence(String text,
+                                     Rule rule)
     {
         super( text,
                rule,
@@ -71,29 +72,31 @@ public class PythonBlockConsequence extends PythonInterp implements Consequence
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.spi.Consequence
+    // org.drools.spi.Consequence
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     *
-     * @param tuple The matching tuple.
-     * @param workingMemory The working memory session.
-     *
-     * @throws ConsequenceException If an error occurs while attempting to
-     *         invoke the consequence.
+     * 
+     * @param tuple
+     *            The matching tuple.
+     * @param workingMemory
+     *            The working memory session.
+     * 
+     * @throws ConsequenceException
+     *             If an error occurs while attempting to invoke the
+     *             consequence.
      */
-    public void invoke( Tuple tuple,
-                        WorkingMemory workingMemory ) throws ConsequenceException
+    public void invoke(Tuple tuple) throws ConsequenceException
     {
         try
         {
             Py.runCode( getCode( ),
-                        setUpDictionary( tuple, 
+                        setUpDictionary( tuple,
                                          getRule( ).getParameterDeclarations( ).iterator( ) ),
                         getGlobals( ) );
         }
@@ -104,4 +107,3 @@ public class PythonBlockConsequence extends PythonInterp implements Consequence
         }
     }
 }
-

@@ -1,14 +1,14 @@
 package org.drools.rule;
 
-import org.drools.DroolsTestCase;
-import org.drools.spi.MockObjectType;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+
+import org.drools.DroolsTestCase;
+import org.drools.spi.MockObjectType;
 
 public class RuleSetTest extends DroolsTestCase
 {
@@ -31,7 +31,8 @@ public class RuleSetTest extends DroolsTestCase
 
     public void testBasics()
     {
-        assertEquals( "rule_set", this.ruleSet.getName( ) );
+        assertEquals( "rule_set",
+                      this.ruleSet.getName( ) );
     }
 
     public void testDocumentation()
@@ -40,7 +41,8 @@ public class RuleSetTest extends DroolsTestCase
 
         this.ruleSet.setDocumentation( "the cheesiest!" );
 
-        assertEquals( "the cheesiest!", this.ruleSet.getDocumentation( ) );
+        assertEquals( "the cheesiest!",
+                      this.ruleSet.getDocumentation( ) );
     }
 
     /**
@@ -53,17 +55,20 @@ public class RuleSetTest extends DroolsTestCase
         rule = new InstrumentedRule( "cheese" );
         rule.isValid( true );
         this.ruleSet.addRule( rule );
-        assertEquals( 0, rule.getLoadOrder( ) );
+        assertEquals( 0,
+                      rule.getLoadOrder( ) );
 
         rule = new InstrumentedRule( "meat" );
         rule.isValid( true );
         this.ruleSet.addRule( rule );
-        assertEquals( 1, rule.getLoadOrder( ) );
+        assertEquals( 1,
+                      rule.getLoadOrder( ) );
 
         rule = new InstrumentedRule( "vegetables" );
         rule.isValid( true );
         this.ruleSet.addRule( rule );
-        assertEquals( 2, rule.getLoadOrder( ) );
+        assertEquals( 2,
+                      rule.getLoadOrder( ) );
     }
 
     public void testGetRule() throws Exception
@@ -76,7 +81,8 @@ public class RuleSetTest extends DroolsTestCase
 
         this.ruleSet.addRule( rule );
 
-        assertSame( rule, this.ruleSet.getRule( "cheese" ) );
+        assertSame( rule,
+                    this.ruleSet.getRule( "cheese" ) );
 
         assertNull( this.ruleSet.getRule( "betty" ) );
     }
@@ -103,11 +109,14 @@ public class RuleSetTest extends DroolsTestCase
         }
         catch ( DuplicateRuleNameException e )
         {
-            assertSame( this.ruleSet, e.getRuleSet( ) );
+            assertSame( this.ruleSet,
+                        e.getRuleSet( ) );
 
-            assertSame( rule1, e.getOriginalRule( ) );
+            assertSame( rule1,
+                        e.getOriginalRule( ) );
 
-            assertSame( rule2, e.getConflictingRule( ) );
+            assertSame( rule2,
+                        e.getConflictingRule( ) );
         }
     }
 
@@ -115,12 +124,13 @@ public class RuleSetTest extends DroolsTestCase
     {
         Rule rule1 = new Rule( "test-rule 1" );
 
-        rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule1.addParameterDeclaration( "paramVar",
+                                       new MockObjectType( true ) );
 
-        //add consequence
+        // add consequence
         rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
-        //add conditions
+        // add conditions
         rule1.addCondition( new org.drools.spi.InstrumentedCondition( ) );
         rule1.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
@@ -129,12 +139,13 @@ public class RuleSetTest extends DroolsTestCase
 
         Rule rule2 = new Rule( "test-rule 2" );
 
-        rule2.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule2.addParameterDeclaration( "paramVar",
+                                       new MockObjectType( true ) );
 
-        //add consequence
+        // add consequence
         rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
-        //add conditions
+        // add conditions
         rule2.addCondition( new org.drools.spi.InstrumentedCondition( ) );
         rule2.addCondition( new org.drools.spi.InstrumentedCondition( ) );
         rule2.setSalience( 12 );
@@ -155,9 +166,10 @@ public class RuleSetTest extends DroolsTestCase
 
         // Deserialize from a byte array
         ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
-        ruleSet = ( RuleSet ) in.readObject( );
+        ruleSet = (RuleSet) in.readObject( );
         in.close( );
 
-        assertLength( 2, ruleSet.getRules( ) );
+        assertLength( 2,
+                      ruleSet.getRules( ) );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.jsr94;
 
 /*
- * $Id: AllTests.java,v 1.1 2004-11-19 14:07:05 dbarnett Exp $
+ * $Id: AllTests.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,19 +41,7 @@ package org.drools.jsr94;
  *
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.drools.jsr94.benchmark.drools.DroolsBenchmarkTestCase;
-import org.drools.jsr94.rules.RuleRuntimeTestCase;
-import org.drools.jsr94.rules.RuleServiceProviderTestCase;
-import org.drools.jsr94.rules.StatefulRuleSessionTestCase;
-import org.drools.jsr94.rules.StatelessRuleSessionTestCase;
-import org.drools.jsr94.rules.admin.LocalRuleExecutionSetProviderTestCase;
-import org.drools.jsr94.rules.admin.RuleAdministratorTestCase;
-import org.drools.jsr94.rules.admin.RuleExecutionSetProviderTestCase;
-import org.drools.jsr94.rules.admin.RuleExecutionSetTestCase;
-import org.drools.jsr94.rules.admin.RuleTestCase;
+import junit.framework.Test;import junit.framework.TestSuite;import org.drools.jsr94.benchmark.drools.DroolsBenchmarkTestCase;import org.drools.jsr94.rules.RuleRuntimeTestCase;import org.drools.jsr94.rules.RuleServiceProviderTestCase;import org.drools.jsr94.rules.StatefulRuleSessionTestCase;import org.drools.jsr94.rules.StatelessRuleSessionTestCase;import org.drools.jsr94.rules.admin.LocalRuleExecutionSetProviderTestCase;import org.drools.jsr94.rules.admin.RuleAdministratorTestCase;import org.drools.jsr94.rules.admin.RuleExecutionSetProviderTestCase;import org.drools.jsr94.rules.admin.RuleExecutionSetTestCase;import org.drools.jsr94.rules.admin.RuleTestCase;
 
 /**
  * Runs all the tests in the <code>org.drools.jsr94</code> hierarchy.

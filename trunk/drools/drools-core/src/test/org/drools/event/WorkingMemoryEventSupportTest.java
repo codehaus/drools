@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupportTest.java,v 1.1 2004-11-09 13:52:38 simon Exp $
+ * $Id: WorkingMemoryEventSupportTest.java,v 1.2 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,9 +39,9 @@ package org.drools.event;
  * POSSIBILITY OF SUCH DAMAGE.
  *
 */
-import junit.framework.TestCase;
-
 import java.io.Serializable;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>

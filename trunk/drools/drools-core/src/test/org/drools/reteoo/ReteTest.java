@@ -1,10 +1,10 @@
 package org.drools.reteoo;
 
-import org.drools.DroolsTestCase;
-import org.drools.spi.MockObjectType;
-
 import java.util.Collection;
 import java.util.List;
+
+import org.drools.DroolsTestCase;
+import org.drools.spi.MockObjectType;
 
 public class ReteTest extends DroolsTestCase
 {

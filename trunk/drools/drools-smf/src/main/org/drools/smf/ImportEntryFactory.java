@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ImportEntryFactory.java,v 1.4 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: ImportEntryFactory.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,10 +41,9 @@ package org.drools.smf;
  *
  */
 
-import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.spi.RuleBaseContext;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.RuleBaseContext;
 
 public interface ImportEntryFactory
 {

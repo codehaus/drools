@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyExprVisitor.java,v 1.1 2004-12-08 23:23:19 simon Exp $
+ * $Id: GroovyExprVisitor.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,11 @@ package org.drools.semantics.groovy;
  *
  */
 
-import org.codehaus.groovy.ast.CodeVisitorSupport;
-import org.codehaus.groovy.ast.expr.VariableExpression;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.codehaus.groovy.ast.CodeVisitorSupport;
+import org.codehaus.groovy.ast.expr.VariableExpression;
 
 /**
  * Visits nodes in a Groovy parse tree to extract the individual expression

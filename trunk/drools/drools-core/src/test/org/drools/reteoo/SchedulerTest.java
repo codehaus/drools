@@ -1,6 +1,6 @@
 package org.drools.reteoo;
 /*
- * $Id: SchedulerTest.java,v 1.4 2005-01-11 21:42:37 mproctor Exp $
+ * $Id: SchedulerTest.java,v 1.5 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,94 +61,106 @@ public class SchedulerTest extends DroolsTestCase
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
-        final Scheduler scheduler = Scheduler.getInstance();
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
+        final Scheduler scheduler = Scheduler.getInstance( );
 
         final Rule rule = new Rule( "test-rule" );
-        final Map data = new HashMap();
+        final Map data = new HashMap( );
 
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
 
-        //add consequence
+        // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple, WorkingMemory workingMemory )
+            public void invoke(org.drools.spi.Tuple tuple)
             {
-                data.put("tested", "yes");
+                data.put( "tested",
+                          "yes" );
             }
         } );
 
-        //add condition
+        // add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-        
-        rule.setDuration(new FixedDuration(1));
+
+        rule.setDuration( new FixedDuration( 1 ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
-        
-        AgendaItem item = new AgendaItem(tuple, rule);
-        
-        assertNull(data.get("tested"));
-        
-        //Schedule is for 1 second
-        scheduler.scheduleAgendaItem(item, workingMemory);
-        
-        //sleep for 2 seconds
-        Thread.sleep( 2000 );       
-        
-        //now check for update
-        assertEquals("yes", data.get("tested"));
+
+        AgendaItem item = new AgendaItem( tuple,
+                                          rule );
+
+        assertNull( data.get( "tested" ) );
+
+        // Schedule is for 1 second
+        scheduler.scheduleAgendaItem( item,
+                                      workingMemory );
+
+        // sleep for 2 seconds
+        Thread.sleep( 2000 );
+
+        // now check for update
+        assertEquals( "yes",
+                      data.get( "tested" ) );
     }
 
     public void testExceptionHandler() throws Exception
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
-        final Scheduler scheduler = Scheduler.getInstance();
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
+        final Scheduler scheduler = Scheduler.getInstance( );
 
         final Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
 
-        //add consequence
+        // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
-            public void invoke(org.drools.spi.Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+            public void invoke(org.drools.spi.Tuple tuple) throws ConsequenceException
             {
-                throw new ConsequenceException("not enough cheese", rule);
+                throw new ConsequenceException( "not enough cheese",
+                                                rule );
             }
         } );
 
-        //add condition
+        // add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-        
-        rule.setDuration(new FixedDuration(1));
+
+        rule.setDuration( new FixedDuration( 1 ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
-        
-        AgendaItem item = new AgendaItem(tuple, rule);
 
-        final Map data = new HashMap();
-        
-        AsyncExceptionHandler handler = new AsyncExceptionHandler()
+        AgendaItem item = new AgendaItem( tuple,
+                                          rule );
+
+        final Map data = new HashMap( );
+
+        AsyncExceptionHandler handler = new AsyncExceptionHandler( )
         {
-            public void handleException(WorkingMemory workingMemory, ConsequenceException exception)
+            public void handleException(WorkingMemory workingMemory,
+                                        ConsequenceException exception)
             {
-                data.put("tested", "yes");
+                data.put( "tested",
+                          "yes" );
             }
         };
-        workingMemory.setAsyncExceptionHandler(handler);        
-        
-        assertNull(data.get("tested"));
-        
-        //Schedule is for 1 second
-        scheduler.scheduleAgendaItem(item, workingMemory);        
-        
-        //sleep for 2 seconds
-        Thread.sleep( 2000 );       
-        
-        //now check for update
-        assertEquals("yes", data.get("tested"));
-    }    
-    
+        workingMemory.setAsyncExceptionHandler( handler );
+
+        assertNull( data.get( "tested" ) );
+
+        // Schedule is for 1 second
+        scheduler.scheduleAgendaItem( item,
+                                      workingMemory );
+
+        // sleep for 2 seconds
+        Thread.sleep( 2000 );
+
+        // now check for update
+        assertEquals( "yes",
+                      data.get( "tested" ) );
+    }
+
 }

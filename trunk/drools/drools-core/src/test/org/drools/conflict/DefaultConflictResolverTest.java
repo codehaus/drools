@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: DefaultConflictResolverTest.java,v 1.11 2004-11-08 16:22:04 simon Exp $
+ * $Id: DefaultConflictResolverTest.java,v 1.12 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,21 +40,22 @@ package org.drools.conflict;
  *
  */
 
-import junit.framework.TestCase;
-import org.drools.util.PriorityQueue;
-import org.drools.rule.InstrumentedRule;
-import org.drools.rule.RuleSet;
-import org.drools.spi.ConflictResolver;
-import org.drools.spi.InstrumentedCondition;
-import org.drools.spi.MockTuple;
-import org.drools.spi.MockAgendaItem;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+
+import junit.framework.TestCase;
+
+import org.drools.rule.InstrumentedRule;
+import org.drools.rule.RuleSet;
+import org.drools.spi.ConflictResolver;
+import org.drools.spi.InstrumentedCondition;
+import org.drools.spi.MockAgendaItem;
+import org.drools.spi.MockTuple;
+import org.drools.util.PriorityQueue;
 
 public class DefaultConflictResolverTest extends TestCase
 {

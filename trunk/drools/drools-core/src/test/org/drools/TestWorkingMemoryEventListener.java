@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: TestWorkingMemoryEventListener.java,v 1.2 2004-11-15 23:06:07 mproctor Exp $
+ * $Id: TestWorkingMemoryEventListener.java,v 1.3 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,15 +40,16 @@ package org.drools;
  *
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import org.drools.event.*;
+import org.drools.event.ActivationCancelledEvent;
+import org.drools.event.ActivationCreatedEvent;
+import org.drools.event.ActivationFiredEvent;
+import org.drools.event.ConditionTestedEvent;
+import org.drools.event.ObjectAssertedEvent;
+import org.drools.event.ObjectModifiedEvent;
+import org.drools.event.ObjectRetractedEvent;
+import org.drools.event.WorkingMemoryEventListener;
 
 public class TestWorkingMemoryEventListener
      implements WorkingMemoryEventListener, Serializable     

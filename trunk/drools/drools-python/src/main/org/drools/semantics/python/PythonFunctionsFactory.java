@@ -2,8 +2,8 @@ package org.drools.semantics.python;
 
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
-import org.drools.smf.FunctionsFactory;
 import org.drools.smf.FactoryException;
+import org.drools.smf.FunctionsFactory;
 import org.drools.spi.Functions;
 import org.drools.spi.RuleBaseContext;
 

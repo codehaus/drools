@@ -1,13 +1,13 @@
 package org.drools.reteoo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drools.AssertionException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InstrumentedParameterNode extends ParameterNode
 {

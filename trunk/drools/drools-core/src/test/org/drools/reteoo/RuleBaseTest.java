@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseTest.java,v 1.13 2004-12-08 23:47:06 simon Exp $
+ * $Id: RuleBaseTest.java,v 1.14 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +40,6 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.DroolsTestCase;
-import org.drools.RuleBase;
-import org.drools.WorkingMemory;
-import org.drools.conflict.DefaultConflictResolver;
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
-import org.drools.spi.MockObjectType;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
@@ -55,6 +47,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.List;
+
+import org.drools.DroolsTestCase;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
+import org.drools.spi.MockObjectType;
 
 public class RuleBaseTest extends DroolsTestCase
 {

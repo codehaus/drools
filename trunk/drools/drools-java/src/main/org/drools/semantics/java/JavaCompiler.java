@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.5 2005-02-02 02:03:07 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.6 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,16 +41,14 @@ package org.drools.semantics.java;
  *
  */
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import org.codehaus.janino.ByteArrayClassLoader;
 import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.RuleBaseContext;
-
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.HashMap;
 
 class JavaCompiler
 {

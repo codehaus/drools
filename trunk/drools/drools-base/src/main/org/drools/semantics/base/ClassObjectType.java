@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectType.java,v 1.4 2004-12-14 21:00:26 mproctor Exp $
+ * $Id: ClassObjectType.java,v 1.5 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.semantics.base;
  *
  */
 
-import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;
 
 /**
@@ -49,7 +48,7 @@ import org.drools.spi.ObjectType;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassObjectType.java,v 1.4 2004-12-14 21:00:26 mproctor Exp $
+ * @version $Id: ClassObjectType.java,v 1.5 2005-02-04 02:13:36 mproctor Exp $
  */
 public class ClassObjectType implements ObjectType
 {

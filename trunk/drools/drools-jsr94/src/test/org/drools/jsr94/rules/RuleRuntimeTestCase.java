@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleRuntimeTestCase.java,v 1.6 2004-11-28 03:34:05 simon Exp $
+ * $Id: RuleRuntimeTestCase.java,v 1.7 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,10 @@ package org.drools.jsr94.rules;
  *
  */
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.List;
+
 import javax.rules.RuleExecutionSetNotFoundException;
 import javax.rules.RuleRuntime;
 import javax.rules.StatefulRuleSession;
@@ -48,9 +52,6 @@ import javax.rules.StatelessRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.List;
 
 /**
  * Test the RuleRuntime implementation.

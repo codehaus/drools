@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.6 2004-12-14 21:00:26 mproctor Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.7 2005-02-04 02:13:36 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,8 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticModule.java,v 1.8 2005-01-23 18:16:20 mproctor Exp $
+ * $Id: SemanticModule.java,v 1.9 2005-02-04 02:13:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,8 +41,6 @@ package org.drools.smf;
  */
 
 import java.util.Set;
-
-import org.drools.rule.ApplicationData;
 
 /**
  * Collection of entities forming a semantic module.

@@ -1,7 +1,7 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersNative.java,v 1.9 2004-11-19 02:49:55 dbarnett Exp $
+ * $Id: MannersNative.java,v 1.10 2005-02-04 02:13:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,10 @@ package org.drools.examples.manners;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
@@ -57,10 +61,6 @@ import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Andy Barnett
@@ -100,22 +100,24 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <class>org.drools.examples.manners.model.Context</class>
+        // <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        final Declaration contextDeclA = findFirstSeatRule.addParameterDeclaration( "context", contextType );
+        final Declaration contextDeclA = findFirstSeatRule.addParameterDeclaration( "context",
+                                                                                    contextType );
 
         // <parameter identifier="guest">
-        //   <class>org.drools.examples.manners.model.Guest</class>
+        // <class>org.drools.examples.manners.model.Guest</class>
         // </parameter>
-        final Declaration guestDeclA = findFirstSeatRule.addParameterDeclaration( "guest", guestType );
+        final Declaration guestDeclA = findFirstSeatRule.addParameterDeclaration( "guest",
+                                                                                  guestType );
 
         // Build and Add the Condition to the Rule
         // <java:condition>context.isState("start")</java:condition>
-        final Condition conditionA1 = new Condition()
+        final Condition conditionA1 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Context context = ( Context ) tuple.get( contextDeclA );
+                Context context = (Context) tuple.get( contextDeclA );
                 return context.isState( "start" );
             }
 
@@ -133,24 +135,26 @@ public class MannersNative extends MannersBase
 
         // Build and Add the Consequence to the Rule
         // <java:consequence>
-        //   System.out.println("FIRE: find first seat: " + guest);
-        //   import org.drools.examples.manners.model.Seating;
-        //   drools.assertObject(new Seating(1, guest, null));
-        //   context.setState("find_seating");
-        //   drools.modifyObject(context);
+        // System.out.println("FIRE: find first seat: " + guest);
+        // import org.drools.examples.manners.model.Seating;
+        // drools.assertObject(new Seating(1, guest, null));
+        // context.setState("find_seating");
+        // drools.modifyObject(context);
         // </java:consequence>
-        final Consequence consequenceA = new Consequence()
+        final Consequence consequenceA = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Context context = ( Context ) tuple.get( contextDeclA );
-                Guest guest = ( Guest ) tuple.get( guestDeclA );
+                Context context = (Context) tuple.get( contextDeclA );
+                Guest guest = (Guest) tuple.get( guestDeclA );
 
                 System.out.println( "FIRE: find first seat: " + guest );
 
                 try
                 {
-                    workingMemory.assertObject( new Seating( 1, guest, null ) );
+                    workingMemory.assertObject( new Seating( 1,
+                                                             guest,
+                                                             null ) );
                 }
                 catch ( FactException e )
                 {
@@ -161,7 +165,8 @@ public class MannersNative extends MannersBase
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ), context );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ),
+                                                context );
                 }
                 catch ( FactException e )
                 {
@@ -180,27 +185,30 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <class>org.drools.examples.manners.model.Context</class>
+        // <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        final Declaration contextDeclB = findSeatingRule.addParameterDeclaration( "context", contextType );
+        final Declaration contextDeclB = findSeatingRule.addParameterDeclaration( "context",
+                                                                                  contextType );
 
         // <parameter identifier="guest">
-        //   <class>org.drools.examples.manners.model.Guest</class>
+        // <class>org.drools.examples.manners.model.Guest</class>
         // </parameter>
-        final Declaration guestDeclB = findSeatingRule.addParameterDeclaration( "guest", guestType );
+        final Declaration guestDeclB = findSeatingRule.addParameterDeclaration( "guest",
+                                                                                guestType );
 
         // <parameter identifier="seating">
-        //     <class>org.drools.examples.manners.model.Seating</class>
+        // <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
-        final Declaration seatingDeclB = findSeatingRule.addParameterDeclaration( "seating", seatingType );
+        final Declaration seatingDeclB = findSeatingRule.addParameterDeclaration( "seating",
+                                                                                  seatingType );
 
         // Build and Add the Condition to the Rule
         // <java:condition>context.isState("find_seating")</java:condition>
-        final Condition conditionB1 = new Condition()
+        final Condition conditionB1 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Context context = ( Context ) tuple.get( contextDeclB );
+                Context context = (Context) tuple.get( contextDeclB );
                 return context.isState( "find_seating" );
             }
 
@@ -217,12 +225,12 @@ public class MannersNative extends MannersBase
         findSeatingRule.addCondition( conditionB1 );
 
         // <java:condition>seating.getGuest2() == null</java:condition>
-        final Condition conditionB2 = new Condition()
+        final Condition conditionB2 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Seating seating = ( Seating ) tuple.get( seatingDeclB );
-                return seating.getGuest2() == null;
+                Seating seating = (Seating) tuple.get( seatingDeclB );
+                return seating.getGuest2( ) == null;
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -238,13 +246,13 @@ public class MannersNative extends MannersBase
         findSeatingRule.addCondition( conditionB2 );
 
         // <java:condition>!seating.getTabooList().contains(guest)</java:condition>
-        final Condition conditionB3 = new Condition()
+        final Condition conditionB3 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Seating seating = ( Seating ) tuple.get( seatingDeclB );
-                Guest guest = ( Guest ) tuple.get( guestDeclB );
-                return !seating.getTabooList().contains( guest );
+                Seating seating = (Seating) tuple.get( seatingDeclB );
+                Guest guest = (Guest) tuple.get( guestDeclB );
+                return !seating.getTabooList( ).contains( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -260,13 +268,13 @@ public class MannersNative extends MannersBase
         findSeatingRule.addCondition( conditionB3 );
 
         // <java:condition>seating.getGuest1().hasOppositeSex(guest)</java:condition>
-        final Condition conditionB4 = new Condition()
+        final Condition conditionB4 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Seating seating = ( Seating ) tuple.get( seatingDeclB );
-                Guest guest = ( Guest ) tuple.get( guestDeclB );
-                return seating.getGuest1().hasOppositeSex( guest );
+                Seating seating = (Seating) tuple.get( seatingDeclB );
+                Guest guest = (Guest) tuple.get( guestDeclB );
+                return seating.getGuest1( ).hasOppositeSex( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -282,13 +290,13 @@ public class MannersNative extends MannersBase
         findSeatingRule.addCondition( conditionB4 );
 
         // <java:condition>seating.getGuest1().hasSameHobby(guest)</java:condition>
-        final Condition conditionB5 = new Condition()
+        final Condition conditionB5 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Seating seating = ( Seating ) tuple.get( seatingDeclB );
-                Guest guest = ( Guest ) tuple.get( guestDeclB );
-                return seating.getGuest1().hasSameHobby( guest );
+                Seating seating = (Seating) tuple.get( seatingDeclB );
+                Guest guest = (Guest) tuple.get( guestDeclB );
+                return seating.getGuest1( ).hasSameHobby( guest );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -305,25 +313,27 @@ public class MannersNative extends MannersBase
 
         // Build and Add the Consequence to the Rule
         // <java:consequence>
-        //    System.out.println("FIRE: find seating: " + seating + " " + guest);
+        // System.out.println("FIRE: find seating: " + seating + " " + guest);
         //
-        //    Seating nextSeat = new Seating(seating.getSeat2(), guest, seating);
-        //    drools.assertObject(nextSeat);
+        // Seating nextSeat = new Seating(seating.getSeat2(), guest, seating);
+        // drools.assertObject(nextSeat);
         //
-        //    seating.setGuest2(guest);
-        //    seating.getTabooList().add(guest);
-        //    drools.modifyObject(seating);
+        // seating.setGuest2(guest);
+        // seating.getTabooList().add(guest);
+        // drools.modifyObject(seating);
         // </java:consequence>
-        final Consequence consequenceB = new Consequence()
+        final Consequence consequenceB = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Guest guest = ( Guest ) tuple.get( guestDeclB );
-                Seating seating = ( Seating ) tuple.get( seatingDeclB );
+                Guest guest = (Guest) tuple.get( guestDeclB );
+                Seating seating = (Seating) tuple.get( seatingDeclB );
 
                 System.out.println( "FIRE: find seating: " + seating + " " + guest );
 
-                Seating nextSeat = new Seating( seating.getSeat2(), guest, seating );
+                Seating nextSeat = new Seating( seating.getSeat2( ),
+                                                guest,
+                                                seating );
                 try
                 {
                     workingMemory.assertObject( nextSeat );
@@ -334,11 +344,12 @@ public class MannersNative extends MannersBase
                 }
 
                 seating.setGuest2( guest );
-                seating.getTabooList().add( guest );
+                seating.getTabooList( ).add( guest );
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( seating ), seating );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( seating ),
+                                                seating );
                 }
                 catch ( FactException e )
                 {
@@ -357,26 +368,29 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <class>org.drools.examples.manners.model.Context</class>
+        // <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        final Declaration contextDeclC = tryAnotherPathRule.addParameterDeclaration( "context", contextType );
+        final Declaration contextDeclC = tryAnotherPathRule.addParameterDeclaration( "context",
+                                                                                     contextType );
 
         // <parameter identifier="lastSeat">
-        //     <class>org.drools.examples.manners.model.LastSeat</class>
+        // <class>org.drools.examples.manners.model.LastSeat</class>
         // </parameter>
-        final Declaration lastSeatDeclC = tryAnotherPathRule.addParameterDeclaration( "lastSeat", lastSeatType );
+        final Declaration lastSeatDeclC = tryAnotherPathRule.addParameterDeclaration( "lastSeat",
+                                                                                      lastSeatType );
 
         // <parameter identifier="seating">
-        //     <class>org.drools.examples.manners.model.Seating</class>
+        // <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
-        final Declaration seatingDeclC = tryAnotherPathRule.addParameterDeclaration( "seating", seatingType );
+        final Declaration seatingDeclC = tryAnotherPathRule.addParameterDeclaration( "seating",
+                                                                                     seatingType );
 
         // <java:condition>context.isState("find_seating")</java:condition>
-        final Condition conditionC1 = new Condition()
+        final Condition conditionC1 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Context context = ( Context ) tuple.get( contextDeclC );
+                Context context = (Context) tuple.get( contextDeclC );
                 return context.isState( "find_seating" );
             }
 
@@ -394,13 +408,13 @@ public class MannersNative extends MannersBase
 
         // <java:condition>lastSeat.getSeat() >
         // seating.getSeat1()</java:condition>
-        final Condition conditionC2 = new Condition()
+        final Condition conditionC2 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                LastSeat lastSeat = ( LastSeat ) tuple.get( lastSeatDeclC );
-                Seating seating = ( Seating ) tuple.get( seatingDeclC );
-                return lastSeat.getSeat() > seating.getSeat1();
+                LastSeat lastSeat = (LastSeat) tuple.get( lastSeatDeclC );
+                Seating seating = (Seating) tuple.get( seatingDeclC );
+                return lastSeat.getSeat( ) > seating.getSeat1( );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -416,12 +430,12 @@ public class MannersNative extends MannersBase
         tryAnotherPathRule.addCondition( conditionC2 );
 
         // <java:condition>seating.getGuest2() == null</java:condition>
-        final Condition conditionC3 = new Condition()
+        final Condition conditionC3 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Seating seating = ( Seating ) tuple.get( seatingDeclC );
-                return seating.getGuest2() == null;
+                Seating seating = (Seating) tuple.get( seatingDeclC );
+                return seating.getGuest2( ) == null;
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -437,28 +451,29 @@ public class MannersNative extends MannersBase
         tryAnotherPathRule.addCondition( conditionC3 );
 
         // <java:consequence>
-        //    System.out.println("FIRE: try another path: " + seating);
+        // System.out.println("FIRE: try another path: " + seating);
         //
-        //    Seating prevSeat = seating.getPrevSeat();
-        //    prevSeat.setGuest2(null);
-        //    drools.modifyObject(prevSeat);
+        // Seating prevSeat = seating.getPrevSeat();
+        // prevSeat.setGuest2(null);
+        // drools.modifyObject(prevSeat);
         //
-        //    drools.retractObject(seating);
+        // drools.retractObject(seating);
         // </java:consequence>
-        final Consequence consequenceC = new Consequence()
+        final Consequence consequenceC = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
-                Seating seating = ( Seating ) tuple.get( seatingDeclC );
+                Seating seating = (Seating) tuple.get( seatingDeclC );
 
                 System.out.println( "FIRE: try another path: " + seating );
 
-                Seating prevSeat = seating.getPrevSeat();
+                Seating prevSeat = seating.getPrevSeat( );
                 prevSeat.setGuest2( null );
 
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( prevSeat ), prevSeat );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( prevSeat ),
+                                                prevSeat );
                 }
                 catch ( FactException e )
                 {
@@ -486,26 +501,29 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <class>org.drools.examples.manners.model.Context</class>
+        // <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
-        final Declaration contextDeclD = weAreDoneRule.addParameterDeclaration( "context", contextType );
+        final Declaration contextDeclD = weAreDoneRule.addParameterDeclaration( "context",
+                                                                                contextType );
 
         // <parameter identifier="lastSeat">
-        //     <class>org.drools.examples.manners.model.LastSeat</class>
+        // <class>org.drools.examples.manners.model.LastSeat</class>
         // </parameter>
-        final Declaration lastSeatDeclD = weAreDoneRule.addParameterDeclaration( "lastSeat", lastSeatType );
+        final Declaration lastSeatDeclD = weAreDoneRule.addParameterDeclaration( "lastSeat",
+                                                                                 lastSeatType );
 
         // <parameter identifier="seating">
-        //     <class>org.drools.examples.manners.model.Seating</class>
+        // <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
-        final Declaration seatingDeclD = weAreDoneRule.addParameterDeclaration( "seating", seatingType );
+        final Declaration seatingDeclD = weAreDoneRule.addParameterDeclaration( "seating",
+                                                                                seatingType );
 
         // <java:condition>context.isState("find_seating")</java:condition>
-        final Condition conditionD1 = new Condition()
+        final Condition conditionD1 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                Context context = ( Context ) tuple.get( contextDeclD );
+                Context context = (Context) tuple.get( contextDeclD );
                 return context.isState( "find_seating" );
             }
 
@@ -523,13 +541,13 @@ public class MannersNative extends MannersBase
 
         // <java:condition>lastSeat.getSeat() ==
         // seating.getSeat1()</java:condition>
-        final Condition conditionD2 = new Condition()
+        final Condition conditionD2 = new Condition( )
         {
-            public boolean isAllowed( Tuple tuple )
+            public boolean isAllowed(Tuple tuple)
             {
-                LastSeat lastSeat = ( LastSeat ) tuple.get( lastSeatDeclD );
-                Seating seating = ( Seating ) tuple.get( seatingDeclD );
-                return lastSeat.getSeat() == seating.getSeat1();
+                LastSeat lastSeat = (LastSeat) tuple.get( lastSeatDeclD );
+                Seating seating = (Seating) tuple.get( seatingDeclD );
+                return lastSeat.getSeat( ) == seating.getSeat1( );
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -545,46 +563,47 @@ public class MannersNative extends MannersBase
         weAreDoneRule.addCondition( conditionD2 );
 
         // <java:consequence>
-        //    System.out.println("FIRE: we are done");
+        // System.out.println("FIRE: we are done");
         //
-        //    import org.drools.examples.manners.model.Seat;
-        //    List list = new ArrayList();
-        //    while(seating != null) {
-        //        Seat seat = new Seat(seating.getSeat1(),
+        // import org.drools.examples.manners.model.Seat;
+        // List list = new ArrayList();
+        // while(seating != null) {
+        // Seat seat = new Seat(seating.getSeat1(),
         // seating.getGuest1().getName());
-        //        seating = seating.getPrevSeat();
-        //        list.add(seat);
-        //    }
+        // seating = seating.getPrevSeat();
+        // list.add(seat);
+        // }
         //
-        //    for (int i = list.size(); i > 0; i--) {
-        //        Seat seat = (Seat)list.get(i-1);
-        //        System.out.println(seat);
-        //        drools.assertObject(seat);
-        //    }
+        // for (int i = list.size(); i > 0; i--) {
+        // Seat seat = (Seat)list.get(i-1);
+        // System.out.println(seat);
+        // drools.assertObject(seat);
+        // }
         //
-        //    context.setState("all_done");
-        //    drools.modifyObject(context);
+        // context.setState("all_done");
+        // drools.modifyObject(context);
         // </java:consequence>
-        final Consequence consequenceD = new Consequence()
+        final Consequence consequenceD = new Consequence( )
         {
-            public void invoke( Tuple tuple, WorkingMemory workingMemory ) throws ConsequenceException
+            public void invoke(Tuple tuple) throws ConsequenceException
             {
                 System.out.println( "FIRE: we are done" );
 
-                Seating seating = ( Seating ) tuple.get( seatingDeclD );
-                Context context = ( Context ) tuple.get( contextDeclD );
+                Seating seating = (Seating) tuple.get( seatingDeclD );
+                Context context = (Context) tuple.get( contextDeclD );
 
-                List list = new ArrayList();
+                List list = new ArrayList( );
                 while ( seating != null )
                 {
-                    Seat seat = new Seat( seating.getSeat1(), seating.getGuest1().getName() );
-                    seating = seating.getPrevSeat();
+                    Seat seat = new Seat( seating.getSeat1( ),
+                                          seating.getGuest1( ).getName( ) );
+                    seating = seating.getPrevSeat( );
                     list.add( seat );
                 }
 
-                for ( int i = list.size(); i > 0; i-- )
+                for ( int i = list.size( ); i > 0; i-- )
                 {
-                    Seat seat = ( Seat ) list.get( i - 1 );
+                    Seat seat = (Seat) list.get( i - 1 );
                     System.out.println( seat );
                     try
                     {
@@ -599,7 +618,8 @@ public class MannersNative extends MannersBase
                 context.setState( "all_done" );
                 try
                 {
-                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ), context );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( context ),
+                                                context );
                 }
                 catch ( FactException e )
                 {
