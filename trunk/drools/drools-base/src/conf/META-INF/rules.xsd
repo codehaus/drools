@@ -107,23 +107,23 @@
 
   <!-- ensures that extractors always extend from te same type -->
   <xs:complexType name="extractorType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
+    <xs:complexContent>
+      <xs:extension base="xs:anyType">
         <xs:attribute name="target" type="xs:string" use="required"/>
       </xs:extension>
-    </xs:simpleContent>
+    </xs:complexContent>
   </xs:complexType>
 
-  <xs:element name="abstractImport"      type="xs:string"           abstract="true"/>
+  <xs:element name="abstractImport"      type="xs:anyType"           abstract="true"/>
 
-  <xs:element name="abstractClass"       type="xs:string"           abstract="true"/>
+  <xs:element name="abstractClass"       type="xs:anyType"           abstract="true"/>
 
-  <xs:element name="abstractClassField"  type="xs:string"           abstract="true"/>
+  <xs:element name="abstractClassField"  type="xs:anyType"           abstract="true"/>
 
-  <xs:element name="abstractExtractor"   type="rules:extractorType" abstract="true" />
+  <xs:element name="abstractExtractor"   type="rules:extractorType"  abstract="true" />
 
-  <xs:element name="abstractCondition"   type="xs:string"           abstract="true"/>
+  <xs:element name="abstractCondition"   type="xs:anyType"           abstract="true"/>
 
-  <xs:element name="abstractConsequence" type="xs:string"           abstract="true"/>
+  <xs:element name="abstractConsequence" type="xs:anyType"           abstract="true"/>
 
 </xs:schema>
