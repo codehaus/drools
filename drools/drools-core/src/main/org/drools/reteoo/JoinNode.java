@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.10 2002-07-28 15:49:50 bob Exp $
+ $Id: JoinNode.java,v 1.11 2002-08-10 19:16:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -55,7 +55,7 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface JoinNode extends TupleSource, TupleSink
+public interface JoinNode extends TupleSource
 {
     /** Retrieve the set of common <code>Declarations</code>
      *  across the two input <code>TupleSources</code>.

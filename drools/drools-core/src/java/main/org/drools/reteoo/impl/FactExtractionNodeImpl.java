@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: FactExtractionNodeImpl.java,v 1.1 2002-08-01 19:27:11 bob Exp $
+ $Id: FactExtractionNodeImpl.java,v 1.2 2002-08-10 19:16:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -152,14 +152,12 @@ public class FactExtractionNodeImpl extends TupleSourceImpl implements FactExtra
 
     /** Assert a new <code>Tuple</code>.
      *
-     *  @param inputSource The source of the <code>Tuple</code>.
      *  @param tuple The <code>Tuple</code> being asserted.
      *  @param workingMemory The working memory seesion.
      *
      *  @throws AssertionException If an error occurs while asserting.
      */
-    public void assertTuple(TupleSourceImpl inputSource,
-                            ReteTuple tuple,
+    public void assertTuple(ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
         Object value = getFactExtractor().extractFact( tuple );
@@ -189,15 +187,13 @@ public class FactExtractionNodeImpl extends TupleSourceImpl implements FactExtra
 
     /** Modify tuples.
      *
-     *  @param inputSource Source of modifications.
      *  @param trigger The root fact object.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    public void modifyTuples(TupleSourceImpl inputSource,
-                             Object trigger,
+    public void modifyTuples(Object trigger,
                              TupleSet newTuples,
                              WorkingMemory workingMemory) throws FactException
     {

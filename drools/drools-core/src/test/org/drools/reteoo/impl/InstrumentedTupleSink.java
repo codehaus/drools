@@ -18,8 +18,7 @@ public class InstrumentedTupleSink implements TupleSinkImpl
         this.retractedObjects = new ArrayList();
     }
 
-    public void assertTuple(TupleSourceImpl tupleSource,
-                            ReteTuple tuple,
+    public void assertTuple(ReteTuple tuple,
                             WorkingMemory workingMemory)
     {
         this.assertedTuples.add( tuple );
@@ -30,8 +29,7 @@ public class InstrumentedTupleSink implements TupleSinkImpl
         return this.assertedTuples;
     }
 
-    public void retractObject(TupleSourceImpl tupleSource,
-                              Object object,
+    public void retractObject(Object object,
                               WorkingMemory workingMemory)
     {
         this.retractedObjects.add( object );
@@ -43,8 +41,7 @@ public class InstrumentedTupleSink implements TupleSinkImpl
         this.retractedKeys.add( key );
     }
 
-    public void modifyTuples(TupleSourceImpl tupleSource,
-                             Object trigger,
+    public void modifyTuples(Object trigger,
                              TupleSet tupleSet,
                              WorkingMemory workingMemory)
     {

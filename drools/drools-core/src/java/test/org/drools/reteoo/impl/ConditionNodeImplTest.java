@@ -46,8 +46,7 @@ public class ConditionNodeImplTest extends TestCase
 
         try
         {
-            node.assertTuple( null,
-                              this.tuple,
+            node.assertTuple( this.tuple,
                               null );
             
             List asserted = sink.getAssertedTuples();
@@ -80,8 +79,7 @@ public class ConditionNodeImplTest extends TestCase
 
         try
         {
-            node.assertTuple( null,
-                              this.tuple,
+            node.assertTuple( this.tuple,
                               null );
             
             List asserted = sink.getAssertedTuples();

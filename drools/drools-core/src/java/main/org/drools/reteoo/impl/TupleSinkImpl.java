@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSinkImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: TupleSinkImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,14 +64,12 @@ public interface TupleSinkImpl extends TupleSink
 {
     /** Assert a new <code>Tuple</code>.
      *
-     *  @param inputSource The source of the <code>Tuple</code>.
      *  @param tuple The <code>Tuple</code> being asserted.
      *  @param workingMemory The working memory seesion.
      *
      *  @throws AssertionException If an error occurs while asserting.
      */
-    void assertTuple(TupleSourceImpl inputSource,
-                     ReteTuple tuple,
+    void assertTuple(ReteTuple tuple,
                      WorkingMemory workingMemory) throws AssertionException;
 
     /** Retract tuples.
@@ -86,15 +84,13 @@ public interface TupleSinkImpl extends TupleSink
 
     /** Modify tuples.
      *
-     *  @param inputSource Source of modifications.
      *  @param trigger The root fact object.
      *  @param newTuples Modification replacement tuples.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException If an error occurs while modifying.
      */
-    void modifyTuples(TupleSourceImpl inputSource,
-                      Object trigger,
+    void modifyTuples(Object trigger,
                       TupleSet newTuples,
                       WorkingMemory workingMemory) throws FactException;
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: TupleSourceImpl.java,v 1.2 2002-07-28 15:49:50 bob Exp $
+ $Id: TupleSourceImpl.java,v 1.3 2002-08-10 19:16:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -116,8 +116,7 @@ public abstract class TupleSourceImpl implements TupleSource
 
         if ( sink != null )
         {
-            sink.assertTuple( this,
-                              tuple,
+            sink.assertTuple( tuple,
                               workingMemory );
         }
     }
@@ -162,8 +161,7 @@ public abstract class TupleSourceImpl implements TupleSource
 
         if ( sink != null )
         {
-            sink.modifyTuples( this,
-                               trigger,
+            sink.modifyTuples( trigger,
                                newTuples,
                                workingMemory );
         }

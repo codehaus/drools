@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: JoinNodeImpl.java,v 1.5 2002-08-10 18:05:00 bob Exp $
+ $Id: JoinNodeImpl.java,v 1.6 2002-08-10 19:16:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class JoinNodeImpl extends TupleSourceImpl implements JoinNode, TupleSinkImpl
+public class JoinNodeImpl extends TupleSourceImpl implements JoinNode
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -101,8 +101,8 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode, TupleSink
 
         determineCommonDeclarations();
 
-        leftInput.setTupleSink( this );
-        rightInput.setTupleSink( this );
+        leftInput.setTupleSink( getLeftNodeInput() );
+        rightInput.setTupleSink( getRightNodeInput() );
     }
 
     // ------------------------------------------------------------
@@ -233,6 +233,63 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode, TupleSink
         }
     }
 
+    void propagateAssertTuples(Set joinedTuples,
+                               WorkingMemory workingMemory) throws AssertionException
+    {
+        Iterator  tupleIter = joinedTuples.iterator();
+        ReteTuple eachTuple = null;
+
+        while ( tupleIter.hasNext() )
+        {
+            eachTuple = (ReteTuple) tupleIter.next();
+
+            propagateAssertTuple( eachTuple,
+                                  workingMemory );
+        }
+    }
+
+    void assertLeftTuple(ReteTuple tuple,
+                         WorkingMemory workingMemory) throws AssertionException
+    {
+        JoinMemoryImpl memory = (JoinMemoryImpl) workingMemory.getJoinMemory( this );
+        Set joinedTuples = memory.addLeftTuple( tuple );
+
+        if ( joinedTuples.isEmpty() )
+        {
+            return;
+        }
+
+        propagateAssertTuples( joinedTuples,
+                               workingMemory );
+    }
+
+    void assertRightTuple(ReteTuple tuple,
+                          WorkingMemory workingMemory) throws AssertionException
+    {
+        JoinMemoryImpl memory = (JoinMemoryImpl) workingMemory.getJoinMemory( this );
+        Set joinedTuples = memory.addRightTuple( tuple );
+
+        if ( joinedTuples.isEmpty() )
+        {
+            return;
+        }
+
+        propagateAssertTuples( joinedTuples,
+                               workingMemory );
+    }
+
+    public JoinNodeInput getLeftNodeInput()
+    {
+        return new JoinNodeInput( this,
+                                  JoinNodeInput.LEFT );
+    }
+
+    public JoinNodeInput getRightNodeInput()
+    {
+        return new JoinNodeInput( this,
+                                  JoinNodeInput.RIGHT );
+    }
+
     /** Retract tuples.
      *
      *  @param key The tuple key.
@@ -281,5 +338,29 @@ public class JoinNodeImpl extends TupleSourceImpl implements JoinNode, TupleSink
                                       this,
                                       workingMemory );
         }
+    }
+
+    void modifyLeftTuples(Object trigger,
+                          TupleSet newTuples,
+                          WorkingMemory workingMemory) throws FactException
+    {
+        JoinMemoryImpl memory = (JoinMemoryImpl) workingMemory.getJoinMemory( this );
+
+        memory.modifyLeftTuples( trigger,
+                                 newTuples,
+                                 this,
+                                 workingMemory );
+    }
+
+    void modifyRightTuples(Object trigger,
+                           TupleSet newTuples,
+                           WorkingMemory workingMemory) throws FactException
+    {
+        JoinMemoryImpl memory = (JoinMemoryImpl) workingMemory.getJoinMemory( this );
+
+        memory.modifyRightTuples( trigger,
+                                  newTuples,
+                                  this,
+                                  workingMemory );
     }
 }
