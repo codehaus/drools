@@ -19,7 +19,7 @@ public class WorkingMemoryEventListenerProcessorTest extends TestCase {
     public static class Listener_B extends DefaultWorkingMemoryEventListener { }
 
     public void testRegisterListeners() throws Exception {
-        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("org/drools/spring/event/explicit-workingmemory.appctx.xml");
+        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("org/drools/spring/event/workingmemory.appctx.xml");
         WorkingMemory workingMemory = (WorkingMemory) context.getBean("workingMemory");
 
         Set expectedListenerClasses = new HashSet();
