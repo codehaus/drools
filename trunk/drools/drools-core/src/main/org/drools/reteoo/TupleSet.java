@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.16 2004-10-29 07:32:37 simon Exp $
+ * $Id: TupleSet.java,v 1.17 2004-10-29 07:38:49 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,8 +39,6 @@ package org.drools.reteoo;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-import org.drools.FactHandle;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -167,27 +165,6 @@ class TupleSet implements Serializable
     }
 
     /**
-     * Remove several tuples matching a subsset key.
-     *
-     * @param key The partial key to match.
-     */
-    public void removeTuplesByPartialKey(TupleKey key)
-    {
-        Iterator tupleIter = iterator( );
-        ReteTuple eachTuple = null;
-
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            if ( eachTuple.getKey( ).containsAll( key ) )
-            {
-                tupleIter.remove( );
-            }
-        }
-    }
-
-    /**
      * Retrieve all <code>Tuple</code>s.
      *
      * @see org.drools.spi.Tuple
@@ -207,33 +184,6 @@ class TupleSet implements Serializable
     public Iterator iterator()
     {
         return this.tuples.values( ).iterator( );
-    }
-
-    /**
-     * Retrieve all tuples related to a specified root fact object.
-     *
-     * @param handle The root fact object handle.
-     *
-     * @return Matching tuples.
-     */
-    public Set getTuples(FactHandle handle)
-    {
-        Set matchingTuples = new HashSet( );
-
-        Iterator keyIter = getKeys( ).iterator( );
-        TupleKey eachKey = null;
-
-        while ( keyIter.hasNext( ) )
-        {
-            eachKey = ( TupleKey ) keyIter.next( );
-
-            if ( eachKey.containsRootFactHandle( handle ) )
-            {
-                matchingTuples.add( getTuple( eachKey ) );
-            }
-        }
-
-        return matchingTuples;
     }
 
     /**
