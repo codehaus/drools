@@ -1,12 +1,9 @@
-<?xml version="1.0"?>
 <project>
-
     <pomVersion>3</pomVersion>
-    <name>drools-core</name>
-    <id>drools-core</id>
+    <name>Drools</name>
     <groupId>drools</groupId>
+    <artifactId>drools</artifactId>
     <currentVersion>2.0-beta-13-dev</currentVersion>
-
     <organization>
         <name>The Codehaus</name>
         <url>http://www.codehaus.org</url>
@@ -14,29 +11,22 @@
     </organization>
     <inceptionYear>2001</inceptionYear>
     <package>org.drools</package>
-
-    <shortDescription>Rete Based Rules Engine</shortDescription>
-
     <description>
         The drools project is a dynamic rules engine for Java.
         It uses a modified implementation of Forgy's RETE algorithm to
         allow natural expression of rules within an object-oriented language.
     </description>
-
+    <shortDescription>Rete Based Rules Engine</shortDescription>
     <url>http://drools.org</url>
-
+    <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
     <siteAddress>drools.codehaus.org</siteAddress>
     <siteDirectory>/www/drools.codehaus.org</siteDirectory>
-    <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
-
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-core</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
-
     <versions/>
     <branches/>
-
     <mailingLists>
         <mailingList>
             <name>drools interest</name>
@@ -51,9 +41,7 @@
             <archive>http://lists.codehaus.org/pipermail/drools-cvs/</archive>
         </mailingList>
     </mailingLists>
-
     <developers>
-
         <developer>
             <name>Bob McWhirter</name>
             <id>bob</id>
@@ -64,7 +52,6 @@
                 <role>Lead Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>James Strachan</name>
             <id>jstrachan</id>
@@ -74,7 +61,6 @@
                 <role>Pontificator</role>
             </roles>
         </developer>
-
         <developer>
             <name>David Cramer</name>
             <id>dcramer</id>
@@ -83,7 +69,6 @@
                 <role>Instigator</role>
             </roles>
         </developer>
-
         <developer>
             <name>Martin Hald</name>
             <id>mhald</id>
@@ -92,7 +77,6 @@
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>Pete Kazmier</name>
             <id>kaz</id>
@@ -101,41 +85,39 @@
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>James Roome</name>
+            <id>0</id>
             <email>refux@hotmail.com</email>
             <roles>
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>Christiaan ten Klooster</name>
+            <id>1</id>
             <email>christiaan@dacelo.nl</email>
             <roles>
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>Tom Vasak</name>
+            <id>2</id>
             <email>tomv@aic.net.au</email>
             <roles>
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>Matt Ho</name>
-            <email>matt@indigoegg.com</email>
             <id>savaki</id>
+            <email>matt@indigoegg.com</email>
             <organization>Indigo Egg</organization>
             <roles>
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>Thomas Diesler</name>
             <id>tdiesler</id>
@@ -144,25 +126,23 @@
                 <role>JCA Lead</role>
             </roles>
         </developer>
-
         <developer>
             <name>Robert Searle</name>
+            <id>3</id>
             <email>RobertSearle@hotmail.com</email>
             <roles>
                 <role>Developer</role>
             </roles>
         </developer>
-
         <developer>
             <name>N. Alex Rupp</name>
+            <id>4</id>
             <email>alex@nrfx.com</email>
             <roles>
                 <role>JSR-94 Lead</role>
             </roles>
         </developer>
-
     </developers>
-
     <contributors>
         <contributor>
             <name>Roger F. Gay</name>
@@ -171,20 +151,10 @@
             </roles>
         </contributor>
     </contributors>
-
-    <dependencies>
-
-    </dependencies>
-
     <build>
         <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/main</sourceDirectory>
         <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-        <integrationUnitTestSourceDirectory/>
-        <aspectSourceDirectory/>
-
-        <!-- Unit test classes -->
-
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
@@ -195,18 +165,10 @@
                     <includes>
                         <include>**/*.drl</include>
                     </includes>
+                    <filtering>false</filtering>
                 </resource>
             </resources>
         </unitTest>
-
-        <!-- Integration unit test classes -->
-
-        <integrationUnitTestPatterns>
-        </integrationUnitTestPatterns>
-
-        <!-- J A R  R E S O U R C E S -->
-        <!-- Resources that are packaged up inside the JAR file -->
-
         <resources>
             <resource>
                 <directory>src/main</directory>
@@ -214,10 +176,9 @@
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
+                <filtering>false</filtering>
             </resource>
         </resources>
-
     </build>
-
+    <properties/>
 </project>
-
