@@ -3,7 +3,8 @@
 
   <semantics module="org.drools.semantics.java"/>
 
-  <ruleset name="Escalation Rules">
+  <rule-set name="Escalation Rules"
+           xmlns:java="http://drools.org/semantics/java">
 
     <rule name="Escalate Immediately If Bob">
       <parameter identifier="ticket">   
@@ -15,7 +16,7 @@
       </condition>
    
       <condition>
-        <java:condition>ticket.getStatus() == TroubleTicket.NEW</java:condition>
+        <java:condition>ticket.getStatus() == escalation.TroubleTicket.NEW</java:condition>
       </condition>
 
       <consequence>
@@ -26,10 +27,10 @@
 
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
           System.err.println( "** Escalating trouble ticket for bob, because he's special" );
-          ticket.setStatus( TroubleTicket.NOTIFIED );
+          ticket.setStatus( escalation.TroubleTicket.NOTIFIED );
           modifyObject( ticket );
 
-        <java:consequence>
+        </java:consequence>
       </consequence>
     </rule>
 
@@ -39,7 +40,7 @@
       </parameter>
 
       <condition> 
-        <java:condition>ticket.getStatus() == TroubleTicket.NEW</java:condition>
+        <java:condition>ticket.getStatus() == escalation.TroubleTicket.NEW</java:condition>
       </condition> 
 
       <!--
@@ -60,14 +61,14 @@
           System.err.println( "----------------------------------------" );
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
           System.err.println( "** ticket == " + ticket );
-          ticket.setStatus( TroubleTicket.NOTIFIED );
+          ticket.setStatus( escalation.TroubleTicket.NOTIFIED );
           System.err.println( "** Escalating trouble ticket from NEW to NOTIFIED after 2 seconds" );
           System.err.println( "** ticket == " + ticket );
           System.err.println( "----------------------------------------" );
 
           modifyObject( ticket );
 
-        <java:consequence>
+        </java:consequence>
       </consequence>
     </rule>
 
@@ -77,7 +78,7 @@
       </parameter>
 
       <condition>
-        <java:condition>ticket.getStatus() == TroubleTicket.NOTIFIED</java:condition>
+        <java:condition>ticket.getStatus() == escalation.TroubleTicket.NOTIFIED</java:condition>
       </condition>
 
       <!--
@@ -95,15 +96,18 @@
           System.err.println( "----------------------------------------" );
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) ); 
           System.err.println( "** ticket == " + ticket );
-          ticket.setStatus( TroubleTicket.NULL );
+          ticket.setStatus( escalation.TroubleTicket.NULL );
           System.err.println( "** Escalating trouble ticket from NOTIFIED to /dev/null after 5 seconds" );
           System.err.println( "** ticket == " + ticket );
           System.err.println( "----------------------------------------" );
 
           modifyObject( ticket );
 
-        <java:consequence>
-      <consequence>
+        </java:consequence>
+      </consequence>
+    </rule>
 
-</ruleset>
+  </rule-set>
+
+</rules>
 

@@ -23,7 +23,7 @@
 
     <subsection name="What's Rete?">
       <p>
-      Rete is an algorithm devised by Charlse Forgy in the early
+      Rete is an algorithm devised by Charles Forgy in the early
       1980's to efficiently match conditions of rules when many
       objects are being observed by many rules.  It's basically
       a structure to allow progressive relational joins across

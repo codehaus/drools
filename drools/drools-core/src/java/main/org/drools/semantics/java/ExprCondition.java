@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.7 2002-08-21 05:46:13 bob Exp $
+ $Id: ExprCondition.java,v 1.8 2002-08-22 05:15:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.spi.ConditionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.7 2002-08-21 05:46:13 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.8 2002-08-22 05:15:26 bob Exp $
  */
 public class ExprCondition extends Expr implements ConfigurableCondition
 {
@@ -111,7 +111,7 @@ public class ExprCondition extends Expr implements ConfigurableCondition
         try
         {
             Object result = evaluate( tuple );
-            
+
             if ( result instanceof Boolean )
             {
                 return ((Boolean)result).booleanValue();
