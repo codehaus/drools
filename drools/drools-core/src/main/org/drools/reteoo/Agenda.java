@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.40 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: Agenda.java,v 1.41 2004-11-08 14:54:20 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -94,9 +94,7 @@ class Agenda implements Serializable
     private final Set           scheduledItems;
 
     /** The current agenda item being fired; or null if none. */
-    private AgendaItem          item;
-    
-    private AgendaFilter	    agendaFilter;
+    private AgendaItem          item;    
 
     // ------------------------------------------------------------
     //     Constructors
@@ -147,12 +145,6 @@ class Agenda implements Serializable
 
         AgendaItem item = new AgendaItem( tuple, rule );
         
-        // if agenda filter is set and returns false drop the activation
-        if ((this.agendaFilter != null)&&(!agendaFilter.accept(item)))
-        {
-            return;
-        }
-
         Duration dur = rule.getDuration( );
 
         if ( dur != null && dur.getDuration( tuple ) > 0 )
@@ -460,7 +452,7 @@ class Agenda implements Serializable
      * @throws ConsequenceException If an error occurs while firing an agenda
      *         item.
      */
-    public void fireNextItem() throws ConsequenceException
+    public void fireNextItem(AgendaFilter filter) throws ConsequenceException
     {
         if ( isEmpty( ) )
         {
@@ -468,6 +460,12 @@ class Agenda implements Serializable
         }
 
         item = ( AgendaItem ) this.items.remove( );
+
+        // if agenda filter is set and returns false drop the activation
+        if ((filter != null)&&(!filter.accept(item)))
+        {
+            return;
+        }        
 
         try
         {
@@ -478,10 +476,4 @@ class Agenda implements Serializable
             item = null;
         }
     }
-
-    public void setAgendaFilter(AgendaFilter agendaFilter)
-    {
-        this.agendaFilter = agendaFilter;
-    }
-    
 }

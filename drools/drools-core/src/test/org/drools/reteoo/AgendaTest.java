@@ -56,7 +56,7 @@ public class AgendaTest extends DroolsTestCase
         rule.setNoLoop( true );
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( );
+        agenda.fireNextItem( null );
         assertEquals( 0, agenda.size( ) );
 
         /*
@@ -65,8 +65,9 @@ public class AgendaTest extends DroolsTestCase
         rule.setNoLoop( false );
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( );
+        agenda.fireNextItem( null );
         assertEquals( 1, agenda.size( ) );
+        agenda.clearAgenda();
     }
     
     public void testFilters() throws Exception
@@ -86,7 +87,7 @@ public class AgendaTest extends DroolsTestCase
             public void invoke(org.drools.spi.Tuple tuple,
                                WorkingMemory workingMemory)
             {
-                //do nothing
+                agenda.addToAgenda( ( ReteTuple ) tuple, tuple.getRule( ) );
             }
         } );
         //add condition
@@ -102,10 +103,12 @@ public class AgendaTest extends DroolsTestCase
         /*
          * Add to agenda
          */
+        rule.setNoLoop( false );
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( );
-        assertEquals( 0, agenda.size( ) );
+        agenda.fireNextItem( null );
+        assertEquals( 1, agenda.size( ) );
+        agenda.clearAgenda();
 
         /*
          * True filter, activations should always add
@@ -117,11 +120,12 @@ public class AgendaTest extends DroolsTestCase
                 return true;
             }
         };
-        agenda.setAgendaFilter(filterTrue);
+        rule.setNoLoop( false );
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( );
-        assertEquals( 0, agenda.size( ) );     
+        agenda.fireNextItem( filterTrue );
+        assertEquals( 1, agenda.size( ) );
+        agenda.clearAgenda();
 
         /*
          * False filter, activations should always be denied
@@ -133,29 +137,11 @@ public class AgendaTest extends DroolsTestCase
                 return false;
             }
         };
-        agenda.setAgendaFilter(filterFalse);
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 0, agenda.size( ) );
-        agenda.fireNextItem( );
-        assertEquals( 0, agenda.size( ) );     
-        
-        /*
-         * Check Filters remove ok
-         */        
-        agenda.setAgendaFilter(null);
+        rule.setNoLoop( false );
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( );
-        assertEquals( 0, agenda.size( ) );   
-
-        /*
-         * Check True filter works
-         */ 
-        agenda.setAgendaFilter(filterTrue);
-        agenda.addToAgenda( tuple, rule );
-        assertEquals( 1, agenda.size( ) );   
-        agenda.fireNextItem( );
-        assertEquals( 0, agenda.size( ) );          
+        agenda.fireNextItem( filterFalse );
+        assertEquals( 0, agenda.size( ) );                   
     }
  
     public void testClearAgenda() throws Exception
@@ -196,7 +182,7 @@ public class AgendaTest extends DroolsTestCase
         rule.setNoLoop( false );
         agenda.addToAgenda( tuple, rule );
         assertEquals( 1, agenda.size( ) );
-        agenda.fireNextItem( );
+        agenda.fireNextItem( null );
         assertEquals( 0, agenda.size( ) );
     }    
     
