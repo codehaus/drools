@@ -6,3 +6,4 @@ cachedir
 bin
 .classpath
 .project
+.settings

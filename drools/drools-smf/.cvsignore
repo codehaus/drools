@@ -5,3 +5,4 @@ target
 cachedir
 .classpath
 .project
+.settings
