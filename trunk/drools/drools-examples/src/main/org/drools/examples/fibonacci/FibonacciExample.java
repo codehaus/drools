@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciExample.java,v 1.10 2004-07-07 04:45:21 dbarnett Exp $
+$Id: FibonacciExample.java,v 1.11 2004-07-09 00:40:55 dbarnett Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -50,7 +50,6 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseBuilder;
 
-
 public class FibonacciExample
 {
     public static void main(String[] args)
@@ -71,7 +70,7 @@ public class FibonacciExample
 
             workingMemory.fireAllRules();
             long stop = System.currentTimeMillis();
-            System.err.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
+            System.err.println( "fibonacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
         } catch (Exception e) {
             e.printStackTrace();
         }
