@@ -90,7 +90,6 @@ public class DroolsScriptEvaluator extends EvaluatorBase
         {
 	        	 list = new ArrayList();
 	        	 type = (String) it.next();
-	        	 System.err.println(type);
 	   		     StringTokenizer st = new StringTokenizer(type, ".");
 	   		     while (st.hasMoreTokens()) {
 	   		         list.add(st.nextToken());
