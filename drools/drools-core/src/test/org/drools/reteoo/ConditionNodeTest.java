@@ -4,10 +4,10 @@ import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
-import org.drools.rule.RuleSet;
+import org.drools.rule.Rule;
 import org.drools.spi.TrueCondition;
 import org.drools.spi.FalseCondition;
-import org.drools.MockObjectType;
+import org.drools.spi.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -27,7 +27,15 @@ public class ConditionNodeTest
     public void setUp()
     {
     	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-        this.tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
+        Rule rule = new Rule( "test-rule 1" );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+                                                 "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );        
+        this.tuple = new ReteTuple(ruleBase.newWorkingMemory(), rule);
     }
 
     public void tearDown()
@@ -40,7 +48,8 @@ public class ConditionNodeTest
     public void testAllowed()
     {
         ConditionNode node = new ConditionNode( null,
-                                                new TrueCondition() );
+                                                new TrueCondition(), 
+                                                0);
 
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
@@ -75,7 +84,8 @@ public class ConditionNodeTest
     public void testNotAllowed()
     {
         ConditionNode node = new ConditionNode( null,
-                                                new FalseCondition() );
+                                                new FalseCondition(), 
+                                                0);
 
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
 
@@ -112,7 +122,8 @@ public class ConditionNodeTest
                                                      decl );
 
         ConditionNode condNode = new ConditionNode( paramNode,
-                                                    null );
+                                                    null,
+                                                    0);
 
         Set decls = condNode.getTupleDeclarations();
 

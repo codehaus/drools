@@ -2,8 +2,9 @@ package org.drools.reteoo;
 
 import org.drools.AssertionException;
 import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
-import org.drools.MockObjectType;
+import org.drools.spi.MockObjectType;
 import org.drools.MockFactHandle;
 import org.drools.DroolsTestCase;
 
@@ -17,7 +18,7 @@ public class ParameterNodeTest
 
     public void setUp()
     {
-        this.decl = new Declaration( new MockObjectType(),
+        this.decl = new Declaration( new MockObjectType(true),
                                      "object" );
     }
 
@@ -34,8 +35,17 @@ public class ParameterNodeTest
         throws Exception
     {
         Object object1 = new String( "cheese" );
+
+        Rule rule = new Rule( "test-rule 1" );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+                                                 "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );        
         
-        ParameterNode node = new ParameterNode( null,
+        ParameterNode node = new ParameterNode( rule,
                                                 null,
                                                 this.decl );
         

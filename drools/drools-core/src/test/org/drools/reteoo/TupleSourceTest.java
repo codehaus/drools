@@ -4,7 +4,10 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Declaration;
+import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
+import org.drools.spi.MockObjectType;
 import org.drools.WorkingMemory;
 
 import junit.framework.TestCase;
@@ -33,7 +36,18 @@ public class TupleSourceTest
 
     	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
     	WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-        ReteTuple tuple = new ReteTuple(workingMemory, null);
+
+        Rule rule = new Rule( "test-rule" );
+        
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+        "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );
+
+        ReteTuple tuple = new ReteTuple(workingMemory, rule);
 
         try
         {

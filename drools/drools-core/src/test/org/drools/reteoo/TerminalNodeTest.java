@@ -4,9 +4,11 @@ import org.drools.MockFactHandle;
 import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.InstrumentedConsequence;
+import org.drools.spi.MockObjectType;
 import org.drools.DroolsTestCase;
 
 import java.util.List;
@@ -32,15 +34,20 @@ public class TerminalNodeTest
 
         Rule rule = new Rule( "test-rule" );
 
-        InstrumentedConsequence consequence = new InstrumentedConsequence();
-
-        rule.setConsequence( consequence );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+        "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );        
 
         TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
     	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
+        
+        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), rule);
 
         node.assertTuple( tuple,
                           memory );

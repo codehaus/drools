@@ -5,10 +5,10 @@ import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
-import org.drools.rule.RuleSet;
-import org.drools.MockObjectType;
-
+import org.drools.rule.Rule;
+import org.drools.spi.MockObjectType;
 import org.drools.spi.InstrumentedExtractor;
+import org.drools.MockFactHandle;
 
 import junit.framework.TestCase;
 
@@ -69,7 +69,19 @@ public class ExtractionNodeTest
         extractNode.setTupleSink( sink );
 
     	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
+        Rule rule = new Rule( "test-rule 1" );
+        Declaration paramDecl = new Declaration( new MockObjectType( true ),
+                                                 "paramVar" );                                                 
+        rule.addParameterDeclaration( paramDecl );
+        //add consequence
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        //add condition
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );
+        
+        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), rule);
+        
+        tuple.putKeyColumn(paramDecl, new MockFactHandle(1), new String("cheese"));
+        
 
         try
         {

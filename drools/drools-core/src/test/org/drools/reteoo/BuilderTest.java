@@ -6,7 +6,7 @@ import org.drools.rule.Extraction;
 import org.drools.spi.ObjectType;
 import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedExtractor;
-import org.drools.MockObjectType;
+import org.drools.spi.MockObjectType;
 
 import junit.framework.TestCase;
 
@@ -30,8 +30,8 @@ public class BuilderTest extends TestCase
     {
         this.builder  = new Builder();
 
-        this.stringType = new MockObjectType();
-        this.objectType = new MockObjectType();
+        this.stringType = new MockObjectType(true);
+        this.objectType = new MockObjectType(true);
 
         this.rule1 = new Rule( "cheese" );
 
