@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.45 2004-11-28 08:05:49 simon Exp $
+ * $Id: JoinMemory.java,v 1.46 2004-11-29 06:28:56 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,8 +45,6 @@ import org.drools.FactHandle;
 import org.drools.rule.Declaration;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -101,14 +99,13 @@ class JoinMemory
     /**
      * Retract tuples from this memory.
      *
-     * @param key
-     *            The key for the tuples to be removed.
+     * @param key The key for the tuples to be removed.
+     * @return <code>true</code> if at least one tuple was removed; <code>false</code> otherwise.
      */
-    void retractTuples(TupleKey key)
+    boolean retractTuples(TupleKey key)
     {
-        this.leftTuples.removeAllTuples( key );
-
-        this.rightTuples.removeAllTuples( key );
+        return this.leftTuples.removeAllTuples( key )
+               || this.rightTuples.removeAllTuples( key );
     }
 
     /**
@@ -116,15 +113,14 @@ class JoinMemory
      * left input to the left side of this memory, and attempt to join to
      * existing <code>Tuples</code> in the right side.
      *
-     * @param tuple
-     *            The <code>Tuple</code> to add to the left side memory.
-     * @return A <code>List</code> of <code>Tuples</code> successfully
+     * @param tuple The <code>Tuple</code> to add to the left side memory.
+     * @return A <code>Set</code> of <code>Tuples</code> successfully
      *         created by joining the incoming <code>tuple</code> against
      *         existing <code>Tuples</code> on the right side memory.
      * @see JoinNode
      * @see ReteTuple
      */
-    Set addLeftTuple(ReteTuple tuple)
+    TupleSet addLeftTuple(ReteTuple tuple)
     {
         this.leftTuples.addTuple( tuple );
 
@@ -137,15 +133,14 @@ class JoinMemory
      * right input to the right side of this memory, and attempt to join to
      * existing <code>Tuples</code> in the left side.
      *
-     * @param tuple
-     *            The <code>Tuple</code> to add to the right side memory.
-     * @return A <code>List</code> of <code>Tuples</code> successfully
+     * @param tuple The <code>Tuple</code> to add to the right side memory.
+     * @return A <code>Set</code> of <code>Tuples</code> successfully
      *         created by joining the incoming <code>tuple</code> against
      *         existing <code>Tuples</code> on the left side memory.
      * @see JoinNode
      * @see ReteTuple
      */
-    Set addRightTuple(ReteTuple tuple)
+    TupleSet addRightTuple(ReteTuple tuple)
     {
         this.rightTuples.addTuple( tuple );
 
@@ -180,13 +175,10 @@ class JoinMemory
     /**
      * Modify tuples on the left-side.
      *
-     * @param trigger
-     *            Triggering object handle.
-     * @param workingMemory
-     *            The working memory session.
+     * @param trigger Triggering object handle.
+     * @param workingMemory The working memory session.
      * @return The newly joined tuples.
-     * @throws FactException
-     *             if an error occurs during modification.
+     * @throws FactException if an error occurs during modification.
      */
 
     protected TupleSet modifyLeftTuples(FactHandle trigger,
@@ -225,24 +217,18 @@ class JoinMemory
     /**
      * Modify tuples
      *
-     * @param trigger
-     *            Triggering object handle.
-     * @param thisSideTuples
-     *            The tuples on the side that's receiving the modifications.
-     * @param thatSideTuples
-     *            The tuples on the side that's <b>not </b> receiving the
-     *            modifications.
-     * @param workingMemory
-     *            The working memory session.
+     * @param trigger Triggering object handle.
+     * @param thisSideTuples The tuples on the side that's receiving the modifications.
+     * @param thatSideTuples The tuples on the side that's <b>not </b> receiving the modifications.
+     * @param workingMemory The working memory session.
      * @return The newly joined tuples.
-     * @throws FactException
-     *             if an error occurs during modification.
+     * @throws FactException if an error occurs during modification.
      */
-    protected TupleSet modifyTuples(FactHandle trigger,
-                                    TupleSet newTuples,
-                                    TupleSet thisSideTuples,
-                                    TupleSet thatSideTuples,
-                                    WorkingMemoryImpl workingMemory) throws FactException
+    protected TupleSet modifyTuples( FactHandle trigger,
+                                     TupleSet newTuples,
+                                     TupleSet thisSideTuples,
+                                     TupleSet thatSideTuples,
+                                     WorkingMemoryImpl workingMemory ) throws FactException
     {
         ReteTuple tuple;
         TupleSet newJoined = new TupleSet( );
@@ -255,8 +241,9 @@ class JoinMemory
 
             if ( tuple.dependsOn( trigger ) )
             {
-                newJoined.addAllTuples( attemptJoin( tuple,
-                                                     thatSideTuples ) );
+                attemptJoin( tuple,
+                             thatSideTuples,
+                             newJoined );
             }
         }
 
@@ -265,81 +252,63 @@ class JoinMemory
     }
 
     /**
-     * Attempt to join the <code>tuple</code> against the tuples available
-     * through the <code>tupleIterator</code>.
+     * Attempt to join a given <code>tuple</code> against all tuples in a specified <code>TupleSet</code>.
      *
-     * @param tuple
-     *            The <code>Tuple</code> to attempt joining.
-     * @param tupleSet
-     *            The Tuples to attempt joining to the parameter.
-     * @return A possibly empty <code>Set</code> of joined <code>Tuples</code>.
+     * @param tuple The <code>Tuple</code> to attempt joining.
+     * @param tupleSet The Tuples to attempt joining to the parameter.
+     * @return The newly joined tuples.
      */
-    private Set attemptJoin(ReteTuple tuple,
-                            TupleSet tupleSet)
+    private TupleSet attemptJoin( ReteTuple tuple,
+                                  TupleSet tupleSet )
     {
-        Set joinedTuples = Collections.EMPTY_SET;
+        TupleSet newJoined = new TupleSet( );
 
-        ReteTuple joinedTuple;
+        attemptJoin( tuple,
+                     tupleSet,
+                     newJoined );
 
+        return newJoined;
+    }
+
+    /**
+     * Attempt to join a given <code>tuple</code> against all tuples in a specified <code>TupleSet</code>.
+     *
+     * @param tuple The <code>Tuple</code> to attempt joining.
+     * @param tupleSet The Tuples to attempt joining to the parameter.
+     * @param newJoined The <code>TupleSet</code> into which newly joined tuples will be added.
+     */
+    private void attemptJoin( ReteTuple tuple,
+                              TupleSet tupleSet,
+                              TupleSet newJoined )
+    {
         Iterator tupleIter = tupleSet.iterator( );
         while ( tupleIter.hasNext( ) )
         {
-            joinedTuple = attemptJoin( tuple,
-                                       (ReteTuple) tupleIter.next( ) );
-
-            if ( joinedTuple != null )
-            {
-                if ( joinedTuples == Collections.EMPTY_SET )
-                {
-                    joinedTuples = new HashSet( );
-                }
-
-                joinedTuples.add( joinedTuple );
-            }
+            attemptJoin( tuple,
+                         ( ReteTuple ) tupleIter.next( ),
+                         newJoined );
         }
-
-        return joinedTuples;
     }
 
-    private ReteTuple attemptJoin(ReteTuple left,
-                                  ReteTuple right)
+    private void attemptJoin( ReteTuple left,
+                              ReteTuple right,
+                              TupleSet newJoined )
     {
         Iterator declIter = this.commonDeclarations.iterator( );
         Declaration eachDecl;
-
-        FactHandle leftHandle;
-        FactHandle rightHandle;
 
         while ( declIter.hasNext( ) )
         {
             eachDecl = (Declaration) declIter.next( );
 
-            leftHandle = left.getKey( ).get( eachDecl );
-            rightHandle = right.getKey( ).get( eachDecl );
-
-            if ( leftHandle == null && rightHandle == null )
+            if ( !left.getKey( ).get( eachDecl ).equals( right.getKey( ).get( eachDecl ) ) )
             {
-                continue;
-            }
-
-            if ( leftHandle == null || rightHandle == null )
-            {
-                return null;
-            }
-
-            if ( leftHandle.equals( rightHandle ) )
-            {
-                continue;
-            }
-            else
-            {
-                return null;
+                return;
             }
         }
 
-        return new ReteTuple( left,
-                              right );
-
+        newJoined.addTuple( new ReteTuple( left,
+                                           right ) );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

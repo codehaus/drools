@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.22 2004-11-21 13:18:04 simon Exp $
+ * $Id: TupleSet.java,v 1.23 2004-11-29 06:28:56 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -135,31 +135,24 @@ class TupleSet
     }
 
     /**
-     * Add a <code>TupleSet</code> of <code>Tuple<code>s to this set.
-     *
-     *  @param tupleSet The tuple set.
-     */
-    public void addAllTuples(TupleSet tupleSet)
-    {
-        this.tuples.putAll( tupleSet.tuples );
-    }
-
-    /**
      * Retract tuples from this memory.
      *
-     * @param key
-     *            The key for the tuples to be removed.
+     * @param key The key for the tuples to be removed.
+     * @return <code>true</code> if at least one tuple was removed; <code>false</code> otherwise.
      */
-    public void removeAllTuples(TupleKey key)
+    public boolean removeAllTuples(TupleKey key)
     {
+        boolean removed = false;
         Iterator tupleIter = iterator( );
         while ( tupleIter.hasNext( ) )
         {
             if ( ( ( ReteTuple ) tupleIter.next( ) ).getKey( ).containsAll( key ) )
             {
                 tupleIter.remove( );
+                removed = true;
             }
         }
+        return removed;
     }
 
     /**
