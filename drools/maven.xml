@@ -7,9 +7,24 @@
     xmlns:maven="jelly:maven">
 
     <goal name="damagecontrol">
-      <attainGoal name="multiproject:clean"/>
+      <!--<attainGoal name="multiproject:clean"/>-->
+      <attainGoal name="manual-clean"/>
       ${pom.getPluginContext( "maven-multiproject-plugin" ).setVariable( "goal", "jar:jar" )}
       <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="manual-clean">
+        <ant:delete dir="drools-base/target"/>
+        <ant:delete dir="drools-base/target"/>
+        <ant:delete dir="drools-core/target"/>
+        <ant:delete dir="drools-examples/target"/>
+        <ant:delete dir="drools-groovy/target"/>
+        <ant:delete dir="drools-io/target"/>
+        <ant:delete dir="drools-java/target"/>
+        <ant:delete dir="drools-jsr94/target"/>
+        <ant:delete dir="drools-python/target"/>
+        <ant:delete dir="drools-smf/target"/>
+        <ant:delete dir="drools-smftest/target"/>
     </goal>
 
     <goal name="default">
