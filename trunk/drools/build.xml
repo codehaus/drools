@@ -124,21 +124,6 @@
         <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
     </target>
 
-    <available classname="antlr.Tool" property="antlr.present"/>
-    <target name="antlr.check" unless="antlr.present">
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
-        <echo level="warning" message="WARNING: You do not appear to have Ant configured to use Clover!"/>
-        <echo level="warning" message="If you see Ant errors about ANTLR, try adding the"/>
-        <echo level="warning" message="  following argument to the front of your Ant commands:"/>
-        <echo level="warning" message="    -lib drools-java/lib/${antlr.jar}"/>
-        <echo level="warning" message=" "/>
-        <echo level="warning" message="Alternatively, copy the ANTLR JAR file"/>
-        <echo level="warning" message="  to your Ant installation's lib directory like so:"/>
-        <echo level="warning" message="    cp drools-java/lib/${antlr.jar} ${env.ANT_HOME}/lib"/>
-        <echo level="warning" message="WARNING -- WARNING -- WARNING -- WARNING -- WARNING -- WARNING"/>
-    </target>
-
     <!-- ================================================================== -->
     <!-- ===========vvvv==== Configuration Properties  =====vvvv=========== -->
     <!-- ================================================================== -->
