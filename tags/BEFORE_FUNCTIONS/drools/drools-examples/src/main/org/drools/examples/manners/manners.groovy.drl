@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+The definition of a RuleExecutionSet is not within the scope of the JSR 94.
+The implementation given in this file is written for the reference
+implementation. A rule engine vendor verifying their rule engine should
+modify this file to their specific needs.
+
+Miss Manners is a program which handles the problem of finding an acceptable
+seating arrangement for guests at a dinner party.  It will attempt to match
+people with the same hobbies, and to seat everyone next to a member of the
+opposite sex.  Manners is a small program, which has only few rules, and
+employs a depth-first search approach to the problem.
+-->
+
+<rule-set name="Miss Manners"
+          xmlns="http://drools.org/rules"
+          xmlns:groovy="http://drools.org/semantics/groovy"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/groovy groovy.xsd">
+
+       <!--
+       Initialize the root seating element.
+       -->
+        <rule name="find first seat" salience="40">
+           <parameter identifier="context">
+               <class>org.drools.examples.manners.model.Context</class>
+           </parameter>
+           <parameter identifier="guest">
+               <class>org.drools.examples.manners.model.Guest</class>
+           </parameter>
+
+           <groovy:condition>
+              context.isState("start")
+           </groovy:condition>
+
+            <groovy:consequence>
+               println "FIRE: find first seat: " + guest ;
+
+               drools.assertObject(new org.drools.examples.manners.model.Seating(1, guest, null));
+
+               context.setState("find_seating");
+               drools.modifyObject(context);
+            </groovy:consequence>
+        </rule>
+
+       <!--
+       Find guest for empty seat.
+       -->
+       <rule name="find seating" salience="30">
+          <parameter identifier="context">
+              <class>org.drools.examples.manners.model.Context</class>
+          </parameter>
+          <parameter identifier="guest">
+              <class>org.drools.examples.manners.model.Guest</class>
+          </parameter>
+          <parameter identifier="seating">
+              <class>org.drools.examples.manners.model.Seating</class>
+          </parameter>
+
+          <groovy:condition>
+             context.isState("find_seating")
+          </groovy:condition>
+
+          <groovy:condition>
+             seating.getGuest2() == null
+          </groovy:condition>
+
+          <groovy:condition>
+             !seating.getTabooList().contains(guest)
+          </groovy:condition>
+
+          <groovy:condition>
+             seating.getGuest1().hasOppositeSex(guest)
+          </groovy:condition>
+
+          <groovy:condition>
+             seating.getGuest1().hasSameHobby(guest)
+          </groovy:condition>
+
+          <groovy:consequence>
+             println "FIRE: find seating: " + seating + " " + guest ;
+
+             org.drools.examples.manners.model.Seating nextSeat = new org.drools.examples.manners.model.Seating(seating.getSeat2(), guest, seating);
+             drools.assertObject(nextSeat);
+
+             seating.setGuest2(guest);
+             seating.getTabooList().add(guest);
+             drools.modifyObject(seating);
+
+          </groovy:consequence>
+       </rule>
+
+       <!--
+       Reached dead end, try another path.
+       -->
+       <rule name="try another path" salience="20">
+          <parameter identifier="context">
+              <class>org.drools.examples.manners.model.Context</class>
+          </parameter>
+          <parameter identifier="lastSeat">
+              <class>org.drools.examples.manners.model.LastSeat</class>
+          </parameter>
+          <parameter identifier="seating">
+              <class>org.drools.examples.manners.model.Seating</class>
+          </parameter>
+
+          <groovy:condition>
+             context.isState("find_seating")
+          </groovy:condition>
+
+          <groovy:condition>
+             lastSeat.getSeat() > seating.getSeat1()
+          </groovy:condition>
+
+          <groovy:condition>
+             seating.getGuest2() == null
+          </groovy:condition>
+
+          <groovy:consequence>
+             println "FIRE: try another path: " + seating ;
+
+             org.drools.examples.manners.model.Seating prevSeat = seating.getPrevSeat();
+             prevSeat.setGuest2(null);
+             drools.modifyObject(prevSeat);
+
+             drools.retractObject(seating);
+          </groovy:consequence>
+       </rule>
+
+       <!--
+       All seats are taken.
+       -->
+       <rule name="we are done" salience="10">
+          <parameter identifier="context">
+              <class>org.drools.examples.manners.model.Context</class>
+          </parameter>
+          <parameter identifier="lastSeat">
+              <class>org.drools.examples.manners.model.LastSeat</class>
+          </parameter>
+          <parameter identifier="seating">
+              <class>org.drools.examples.manners.model.Seating</class>
+          </parameter>
+
+          <groovy:condition>
+             context.isState("find_seating")
+          </groovy:condition>
+
+          <groovy:condition>
+             lastSeat.getSeat() == seating.getSeat1()
+          </groovy:condition>
+
+          <groovy:consequence>
+             println "FIRE: we are done" ;
+
+             List list = new ArrayList();
+             while(seating != null) {
+                org.drools.examples.manners.model.Seat seat = new org.drools.examples.manners.model.Seat(seating.getSeat1(), seating.getGuest1().getName());
+                seating = seating.getPrevSeat();
+                list.add(seat);
+             }
+
+             int i = list.size();
+             while (i > 0) {
+                org.drools.examples.manners.model.Seat seat = (org.drools.examples.manners.model.Seat)list.get(i-1);
+                println seat ;
+                drools.assertObject(seat);
+                i--;
+             }
+
+             context.setState("all_done");
+             drools.modifyObject(context);
+          </groovy:consequence>
+       </rule>
+
+</rule-set>
+
