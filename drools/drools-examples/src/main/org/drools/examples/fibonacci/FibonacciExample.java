@@ -24,41 +24,6 @@ public class FibonacciExample
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 
-        WorkingMemoryEventListener listener = new DefaultWorkingMemoryEventListener()
-        {
-            public void objectAsserted(ObjectAssertedEvent event)
-            {
-                System.out.println("asserted");
-            }
-
-            public void objectModified(ObjectModifiedEvent event)
-            {
-                System.out.println("modified");
-            }
-
-            public void objectRetracted(ObjectRetractedEvent event)
-            {
-                System.out.println("retracted");
-            }
-
-            public void conditionTested(ConditionTestedEvent event)
-            {
-                System.out.println("tested : " + event.getPassed());
-            }
-
-            public void activationCreated(ActivationCreatedEvent event)
-            {
-                System.out.println("activation created");
-            }
-
-            public void activationFired(ActivationFiredEvent event)
-            {
-                System.out.println("activation fired");
-            }
-        };
-
-        workingMemory.addEventListener(listener);
-
         Fibonacci fibonacci = new Fibonacci( 50 );
 
         long start = System.currentTimeMillis();
