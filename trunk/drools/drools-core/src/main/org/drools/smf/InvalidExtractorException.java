@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: InvalidExtractorException.java,v 1.1 2002-08-18 19:17:51 bob Exp $
+ $Id: InvalidExtractorException.java,v 1.2 2003-10-29 20:29:33 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -82,6 +82,6 @@ public class InvalidExtractorException extends SemanticComponentException
      */
     public String getMessage()
     {
-        return getClass().getName() + " is not a valid fact extractor";
+        return getInvalidClass().getName() + " is not a valid fact extractor";
     }
 }
