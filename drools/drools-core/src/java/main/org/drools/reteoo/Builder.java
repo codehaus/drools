@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.20 2002-08-20 18:33:17 bob Exp $
+ $Id: Builder.java,v 1.21 2002-08-21 05:46:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -133,13 +133,15 @@ public class Builder
         boolean performedJoin      = false;
         boolean attachedExtract    = false;
         boolean cycleAttachExtract = false;
+        boolean joinedForCondition = false;
         
         leafNodes = createParameterNodes( rule );
 
-        do 
+        while ( true )
         {
-            performedJoin   = false;
-            attachedExtract = false;
+            performedJoin      = false;
+            attachedExtract    = false;
+            joinedForCondition = false;
 
             if ( ! conds.isEmpty() )
             {
@@ -148,7 +150,7 @@ public class Builder
             }
 
             attachedExtract = attachExtractions( factExtracts,
-                                                     leafNodes );
+                                                 leafNodes );
 
             performedJoin = createJoinNodes( leafNodes );
 
@@ -158,16 +160,31 @@ public class Builder
                  &&
                  ! conds.isEmpty())
             {
-                joinForCondition( conds,
-                                  leafNodes );
+                joinedForCondition = joinForCondition( conds,
+                                                       leafNodes );
             }
+
+            if ( joinedForCondition )
+            {
+                continue;
+            }
+
+            if ( ( performedJoin
+                   ||
+                   attachedExtract )
+                 &&
+                 leafNodes.size() > 1 )
+            {
+                continue;
+            }
+
+            break;
         }
-        while ( ! leafNodes.isEmpty() 
-                &&
-                ( performedJoin
-                  ||
-                  attachedExtract
-                  ) );
+
+        if ( leafNodes.size() != 1 )
+        {
+            throw new RuleIntegrationException( rule );
+        }
 
         TupleSource lastNode = (TupleSource) leafNodes.iterator().next();
 

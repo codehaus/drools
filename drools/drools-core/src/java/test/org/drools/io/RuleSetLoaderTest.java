@@ -65,7 +65,7 @@ public class RuleSetLoaderTest extends TestCase
 
         assertNotNull( ruleSets );
 
-        assertEquals( 2,
+        assertEquals( 3,
                       ruleSets.size() );
 
         RuleSet ruleSet    = null;
@@ -163,7 +163,7 @@ public class RuleSetLoaderTest extends TestCase
 
         Set conditionExprs = new HashSet();
         conditionExprs.add( "strLen > 5" );
-        conditionExprs.add( "strLen.intValue() < maxLen.intValue()" );
+        conditionExprs.add( "strLen < maxLen" );
 
         assertEquals( 2,
                       rule.getConditions().size() );

@@ -33,7 +33,7 @@
         <java:condition>strLen &gt; 5</java:condition>
       </condition>
       <condition>
-        <java:condition>strLen.intValue() &lt; maxLen.intValue()</java:condition>
+        <java:condition>strLen &lt; maxLen</java:condition>
       </condition>
       <consequence>
         <java:consequence>
@@ -52,8 +52,23 @@
 	-->
 
   <rule-set name="ruleset.2">
-
+    <!-- intentionally left blank -->
   </rule-set>
 
+  <rule-set name="ruleset.3">      
+    <rule name="rule.3.1">
+      <parameter identifier="str">
+        <java:class type="java.lang.String"/>
+      </parameter>
+      <condition>
+        <java:condition>true</java:condition>
+      </condition>
+      <consequence>
+        <java:consequence>
+          System.err.println( "saw a string: \"" + str + "\"" );
+        </java:consequence>
+      </consequence>
+    </rule>
+  </rule-set>
 
 </rules>
