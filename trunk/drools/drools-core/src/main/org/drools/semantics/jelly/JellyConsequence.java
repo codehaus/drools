@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequence.java,v 1.6 2003-03-04 05:09:39 kaz Exp $
+ $Id: JellyConsequence.java,v 1.7 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,24 +46,23 @@ package org.drools.semantics.jelly;
  
  */
 
+import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.Script;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.WorkingMemory;
+import org.drools.rule.Declaration;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
-import org.drools.rule.Declaration;
 
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
-import org.apache.commons.jelly.XMLOutput;
-
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Jelly-script semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirteR</a>
  *
- *  @version $Id: JellyConsequence.java,v 1.6 2003-03-04 05:09:39 kaz Exp $
+ *  @version $Id: JellyConsequence.java,v 1.7 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class JellyConsequence implements Consequence
 {

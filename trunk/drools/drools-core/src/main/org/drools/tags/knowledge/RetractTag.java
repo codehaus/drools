@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: RetractTag.java,v 1.1 2002-08-20 18:33:17 bob Exp $
+ $Id: RetractTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,16 +46,16 @@ package org.drools.tags.knowledge;
  
  */
 
-import org.drools.RetractionException;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.RetractionException;
 
 /** Retract an object from the working memory.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RetractTag.java,v 1.1 2002-08-20 18:33:17 bob Exp $
+ *  @version $Id: RetractTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class RetractTag extends FactTagSupport
 {
@@ -82,10 +82,10 @@ public class RetractTag extends FactTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         validateAttributes();
 
@@ -95,7 +95,7 @@ public class RetractTag extends FactTagSupport
         }
         catch (RetractionException e)
         {
-            throw new JellyException( e );
+            throw new JellyTagException( e );
         }
     }
 }

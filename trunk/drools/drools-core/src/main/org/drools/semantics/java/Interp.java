@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.6 2002-08-26 23:04:34 bob Exp $
+ $Id: Interp.java,v 1.7 2003-03-25 19:47:29 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,16 +46,15 @@ package org.drools.semantics.java;
  
  */
 
-import org.drools.rule.Declaration;
-import org.drools.spi.Tuple;
-import org.drools.spi.ObjectType;
-
+import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.NameSpace;
-import bsh.EvalError;
+import org.drools.rule.Declaration;
+import org.drools.spi.ObjectType;
+import org.drools.spi.Tuple;
 
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Base class for BeanShell interpreter-based Java semantic components.
  *
@@ -65,7 +64,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.6 2002-08-26 23:04:34 bob Exp $
+ *  @version $Id: Interp.java,v 1.7 2003-03-25 19:47:29 tdiesler Exp $
  */
 public class Interp
 {

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ClassObjectType.java,v 1.7 2002-08-25 20:30:06 bob Exp $
+ $Id: ClassObjectType.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,17 +46,16 @@ package org.drools.semantics.java;
  
  */
 
-import org.drools.spi.ObjectType;
-
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.drools.spi.ObjectType;
 
 /** Java class semantics <code>ObjectType</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.7 2002-08-25 20:30:06 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.8 2003-03-25 19:47:29 tdiesler Exp $
  */
 public class ClassObjectType implements ObjectType
 {

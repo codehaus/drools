@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.6 2002-09-27 20:55:32 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.7 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,18 +46,18 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.impl.DynamicTagLibrary;
 import org.drools.smf.SemanticModule;
 
-import org.apache.commons.jelly.impl.DynamicTagLibrary;
-
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /** Dyanmic tag library for loading <code>SemanticModule</code>s.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.6 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.7 2003-03-25 19:47:32 tdiesler Exp $
  */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -76,10 +76,10 @@ class SemanticsTagLibrary extends DynamicTagLibrary
      *
      *  @param module The module to make available as a taglib.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to initialize the module as a tag library.
      */
-    SemanticsTagLibrary(SemanticModule module) throws Exception
+    SemanticsTagLibrary(SemanticModule module) throws JellyTagException
     {
         super( module.getUri() );
         this.module = module;
@@ -105,10 +105,10 @@ class SemanticsTagLibrary extends DynamicTagLibrary
 
     /** Register <code>ObjectType</code>s.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register this module's object-types.
      */
-    protected void registerObjectTypes() throws Exception
+    protected void registerObjectTypes() throws JellyTagException
     {
         Set names = getSemanticModule().getObjectTypeNames();
 
@@ -131,11 +131,11 @@ class SemanticsTagLibrary extends DynamicTagLibrary
      *  @param name The name.
      *  @param beanClass The class.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register the object-type.
      */
     protected void registerObjectType(final String name,
-                                      final Class beanClass) throws Exception
+                                      final Class beanClass) throws JellyTagException
     {
         registerBeanTag( name,
                          new ComponentTagFactory( beanClass,
@@ -144,10 +144,10 @@ class SemanticsTagLibrary extends DynamicTagLibrary
 
     /** Register <code>Condition</code>s.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register this module's conditions.
      */
-    protected void registerConditions() throws Exception
+    protected void registerConditions() throws JellyTagException
     {
         Set names = getSemanticModule().getConditionNames();
 
@@ -170,11 +170,11 @@ class SemanticsTagLibrary extends DynamicTagLibrary
      *  @param name The name.
      *  @param beanClass The class.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register the condition.
      */
     protected void registerCondition(final String name,
-                                     final Class beanClass) throws Exception
+                                     final Class beanClass) throws JellyTagException
     {
         registerBeanTag( name,
                          new ComponentTagFactory( beanClass,
@@ -183,10 +183,10 @@ class SemanticsTagLibrary extends DynamicTagLibrary
 
     /** Register <code>Extractors</code>s.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register this module's extractors.
      */
-    protected void registerExtractors() throws Exception
+    protected void registerExtractors() throws JellyTagException
     {
         Set names = getSemanticModule().getExtractorNames();
 
@@ -209,11 +209,11 @@ class SemanticsTagLibrary extends DynamicTagLibrary
      *  @param name The name.
      *  @param beanClass The class.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register the extractor.
      */
     protected void registerExtractor(final String name,
-                                     final Class beanClass) throws Exception
+                                     final Class beanClass) throws JellyTagException
     {
         registerBeanTag( name,
                          new ComponentTagFactory( beanClass,
@@ -222,10 +222,10 @@ class SemanticsTagLibrary extends DynamicTagLibrary
 
     /** Register <code>Consequence</code>s.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register this module's consequences.
      */
-    protected void registerConsequences() throws Exception
+    protected void registerConsequences() throws JellyTagException
     {
         Set names = getSemanticModule().getConsequenceNames();
 
@@ -248,11 +248,11 @@ class SemanticsTagLibrary extends DynamicTagLibrary
      *  @param name The name.
      *  @param beanClass The class.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to register the consequence.
      */
     protected void registerConsequence(final String name,
-                                       final Class beanClass) throws Exception
+                                       final Class beanClass) throws JellyTagException
     {
         registerBeanTag( name,
                          new ComponentTagFactory( beanClass,

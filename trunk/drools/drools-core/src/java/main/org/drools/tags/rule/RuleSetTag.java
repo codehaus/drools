@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleSetTag.java,v 1.5 2003-01-01 23:11:40 bob Exp $
+ $Id: RuleSetTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,11 +46,12 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.io.RuleSetLoader;
 import org.drools.rule.RuleSet;
 import org.drools.tags.knowledge.RuleBaseTag;
-
-import org.apache.commons.jelly.XMLOutput;
 
 /** Construct a <code>RuleSet</code>.
  *
@@ -58,7 +59,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetTag.java,v 1.5 2003-01-01 23:11:40 bob Exp $
+ *  @version $Id: RuleSetTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class RuleSetTag extends RuleTagSupport
 {
@@ -143,10 +144,10 @@ public class RuleSetTag extends RuleTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         requiredAttribute( "name",
                            this.name );

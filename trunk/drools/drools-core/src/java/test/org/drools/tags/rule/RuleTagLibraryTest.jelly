@@ -186,7 +186,7 @@
       </parameter>
     </j:catch>
 <!--
-    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+    <test:assert test="${e != null}">Should have thrown JellyTagException: No rule</test:assert>
 -->
   </test:case>
 
@@ -242,7 +242,7 @@
       </condition>
     </j:catch>
 <!--
-    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+    <test:assert test="${e != null}">Should have thrown JellyTagException: No rule</test:assert>
 -->
   </test:case>
 
@@ -291,7 +291,7 @@
       </extraction>
     </j:catch>
 <!--
-    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+    <test:assert test="${e != null}">Should have thrown JellyTagException: No rule</test:assert>
 -->
   </test:case>
 
@@ -358,7 +358,7 @@
       </consequence>
     </j:catch>
 <!--
-    <test:assert test="${e != null}">Should have thrown JellyException: No rule</test:assert> 
+    <test:assert test="${e != null}">Should have thrown JellyTagException: No rule</test:assert>
 -->
   </test:case>
 

@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ParameterTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
+ $Id: ParameterTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,11 +46,11 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 
 /** Construct a root fact object parameter <code>Declaration</code>
  *  for a <code>Rule</code>.
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ParameterTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
+ *  @version $Id: ParameterTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class ParameterTag extends DeclarationTag
 {
@@ -87,10 +87,10 @@ public class ParameterTag extends DeclarationTag
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         verifyAttributes();
 
@@ -98,7 +98,7 @@ public class ParameterTag extends DeclarationTag
 
         if ( rule == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyTagException( "No rule available" );
         }
 
         Declaration decl = createDeclaration( output );

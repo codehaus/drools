@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: FactTagSupport.java,v 1.3 2002-08-28 20:24:59 bob Exp $
+ $Id: FactTagSupport.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,17 +46,16 @@ package org.drools.tags.knowledge;
  
  */
 
-import org.drools.WorkingMemory;
-
-import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.JellyTagException;
 import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.TagSupport;
+import org.drools.WorkingMemory;
 
 /** Support for fact tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: FactTagSupport.java,v 1.3 2002-08-28 20:24:59 bob Exp $
+ *  @version $Id: FactTagSupport.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
  */
 public abstract class FactTagSupport extends TagSupport
 {
@@ -116,9 +115,9 @@ public abstract class FactTagSupport extends TagSupport
      *
      *  @return The working memory.
      *
-     *  @throws JellyException If a working memory cannot be retrieved.
+     *  @throws JellyTagException If a working memory cannot be retrieved.
      */
-    protected WorkingMemory getWorkingMemory() throws JellyException
+    protected WorkingMemory getWorkingMemory() throws JellyTagException
     {
         WorkingMemory memory = (WorkingMemory) getContext().getVariable( "org.drools.working-memory" );
 
@@ -128,7 +127,7 @@ public abstract class FactTagSupport extends TagSupport
             
             if ( tag == null )
             {
-                throw new JellyException( "No working memory available" );
+                throw new JellyTagException( "No working memory available" );
             }
             
             return tag.getMemory();

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: ExprVisitor.java,v 1.2 2002-10-11 15:02:30 ckl Exp $
+ $Id: ExprVisitor.java,v 1.3 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,12 +50,12 @@ package org.drools.semantics.python;
   All Rights Reserved
 */
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.python.parser.SimpleNode;
 import org.python.parser.Visitor;
 import org.python.parser.ast.Name;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /** Visits nodes in a Jython parse tree to extract the individual expression criteria.
  *

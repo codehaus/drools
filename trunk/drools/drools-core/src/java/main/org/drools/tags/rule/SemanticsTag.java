@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTag.java,v 1.5 2003-01-01 22:15:31 bob Exp $
+ $Id: SemanticsTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,9 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.smf.SemanticModule;
+import org.apache.commons.jelly.*;
 import org.drools.io.SemanticsLoader;
-
-import org.apache.commons.jelly.TagLibrary;
-import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.MissingAttributeException;
-import org.apache.commons.jelly.JellyException;
+import org.drools.smf.SemanticModule;
 
 /** Load semantics.
  *
@@ -61,7 +56,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTag.java,v 1.5 2003-01-01 22:15:31 bob Exp $
+ *  @version $Id: SemanticsTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class SemanticsTag extends TagSupport
 {
@@ -131,14 +126,21 @@ public class SemanticsTag extends TagSupport
      *
      *  @return The semantic module.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to load the semantic module.
      */
-    protected SemanticModule getSemanticModule() throws Exception
+    protected SemanticModule getSemanticModule() throws JellyTagException
     {
         SemanticsLoader loader = new SemanticsLoader();
 
-        return loader.load( getModule() );
+        try
+        {
+            return loader.load( getModule() );
+        }
+        catch (Exception e)
+        {
+            throw new JellyTagException( e );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -149,10 +151,10 @@ public class SemanticsTag extends TagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         if ( this.module == null
              ||
@@ -165,7 +167,7 @@ public class SemanticsTag extends TagSupport
 
         if ( semanticModule == null )
         {
-            throw new JellyException( "Unknown semantic module: " + this.module );
+            throw new JellyTagException( "Unknown semantic module: " + this.module );
         }
 
         if ( this.var != null )

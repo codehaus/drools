@@ -108,7 +108,7 @@
         <load-rules uri="file:///i/am/on/a/path/to/nowhere.drl"/>
       </rule-base>
     </j:catch>
-    <test:assert test="${e != null}">Should have thrown JellyException: invalid uri</test:assert>
+    <test:assert test="${e != null}">Should have thrown JellyTagException: invalid uri</test:assert>
   </test:case>
 
   <test:case name="testLoadRules_Valid">

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.8 2002-08-22 05:15:26 bob Exp $
+ $Id: ExprCondition.java,v 1.9 2003-03-25 19:47:29 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,14 +49,14 @@ package org.drools.semantics.java;
 import org.drools.rule.Declaration;
 import org.drools.smf.ConfigurableCondition;
 import org.drools.smf.ConfigurationException;
-import org.drools.spi.Tuple;
 import org.drools.spi.ConditionException;
+import org.drools.spi.Tuple;
 
 /** Java expression semantics <code>Condition</code>.
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.8 2002-08-22 05:15:26 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.9 2003-03-25 19:47:29 tdiesler Exp $
  */
 public class ExprCondition extends Expr implements ConfigurableCondition
 {

@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: KnowledgeTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
+ $Id: KnowledgeTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,12 +46,12 @@ package org.drools.tags.knowledge;
  
  */
 
-import org.drools.WorkingMemory;
-import org.drools.RuleBase;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
 
 /** Work in a knowledge session.
  *
@@ -59,7 +59,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: KnowledgeTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
+ *  @version $Id: KnowledgeTag.java,v 1.4 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class KnowledgeTag extends TagSupport
 {
@@ -175,16 +175,16 @@ public class KnowledgeTag extends TagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         if (  this.workingMemory == null 
               &&
               this.ruleBase == null ) 
         {
-            throw new JellyException( "Either 'memory' or 'rulebase' attribute must be specified" );
+            throw new JellyTagException( "Either 'memory' or 'rulebase' attribute must be specified" );
         }
 
         if ( this.workingMemory == null )

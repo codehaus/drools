@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: FixedDurationTag.java,v 1.1 2002-08-22 07:42:39 bob Exp $
+ $Id: FixedDurationTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,17 +46,17 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.rule.FixedDuration;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.rule.FixedDuration;
 
 /** Construct a <code>FixedDuration</code> for a <code>Rule</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: FixedDurationTag.java,v 1.1 2002-08-22 07:42:39 bob Exp $
+ *  @version $Id: FixedDurationTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class FixedDurationTag extends TagSupport
 {
@@ -146,16 +146,16 @@ public class FixedDurationTag extends TagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         DurationTag tag = (DurationTag) findAncestorWithClass( DurationTag.class );
 
         if ( tag == null )
         {
-            throw new JellyException( "No duration available" );
+            throw new JellyTagException( "No duration available" );
         }
 
         FixedDuration duration = new FixedDuration();

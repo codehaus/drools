@@ -1,7 +1,7 @@
 package org.drools.tags.semantics;
 
 /*
- $Id: ExtractorTag.java,v 1.4 2002-09-19 06:58:01 bob Exp $
+ $Id: ExtractorTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,10 +46,10 @@ package org.drools.tags.semantics;
  
  */
 
-import org.drools.smf.SimpleSemanticModule;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.drools.smf.SimpleSemanticModule;
 
 /** Defines a <code>Extractor</code>.
  *
@@ -82,10 +82,10 @@ public class ExtractorTag extends SemanticComponentTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         checkAttributes();
 
@@ -93,13 +93,20 @@ public class ExtractorTag extends SemanticComponentTagSupport
 
         if ( module == null )
         {
-            throw new JellyException( "Only allowed within a module" );
+            throw new JellyTagException( "Only allowed within a module" );
         }
 
-        Class extractClass = Class.forName( getClassname() );
+        try
+        {
+            Class extractClass = Class.forName( getClassname() );
 
-       module.addExtractor( getName(),
-                            extractClass );
+            module.addExtractor( getName(),
+                                 extractClass );
+        }
+        catch (Exception e)
+        {
+            throw new JellyTagException( e );
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: LoadRulesTag.java,v 1.4 2002-08-22 19:59:51 bob Exp $
+ $Id: LoadRulesTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,26 +46,25 @@ package org.drools.tags.knowledge;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.TagSupport;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.RuleBase;
 import org.drools.io.RuleSetLoader;
 import org.drools.rule.RuleSet;
 
-import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
-
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /** Load <code>Rule</code>s and <code>RuleSet</code>s
  *  into a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: LoadRulesTag.java,v 1.4 2002-08-22 19:59:51 bob Exp $
+ *  @version $Id: LoadRulesTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class LoadRulesTag extends TagSupport
 {
@@ -138,10 +137,10 @@ public class LoadRulesTag extends TagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         if ( getUri() == null
              &&
@@ -150,28 +149,28 @@ public class LoadRulesTag extends TagSupport
             throw new MissingAttributeException( "uri or file" );
         }
 
-        URL url = null;
-
-        if ( getUri() != null )
-        {
-            url = new URL( getUri() );
-        }
-        else
-        {
-            File file = new File( getFile() );
-
-            url = file.toURL();
-        }
-        
         RuleBaseTag tag = (RuleBaseTag) findAncestorWithClass( RuleBaseTag.class );
 
         if ( tag == null )
         {
-            throw new JellyException( "<load-rules> may only be used within a <rule-set>" );
+            throw new JellyTagException( "<load-rules> may only be used within a <rule-set>" );
         }
 
+        URL url = null;
+
         try
-        { 
+        {
+            if (getUri() != null)
+            {
+                url = new URL( getUri() );
+            }
+            else
+            {
+                File file = new File( getFile() );
+
+                url = file.toURL();
+            }
+        
             RuleSetLoader loader = new RuleSetLoader();
             
             List ruleSets = loader.load( url );
@@ -189,7 +188,7 @@ public class LoadRulesTag extends TagSupport
         }
         catch (Exception e)
         {
-            throw new JellyException( e );
+            throw new JellyTagException( e );
         }
     }
 }

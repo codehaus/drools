@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: DeclarationTag.java,v 1.5 2002-09-27 20:55:32 bob Exp $
+ $Id: DeclarationTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,13 +46,12 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.XMLOutput;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;
-
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.MissingAttributeException;
-import org.apache.commons.jelly.JellyException;
 
 /** Construct a <code>Declaration</code> for a <code>Rule</code>.
  *
@@ -60,7 +59,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DeclarationTag.java,v 1.5 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: DeclarationTag.java,v 1.6 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class DeclarationTag extends RuleTagSupport implements ObjectTypeReceptor
 {
@@ -150,16 +149,16 @@ public class DeclarationTag extends RuleTagSupport implements ObjectTypeReceptor
      *
      *  @return The configured declaration.
      *
-     *  @throws Exception If an error occurs while attempting  to
+     *  @throws JellyTagException If an error occurs while attempting  to
      *          configure the declaration.
      */
-    protected Declaration createDeclaration(XMLOutput output) throws Exception
+    protected Declaration createDeclaration(XMLOutput output) throws JellyTagException
     {
         invokeBody( output );
 
         if ( this.objectType == null )
         {
-            throw new JellyException( "No object type specified" );
+            throw new JellyTagException( "No object type specified" );
         }
 
         Declaration decl = new Declaration( this.objectType,
@@ -189,10 +188,10 @@ public class DeclarationTag extends RuleTagSupport implements ObjectTypeReceptor
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         verifyAttributes();
 

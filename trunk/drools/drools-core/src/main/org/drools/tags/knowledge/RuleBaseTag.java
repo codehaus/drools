@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: RuleBaseTag.java,v 1.4 2002-08-21 05:46:13 bob Exp $
+ $Id: RuleBaseTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,21 +46,20 @@ package org.drools.tags.knowledge;
  
  */
 
-import org.drools.RuleBase;
-import org.drools.RuleIntegrationException;
-import org.drools.rule.RuleSet;
-import org.drools.rule.Rule;
-
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
+import org.drools.RuleBase;
+import org.drools.RuleIntegrationException;
+import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 
 /** Create a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseTag.java,v 1.4 2002-08-21 05:46:13 bob Exp $
+ *  @version $Id: RuleBaseTag.java,v 1.5 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class RuleBaseTag extends TagSupport
 {
@@ -121,10 +120,10 @@ public class RuleBaseTag extends TagSupport
      *
      *  @param ruleSet The rule-set to add.
      *
-     *  @throws JellyException If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to add the rule-set.
      */
-    public void addRuleSet(RuleSet ruleSet) throws JellyException
+    public void addRuleSet(RuleSet ruleSet) throws JellyTagException
     {
         try
         {
@@ -132,7 +131,7 @@ public class RuleBaseTag extends TagSupport
         }
         catch (RuleIntegrationException e)
         {
-            throw new JellyException( e );
+            throw new JellyTagException( e );
         }
     }
 
@@ -140,10 +139,10 @@ public class RuleBaseTag extends TagSupport
      *
      *  @param rule The rule to add.
      *
-     *  @throws JellyException If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to add the rule.
      */
-    public void addRule(Rule rule) throws JellyException
+    public void addRule(Rule rule) throws JellyTagException
     {
         try
         {
@@ -151,7 +150,7 @@ public class RuleBaseTag extends TagSupport
         }
         catch (RuleIntegrationException e)
         {
-            throw new JellyException( e );
+            throw new JellyTagException( e );
         }
     }
 
@@ -163,10 +162,10 @@ public class RuleBaseTag extends TagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         if ( this.var == null )
         {

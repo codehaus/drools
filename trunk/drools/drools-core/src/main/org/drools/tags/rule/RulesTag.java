@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RulesTag.java,v 1.1 2002-08-20 05:06:24 bob Exp $
+ $Id: RulesTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,13 +46,15 @@ package org.drools.tags.rule;
  
  */
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.XMLOutput;
 
 /** General rules container tag.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RulesTag.java,v 1.1 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: RulesTag.java,v 1.2 2003-03-25 19:47:32 tdiesler Exp $
  */
 public class RulesTag extends RuleTagSupport
 {
@@ -78,10 +80,10 @@ public class RulesTag extends RuleTagSupport
      *
      *  @param output The output sink.
      *
-     *  @throws Exception If an error occurs while attempting
+     *  @throws JellyTagException If an error occurs while attempting
      *          to perform this tag.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws MissingAttributeException, JellyTagException
     {
         invokeBody( output );
     }

@@ -27,7 +27,7 @@
     <j:catch var="e">
       <consequence/>
     </j:catch>
-    <test:assert test="${e != null}"> Should have thrown JellyException: not within module</test:assert> 
+    <test:assert test="${e != null}"> Should have thrown JellyTagException: not within module</test:assert>
   </test:case>
 
   <!-- 
