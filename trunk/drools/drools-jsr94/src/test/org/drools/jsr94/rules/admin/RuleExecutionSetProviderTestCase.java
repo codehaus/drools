@@ -30,10 +30,10 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
     /**
      * Test createRuleExecutionSet from DOM.
      */
-    public void testCreateFromDOM() throws Exception
+    public void testCreateFromElement() throws Exception
     {
-        // TODO: implement testCreateFromDOM()
-        // not implemented
+        // TODO: implement testCreateFromElement()
+        throw new UnsupportedOperationException("The createRuleExecutionSet(Element, Map) method has not yet been implemented.");
     }
 
 
@@ -43,7 +43,7 @@ public class RuleExecutionSetProviderTestCase extends RuleEngineTestBase
     public void testCreateFromSerializable() throws Exception
     {
         // TODO: implement testCreateFromSerializable()
-        // not implemented
+        throw new UnsupportedOperationException("The createRuleExecutionSet(Serializable, Map) method has not yet been implemented.");
     }
 
     /**
