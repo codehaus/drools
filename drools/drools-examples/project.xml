@@ -30,7 +30,7 @@
     <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/drools:drools</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/scm/drools:drools/drools-core</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
 
@@ -39,17 +39,35 @@
 
     <mailingLists>
         <mailingList>
-            <name>user</name>
-            <subscribe>user-subscribe@drools.codehaus.org</subscribe>
-            <unsubscribe>user-unsubscribe@drools.codehaus.org</unsubscribe>
-            <archive>http://archive.drools.codehaus.org/user/</archive>
-        </mailingList>
+            <name>announce</name>
+            <subscribe>mailto:announce-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>mailto:announce-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/announce/</archive>
+        </mailingList>     
         <mailingList>
-            <name>drools cvs messages</name>
-            <subscribe>scm-subscribe@drools.codehaus.org</subscribe>
-            <unsubscribe>scm-unsubscribe@drools.codehaus.org</unsubscribe>
+            <name>despots</name>
+            <subscribe>mailto:despots-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>mailto:despots-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/despots/</archive>
+        </mailingList>         
+        <mailingList>
+            <name>dev</name>
+            <subscribe>mailto:dev-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>mailto:dev-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/dev/</archive>
+        </mailingList>      
+        <mailingList>
+            <name>scm</name>
+            <subscribe>mailto:scm-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>mailto:scm-unsubscribe@drools.codehaus.org</unsubscribe>
             <archive>http://archive.drools.codehaus.org/scm/</archive>
-        </mailingList>
+        </mailingList>   
+        <mailingList>
+            <name>user</name>
+            <subscribe>mailto:user-subscribe@drools.codehaus.org</subscribe>
+            <unsubscribe>mailto:user-unsubscribe@drools.codehaus.org</unsubscribe>
+            <archive>http://archive.drools.codehaus.org/user/</archive>
+        </mailingList> 
     </mailingLists>
 
     <developers>
