@@ -204,8 +204,25 @@
         \noindent\rule[-1ex]{\columnwidth}{0.8mm}\vspace{-1ex}%
 }
 
+\newcommand{\partLayout}[2][?]{
+    \clearpage\thispagestyle{empty}
+{
+    \refstepcounter{part}
+    \usefont{OT1}{phv}{b}{n}\selectfont
+    \rule{0pt}{3in}
+
+    {\noindent\Huge\partname\ \arabic{part} }
+
+    \noindent\rule{\textwidth}{1pt}
+
+    \vspace{10pt}
+    {\noindent\Large#1}
+}
+    \clearpage}
+
 
 \begin{document}
+
 
 \frontmatter
 
@@ -254,6 +271,8 @@
 
 
 \mainmatter
+
+
 %\setcounter{chapter}{0}
 %\setcounter{page}{1}
 
@@ -266,6 +285,7 @@
 \pagestyle{fancy}
 
 
+\renewcommand{\part}{\secdef\partLayout\partLayout}
 
 \part{Drools}
 
