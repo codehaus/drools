@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.18 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: AgendaItem.java,v 1.19 2004-11-29 11:57:49 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,7 +43,6 @@ package org.drools.reteoo;
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
-import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
@@ -51,7 +50,7 @@ import java.io.Serializable;
 
 /**
  * Item entry in the <code>Agenda</code>.
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class AgendaItem
@@ -80,11 +79,9 @@ class AgendaItem
 
     /**
      * Construct.
-     * 
-     * @param tuple
-     *            The tuple.
-     * @param rule
-     *            The rule.
+     *
+     * @param tuple The tuple.
+     * @param rule The rule.
      */
     AgendaItem(ReteTuple tuple,
                Rule rule)
@@ -100,7 +97,7 @@ class AgendaItem
 
     /**
      * Retrieve the rule.
-     * 
+     *
      * @return The rule.
      */
     public Rule getRule()
@@ -111,10 +108,9 @@ class AgendaItem
     /**
      * Determine if this tuple depends on the values derrived from a particular
      * root object.
-     * 
-     * @param handle
-     *            The root object handle.
-     * 
+     *
+     * @param handle The root object handle.
+     *
      * @return <code>true<code> if this agenda item depends
      *          upon the item, otherwise <code>false</code>.
      */
@@ -125,9 +121,8 @@ class AgendaItem
 
     /**
      * Set the tuple.
-     * 
-     * @param tuple
-     *            The tuple.
+     *
+     * @param tuple The tuple.
      */
     void setTuple(ReteTuple tuple)
     {
@@ -136,7 +131,7 @@ class AgendaItem
 
     /**
      * Retrieve the tuple.
-     * 
+     *
      * @return The tuple.
      */
     public Tuple getTuple()
@@ -146,7 +141,7 @@ class AgendaItem
 
     /**
      * Retrieve the <code>TupleKey</code>.
-     * 
+     *
      * @return The key to the tuple in this item.
      */
     TupleKey getKey()
@@ -156,21 +151,18 @@ class AgendaItem
 
     /**
      * Fire this item.
-     * 
-     * @param workingMemory
-     *            The working memory context.
-     * 
-     * @throws ConsequenceException
-     *             If an error occurs while attempting to fire the consequence.
+     *
+     * @param workingMemory The working memory context.
+     *
+     * @throws ConsequenceException If an error occurs while attempting to fire the consequence.
      */
     void fire(WorkingMemoryImpl workingMemory) throws ConsequenceException
     {
-        Consequence consequence = getRule( ).getConsequence( );
 
-        consequence.invoke( tuple,
-                            workingMemory );
+        this.rule.getConsequence( ).invoke( this.tuple,
+                                            workingMemory );
 
-        workingMemory.getEventSupport( ).fireActivationFired( consequence,
+        workingMemory.getEventSupport( ).fireActivationFired( this.rule,
                                                               this.tuple );
     }
 
