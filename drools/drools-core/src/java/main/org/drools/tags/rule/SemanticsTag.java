@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
+ $Id: SemanticsTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
+ *  @version $Id: SemanticsTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
  */
 public class SemanticsTag extends TagSupport
 {
@@ -82,6 +82,7 @@ public class SemanticsTag extends TagSupport
      */
     public SemanticsTag()
     {
+        super( true );
         this.module = null;
     }
 

@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ExtractionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: ExtractionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,7 @@ package org.drools.tags.rule;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
+import org.drools.rule.Rule;
 import org.drools.spi.Extractor;
 
 import org.apache.commons.jelly.XMLOutput;
@@ -59,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ExtractionTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: ExtractionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
  */
 public class ExtractionTag extends RuleTagSupport
 {
@@ -72,6 +73,8 @@ public class ExtractionTag extends RuleTagSupport
 
     /** The semantic extractor. */
     private Extractor extractor;
+
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -125,6 +128,16 @@ public class ExtractionTag extends RuleTagSupport
         return this.target;
     }
 
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -141,7 +154,14 @@ public class ExtractionTag extends RuleTagSupport
         requiredAttribute( "target",
                            this.target );
 
-        Declaration decl = getRule().getDeclaration( this.target );
+        Rule rule = getRule();
+
+        if ( rule == null )
+        {
+            throw new JellyException( "No rule available" );
+        }
+
+        Declaration decl = rule.getDeclaration( this.target );
 
         if ( decl == null )
         {
@@ -158,6 +178,15 @@ public class ExtractionTag extends RuleTagSupport
         Extraction extraction = new Extraction( decl,
                                                 this.extractor );
 
-        getRule().addExtraction( extraction );
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      extraction );
+        }
+
+        getContext().setVariable( "org.drools.extraction",
+                                  extraction );
+
+        rule.addExtraction( extraction );
     }
 }

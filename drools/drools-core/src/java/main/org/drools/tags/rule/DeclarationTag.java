@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: DeclarationTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
+ $Id: DeclarationTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DeclarationTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
+ *  @version $Id: DeclarationTag.java,v 1.3 2002-08-19 21:00:13 bob Exp $
  */
 public class DeclarationTag extends RuleTagSupport
 {
@@ -73,6 +73,9 @@ public class DeclarationTag extends RuleTagSupport
 
     /** The semantic type. */
     private ObjectType objectType;
+
+    /** The variable. */
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -111,6 +114,24 @@ public class DeclarationTag extends RuleTagSupport
     {
         this.objectType = objectType;
     }
+
+    /** Set the variable in which to store the <code>Declaration</code>.
+     *
+     *  @param var The variable name.
+     */
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    /** Retrieve the variable in which to store the <code>Declaration</code>.
+     *
+     *  @return The variable name.
+     */
+    public String getVar()
+    {
+        return this.var;
+    } 
 
     /** Verify required attributes.
      *
@@ -160,18 +181,30 @@ public class DeclarationTag extends RuleTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        Rule rule = getRule();
-
-        if ( rule == null )
-        {
-            throw new JellyException( "No rule available" );
-        }
-
         verifyAttributes();
 
         Declaration decl = createDeclaration( output );
 
-        rule.addDeclaration( decl );
+
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      decl );
+        }
+
+        getContext().setVariable( "org.drools.declaration",
+                                  decl );
+
+        Rule rule = getRule();
+
+        if ( rule != null )
+        {
+            rule.addDeclaration( decl );
+        }
+        else
+        {
+            System.err.println( "rule is null" );
+        }
     }
         
 }

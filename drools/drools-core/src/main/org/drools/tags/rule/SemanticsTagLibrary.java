@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: SemanticsTagLibrary.java,v 1.2 2002-08-19 17:24:00 bob Exp $
+ $Id: SemanticsTagLibrary.java,v 1.3 2002-08-19 21:00:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,11 +46,17 @@ package org.drools.tags.rule;
  
  */
 
+import org.drools.rule.Declaration;
 import org.drools.smf.SemanticModule;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Condition;
 import org.drools.spi.Extractor;
 import org.drools.spi.Consequence;
+import org.drools.smf.ConfigurableObjectType;
+import org.drools.smf.ConfigurableCondition;
+import org.drools.smf.ConfigurableExtractor;
+import org.drools.smf.ConfigurableConsequence;
+import org.drools.smf.ConfigurationException;
 
 import org.apache.commons.beanutils.ConvertingWrapDynaBean;
 import org.apache.commons.jelly.Tag;
@@ -67,7 +73,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SemanticsTagLibrary.java,v 1.2 2002-08-19 17:24:00 bob Exp $
+ *  @version $Id: SemanticsTagLibrary.java,v 1.3 2002-08-19 21:00:13 bob Exp $
  */
 class SemanticsTagLibrary extends DynamicTagLibrary
 {
@@ -160,14 +166,12 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                          public void setAttribute(String name,
                                                                   Object value) throws Exception
                                          {
-                                             System.err.println( objectType + " -- setAttribute(" + name + ", " + value + ")" );
                                              super.setAttribute( name,
                                                                  value );
                                          }
                                          
                                          public void beforeSetAttributes() throws Exception
                                          {
-                                             System.err.println( "beforeSetAttribute()" );
                                              try
                                              {
                                                  this.objectType = (ObjectType) beanClass.newInstance();
@@ -262,6 +266,19 @@ class SemanticsTagLibrary extends DynamicTagLibrary
                                              if ( tag == null )
                                              {
                                                  throw new JellyException( "No wrapper for condition" );
+                                             }
+
+                                             if ( this.condition instanceof ConfigurableCondition )
+                                             {
+                                                 try
+                                                 {
+                                                     ((ConfigurableCondition)this.condition).configure( getBodyText(),
+                                                                                                        tag.getAvailableDeclarations() );
+                                                 }
+                                                 catch (ConfigurationException e)
+                                                 {
+                                                     throw new JellyException( e );
+                                                 }
                                              }
 
                                              tag.setCondition( this.condition );
