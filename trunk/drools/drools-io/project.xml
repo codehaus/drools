@@ -2,7 +2,7 @@
 <project>
 
     <pomVersion>3</pomVersion>
-    <groupId>drools-io</groupId>
+    <name>Drools :: Semantics IO Library</name>
     <id>drools-io</id>
     <groupId>drools</groupId>
     <currentVersion>2.0-beta-13-dev</currentVersion>
