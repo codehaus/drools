@@ -12,7 +12,7 @@
 
       <div class="code">
 <pre>
-&lt;rule-set <b>xmlns:java="http://drools.org/semantics/java"</b>
+&lt;rule-set <span class="highlight">xmlns:java="http://drools.org/semantics/java"</span>
           ...&gt;
 </pre>
       </div>
@@ -35,7 +35,7 @@
          
             <div class="code">
 <pre>
-&lt;java:class&gt;<b>com.mycompany.Person</b>&lt/java:class&gt;
+&lt;java:class&gt;<span class="highlight">com.mycompany.Person</span>&lt/java:class&gt;
 </pre>
             </div>
         </div>
@@ -58,7 +58,7 @@
 
             <div class="code">
 <pre>
-&lt;java:condition&gt;<b>employee.getSlackRatio() &amp;gt; 0.25</b>&lt/java:condition&gt;
+&lt;java:condition&gt;<span class="highlight">employee.getSlackRatio() &amp;gt; 0.25</span>&lt/java:condition&gt;
 </pre>
             </div>
         </div>
@@ -95,7 +95,8 @@
   import com.mycompany.ChipperShredder;
 
   ChipperShredder.getInstance().accept( employee );
-  modifyObject( employee );
+
+  <span class="highlight">modifyObject( employee )</span>;
 &lt/java:consequence&gt;
 </pre>
             </div>
