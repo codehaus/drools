@@ -21,6 +21,12 @@ public class ActivationCreatedEvent extends WorkingMemoryEvent
         this.tuple = tuple;
     }
 
+    public Rule getRule( )
+    {
+        return this.rule;
+    }
+    
+
     public Consequence getConsequence()
     {
         return this.rule.getConsequence( );
