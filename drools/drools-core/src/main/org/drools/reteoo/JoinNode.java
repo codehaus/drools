@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.24 2004-11-02 10:15:37 simon Exp $
+ * $Id: JoinNode.java,v 1.25 2004-11-02 12:01:11 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -204,7 +204,7 @@ class JoinNode extends TupleSource
     void assertLeftTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
-        Set joinedTuples = memory.addLeftTuple( this, tuple );
+        Set joinedTuples = memory.addLeftTuple( tuple );
 
         if ( joinedTuples.isEmpty( ) )
         {
@@ -225,7 +225,7 @@ class JoinNode extends TupleSource
     void assertRightTuple(ReteTuple tuple, WorkingMemoryImpl workingMemory) throws AssertionException
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
-        Set joinedTuples = memory.addRightTuple( this, tuple );
+        Set joinedTuples = memory.addRightTuple( tuple );
 
         if ( joinedTuples.isEmpty( ) )
         {
