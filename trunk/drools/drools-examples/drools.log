@@ -1,0 +1,363 @@
+Buildfile: build.xml
+
+maven:jar:
+
+update-pom-check:
+Trying to override old definition of task maven-ant
+
+callUpdateDescriptor:
+
+project-properties:
+
+load-default-properties:
+
+prepare.httpget:
+
+verify-project-proxy:
+
+verify-project-noproxy:
+
+verify-project:
+
+init:
+
+local-init:
+    [mkdir] Created dir: /home/bob/old.workspaces/drools.org/drools-2/target/classes
+    [mkdir] Created dir: /home/bob/old.workspaces/drools.org/drools-2/target/docs
+
+pre-compile-callback-check:
+
+pre-compile-callback:
+
+do-compile:
+Trying to override old definition of task maven-ant
+
+update-pom-check:
+
+project-properties:
+Trying to override old definition of task project-properties
+Trying to override old definition of task update-properties
+
+load-default-properties:
+
+prepare.httpget:
+Trying to override old definition of task verify-project
+
+verify-project-proxy:
+
+verify-project-noproxy:
+
+verify-project:
+
+init:
+
+local-init:
+
+pre-env-callback-check:
+
+pre-env-callback:
+
+do-env:
+     [echo]       java.home = /usr/local/j2sdk1.3.1/jre
+     [echo]       user.home = /home/bob
+     [echo]       lib.repo = /home/bob/maven.repo
+     [echo]       Classpath:
+     [echo]       /home/bob/maven.repo/antlrall-2.7.1.jar:/home/bob/maven.repo/bsh-1.2-b3.jar:/home/bob/maven.repo/dom4j-1.4-dev.jar:/home/bob/maven.repo/jaxen-1.0-FCS-full.jar:/home/bob/maven.repo/jdring-1.0.jar:/home/bob/maven.repo/saxpath-1.0-FCS.jar
+     [echo]     
+
+post-env-callback-check:
+
+post-env-callback:
+
+env:
+
+prepare-sources:
+     [echo]       maven.prepareSourceDirectory = ./target/prepared-src
+     [echo]     
+    [mkdir] Created dir: /home/bob/old.workspaces/drools.org/drools-2/target/prepared-src
+
+prepareSources:
+     [copy] Copying 84 files to /home/bob/old.workspaces/drools.org/drools-2/target/prepared-src
+     [java] ANTLR Parser Generator   Version 2.7.1   1989-2000 jGuru.com
+     [java] ANTLR Parser Generator   Version 2.7.1   1989-2000 jGuru.com
+    [touch] Creating /home/bob/old.workspaces/drools.org/drools-2/target/prepared-src/PREPARED
+
+javac.compile:
+    [javac] Compiling 78 source files to /home/bob/old.workspaces/drools.org/drools-2/target/classes
+
+aspectj.compile:
+
+compile-sources:
+
+post-compile-callback-check:
+
+post-compile-callback:
+
+compile:
+
+pre-jar-callback-check:
+
+pre-jar-callback:
+
+pre-env-callback-check:
+
+pre-env-callback:
+
+do-env:
+     [echo]       java.home = /usr/local/j2sdk1.3.1/jre
+     [echo]       user.home = /home/bob
+     [echo]       lib.repo = /home/bob/maven.repo
+     [echo]       Classpath:
+     [echo]       /home/bob/maven.repo/antlrall-2.7.1.jar:/home/bob/maven.repo/bsh-1.2-b3.jar:/home/bob/maven.repo/dom4j-1.4-dev.jar:/home/bob/maven.repo/jaxen-1.0-FCS-full.jar:/home/bob/maven.repo/jdring-1.0.jar:/home/bob/maven.repo/saxpath-1.0-FCS.jar
+     [echo]     
+
+post-env-callback-check:
+
+post-env-callback:
+
+env:
+
+jar-resources:
+
+do-jar:
+Trying to override old definition of task maven-ant
+
+update-pom-check:
+
+project-properties:
+Trying to override old definition of task project-properties
+Trying to override old definition of task update-properties
+
+load-default-properties:
+
+prepare.httpget:
+Trying to override old definition of task verify-project
+
+verify-project-proxy:
+
+verify-project-noproxy:
+
+verify-project:
+
+init:
+
+local-init:
+    [mkdir] Created dir: /home/bob/old.workspaces/drools.org/drools-2/target/test-classes
+    [mkdir] Created dir: /home/bob/old.workspaces/drools.org/drools-2/target/test-reports
+
+pre-test-callback-check:
+
+pre-test-callback:
+
+compile:
+Trying to override old definition of task maven-ant
+
+update-pom-check:
+
+project-properties:
+Trying to override old definition of task project-properties
+Trying to override old definition of task update-properties
+
+load-default-properties:
+
+prepare.httpget:
+Trying to override old definition of task verify-project
+
+verify-project-proxy:
+
+verify-project-noproxy:
+
+verify-project:
+
+init:
+
+local-init:
+
+pre-compile-callback-check:
+
+pre-compile-callback:
+
+do-compile:
+Trying to override old definition of task maven-ant
+
+update-pom-check:
+
+project-properties:
+Trying to override old definition of task project-properties
+Trying to override old definition of task update-properties
+
+load-default-properties:
+
+prepare.httpget:
+Trying to override old definition of task verify-project
+
+verify-project-proxy:
+
+verify-project-noproxy:
+
+verify-project:
+
+init:
+
+local-init:
+
+pre-env-callback-check:
+
+pre-env-callback:
+
+do-env:
+     [echo]       java.home = /usr/local/j2sdk1.3.1/jre
+     [echo]       user.home = /home/bob
+     [echo]       lib.repo = /home/bob/maven.repo
+     [echo]       Classpath:
+     [echo]       /home/bob/maven.repo/antlrall-2.7.1.jar:/home/bob/maven.repo/bsh-1.2-b3.jar:/home/bob/maven.repo/dom4j-1.4-dev.jar:/home/bob/maven.repo/jaxen-1.0-FCS-full.jar:/home/bob/maven.repo/jdring-1.0.jar:/home/bob/maven.repo/saxpath-1.0-FCS.jar
+     [echo]     
+
+post-env-callback-check:
+
+post-env-callback:
+
+env:
+
+prepare-sources:
+     [echo]       maven.prepareSourceDirectory = ./target/prepared-src
+     [echo]     
+
+prepareSources:
+     [java] ANTLR Parser Generator   Version 2.7.1   1989-2000 jGuru.com
+     [java] ANTLR Parser Generator   Version 2.7.1   1989-2000 jGuru.com
+
+javac.compile:
+    [javac] Compiling 5 source files to /home/bob/old.workspaces/drools.org/drools-2/target/classes
+
+aspectj.compile:
+
+compile-sources:
+
+post-compile-callback-check:
+
+post-compile-callback:
+
+compile:
+Trying to override old definition of task maven-ant
+
+update-pom-check:
+
+project-properties:
+Trying to override old definition of task project-properties
+Trying to override old definition of task update-properties
+
+load-default-properties:
+
+prepare.httpget:
+Trying to override old definition of task verify-project
+
+verify-project-proxy:
+
+verify-project-noproxy:
+
+verify-project:
+
+init:
+
+local-init:
+
+pre-env-callback-check:
+
+pre-env-callback:
+
+do-env:
+     [echo]       java.home = /usr/local/j2sdk1.3.1/jre
+     [echo]       user.home = /home/bob
+     [echo]       lib.repo = /home/bob/maven.repo
+     [echo]       Classpath:
+     [echo]       /home/bob/maven.repo/antlrall-2.7.1.jar:/home/bob/maven.repo/bsh-1.2-b3.jar:/home/bob/maven.repo/dom4j-1.4-dev.jar:/home/bob/maven.repo/jaxen-1.0-FCS-full.jar:/home/bob/maven.repo/jdring-1.0.jar:/home/bob/maven.repo/saxpath-1.0-FCS.jar
+     [echo]     
+
+post-env-callback-check:
+
+post-env-callback:
+
+env:
+
+jar-resources:
+    [javac] Compiling 29 source files to /home/bob/old.workspaces/drools.org/drools-2/target/test-classes
+
+run-tests:
+     [echo]       Running all JUnit tests
+     [echo]     
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.AssignmentNodeTest
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.259 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.BuilderTest
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.089 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.FilterNodeTest
+    [junit] Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.076 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.JoinMemoryTest
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.087 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.ObjectTypeNodeTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.045 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.ParameterNodeTest
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.051 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.RootNodeTest
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.034 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.TerminalNodeTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.046 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.TupleSourceTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.036 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.reteoo.PriorityQueueTest
+    [junit] Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.029 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.RoughDom4jTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 1.271 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.RuleBaseTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.051 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.semantic.java.io.RuleSetReaderTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 1.886 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.semantic.java.BeanShellActionTest
+    [junit] Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.564 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.semantic.java.BeanShellFilterConditionTest
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.568 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.semantic.java.JavaObjectTypeTest
+    [junit] Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.021 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.spi.DeclarationTest
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.02 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.spi.RuleSetTest
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.037 sec
+    [junit] dir attribute ignored if running in the same VM
+    [junit] Running org.drools.spi.RuleTest
+    [junit] Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.043 sec
+
+do-test:
+
+post-test-callback-check:
+
+post-test-callback:
+
+test:
+      [jar] Building jar: /home/bob/old.workspaces/drools.org/drools-2/target/drools-1.0-dev.jar
+
+post-jar-callback-check:
+
+post-jar-callback:
+
+jar:
+
+BUILD SUCCESSFUL
+Total time: 51 seconds
