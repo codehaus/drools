@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"            
+           targetNamespace="http://drools.org/rules"
+           elementFormDefault="qualified"
+           xmlns:rules="http://drools.org/rules"  
+           xmlns:java="http://drools.org/semantics/java"
+           xmlns:groovy="http://drools.org/semantics/groovy"
+           xmlns:python="http://drools.org/semantics/python">
+       
+  <xs:import namespace="http://drools.org/semantics/java"/>
+  <xs:import namespace="http://drools.org/semantics/groovy"/>
+  <xs:import namespace="http://drools.org/semantics/python"/>             
+  
+  <xs:element name="rule-set">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="rules:rule"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="rule">
+    <xs:complexType>  
+      <xs:sequence>
+        
+        <xs:element name="parameter" maxOccurs="unbounded" >
+          <xs:complexType>
+            <xs:choice>
+              <xs:element ref="java:class"/>
+              <xs:element ref="groovy:class"/>
+              <xs:element ref="python:class"/>
+            </xs:choice>
+            <xs:attribute name="identifier" use="required" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:choice minOccurs="0" maxOccurs="unbounded">          
+          <xs:element name="declaration" minOccurs="0" maxOccurs="unbounded" >
+              <xs:complexType>
+                <xs:choice>
+                  <xs:element ref="java:class"/>
+                  <xs:element ref="groovy:class"/>
+                  <xs:element ref="python:class"/>
+                </xs:choice>
+                <xs:attribute name="identifier" use="required" type="xs:string"/>
+              </xs:complexType>
+            </xs:element>     
+          
+          <xs:element minOccurs="0" maxOccurs="unbounded" ref="java:extractor"/>   
+        </xs:choice>
+        
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="java:condition"/>
+          <xs:element ref="groovy:condition"/>
+          <xs:element ref="python:condition"/>
+        </xs:choice>
+        
+        <xs:element name="duration" minOccurs="0" >
+          <xs:complexType>
+            <xs:attribute name="days" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="hours" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="minutes" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="seconds" type="xs:nonNegativeInteger"/>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:choice>
+          <xs:element ref="java:consequence"/>
+          <xs:element ref="groovy:consequence"/>
+          <xs:element ref="python:consequence"/>
+        </xs:choice>
+        
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:string"/>
+      <xs:attribute name="salience" type="xs:integer"/>     
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
