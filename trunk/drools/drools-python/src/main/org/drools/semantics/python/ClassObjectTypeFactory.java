@@ -1,4 +1,4 @@
-package org.drools.semantics.java;
+package org.drools.semantics.python;
 
 import org.drools.spi.ObjectType;
 import org.drools.smf.ObjectTypeFactory;

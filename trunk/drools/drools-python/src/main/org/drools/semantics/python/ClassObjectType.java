@@ -1,7 +1,7 @@
-package org.drools.semantics.java;
+package org.drools.semantics.python;
 
 /*
- $Id: ClassObjectType.java,v 1.1 2003-12-17 07:29:13 bob Exp $
+ $Id: ClassObjectType.java,v 1.2 2003-12-17 07:50:35 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import org.drools.spi.ObjectType;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ClassObjectType.java,v 1.1 2003-12-17 07:29:13 bob Exp $
+ *  @version $Id: ClassObjectType.java,v 1.2 2003-12-17 07:50:35 bob Exp $
  */
 public class ClassObjectType
     implements ObjectType
