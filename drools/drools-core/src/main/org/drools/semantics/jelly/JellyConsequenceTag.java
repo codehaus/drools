@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: ConsequenceTag.java,v 1.1 2002-08-25 21:59:08 bob Exp $
+ $Id: JellyConsequenceTag.java,v 1.1 2002-08-25 22:22:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,7 @@ package org.drools.semantics.jelly;
  
  */
 
-import org.drools.tags.rule.RuleTag;
+import org.drools.tags.rule.ConsequenceTag;
 
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
@@ -56,9 +56,9 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConsequenceTag.java,v 1.1 2002-08-25 21:59:08 bob Exp $
+ *  @version $Id: JellyConsequenceTag.java,v 1.1 2002-08-25 22:22:42 bob Exp $
  */
-public class ConsequenceTag extends TagSupport
+public class JellyConsequenceTag extends TagSupport
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -66,7 +66,7 @@ public class ConsequenceTag extends TagSupport
 
     /** Construct.
      */
-    public ConsequenceTag()
+    public JellyConsequenceTag()
     {
         // intentionally left blank
     }
@@ -84,15 +84,16 @@ public class ConsequenceTag extends TagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        RuleTag tag = (RuleTag) findAncestorWithClass( RuleTag.class );
+        ConsequenceTag tag = (ConsequenceTag) findAncestorWithClass( ConsequenceTag.class );
 
         if ( tag == null )
         {
-            throw new JellyException( "No rule available" );
+            throw new JellyException( "No consequence wrapper available" );
         }
 
-        JellyConsequence consequence = new JellyConsequence( getBody() );
+        JellyConsequence consequence = new JellyConsequence( getBody(),
+                                                             output );
 
-        tag.getRule().setConsequence( consequence );
+        tag.setConsequence( consequence );
     }
 }

@@ -1,0 +1,47 @@
+
+<rules xmlns="http://drools.org/rules">
+
+  <semantics module="org.drools.semantics.java"/>
+  <semantics module="org.drools.semantics.jelly"/>
+
+  <rule-set name="Fishmonger Rules"
+           xmlns:java="http://drools.org/semantics/java"
+           xmlns:jelly="http://drools.org/semantics/jelly">
+
+    <rule name="Find Sisters">
+
+      <parameter identifier="person">
+        <java:class type="sisters.Person"/>
+      </parameter>
+
+      <parameter identifier="sister">
+        <java:class type="sisters.Person"/>
+      </parameter>
+
+      <condition>
+        <java:condition>person.hasSister( sister )</java:condition>
+      </condition>
+
+      <consequence>
+        <java:consequence>
+	    System.err.println( "person: " + person );
+	    System.err.println( "sister: " + sister );
+        </java:consequence>
+
+<!--
+        <jelly:consequence>
+         
+          This is some jelly:  
+             person: ${person}
+             sister: ${sister}
+
+        </jelly:consequence>
+-->
+      </consequence>
+
+    </rule>
+
+  </rule-set>
+
+</rules>
+
