@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.8 2003-11-21 04:18:13 bob Exp $
+ $Id: RuleBaseImpl.java,v 1.9 2003-11-23 02:28:46 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.drools.rule.RuleSet;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.8 2003-11-21 04:18:13 bob Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.9 2003-11-23 02:28:46 bob Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -72,6 +72,9 @@ class RuleBaseImpl
     /** Integrated rule-sets. */
     private RuleSet[] ruleSets;
 
+    /** Conflict resolution strategy. */
+    private ConflictResolutionStrategy conflictResolutionStrategy;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -80,12 +83,15 @@ class RuleBaseImpl
      *
      *  @param rete The rete network.
      *  @param ruleSets The rule-sets integrated into the rete.
+     *  @param conflictResolutionStrategy The conflict-resolution strategy.
      */
     RuleBaseImpl(Rete rete,
-                 RuleSet[] ruleSets)
+                 RuleSet[] ruleSets,
+                 ConflictResolutionStrategy conflictResolutionStrategy)
     {
-        this.rete = rete;
+        this.rete     = rete;
         this.ruleSets = ruleSets;
+        this.conflictResolutionStrategy = conflictResolutionStrategy;
     }
 
     // ------------------------------------------------------------
@@ -96,15 +102,15 @@ class RuleBaseImpl
      */
     public WorkingMemory newWorkingMemory()
     {
-        return new WorkingMemoryImpl( this );
+        return new WorkingMemoryImpl( this,
+                                      getConflictResolutionStrategy() );
     }
 
     /** @see RuleBase
      */
-    public WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy)
+    public ConflictResolutionStrategy getConflictResolutionStrategy()
     {
-        return new WorkingMemoryImpl( this,
-                                      strategy );
+        return this.conflictResolutionStrategy;
     }
 
     /** @see RuleBase

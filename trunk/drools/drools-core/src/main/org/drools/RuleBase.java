@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBase.java,v 1.24 2003-11-19 21:31:09 bob Exp $
+ $Id: RuleBase.java,v 1.25 2003-11-23 02:28:46 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBase.java,v 1.24 2003-11-19 21:31:09 bob Exp $
+ *  @version $Id: RuleBase.java,v 1.25 2003-11-23 02:28:46 bob Exp $
  */
 public interface RuleBase
     extends Serializable
@@ -82,21 +82,15 @@ public interface RuleBase
      */
     WorkingMemory newWorkingMemory();
 
-    /** Create a new <code>WorkingMemory</code> session for this <code>RuleBase</code>
-     *  with the specified <code>ConflictResolutionStrategy</code>.
-     *
-     *  @see WorkingMemory
-     *  @see ConflictResolutionStrategy
-     *
-     *  @param strategy The conflict resolution strategy.
-     *
-     *  @return A newly initialized <code>WorkingMemory</code>.
-     */
-    WorkingMemory newWorkingMemory(ConflictResolutionStrategy strategy);
-
     /** Retrieve the contained <code>RuleSet</code>s.
      *
      *  @return The rule sets.
      */
     RuleSet[] getRuleSets();
+
+    /** Retrieve the <code>ConflictResolutionStrategy</code>.
+     *
+     *  @return The conflict resolution strategy.
+     */
+    ConflictResolutionStrategy getConflictResolutionStrategy();
 }
