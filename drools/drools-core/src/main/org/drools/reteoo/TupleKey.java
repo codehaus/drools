@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.16 2004-10-09 06:59:00 simon Exp $
+ * $Id: TupleKey.java,v 1.17 2004-10-28 07:04:47 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,7 +48,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A composite key to match tuples.
@@ -123,7 +122,6 @@ class TupleKey implements Serializable
      *
      * @param declaration Column declaration.
      * @param handle The handle.
-     * @param value The value.
      */
     public void put(Declaration declaration, FactHandle handle)
     {
@@ -144,19 +142,6 @@ class TupleKey implements Serializable
     }
 
     /**
-     * Determine if this key contains the specified declaration.
-     *
-     * @param declaration The declaration to test.
-     *
-     * @return <code>true</code> if this key contains a column for the
-     *         specified declaration, otherwise <code>false</code>.
-     */
-    public boolean containsDeclaration(Declaration declaration)
-    {
-        return this.columns.containsKey( declaration );
-    }
-
-    /**
      * Determine if this key contains the specified root fact object.
      *
      * @param handle The fact-handle to test.
@@ -170,28 +155,6 @@ class TupleKey implements Serializable
     }
 
     /**
-     * Retrieve the number of columns in this key.
-     *
-     * @return The number of columns.
-     */
-    public int size()
-    {
-        return this.columns.size( );
-    }
-
-    /**
-     * Retrieve the declarations of this key.
-     *
-     * @see Declaration
-     *
-     * @return The set of declarations for this key.
-     */
-    public Set getDeclarations()
-    {
-        return this.columns.keySet( );
-    }
-
-    /**
      * Determine if the specified key is a subset of this key.
      *
      * @param that The key to compare.
@@ -202,7 +165,7 @@ class TupleKey implements Serializable
     {
         // return this.columns.containsAll( that.columns );
 
-        for ( Iterator declIter = that.getDeclarations( ).iterator( ); declIter
+        for ( Iterator declIter = that.columns.keySet( ).iterator( ); declIter
                                                                                .hasNext( ); )
         {
             Declaration eachDecl = ( Declaration ) declIter.next( );
