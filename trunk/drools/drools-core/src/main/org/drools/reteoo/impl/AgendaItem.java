@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaItem.java,v 1.2 2002-08-01 18:47:33 bob Exp $
+ $Id: AgendaItem.java,v 1.3 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package org.drools.reteoo.impl;
 import org.drools.WorkingMemory;
 
 import org.drools.rule.Rule;
-import org.drools.spi.ActionInvokationException;
+import org.drools.spi.ConsequenceException;
 
 /** Item entry in the <code>Agenda</code>.
  *
@@ -131,13 +131,13 @@ class AgendaItem
      *
      *  @param workingMemory The working memory context.
      *
-     *  @throws ActionInvokationException If an error occurs while
-     *          attempting to fire the action.
+     *  @throws ConsequenceException If an error occurs while
+     *          attempting to fire the consequence.
      */
-    void fire(WorkingMemory workingMemory) throws ActionInvokationException
+    void fire(WorkingMemory workingMemory) throws ConsequenceException
     {
-        getRule().getAction().invoke( getTuple(),
-                                      workingMemory );
+        getRule().getConsequence().invoke( getTuple(),
+                                           workingMemory );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,7 +1,7 @@
-package org.drools.reteoo;
+package org.drools.spi;
 
 /*
- $Id: Agenda.java,v 1.18 2002-08-10 19:34:31 bob Exp $
+ $Id: Consequence.java,v 1.1 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,38 +46,26 @@ package org.drools.reteoo;
  
  */
 
-import org.drools.spi.ConsequenceException;
+import org.drools.WorkingMemory;
 
-/** Rule-firing Agenda.
+/** Consequence to be fired upon successful  match of a <code>Rule</code>.
  *
- *  <p>
- *  Since many rules may be matched by a single assertObject(...)
- *  all scheduled actions are placed into the <code>Agenda</code>.
- *  </p>
- *
- *  <p>
- *  While processing a scheduled action, it may modify or retract
- *  objects in other scheduled actions, which must then be removed
- *  from the agenda.  Non-invalidated actions are left on the agenda,
- *  and are executed in turn.
- *  </p>
+ *  @see Rule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface Agenda
+public interface Consequence
 {
-    /** Determine if this <code>Agenda</code> has any
-     *  scheduled items.
+    /** Execute the consequence for the supplied
+     *  matching <code>Tuple</code>.
      *
-     *  @return <code>true<code> if the agenda is empty, otherwise
-     *          <code>false</code>.
-     */
-    boolean isEmpty();
-
-    /** Fire the next scheduled <code>Agenda</code> item.
+     *  @param tuple The matching tuple.
+     *  @param workingMemory The working memory session.
      *
      *  @throws ConsequenceException If an error occurs while
-     *          firing an agenda item.
+     *          attempting to invoke the consequence.
      */
-    void fireNextItem() throws ConsequenceException;
+    void invoke(Tuple tuple,
+                WorkingMemory workingMemory) throws ConsequenceException;
 }
+

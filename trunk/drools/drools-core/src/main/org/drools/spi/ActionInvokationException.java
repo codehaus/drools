@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ActionInvokationException.java,v 1.3 2002-07-27 05:52:17 bob Exp $
+ $Id: ActionInvokationException.java,v 1.4 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,13 @@ package org.drools.spi;
  
  */
 
-import org.drools.AssertionException;
-
 /** Indicates an error during an <code>Action</code> invokation.
  *
  *  @see Action
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ActionInvokationException extends AssertionException
+public class ActionInvokationException extends ConsequenceException
 {
     // ------------------------------------------------------------
     //     Constructors

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Action.java,v 1.4 2002-07-27 05:52:17 bob Exp $
+ $Id: Action.java,v 1.5 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import org.drools.WorkingMemory;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface Action
+public interface Action extends Consequence
 {
     /** Execute the action for the supplied
      *  matching <code>Tuple</code>.

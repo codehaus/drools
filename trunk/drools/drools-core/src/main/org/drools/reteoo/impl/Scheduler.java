@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: Scheduler.java,v 1.1 2002-07-28 13:55:47 bob Exp $
+ $Id: Scheduler.java,v 1.2 2002-08-10 19:34:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package org.drools.reteoo.impl;
  */
 
 import org.drools.WorkingMemory;
-import org.drools.spi.ActionInvokationException;
+import org.drools.spi.ConsequenceException;
 
 import fr.dyade.jdring.AlarmManager;
 import fr.dyade.jdring.AlarmListener;
@@ -200,7 +200,7 @@ class AgendaItemFireListener implements AlarmListener
         {
             this.item.fire( this.workingMemory );
         }
-        catch (ActionInvokationException e)
+        catch (ConsequenceException e)
         {
             e.printStackTrace();
         }
