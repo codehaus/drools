@@ -253,8 +253,12 @@ public class RuleTest
         rule.addExtraction( extraction );
 
         //add consequence
-        Consequence consequence = new org.drools.spi.InstrumentedConsequence();
-        rule.setConsequence( consequence );
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+
+        //add conditions
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );
+        rule.addCondition( new org.drools.spi.InstrumentedCondition() );
+
         rule.setSalience( 42 );
         rule.setLoadOrder( 22 );
 
@@ -276,5 +280,6 @@ public class RuleTest
         assertEquals(22, rule.getLoadOrder());
         assertLength(1, rule.getLocalDeclarations());
         assertLength(1, rule.getParameterDeclarations());
+        assertLength(2, rule.getConditions());
     }
 }

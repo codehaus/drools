@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.8 2004-06-25 01:57:26 mproctor Exp $
+ $Id: RuleSet.java,v 1.9 2004-06-27 22:44:58 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -51,15 +51,17 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 
+import java.io.Serializable;
+
 /** Collection of related <code>Rule</code>s.
  *
  *  @see Rule
  *
  *  @author <a href="mail:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSet.java,v 1.8 2004-06-25 01:57:26 mproctor Exp $
+ *  @version $Id: RuleSet.java,v 1.9 2004-06-27 22:44:58 mproctor Exp $
  */
-public class RuleSet
+public class RuleSet implements Serializable
 {
     // ------------------------------------------------------------
     //     Constants
