@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.4 2004-12-04 00:26:29 simon Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.5 2004-12-04 02:00:46 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -72,6 +72,13 @@ public class PrimitiveLongMapTest extends TestCase
         PrimitiveLongMap map = new PrimitiveLongMap( 2, 1 );
 
         assertNull( map.get( -1 ) );
+    }
+
+    public void testRemoveWithNegativeReturnsNull()
+    {
+        PrimitiveLongMap map = new PrimitiveLongMap( 2, 1 );
+
+        assertNull( map.remove( -1 ) );
     }
 
     public void testPutWithNegativeKeyThrowsIllegalArgumentException()
