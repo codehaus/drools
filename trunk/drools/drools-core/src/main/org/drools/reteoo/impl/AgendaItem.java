@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaItem.java,v 1.6 2003-10-15 20:03:59 bob Exp $
+ $Id: AgendaItem.java,v 1.7 2003-10-19 18:07:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 import org.drools.FactHandle;
 
 import org.drools.rule.Rule;
-import org.drools.spi.Firing;
+import org.drools.spi.Activation;
 import org.drools.spi.Tuple;
 import org.drools.spi.ConsequenceException;
 
@@ -59,7 +59,7 @@ import org.drools.spi.ConsequenceException;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 class AgendaItem
-    implements Firing
+    implements Activation
 {
     // ------------------------------------------------------------
     //     Instance members
