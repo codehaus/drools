@@ -165,7 +165,7 @@
       </ant:delete>
     </goal>
 
-    <goal name="drools-dist">
+    <goal name="drools-dist" prereqs="javadoc-all">
       <copy todir="./lib" flatten="true">
         <fileset dir=".">
           <include name="**/drools-*.jar"/>
@@ -174,12 +174,19 @@
 
       <zip destfile="target/drools-${pom.currentVersion}.zip"
            excludes=".metadata/**, clover/**, **/target/**"
-           basedir="." />
+           basedir=".">
+    		 <zipfileset dir="target/docs" prefix="docs"/>
+    		 <zipgroupfileset dir="." includes="*"/>
+      </zip>
 
       <tar destfile="target/drools-${pom.currentVersion}.tar.gz"
            compression="gzip"
            excludes=".metadata/**, clover/**, **/target/**"
-           basedir="." />
+           basedir=".">
+    		 <tarfileset dir="target/docs" prefix="docs"/>
+    		 <targroupfileset dir="." includes="*"/>
+    	</tar>
+
     </goal>
 
     <goal name="drools-src-dist">
