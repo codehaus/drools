@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: RuleBaseTag.java,v 1.3 2002-08-20 21:19:55 bob Exp $
+ $Id: RuleBaseTag.java,v 1.4 2002-08-21 05:46:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseTag.java,v 1.3 2002-08-20 21:19:55 bob Exp $
+ *  @version $Id: RuleBaseTag.java,v 1.4 2002-08-21 05:46:13 bob Exp $
  */
 public class RuleBaseTag extends TagSupport
 {
@@ -174,6 +174,10 @@ public class RuleBaseTag extends TagSupport
         }
 
         this.ruleBase = new RuleBase();
+
+        getContext().setVariable( this.var,
+                                  this.ruleBase );
+
         invokeBody( output );
     }
 }

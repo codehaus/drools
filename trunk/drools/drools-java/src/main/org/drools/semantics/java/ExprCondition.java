@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.6 2002-08-19 04:41:56 bob Exp $
+ $Id: ExprCondition.java,v 1.7 2002-08-21 05:46:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.drools.spi.ConditionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.6 2002-08-19 04:41:56 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.7 2002-08-21 05:46:13 bob Exp $
  */
 public class ExprCondition extends Expr implements ConfigurableCondition
 {
@@ -123,5 +123,18 @@ public class ExprCondition extends Expr implements ConfigurableCondition
         }
 
         throw new NonBooleanExprException( getExpression() );
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Produce a debug string.
+     *
+     *  @return The debug string.
+     */
+    public String toString()
+    {
+        return "[ExprCondition: expr=" + getExpression() + "]";
     }
 }

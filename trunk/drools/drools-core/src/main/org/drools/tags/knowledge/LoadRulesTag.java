@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: LoadRulesTag.java,v 1.2 2002-08-20 21:49:32 bob Exp $
+ $Id: LoadRulesTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,23 +47,24 @@ package org.drools.tags.knowledge;
  */
 
 import org.drools.RuleBase;
+import org.drools.io.RuleSetLoader;
+import org.drools.rule.RuleSet;
 
-import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
-import org.apache.commons.jelly.parser.XMLParser;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Iterator;
 
 /** Load <code>Rule</code>s and <code>RuleSet</code>s
  *  into a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: LoadRulesTag.java,v 1.2 2002-08-20 21:49:32 bob Exp $
+ *  @version $Id: LoadRulesTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
  */
 public class LoadRulesTag extends TagSupport
 {
@@ -134,30 +135,22 @@ public class LoadRulesTag extends TagSupport
             throw new JellyException( "<load-rules> may only be used within a <rule-set>" );
         }
 
-        RuleBase ruleBase = tag.getRuleBase();
-
-        XMLParser parser = new XMLParser();
-
-        JellyContext context = new JellyContext( getContext(),
-                                                 uri,
-                                                 uri );
-
-        context.setInherit( true );
-        context.setExport( false );
-
-        parser.setContext( context );
-
         try
-        {
-            Script script = parser.parse( uri.toExternalForm() );
+        { 
+            RuleSetLoader loader = new RuleSetLoader();
             
-            script.run( context,
-                        output );
-        }
-        catch (JellyException e)
-        {
-            throw (JellyException) e.fillInStackTrace();
+            List ruleSets = loader.load( getUri() );
+            
+            RuleBase ruleBase = tag.getRuleBase();
 
+            Iterator ruleSetIter = ruleSets.iterator();
+            RuleSet  eachRuleSet = null;
+            
+            while ( ruleSetIter.hasNext() )
+            {
+                eachRuleSet = (RuleSet) ruleSetIter.next();
+                ruleBase.addRuleSet( eachRuleSet );
+            }
         }
         catch (Exception e)
         {

@@ -1,7 +1,7 @@
 package org.drools.tags.knowledge;
 
 /*
- $Id: KnowledgeTag.java,v 1.2 2002-08-20 21:19:55 bob Exp $
+ $Id: KnowledgeTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: KnowledgeTag.java,v 1.2 2002-08-20 21:19:55 bob Exp $
+ *  @version $Id: KnowledgeTag.java,v 1.3 2002-08-21 05:46:13 bob Exp $
  */
 public class KnowledgeTag extends TagSupport
 {
@@ -153,7 +153,7 @@ public class KnowledgeTag extends TagSupport
      *
      *  @param ruleBase The rule-base.
      */
-    public void setRuleBase(RuleBase ruleBase)
+    public void setRules(RuleBase ruleBase)
     {
         this.ruleBase = ruleBase;
     }
@@ -162,7 +162,7 @@ public class KnowledgeTag extends TagSupport
      *
      *  @return The rule-base.
      */
-    public RuleBase getRuleBase()
+    public RuleBase getRules()
     {
         return this.ruleBase;
     }

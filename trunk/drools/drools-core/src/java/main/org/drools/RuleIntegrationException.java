@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleIntegrationException.java,v 1.2 2002-08-20 19:33:29 bob Exp $
+ $Id: RuleIntegrationException.java,v 1.3 2002-08-21 05:46:12 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,8 @@ package org.drools;
  
  */
 
+import org.drools.rule.Rule;
+
 /** Indicates an error integrating a <code>Rule</code> or <code>RuleSet</code>
  *  into a <code>RuleBase</code>.
  *
@@ -54,27 +56,53 @@ package org.drools;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleIntegrationException.java,v 1.2 2002-08-20 19:33:29 bob Exp $
+ *  @version $Id: RuleIntegrationException.java,v 1.3 2002-08-21 05:46:12 bob Exp $
  */
 public class RuleIntegrationException extends DroolsException
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The rule. */
+    private Rule rule;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
+     *
+     *  @param rule The offending rule.
      */
-    public RuleIntegrationException()
+    public RuleIntegrationException(Rule rule)
     {
-        // intentionally left blank
+        this.rule = rule;
     }
 
-    /** Construct with a root cause.
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the <code>Rule</code>.
      *
-     *  @param rootCause The root cause.
+     *  @return The rule.
      */
-    public RuleIntegrationException(Throwable rootCause)
+    public Rule getRule()
     {
-        super( rootCause );
+        return this.rule;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Throwable
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the error message.
+     *
+     *  @return The erroe message.
+     */
+    public String getMessage()
+    {
+        return getRule().getName() + " cannot be integrated";
     }
 }

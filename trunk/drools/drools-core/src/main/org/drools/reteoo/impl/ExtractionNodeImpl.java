@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ExtractionNodeImpl.java,v 1.2 2002-08-18 23:24:48 bob Exp $
+ $Id: ExtractionNodeImpl.java,v 1.3 2002-08-21 05:46:13 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -200,5 +200,19 @@ public class ExtractionNodeImpl extends TupleSourceImpl implements ExtractionNod
         propagateModifyTuples( trigger,
                                newTuples,
                                workingMemory );
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Produce a debug string.
+     *
+     *  @return The debug string.
+     */
+    public String toString()
+    {
+        return "[ExtractionNodeImpl: target=" + getTargetDeclaration()
+            + "; extractor=" + getExtractor() + "]";
     }
 }
