@@ -1,65 +1,343 @@
-#!/bin/sh
 
-function target_prepare()
+VERSION=2.0-beta-12
+JAVADOC=javadoc
+JAVAC=javac
+JAVA=java
+JAR=jar
+MODULES="core smf io base java python groovy jsr94"
+
+export JAVA JAVAC JAR
+##
+##
+##
+
+build()
 {
-  mkdir -p build
-  mkdir -p build/classes
-  mkdir -p build/sources
+  local target;
 
-  ( cd ./src/main/ ; find ./ -depth \( -name '*.java' \) -print | cpio -pudm --quiet ../../build/sources )
+  for target in $* ; do
+    done_var=done_$target
+    done=${!done_var}
+    if [ "${done}" != "done" ] ; then
+      export ${done_var}="done"
+      target_${target}
+    fi
+  done 
 }
 
-function target_precompile()
+target_all()
 {
-  if [ -f build.sh ] ; then
-    /bin/sh build.sh
-  fi
+  build compile javadoc site
 }
 
-function target_compile()
+target_site()
 {
-  $JAVAC \
-    -classpath $(dyn_classpath) \
-    -sourcepath ./build/sources/ \
-    -d ./build/classes/ \
-    -deprecation \
-    -g \
-    $(find ./build/sources/ -name '*.java')
+  #build javadoc
+
+  for module in $MODULES ; do
+    module_site $module
+  done
+
+  copy_tree $BASE/build/docs/api $BASE/build/site/api 
 }
 
-function target_copy_resources()
+module_site()
 {
-  if [ -d ./src/conf/ ] ; then
-    ( cd ./src/conf/ ; find ./ -depth \( -name '*.java' \) -print | cpio -pudm --quiet ../../build/classes )
-  fi
-}
+  local module=$1
 
-function target_jar()
-{
-  ( cd ./build/ ; $JAR -cf drools-$MODULE-$VERSION.jar -C ./classes/ . )
-}
-
-function target_copy_jar()
-{
-  cp ./build/drools-$MODULE-$VERSION.jar ../build/lib
-}
-
-function target_copy_lib()
-{
-  if [ ! -d ./lib/ ] ; then
+  if [ ! -d drools-$module/site ] ; then
     return
   fi
-  ( cd ./lib/ ; find ./ -depth \( -name '*.jar' \) -print | cpio -pudm --quiet ../../build/lib )
+  
+  for path in $(cd $BASE/site; find . -name '*.html') ; do
+    generate_root_page $path 
+  done
+
+  for path in $(cd drools-$module/site; find . -name '*.html') ; do
+    generate_module_page $path $module
+  done
 }
 
-function target_javadoc()
+generate_root_page()
 {
-  local sourcepath=""
+  local path=$1
+  local page=$(basename $path)
+  local out=$BASE/build/site/$page
 
+  echo "page $page"
+
+  mkdir -p $(dirname $out)
+
+  cat $BASE/lib/site/first.html > $out
+  generate_root_nav $page $out
+  cat $BASE/lib/site/middle.html >> $out
+  while read line ; do
+    echo "$line" >> $out
+  done < ./site/$page
+  cat $BASE/lib/site/last.html >> $out
+}
+
+generate_module_page()
+{
+  local path=$1
+  local module=$2
+  local page=$(basename $path)
+  local out=$BASE/build/site/$module/$page
+
+  echo "module $module"
+  echo "page $page"
+
+  mkdir -p $(dirname $out)
+
+  cat $BASE/lib/site/first.html > $out
+  generate_module_nav $page $module $out
+  cat $BASE/lib/site/middle.html >> $out
+  while read line ; do
+    echo "$line" >> $out
+  done < ./drools-$module/site/$page
+  cat $BASE/lib/site/last.html >> $out
+}
+
+generate_root_nav()
+{
+  local page=$1
+  local out=$2
+
+  generate_local_nav $page $out ./site/nav
+
+  local module
+
+  for module in $MODULES ; do 
+    if [ -f drools-$module/site/nav ] ; then
+      generate_nonlocal_nav "$out" "drools-$module/site/nav" "$module" ""
+    fi
+  done
+  
+}
+
+generate_module_nav()
+{
+  local page=$1
+  local thismodule=$2
+  local out=$3
+
+  local module
+
+  generate_nonlocal_nav $out $BASE/site/nav ".." ""
+
+  for module in $MODULES ; do 
+    if [ -f drools-$module/site/nav ] ; then
+      if [ "$module" == "$thismodule" ] ; then 
+        generate_local_nav "$page" "$out" "drools-$module/site/nav"
+      else
+        generate_nonlocal_nav "$out" "drools-$module/site/nav" "$module" "../"
+      fi
+    fi
+  done
+}
+
+generate_local_nav()
+{
+  local page=$1
+  local out=$2
+  local nav=$3
+
+  local first="first"
+
+  echo '<div class="navSection">' >> $out
+
+  while read line ; do
+    echo "$line" | grep '^=' 2>&1 > /dev/null
+    if [ $? -eq 0 ] ; then
+      if [ $first == "first" ] ; then
+        first=notfirst
+      else
+        echo "</div>" >> $out
+        echo '<div class="navSection">' >> $out
+      fi
+      local header=$(echo $line | cut -f 2 -d =)
+      echo "  <div class=\"navSectionHead\">$header</div>" >> $out
+    else
+      local url=$(echo $line | cut -f 1 -d \|)
+      local desc=$(echo $line | cut -f 2 -d \|)
+      if [ "$url" == "$page" ] ; then
+        echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold\">$desc</a></small></div>" >> $out
+      else
+        echo "    <div class=\"navLink\"><small><a href=\"$url\">$desc</a></small></div>" >> $out
+      fi
+    fi
+  done < "$nav"
+
+  echo '</div>' >> $out
+}
+
+generate_nonlocal_nav()
+{
+  local out=$1
+  local nav=$2
+  local navmodule=$3
+  local prefix=$4
+
+  local first="first"
+
+  echo '<div class="navSection">' >> $out
+
+  while read line ; do
+    echo "$line" | grep '^=' 2>&1 > /dev/null
+    if [ $? -eq 0 ] ; then
+      if [ $first == "first" ] ; then
+        first=notfirst
+      else
+        echo "</div>" >> $out
+        echo '<div class="navSection">' >> $out
+      fi
+      local header=$(echo $line | cut -f 2 -d =)
+      echo "  <div class=\"navSectionHead\">$header</div>" >> $out
+    else
+      local url=$(echo $line | cut -f 1 -d \|)
+      local desc=$(echo $line | cut -f 2 -d \|)
+      echo "    <div class=\"navLink\"><small><a href=\"$prefix$navmodule/$url\">$desc</a></small></div>" >> $out
+    fi
+  done < "$nav"
+
+  echo '</div>' >> $out
+}
+
+target_jsr94()
+{
+  build core smf io 
+  target_compile jsr94
+}
+
+target_groovy()
+{
+  build core smf
+  target_compile groovy
+}
+
+target_python()
+{
+  build core smf
+  target_compile python
+}
+
+target_java()
+{
+  build core smf
+  target_compile java
+}
+
+target_base()
+{
+  build core smf
+  target_compile base
+}
+
+target_io()
+{
+  build core smf
+  target_compile io
+}
+
+target_smf()
+{
+  build core
+  target_compile smf
+}
+
+target_core()
+{
+  target_compile core
+}
+
+target_prepare()
+{
+  echo "preparing filesystem"
+  mkdir -p $BASE/build/
+}
+
+target_compile()
+{
+  local modules=$1
+
+  if [ -z $modules ] ; then
+    modules=$MODULES
+  fi
+  build prepare
+
+  local module 
+
+  for module in $modules ; do 
+    module_build     $module
+    module_compile   $module
+    module_make_jar  $module
+    module_copy_jar  $module
+    module_copy_deps $module
+  done
+}
+
+module_build()
+{
+  if [ ! -f drools-$module/build.sh ] ; then
+    return
+  fi
+
+  cd drools-$module
+  /bin/sh build.sh  
+  cd -
+}
+
+module_compile()
+{
+  local module=$1
+
+  mkdir -p drools-$module/build/classes/
+  echo "compiling module $module"
+  copy_tree drools-$module/src/main/ drools-$module/build/sources/ java 
+  _javac $module
+}
+
+module_make_jar()
+{
+  local module=$1
+
+  echo "jarring module $module"
+  copy_tree drools-$module/src/main/ drools-$module/build/classes/ properties 
+  copy_tree drools-$module/src/conf/ drools-$module/build/classes/ '*'
+  _jar $module
+}
+
+module_copy_jar()
+{
+  local module=$1
+
+  echo "copying $module jar"
+  mkdir -p $BASE/build/lib/
+
+  cp drools-$module/build/drools-$module-$VERSION.jar $BASE/build/lib
+}
+
+module_copy_deps()
+{
+  local module=$1
+
+  echo "copy $module dependencies"
+  mkdir -p $BASE/build/lib/
+  if [ -d drools-$module/lib ] ; then
+    cp drools-$module/lib/*.jar $BASE/build/lib
+  fi
+}
+
+target_javadoc()
+{
+  build compile
+
+  echo "building javadocs"
+
+  local sourcepath=""
 
   for module in $MODULES ; do 
     if [ -z $sourcepath ] ; then
-      ( cd drools-$module/src/main/ ; find ./ -depth \( -name '*.html' \) -print | cpio -pudm --quiet ../../build/sources )
       sourcepath=./drools-$module/build/sources/
     else
       sourcepath=$sourcepath:./drools-$module/build/sources/
@@ -73,7 +351,7 @@ function target_javadoc()
       -use \
       -version \
       -author \
-      -d ./build/docs/api/ -subpackages org.drools:bsh.commands\
+      -d $BASE/build/docs/api/ -subpackages org.drools:bsh.commands\
       -group "Core Engine" org.drools:org.drools.rule:org.drools.conflict \
       -group "Semanic Providers Interface" org.drools.spi \
       -group "Semantic Module Framework" org.drools.smf \
@@ -86,10 +364,94 @@ function target_javadoc()
       -exclude org.drools.reteoo \
       org.drools \
       bsh.commands 
-
 }
 
-function dyn_classpath()
+target_clean()
+{
+  echo "cleaning filesystem"
+  rm -Rf $BASE/build
+
+  local module 
+
+  for module in $MODULES ; do 
+    rm -Rf drools-$module/build 
+  done
+}
+
+_javac()
+{
+  local module=$1
+
+  cd drools-$module
+
+  $JAVAC \
+    -classpath $(dyn_classpath) \
+    -sourcepath ./build/sources/ \
+    -d ./build/classes/ \
+    -deprecation \
+    -g \
+    $(find ./build/sources/ -name '*.java')
+
+  cd -
+}
+
+_jar()
+{
+  local module=$1
+
+  cd drools-$module
+
+  $JAR -cf ./build/drools-$module-$VERSION.jar -C ./build/classes . 
+
+  cd - 
+}
+
+copy_tree()
+{
+  local source=$1
+  local dest=$2
+  local exts="$3 $4 $5 $6 $7 $8 $9"
+
+  if [ ! -d $source ] ; then
+    return
+  fi
+
+  mkdir -p $dest
+  cd $dest
+  dest=$PWD
+  cd -
+
+  cd $source
+
+  if [ -z $exts ] ; then
+    find ./ -depth -print | cpio -pudm --quiet $dest
+  else
+    for ext in $exts ; do
+      find ./ -depth \( -name *.$ext \) -print | cpio -pudm --quiet $dest
+    done
+  fi
+
+  cd -
+}
+
+function dyn_javadoc_classpath()
+{
+  local jars=$BASE/build/lib/*.jar
+
+  local cp=""
+
+  for jar in $jars ; do
+    if [ -z $cp ] ; then
+      cp=$jar
+    else
+      cp="$cp:$jar"
+    fi
+  done
+
+  echo $cp
+}
+
+dyn_classpath()
 {
   local common=$(dyn_common_classpath)
   local lib=$(dyn_lib_classpath)
@@ -109,40 +471,6 @@ function dyn_classpath()
   fi 
 
   echo $cp 
-}
-
-function dyn_javadoc_classpath()
-{
-  local jars=./build/lib/*.jar
-
-  local cp=""
-
-  for jar in $jars ; do
-    if [ -z $cp ] ; then
-      cp=$jar
-    else
-      cp="$cp:$jar"
-    fi
-  done
-
-  echo $cp
-}
-
-function dyn_common_classpath()
-{
-  local jars=../build/lib/*.jar
-
-  local cp=""
-
-  for jar in $jars ; do
-    if [ -z $cp ] ; then
-      cp=$jar
-    else
-      cp="$cp:$jar"
-    fi
-  done
-
-  echo $cp
 }
 
 function dyn_lib_classpath()
@@ -167,95 +495,36 @@ function dyn_lib_classpath()
   echo $cp
 }
 
-function build()
+dyn_common_classpath()
 {
-  ( build_i $* )
-}
+  local jars=$BASE/build/lib/*.jar
 
-function clean()
-{
-  (clean_i $* )
-}
+  local cp=""
 
-function build_i()
-{
-  local module=$*
-
-  mkdir -p ./build/
-  mkdir -p ./build/lib/
-  mkdir -p ./build/docs/api/
-
-  cd "drools-$module"
-
-  echo "building $module"
-
-  old_MODULE=$MODULE
-  MODULE=$module
-
-  target_prepare
-  target_precompile
-  target_compile
-  target_copy_resources
-  target_jar
-  target_copy_jar
-  target_copy_lib
-  
-  MODULE=$old_MODULE
-}
-
-function clean_i()
-{
-  local module=$*
-
-  cd "drools-$module"
-
-  echo "cleaning $module"
-  
-  rm -Rf build
-}
-
-function do_build
-{
-  for module in $MODULES ; do
-    build $module;
+  for jar in $jars ; do
+    if [ -z $cp ] ; then
+      cp=$jar
+    else
+      cp="$cp:$jar"
+    fi
   done
+
+  echo $cp
 }
 
-function do_javadoc
-{
-  target_javadoc
-}
 
-function do_clean
-{
-  for module in $MODULES ; do
-    clean $module;
-  done
-  rm -Rf ./build
-}
+##
+##
+##
 
-function do_
-{
-  do_build
-}
-
-VERSION=2.0-beta-12
-#MODULES="core"
-MODULES="core smf io base java python jsr94 groovy"
-#MODULES="core smf io base python jsr94 groovy"
-#MODULES="core smf io jsr94 base java python groovy"
-JAVA=java
-JAVAC=javac
-JAR=jar
-JAVADOC=javadoc
-
-export JAVA JAVAC JAR JAVADOC
+default_targets="all"
 
 if [ -z "$*" ] ; then
-  do_
+  targets=$default_targets
 else
-  for target in $* ; do
-    do_$target
-  done
+  targets=$*
 fi
 
+BASE=$PWD
+
+build $targets
