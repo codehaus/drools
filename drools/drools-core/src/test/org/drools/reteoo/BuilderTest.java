@@ -3,6 +3,7 @@ package org.drools.reteoo;
 import junit.framework.TestCase;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
+import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedExtractor;
@@ -85,7 +86,7 @@ public class BuilderTest extends TestCase
         assertTrue( this.builder.matches( cond, decls ) );
     }
 
-    public void testFindMatchingTupleSourceForExtraction()
+    public void testFindMatchingTupleSourceForExtraction() throws Exception
     {
         Set sources = new HashSet( );
 
@@ -104,14 +105,35 @@ public class BuilderTest extends TestCase
 
         source.addTupleDeclaration( this.objectDecl );
 
-        sources.add( source );
+        sources.add( source );        
 
         extractor = new InstrumentedExtractor( );
 
         extractor.addDeclaration( this.stringDecl );
 
-        extract = rule1.addExtraction( "object", extractor );
-
+        try
+        {
+          extract = rule1.addExtraction( "object", extractor );
+          fail("Extractor cannot target a parameter");
+        } catch (InvalidRuleException e)
+        {
+            
+        }
+        
+        Declaration localObjectDecl = this.rule1.addLocalDeclaration("localObject", this.objectType);
+        source.addTupleDeclaration( localObjectDecl );
+        
+        extract = rule1.addExtraction( "localObject", extractor );
+        
+        try
+        {
+            extract = rule1.addExtraction( "localObject", extractor );
+            fail("Extractor cannot target the same local declaration twice");
+        } catch (InvalidRuleException e)
+        {
+            
+        }
+                                   
         found = this.builder.findMatchingTupleSourceForExtraction( extract, sources );
 
         //sources contains objectsDecl, not stringDecl

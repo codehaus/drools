@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.45 2004-11-23 22:08:59 dbarnett Exp $
+ * $Id: Rule.java,v 1.46 2004-11-26 13:12:10 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
+import org.xml.sax.SAXParseException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -344,8 +345,37 @@ public class Rule
      * @return extraction the <code>Extraction</code> to add.
      */
     public Extraction addExtraction(String identifier,
-                                    Extractor extractor)
+                                    Extractor extractor) throws InvalidRuleException
     {
+        // check extractors do not share declarations
+        Declaration eachDecl;
+
+        // check extractor doesn't target a parameter
+        Iterator declIter = this.parameterDeclarations.iterator( );
+        while ( declIter.hasNext( ) )
+        {
+            eachDecl = (Declaration) declIter.next( );
+
+            if ( eachDecl.getIdentifier( ).equals( identifier ) )
+            {
+                throw new InvalidRuleException( this );
+            }
+        }
+
+        // check identifer is not an existing targetted local declaration
+        Iterator it = this.extractions.iterator( );
+        Extraction extractions;
+        while ( it.hasNext( ) )
+        {
+            extractions = (Extraction) it.next( );
+            eachDecl = extractions.getTargetDeclaration( );
+
+            if ( eachDecl.getIdentifier( ).equals( identifier ) )
+            {
+                throw new InvalidRuleException( this );
+            }
+        }
+
         Extraction extraction = new Extraction( getDeclaration( identifier ),
                                                 extractor );
 

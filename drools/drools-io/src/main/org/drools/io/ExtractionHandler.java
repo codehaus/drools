@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ExtractionHandler.java,v 1.2 2004-11-12 17:11:15 simon Exp $
+ * $Id: ExtractionHandler.java,v 1.3 2004-11-26 13:12:10 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.io;
  */
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
+import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ExtractorFactory;
@@ -52,17 +53,20 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
  * @author mproctor
- *
+ * 
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-class ExtractionHandler extends BaseAbstractHandler implements Handler
+class ExtractionHandler extends BaseAbstractHandler
+    implements
+    Handler
 {
-    ExtractionHandler( RuleSetReader ruleSetReader )
+    ExtractionHandler(RuleSetReader ruleSetReader)
     {
         this.ruleSetReader = ruleSetReader;
 
@@ -94,7 +98,9 @@ class ExtractionHandler extends BaseAbstractHandler implements Handler
         return this.allowNesting;
     }
 
-    public Object start( String uri, String localName, Attributes attrs ) throws SAXException
+    public Object start(String uri,
+                        String localName,
+                        Attributes attrs) throws SAXException
     {
         Rule rule = (Rule) ruleSetReader.getParent( Rule.class );
 
@@ -102,27 +108,37 @@ class ExtractionHandler extends BaseAbstractHandler implements Handler
 
         if ( targetDeclName == null || targetDeclName.trim( ).equals( "" ) )
         {
-            throw new SAXParseException(
-                    "extraction requires a 'target' attribute", ruleSetReader
-                            .getLocator( ) );
+            throw new SAXParseException( "extraction requires a 'target' attribute",
+                                         ruleSetReader.getLocator( ) );
         }
 
         Declaration targetDecl = rule.getDeclaration( targetDeclName.trim( ) );
 
         if ( targetDecl == null )
         {
-            throw new SAXParseException( "'" + targetDeclName
-                    + "' is not a valid declaration", ruleSetReader
-                    .getLocator( ) );
+            throw new SAXParseException( "'" + targetDeclName + "' is not a valid declaration",
+                                         ruleSetReader.getLocator( ) );
         }
 
-        Extraction extraction = rule.addExtraction( targetDecl.getIdentifier( ), null );
+        Extraction extraction;
+        try
+        {
+            extraction = rule.addExtraction( targetDecl.getIdentifier( ),
+                                             null );
+        }
+        catch ( InvalidRuleException e )
+        {
+            throw new SAXParseException( "extraction has an illegal 'target' attribute",
+                                         ruleSetReader.getLocator( ) );
+        }
 
-        ruleSetReader.startConfiguration( localName, attrs );
+        ruleSetReader.startConfiguration( localName,
+                                          attrs );
         return extraction;
     }
 
-    public Object end( String uri, String localName ) throws SAXException
+    public Object end(String uri,
+                      String localName) throws SAXException
     {
         Configuration config = ruleSetReader.endConfiguration( );
         SemanticModule module = ruleSetReader.lookupSemanticModule( uri,
@@ -134,7 +150,8 @@ class ExtractionHandler extends BaseAbstractHandler implements Handler
         Extractor extractor;
         try
         {
-            extractor = factory.newExtractor( config, rule );
+            extractor = factory.newExtractor( config,
+                                              rule );
             Extraction extraction = (Extraction) ruleSetReader.getCurrent( );
 
             extraction.setExtractor( extractor );
@@ -142,7 +159,8 @@ class ExtractionHandler extends BaseAbstractHandler implements Handler
         catch ( FactoryException e )
         {
             throw new SAXParseException( "error constructing extractor",
-                    ruleSetReader.getLocator( ), e );
+                                         ruleSetReader.getLocator( ),
+                                         e );
         }
         return null;
     }
