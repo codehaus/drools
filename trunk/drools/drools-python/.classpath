@@ -4,8 +4,7 @@
 	<classpathentry output="target/test-classes" kind="src" path="src/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/drools-core"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jython/jars/jython-20020827-no-oro.jar"/>
 	<classpathentry kind="src" path="/drools-smf"/>
-	<classpathentry kind="var" path="MAVEN_REPO/groovy/jars/groovy-1.0-rc1-snapshot.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/asm/jars/asm-1.4.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

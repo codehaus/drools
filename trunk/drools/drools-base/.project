@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>drools-groovy</name>
-	<comment>Drools :: Groovy Semantics Module</comment>
+	<name>drools-base</name>
+	<comment>Drools :: Base Semantics Module</comment>
 	<projects>
 	</projects>
 	<buildSpec>

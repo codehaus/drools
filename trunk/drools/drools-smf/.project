@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>drools-groovy</name>
-	<comment>Drools :: Groovy Semantics Module</comment>
+	<name>drools-smf</name>
+	<comment>Drools :: Semantics Module Framework</comment>
 	<projects>
 	</projects>
 	<buildSpec>
