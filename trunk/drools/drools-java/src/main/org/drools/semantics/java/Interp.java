@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.5 2002-08-26 17:59:22 bob Exp $
+ $Id: Interp.java,v 1.6 2002-08-26 23:04:34 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.5 2002-08-26 17:59:22 bob Exp $
+ *  @version $Id: Interp.java,v 1.6 2002-08-26 23:04:34 bob Exp $
  */
 public class Interp
 {
@@ -106,7 +106,7 @@ public class Interp
      */
     public Object evaluate(Tuple tuple) throws EvalError
     {
-        NameSpace ns = setUpNamespace( tuple );
+        NameSpace ns = setUpNameSpace( tuple );
         
         return evaluate( ns );
     }
@@ -154,7 +154,7 @@ public class Interp
      *  @throws EvalError If an error occurs while attempting
      *          to bind variables.
      */
-    protected NameSpace setUpNamespace(Tuple tuple) throws EvalError
+    protected NameSpace setUpNameSpace(Tuple tuple) throws EvalError
     {
         NameSpace ns = new NameSpace( "" );
 
@@ -181,32 +181,5 @@ public class Interp
         }
 
         return ns;
-    }
-
-    /** Set a variable for the interpreter.
-     *
-     *  @param name The variable name.
-     *  @param value The variable value.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to bind the variable.
-     */
-    protected void setVariable(String name,
-                               Object value) throws EvalError
-    {
-        this.interp.set( name,
-                         value );
-    }
-
-    /** Set a variable for the interpreter.
-     *
-     *  @param name The variable name.
-     *
-     *  @throws EvalError If an error occurs while attempting
-     *          to unbind the variable.
-     */
-    protected void unsetVariable(String name) throws EvalError
-    {
-        this.interp.unset( name );
     }
 }
