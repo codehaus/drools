@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConditionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ $Id: ConditionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConditionTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: ConditionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
  */
 public class ConditionTag extends RuleTagSupport
 {
@@ -69,6 +69,7 @@ public class ConditionTag extends RuleTagSupport
     /** The condition.*/
     private Condition condition;
 
+    /** The variable. */
     private String var;
 
     // ------------------------------------------------------------
@@ -104,11 +105,19 @@ public class ConditionTag extends RuleTagSupport
         return this.condition;
     }
 
+    /** Set the variable in which to store the <code>Condition</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable in which to store the <code>Condition</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;

@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ParameterTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ $Id: ParameterTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,16 +60,10 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ParameterTag.java,v 1.2 2002-08-19 21:00:13 bob Exp $
+ *  @version $Id: ParameterTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
  */
 public class ParameterTag extends DeclarationTag
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    private String var;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -84,16 +78,6 @@ public class ParameterTag extends DeclarationTag
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    public void setVar(String var)
-    {
-        this.var = var;
-    }
-
-    public String getVar()
-    {
-        return this.var;
-    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -119,9 +103,11 @@ public class ParameterTag extends DeclarationTag
 
         Declaration decl = createDeclaration( output );
 
-        if ( this.var != null )
+        String var = getVar();
+
+        if ( var != null )
         {
-            getContext().setVariable( this.var,
+            getContext().setVariable( var,
                                       decl );
         }
 
