@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.52 2004-11-26 03:21:58 dbarnett Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.53 2004-11-28 00:58:44 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,17 +40,6 @@ package org.drools.reteoo;
  *
  */
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.NoSuchFactHandleException;
@@ -64,34 +53,54 @@ import org.drools.util.IdentityMap;
 import org.drools.util.PrimitiveLongMap;
 import org.drools.util.PrimitiveLongStack;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Implementation of <code>WorkingMemory</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-class WorkingMemoryImpl implements WorkingMemory
+class WorkingMemoryImpl
+        implements WorkingMemory, PropertyChangeListener
 {
+    // ------------------------------------------------------------
+    // Constants
+    // ------------------------------------------------------------
+    private static final Class[] ADD_REMOVE_PROPERTY_CHANGE_LISTENER_ARG_TYPES = new Class[] { PropertyChangeListener.class };
+
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
 
+    /** The arguments used when adding/removing a property change listener. */
+    private final Object[] addRemovePropertyChangeListenerArgs = new Object[] { this };
+
     /** The actual memory for the <code>JoinNode</code>s. */
     private final Map joinMemories = new HashMap( );
- 
+
     /** Application data which is associated with this memory. */
     private final Map applicationData = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private final PrimitiveLongMap objects = new PrimitiveLongMap( 32, 8 ); 
-    
+    private final PrimitiveLongMap objects = new PrimitiveLongMap( 32,
+                                                                   8 );
+
     /** Object-to-handle mapping. */
     private final Map handles = new IdentityMap( );
     private final PrimitiveLongStack factHandlePool = new PrimitiveLongStack( );
-    
+
     /** The eventSupport */
-    private final WorkingMemoryEventSupport eventSupport =
-        new WorkingMemoryEventSupport( this );
+    private final WorkingMemoryEventSupport eventSupport = new WorkingMemoryEventSupport( this );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
     private final RuleBaseImpl ruleBase;
@@ -99,25 +108,18 @@ class WorkingMemoryImpl implements WorkingMemory
     /** Rule-firing agenda. */
     private final Agenda agenda;
 
-    /**
-     * A <code>Map</code> of <code>PropertyChangeListener</code>s keyed by
-     * <code>FactHandle</code> which allows retracted objects to
-     * have their registered <code>PropertyChangeListener</code>s removed.
-     */
-    private final Map propertyChangeListeners = new HashMap();
-
     /** Flag to determine if a rule is currently being fired. */
     private boolean firing;
 
     private long conditionCounter;
-    
+
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
-     * 
+     *
      * @param ruleBase
      *            The backing rule-base.
      */
@@ -149,7 +151,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Create a new <code>FactHandle</code>.
-     * 
+     *
      * @return The new fact handle.
      */
     FactHandle newFactHandle()
@@ -212,7 +214,7 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * Retrieve the rule-firing <code>Agenda</code> for this
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @return The <code>Agenda</code>.
      */
     protected Agenda getAgenda()
@@ -345,86 +347,83 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         return assertObject( object, /*Not-Dynamic*/false );
     }
-    
-    public synchronized FactHandle assertObject(
-            Object object, boolean dynamic )
+
+    public synchronized FactHandle assertObject( Object object,
+                                                 boolean dynamic )
         throws FactException
     {
         FactHandle handle = ( FactHandle ) handles.get( object );
-    
+
         if ( handle != null )
         {
             return handle;
         }
-        
+
         handle = newFactHandle( );
-    
-        putObject( handle, object );
-        
+
+        putObject( handle,
+                   object );
+
         if ( dynamic )
         {
-            addPropertyChangeListener( object, handle );
+            addPropertyChangeListener( object );
         }
-        
-        ruleBase.assertObject( handle, object, this );
-    
-        eventSupport.fireObjectAsserted( handle, object );
-    
+
+        ruleBase.assertObject( handle,
+                               object,
+                               this );
+
+        eventSupport.fireObjectAsserted( handle,
+                                         object );
+
         return handle;
     }
 
-    private void addPropertyChangeListener(
-        final Object object, final FactHandle handle )
+    private void addPropertyChangeListener( Object object )
     {
-        Method addPCLMethod = null;
         try {
-            addPCLMethod = object.getClass( ).getMethod(
-                "addPropertyChangeListener",
-                new Class[] { PropertyChangeListener.class } );
-            
-            PropertyChangeListener propertyChangeListener = 
-                new PropertyChangeListener( )
-                {
-                    public void propertyChange( PropertyChangeEvent evt )
-                    {
-                        try {
-                            modifyObject( handle, object );
-                        } catch ( FactException e ) {
-                            throw new RuntimeException( e.getMessage( ) );
-                        }
-                    }
-                }
-            ;
+            Method method = object.getClass( ).getMethod( "addPropertyChangeListener",
+                                                          ADD_REMOVE_PROPERTY_CHANGE_LISTENER_ARG_TYPES );
 
-            try {
-                addPCLMethod.invoke(
-                    object, new Object[] { propertyChangeListener } );
-                propertyChangeListeners.put( handle, propertyChangeListener );
-            } catch ( IllegalArgumentException e ) {
-                System.err.println(
-                    "Warning: The addPropertyChangeListener method" +
-                    " on the class " + object.getClass() +
-                    " does not take" +
-                    " a simple PropertyChangeListener argument" +
-                    " so Drools will be unable to process JavaBean" +
-                    " PropertyChangeEvents on the asserted Object" );
-            } catch ( IllegalAccessException e ) {
-                System.err.println(
-                    "Warning: The addPropertyChangeListener method" +
-                    " on the class " + object.getClass() +
-                    " is not public" +
-                    " so Drools will be unable to process JavaBean" +
-                    " PropertyChangeEvents on the asserted Object" );
-            } catch ( InvocationTargetException e ) {
-                System.err.println(
-                    "Warning: The addPropertyChangeListener method" +
-                    " on the class " + object.getClass() +
-                    " threw an InvocationTargetException" +
-                    " so Drools will be unable to process JavaBean" +
-                    " PropertyChangeEvents on the asserted Object: " +
-                    e.getMessage( ) );
-            }
-        } catch ( SecurityException e ) {
+            method.invoke( object, addRemovePropertyChangeListenerArgs );
+        }
+        catch ( NoSuchMethodException e )
+        {
+            // Method addPropertyChangeListener not found,
+            // so Drools will be unable to process JavaBean
+            // PropertyChangeEvents on the asserted Object
+        }
+        catch ( IllegalArgumentException e )
+        {
+            System.err.println(
+                "Warning: The addPropertyChangeListener method" +
+                " on the class " + object.getClass() +
+                " does not take" +
+                " a simple PropertyChangeListener argument" +
+                " so Drools will be unable to process JavaBean" +
+                " PropertyChangeEvents on the asserted Object" );
+        }
+        catch ( IllegalAccessException e )
+        {
+            System.err.println(
+                "Warning: The addPropertyChangeListener method" +
+                " on the class " + object.getClass() +
+                " is not public" +
+                " so Drools will be unable to process JavaBean" +
+                " PropertyChangeEvents on the asserted Object" );
+        }
+        catch ( InvocationTargetException e )
+        {
+            System.err.println(
+                "Warning: The addPropertyChangeListener method" +
+                " on the class " + object.getClass() +
+                " threw an InvocationTargetException" +
+                " so Drools will be unable to process JavaBean" +
+                " PropertyChangeEvents on the asserted Object: " +
+                e.getMessage( ) );
+        }
+        catch ( SecurityException e )
+        {
             System.err.println(
                 "Warning: The SecurityManager controlling the class " +
                 object.getClass() + " did not allow the lookup of a" +
@@ -432,74 +431,59 @@ class WorkingMemoryImpl implements WorkingMemory
                 " so Drools will be unable to process JavaBean" +
                 " PropertyChangeEvents on the asserted Object: " +
                 e.getMessage( ) );
-        } catch ( NoSuchMethodException e ) {
-            // Method addPropertyChangeListener not found,
-            // so Drools will be unable to process JavaBean
-            // PropertyChangeEvents on the asserted Object
         }
     }
-    
-    private void removePropertyChangeListener( FactHandle handle )
+
+    private void removePropertyChangeListener( FactHandle handle ) throws NoSuchFactObjectException
     {
-        PropertyChangeListener propertyChangeListener =
-            ( PropertyChangeListener )
-                propertyChangeListeners.get( handle/*Handle*/ );
-        
-        if ( null == propertyChangeListener )
-        {
-            return;
-        }
-        
-        Object object;
-        try
-        {
-            object = getObject( handle );
-        }
-        catch ( NoSuchFactObjectException e )
-        {
-            System.err.println( e.getMessage( ) );
-            return;
-        }
-        
-        if ( null == object )
-        {
-            return;
-        }
-        
-        Method removePCLMethod = null;
+        Object object = null;
         try {
-            removePCLMethod = handle.getClass( ).getMethod(
-                "removePropertyChangeListener",
-                new Class[] { PropertyChangeListener.class } );
-            
-            try {
-                removePCLMethod.invoke(
-                    handle, new Object[] { propertyChangeListener } );
-            } catch ( IllegalArgumentException e ) {
-                System.err.println(
-                    "Warning: The removePropertyChangeListener method" +
-                    " on the class " + object.getClass() +
-                    " does not take" +
-                    " a simple PropertyChangeListener argument" +
-                    " so Drools will be unable to stop processing JavaBean" +
-                    " PropertyChangeEvents on the retracted Object" );
-            } catch ( IllegalAccessException e ) {
-                System.err.println(
-                    "Warning: The removePropertyChangeListener method" +
-                    " on the class " + object.getClass() +
-                    " is not public" +
-                    " so Drools will be unable to stop processing JavaBean" +
-                    " PropertyChangeEvents on the retracted Object" );
-            } catch ( InvocationTargetException e ) {
-                System.err.println(
-                    "Warning: The removePropertyChangeListener method" +
-                    " on the class " + object.getClass() +
-                    " threw an InvocationTargetException" +
-                    " so Drools will be unable to stop processing JavaBean" +
-                    " PropertyChangeEvents on the retracted Object: " +
-                    e.getMessage( ) );
-            }
-        } catch ( SecurityException e ) {
+            object = getObject( handle );
+
+            Method mehod = handle.getClass( ).getMethod( "removePropertyChangeListener",
+                                                         ADD_REMOVE_PROPERTY_CHANGE_LISTENER_ARG_TYPES );
+
+            mehod.invoke( handle,
+                          addRemovePropertyChangeListenerArgs );
+        }
+        catch ( NoSuchMethodException e )
+        {
+            // The removePropertyChangeListener method on the class
+            // was not found so Drools will be unable to
+            // stop processing JavaBean PropertyChangeEvents
+            // on the retracted Object
+        }
+        catch ( IllegalArgumentException e )
+        {
+            System.err.println(
+                "Warning: The removePropertyChangeListener method" +
+                " on the class " + object.getClass( ) +
+                " does not take" +
+                " a simple PropertyChangeListener argument" +
+                " so Drools will be unable to stop processing JavaBean" +
+                " PropertyChangeEvents on the retracted Object" );
+        }
+        catch ( IllegalAccessException e )
+        {
+            System.err.println(
+                "Warning: The removePropertyChangeListener method" +
+                " on the class " + object.getClass( ) +
+                " is not public" +
+                " so Drools will be unable to stop processing JavaBean" +
+                " PropertyChangeEvents on the retracted Object" );
+        }
+        catch ( InvocationTargetException e )
+        {
+            System.err.println(
+                "Warning: The removePropertyChangeL istener method" +
+                " on the class " + object.getClass() +
+                " threw an InvocationTargetException" +
+                " so Drools will be unable to stop processing JavaBean" +
+                " PropertyChangeEvents on the retracted Object: " +
+                e.getMessage( ) );
+        }
+        catch ( SecurityException e )
+        {
             System.err.println(
                 "Warning: The SecurityManager controlling the class " +
                 object.getClass() + " did not allow the lookup of a" +
@@ -507,19 +491,12 @@ class WorkingMemoryImpl implements WorkingMemory
                 " so Drools will be unable to stop processing JavaBean" +
                 " PropertyChangeEvents on the retracted Object: " +
                 e.getMessage( ) );
-        } catch ( NoSuchMethodException e ) {
-            System.err.println(
-                "Warning: The removePropertyChangeListener method" +
-                " on the class " + object.getClass() +
-                " was not found" +
-                " so Drools will be unable to stop processing JavaBean" +
-                " PropertyChangeEvents on the retracted Object");
         }
     }
 
     /**
      * Associate an object with its handle.
-     * 
+     *
      * @param handle
      *            The handle.
      * @param object
@@ -528,7 +505,7 @@ class WorkingMemoryImpl implements WorkingMemory
     Object putObject(FactHandle handle,
                      Object object)
     {
-        Object oldValue = this.objects.put( ((FactHandleImpl) handle).getId( ),
+        Object oldValue = this.objects.put( ( ( FactHandleImpl ) handle ).getId( ),
                                             object );
 
         this.handles.put( object,
@@ -539,10 +516,10 @@ class WorkingMemoryImpl implements WorkingMemory
 
     Object removeObject(FactHandle handle)
     {
-        Object object = this.objects.remove( ((FactHandleImpl) handle).getId( ) );
-        
+        Object object = this.objects.remove( ( ( FactHandleImpl ) handle ).getId( ) );
+
         this.handles.remove( object  );
-        
+
         return object;
     }
 
@@ -553,7 +530,7 @@ class WorkingMemoryImpl implements WorkingMemory
         throws FactException
     {
         removePropertyChangeListener( handle );
-        
+
         ruleBase.retractObject( handle, this );
 
         removeObject( handle );
@@ -562,7 +539,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
         eventSupport.fireObjectRetracted( handle );
 
-        ( ( FactHandleImpl ) handle ).invalidate( );        
+        ( ( FactHandleImpl ) handle ).invalidate( );
     }
 
     /**
@@ -577,10 +554,10 @@ class WorkingMemoryImpl implements WorkingMemory
         {
             throw new NoSuchFactObjectException( handle );
         }
-        
+
         putObject( handle,
                     object );
-        
+
 
         this.ruleBase.modifyObject( handle,
                                     object,
@@ -593,10 +570,10 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
      * <code>JoinNode</code>.
-     * 
+     *
      * @param node
      *            The <code>JoinNode</code> key.
-     * 
+     *
      * @return The node's memory.
      */
     public JoinMemory getJoinMemory(JoinNode node)
@@ -626,12 +603,30 @@ class WorkingMemoryImpl implements WorkingMemory
 
     public void dumpMemory()
     {
-        Iterator it = this.joinMemories.keySet().iterator();
-        while (it.hasNext())
+        Iterator it = this.joinMemories.keySet( ).iterator( );
+        while ( it.hasNext( ) )
         {
-            JoinMemory memory = (JoinMemory) this.joinMemories.get(it.next());
-            memory.dump();
+            ( (JoinMemory) this.joinMemories.get( it.next( ) ) ).dump( );
         }
-        
-    }     
+
+    }
+
+    public void propertyChange( PropertyChangeEvent event )
+    {
+        Object object = event.getSource( );
+
+        try
+        {
+            modifyObject( getFactHandle( object ),
+                          object );
+        }
+        catch ( NoSuchFactHandleException e )
+        {
+            // Not a fact so unable to process the chnage event
+        }
+        catch ( FactException e )
+        {
+            throw new RuntimeException( e.getMessage( ) );
+        }
+    }
 }
