@@ -3,17 +3,11 @@ package org.drools.semantics.base;
 import org.drools.rule.Declaration;
 import org.drools.smf.Configuration;
 import org.drools.smf.DurationFactory;
-import org.drools.smf.FactoryException;
 import org.drools.spi.Duration;
 
 public class BaseDurationFactory implements DurationFactory
 {
-    public BaseDurationFactory()
-    {
-
-    }
-
-    public Duration newDuration(Configuration config, Declaration[] availDecls) throws FactoryException
+    public Duration newDuration(Configuration config, Declaration[] availDecls)
     {
         String daysStr = config.getAttribute( "days" );
         String hoursStr = config.getAttribute( "hours" );
