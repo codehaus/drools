@@ -1,4 +1,3 @@
-
 <project default="jar:jar">
 
 <!-- Fibonacci Examples -->
@@ -46,7 +45,7 @@
       </java>
     </goal>
 
-    <goal name="fibonacciJNDI" prereqs="jar:jar">
+    <goal name="fibonacci-java-jndi" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
             fork="true">
         <arg value="org.osjava.jndi.PropertiesFactory"/>
@@ -58,7 +57,7 @@
       </java>
     </goal>
 
-    <goal name="fibonacciSerialized" prereqs="jar:jar">
+    <goal name="fibonacci-java-serialized" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
             fork="true">
         <classpath refid="maven.dependency.classpath"/>
@@ -69,7 +68,7 @@
       </java>
     </goal>
 
-    <goal name="fibonacciJNDI-groovy" prereqs="jar:jar">
+    <goal name="fibonacci-groovy-jndi" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
             fork="true">
           <arg value="org.osjava.jndi.PropertiesFactory"/>
@@ -81,7 +80,7 @@
       </java>
     </goal>
 
-    <goal name="fibonacciSerialized-groovy" prereqs="jar:jar">
+    <goal name="fibonacci-groovy-serialized" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
             fork="true">
         <classpath refid="maven.dependency.classpath"/>
