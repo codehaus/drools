@@ -77,5 +77,6 @@ public final class Main {
                 // and let the logic engine do the rest.
 
                 workingMemory.assertObject( getFamilyTree(workingMemory) );
+                workingMemory.fireAllRules();
     }
 }

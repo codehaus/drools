@@ -20,4 +20,14 @@
       </classpath>
     </java>
   </goal>
+
+  <goal name="familyTree" prereqs="jar:jar">
+    <java classname="org.drools.examples.familyTree.Main"
+          fork="true">
+      <classpath refid="maven.dependency.classpath"/>
+      <classpath>
+        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+      </classpath>
+    </java>
+  </goal>
 </project>
