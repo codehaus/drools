@@ -233,15 +233,6 @@
         </fileset>
       </ant:unjar>
 
-      <ant:unjar dest="${basedir}/target/all-stage/drools-conf/annotation">
-        <patternset>
-            <include name="**/drools.conf"/>
-        </patternset>
-        <fileset dir="${basedir}">
-            <include name="target/drools-base-${pom.currentVersion}.jar"/>
-        </fileset>
-      </ant:unjar>
-
       <ant:concat destfile="${basedir}/target/all-stage/drools-all/META-INF/drools.conf" force="yes">
         <fileset dir="target/all-stage/drools-conf" includes="**/drools.conf" />
       </ant:concat>
