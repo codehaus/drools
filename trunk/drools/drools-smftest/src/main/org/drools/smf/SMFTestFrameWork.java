@@ -53,7 +53,7 @@ import org.drools.MockWorkingMemory;
  * Each testType has a corresponding private helper method to instantiate
  * a Condition, Extractor, Consequence for each test using the specified parameters
  */
-public class SMFTestFrameWork  extends TestCase
+public abstract class SMFTestFrameWork  extends TestCase
 {
     /** the samentic name being tested */
     private String semantic;
@@ -264,7 +264,7 @@ public class SMFTestFrameWork  extends TestCase
         //simple condition, no declrations
         testConsequence(0, tuple, new Declaration[] {});
 
-        //need to declare so that the test has SMFTestFrameWork.Cheese imported
+        //need to declare so that the tests have SMFTestFrameWork.Cheese imported
         Declaration camembertDecl = new Declaration(cheeseType, "camembert");
         Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
 
