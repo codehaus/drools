@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ExtractionNode.java,v 1.11 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: ExtractionNode.java,v 1.12 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,16 +46,16 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.FactException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.drools.AssertionException;
+import org.drools.FactException;
+import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.spi.Extractor;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
 /** <i> extraction</i> node in the Rete-OO network.
  *

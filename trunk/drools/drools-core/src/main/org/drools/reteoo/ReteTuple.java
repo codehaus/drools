@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.28 2004-09-16 16:34:57 mproctor Exp $
+ $Id: ReteTuple.java,v 1.29 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,18 +46,17 @@ package org.drools.reteoo;
 
  */
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
-import org.drools.spi.Tuple;
-import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Iterator;
-
-import java.io.Serializable;
+import org.drools.rule.Rule;
+import org.drools.spi.Tuple;
 
 /** Base Rete-OO <code>Tuple</code> implementation.
  *
@@ -65,7 +64,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.28 2004-09-16 16:34:57 mproctor Exp $
+ *  @version $Id: ReteTuple.java,v 1.29 2004-09-16 23:43:03 mproctor Exp $
  */
 class ReteTuple
     implements Tuple,
@@ -304,7 +303,9 @@ class ReteTuple
             Iterator it = this.key.iterator();
             while (it.hasNext())
             {
-                fact = (FactHandleImpl) this.key.get((Declaration) it.next());
+                Declaration decl = (Declaration) it.next();
+                Object factObject = this.key.get(decl);
+                fact = (FactHandleImpl) this.key.get(decl);
                 if (fact.getRecency() > currentRecency)
                 {
                     this.mostRecentFact = fact;

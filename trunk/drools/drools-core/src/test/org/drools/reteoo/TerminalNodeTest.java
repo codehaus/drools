@@ -1,17 +1,12 @@
 package org.drools.reteoo;
 
-import org.drools.MockFactHandle;
-import org.drools.AssertionException;
+import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.rule.RuleSet;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.spi.MockObjectType;
-import org.drools.DroolsTestCase;
-
-import java.util.List;
 
 public class TerminalNodeTest
     extends DroolsTestCase
@@ -121,7 +116,7 @@ public class TerminalNodeTest
         TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
-        MockFactHandle handle = new MockFactHandle( 42 );
+        FactHandleImpl handle = new FactHandleImpl( 42 );
 
         node.modifyTuples( handle,
                            new TupleSet(),

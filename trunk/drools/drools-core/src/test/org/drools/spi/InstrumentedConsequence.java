@@ -1,10 +1,10 @@
 
 package org.drools.spi;
 
-import org.drools.WorkingMemory;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.drools.WorkingMemory;
 
 public class InstrumentedConsequence
     implements Consequence

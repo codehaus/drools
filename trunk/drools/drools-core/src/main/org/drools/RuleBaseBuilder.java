@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBaseBuilder.java,v 1.11 2004-06-26 15:10:56 mproctor Exp $
+ $Id: RuleBaseBuilder.java,v 1.12 2004-09-16 23:43:00 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,10 +46,8 @@ package org.drools;
  
  */
 
-import org.drools.RuleBase;
-import org.drools.RuleIntegrationException;
-import org.drools.rule.RuleSet;
 import org.drools.reteoo.Builder;
+import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 
 /** Factory for constructing a <code>RuleBase</code>.
@@ -67,7 +65,7 @@ import org.drools.spi.ConflictResolver;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseBuilder.java,v 1.11 2004-06-26 15:10:56 mproctor Exp $
+ *  @version $Id: RuleBaseBuilder.java,v 1.12 2004-09-16 23:43:00 mproctor Exp $
  */
 public class RuleBaseBuilder
 {

@@ -1,14 +1,11 @@
 package org.drools.reteoo;
 
-import org.drools.AssertionException;
-import org.drools.rule.Declaration;
-import org.drools.spi.Tuple;
-import org.drools.MockObjectType;
-import org.drools.MockFactHandle;
-import org.drools.DroolsTestCase;
-
 import java.util.List;
 import java.util.Set;
+
+import org.drools.DroolsTestCase;
+import org.drools.MockObjectType;
+import org.drools.rule.Declaration;
 
 public class ObjectTypeNodeTest
     extends DroolsTestCase
@@ -41,8 +38,8 @@ public class ObjectTypeNodeTest
         Object string1 = new String( "cheese" );
         Object object1 = new Object();
 
-        MockFactHandle handle1 = new MockFactHandle( 1 );
-        MockFactHandle handle2 = new MockFactHandle( 2 );
+        FactHandleImpl handle1 = new FactHandleImpl( 1 );
+        FactHandleImpl handle2 = new FactHandleImpl( 2 );
 
         memory.putObject( handle1,
                           string1 );

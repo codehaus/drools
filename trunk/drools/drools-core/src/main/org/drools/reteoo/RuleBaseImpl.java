@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.18 2004-08-08 05:48:37 dbarnett Exp $
+ $Id: RuleBaseImpl.java,v 1.19 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,22 +46,17 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.WorkingMemory;
+import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
-import org.drools.FactException;
+import org.drools.WorkingMemory;
 import org.drools.spi.ConflictResolver;
-
-import java.util.Iterator;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 /** Implementation of <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.18 2004-08-08 05:48:37 dbarnett Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.19 2004-09-16 23:43:03 mproctor Exp $
  */
 class RuleBaseImpl
     implements RuleBase

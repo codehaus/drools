@@ -1,18 +1,18 @@
 package org.drools.reteoo;
 
-import org.drools.rule.Rule;
-import org.drools.rule.Declaration;
-import org.drools.rule.Extraction;
-import org.drools.spi.ObjectType;
-import org.drools.spi.InstrumentedCondition;
-import org.drools.spi.InstrumentedExtractor;
-import org.drools.spi.MockObjectType;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
+import org.drools.rule.Declaration;
+import org.drools.rule.Extraction;
+import org.drools.rule.Rule;
+import org.drools.spi.InstrumentedCondition;
+import org.drools.spi.InstrumentedExtractor;
+import org.drools.spi.MockObjectType;
+import org.drools.spi.ObjectType;
 
 public class BuilderTest extends TestCase
 {

@@ -1,14 +1,14 @@
 package org.drools.reteoo;
 
-import org.drools.FactHandle;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drools.AssertionException;
+import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class InstrumentedParameterNode
     extends ParameterNode

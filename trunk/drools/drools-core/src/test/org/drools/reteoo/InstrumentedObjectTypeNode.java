@@ -1,11 +1,11 @@
 package org.drools.reteoo;
 
-import org.drools.FactHandle;
-import org.drools.FactException;
-import org.drools.spi.ObjectType;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.spi.ObjectType;
 
 public class InstrumentedObjectTypeNode
     extends ObjectTypeNode

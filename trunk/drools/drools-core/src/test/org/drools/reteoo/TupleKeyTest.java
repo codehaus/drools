@@ -1,10 +1,9 @@
 package org.drools.reteoo;
 
-import org.drools.rule.Declaration;
-import org.drools.MockObjectType;
-import org.drools.MockFactHandle;
-
 import junit.framework.TestCase;
+
+import org.drools.MockObjectType;
+import org.drools.rule.Declaration;
 
 public class TupleKeyTest
     extends TestCase
@@ -17,8 +16,8 @@ public class TupleKeyTest
     private Object obj1;
     private Object obj2;
 
-    private MockFactHandle handle1;
-    private MockFactHandle handle2;
+    private FactHandleImpl handle1;
+    private FactHandleImpl handle2;
 
     public void setUp()
     {
@@ -33,8 +32,8 @@ public class TupleKeyTest
         this.obj1 = new Object();
         this.obj2 = new Object();
 
-        this.handle1 = new MockFactHandle( 1 );
-        this.handle2 = new MockFactHandle( 2 );
+        this.handle1 = new FactHandleImpl( 1 );
+        this.handle2 = new FactHandleImpl( 2 );
     }
 
     public void tearDown()
@@ -216,7 +215,7 @@ public class TupleKeyTest
                       this.obj1 );
 
         otherKey.put( this.decl2,
-                      new MockFactHandle( 42 ),
+                      new FactHandleImpl( 42 ),
                       this.obj2 );
 
         assertTrue( ! this.key.containsAll( otherKey ) );
@@ -243,7 +242,7 @@ public class TupleKeyTest
                       this.obj1 );
 
         otherKey.put( decl,
-                      new MockFactHandle( 42 ),
+                      new FactHandleImpl( 42 ),
                       this.obj2 );
 
         assertTrue( ! this.key.containsAll( otherKey ) );

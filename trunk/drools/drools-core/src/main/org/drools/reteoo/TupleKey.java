@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleKey.java,v 1.13 2004-09-11 13:00:08 mproctor Exp $
+ $Id: TupleKey.java,v 1.14 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,15 +46,15 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.rule.Declaration;
-
-import java.util.Set;
-import java.util.Map;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-import java.io.Serializable;
+import org.drools.FactHandle;
+import org.drools.rule.Declaration;
+import org.drools.spi.Tuple;
 
 /** A composite key to match tuples.
  *

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Extraction.java,v 1.10 2004-08-07 16:23:32 mproctor Exp $
+ $Id: Extraction.java,v 1.11 2004-09-16 23:43:04 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,8 +46,9 @@ package org.drools.rule;
 
  */
 
-import org.drools.spi.Extractor;
 import java.io.Serializable;
+
+import org.drools.spi.Extractor;
 
 /** A <code>Condition</code> representing a <i>consistent assignment</i>
  *  as defined by the Rete-OO algorithm.

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: MockAgendaItem.java,v 1.3 2004-06-27 12:31:17 mproctor Exp $
+ $Id: MockAgendaItem.java,v 1.4 2004-09-16 23:43:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,12 +47,11 @@ package org.drools.conflict;
  */
 
 import org.drools.WorkingMemory;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
+import org.drools.spi.ConsequenceException;
 import org.drools.spi.MockTuple;
 import org.drools.spi.Tuple;
-import org.drools.spi.ConsequenceException;
 
 /** Item entry in the <code>Agenda</code>.
  *

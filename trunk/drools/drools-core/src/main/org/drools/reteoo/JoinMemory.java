@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinMemory.java,v 1.20 2004-08-05 10:15:44 mproctor Exp $
+ $Id: JoinMemory.java,v 1.21 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,16 +46,15 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.FactException;
-import org.drools.rule.Declaration;
-
-import java.util.Set;
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collections;
+import java.util.Set;
 
-import java.io.Serializable;
+import org.drools.FactException;
+import org.drools.FactHandle;
+import org.drools.rule.Declaration;
 
 /** Memory for left and right inputs of a <code>JoinNode</code>.
  *

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: AgendaItem.java,v 1.12 2004-08-05 10:15:44 mproctor Exp $
+ $Id: AgendaItem.java,v 1.13 2004-09-16 23:43:03 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,15 +46,14 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.WorkingMemory;
-import org.drools.FactHandle;
+import java.io.Serializable;
 
+import org.drools.FactHandle;
+import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
-import org.drools.spi.Tuple;
 import org.drools.spi.ConsequenceException;
-
-import java.io.Serializable;
+import org.drools.spi.Tuple;
 
 /** Item entry in the <code>Agenda</code>.
  *

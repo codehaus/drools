@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
-$Id: SalienceConflictResolverTest.java,v 1.4 2004-06-27 23:09:41 mproctor Exp $
+$Id: SalienceConflictResolverTest.java,v 1.5 2004-09-16 23:43:08 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,6 +46,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,14 +60,6 @@ import junit.framework.TestCase;
 import org.drools.rule.InstrumentedRule;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.MockTuple;
-
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectInputStream;
-import java.io.ObjectInput;
 
 public class SalienceConflictResolverTest extends TestCase
 {
