@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.57 2004-11-28 20:01:12 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.58 2004-12-06 06:54:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -185,7 +185,7 @@ class WorkingMemoryImpl
         {
             throw new RuntimeException("Invalid Class for name [" + name + "]");
         }
-        
+
         this.applicationData.put( name,
                                   value );
     }
@@ -489,8 +489,8 @@ class WorkingMemoryImpl
      * @param object
      *            The object.
      */
-    Object putObject(FactHandle handle,
-                     Object object)
+    Object putObject( FactHandle handle,
+                      Object object )
     {
         Object oldValue = this.objects.put( ( ( FactHandleImpl ) handle ).getId( ),
                                             object );
@@ -501,7 +501,7 @@ class WorkingMemoryImpl
         return oldValue;
     }
 
-    Object removeObject(FactHandle handle)
+    Object removeObject( FactHandle handle )
     {
         Object object = this.objects.remove( ( ( FactHandleImpl ) handle ).getId( ) );
 
@@ -532,8 +532,8 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public synchronized void modifyObject(FactHandle handle,
-                                          Object object) throws FactException
+    public synchronized void modifyObject( FactHandle handle,
+                                           Object object ) throws FactException
     {
         Object originalObject = removeObject(handle);
 
@@ -563,7 +563,7 @@ class WorkingMemoryImpl
      *
      * @return The node's memory.
      */
-    public JoinMemory getJoinMemory(JoinNode node)
+    public JoinMemory getJoinMemory( JoinNode node )
     {
         JoinMemory memory = (JoinMemory) this.joinMemories.get( node );
 
@@ -589,7 +589,7 @@ class WorkingMemoryImpl
         Iterator it = this.joinMemories.keySet( ).iterator( );
         while ( it.hasNext( ) )
         {
-            ( (JoinMemory) this.joinMemories.get( it.next( ) ) ).dump( );
+            ( ( JoinMemory ) this.joinMemories.get( it.next( ) ) ).dump( );
         }
 
     }

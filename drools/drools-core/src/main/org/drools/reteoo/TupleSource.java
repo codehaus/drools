@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.27 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: TupleSource.java,v 1.28 2004-12-06 06:54:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -135,7 +135,7 @@ abstract class TupleSource
     protected void propagateRetractTuples(TupleKey key,
                                           WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        for ( int i = 0, size = this.tupleSinks.size(); i < size; i++ )
+        for ( int i = 0, size = this.tupleSinks.size( ); i < size; i++ )
         {
             ( ( TupleSink ) this.tupleSinks.get( i ) ).retractTuples( key,
                                                                       workingMemory );
@@ -156,7 +156,7 @@ abstract class TupleSource
                                          TupleSet modifyTuples,
                                          WorkingMemoryImpl workingMemory) throws FactException
     {
-        for ( int i = 0, size = this.tupleSinks.size(); i < size; i++ )
+        for ( int i = 0, size = this.tupleSinks.size( ); i < size; i++ )
         {
             ( ( TupleSink ) this.tupleSinks.get( i ) ).modifyTuples( trigger,
                                                                      modifyTuples,
