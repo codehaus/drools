@@ -1,6 +1,8 @@
 
 package org.drools.reteoo;
 
+import org.drools.WorkingMemory;
+import org.drools.FactException;
 import org.drools.spi.Declaration;
 
 import java.util.List;
@@ -92,6 +94,19 @@ public class JoinMemory
         }
     }
 
+    protected void retractTuples(Set keys)
+    {
+        Iterator keyIter = keys.iterator();
+        TupleKey eachKey = null;
+
+        while ( keyIter.hasNext() )
+        {
+            eachKey = (TupleKey) keyIter.next();
+
+            retractTuples( eachKey );
+        }
+    }
+
     protected void retractTuples(TupleKey key)
     {
         retractTuples( key,
@@ -117,64 +132,70 @@ public class JoinMemory
         }
     }
 
-    protected void retractLeft(Set keys)
+    protected void modifyLeftTuples(Object trigger,
+                                    TupleSet newTuples,
+                                    JoinNode joinNode,
+                                    WorkingMemory workingMemory) throws FactException
     {
-        Iterator keyIter = keys.iterator();
-        TupleKey eachKey = null;
-
-        while ( keyIter.hasNext() )
-        {
-            eachKey = (TupleKey) keyIter.next();
-
-            this.leftTuples.removeTuplesByPartialKey( eachKey );
-        }
+        modifyTuples( trigger,
+                      newTuples,
+                      getLeftTuples(),
+                      getRightTuples(),
+                      joinNode,
+                      workingMemory  );
     }
 
-    protected void modifyLeft(Object trigger,
-                              TupleSet tuples)
+    protected void modifyRightTuples(Object trigger,
+                                     TupleSet newTuples,
+                                     JoinNode joinNode,
+                                     WorkingMemory workingMemory) throws FactException
     {
-        TupleSet origModified = new TupleSet();
-        TupleSet newModified  = new TupleSet();
-        TupleSet retracted    = new TupleSet();
+        modifyTuples( trigger,
+                      newTuples,
+                      getRightTuples(),
+                      getLeftTuples(),
+                      joinNode,
+                      workingMemory );
+    }
 
-        Iterator  tupleIter = getLeftTupleIterator();
-        ReteTuple eachTuple = null;
+    protected void modifyTuples(Object trigger,
+                                TupleSet newTuples,
+                                TupleSet thisSideTuples,
+                                TupleSet thatSideTuples,
+                                JoinNode joinNode,
+                                WorkingMemory workingMemory) throws FactException
+    {
+        Set retractedKeys = new HashSet();
+
+        Set origModified = new HashSet();
+        Set newModified = new HashSet();
+        
+        ReteTuple origTuple = null;
         ReteTuple newTuple  = null;
+        
+        Iterator  tupleIter = thisSideTuples.iterator();
 
         while ( tupleIter.hasNext() )
         {
-            eachTuple = (ReteTuple) tupleIter.next();
+            origTuple = (ReteTuple) tupleIter.next();
 
-            if ( eachTuple.dependsOn( trigger ) )
+            if ( origTuple.dependsOn( trigger ) )
             {
-                newTuple = tuples.getTuple( eachTuple.getKey() );
+                newTuple = newTuples.getTuple( origTuple.getKey() );
 
                 if ( newTuple == null )
                 {
-                    // Not replaced, thus, retracted.
-                    tupleIter.remove();
-                    retracted.addTuple( eachTuple );
+                    retractedKeys.add( origTuple.getKey() );
                 }
                 else
                 {
-                    // Replaced, thus, modified.
-                    origModified.addTuple( eachTuple );
-                    newModified.addTuple( newTuple );
+                    newModified.add( newTuple );
+                    origModified.add( origTuple );
                 }
             }
         }
 
-        TupleSet retractedJoined = new TupleSet();
-
-        tupleIter = retracted.iterator();
-
-        while ( tupleIter.hasNext() )
-        {
-            eachTuple = (ReteTuple) tupleIter.next();
-
-            retractedJoined.addAllTuples( attemptJoin( eachTuple,
-                                                       getRightTupleIterator() ) );
-        }
+        ReteTuple eachTuple = null;
 
         TupleSet origJoined = new TupleSet();
 
@@ -208,13 +229,35 @@ public class JoinMemory
 
             if ( ! newJoined.containsTuple( eachTuple.getKey() ) )
             {
-                retractedJoined.addTuple( eachTuple );
-                newJoined.removeTuple( eachTuple.getKey() );
+                retractedKeys.add( eachTuple.getKey() );
             }
         }
 
-        // propagateRetractTuples( trigger, retractedJoined, workingMemory );
-        // propagateModifyTuples( trigger, modifiedJoined, workingMemory );
+        propagateRetractTuples( trigger,
+                                retractedKeys,
+                                joinNode,
+                                workingMemory );
+                                
+
+        // propagateRetractedKeys
+        // propagateNewJoined.
+    }
+
+    private void propagateRetractTuples(Object trigger,
+                                        Set retractedKeys,
+                                        JoinNode joinNode, 
+                                        WorkingMemory workingMemory) throws FactException
+    {
+        Iterator keyIter = retractedKeys.iterator();
+        TupleKey eachKey = null;
+
+        while ( keyIter.hasNext() )
+        {
+            eachKey = (TupleKey) keyIter.next();
+
+            joinNode.propagateRetractTuples( eachKey,
+                                             workingMemory );
+        }
         
     }
 

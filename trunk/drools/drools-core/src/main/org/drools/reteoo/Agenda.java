@@ -61,6 +61,54 @@ public class Agenda
         this.items.add( new AgendaItem( tuple,
                                         action )  );
     }
+
+    void removeFromAgenda(TupleKey key,
+                          Action action)
+    {
+        if ( action == null )
+        {
+            return;
+        }
+
+        Iterator   itemIter = this.items.iterator();
+        AgendaItem eachItem = null;
+
+        while ( itemIter.hasNext() )
+        {
+            eachItem = (AgendaItem) itemIter.next();
+
+            if ( eachItem.getAction() == action )
+            {
+                if ( eachItem.getTuple().getKey().containsAll( key ) )
+                {
+                    itemIter.remove();
+                }
+            }
+        }
+    }
+
+    void modifyAgenda(TupleSet newTuples,
+                      Action action)
+    {
+        Iterator   itemIter  = this.items.iterator();
+        AgendaItem eachItem  = null;
+        ReteTuple  eachTuple = null;
+
+        while ( itemIter.hasNext() )
+        {
+            eachItem = (AgendaItem) itemIter.next();
+
+            if ( eachItem.getAction() == action )
+            {
+                eachTuple = eachItem.getTuple();
+
+                if ( ! newTuples.containsTuple( eachTuple.getKey() ) )
+                {
+                    itemIter.remove();
+                }
+            }
+        }
+    }
     
     /** Receive notification of a modified object.
      *
@@ -68,7 +116,7 @@ public class Agenda
      */
     public void modifyObject(Object object)
     {
-        retractObject( object );
+        // retractObject( object );
     }
     
     /** Receive notification of a retracted object.

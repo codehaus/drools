@@ -2,6 +2,7 @@
 package org.drools.reteoo;
 
 import org.drools.WorkingMemory;
+import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.ModificationException;
@@ -62,10 +63,8 @@ public class ParameterNode extends TupleSource
     protected void assertObject(Object object,
                                 WorkingMemory workingMemory) throws AssertionException
     {
-        ReteTuple tuple = new ReteTuple();
-
-        tuple.putKeyColumn( getDeclaration(),
-                            object );
+        ReteTuple tuple = new ReteTuple( getDeclaration(),
+                                         object );
 
         propagateAssertTuple( tuple,
                               workingMemory );
@@ -82,28 +81,15 @@ public class ParameterNode extends TupleSource
     }
 
     protected void modifyObject(Object object,
-                                WorkingMemory workingMemory) throws ModificationException
+                                WorkingMemory workingMemory) throws FactException
     {
-        try
-        {
-            /*
-            propagateRetractObject( object,
-                                    workingMemory );
-            */
+        ReteTuple tuple = new ReteTuple( getDeclaration(),
+                                         object );
+        
+        TupleSet tupleSet = new TupleSet( tuple );
 
-            retractObject( object,
-                           workingMemory );
-            
-            assertObject( object,
-                          workingMemory );
-        }
-        catch (RetractionException e)
-        {
-            throw new ModificationException( e );
-        }
-        catch (AssertionException e)
-        {
-            throw new ModificationException( e );
-        }
+        propagateModifyTuples( object,
+                               tupleSet,
+                               workingMemory );
     }
 }

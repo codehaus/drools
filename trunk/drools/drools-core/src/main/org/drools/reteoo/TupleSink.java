@@ -27,4 +27,9 @@ public interface TupleSink
     void retractTuples(TupleKey key,
                        WorkingMemory workingMemory) throws RetractionException;
 
+    void modifyTuples(TupleSource inputSource,
+                      Object trigger,
+                      TupleSet newTuples,
+                      WorkingMemory workingMemory) throws FactException;
+
 }

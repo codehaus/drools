@@ -153,7 +153,7 @@ public class RuleBase
      *  @throws ModificationException if an error occurs during assertion.
      */
     protected void modifyObject(Object object,
-                                WorkingMemory workingMemory) throws ModificationException
+                                WorkingMemory workingMemory) throws FactException
     {
         getRootNode().modifyObject( object,
                                     workingMemory );

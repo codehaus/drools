@@ -46,7 +46,7 @@ public class TransactionalWorkingMemory extends WorkingMemory
         }
     }
 
-    public void modifyObject(Object object) throws ModificationException
+    public void modifyObject(Object object) throws FactException
     {
         if ( this.retractedObjects != null )
         {

@@ -32,8 +32,8 @@
 			System.err.println( buyer );
 			System.err.println( seller );
 
-			modifyObject( buyer );
-			modifyObject( seller );
+			 modifyObject( buyer );
+			 modifyObject( seller );
 		</then>
 	</rule>
 

@@ -37,6 +37,14 @@ public class ReteTuple implements Tuple
         this.otherColumns    = new HashMap( that.otherColumns );
     }
 
+    public ReteTuple(Declaration declaration,
+                     Object value)
+    {
+        this();
+        putKeyColumn( declaration,
+                      value );
+    }
+
     public void putKeyColumn(Declaration declaration,
                              Object value)
     {

@@ -2,6 +2,7 @@
 package org.drools.reteoo;
 
 import org.drools.WorkingMemory;
+import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 
@@ -89,6 +90,21 @@ public abstract class TupleSource
         {
             sink.retractTuples( key,
                                 workingMemory );
+        }
+    }
+
+    protected void propagateModifyTuples(Object trigger,
+                                         TupleSet newTuples,
+                                         WorkingMemory workingMemory) throws FactException
+    {
+        TupleSink sink = getTupleSink();
+
+        if ( sink != null )
+        {
+            sink.modifyTuples( this,
+                               trigger,
+                               newTuples,
+                               workingMemory );
         }
     }
 }
