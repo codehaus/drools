@@ -134,26 +134,26 @@ public abstract class SMFTestFrameWork  extends TestCase
         tuple.setWorkingMemory(new MockWorkingMemory());
 
         //simple condition checks
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
-        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));  //0
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {})); //1
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));  //2
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));  //3
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));  //4
 
         Declaration camembertDecl = new Declaration(cheeseType, "camembert");
         Declaration stiltonDecl = new Declaration(cheeseType, "stilton");
 
         //condition check with a single declaration
         tuple.put(camembertDecl, new Cheese("camembert"));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl}));
-        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl})); //5
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl})); //6
 
         //condition check with a single declaration
         tuple = new MockTuple();
         tuple.setWorkingMemory(new MockWorkingMemory());
         tuple.put(stiltonDecl, new Cheese("stilton"));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl}));
-        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl}));  //7
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl})); //8
 
 
         //condition check with two declarations
@@ -161,10 +161,10 @@ public abstract class SMFTestFrameWork  extends TestCase
         tuple.setWorkingMemory(new MockWorkingMemory());
         tuple.put(stiltonDecl, new Cheese("stilton"));
         tuple.put(camembertDecl, new Cheese("camembert"));
-        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl})); //9
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));  //10
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));  //11
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl})); //12
 
         //condition check with 2 declarations and application data
         WorkingMemory workingMemory = new MockWorkingMemory();
@@ -172,9 +172,9 @@ public abstract class SMFTestFrameWork  extends TestCase
         workingMemory.setApplicationData("favouriteCheese", new Cheese("camembert"));
         tuple.setWorkingMemory(workingMemory);
 
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));  //13
+        assertFalse(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl})); //14
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {stiltonDecl, camembertDecl}));  //15
 
         //test code works no matter what the order of decl are
         tuple = new MockTuple();
@@ -188,11 +188,11 @@ public abstract class SMFTestFrameWork  extends TestCase
 
         tuple.put(favouriteCheeseDecl, "camembert");
         tuple.put(camembertDecl, new Cheese("camembert"));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl}));
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl})); //16
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl})); //17
 
         // test condition syntax with commas - Drools Issue #77
-        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {}));
+        assertTrue(testCondition(testNumber++, tuple, new Declaration[] {})); //18
     }
 
     /**
@@ -373,6 +373,10 @@ public abstract class SMFTestFrameWork  extends TestCase
         assertEquals(3, ((Integer) map.get("bites")).intValue());
 
         //test code works no matter what the order of decl are
+        /* In java this doesn't actually do anything now as Declaration[]
+           in the constructor is ignored, it uses the tuples.getDeclaration()
+           of the invoke method to compiled and also invoke
+        */
         tuple = new MockTuple();
         workingMemory = new MockWorkingMemory();
         tuple.setWorkingMemory(workingMemory);
@@ -386,6 +390,7 @@ public abstract class SMFTestFrameWork  extends TestCase
         tuple.put(camembertDecl, new Cheese("camembert"));
         testConsequence(4, tuple, new Declaration[] {favouriteCheeseDecl, camembertDecl});
         testConsequence(5, tuple, new Declaration[] {camembertDecl, favouriteCheeseDecl});
+
     }
 
     /**
