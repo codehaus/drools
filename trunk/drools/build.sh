@@ -5,6 +5,9 @@ JAVAC=javac
 JAVA=java
 JAR=jar
 
+DEPLOY_SITE=codehaus.org
+DEPLOY_DIR=/www/drools.codehaus.org/tmp
+
 #IFS=""
 MODULES="core io base java python groovy smf jsr94"
 COMPILATION_MODULES="core smf io base java python groovy jsr94"
@@ -172,7 +175,7 @@ generate_local_nav()
           echo "    <div class=\"navLink\"><small><i><a href=\"$url\">$desc</a></i></small></div>" >> $out
       else
         if [ "$url" == "$page" ] ; then
-          echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold\">[ $desc ]</a></small></div>" >> $out
+          echo "    <div class=\"navLink\"><small><a href=\"$url\" style=\"font-weight: bold\">[&nbsp;$desc&nbsp;]</a></small></div>" >> $out
         else
           echo "    <div class=\"navLink\"><small><a href=\"$url\">$desc</a></small></div>" >> $out
         fi
@@ -428,6 +431,18 @@ target_binary_dist()
   tar zcvf drools-$VERSION.tar.gz drools-$VERSION
   zip -r9 drools-$VERSION.zip drools-$VERSION
   cd -
+}
+
+target_deploy_site()
+{
+  build site
+
+  cd $BASE/build/site
+  tar zcvf drools-$VERSION-site.tar.gz .
+  scp drools-$VERSION-site.tar.gz $DEPLOY_SITE:$DEPLOY_DIR
+  cd -
+
+  ssh $DEPLOY_SITE "cd $DEPLOY_DIR && tar zxvf drools-$VERSION-site.tar.gz"
 }
 
 target_clean()
