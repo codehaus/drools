@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.9 2004-07-06 20:16:40 dbarnett Exp $
+ $Id: RuleSetReader.java,v 1.10 2004-08-06 03:40:49 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -73,7 +73,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.w3c.dom.Element;
 
 import java.io.Reader;
 import java.io.InputStream;
@@ -90,7 +89,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.9 2004-07-06 20:16:40 dbarnett Exp $
+ *  @version $Id: RuleSetReader.java,v 1.10 2004-08-06 03:40:49 dbarnett Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -220,7 +219,7 @@ public class RuleSetReader
                          void start(Attributes attrs)
                              throws SAXException
                          {
-                             startParameter( attrs );
+                             startDeclaration( attrs );
                          }
                      } );
 
