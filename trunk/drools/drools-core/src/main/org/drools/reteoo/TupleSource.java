@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.28 2004-12-06 06:54:48 simon Exp $
+ * $Id: TupleSource.java,v 1.29 2004-12-06 16:11:40 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -186,4 +186,9 @@ abstract class TupleSource
      * @return The available tuple declarations.
      */
     public abstract Set getTupleDeclarations();
+
+    /**
+     * Attaches this node into the network.
+     */
+    public abstract void attach( );
 }

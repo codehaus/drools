@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.27 2004-12-06 15:36:15 simon Exp $
+ * $Id: ObjectTypeNode.java,v 1.28 2004-12-06 16:11:40 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

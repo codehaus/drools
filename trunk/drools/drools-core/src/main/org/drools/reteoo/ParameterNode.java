@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.44 2004-12-06 15:44:23 simon Exp $
+ * $Id: ParameterNode.java,v 1.45 2004-12-06 16:11:40 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -102,9 +102,6 @@ class ParameterNode extends TupleSource
     // Instance methods
     // ------------------------------------------------------------
 
-    /**
-     * Attaches this node into the network.
-     */
     public void attach( )
     {
         this.objectTypeNode.addParameterNode( this );

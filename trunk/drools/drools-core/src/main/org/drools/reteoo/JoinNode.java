@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.41 2004-12-06 15:36:15 simon Exp $
+ * $Id: JoinNode.java,v 1.42 2004-12-06 16:11:40 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -95,10 +95,7 @@ class JoinNode extends TupleSource
         this.tupleDeclarations = determineTupleDeclarations( );
         this.commonDeclarations = determineCommonDeclarations( );
 
-        leftInput.addTupleSink( new JoinNodeInput( this,
-                                                   JoinNodeInput.LEFT ) );
-        rightInput.addTupleSink( new JoinNodeInput( this,
-                                                    JoinNodeInput.RIGHT ) );
+        attach( );
     }
 
     // ------------------------------------------------------------
@@ -290,6 +287,15 @@ class JoinNode extends TupleSource
     public Set getTupleDeclarations()
     {
         return this.tupleDeclarations;
+    }
+
+    public void attach()
+    {
+        leftInput.addTupleSink( new JoinNodeInput( this,
+                                                   JoinNodeInput.LEFT ) );
+
+        rightInput.addTupleSink( new JoinNodeInput( this,
+                                                    JoinNodeInput.RIGHT ) );
     }
 
     private Set determineTupleDeclarations()
