@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImplTest.java,v 1.4 2004-11-09 13:52:39 simon Exp $
+ * $Id: WorkingMemoryImplTest.java,v 1.5 2004-11-28 00:58:44 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -82,7 +82,7 @@ public class WorkingMemoryImplTest extends TestCase
     }
 
     //Serialise twice to test DROOLS-182
-    public void testSerializationIsRepeatble() throws Exception
+    public void testSerializationIsRepeatable() throws Exception
     {
         TestObject fact = new TestObject();
 
