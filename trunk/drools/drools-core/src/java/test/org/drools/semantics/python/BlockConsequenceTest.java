@@ -2,6 +2,7 @@ package org.drools.semantics.python;
 
 import org.drools.semantics.java.ClassObjectType;
 
+import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.spi.MockTuple;
 import org.drools.spi.ConsequenceException;
@@ -41,7 +42,7 @@ public class BlockConsequenceTest extends TestCase
         try
         {
             conseq.invoke( tuple,
-                           null );
+                           new TestWorkingMemory() );
         }
         catch (ConsequenceException e)
         {
@@ -54,7 +55,7 @@ public class BlockConsequenceTest extends TestCase
     {
         BlockConsequence conseq = new BlockConsequence();
 
-        conseq.setText( "test.poke();test.prod();" );
+        conseq.setText( "test.poke();test.prod(appData);" );
 
         MockTuple tuple = new MockTuple();
 
@@ -62,8 +63,11 @@ public class BlockConsequenceTest extends TestCase
                                     "test" ),
                    this );
 
+        WorkingMemory memory = new TestWorkingMemory();
+        memory.setApplicationData( "This is app data" );
+        
         conseq.invoke( tuple,
-                       null );
+                       memory );
 
         assertTrue( this.poked );
         assertTrue( this.prodded );
@@ -74,8 +78,20 @@ public class BlockConsequenceTest extends TestCase
         this.poked = true;
     }
 
-    public void prod()
+    public void prod( String appData )
     {
-        this.prodded = true;
+        if ( appData.equals( "This is app data" ) )
+        {
+            this.prodded = true;
+        }
+    }
+
+    /** Simple subclass so we can call the protected constructor */
+    private static class TestWorkingMemory extends WorkingMemory
+    {
+        public TestWorkingMemory()
+        {
+            super( null );
+        }
     }
 }

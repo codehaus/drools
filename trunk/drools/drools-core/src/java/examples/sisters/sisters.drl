@@ -31,6 +31,9 @@
              person: ${person}
              sister: ${sister}
 
+          Getting message from appData:
+          ${appData.get( "message" )}
+
           <know:assert fact="${person}: I like cheese"/>
           <know:assert fact="bob says: ${person} and ${sister} are sisters"/>
 
@@ -53,6 +56,9 @@
 
       <consequence>
         <java:consequence>
+            System.err.println( "Getting message from appData." );
+            System.err.println( appData.get("message") );
+            System.err.println();
             System.err.println( "Message from bob received." );
             System.err.println( message );
         </java:consequence>
