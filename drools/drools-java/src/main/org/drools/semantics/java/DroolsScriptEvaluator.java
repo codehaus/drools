@@ -6,6 +6,8 @@ import net.janino.Mod;
 import net.janino.Parser;
 import net.janino.Scanner;
 import net.janino.util.PrimitiveWrapper;
+import net.janino.DebuggingInformation;
+
 import org.drools.rule.Declaration;
 import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.ObjectType;
@@ -146,7 +148,7 @@ public class DroolsScriptEvaluator extends EvaluatorBase
         Class c;
         try
         {
-            c = this.compileAndLoad( compilationUnit, Java.DEBUGGING_SOURCE | Java.DEBUGGING_LINES, "DroolsConsequence" );
+            c = this.compileAndLoad( compilationUnit, DebuggingInformation.ALL, "DroolsConsequence" );
         }
         catch ( ClassNotFoundException e )
         {
