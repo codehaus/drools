@@ -36,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>drools</groupId>
-            <artifactId>drools-smftestframework</artifactId>
+            <artifactId>drools-smftest</artifactId>
             <version>${pom.currentVersion}</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
