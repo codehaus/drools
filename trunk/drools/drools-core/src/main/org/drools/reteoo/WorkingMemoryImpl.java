@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.22 2004-10-06 13:33:38 mproctor Exp $
- * 
+ * $Id: WorkingMemoryImpl.java,v 1.23 2004-10-08 16:30:07 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,7 +37,7 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import org.drools.FactException;
@@ -57,11 +57,11 @@ import java.util.Map;
 
 /**
  * Implementation of <code>WorkingMemory</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
- * 
- * @version $Id: WorkingMemoryImpl.java,v 1.22 2004-10-06 13:33:38 mproctor Exp $
+ *
+ * @version $Id: WorkingMemoryImpl.java,v 1.23 2004-10-08 16:30:07 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -91,9 +91,6 @@ class WorkingMemoryImpl implements WorkingMemory
     /** Handle-to-object mapping. */
     private Map                      objects;
 
-    /** Object-to-handle mapping to ensure uniqueness of facts. */
-    private final Map                handles;
-
     private static FactHandleFactory factHandleFactory;
 
     /** Array of listeners */
@@ -107,7 +104,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Construct.
-     * 
+     *
      * @param ruleBase The backing rule-base.
      */
     public WorkingMemoryImpl(RuleBaseImpl ruleBase)
@@ -117,7 +114,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Construct.
-     * 
+     *
      * @param ruleBase The backing rule-base.
      * @param conflictResolver The conflict resolver.
      */
@@ -127,7 +124,6 @@ class WorkingMemoryImpl implements WorkingMemory
         this.ruleBase = ruleBase;
         this.joinMemories = new HashMap( );
         this.objects = new HashMap( );
-        this.handles = new HashMap( );
         this.applicationData = new HashMap( );
 
         this.agenda = new Agenda( this, conflictResolver );
@@ -146,7 +142,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * add event listener to listeners ArrayList
-     * 
+     *
      * @param listener
      */
     public void addEventListener(WorkingMemoryEventListener listener)
@@ -159,7 +155,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * remove event listener from listeners ArrayList
-     * 
+     *
      * @param listener
      */
     public void removeEventListener(WorkingMemoryEventListener listener)
@@ -169,7 +165,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Returns a read-only list of listeners
-     * 
+     *
      * @return listeners
      */
     public List getListeners()
@@ -230,7 +226,7 @@ class WorkingMemoryImpl implements WorkingMemory
 
     /**
      * Create a new <code>FactHandle</code>.
-     * 
+     *
      * @return The new fact handle.
      */
     protected FactHandle newFactHandle()
@@ -286,7 +282,7 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * Retrieve the rule-firing <code>Agenda</code> for this
      * <code>WorkingMemory</code>.
-     * 
+     *
      * @return The <code>Agenda</code>.
      */
     protected Agenda getAgenda()
@@ -376,31 +372,24 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized FactHandle assertObject(Object object) throws FactException
     {
-        FactHandle handle = ( FactHandle ) this.handles.get( object );
+        FactHandle handle = newFactHandle( );
 
-        if ( handle == null )
-        {
-            handle = newFactHandle( );
+        this.ruleBase.assertObject( handle, object, this );
 
-            this.ruleBase.assertObject( handle, object, this );
-
-            putObject( handle, object );
-        }
+        putObject( handle, object );
 
         return handle;
     }
 
     /**
      * Associate an object with its handle.
-     * 
+     *
      * @param handle The handle.
      * @param object The object.
      */
     void putObject(FactHandle handle, Object object)
     {
         this.objects.put( handle, object );
-
-        this.handles.put( object, handle );
     }
 
     /**
@@ -409,8 +398,6 @@ class WorkingMemoryImpl implements WorkingMemory
     public synchronized void retractObject(FactHandle handle) throws FactException
     {
         this.ruleBase.retractObject( handle, this );
-
-        this.handles.remove( objects.get( handle ) );
 
         this.objects.remove( handle );
     }
@@ -433,9 +420,9 @@ class WorkingMemoryImpl implements WorkingMemory
     /**
      * Retrieve the <code>JoinMemory</code> for a particular
      * <code>JoinNode</code>.
-     * 
+     *
      * @param node The <code>JoinNode</code> key.
-     * 
+     *
      * @return The node's memory.
      */
     public JoinMemory getJoinMemory(JoinNode node)
