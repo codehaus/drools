@@ -141,6 +141,11 @@ public class MockWorkingMemory implements WorkingMemory
         return null;
     }
 
+    public FactHandle assertObject(Object object, boolean dynamic) throws FactException
+    {
+        return null;
+    }
+
     public void retractObject(FactHandle handle) throws FactException
     {
         //

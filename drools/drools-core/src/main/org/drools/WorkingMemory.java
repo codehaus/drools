@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.39 2004-11-19 02:12:12 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.40 2004-11-26 03:21:57 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,9 +52,7 @@ import java.util.Map;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public interface WorkingMemory
-    extends
-    Serializable
+public interface WorkingMemory extends Serializable
 {
     /**
      * Add an event listener.
@@ -195,17 +193,30 @@ public interface WorkingMemory
     boolean containsObject(FactHandle handle);
 
     /**
-     * Aasert a fact.
+     * Assert a fact.
      * 
-     * @param object
-     *            The fact object.
+     * @param object The fact object.
      * 
      * @return The new fact-handle associated with the object.
      * 
-     * @throws FactException
-     *             If an error occurs.
+     * @throws FactException If an error occurs.
      */
     FactHandle assertObject(Object object) throws FactException;
+
+    /**
+     * Assert a fact registering JavaBean <code>PropertyChangeListeners</code>
+     * on the Object to automatically trigger <code>modifyObject</code> calls
+     * if <code>dynamic</code> is <code>true</code>.
+     *
+     * @param object The fact object.
+     * @param dynamic true if Drools should add JavaBean
+     *        <code>PropertyChangeListeners</code> to the object.
+     * 
+     * @return The new fact-handle associated with the object.
+     * 
+     * @throws FactException If an error occurs.
+     */
+    FactHandle assertObject(Object object, boolean dynamic) throws FactException;
 
     /**
      * Retract a fact.
