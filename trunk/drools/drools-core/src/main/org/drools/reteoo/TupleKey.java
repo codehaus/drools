@@ -89,8 +89,8 @@ class TupleKey
         {
             eachDecl = (Declaration) declIter.next();
 
-            thisValue = get( eachDecl );
-            thatValue = get( eachDecl );
+            thisValue = this.get( eachDecl );
+            thatValue = that.get( eachDecl );
 
             if ( thisValue == null
                  && 

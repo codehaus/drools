@@ -57,6 +57,12 @@ public class BeanShellFilterCondition implements FilterCondition
         initializeInterpreter();
     }
 
+
+    public String toString()
+    {
+        return this.filterExpr;
+    }
+    
     /** Initialize the BeanShell interpreter. 
      */
     private void initializeInterpreter()

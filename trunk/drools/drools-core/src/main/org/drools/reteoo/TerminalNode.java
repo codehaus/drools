@@ -73,22 +73,10 @@ public class TerminalNode implements TupleSink
                             ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
-        /*
-        Action action = getAction();
-
-        if ( action != null )
-        {
-            action.invoke( tuple,
-                           workingMemory );
-        }
-        */
-
-        Action action = getAction();
-
         Agenda agenda = workingMemory.getAgenda();
 
         agenda.addToAgenda( tuple,
-                            action,
+                            getAction(),
                             getDuration() );
     }
 
@@ -107,7 +95,7 @@ public class TerminalNode implements TupleSink
                              WorkingMemory workingMemory)
     {
         Agenda agenda = workingMemory.getAgenda();
-
+        
         agenda.modifyAgenda( newTuples,
                              getAction(),
                              getDuration() );
