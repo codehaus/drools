@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ConditionNode.java,v 1.8 2004-07-05 21:51:36 mproctor Exp $
+ $Id: ConditionNode.java,v 1.9 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -242,5 +242,16 @@ class ConditionNode
         buffer.append(indent + "tupleSink:\n");
         buffer.append(getTupleSink().dump(indent + " "));
         return buffer.toString();
+    }
+    
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(thisNode + " [label=\"ConditionNode\\n(TupleSink)\\n" +
+            "condition: " + condition + "\"];\n");
+        
+        long nextNode = thisNode + 1;
+        
+        buffer.append(thisNode + " -> " + nextNode + ";\n");
+        return getTupleSink().dumpToDot(buffer, nextNode);
     }
 }

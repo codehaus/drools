@@ -65,4 +65,11 @@ public class InstrumentedTupleSink
         buffer.append(indent + "-------------\n");
         return buffer.toString();
     }
+
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(
+            thisNode + " [label=\"InstrumentedTupleSink\\n(TupleSink)\"];\n");
+        return thisNode + 1;
+    }
 }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.13 2004-07-09 00:42:21 dbarnett Exp $
+ $Id: Declaration.java,v 1.14 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -173,5 +173,16 @@ public class Declaration implements Serializable
         buffer.append(indent + objectType);
         buffer.append(indent + "\n");
         return buffer.toString();
+    }
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(thisNode + " [label=\"Declaration\\n" +
+            "identifier: " + identifier + "\\n" +
+            "objectType: " + objectType + "\"];\n");
+        return thisNode + 1;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Extraction.java,v 1.7 2004-07-05 20:15:01 mproctor Exp $
+ $Id: Extraction.java,v 1.8 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -158,5 +158,24 @@ public class Extraction implements Serializable
         }
 
         return buffer.toString();
+    }
+    
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public long dumpToDot(StringBuffer buffer, long thisNode) {
+        buffer.append(thisNode + " [label=\"Extraction\\n" +
+            "extractor: " + extractor + "\"];\n");
+        
+        long nextNode = thisNode + 1;
+        
+        Declaration[] declarations = extractor.getRequiredTupleMembers();
+        for (int i = 0, max = declarations.length; i < max; i++)
+        {
+            buffer.append(thisNode + " -> " + nextNode + ";\n");
+            nextNode = declarations[i].dumpToDot(buffer, nextNode);
+        }
+        
+        return nextNode;
     }
 }

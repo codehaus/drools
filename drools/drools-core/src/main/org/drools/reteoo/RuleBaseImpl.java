@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.15 2004-07-04 11:45:43 mproctor Exp $
+ $Id: RuleBaseImpl.java,v 1.16 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -61,7 +61,7 @@ import java.io.ObjectInputStream;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.15 2004-07-04 11:45:43 mproctor Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.16 2004-07-13 17:19:41 dbarnett Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -174,5 +174,13 @@ class RuleBaseImpl
     public String dumpRete()
     {
       return this.rete.dump();
+    }
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public String dumpReteToDot()
+    {
+      return this.rete.dumpToDot();
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.25 2004-07-05 21:18:43 mproctor Exp $
+ $Id: TerminalNode.java,v 1.26 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -157,5 +157,11 @@ final class TerminalNode
         buffer.append(indent + "TerminalNode\n");
         buffer.append(indent + "-------------\n");
         return buffer.toString();
+    }
+
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(thisNode + " [label=\"TerminalNode\\n(TupleSink)\"];\n");
+        return thisNode + 1;
     }
 }

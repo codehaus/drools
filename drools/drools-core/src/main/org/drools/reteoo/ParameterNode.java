@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.21 2004-07-05 21:51:36 mproctor Exp $
+ $Id: ParameterNode.java,v 1.22 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -220,7 +220,28 @@ class ParameterNode
         buffer.append(declaration.dump(indent + " "));
         buffer.append(indent + "tupleSink:\n");
         buffer.append(getTupleSink().dump(indent + " "));
-        //buffer.append(rule.dump(indent + " "));
+//        buffer.append(rule.dump(indent + " "));
         return buffer.toString();
+    }
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public long dumpToDot(StringBuffer buffer, long thisNode)
+    {
+        buffer.append(thisNode + " [label=\"ParameterNode\"];\n");
+        
+        long nextNode = thisNode + 1;
+        
+        buffer.append(thisNode + " -> " + nextNode + ";\n");
+        nextNode = declaration.dumpToDot(buffer, nextNode);
+
+        buffer.append(thisNode + " -> " + nextNode + ";\n");
+        nextNode = getTupleSink().dumpToDot(buffer, nextNode);
+        
+//        buffer.append(thisNode + " -> " + nextNode + ";\n");
+//        nextNode = rule.dumpToDot(buffer, nextNode);
+        
+        return nextNode;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSink.java,v 1.14 2004-07-05 21:18:43 mproctor Exp $
+ $Id: TupleSink.java,v 1.15 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -94,4 +94,10 @@ interface TupleSink extends Serializable
                       WorkingMemoryImpl workingMemory) throws FactException;
 
     public String dump(String indent);
+
+    /**
+     * Compatible with the GraphViz DOT format.
+     * @returns the next node number to be used
+     */
+    public long dumpToDot(StringBuffer buffer, long thisNode);
 }

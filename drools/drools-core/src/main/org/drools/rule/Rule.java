@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.29 2004-07-05 20:15:01 mproctor Exp $
+ $Id: Rule.java,v 1.30 2004-07-13 17:19:41 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -50,6 +50,7 @@ import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.29 2004-07-05 20:15:01 mproctor Exp $
+ *  @version $Id: Rule.java,v 1.30 2004-07-13 17:19:41 dbarnett Exp $
  */
 public class Rule implements Serializable
 {
@@ -501,5 +502,37 @@ public class Rule implements Serializable
         buffer.append(indent + this.consequence);
         buffer.append("\n");
         return buffer.toString();
+    }
+    
+    /**
+     * Compatible with the GraphViz DOT format.
+     */
+    public long dumpToDot(StringBuffer buffer, long thisNode) {
+        buffer.append(thisNode + " [label=\"Rule\\n" +
+            "name: " + name + "\\n" +
+            "salience: " + salience + "\\n" +
+            "load order: " + loadOrder + "\\n" +
+            "duration: " + duration + "\\n");
+        for (Iterator i = Arrays.asList(getConditions()).iterator(); i.hasNext(); )
+        {
+            buffer.append("condition: " + i.next() + "\\n");
+        }
+        buffer.append("consequence: " + consequence + "\"];\n");
+        
+        long nextNode = thisNode + 1;
+
+        for (Iterator i = Arrays.asList(getAllDeclarations()).iterator(); i.hasNext(); )
+        {
+            buffer.append(thisNode + " -> " + nextNode + ";\n");
+            nextNode = ((Declaration) i.next()).dumpToDot(buffer, nextNode);
+        }
+
+        for (Iterator i = Arrays.asList(getExtractions()).iterator(); i.hasNext(); )
+        {
+            buffer.append(thisNode + " -> " + nextNode + ";\n");
+            nextNode = ((Extraction) i.next()).dumpToDot(buffer, nextNode);
+        }
+        
+        return nextNode;
     }
 }
