@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.37 2004-11-08 14:54:20 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.38 2004-11-09 08:40:02 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,20 +42,17 @@ package org.drools.reteoo;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
+import org.drools.NoSuchFactHandleException;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.NoSuchFactHandleException;
-import org.drools.event.WorkingMemoryEventListener;
-
-
-import org.drools.event.WorkingMemoryEventListener;
 import org.drools.event.ObjectAssertedEvent;
 import org.drools.event.ObjectModifiedEvent;
 import org.drools.event.ObjectRetractedEvent;
-
+import org.drools.event.WorkingMemoryEventListener;
 import org.drools.spi.AgendaFilter;
 import org.drools.util.IdentityMap;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,7 +66,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.37 2004-11-08 14:54:20 mproctor Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.38 2004-11-09 08:40:02 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -217,10 +214,9 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         return this.agenda;
     }
-   /**
+
+    /**
      * Clear the Agenda
-     *
-     * @return The <code>Agenda</code>.
      */
     public void clearAgenda()
     {
@@ -259,7 +255,7 @@ class WorkingMemoryImpl implements WorkingMemory
             {
                 this.firing = false;
             }
-        }        
+        }
     }
 
     /**
