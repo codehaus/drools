@@ -7,7 +7,7 @@ JAVA=java
 JAR=jar
 
 DEPLOY_SITE=codehaus.org
-DEPLOY_DIR=/www/drools.codehaus.org/tmp
+DEPLOY_DIR=/www/drools.codehaus.org/preview
 
 #IFS=""
 MODULES="core io base java python groovy smf jsr94"
@@ -39,7 +39,7 @@ target_all()
 
 target_site()
 {
-  # build javadoc pdf
+  build javadoc pdf
 
   echo "building site"
 
@@ -469,10 +469,12 @@ target_binary_dist()
 
 target_deploy_site()
 {
-  build site
+  build clean site
 
   cd $BASE/build/site
   tar zcvf drools-$VERSION-site.tar.gz .
+  ssh $DEPLOY_SITE "rm -Rf $DEPLOY_DIR"
+  ssh $DEPLOY_SITE "mkdir -p $DEPLOY_DIR"
   scp drools-$VERSION-site.tar.gz $DEPLOY_SITE:$DEPLOY_DIR
   cd -
 
