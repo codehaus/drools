@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: BlockConsequence.java,v 1.11 2004-11-22 02:38:37 simon Exp $
+ * $Id: BlockConsequence.java,v 1.12 2004-11-29 12:14:43 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,13 +43,13 @@ package org.drools.semantics.groovy;
 
 import groovy.lang.Binding;
 import org.drools.WorkingMemory;
+import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Groovy block semantics <code>Consequence</code>.
@@ -57,8 +57,6 @@ import java.util.Set;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
- *
- * @version $Id: BlockConsequence.java,v 1.11 2004-11-22 02:38:37 simon Exp $
  */
 public class BlockConsequence extends Exec implements Consequence
 {
@@ -70,18 +68,12 @@ public class BlockConsequence extends Exec implements Consequence
      * Construct.
      *
      * @param text The block text.
+     * @param rule The rule.
      */
-    public BlockConsequence(String text, Set imports)
+    public BlockConsequence( String text,
+                             Rule rule)
     {
-        super( text, imports );
-    }
-
-    /**
-     * Default constructor - required for serialization
-     */
-    public BlockConsequence()
-    {
-        super( );
+        super( text, rule );
     }
 
     // ------------------------------------------------------------
@@ -120,7 +112,7 @@ public class BlockConsequence extends Exec implements Consequence
         }
         catch ( Exception e )
         {
-            throw new ConsequenceException( e, tuple.getRule( ) );
+            throw new ConsequenceException( e, getRule( ) );
         }
     }
 }
