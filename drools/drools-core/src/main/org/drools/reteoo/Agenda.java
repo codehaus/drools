@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.50 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: Agenda.java,v 1.51 2004-12-29 06:18:20 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -192,6 +192,8 @@ class Agenda
                 tuple = eachItem.getTuple( );
 
                 itemIter.remove( );
+                //need to restart iterator as heap could place elements before current iterator position
+                itemIter = this.items.iterator( );
 
                 this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
                                                                                tuple );
