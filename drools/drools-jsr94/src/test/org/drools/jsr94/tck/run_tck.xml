@@ -48,7 +48,7 @@
         <pathelement location="${lib.dir}/${tck.jar.name}.jar"/>
    <!-- <pathelement location="${lib.dir}/${ri.jar.name}.jar"/> -->
         <pathelement location="${lib.dir}/xerces.jar"/>
-   <!-- <pathelement location="${lib.dir}/sigtest.jar"/> -->
+        <pathelement location="${lib.dir}/sigtest.jar"/>
    <!-- <pathelement location="${lib.dir}/jess.jar"/> -->
 
         <pathelement location="${lib.dir}/drools-base-2.0-beta-16.jar"/>
@@ -82,7 +82,7 @@
         <pathelement location="${lib.dir}/${jsr94.jar.name}.jar"/>
         <pathelement location="${lib.dir}/${tck.jar.name}.jar"/>
         <pathelement location="${lib.dir}/xerces.jar"/>
-   <!-- <pathelement location="${lib.dir}/sigtest.jar"/> -->
+        <pathelement location="${lib.dir}/sigtest.jar"/>
    <!-- <pathelement location="${lib.dir}/jess.jar"/> -->
 
         <pathelement location="${lib.dir}/drools-base-2.0-beta-16.jar"/>
