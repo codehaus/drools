@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: SalienceConflictResolver.java,v 1.2 2004-06-25 01:55:16 mproctor Exp $
+ $Id: LoadOrderConflictResolver.java,v 1.1 2004-06-25 01:55:16 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -52,7 +52,7 @@ import org.drools.spi.Activation;
 import java.util.List;
 import java.util.ListIterator;
 
-/** <code>ConflictResolver</code> that uses the salience of rules to
+/** <code>ConflictResolver</code> that uses the loadOrder of rules to
  *  resolve conflict.
  *
  *  @see #getInstance
@@ -61,9 +61,9 @@ import java.util.ListIterator;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SalienceConflictResolver.java,v 1.2 2004-06-25 01:55:16 mproctor Exp $
+ *  @version $Id: LoadOrderConflictResolver.java,v 1.1 2004-06-25 01:55:16 mproctor Exp $
  */
-public class SalienceConflictResolver
+public class LoadOrderConflictResolver
     implements ConflictResolver
 {
     // ----------------------------------------------------------------------
@@ -71,7 +71,7 @@ public class SalienceConflictResolver
     // ----------------------------------------------------------------------
 
     /** Singleton instance. */
-    private static final SalienceConflictResolver INSTANCE = new SalienceConflictResolver();
+    private static final LoadOrderConflictResolver INSTANCE = new LoadOrderConflictResolver();
 
     // ----------------------------------------------------------------------
     //     Class methods
@@ -92,7 +92,7 @@ public class SalienceConflictResolver
 
     /** Construct.
      */
-    public SalienceConflictResolver()
+    public LoadOrderConflictResolver()
     {
         // intentionally left blank
     }
@@ -106,29 +106,17 @@ public class SalienceConflictResolver
     {
         ListIterator listIter;
         Activation eachActivation;
-        int salience = activation.getRule().getSalience();
+        long loadOrder = activation.getRule().getLoadOrder();
 
         //quick optimisation, check if should just add to end
         if (!list.isEmpty())
         {
             eachActivation = (Activation) list.get(list.size() - 1);
-            if (eachActivation.getRule().getSalience() > salience)
+            if (eachActivation.getRule().getLoadOrder() < loadOrder)
             {
                 list.add( activation );
                 return null;
             }
-            else if (eachActivation.getRule().getSalience() == salience)
-            {
-                //list.add( activation );
-                int endIndex = list.size();
-                int startIndex = list.size() - 1;
-                while (eachActivation.getRule().getSalience() == salience)
-                {
-                  eachActivation = (Activation) list.get(--startIndex);
-                }
-                return list.subList( startIndex + 1, endIndex );
-            }
-
         }
         else
         {
@@ -137,32 +125,18 @@ public class SalienceConflictResolver
         }
 
         // Traverse the list.  If an activation is found
-        // that has a lower salience than the item to be inserted,
+        // that has a lower loadOrder than the item to be inserted,
         // insert the item *before* it by backing up and adding
         // to the list. Then return a list of any conflicts
         for ( listIter = list.listIterator();
               listIter.hasNext(); )
         {
             eachActivation = (Activation) listIter.next();
-            if ( eachActivation.getRule().getSalience() <= salience )
+            if ( eachActivation.getRule().getLoadOrder() > loadOrder )
             {
-                //listIter.previous();
-                int startIndex = listIter.previousIndex();
-                while( eachActivation.getRule().getSalience() == salience  )
-                {
-                    eachActivation = (Activation) listIter.next();
-                }
-                int endIndex = listIter.previousIndex();
-                if (startIndex == endIndex)
-                {
-                    listIter.previous();
-                    listIter.add( activation );
-                    return null;
-                }
-                else
-                {
-                    return list.subList( startIndex, endIndex );
-                }
+                listIter.previous();
+                listIter.add( activation );
+                return null;
             }
         }
 
