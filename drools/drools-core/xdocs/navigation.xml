@@ -14,6 +14,8 @@
       <item name="FAQ"                href="/faq.html"/>
       <item name="Releases"           href="/releases.html"/> 
       <item name="CVS Access"         href="/cvs.html"/>
+      <item name="IRC"                href="/irc.html"/>
+      <item name="Blog"               href="http://blogs.werken.com/projects/drools/"/>
       <item name="Papers"             href="/papers.html"/>
       <item name="Status"             href="/status.html"/>
       <item name="drools@SourceForge" href="http://www.sourceforge.net/projects/drools"/>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+    <title>IRC</title>
+  </properties>
+
+  <body>
+    <section name="IRC">
+
+      <p>
+      You may occasionally find folks hanging out in <code>#drools</code>
+      on the <code>irc.werken.com</code> server (port 6667).
+      </p>
+
+    </section>
+  </body>
+
+</document>
+

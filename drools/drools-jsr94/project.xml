@@ -9,10 +9,11 @@
   <organization>
     <name>The Werken Company</name>
     <url>http://www.werken.com/</url>
-    <logo>/images/werken.gif</logo>
+    <logo>http://images.werken.com/werken_large.gif</logo>
   </organization>
   <inceptionYear>2001</inceptionYear>
   <package>org.drools</package>
+  <logo>http://images.werken.com/drools.gif</logo>
 
   <shortDescription>Rete Based Rules Engine</shortDescription>
 
@@ -26,6 +27,7 @@
 
   <siteAddress>drools.werken.com</siteAddress>
   <siteDirectory>/www/drools.werken.com</siteDirectory>
+  <issueTrackingUrl>http://jira.werken.com/</issueTrackingUrl>
   
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
