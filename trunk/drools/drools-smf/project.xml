@@ -3,9 +3,9 @@
 
     <pomVersion>3</pomVersion>
     <name>drools-smf</name>
-    <artifactId>drools-smf</artifactId>
+    <id>drools-smf</id>
     <groupId>drools</groupId>
-    <currentVersion>2.0-beta-12-dev</currentVersion>
+    <currentVersion>2.0-beta-13-dev</currentVersion>
 
     <organization>
         <name>The Codehaus</name>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
-            <version>2.0-beta-12-dev</version>
+            <version>2.0-beta-13-dev</version>
         </dependency>
     </dependencies>
 

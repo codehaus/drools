@@ -15,7 +15,7 @@
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/asm/jars/asm-1.3.4.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/drools/jars/drools-core-2.0-beta-12-dev.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/drools/jars/drools-core-2.0-beta-13-dev.jar">
   </classpathentry>
   <classpathentry kind="output" path="bin">
   </classpathentry>

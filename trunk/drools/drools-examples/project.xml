@@ -4,7 +4,7 @@
     <pomVersion>3</pomVersion>
     <name>drools</name>
     <id>drools-examples</id>
-    <currentVersion>2.0-beta-12-dev</currentVersion>
+    <currentVersion>2.0-beta-13-dev</currentVersion>
 
     <organization>
         <name>The Codehaus</name>
@@ -76,27 +76,27 @@
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
-            <version>2.0-beta-12-dev</version>
+            <version>2.0-beta-13-dev</version>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-smf</artifactId>
-            <version>2.0-beta-12-dev</version>
+            <version>2.0-beta-13-dev</version>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-io</artifactId>
-            <version>2.0-beta-12-dev</version>
+            <version>2.0-beta-13-dev</version>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-base</artifactId>
-            <version>2.0-beta-12-dev</version>
+            <version>2.0-beta-13-dev</version>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-java</artifactId>
-            <version>2.0-beta-12-dev</version>
+            <version>2.0-beta-13-dev</version>
         </dependency>
         <dependency>
             <groupId>antlr</groupId>
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>bsh</groupId>
             <artifactId>bsh</artifactId>
-            <version>1.2b7</version>
+            <version>2.0b1</version>
         </dependency>
     </dependencies>
 
