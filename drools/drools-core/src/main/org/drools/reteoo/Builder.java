@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.24 2003-08-21 00:57:46 tdiesler Exp $
+ $Id: Builder.java,v 1.25 2003-10-14 19:16:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -81,9 +81,6 @@ public class Builder
 
     /** Rete network to build against. */
     private ReteImpl rete;
-
-    /** Total-ordering priority counter. */
-    private int priorityCounter;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -194,8 +191,7 @@ public class Builder
         TupleSource lastNode = (TupleSource) leafNodes.iterator().next();
 
         TerminalNode terminal = new TerminalNodeImpl( lastNode,
-                                                      rule,
-                                                      ++this.priorityCounter);
+                                                      rule );
         log.debug("new TerminalNode: " + terminal);
     }
 

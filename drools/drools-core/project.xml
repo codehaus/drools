@@ -7,9 +7,9 @@
     <currentVersion>2.0-beta-12-dev</currentVersion>
 
     <organization>
-        <name>The Werken Company</name>
-        <url>http://www.werken.com</url>
-        <logo>http://images.werken.com/werken_large.gif</logo>
+        <name>The Codehaus</name>
+        <url>http://www.codehaus.org</url>
+        <logo>http://www.codehaus.org/codehaus-small.gif</logo>
     </organization>
     <inceptionYear>2001</inceptionYear>
     <package>org.drools</package>
@@ -25,13 +25,13 @@
 
     <url>http://drools.org</url>
 
-    <siteAddress>drools.werken.com</siteAddress>
-    <siteDirectory>/www/drools.werken.com</siteDirectory>
-    <issueTrackingUrl>http://jira.werken.com/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
+    <siteAddress>drools.codehaus.org</siteAddress>
+    <siteDirectory>/www/drools.codehaus.org</siteDirectory>
+    <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.werken.com:/cvsroot/drools:drools</connection>
-        <url>http://cvs.werken.com/viewcvs.cgi/drools/?cvsroot=drools</url>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/drools:drools</connection>
+        <url>http://cvs.drools.codehaus.org/</url>
     </repository>
 
     <versions/>
@@ -40,15 +40,15 @@
     <mailingLists>
         <mailingList>
             <name>drools interest</name>
-            <subscribe>http://lists.werken.com/mailman/listinfo/drools-interest</subscribe>
-            <unsubscribe>http://lists.werken.com/mailman/listinfo/drools-interest</unsubscribe>
-            <archive>http://lists.werken.com/pipermail/drools-interest/</archive>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/drools-interest/</archive>
         </mailingList>
         <mailingList>
             <name>drools cvs messages</name>
-            <subscribe>http://lists.werken.com/mailman/listinfo/drools-cvs</subscribe>
-            <unsubscribe>http://lists.werken.com/mailman/listinfo/drools-cvs</unsubscribe>
-            <archive>http://lists.werken.com/pipermail/drools-cvs/</archive>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/drools-cvs/</archive>
         </mailingList>
     </mailingLists>
 
@@ -314,7 +314,7 @@
     </dependencies>
 
     <build>
-        <nagEmailAddress>drools-cvs@lists.werken.com</nagEmailAddress>
+        <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/java/main</sourceDirectory>
         <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
         <integrationUnitTestSourceDirectory/>

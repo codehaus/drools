@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: AgendaItem.java,v 1.3 2002-08-10 19:34:32 bob Exp $
+ $Id: AgendaItem.java,v 1.4 2003-10-14 19:16:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,6 +49,8 @@ package org.drools.reteoo.impl;
 import org.drools.WorkingMemory;
 
 import org.drools.rule.Rule;
+import org.drools.spi.Firing;
+import org.drools.spi.Tuple;
 import org.drools.spi.ConsequenceException;
 
 /** Item entry in the <code>Agenda</code>.
@@ -56,6 +58,7 @@ import org.drools.spi.ConsequenceException;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 class AgendaItem
+    implements Firing
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -91,7 +94,7 @@ class AgendaItem
      *
      *  @return The rule.
      */
-    Rule getRule()
+    public Rule getRule()
     {
         return this.rule;
     }
@@ -106,7 +109,7 @@ class AgendaItem
      */
     boolean dependsOn(Object object)
     {
-        return getTuple().dependsOn( object );
+        return this.tuple.dependsOn( object );
     }
 
     /** Set the tuple.
@@ -122,9 +125,14 @@ class AgendaItem
      *
      *  @return The tuple.
      */
-    ReteTuple getTuple()
+    public Tuple getTuple()
     {
         return this.tuple;
+    }
+
+    TupleKey getKey()
+    {
+        return this.tuple.getKey();
     }
     
     /** Fire this item.

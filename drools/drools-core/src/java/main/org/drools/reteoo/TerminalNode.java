@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TerminalNode.java,v 1.17 2002-08-01 18:47:33 bob Exp $
+ $Id: TerminalNode.java,v 1.18 2003-10-14 19:16:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,12 +58,6 @@ import org.drools.rule.Rule;
  */
 public interface TerminalNode extends TupleSink
 {
-    /** Retrieve the priority
-     *
-     *  @return The priority.
-     */
-    int getPriority();
-
     /** Retrieve the <code>Action</code> associated with
      *  this node.
      *
