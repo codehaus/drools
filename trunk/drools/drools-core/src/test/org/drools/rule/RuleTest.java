@@ -6,13 +6,9 @@ import junit.framework.TestCase;
 
 import java.util.Set;
 
-public class RuleTest extends TestCase
+public class RuleTest
+    extends TestCase
 {
-    public RuleTest(String name)
-    {
-        super( name );
-    }
-
     public void setUp()
     {
     }
@@ -40,6 +36,7 @@ public class RuleTest extends TestCase
     }
 
     public void testParameterDeclarations()
+        throws Exception
     {
         Rule rule = new Rule( "test-rule" );
 
@@ -55,6 +52,11 @@ public class RuleTest extends TestCase
 
         assertTrue( paramDecls.contains( paramDecl ) );
 
+        assertSame( paramDecl,
+                    rule.getParameterDeclaration( "paramVar" ) );
+
+        assertNull( rule.getParameterDeclaration( "betty" ) );
+
         Set localDecls = rule.getLocalDeclarations();
 
         assertEquals( 0,
@@ -62,6 +64,7 @@ public class RuleTest extends TestCase
     }
 
     public void testLocalDeclarations()
+        throws Exception
     {
         Rule rule = new Rule( "test-rule" );
 
@@ -69,7 +72,7 @@ public class RuleTest extends TestCase
                                                  "paramVar" );
 
         Declaration localDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
+                                                 "localVar" );
 
         Extraction extraction = new Extraction( localDecl,
                                                 null );
@@ -90,5 +93,35 @@ public class RuleTest extends TestCase
                       localDecls.size() );
 
         assertTrue( localDecls.contains( localDecl ) );
+
+        assertSame( localDecl,
+                    rule.getDeclaration( "localVar" ) );
+    }
+
+    public void testDocumenation()
+        throws Exception
+    {
+        Rule rule = new Rule( "test-rule" );
+
+        assertNull( rule.getDocumentation() );
+
+        rule.setDocumentation( "the cheesiest!" );
+
+        assertEquals( "the cheesiest!",
+                      rule.getDocumentation() );
+    }
+
+    public void testSalience()
+        throws Exception
+    {
+        Rule rule = new Rule( "test-rule" );
+
+        assertEquals( 0,
+                      rule.getSalience() );
+
+        rule.setSalience( 42 );
+
+        assertEquals( 42,
+                      rule.getSalience() );
     }
 }

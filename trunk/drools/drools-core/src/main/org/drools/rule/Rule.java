@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.17 2003-10-26 22:06:49 bob Exp $
+ $Id: Rule.java,v 1.18 2003-10-28 05:00:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -67,10 +67,12 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.17 2003-10-26 22:06:49 bob Exp $
+ *  @version $Id: Rule.java,v 1.18 2003-10-28 05:00:39 bob Exp $
  */
 public class Rule
 {
+    public static final Rule[] EMPTY_ARRAY = new Rule[0];
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------

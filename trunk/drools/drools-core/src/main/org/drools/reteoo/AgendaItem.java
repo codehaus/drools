@@ -1,7 +1,7 @@
-package org.drools.rule;
+package org.drools.reteoo;
 
 /*
- $Id: Declaration.java,v 1.5 2003-10-28 05:00:39 bob Exp $
+ $Id: AgendaItem.java,v 1.5 2003-10-28 05:00:39 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,100 +46,119 @@ package org.drools.rule;
  
  */
 
-import org.drools.spi.ObjectType;
+import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 
-/** A typed, named variable for <code>Condition</code> evaluation.
- *
- *  @see ObjectType
- *  @see org.drools.spi.Condition
+import org.drools.rule.Rule;
+import org.drools.spi.Activation;
+import org.drools.spi.Tuple;
+import org.drools.spi.ConsequenceException;
+
+/** Item entry in the <code>Agenda</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Declaration
+class AgendaItem
+    implements Activation
 {
-    // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Empty array. */
-    public static final Declaration[] EMPTY_ARRAY = new Declaration[0];
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The type of the variable. */
-    private ObjectType objectType;
+    /** The tuple. */
+    private ReteTuple tuple;
 
-    /** The identifier for the variable. */
-    private String     identifier;
+    /** The rule. */
+    private Rule      rule;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
+    
     /** Construct.
      *
-     *  @param objectType The type of this variable declaration.
-     *  @param identifier The name of the variable.
+     *  @param tuple The tuple.
+     *  @param rule The rule.
      */
-    public Declaration(ObjectType objectType,
-                       String identifier)
+    AgendaItem(ReteTuple tuple,
+               Rule rule)
     {
-        this.objectType = objectType;
-        this.identifier = identifier;
-    }
-
-    public Declaration(String identifier)
-    {
-        this.identifier = identifier;
+        this.tuple    = tuple;
+        this.rule     = rule;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    public void setObjectType(ObjectType objectType)
+    
+    /** Retrieve the rule.
+     *
+     *  @return The rule.
+     */
+    public Rule getRule()
     {
-        this.objectType = objectType;
+        return this.rule;
     }
 
-    /** Retrieve the <code>ObjectType</code> of this <code>Declaration</code>.
+    /** Determine if this tuple depends on the values 
+     *  derrived from a particular root object.
      *
-     *  @return The <code>ObjectType</code> of this <code>Declaration</code>.
+     *  @param object The root object handle.
+     *
+     *  @return <code>true<code> if this agenda item depends
+     *          upon the item, otherwise <code>false</code>.
      */
-    public ObjectType getObjectType()
+    boolean dependsOn(FactHandle handle)
     {
-        return this.objectType;
+        return this.tuple.dependsOn( handle );
     }
 
-    /** Retrieve the variable's identifier.
+    /** Set the tuple.
      *
-     *  @return The variable's identifier.
+     *  @param tuple The tuple.
      */
-    public String getIdentifier()
+    void setTuple(ReteTuple tuple)
     {
-        return this.identifier;
+        this.tuple = tuple;
+    }
+
+    /** Retrieve the tuple.
+     *
+     *  @return The tuple.
+     */
+    public Tuple getTuple()
+    {
+        return this.tuple;
+    }
+
+    TupleKey getKey()
+    {
+        return this.tuple.getKey();
+    }
+    
+    /** Fire this item.
+     *
+     *  @param workingMemory The working memory context.
+     *
+     *  @throws ConsequenceException If an error occurs while
+     *          attempting to fire the consequence.
+     */
+    void fire(WorkingMemory workingMemory) throws ConsequenceException
+    {
+        getRule().getConsequence().invoke( getTuple(),
+                                           workingMemory );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
+    //     java.lang.Object;
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Determine if another <code>Declaration</code> is
-     *  <b>semantically</b> equivelent to this one.
+    /** Retrieve a debug string.
      *
-     *  @param thatObj The object to compare to.
-     *
-     *  @return <code>true</code> if <code>thatObj</code> is
-     *          semantically equal to this object.
+     *  @return The debug string.
      */
-    public boolean equals(Object thatObj)
+    public String toString()
     {
-        Declaration that = (Declaration) thatObj;
-
-        return ( this.objectType.equals( that.objectType )
-                 &&
-                 this.identifier.equals( that.identifier ) );
+        return "[" + getTuple() + "; " + getRule().getName() + "]";
     }
 }

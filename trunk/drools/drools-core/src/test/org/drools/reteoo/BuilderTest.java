@@ -1,6 +1,5 @@
 package org.drools.reteoo;
 
-import org.drools.reteoo.impl.ReteImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
@@ -17,7 +16,7 @@ import java.util.Iterator;
 
 public class BuilderTest extends TestCase
 {
-    private ReteImpl rete;
+    private Rete rete;
     private Builder  builder;
 
     private ObjectType stringType;
@@ -35,7 +34,7 @@ public class BuilderTest extends TestCase
 
     public void setUp()
     {
-        this.rete     = new ReteImpl();
+        this.rete     = new Rete();
         this.builder  = new Builder( this.rete );
 
         this.stringType = new MockObjectType();
