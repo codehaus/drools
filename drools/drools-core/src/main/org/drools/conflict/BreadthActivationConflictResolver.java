@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: BreadthConflictResolver.java,v 1.2 2004-07-04 11:45:42 mproctor Exp $
+ $Id: BreadthActivationConflictResolver.java,v 1.1 2004-09-11 12:59:08 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -66,14 +66,14 @@ import org.drools.spi.ConflictResolver;
  * @version $Id: SalienceConflictResolver.java,v 1.3 2004/06/25 02:46:39
  *          mproctor Exp $
  */
-public class BreadthConflictResolver implements ConflictResolver
+public class BreadthActivationConflictResolver implements ConflictResolver
 {
 	// ----------------------------------------------------------------------
 	//     Class members
 	// ----------------------------------------------------------------------
 
 	/** Singleton instance. */
-	private static final BreadthConflictResolver INSTANCE = new BreadthConflictResolver( );
+	private static final BreadthActivationConflictResolver INSTANCE = new BreadthActivationConflictResolver( );
 
 	// ----------------------------------------------------------------------
 	//     Class methods
@@ -96,7 +96,7 @@ public class BreadthConflictResolver implements ConflictResolver
 	/**
 	 * Construct.
 	 */
-	public BreadthConflictResolver()
+	public BreadthActivationConflictResolver()
 	{
 		// intentionally left blank
 	}
@@ -116,7 +116,7 @@ public class BreadthConflictResolver implements ConflictResolver
 		if ( !list.isEmpty( ) )
 		{
 			eachActivation = (Activation) list.get( list.size( ) - 1 );
-			if ( eachActivation.getActivationNumber( ) > activationNumber )
+			if ( eachActivation.getActivationNumber( ) < activationNumber )
 			{
 				list.add( activation );
 				return null;
@@ -156,7 +156,7 @@ public class BreadthConflictResolver implements ConflictResolver
 		for ( listIter = list.listIterator( ); listIter.hasNext( ); )
 		{
 			eachActivation = (Activation) listIter.next( );
-			if ( eachActivation.getActivationNumber( ) <= activationNumber )
+			if ( eachActivation.getActivationNumber( ) >= activationNumber )
 			{
 				//do we still have any conflicts
 				int startIndex = listIter.previousIndex( );
