@@ -208,7 +208,7 @@
 
         <resources>
             <resource>
-                <directory>src/main</directory>
+                <directory>src/conf</directory>
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
