@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,12 +46,18 @@ package org.drools.jsr94.rules.admin;
 
  */
 
+import org.drools.io.RuleSetLoader;
 import org.drools.jsr94.rules.NotImplementedException;
 import org.w3c.dom.Document;
 
 import javax.rules.admin.RuleExecutionSet;
+import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetProvider;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,7 +78,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Document,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(Document document, Map properties)
+    public RuleExecutionSet createRuleExecutionSet( Document document, Map properties ) throws RuleExecutionSetCreateException, RemoteException
     {
         // [TODO]
         throw new NotImplementedException();
@@ -84,10 +90,10 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(Serializable serializable, Map properties)
+    public RuleExecutionSet createRuleExecutionSet( Serializable serializable, Map properties ) throws RuleExecutionSetCreateException, RemoteException
     {
-        // [TODO]
-        throw new NotImplementedException();
+        LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
+        return localRuleExecutionSetProvider.createRuleExecutionSet( serializable, properties );
     }
 
     /**
@@ -95,9 +101,23 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(String ruleExecutionSetUri, Map properties)
+    public RuleExecutionSet createRuleExecutionSet( String ruleExecutionSetUri, Map properties ) throws RuleExecutionSetCreateException, IOException, RemoteException
     {
-        // [TODO]
-        throw new NotImplementedException();
+        try
+        {
+            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();
+            List droolRules = ruleSetLoader.load( new URL( ruleExecutionSetUri ) );
+            return localRuleExecutionSetProvider.createRuleExecutionSet( droolRules, properties );
+
+        }
+        catch ( IOException ex )
+        {
+            throw ex;
+        }
+        catch ( Exception ex )
+        {
+            throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
+        }
     }
 }

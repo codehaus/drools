@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.2 2003-06-19 09:28:36 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,9 +46,9 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.jsr94.rules.admin.JSR94RuleSetLoader;
 import org.drools.rule.RuleSet;
 import org.drools.jsr94.rules.JSR94TestBase;
+import org.drools.io.RuleSetLoader;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
@@ -92,7 +92,7 @@ public class LocalRuleExecutionSetProviderTestCase extends JSR94TestBase {
     */
    public void testCreateFromObject() throws Exception {
 
-      JSR94RuleSetLoader ruleSetLoader = new JSR94RuleSetLoader();
+      RuleSetLoader ruleSetLoader = new RuleSetLoader();
       Reader ruleReader = new InputStreamReader(getResourceAsStream(RULES_RESOURCE));
       RuleSet droolRuleSet = (RuleSet)ruleSetLoader.load(ruleReader).get(0);
 

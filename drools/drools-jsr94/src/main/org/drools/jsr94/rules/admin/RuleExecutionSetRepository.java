@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetRepository.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
+ $Id: RuleExecutionSetRepository.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -73,7 +73,7 @@ public class RuleExecutionSetRepository
     /** Get the class instance of a <code>RuleExecutionSetRepository</code>. */
     public static RuleExecutionSetRepository getInstance()
     {
-        if (repository != null) return repository;
+        if ( repository != null ) return repository;
         return repository = new RuleExecutionSetRepository();
     }
 
@@ -86,35 +86,35 @@ public class RuleExecutionSetRepository
     public List getRegistrations()
     {
         List list = new ArrayList();
-        list.addAll(map.keySet());
+        list.addAll( map.keySet() );
         return list;
     }
 
     /**
      * Get the <code>RuleExecutionSet</code> bound to this URI, or return null.
      */
-    public RuleExecutionSet getRuleExecutionSet(String bindUri)
+    public RuleExecutionSet getRuleExecutionSet( String bindUri )
     {
-        return (RuleExecutionSet) map.get(bindUri);
+        return (RuleExecutionSet) map.get( bindUri );
     }
 
     /**
      * Register a <code>RuleExecutionSet</code> under the given URI.
      */
-    public void registerRuleExecutionSet(String bindUri, RuleExecutionSet ruleSet)
+    public void registerRuleExecutionSet( String bindUri, RuleExecutionSet ruleSet )
     {
-        if (bindUri == null) throw new NullPointerException("bindUri cannot be null");
-        if (ruleSet == null) throw new NullPointerException("ruleSet cannot be null");
-        map.put(bindUri, ruleSet);
+        if ( bindUri == null ) throw new NullPointerException( "bindUri cannot be null" );
+        if ( ruleSet == null ) throw new NullPointerException( "ruleSet cannot be null" );
+        map.put( bindUri, ruleSet );
     }
 
     /**
      * Unregister a <code>RuleExecutionSet</code> from the given URI.
      */
-    public void unregisterRuleExecutionSet(String bindUri)
+    public void unregisterRuleExecutionSet( String bindUri )
     {
-        if (bindUri == null) throw new NullPointerException("bindUri cannot be null");
-        map.remove(bindUri);
+        if ( bindUri == null ) throw new NullPointerException( "bindUri cannot be null" );
+        map.remove( bindUri );
     }
 
 }

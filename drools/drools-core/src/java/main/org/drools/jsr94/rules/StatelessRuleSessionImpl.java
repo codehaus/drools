@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatelessRuleSessionImpl.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
+ $Id: StatelessRuleSessionImpl.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -83,14 +83,14 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements Statele
      * @param bindUri the URI the <code>RuleExecutionSet</code> has been bound to
      * @throws RuleExecutionSetNotFoundException if there is no rule set under the given URI
      */
-    StatelessRuleSessionImpl(String bindUri, Map properties) throws RuleExecutionSetNotFoundException
+    StatelessRuleSessionImpl( String bindUri, Map properties ) throws RuleExecutionSetNotFoundException
     {
         this.properties = properties;
 
         // get the rule set from the repository
         RuleExecutionSetRepository repository = RuleExecutionSetRepository.getInstance();
-        ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet(bindUri);
-        if (ruleSet == null) throw new RuleExecutionSetNotFoundException("RuleExecutionSet unbound: " + bindUri);
+        ruleSet = (RuleExecutionSetImpl) repository.getRuleExecutionSet( bindUri );
+        if ( ruleSet == null ) throw new RuleExecutionSetNotFoundException( "RuleExecutionSet unbound: " + bindUri );
 
         ruleBase = ruleSet.getRuleBase();
     }
@@ -103,39 +103,39 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements Statele
 
      * @see StatelessRuleSession#executeRules(List)
      */
-    public List executeRules(List list) throws InvalidRuleSessionException
+    public List executeRules( List list ) throws InvalidRuleSessionException
     {
 
         // Note: this breaks the factory intension of RuleBase.createWorkingMemory
-        JSR94WorkingMemory workingMemory = new JSR94WorkingMemory(ruleBase);
-        workingMemory.setApplicationData(properties);
+        JSR94WorkingMemory workingMemory = new JSR94WorkingMemory( ruleBase );
+        workingMemory.setApplicationData( properties );
 
         try
         {
-            for (int i = 0; i < list.size(); i++)
+            for ( int i = 0; i < list.size(); i++ )
             {
-                Object obj = list.get(i);
-                workingMemory.assertObject(obj);
+                Object obj = list.get( i );
+                workingMemory.assertObject( obj );
             }
         }
-        catch (AssertionException ex)
+        catch ( AssertionException ex )
         {
-            throw new InvalidRuleSessionException(ex.getMessage(), ex);
+            throw new InvalidRuleSessionException( ex.getMessage(), ex );
         }
 
         List outList = workingMemory.getObjectList();
 
         // apply the default filter
         ObjectFilter objectFilter = ruleSet.getObjectFilter();
-        if (objectFilter != null)
+        if ( objectFilter != null )
         {
 
             // apply the filter
             List cpyList = new ArrayList();
-            for (int i = 0; i < outList.size(); i++)
+            for ( int i = 0; i < outList.size(); i++ )
             {
-                Object obj = objectFilter.filter(outList.get(i));
-                if (obj != null) cpyList.add(obj);
+                Object obj = objectFilter.filter( outList.get( i ) );
+                if ( obj != null ) cpyList.add( obj );
             }
             outList = cpyList;
         }
@@ -149,33 +149,33 @@ public class StatelessRuleSessionImpl extends RuleSessionImpl implements Statele
 
      * @see StatelessRuleSession#executeRules(List,ObjectFilter)
      */
-    public List executeRules(List list, ObjectFilter objectFilter) throws InvalidRuleSessionException
+    public List executeRules( List list, ObjectFilter objectFilter ) throws InvalidRuleSessionException
     {
 
         // Note: this breaks the factory intension of RuleBase.createWorkingMemory
-        JSR94WorkingMemory workingMemory = new JSR94WorkingMemory(ruleBase);
+        JSR94WorkingMemory workingMemory = new JSR94WorkingMemory( ruleBase );
 
         try
         {
-            for (int i = 0; i < list.size(); i++)
+            for ( int i = 0; i < list.size(); i++ )
             {
-                Object obj = list.get(i);
-                workingMemory.assertObject(obj);
+                Object obj = list.get( i );
+                workingMemory.assertObject( obj );
             }
         }
-        catch (AssertionException ex)
+        catch ( AssertionException ex )
         {
-            throw new InvalidRuleSessionException(ex.getMessage(), ex);
+            throw new InvalidRuleSessionException( ex.getMessage(), ex );
         }
 
         List outList = workingMemory.getObjectList();
 
         // apply the filter
         List cpyList = new ArrayList();
-        for (int i = 0; i < outList.size(); i++)
+        for ( int i = 0; i < outList.size(); i++ )
         {
-            Object obj = objectFilter.filter(outList.get(i));
-            if (obj != null) cpyList.add(obj);
+            Object obj = objectFilter.filter( outList.get( i ) );
+            if ( obj != null ) cpyList.add( obj );
         }
 
         return cpyList;

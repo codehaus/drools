@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.3 2003-05-23 14:17:46 tdiesler Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,6 +46,7 @@ package org.drools.jsr94.rules.admin;
 
  */
 
+import org.drools.io.RuleSetLoader;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
@@ -57,6 +58,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,65 +80,77 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(InputStream,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(InputStream ruleExecutionSetStream, Map properties) throws IOException, RuleExecutionSetCreateException
+    public RuleExecutionSet createRuleExecutionSet( InputStream ruleExecutionSetStream, Map properties ) throws IOException, RuleExecutionSetCreateException
     {
-        Reader reader = new InputStreamReader(ruleExecutionSetStream);
-        return createRuleExecutionSet(reader, properties);
+        Reader reader = new InputStreamReader( ruleExecutionSetStream );
+        return createRuleExecutionSet( reader, properties );
     }
 
     /**
      * Creates a <code>RuleExecutionSet</code> implementation from a vendor specific AST representation
      * and vendor-specific properties.
      * <p>
-     * This method accepts <code>org.drools.rule.Rule</code> and <code>org.drools.rule.RuleSet</code> objects.
+     * This method accepts <code>org.drools.rule.Rule</code> and <code>org.drools.rule.RuleSet</code> objects or
+     * a <code>List</code> of these objects.
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Object,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(Object astObject, Map properties) throws RuleExecutionSetCreateException
+    public RuleExecutionSet createRuleExecutionSet( Object astObject, Map properties ) throws RuleExecutionSetCreateException
     {
 
         try
         {
-            if (astObject instanceof RuleSet)
+            if ( astObject instanceof List )
+            {
+                Iterator itDroolRules = ( (List) astObject ).iterator();
+                while ( itDroolRules.hasNext() )
+                {
+                    Object object = itDroolRules.next();
+                    createRuleExecutionSet( object, properties );
+                }
+            }
+            else if ( astObject instanceof RuleSet )
             {
                 RuleSet droolRuleSet = (RuleSet) astObject;
 
                 // the first drool rule set inits the ruleExecutionSet
-                if (ruleExecutionSet.getName() == null)
+                if ( ruleExecutionSet.getName() == null )
                 {
-                    ruleExecutionSet.setName(droolRuleSet.getName());
-                    ruleExecutionSet.setDescription(null);
+                    ruleExecutionSet.setName( droolRuleSet.getName() );
+                    ruleExecutionSet.setDescription( null );
                 }
 
                 // recursivly add the rules
                 Iterator itDroolRules = droolRuleSet.getRules().iterator();
-                while (itDroolRules.hasNext())
+                while ( itDroolRules.hasNext() )
                 {
                     Object object = itDroolRules.next();
-                    createRuleExecutionSet(object, properties);
+                    createRuleExecutionSet( object, properties );
                 }
             }
-            else if (astObject instanceof Rule)
+            else if ( astObject instanceof Rule )
             {
                 Rule droolRule = (Rule) astObject;
 
                 // the first drool rule inits the ruleExecutionSet
-                if (ruleExecutionSet.getName() == null)
+                if ( ruleExecutionSet.getName() == null )
                 {
-                    ruleExecutionSet.setName(droolRule.getName());
-                    ruleExecutionSet.setDescription(null);
+                    ruleExecutionSet.setName( droolRule.getName() );
+                    ruleExecutionSet.setDescription( null );
                 }
 
 
-                ruleExecutionSet.addRule(droolRule);
+                ruleExecutionSet.addRule( droolRule );
             }
             else
-                throw new RuleExecutionSetCreateException("invalid object type: " + astObject.getClass().getName());
+            {
+                throw new RuleExecutionSetCreateException( "invalid object type: " + astObject.getClass().getName() );
+            }
 
         }
-        catch (Exception ex)
+        catch ( Exception ex )
         {
-            throw new RuleExecutionSetCreateException("cannot create rule set", ex);
+            throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
         }
 
         return ruleExecutionSet;
@@ -148,38 +162,32 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
      *
      * @see LocalRuleExecutionSetProvider#createRuleExecutionSet(Reader,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(Reader ruleReader, Map properties)
+    public RuleExecutionSet createRuleExecutionSet( Reader ruleReader, Map properties )
             throws RuleExecutionSetCreateException, IOException
     {
 
         try
         {
             // load the rules from XML
-            JSR94RuleSetLoader ruleSetLoader = new JSR94RuleSetLoader();
-            Iterator itDroolRules = ruleSetLoader.load(ruleReader).iterator();
-            while (itDroolRules.hasNext())
-            {
-                Object object = itDroolRules.next();
-                createRuleExecutionSet(object, properties);
-            }
-
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();
+            List droolRules = ruleSetLoader.load( ruleReader );
+            createRuleExecutionSet( droolRules, properties );
         }
-        catch (IOException ex)
+        catch ( IOException ex )
         {
             throw ex;
         }
-        catch (Exception ex)
+        catch ( Exception ex )
         {
-            throw new RuleExecutionSetCreateException("cannot create rule set", ex);
+            throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
         }
 
 
-        if (ruleExecutionSet.getRules().size() == 0)
+        if ( ruleExecutionSet.getRules().size() == 0 )
         {
-            throw new RuleExecutionSetCreateException("no rules found");
+            throw new RuleExecutionSetCreateException( "no rules found" );
         }
 
         return ruleExecutionSet;
-
     }
 }

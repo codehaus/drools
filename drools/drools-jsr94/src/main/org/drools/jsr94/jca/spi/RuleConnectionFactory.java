@@ -1,7 +1,7 @@
 package org.drools.jsr94.jca.spi;
 
 /*
- $Id: RuleConnectionFactory.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
+ $Id: RuleConnectionFactory.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -78,12 +78,12 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
     private Reference reference;
     private PrintWriter logWriter;
 
-    public RuleConnectionFactory(ManagedConnectionFactory mcf, ConnectionManager cm) throws ResourceException
+    public RuleConnectionFactory( ManagedConnectionFactory mcf, ConnectionManager cm ) throws ResourceException
     {
         this.mcf = mcf;
         this.cm = cm;
         this.logWriter = mcf.getLogWriter();
-        logWriter.println("RuleConnectionFactory");
+        logWriter.println( "RuleConnectionFactory" );
     }
 
     /**
@@ -97,7 +97,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
      */
     public Connection getConnection() throws ResourceException
     {
-        logWriter.println("RuleConnectionFactory.getConnection,1");
+        logWriter.println( "RuleConnectionFactory.getConnection,1" );
         return null;
     }
 
@@ -112,9 +112,9 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
      * (example: port number, server name). The ManagedConnectionFactory instance is configured with complete set of
      * properties required for the creation of a connection to an EIS instance.
      */
-    public Connection getConnection(ConnectionSpec connectionSpec) throws ResourceException
+    public Connection getConnection( ConnectionSpec connectionSpec ) throws ResourceException
     {
-        logWriter.println("RuleConnectionFactory.getConnection,2");
+        logWriter.println( "RuleConnectionFactory.getConnection,2" );
         return null;
     }
 
@@ -123,7 +123,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
      */
     public RecordFactory getRecordFactory() throws ResourceException
     {
-        logWriter.println("RuleConnectionFactory.getRecordFactory");
+        logWriter.println( "RuleConnectionFactory.getRecordFactory" );
         return null;
     }
 
@@ -134,7 +134,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
      */
     public ResourceAdapterMetaData getMetaData() throws ResourceException
     {
-        logWriter.println("RuleConnectionFactory.getMetaData");
+        logWriter.println( "RuleConnectionFactory.getMetaData" );
         return null;
     }
 
@@ -142,9 +142,9 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
      * Sets the Reference instance. This method is called by the deployment code to set the Reference that can be
      * later returned by the getReference method (as defined in the javax.naming.Referenceable interface).
      */
-    public void setReference(Reference reference)
+    public void setReference( Reference reference )
     {
-        logWriter.println("RuleConnectionFactory.setReference");
+        logWriter.println( "RuleConnectionFactory.setReference" );
         this.reference = reference;
     }
 
@@ -153,7 +153,7 @@ public class RuleConnectionFactory extends RuleServiceProviderImpl implements Co
      */
     public Reference getReference() throws NamingException
     {
-        logWriter.println("RuleConnectionFactory.getReference");
+        logWriter.println( "RuleConnectionFactory.getReference" );
         return reference;
     }
 

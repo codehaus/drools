@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: JSR94TestBase.java,v 1.1 2003-03-22 00:59:49 tdiesler Exp $
+ $Id: JSR94TestBase.java,v 1.2 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -52,13 +52,15 @@ import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Baseclass for all drools JSR94 test cases.
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-public abstract class JSR94TestBase extends TestCase {
+public abstract class JSR94TestBase extends TestCase
+{
 
     /** Drools <code>RuleServiceProvider</code> URI. */
     public static final String RULE_SERVICE_PROVIDER = "http://drools.org/rules";
@@ -72,10 +74,21 @@ public abstract class JSR94TestBase extends TestCase {
     /**
      * Setup the test case.
      */
-    protected void setUp() throws Exception {
+    protected void setUp() throws Exception
+    {
         super.setUp();
-        RuleServiceProviderManager.registerRuleServiceProvider(RULE_SERVICE_PROVIDER, RuleServiceProviderImpl.class);
-        ruleServiceProvider = RuleServiceProviderManager.getRuleServiceProvider(RULE_SERVICE_PROVIDER);
+        RuleServiceProviderManager.registerRuleServiceProvider( RULE_SERVICE_PROVIDER, RuleServiceProviderImpl.class );
+        ruleServiceProvider = RuleServiceProviderManager.getRuleServiceProvider( RULE_SERVICE_PROVIDER );
+    }
+
+    /**
+     * Get the requested resource from the ClassLoader.
+     *
+     * @see ClassLoader#getResource
+     */
+    protected URL getResource( String res )
+    {
+        return getClass().getClassLoader().getResource( res );
     }
 
     /**
@@ -83,14 +96,8 @@ public abstract class JSR94TestBase extends TestCase {
      *
      * @see ClassLoader#getResourceAsStream
      */
-    protected InputStream getResourceAsStream(String res) {
-        return getClass().getClassLoader().getResourceAsStream(res);
-    }
-
-    /**
-     * A test should call this method if its not yet implemented.
-     */
-    protected void notImplemented() {
-        fail("not implemented");
+    protected InputStream getResourceAsStream( String res )
+    {
+        return getClass().getClassLoader().getResourceAsStream( res );
     }
 }

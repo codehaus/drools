@@ -1,7 +1,7 @@
 package org.drools.jsr94.jca.spi;
 
 /*
- $Id: RuleManagedConnectionFactory.java,v 1.4 2003-05-23 14:17:47 tdiesler Exp $
+ $Id: RuleManagedConnectionFactory.java,v 1.5 2003-06-19 09:28:35 tdiesler Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -72,10 +72,10 @@ public class RuleManagedConnectionFactory implements ManagedConnectionFactory, S
      * The Connection Factory instance gets initialized with the passed ConnectionManager.
      * In the managed scenario, ConnectionManager is provided by the application server.
      */
-    public Object createConnectionFactory(ConnectionManager cxManager) throws ResourceException
+    public Object createConnectionFactory( ConnectionManager cxManager ) throws ResourceException
     {
-        logWriter.println("RuleManagedConnectionFactory.createConnectionFactory");
-        return new RuleConnectionFactory(this, cxManager);
+        logWriter.println( "RuleManagedConnectionFactory.createConnectionFactory" );
+        return new RuleConnectionFactory( this, cxManager );
     }
 
     /**
@@ -84,8 +84,8 @@ public class RuleManagedConnectionFactory implements ManagedConnectionFactory, S
      */
     public Object createConnectionFactory() throws ResourceException
     {
-        logWriter.println("RuleManagedConnectionFactory.createManagedFactory");
-        return new RuleConnectionFactory(this, null);
+        logWriter.println( "RuleManagedConnectionFactory.createManagedFactory" );
+        return new RuleConnectionFactory( this, null );
     }
 
     /**
@@ -94,9 +94,9 @@ public class RuleManagedConnectionFactory implements ManagedConnectionFactory, S
      * ManagedConnectionFactory uses the security information (passed as Subject) and additional
      * ConnectionRequestInfo (which is specific to ResourceAdapter and opaque to application server) to create this new connection.
      */
-    public ManagedConnection createManagedConnection(Subject subject, ConnectionRequestInfo info)
+    public ManagedConnection createManagedConnection( Subject subject, ConnectionRequestInfo info )
     {
-        logWriter.println("RuleManagedConnectionFactory.createManagedConnection");
+        logWriter.println( "RuleManagedConnectionFactory.createManagedConnection" );
         return null;
     }
 
@@ -110,9 +110,9 @@ public class RuleManagedConnectionFactory implements ManagedConnectionFactory, S
      * This method returns a ManagedConnection instance that is the best match for handling the connection allocation request.
      *
      */
-    public ManagedConnection matchManagedConnections(Set connectionSet, Subject subject, ConnectionRequestInfo info) throws ResourceException
+    public ManagedConnection matchManagedConnections( Set connectionSet, Subject subject, ConnectionRequestInfo info ) throws ResourceException
     {
-        logWriter.println("RuleManagedConnectionFactory.matchManagedConnections");
+        logWriter.println( "RuleManagedConnectionFactory.matchManagedConnections" );
         return null;
     }
 
@@ -131,7 +131,7 @@ public class RuleManagedConnectionFactory implements ManagedConnectionFactory, S
      * which can be overridden by ApplicationServer using ManagedConnection.setLogWriter to set ManagedConnection
      * specific logging and tracing.
      */
-    public void setLogWriter(PrintWriter logWriter) throws ResourceException
+    public void setLogWriter( PrintWriter logWriter ) throws ResourceException
     {
         this.logWriter = logWriter;
     }
