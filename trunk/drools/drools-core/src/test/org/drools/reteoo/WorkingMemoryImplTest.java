@@ -56,7 +56,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
- * @version $Id: WorkingMemoryImplTest.java,v 1.2 2004-11-07 12:57:59 mproctor Exp $
+ * @version $Id: WorkingMemoryImplTest.java,v 1.3 2004-11-07 13:12:16 simon Exp $
  */
 public class WorkingMemoryImplTest extends TestCase
 {
@@ -81,62 +81,22 @@ public class WorkingMemoryImplTest extends TestCase
         assertSame( fact, objects.get( 0 ) );
     }
 
-    public void testSerializationSame() throws Exception
+    //Serialise twice to test DROOLS-182
+    public void testSerializationIsRepeatble() throws Exception
     {
         TestObject fact = new TestObject();
 
         WorkingMemory memory = getWorkingMemory( new RuleBaseImpl( new Rete( ) ) );
 
-        //Serialise twice to test DROOLS-182
+        memory.assertObject( fact );
+
         memory = serializeWorkingMemory( memory );
         memory = serializeWorkingMemory( memory );
-
-        FactHandle handleA = memory.assertObject( fact );
-
-        assertNotNull( handleA );
-
-        FactHandle handleB = memory.assertObject( fact );
-
-        assertSame( handleA, handleB );
 
         List objects = memory.getObjects( );
 
         assertNotNull( objects );
         assertEquals( 1, objects.size( ) );
-        assertSame( fact, objects.get( 0 ) );
-
-        //Serialise twice to test DROOLS-182
-        memory = serializeWorkingMemory( memory );
-        memory = serializeWorkingMemory( memory );
-    }
-
-    public void testSerializationNotSame() throws Exception
-    {
-        TestObject fact = new TestObject();
-
-        WorkingMemory memory = getWorkingMemory( new RuleBaseImpl( new Rete( ) ) );
-
-        FactHandle handleA = memory.assertObject( fact );
-
-        assertNotNull( handleA );
-
-        //Serialise twice to test DROOLS-182
-        memory = serializeWorkingMemory( memory );
-        memory = serializeWorkingMemory( memory );
-
-        FactHandle handleB = memory.assertObject( fact );
-
-        assertNotSame( handleA, handleB );
-        //assertEquals( handleA, handleB );
-
-        List objects = memory.getObjects( );
-
-        assertNotNull( objects );
-        assertEquals( 2, objects.size( ) );
-
-        //Serialise twice to test DROOLS-182
-        memory = serializeWorkingMemory( memory );
-        memory = serializeWorkingMemory( memory );
     }
 
     private static WorkingMemory getWorkingMemory(RuleBase ruleBase) throws Exception
