@@ -3,8 +3,9 @@ package org.drools.reteoo;
 import org.drools.WorkingMemory;
 import org.drools.FactHandle;
 import org.drools.rule.Rule;
-import org.drools.spi.ConsequenceException;
+import org.drools.spi.Duration;
 import org.drools.spi.ConflictResolutionStrategy;
+import org.drools.spi.ConsequenceException;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -89,7 +90,12 @@ class Agenda
 
         AgendaItem item = new AgendaItem( tuple,
                                           rule );
-        if ( rule.getDuration( tuple ) > 0 )
+
+        Duration dur = rule.getDuration();
+
+        if ( dur != null
+             &&
+             dur.getDuration( tuple ) > 0 )
         {
             this.scheduledItems.add( item );
             scheduleItem( item );
