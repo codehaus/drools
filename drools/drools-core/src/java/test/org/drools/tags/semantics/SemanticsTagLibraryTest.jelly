@@ -10,7 +10,7 @@
     ||
     -->
 
-  <test:case name="module_NoUri">
+  <test:case name="testModule_NoUri">
 
     <j:catch var="e">
       <module>
@@ -20,11 +20,11 @@
 
   </test:case>
 
-  <test:case name="module_Empty_WithUri">
+  <test:case name="testModule_EmptyWithUri">
     <module uri="http://drools.org/semantics/test"/>
   </test:case>
 
-  <test:case name="consequence_NoModule">
+  <test:case name="testConsequence_NoModule">
     <j:catch var="e">
       <consequence/>
     </j:catch>
@@ -37,7 +37,7 @@
     ||
     -->
 
-  <test:case name="objectType_NoName">
+  <test:case name="testObjectType_NoName">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
@@ -48,7 +48,7 @@
     </module>
   </test:case>
 
-  <test:case name="objectType_NoClassname">
+  <test:case name="testObjectType_NoClassname">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
@@ -59,7 +59,7 @@
     </module>
   </test:case>
 
-  <test:case name="objectType_Valid">
+  <test:case name="testObjectType_Valid">
     <module uri="http://drools.org/semantics/test" var="semantic_module">
 
       <type name="testType"
@@ -75,7 +75,7 @@
     ||    <extractor>
     ||
     -->
-  <test:case name="extractor_NoName">
+  <test:case name="testExtractor_NoName">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
@@ -86,7 +86,7 @@
     </module>
   </test:case>
 
-  <test:case name="extractor_NoClassname">
+  <test:case name="testExtractor_NoClassname">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
@@ -97,7 +97,7 @@
     </module>
   </test:case>
 
-  <test:case name="extractor_Valid">
+  <test:case name="testExtractor_Valid">
     <module uri="http://drools.org/semantics/test" var="semantic_module">
 
       <extractor name="testExtractor"
@@ -114,7 +114,7 @@
     ||
     -->
 
-  <test:case name="consequence_NoName">
+  <test:case name="testConsequence_NoName">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
@@ -125,7 +125,7 @@
     </module>
   </test:case>
 
-  <test:case name="consequence_NoClassname">
+  <test:case name="testConsequence_NoClassname">
     <module uri="http://drools.org/semantics/test">
       <j:catch var="e">
 
@@ -136,7 +136,7 @@
     </module>
   </test:case>
 
-  <test:case name="consequence_Valid">
+  <test:case name="testConsequence_Valid">
     <module uri="http://drools.org/semantics/test" var="semantic_module">
 
       <consequence name="testConsequence"
