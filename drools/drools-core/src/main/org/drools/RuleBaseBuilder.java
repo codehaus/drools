@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBaseBuilder.java,v 1.7 2003-12-02 23:12:40 bob Exp $
+ $Id: RuleBaseBuilder.java,v 1.8 2003-12-06 03:41:05 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,14 @@ package org.drools;
  
  */
 
+import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
 import org.drools.reteoo.Builder;
 import org.drools.spi.ConflictResolver;
+
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
 
 /** Factory for constructing a <code>RuleBase</code>.
  *
@@ -65,7 +70,7 @@ import org.drools.spi.ConflictResolver;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseBuilder.java,v 1.7 2003-12-02 23:12:40 bob Exp $
+ *  @version $Id: RuleBaseBuilder.java,v 1.8 2003-12-06 03:41:05 bob Exp $
  */
 public class RuleBaseBuilder
 {
@@ -123,5 +128,47 @@ public class RuleBaseBuilder
     public void setConflictResolver(ConflictResolver conflictResolver)
     {
         this.builder.setConflictResolver( conflictResolver );
+    }
+
+    public static RuleBase buildFromUrl(URL url)
+        throws Exception
+    {
+        RuleSetReader reader = new RuleSetReader();
+
+        RuleSet ruleSet = reader.read( url );
+
+        RuleBaseBuilder builder = new RuleBaseBuilder();
+
+        builder.addRuleSet( ruleSet );
+
+        return builder.build();
+    }
+
+    public static RuleBase buildFromInputStream(InputStream in)
+        throws Exception
+    {
+        RuleSetReader reader = new RuleSetReader();
+
+        RuleSet ruleSet = reader.read( in );
+
+        RuleBaseBuilder builder = new RuleBaseBuilder();
+
+        builder.addRuleSet( ruleSet );
+
+        return builder.build();
+    }
+
+    public static RuleBase buildFromReader(Reader in)
+        throws Exception
+    {
+        RuleSetReader reader = new RuleSetReader();
+
+        RuleSet ruleSet = reader.read( in );
+
+        RuleBaseBuilder builder = new RuleBaseBuilder();
+
+        builder.addRuleSet( ruleSet );
+
+        return builder.build();
     }
 }
