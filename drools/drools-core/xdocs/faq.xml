@@ -82,13 +82,22 @@
     <subsection name="What's a Semantic Module?">
       <p width="50%">
       Rules are written against objects, but the concept of
-      an 'object' is fairly arbitrary, and completely customizable
+      an 'object' is fairly arbitrary and completely customizable
       using <b>Semantic Modules</b>.  A Java Semantic Module may
       regard any XML document simply as an object of type
       <i>org.dom4j.Document</i>, while an XML Semantic Module
       may differentiate between documents based upon their
       root element's name and namespace-uri.  It's up to you.
       </p>
+
+      <p>
+      A <a href="./apidocs/org/drools/smf/SemanticModule.html">SemanticModule</a>
+      simply aggregates and packages a collection of 
+      <a href="./apidocs/org/drools/spi/SemanticComponent.html">SemanticComponents</a>.
+      The semantic components simply define the concepts of "object type",
+      "fact extraction" and "filter condition" that are used by the Rete-OO engine.
+      </p>
+
     </subsection>
 
     </section>
