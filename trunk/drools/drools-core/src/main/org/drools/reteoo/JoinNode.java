@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.32 2004-11-29 06:28:56 simon Exp $
+ * $Id: JoinNode.java,v 1.33 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -258,7 +258,7 @@ class JoinNode extends TupleSource
             while ( tupleIter.hasNext( ) )
             {
                 assertLeftTuple( ( ReteTuple ) tupleIter.next( ),
-                                  workingMemory );
+                                 workingMemory );
             }
         }
     }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSet.java,v 1.23 2004-11-29 06:28:56 simon Exp $
+ * $Id: TupleSet.java,v 1.24 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,11 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A set of <code>Tuple<code>s indexed by <code>TupleKey<code>s.
@@ -78,8 +78,7 @@ class TupleSet
     /**
      * Construct with a single tuple.
      *
-     * @param tuple
-     *            The tuple.
+     * @param tuple The tuple.
      */
     TupleSet(ReteTuple tuple)
     {
@@ -120,21 +119,6 @@ class TupleSet
     }
 
     /**
-     * Add a <code>Set</code> of <code>Tuple</code> s to this set.
-     *
-     * @param tuples The tuples.
-     */
-    public void addAllTuples(Set tuples)
-    {
-        Iterator tupleIter = tuples.iterator( );
-
-        while ( tupleIter.hasNext( ) )
-        {
-            addTuple( ( ReteTuple ) tupleIter.next( ) );
-        }
-    }
-
-    /**
      * Retract tuples from this memory.
      *
      * @param key The key for the tuples to be removed.
@@ -162,9 +146,9 @@ class TupleSet
      *
      * @return The set of tuples.
      */
-    public Set getTuples()
+    public Collection getTuples()
     {
-        return new HashSet( this.tuples.values( ) );
+        return Collections.unmodifiableCollection( this.tuples.values( ) );
     }
 
     /**

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.47 2004-11-29 06:37:00 simon Exp $
+ * $Id: JoinMemory.java,v 1.48 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.FactHandle;
 import org.drools.rule.Declaration;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -104,7 +105,8 @@ class JoinMemory
      */
     boolean retractTuples(TupleKey key)
     {
-        // Single | doesn't short circuit; THIS IS IMPORTANT!
+        // Single | doesn't short circuit. THIS IS IMPORTANT as we need to
+        // ensure all relevant left AND right side tuples are removed.
         return this.leftTuples.removeAllTuples( key )
                | this.rightTuples.removeAllTuples( key );
     }
@@ -330,7 +332,7 @@ class JoinMemory
     {
         System.err.println( "----" );
         ReteTuple tuple;
-        Set tuples = this.leftTuples.getTuples( );
+        Collection tuples = this.leftTuples.getTuples( );
         Iterator it1 = tuples.iterator( );
         while ( it1.hasNext( ) )
         {

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.27 2004-11-28 05:55:46 simon Exp $
+ * $Id: TupleKey.java,v 1.28 2004-11-29 13:20:52 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -72,7 +72,7 @@ class TupleKey
     private final Map handles;
 
     /** Cached hashCode. */
-    private int hashCode;
+    private final int hashCode;
 
     // ------------------------------------------------------------
     // Constructors
@@ -80,23 +80,26 @@ class TupleKey
 
     private TupleKey()
     {
-        handles = Collections.EMPTY_MAP;
+        this.handles = Collections.EMPTY_MAP;
+        this.hashCode = 0;
     }
 
     public TupleKey(TupleKey left,
                     TupleKey right)
     {
-        handles = new HashMap( left.handles.size( ) + right.handles.size( ),
-                               1 );
+        this.handles = new HashMap( left.handles.size( ) + right.handles.size( ),
+                                    1 );
         this.handles.putAll( left.handles );
         this.handles.putAll( right.handles );
+        this.hashCode = this.handles.hashCode( );
     }
 
     public TupleKey(Declaration declaration,
                     FactHandle handle)
     {
-        handles = Collections.singletonMap( declaration,
-                                            handle );
+        this.handles = Collections.singletonMap( declaration,
+                                                 handle );
+        this.hashCode = this.handles.hashCode( );
     }
 
     public String toString()
@@ -111,8 +114,7 @@ class TupleKey
     /**
      * Retrieve a <code>FactHandle</code> by declaration.
      *
-     * @param declaration
-     *            The declaration.
+     * @param declaration The declaration.
      *
      * @return The fact handle.
      */
@@ -124,8 +126,7 @@ class TupleKey
     /**
      * Determine if this key contains the specified root fact object.
      *
-     * @param handle
-     *            The fact-handle to test.
+     * @param handle The fact-handle to test.
      *
      * @return <code>true</code> if this key contains the specified root
      *         fact-handle, otherwise <code>false</code>.
@@ -227,7 +228,7 @@ class TupleKey
 
         if ( thatObj instanceof TupleKey )
         {
-            return this.handles.equals( ((TupleKey) thatObj).handles );
+            return this.handles.equals( ( ( TupleKey ) thatObj ).handles );
         }
 
         return false;
@@ -238,11 +239,6 @@ class TupleKey
      */
     public int hashCode()
     {
-        if ( this.hashCode == 0 )
-        {
-            this.hashCode = this.handles.hashCode( );
-        }
-
         return hashCode;
     }
 }
