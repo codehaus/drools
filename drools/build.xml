@@ -136,7 +136,9 @@
     <property name="groovy.jar" value="groovy-1.0-beta-7.jar"/>
     <property name="asm.jar" value="asm-1.4.3.jar"/>
     <property name="asm-util.jar" value="asm-util-1.4.3.jar"/>
-    <property name="jsr94.jar" value="jsr94-1.0.jar"/>
+    <property name="jsr94.jar" value="jsr94-1.1.jar"/>
+    <property name="jsr94-tck.jar" value="jsr94-tck-1.1.jar"/>
+    <property name="sigtest.jar" value="sigtest-1.1.jar"/>
     <property name="xerces.jar" value="xercesImpl-2.6.2.jar"/>
 
     <!-- These configure where all the output goes. -->
@@ -187,6 +189,10 @@
         <!-- Local JARs not found at ibiblio -->
         <get dest="${lib.dir}/${jsr94.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="file://${basedir}/lib/${jsr94.jar}"/>
+        <get dest="${lib.dir}/${jsr94-tck.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="file://${basedir}/lib/${jsr94-tck.jar}"/>
+        <get dest="${lib.dir}/${sigtest.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="file://${basedir}/lib/${sigtest.jar}"/>
     </target>
 
     <target name="antlr" depends="get-deps,antlr.check"
@@ -238,6 +244,7 @@
             <src path="${test-src.dir}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${jsr94-tck.jar}"/>
             <classpath location="${lib.dir}/${jython.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
         </javac>
@@ -314,6 +321,8 @@
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${jsr94-tck.jar}"/>
+            <classpath location="${lib.dir}/${sigtest.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
             <classpath location="${lib.dir}/${asm.jar}"/>
             <classpath location="${lib.dir}/${jython.jar}"/>
@@ -321,6 +330,8 @@
                 <fileset dir="${test-src.dir}">
                     <include name="**/*Test.java"/>
                     <include name="**/jsr94/**/*TestCase.java"/>
+		    <!-- TODO: Need to fixup build.xml to run JSR94 TCK tests -->
+		    <!--<include name="**/org/jcp/jsr94/tck/AllTests.java"/>-->
                     <exclude name="**/PythonSemanticTest.java"/>
                 </fileset>
             </batchtest>
@@ -340,7 +351,7 @@
     <!-- ===========vvvv========== Example Tasks ===========vvvv=========== -->
     <!-- ================================================================== -->
 
-    <target name="examples" depends="example-fibonacci-java,example-fibonacci-groovy,example-state-java,example-state-groovy,example-petstore-java,example-petstore-groovy"
+    <target name="examples" depends="example-fibonacci-java,example-fibonacci-native,example-fibonacci-groovy,example-state-java,example-state-groovy,example-petstore-java,example-petstore-groovy"
             description="Run all examples."/>
 
     <target name="example-fibonacci-java" depends="compile,copy-resources"
@@ -355,6 +366,15 @@
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-fibonacci-native" depends="compile,copy-resources"
+            description="Run the Fibonacci example.">
+        <java classname="org.drools.examples.fibonacci.FibonacciNative" fork="true">
+            <arg value="fibonacci.java.drl"/>
+            <classpath path="${classes.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
         </java>
     </target>
 
