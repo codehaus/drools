@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+    default="default"
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:util="jelly:util"
+    xmlns:maven="jelly:maven">
+
+    <goal name="default" >
+        <attainGoal name="jar:install"/>
+    </goal>
+
+    <postGoal name="clover">
+        <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
+            file="${basedir}/target/docs/clover/pkgs-summary.html"/>
+    </postGoal>
+
+<goal name="ydocs" >
+		<javadoc
+			destdir="doc/api"
+			author="true"
+			additionalparam="-breakiterator">
+			<packageset dir="./src/main">
+				<include name="org/drools/rule"/>
+			</packageset>
+			<doclet
+				name="ydoc.doclets.YStandard"
+				path="./lib/ydoc.jar;./lib/class2svg.jar;./resources;./doc;./src/main">
+				<param name="-generic"/>
+				<param name="-umlautogen"/>
+				<param name="-filterpath" value="./lib/ydoc.jar"/>
+				<param name="-filter"     value="ydoc.filters.ExcludeFilter"/>
+				<param name="-tag" value="y.precondition"/>
+				<param name="-tag" value="y.postcondition"/>
+				<param name="-tag" value="y.complexity"/>
+				<param name="-tag" value="param"/>
+				<param name="-tag" value="return"/>
+				<param name="-tag" value="see"/>
+				<param name="-tag" value="y.uml"/>
+			</doclet>
+		</javadoc>
+</goal>
+
+     <goal name="get-deps">
+      <j:forEach var="dep" items="${pom.artifacts}">
+        <j:if test="${dep.path.indexOf('drools') &lt;= 0}">
+          <copy file="${dep.path}"
+                todir="${basedir}/../target/dependencies"/>
+        </j:if>
+      </j:forEach>
+    </goal>
+
+    <goal name="reports:publish">
+        <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-core"/>
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/clover"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/clover">
+            <ant:fileset dir="${basedir}/target/docs/clover"/>
+        </ant:copy>
+
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/junit"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/junit">
+            <ant:fileset dir="${basedir}/target/test-reports"/>
+        </ant:copy>
+
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/checkstyle"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle">
+            <ant:fileset file="${basedir}/target/docs/checkstyle-report.html"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle/xref">
+            <ant:fileset dir="${basedir}/target/docs/xref"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle/style">
+            <ant:fileset dir="${basedir}/target/docs/style"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle/images">
+            <ant:fileset dir="${basedir}/target/docs/images"/>
+        </ant:copy>
+    </goal>
+
+</project>
