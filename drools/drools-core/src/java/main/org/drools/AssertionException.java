@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: AssertionException.java,v 1.3 2002-07-26 19:41:05 bob Exp $
+ $Id: AssertionException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,9 @@ package org.drools;
  */
 
 /** Indicates an error while asserting a new
- *  <i>root fact object</i> into a {@link WorkingMemory}.
+ *  <i>root fact object</i> into a <code>WorkingMemory</code>.
+ *
+ *  @see WorkingMemory#assertObject
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */

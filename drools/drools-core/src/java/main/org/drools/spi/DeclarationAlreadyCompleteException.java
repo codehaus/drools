@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: DeclarationAlreadyCompleteException.java,v 1.3 2002-07-26 21:10:43 bob Exp $
+ $Id: DeclarationAlreadyCompleteException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package org.drools.spi;
  */
 
 /** Indicates an attempt to add a parameter declaration to a
- *  {@link Rule} after adding a {@link Condition} to that
+ *  <code>Rule</code> after adding a <code>Condition</condition> to that
  *  <code>Rule</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>

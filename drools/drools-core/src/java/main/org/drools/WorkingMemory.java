@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.9 2002-07-26 19:41:05 bob Exp $
+ $Id: WorkingMemory.java,v 1.10 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ import org.drools.reteoo.Agenda;
 import java.util.Map;
 import java.util.HashMap;
 
-/** A knowledge session for a {@link RuleBase}.
+/** A knowledge session for a <code>RuleBase</code>.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */
@@ -66,7 +66,7 @@ public class WorkingMemory
     /** The <code>RuleBase</code> with which this memory is associated. */
     private RuleBase ruleBase;
 
-    /** The actual memory for the {@link JoinNode}s. */
+    /** The actual memory for the <code>JoinNode</code>s. */
     private Map      joinMemories;
 
     /** Rule-firing agenda. */
@@ -190,7 +190,7 @@ public class WorkingMemory
         fireAgenda();
     }
 
-    /** Retrieve the {@link JoinMemory} for a particular {@link JoinNode}.
+    /** Retrieve the <code>JoinMemory</code> for a particular <code>JoinNode</code>.
      *
      *  @param node The <code>JoinNode</code> key.
      *

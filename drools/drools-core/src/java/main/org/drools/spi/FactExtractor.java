@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: FactExtractor.java,v 1.2 2002-07-26 21:10:43 bob Exp $
+ $Id: FactExtractor.java,v 1.3 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,11 +56,11 @@ package org.drools.spi;
  */
 public interface FactExtractor
 {
-    /** Retrieve the array of {@link Declaration}s required
+    /** Retrieve the array of <code>Declaration</code>s required
      *  by this <code>FactExtractor</code> to perform its duties.
      *
      *  @return The array of <code>Declarations</code> expected
-     *          on incoming {@link Tuple}s.
+     *          on incoming <code>Tuple</code>s.
      */
     Declaration[] getRequiredTupleMembers();
 

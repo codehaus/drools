@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: AssignmentCondition.java,v 1.3 2002-07-26 21:10:43 bob Exp $
+ $Id: AssignmentCondition.java,v 1.4 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,12 +46,13 @@ package org.drools.spi;
  
  */
 
-/** A {@link Condition} representing a <i>consistent assignment</i>
+/** A <code>Condition</code> representing a <i>consistent assignment</i>
  *  as defined by the Rete-OO algorithm.
  *
  *  The assignment occurs through the process of extracting a
  *  new fact from existing facts.
  *
+ *  @see Condition
  *  @see FactExtractor
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
@@ -112,11 +113,11 @@ public class AssignmentCondition implements Condition
     //     org.drools.spi.Condition
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the array of {@link Declaration}s required
+    /** Retrieve the array of <code>Declaration</code>s required
      *  by this condition to perform its duties.
      *
      *  @return The array of <code>Declarations</code> expected
-     *          on incoming {@link Tuple}s.
+     *          on incoming <code>Tuple</code>s.
      */
     public Declaration[] getRequiredTupleMembers()
     {

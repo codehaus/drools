@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinNode.java,v 1.7 2002-07-26 20:55:10 bob Exp $
+ $Id: JoinNode.java,v 1.8 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -159,8 +159,10 @@ public class JoinNode extends TupleSource implements TupleSink
     //     org.drools.reteoo.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the <code>Set</code> of {@link Declaration}s
+    /** Retrieve the <code>Set</code> of <code>Declaration</code>s.
      *  in the propagated <code>Tuples</code>.
+     *
+     *  @see Declaration
      *
      *  @return The <code>Set</code> of <code>Declarations</code>
      *          in progated <code>Tuples</code>.

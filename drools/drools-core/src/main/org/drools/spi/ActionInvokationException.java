@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ActionInvokationException.java,v 1.2 2002-07-26 21:10:43 bob Exp $
+ $Id: ActionInvokationException.java,v 1.3 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools.spi;
 
 import org.drools.AssertionException;
 
-/** Indicates an error during an {@link Action} invokation.
+/** Indicates an error during an <code>Action</code> invokation.
  *
  *  @see Action
  *

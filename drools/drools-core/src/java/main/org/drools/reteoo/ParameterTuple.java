@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterTuple.java,v 1.5 2002-07-26 20:55:10 bob Exp $
+ $Id: ParameterTuple.java,v 1.6 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,8 +51,11 @@ import org.drools.spi.Declaration;
 import java.util.Set;
 import java.util.HashSet;
 
-/** Implementation of {@link ReteTuple} with a single column,
+/** Implementation of <code>ReteTuple</code> with a single column,
  *  based upon a <i>root fact object parameter</i> of a rule.
+ *
+ *  @see ReteTuple
+ *  @see ParameterNode
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */

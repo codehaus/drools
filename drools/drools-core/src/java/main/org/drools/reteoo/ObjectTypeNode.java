@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ObjectTypeNode.java,v 1.4 2002-07-27 02:37:12 bob Exp $
+ $Id: ObjectTypeNode.java,v 1.5 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,18 +57,19 @@ import java.util.HashSet;
 import java.util.Collections;
 import java.util.Iterator;
 
-/** Filters <code>Objects</code> coming from the {@link RootNode}
- *  using a {@link ObjectType} semantic module.
+/** Filters <code>Objects</code> coming from the <code>RootNode</code>
+ *  using a <code>ObjectType</code> semantic module.
  *
  *  <p>
  *  It receives <code>Objects</code> from the <code>RootNode</code>,
  *  uses a <code>ObjectType</code> instance to determine membership,
  *  and propagates matching <code>Objects</code> further to all
- *  matching {@link ParameterNode}s.
+ *  matching <code>ParameterNode</code>s.
  *  </p>
  *
  *  @see ObjectType
  *  @see ParameterNode
+ *  @see RootNode
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob@eng.werken.com</a>
  */

@@ -13,7 +13,7 @@ import bsh.EvalError;
 import java.util.Set;
 import java.util.Iterator;
 
-/** Rule {@link Action} using <a hef="http://beanshell.org/">BeanShell</a>
+/** Rule <code>Action</code> using <a hef="http://beanshell.org/">BeanShell</a>
  *  for execution.
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>

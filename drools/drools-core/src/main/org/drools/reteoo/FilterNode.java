@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FilterNode.java,v 1.6 2002-07-26 20:55:10 bob Exp $
+ $Id: FilterNode.java,v 1.7 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,15 +57,16 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/** Node which filters {@link ReteTuple}s.
+/** Node which filters <code>ReteTuple</code>s.
  *
  *  <p>
- *  Using a semantic {@link FilterCondition}, this node
+ *  Using a semantic <code>FilterCondition</code>, this node
  *  may allow or disallow <code>Tuples</code> to proceed
  *  further through the Rete-OO network.
  *  </p>
  *
  *  @see FilterCondition
+ *  @see ReteTuple
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -116,7 +117,7 @@ public class FilterNode extends TupleSource implements TupleSink
     //     org.drools.reteoo.TupleSource
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the <code>Set</code> of {@link Declaration}s
+    /** Retrieve the <code>Set</code> of <code>Declaration</code>s
      *  in the propagated <code>Tuples</code>.
      *
      *  @return The <code>Set</code> of <code>Declarations</code>

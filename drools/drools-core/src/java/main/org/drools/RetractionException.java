@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RetractionException.java,v 1.3 2002-07-26 19:41:05 bob Exp $
+ $Id: RetractionException.java,v 1.4 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,9 @@ package org.drools;
  */
 
 /** Indicates an error while retracting a <i>root fact object</i>
- *  from a {@link WorkingMemory}.
+ *  from a <code>WorkingMemory</code>.
+ *
+ *  @see WorkingMemory#retractObject
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

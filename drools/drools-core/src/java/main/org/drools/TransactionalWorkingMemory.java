@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: TransactionalWorkingMemory.java,v 1.4 2002-07-26 19:41:05 bob Exp $
+ $Id: TransactionalWorkingMemory.java,v 1.5 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,13 +50,16 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/** A transactional knowledge session for a {@link RuleBase}.
+/** A transactional knowledge session for a <code>RuleBase</code>.
  *
  *  <p>
- *  A {@link WorkingMemory} which caches all assertion, retractions
+ *  A <code>WorkingMemory</code> which caches all assertion, retractions
  *  and modifications, and only performs the fact propagation and
  *  rule action invokation upon {@link #commit}.  
  *  </p>
+ *
+ *  @see WorkingMemory
+ *  @see RuleBase
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.8 2002-07-27 02:37:12 bob Exp $
+ $Id: Builder.java,v 1.9 2002-07-27 05:52:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/** Builds the Rete-OO network for a {@link org.drools.spi.RuleSet}.
+/** Builds the Rete-OO network for a <code>RuleSet</code>.
+ *
+ *  @see org.drools.spi.RuleSet
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
@@ -77,7 +79,7 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Construct a <code>Builder</code> against an existing
-     *  {@link RootNode} in the network.
+     *  <code>RootNode</code> in the network.
      *
      *  @param rootNode The network to add on to.
      */
@@ -100,7 +102,7 @@ public class Builder
         return this.rootNode;
     }
 
-    /** Add a {@link Rule} to the network.
+    /** Add a <code>Rule</code> to the network.
      *
      *  @param rule The rule to add.
      *
@@ -158,7 +160,7 @@ public class Builder
                                                   ++this.priorityCounter);
     }
 
-    /** Create the {@link ParameterNode}s for the <code>Rule</code>,
+    /** Create the <code>ParameterNode</code>s for the <code>Rule</code>,
      *  and link into the network.
      *
      *  @param rule The rule.
@@ -198,7 +200,7 @@ public class Builder
     }
     
 
-    /** Create and attach {@link FilterCondition}s to the network.
+    /** Create and attach <code>FilterCondition</code>s to the network.
      *
      *  <p>
      *  It may not be possible to satisfy all filder conditions
@@ -244,7 +246,7 @@ public class Builder
         }
     }
 
-    /** Create and attach {@link JoinNode}s to the network.
+    /** Create and attach <code>JoinNode</code>s to the network.
      *
      *  <p>
      *  It may not be possible to join all <code>attachableNodes</code>.
@@ -321,7 +323,7 @@ public class Builder
         return performedJoin;
     }
 
-    /** Determine if two {@link TupleSource}s can be joined.
+    /** Determine if two <code>TupleSource</code>s can be joined.
      *
      *  @param left The left tuple source
      *  @param right The right tuple source
@@ -347,7 +349,7 @@ public class Builder
         return false;
     }
 
-    /** Create and attach {@link AssignmentCondition}s to the network.
+    /** Create and attach <code>AssignmentCondition</code>s to the network.
      *
      *  <p>
      *  It may not be possible to satisfy all <code>assignmentConds</code>,
