@@ -2,8 +2,10 @@ package org.drools.reteoo;
 
 import org.drools.MockFactHandle;
 import org.drools.AssertionException;
+import org.drools.RuleBase;
 import org.drools.conflict.SalienceConflictResolver;
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.DroolsTestCase;
 
@@ -37,7 +39,8 @@ public class TerminalNodeTest
         TerminalNode node = new TerminalNode( new MockTupleSource(),
                                               rule );
 
-        ReteTuple tuple = new ReteTuple();
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());    	
+        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
 
         node.assertTuple( tuple,
                           memory );

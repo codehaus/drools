@@ -30,7 +30,7 @@
     <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.drools.codehaus.org:/home/projects/drools/scm:drools/drools-core</connection>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-core</connection>
         <url>http://cvs.drools.codehaus.org/</url>
     </repository>
 
@@ -39,16 +39,16 @@
 
     <mailingLists>
         <mailingList>
-            <name>user</name>
-            <subscribe>user-subscribe@drools.codehaus.org</subscribe>
-            <unsubscribe>user-unsubscribe@drools.codehaus.org</unsubscribe>
-            <archive>http://archive.drools.codehaus.org/user/</archive>
+            <name>drools interest</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/drools-interest/</archive>
         </mailingList>
         <mailingList>
             <name>drools cvs messages</name>
-            <subscribe>scm-subscribe@drools.codehaus.org</subscribe>
-            <unsubscribe>scm-unsubscribe@drools.codehaus.org</unsubscribe>
-            <archive>http://archive.drools.codehaus.org/scm/</archive>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/drools-cvs/</archive>
         </mailingList>
     </mailingLists>
 
@@ -165,15 +165,18 @@
     </contributors>
 
     <dependencies>
-
+        <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <nagEmailAddress>scm@drools.codehaus.org</nagEmailAddress>
+        <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/main</sourceDirectory>
         <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-        <integrationUnitTestSourceDirectory/>
-        <aspectSourceDirectory/>
+        <aspectSourceDirectory>src/aspects</aspectSourceDirectory>
 
         <!-- Unit test classes -->
 

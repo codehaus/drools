@@ -1,8 +1,11 @@
 package org.drools.reteoo;
 
 import org.drools.AssertionException;
+import org.drools.RuleBase;
+import org.drools.conflict.SalienceConflictResolver;
 import org.drools.reteoo.MockTupleSource;
 import org.drools.rule.Declaration;
+import org.drools.rule.RuleSet;
 import org.drools.MockObjectType;
 
 import org.drools.spi.InstrumentedExtractor;
@@ -65,7 +68,8 @@ public class ExtractionNodeTest
 
         extractNode.setTupleSink( sink );
 
-        ReteTuple tuple = new ReteTuple();
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());    	
+        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
 
         try
         {
