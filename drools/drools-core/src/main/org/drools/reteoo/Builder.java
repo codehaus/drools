@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.17 2002-08-01 21:00:21 bob Exp $
+ $Id: Builder.java,v 1.18 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -66,7 +66,7 @@ import java.util.Iterator;
 
 /** Builds the Rete-OO network for a <code>RuleSet</code>.
  *
- *  @see org.drools.spi.RuleSet
+ *  @see org.drools.rule.RuleSet
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
@@ -108,7 +108,7 @@ public class Builder
     /** Retrieve the <code>Rete</code> this <code>Builder</code>
      *  appends to.
      *
-     *  @return The <code>RootNode</code>.
+     *  @return The <code>Rete</code>.
      */
     public Rete getRete()
     {
@@ -388,12 +388,12 @@ public class Builder
         return false;
     }
 
-    /** Create and attach <code>AssignmentCondition</code>s to the network.
+    /** Create and attach <code>FactExtraction</code>s to the network.
      *
      *  <p>
-     *  It may not be possible to satisfy all <code>assignmentConds</code>,
+     *  It may not be possible to satisfy all <code>FactExtraction</code>,
      *  in which case, unsatisfied conditions will remain in the <code>Set</code>
-     *  passed in as <code>assignmentConds</code>.
+     *  passed in as <code>FactExtraction</code>.
      *  </p>
      *
      *  @param factExtracts Set of <code>FactExtractions</code> to
@@ -401,7 +401,7 @@ public class Builder
      *  @param leafNodes The current attachable leaf nodes of
      *         the network.
      *
-     *  @return <code>true</code> if assignment conditions have been
+     *  @return <code>true</code> if fact extractions have been
      *          attached, otherwise <code>false</code>.
      */
     protected boolean attachFactExtractions(Set factExtracts,

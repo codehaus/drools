@@ -1,7 +1,7 @@
 package org.drools.reteoo.impl;
 
 /*
- $Id: ReteImpl.java,v 1.1 2002-07-30 19:52:56 bob Exp $
+ $Id: ReteImpl.java,v 1.2 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,7 +60,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-/** The root node in the Rete-OO network.
+/** The Rete-OO network.
  *
  *  This node accepts an <code>Object</code>, and simply
  *  propagates it to all <code>ObjectTypeNode</code>s for
@@ -168,7 +168,7 @@ public class ReteImpl implements Rete
     }
 
     /** Add an <code>ObjectTypeNode</code> child to
-     *  this <code>RootNode</code>.
+     *  this <code>Rete</code>.
      *
      *  @param node The node to add.
      */

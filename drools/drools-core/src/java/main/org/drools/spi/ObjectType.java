@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: ObjectType.java,v 1.3 2002-07-27 05:55:59 bob Exp $
+ $Id: ObjectType.java,v 1.4 2002-08-13 04:12:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools.spi;
 
 /** Semantic object type differentiator.
  *
- *  @see Declaration
+ *  @see org.drools.rule.Declaration
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSource.java,v 1.12 2002-07-28 15:49:50 bob Exp $
+ $Id: TupleSource.java,v 1.13 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,7 +64,7 @@ public interface TupleSource
     /** Retrieve the <code>Set</code> of <code>Declaration<code>s
      *  in the propagated <code>Tuples</code>.
      *
-     *  @see org.drools.spi.Declaration
+     *  @see org.drools.rule.Declaration
      *
      *  @return The <code>Set</code> of <code>Declarations</code>
      *          in progated <code>Tuples</code>.

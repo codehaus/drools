@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- $Id: Action.java,v 1.5 2002-08-10 19:34:32 bob Exp $
+ $Id: Action.java,v 1.6 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ import org.drools.WorkingMemory;
 
 /** Action to be executed upon successful  match of a <code>Rule</code>.
  *
- *  @see Rule
+ *  @see org.drools.rule.Rule
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticModule.java,v 1.3 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticModule.java,v 1.4 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -50,8 +50,8 @@ import java.util.Set;
 
 /** Collection of entities forming a semantic module.
  *
- *  @see org.drools.spi;
-
+ *  @see org.drools.spi
+ *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public interface SemanticModule

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: NoSuchRuleBaseException.java,v 1.2 2002-08-01 21:00:21 bob Exp $
+ $Id: NoSuchRuleBaseException.java,v 1.3 2002-08-13 04:12:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package org.drools;
 
 /** Indicates an attempt to retrieve an unknowwn rule base.
  *
- *  @see RuleBaseRepository#getRuleBase
+ *  @see RuleBaseRepository#lookupRuleBase
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
