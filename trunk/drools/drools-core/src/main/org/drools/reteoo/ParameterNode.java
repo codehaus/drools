@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.38 2004-11-29 12:50:32 simon Exp $
+ * $Id: ParameterNode.java,v 1.39 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -106,15 +106,11 @@ class ParameterNode extends TupleSource
      * Assert a new fact object into this <code>RuleBase</code> and the
      * specified <code>WorkingMemory</code>.
      *
-     * @param handle
-     *            The fact handle.
-     * @param object
-     *            The object to assert.
-     * @param workingMemory
-     *            The working memory session.
+     * @param handle The fact handle.
+     * @param object The object to assert.
+     * @param workingMemory The working memory session.
      *
-     * @throws AssertionException
-     *             if an error occurs during assertion.
+     * @throws AssertionException if an error occurs during assertion.
      */
     void assertObject(FactHandle handle,
                       Object object,
@@ -131,13 +127,10 @@ class ParameterNode extends TupleSource
      * Retract a fact object from this <code>RuleBase</code> and the specified
      * <code>WorkingMemory</code>.
      *
-     * @param handle
-     *            The handle to the fact to retract.
-     * @param workingMemory
-     *            The working memory session.
+     * @param handle The handle to the fact to retract.
+     * @param workingMemory The working memory session.
      *
-     * @throws RetractionException
-     *             if an error occurs during retraction.
+     * @throws RetractionException if an error occurs during retraction.
      */
     void retractObject(FactHandle handle,
                        WorkingMemoryImpl workingMemory) throws RetractionException
@@ -156,15 +149,11 @@ class ParameterNode extends TupleSource
      * With the exception of time-based nodes, modification of a fact object is
      * semantically equivelent to retracting and re-asserting it.
      *
-     * @param handle
-     *            The fact handle.
-     * @param newObject
-     *            The new fact value object.
-     * @param workingMemory
-     *            The working memory session.
+     * @param handle The fact handle.
+     * @param newObject The new fact value object.
+     * @param workingMemory The working memory session.
      *
-     * @throws FactException
-     *             if an error occurs during modification.
+     * @throws FactException if an error occurs during modification.
      */
     void modifyObject(FactHandle handle,
                       Object newObject,
@@ -206,5 +195,28 @@ class ParameterNode extends TupleSource
     public Set getTupleDeclarations()
     {
         return declarations;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    public int hashCode()
+    {
+        return this.declaration.hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object instanceof ParameterNode )
+        {
+            return this.declaration == ( ( ParameterNode ) object ).declaration;
+//            return this.declaration.equals( ( ( ParameterNode ) object ).declaration );
+        }
+
+        return false;
     }
 }

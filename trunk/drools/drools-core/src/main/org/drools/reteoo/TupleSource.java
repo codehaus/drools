@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.23 2004-11-29 13:20:52 simon Exp $
+ * $Id: TupleSource.java,v 1.24 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -91,9 +91,7 @@ abstract class TupleSource
      * Set the <code>TupleSink</code> that receives <code>Tuples</code>
      * propagated from this <code>TupleSource</code>.
      *
-     * @param tupleSink
-     *            The <code>TupleSink</code> to receive propagated
-     *            <code>Tuples</code>.
+     * @param tupleSink The <code>TupleSink</code> to receive propagated <code>Tuples</code>.
      */
     protected void setTupleSink(TupleSink tupleSink)
     {
@@ -112,7 +110,6 @@ abstract class TupleSource
     protected void propagateAssertTuple(ReteTuple tuple,
                                         WorkingMemoryImpl workingMemory) throws AssertionException
     {
-
         this.tupleSink.assertTuple( tuple,
                                     workingMemory );
     }

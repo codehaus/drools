@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.28 2004-11-29 13:20:52 simon Exp $
+ * $Id: ConditionNode.java,v 1.29 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -254,5 +254,27 @@ class ConditionNode extends TupleSource
     public String toString()
     {
         return "[ConditionNode: cond=" + this.condition + "]";
+    }
+
+    public int hashCode()
+    {
+        return this.tupleSource.hashCode( ) ^ this.condition.hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object instanceof ConditionNode )
+        {
+            ConditionNode other = ( ConditionNode ) object;
+
+            return this.tupleSource.equals( other.tupleSource ) && this.condition.equals( other.condition );
+        }
+
+        return false;
     }
 }

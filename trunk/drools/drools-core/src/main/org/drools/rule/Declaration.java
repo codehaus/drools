@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Declaration.java,v 1.26 2004-12-01 13:41:57 simon Exp $
+ * $Id: Declaration.java,v 1.27 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -145,5 +145,24 @@ public class Declaration
     public int hashCode()
     {
         return this.index;
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object instanceof Declaration )
+        {
+            Declaration other = ( Declaration ) object;
+
+            return this.index == other.index
+                   && this.identifier.equals( other.identifier )
+                   && this.objectType.equals( other.objectType );
+        }
+
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.35 2004-11-30 05:31:09 simon Exp $
+ * $Id: JoinNode.java,v 1.36 2004-12-03 03:26:17 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,13 +84,11 @@ class JoinNode extends TupleSource
     /**
      * Construct.
      *
-     * @param leftInput
-     *            The left input <code>TupleSource</code>.
-     * @param rightInput
-     *            The right input <code>TupleSource</code>.
+     * @param leftInput The left input <code>TupleSource</code>.
+     * @param rightInput The right input <code>TupleSource</code>.
      */
-    public JoinNode(TupleSource leftInput,
-                    TupleSource rightInput)
+    public JoinNode( TupleSource leftInput,
+                     TupleSource rightInput )
     {
         this.leftInput = leftInput;
         this.rightInput = rightInput;
@@ -108,6 +106,28 @@ class JoinNode extends TupleSource
         return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + this.tupleDeclarations + "]";
     }
 
+    public int hashCode()
+    {
+        return this.leftInput.hashCode( ) ^ this.rightInput.hashCode( );
+    }
+
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object instanceof JoinNode )
+        {
+            JoinNode other = ( JoinNode ) object;
+
+            return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
+        }
+
+        return false;
+    }
+
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
@@ -118,9 +138,9 @@ class JoinNode extends TupleSource
      */
     private Set determineCommonDeclarations()
     {
-        Set commonDeclarations = new HashSet( leftInput.getTupleDeclarations( ) );
+        Set commonDeclarations = new HashSet( this.leftInput.getTupleDeclarations( ) );
 
-        commonDeclarations.retainAll( rightInput.getTupleDeclarations( ) );
+        commonDeclarations.retainAll( this.rightInput.getTupleDeclarations( ) );
 
         return commonDeclarations.isEmpty( ) ? Collections.EMPTY_SET : Collections.unmodifiableSet( commonDeclarations );
     }
