@@ -52,11 +52,11 @@ public class SupplyAndDemand
                                       9.99 );
 
             Buyer buyer2 = new Buyer( "buyer-2",
-                                      20,
+                                      100,
                                       15.00 );
 
             Seller seller1 = new Seller( "seller-1",
-                                         50,
+                                         150,
                                          9.99 );
 
             Seller seller2 = new Seller ( "seller-2",
@@ -84,10 +84,10 @@ public class SupplyAndDemand
                 // and let the logic engine do the rest.
 
                 workingMemory.assertObject( buyer1 );
-                workingMemory.assertObject( buyer2 );
                 workingMemory.assertObject( seller1 );
                 workingMemory.assertObject( seller2 );
                 workingMemory.assertObject( seller3 );
+                workingMemory.assertObject( buyer2 );
             }
             catch (AssertionException e)
             {

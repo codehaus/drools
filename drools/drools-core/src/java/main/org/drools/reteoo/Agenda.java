@@ -287,6 +287,11 @@ class AgendaItem
         getAction().invoke( getTuple(),
                             workingMemory );
     }
+
+    public String toString()
+    {
+        return "[" + getTuple() + getAction() + "]";
+    }
 }
 
 class FireListener implements AlarmListener
