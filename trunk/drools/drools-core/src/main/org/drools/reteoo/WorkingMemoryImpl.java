@@ -1,9 +1,9 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.58 2004-12-06 06:54:48 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.59 2004-12-14 20:13:20 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -520,11 +520,12 @@ class WorkingMemoryImpl
 
         ruleBase.retractObject( handle, this );
 
-        removeObject( handle );
+        Object oldObject = removeObject( handle );
 
         factHandlePool.push( ( ( FactHandleImpl ) handle ).getId( ) );
 
-        eventSupport.fireObjectRetracted( handle );
+        eventSupport.fireObjectRetracted( handle,
+                                          oldObject );
 
         ( ( FactHandleImpl ) handle ).invalidate( );
     }
@@ -551,6 +552,7 @@ class WorkingMemoryImpl
                                     this );
 
         this.eventSupport.fireObjectModified( handle,
+                                              originalObject,
                                               object );
     }
 
