@@ -1,9 +1,9 @@
 package org.drools.examples.fibonacci;
 
-import org.drools.RuleBaseBuilder;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleSetReader;
+import org.drools.io.RuleBaseBuilder;
 import org.drools.rule.RuleSet;
 
 public class FibonacciExample
@@ -15,7 +15,7 @@ public class FibonacciExample
         
         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
         
-        Fibonacci fibonacci = new Fibonacci( 80 );
+        Fibonacci fibonacci = new Fibonacci( 50 );
         
         long start = System.currentTimeMillis();
 
