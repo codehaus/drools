@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.6 2003-11-30 03:28:51 bob Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.7 2004-03-27 15:52:25 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -47,9 +47,10 @@ package org.drools.jsr94.rules.admin;
  */
 
 import org.drools.io.RuleSetReader;
+import org.drools.io.RuleBaseBuilder;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.smf.SimpleSemanticsRepository;
+import org.drools.RuleBase;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
@@ -69,6 +70,7 @@ import java.util.Map;
  * @see LocalRuleExecutionSetProvider
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  */
 public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetProvider
 {
@@ -127,7 +129,7 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
                 // recursivly add the rules
                 Rule[] rules = ruleSet.getRules();
 
-                for ( int i = 0 ; i < rules.length ; ++i )
+                for ( int i = 0 ; i < rules.length ; i++ )
                 {
                     createRuleExecutionSet( rules[ i ],
                                             properties );
@@ -174,11 +176,14 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
 
         try
         {
-            // load the rules from XML
-            RuleSetReader reader = new RuleSetReader( new SimpleSemanticsRepository() );
-            RuleSet ruleSet = reader.read( ruleReader );
-            createRuleExecutionSet( ruleSet,
-                                    properties );
+
+            RuleBase ruleBase = RuleBaseBuilder.buildFromReader(ruleReader);
+            RuleSet[] ruleSet = ruleBase.getRuleSets();
+
+            // add the ruleBase to the execution set
+            ruleExecutionSet.setRuleBase(ruleBase);
+            createRuleExecutionSet( ruleSet[0], properties );
+
         }
         catch ( IOException ex )
         {
@@ -188,7 +193,6 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
         {
             throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
         }
-
 
         if ( ruleExecutionSet.getRules().size() == 0 )
         {
