@@ -53,35 +53,42 @@ class RuleHandler
     {
         Element elem = path.getCurrent();
 
-        String ruleName = elem.attributeValue( "name" );
-
-        Rule rule = new Rule( ruleName );
-
-        for ( Iterator elemIter = elem.elementIterator();
-              elemIter.hasNext(); )
+        if ( ! elem.getNamespace().getURI().equals( RuleSetReader.RULES_NAMESPACE ) )
         {
+            addError( new SyntaxException( "<rule> must be in namespace '" + RuleSetReader.RULES_NAMESPACE + "'" ) );
+        }
+        else
+        {
+            String ruleName = elem.attributeValue( "name" );
+            
+            Rule rule = new Rule( ruleName );
+            
+            for ( Iterator elemIter = elem.elementIterator();
+                  elemIter.hasNext(); )
+            {
+                try
+                {
+                    add( rule,
+                         (Element) elemIter.next() );
+                }
+                catch (Exception e)
+                {
+                    addError( e );
+                }
+            }
+            
             try
             {
-                add( rule,
-                     (Element) elemIter.next() );
+                getRuleSet().addRule( rule );
             }
-            catch (Exception e)
+            catch (DuplicateRuleNameException e)
             {
                 addError( e );
             }
-        }
-
-        try
-        {
-            getRuleSet().addRule( rule );
-        }
-        catch (DuplicateRuleNameException e)
-        {
-            addError( e );
-        }
-        catch (InvalidRuleException e)
-        {
-            addError( e );
+            catch (InvalidRuleException e)
+            {
+                addError( e );
+            }
         }
     }
 
@@ -94,7 +101,7 @@ class RuleHandler
 
         SemanticModule module = lookupSemanticModule( nsUri );
 
-        if ( "http://drools.org/rules".equals( nsUri ) )
+        if ( nsUri.equals( RuleSetReader.RULES_NAMESPACE ) )
         {
             if ( "parameter".equals( name ) )
             {
@@ -129,7 +136,7 @@ class RuleHandler
         }
         else
         {
-            // register error
+            addError( new SyntaxException( "<" + elem.getName() + "> in namespace '" + elem.getNamespace().getURI() + "' is unknown" ) );
         }
     }
 
@@ -145,6 +152,12 @@ class RuleHandler
         ObjectType objectType = parseObjectType( rule,
                                                  module,
                                                  objectTypeElem );
+
+        if ( objectType == null )
+        {
+            addError( new SyntaxException( "unable to handle <" + objectTypeElem.getName() + "> in namespace '" + objectTypeElem.getNamespace().getURI() + "'" ) );
+            return;
+        }
 
         Declaration decl = new Declaration( objectType,
                                             identifier );
@@ -165,6 +178,12 @@ class RuleHandler
                                                  module,
                                                  objectTypeElem );
 
+        if ( objectType == null )
+        {
+            addError( new SyntaxException( "unable to handle <" + objectTypeElem.getName() + "> in namespace '" + objectTypeElem.getNamespace().getURI() + "'" ) );
+            return;
+        }
+
         Declaration decl = new Declaration( objectType,
                                             identifier );
 
@@ -180,9 +199,16 @@ class RuleHandler
 
         Class objectTypeClass = module.getObjectType( objectTypeName );
 
+        if ( objectTypeClass == null )
+        {
+            addError( new SyntaxException( "no object type for <" + elem.getName() + "> for namespace '" + elem.getNamespace().getURI() + "'" ) );
+            return null;
+        }
+
         if ( ! ObjectType.class.isAssignableFrom( objectTypeClass ) )
         {
-            // throw error
+            addError( new SyntaxException( "'" + objectTypeClass.getName() + "' is not a valid ObjectType subclass" ) );
+            return null;
         }
 
         ObjectType objectType = (ObjectType) objectTypeClass.newInstance();
@@ -200,9 +226,16 @@ class RuleHandler
                       Element elem)
         throws InstantiationException, ConfigurationException, IllegalAccessException
     {
+        if ( conditionClass == null )
+        {
+            addError( new SyntaxException( "no condition for <" + elem.getName() + "> for namespace '" + elem.getNamespace().getURI() + "'" ) );
+            return;
+        }
+
         if ( ! Condition.class.isAssignableFrom( conditionClass ) )
         {
-            // throw error
+            addError( new SyntaxException( "'" + conditionClass.getName() + "' is not a valid Condition subclass" ) );
+            return;
         }
 
         Condition condition = (Condition) conditionClass.newInstance();
@@ -230,9 +263,22 @@ class RuleHandler
                         Element elem)
         throws InstantiationException, ConfigurationException, IllegalAccessException
     {
+        if ( consequenceClass == null )
+        {
+            addError( new SyntaxException( "no consequence for <" + elem.getName() + "> for namespace '" + elem.getNamespace().getURI() + "'" ) );
+            return;
+        }
+
+        if ( rule.getConsequence() != null )
+        {
+            addError( new SyntaxException( rule.getName() + " already has a consequence" ) );
+            return;
+        }
+
         if ( ! Consequence.class.isAssignableFrom( consequenceClass ) )
         {
-            // throw error
+            addError( new SyntaxException( "'" + consequenceClass.getName() + "' is not a valid Consequence subclass" ) );
+            return;
         }
 
         Consequence consequence = (Consequence) consequenceClass.newInstance();
