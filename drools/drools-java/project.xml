@@ -138,8 +138,7 @@
             <resource>
                 <directory>src/conf</directory>
                 <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
+                    <include>**/*.conf</include>
                 </includes>
             </resource>
         </resources>
