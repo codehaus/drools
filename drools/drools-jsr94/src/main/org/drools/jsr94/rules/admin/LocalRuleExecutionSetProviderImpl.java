@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderImpl.java,v 1.7 2004-03-27 15:52:25 n_alex Exp $
+ $Id: LocalRuleExecutionSetProviderImpl.java,v 1.8 2004-03-28 02:55:19 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -146,8 +146,7 @@ public class LocalRuleExecutionSetProviderImpl implements LocalRuleExecutionSetP
                     ruleExecutionSet.setDescription( null );
                 }
 
-
-                ruleExecutionSet.addRules( new Rule[] { rule } );
+                ruleExecutionSet.addRule( rule );
             }
             else
             {
