@@ -8,7 +8,17 @@
        <include name="**/*"/>
    </patternset>
 
-  <taskdef name="latex" classname="de.prima.shire.anttex.LaTeX"/>
+   <path id="lib.jars">
+     <fileset dir="${basedir}/lib">
+       <include name="*.jar"/>
+     </fileset>
+   </path>
+
+  <taskdef name="latex" classname="de.prima.shire.anttex.LaTeX">
+    <classpath>
+      <path location="${basedir}/lib/anttex.jar"/>
+    </classpath>
+  </taskdef>
 
   <!-- =================================================================== -->
   <!-- Properties                                                          -->
@@ -129,6 +139,7 @@
            deprecation="${deprecation}">
         <src path="${build.src.main}"/>
         <patternset refid="${compile.target}"/>
+    <classpath refid="lib.jars"/>
     </javac>
   </target>
 
@@ -140,6 +151,7 @@
         <src path="${build.src.test}"/>
         <classpath path="${build.dest.test}"/>
         <classpath path="${build.dest.main}"/>
+        <classpath refid="lib.jars"/>
         <patternset refid="${compile.target}"/>
     </javac>
   </target>
@@ -152,11 +164,10 @@
       <src path="${build.src.examples}"/>
       <classpath path="${build.dest.examples}"/>
       <classpath path="${build.dest.main}"/>
+      <classpath refid="lib.jars"/>
       <patternset refid="${compile.target}"/>
     </javac>
   </target>
-
-
 
   <target name="rule.jar">
     <jar jarfile="${build.dir}/${name}.jar"
@@ -177,6 +188,7 @@
         <pathelement location="${build.dest.test}" />
         <pathelement path="${java.class.path}" />
       </classpath>
+      <classpath refid="lib.jars"/>
 
       <batchtest fork="yes" todir="${build.dir}/test-results">
         <fileset dir="${test.dir}">
@@ -240,8 +252,16 @@
       </fileset>
     </copy>
 
-    <antlr target="${build.src.main}/org/drools/semantic/java/parser/java.g"/>
-    <antlr target="${build.src.main}/org/drools/semantic/java/parser/java.tree.g"/>
+    <antlr target="${build.src.main}/org/drools/semantic/java/parser/java.g">
+      <classpath>
+        <path location="${basedir}/lib/antlrall-2.7.1.jar"/>
+      </classpath>
+    </antlr>
+    <antlr target="${build.src.main}/org/drools/semantic/java/parser/java.tree.g">
+      <classpath>
+        <path location="${basedir}/lib/antlrall-2.7.1.jar"/>
+      </classpath>
+    </antlr>
 
   </target>
 
