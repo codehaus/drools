@@ -121,30 +121,4 @@ public class ReteTest extends DroolsTestCase
 
         assertContains( handle2, retracted );
     }
-
-    public void testModifyObject() throws Exception
-    {
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
-
-        FactHandleImpl handle1 = new FactHandleImpl( 1 );
-        FactHandleImpl handle2 = new FactHandleImpl( 2 );
-
-        memory.putObject( handle1, "cheese1" );
-
-        memory.putObject( handle2, "cheese2" );
-
-        this.rete.modifyObject( handle1, "cheese1-b", memory );
-
-        this.rete.modifyObject( handle2, "cheese2-b", memory );
-
-        List modified = null;
-
-        modified = this.objectTypeNode.getModifiedHandles( );
-
-        assertLength( 2, modified );
-
-        assertContains( handle1, modified );
-
-        assertContains( handle2, modified );
-    }
 }

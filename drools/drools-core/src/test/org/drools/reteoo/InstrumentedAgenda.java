@@ -52,10 +52,5 @@ public class InstrumentedAgenda extends Agenda
         super.removeFromAgenda( key, rule );
     }
 
-    public void modifyAgenda(FactHandle handle, TupleSet newTuples, Rule rule)
-    {
-        this.modified.add( handle );
-        super.modifyAgenda( handle, newTuples, rule );
-    }
 }
 

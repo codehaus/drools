@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.33 2004-11-03 14:27:00 simon Exp $
+ * $Id: TerminalNode.java,v 1.34 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,6 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
-import org.drools.FactHandle;
 import org.drools.rule.Rule;
 
 /**
@@ -118,20 +117,6 @@ final class TerminalNode implements TupleSink
     public void retractTuples(TupleKey key, WorkingMemoryImpl workingMemory)
     {
         workingMemory.getAgenda( ).removeFromAgenda( key, getRule( ) );
-    }
-
-    /**
-     * Modify tuples.
-     *
-     * @param trigger The root fact object handle.
-     * @param newTuples Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     */
-    public void modifyTuples(FactHandle trigger,
-                             TupleSet newTuples,
-                             WorkingMemoryImpl workingMemory)
-    {
-        workingMemory.getAgenda( ).modifyAgenda( trigger, newTuples, getRule( ) );
     }
 
     public String toString()

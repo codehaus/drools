@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinMemory.java,v 1.31 2004-11-03 03:14:57 simon Exp $
+ * $Id: JoinMemory.java,v 1.32 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,7 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactException;
 import org.drools.FactHandle;
-import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 
 import java.io.Serializable;
@@ -170,85 +168,6 @@ class JoinMemory implements Serializable
                 tupleIter.remove();
             }
         }
-    }
-
-    /**
-     * Modify tuples on the left-side.
-     *
-     * @param trigger       Triggering object handle.
-     * @param newTuples     Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     * @return The newly joined tuples.
-     * @throws FactException if an error occurs during modification.
-     */
-    protected TupleSet modifyLeftTuples( FactHandle trigger,
-                                         TupleSet newTuples,
-                                         WorkingMemory workingMemory ) throws FactException
-    {
-        return modifyTuples( trigger, newTuples, getLeftTuples(), getRightTuples(), workingMemory );
-    }
-
-    /**
-     * Modify tuples on the right-side.
-     *
-     * @param trigger       Triggering object handle.
-     * @param newTuples     Modification replacement tuples.
-     * @param workingMemory The working memory session.
-     * @return The newly joined tuples.
-     * @throws FactException if an error occurs during modification.
-     */
-    protected TupleSet modifyRightTuples( FactHandle trigger,
-                                          TupleSet newTuples,
-                                          WorkingMemory workingMemory ) throws FactException
-    {
-        return modifyTuples( trigger, newTuples, getRightTuples(), getLeftTuples(), workingMemory );
-    }
-
-    /**
-     * Modify tuples
-     *
-     * @param trigger        Triggering object handle.
-     * @param newTuples      Modification replacement tuples.
-     * @param thisSideTuples The tuples on the side that's receiving the modifications.
-     * @param thatSideTuples The tuples on the side that's <b>not </b> receiving the modifications.
-     * @param workingMemory  The working memory session.
-     * @return The newly joined tuples.
-     * @throws FactException if an error occurs during modification.
-     */
-    protected TupleSet modifyTuples( FactHandle trigger,
-                                     TupleSet newTuples,
-                                     TupleSet thisSideTuples,
-                                     TupleSet thatSideTuples,
-                                     WorkingMemory workingMemory ) throws FactException
-    {
-        ReteTuple tuple;
-
-        Iterator tupleIter = thisSideTuples.iterator();
-
-        while ( tupleIter.hasNext() )
-        {
-            tuple = ( ReteTuple ) tupleIter.next();
-
-            if ( tuple.dependsOn( trigger ) && !newTuples.containsTuple( tuple.getKey() ) )
-            {
-                tupleIter.remove();
-            }
-        }
-
-        TupleSet newJoined = new TupleSet();
-
-        tupleIter = newTuples.iterator();
-
-        while ( tupleIter.hasNext() )
-        {
-            tuple = ( ReteTuple ) tupleIter.next();
-
-            thisSideTuples.addTuple( tuple );
-
-            newJoined.addAllTuples( attemptJoin( tuple, thatSideTuples.iterator() ) );
-        }
-
-        return newJoined;
     }
 
     /**

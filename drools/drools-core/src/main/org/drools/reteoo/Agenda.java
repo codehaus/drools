@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.42 2004-11-09 08:40:02 simon Exp $
+ * $Id: Agenda.java,v 1.43 2004-11-09 09:03:35 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,26 +40,23 @@ package org.drools.reteoo;
  *
  */
 
-import org.drools.FactHandle;
 import org.drools.WorkingMemory;
+import org.drools.event.ActivationCancelledEvent;
+import org.drools.event.ActivationCreatedEvent;
+import org.drools.event.WorkingMemoryEventListener;
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
-
-import org.drools.event.WorkingMemoryEventListener;
-import org.drools.event.ActivationCreatedEvent;
-import org.drools.event.ActivationCancelledEvent;
-
 import org.drools.util.PriorityQueue;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Rule-firing Agenda.
@@ -248,114 +245,6 @@ class Agenda implements Serializable
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * Modify the agenda.
-     *
-     * @param trigger The triggering root object handle.
-     * @param newTuples New tuples from the modification.
-     * @param rule The rule.
-     */
-    void modifyAgenda(FactHandle trigger, TupleSet newTuples, Rule rule)
-    {
-        Iterator itemIter = this.items.iterator( );
-        AgendaItem eachItem;
-        ReteTuple eachTuple;
-        Tuple tuple;
-        List listeners = workingMemory.getListeners();
-        WorkingMemoryEventListener listener;
-        ActivationCancelledEvent activationCancelledEvent;
-        Iterator iter;
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = ( AgendaItem ) itemIter.next( );
-
-            if ( eachItem.getRule( ) == rule )
-            {
-                if ( eachItem.dependsOn( trigger ) )
-                {
-                    if ( !newTuples.containsTuple( eachItem.getKey( ) ) )
-                    {
-                        itemIter.remove( );
-
-                        if ( !listeners.isEmpty( ) )
-                        {
-                            tuple = eachItem.getTuple( );
-                            activationCancelledEvent =  new ActivationCancelledEvent(workingMemory,
-                                                                                     tuple.getRule( ).getConsequence( ),
-                                                                                     tuple);
-
-                            iter = workingMemory.getListeners( ).iterator( );
-                            while ( iter.hasNext() )
-                            {
-                                listener = ( WorkingMemoryEventListener ) iter.next();
-                                listener.activationCancelled( activationCancelledEvent );
-                            }
-                        }
-                    }
-                    else
-                    {
-                        eachItem
-                                .setTuple( newTuples
-                                                    .getTuple( eachItem
-                                                                       .getKey( ) ) );
-                        newTuples.removeTuple( eachItem.getKey( ) );
-                    }
-                }
-            }
-        }
-
-        itemIter = this.scheduledItems.iterator( );
-
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = ( AgendaItem ) itemIter.next( );
-
-            if ( eachItem.getRule( ) == rule )
-            {
-                if ( eachItem.dependsOn( trigger ) )
-                {
-                    if ( !newTuples.containsTuple( eachItem.getKey( ) ) )
-                    {
-                        cancelItem( eachItem );
-                        itemIter.remove( );
-                        if ( !listeners.isEmpty( ) )
-                        {
-                            tuple = eachItem.getTuple( );
-                            activationCancelledEvent =  new ActivationCancelledEvent( workingMemory,
-                                                                                      tuple.getRule( ).getConsequence( ),
-                                                                                      tuple);
-
-                            iter = workingMemory.getListeners().iterator( );
-                            while ( iter.hasNext() )
-                            {
-                                listener = ( WorkingMemoryEventListener) iter.next( );
-                                listener.activationCancelled( activationCancelledEvent );
-                            }
-                        }
-                    }
-
-                    else
-                    {
-                        eachItem
-                                .setTuple( newTuples
-                                                    .getTuple( eachItem
-                                                                       .getKey( ) ) );
-                        newTuples.removeTuple( eachItem.getKey( ) );
-                    }
-                }
-            }
-        }
-
-        Iterator tupleIter = newTuples.iterator( );
-
-        while ( tupleIter.hasNext( ) )
-        {
-            eachTuple = ( ReteTuple ) tupleIter.next( );
-
-            addToAgenda( eachTuple, rule );
         }
     }
 
