@@ -10,11 +10,34 @@ import org.drools.spi.ActionInvokationException;
 import java.util.LinkedList;
 import java.util.Iterator;
 
+/** Rule-firing Agenda.
+ *
+ *  <p>
+ *  Since many rules may be matched by a single assertObject(...)
+ *  all scheduled actions are placed into the <code>Agenda</code>.
+ *  </p>
+ *
+ *  <p>
+ *  While processing a scheduled action, it may modify or retract
+ *  objects in other scheduled actions, which must then be removed
+ *  from the agenda.  Non-invalidated actions are left on the agenda,
+ *  and are executed in turn.
+ *  </p>
+ *
+ *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
+ */
 public class Agenda
 {
+    /** Working memory of this Agenda. */
     private WorkingMemory workingMemory;
+
+    /** Items in the agenda. */
     private LinkedList items;
 
+    /** Construct.
+     *
+     *  @param workingMemory The <code>WorkingMemory</code> of this agenda.
+     */
     public Agenda(WorkingMemory workingMemory)
     {
         this.workingMemory = workingMemory;
@@ -22,6 +45,11 @@ public class Agenda
         this.items = new LinkedList();
     }
 
+    /** Schedule a rule action invokation on this <code>Agenda</code>.
+     *
+     *  @param tuple The matching <code>Tuple</code>.
+     *  @param action The <code>Action</code> to fire.
+     */
     void addToAgenda(ReteTuple tuple,
                      Action action)
     {
@@ -34,11 +62,19 @@ public class Agenda
                                         action )  );
     }
     
+    /** Receive notification of a modified object.
+     *
+     *  @param object The modified object.
+     */
     public void modifyObject(Object object)
     {
         retractObject( object );
     }
     
+    /** Receive notification of a retracted object.
+     *
+     *  @param object The retracted object.
+     */
     public void retractObject(Object object)
     {
         Iterator   itemIter = this.items.iterator();
@@ -55,11 +91,16 @@ public class Agenda
         }
     }
 
+    /** Determine if this <code>Agenda</code> has any
+     *  scheduled items.
+     */
     public boolean isEmpty()
     {
         return this.items.isEmpty();
     }
 
+    /** Fire the next scheduled <code>Agenda</code> item.
+     */
     public void fireNextItem() throws ActionInvokationException
     {
         if ( isEmpty() )
@@ -73,6 +114,8 @@ public class Agenda
     }
 }
 
+/** Item entry in the <code>Agenda</code>.
+ */
 class AgendaItem
 {
     private ReteTuple tuple;

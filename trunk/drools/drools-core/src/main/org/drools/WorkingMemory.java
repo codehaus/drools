@@ -87,6 +87,8 @@ public class WorkingMemory
      */
     public void retractObject(Object object) throws RetractionException
     {
+        getAgenda().retractObject( object );
+
         getRuleBase().retractObject( object,
                                      this );
     }
@@ -103,6 +105,8 @@ public class WorkingMemory
      */
     public void modifyObject(Object object) throws ModificationException
     {
+        getAgenda().modifyObject( object );
+
         getRuleBase().modifyObject( object,
                                     this );
     }

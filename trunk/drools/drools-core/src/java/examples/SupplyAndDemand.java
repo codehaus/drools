@@ -40,6 +40,13 @@ public class SupplyAndDemand
 
             // Create some fact objects.
 
+            // buyer-1 wants 100 items for no more than $9.99 each
+            // buyer-2 wants 20 items for no more than $15.00 each
+
+            // seller-1 has 50 items to sell for no less than $9.99 each
+            // seller-2 has 75 items to sell for no less than $15.00 each
+            // seller-3 has 20 items to sell for no less than $5.00 each
+
             Buyer buyer1 = new Buyer( "buyer-1",
                                       100,
                                       9.99 );
