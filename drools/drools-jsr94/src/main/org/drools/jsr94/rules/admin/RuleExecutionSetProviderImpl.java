@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.6 2003-10-26 22:06:49 bob Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.7 2004-04-02 22:30:24 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,20 +46,15 @@ package org.drools.jsr94.rules.admin;
 
  */
 
-import org.drools.io.RuleSetReader;
-import org.drools.rule.RuleSet;
-import org.drools.smf.SimpleSemanticsRepository;
 import org.drools.jsr94.rules.NotImplementedException;
 import org.w3c.dom.Document;
 
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetProvider;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,16 +64,16 @@ import java.util.Map;
  *
  * @see RuleExecutionSetProvider
  *
+ * @author N. Alex Rupp (n_alex <at> codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
 public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
 {
-
     /**
      * Creates a <code>RuleExecutionSet</code> implementation from an XML Document and additional
      * vendor-specific properties.
      *
-     * @see RuleExecutionSetProvider#createRuleExecutionSet(Document,Map)
+     * @see RuleExecutionSetProvider#createRuleExecutionSet(Document, Map)
      */
     public RuleExecutionSet createRuleExecutionSet( Document document, Map properties ) throws RuleExecutionSetCreateException, RemoteException
     {
@@ -93,7 +88,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      * This method accepts <code>org.drools.rule.Rule</code> and <code>org.drools.rule.RuleSet</code> objects or
      * a <code>List</code> of these objects.
      *
-     * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable,Map)
+     * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable, Map)
      */
     public RuleExecutionSet createRuleExecutionSet( Serializable serializable, Map properties ) throws RuleExecutionSetCreateException, RemoteException
     {
@@ -106,17 +101,20 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      *
      * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(String ruleExecutionSetUri,
-                                                   Map properties)
-        throws RuleExecutionSetCreateException, IOException, RemoteException
+    public RuleExecutionSet createRuleExecutionSet(
+            String ruleExecutionSetUri,
+            Map properties)
+            throws RuleExecutionSetCreateException,
+            IOException,
+            RemoteException
     {
+        InputStream in = null;
         try
         {
             LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl();
-            RuleSetReader reader = new RuleSetReader( new SimpleSemanticsRepository() );
-            RuleSet ruleSet = reader.read( new URL( ruleExecutionSetUri ) );
-            return localRuleExecutionSetProvider.createRuleExecutionSet( ruleSet, properties );
-
+            in = new URL( ruleExecutionSetUri ).openStream();
+            Reader reader = new InputStreamReader(in);
+            return localRuleExecutionSetProvider.createRuleExecutionSet( reader, properties );
         }
         catch ( IOException ex )
         {
@@ -125,6 +123,16 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         catch ( Exception ex )
         {
             throw new RuleExecutionSetCreateException( "cannot create rule set", ex );
+        }
+        finally
+        {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
