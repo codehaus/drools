@@ -5,9 +5,13 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/** A {@link WorkingMemory} which caches all assertion, retractions
+/** A transactional knowledge session for a {@link RuleBase}.
+ *
+ *  <p>
+ *  A {@link WorkingMemory} which caches all assertion, retractions
  *  and modifications, and only performs the fact propagation and
  *  rule action invokation upon {@link #commit}.  
+ *  </p>
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
