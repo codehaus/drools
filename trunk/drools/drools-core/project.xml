@@ -3,7 +3,7 @@
     <name>Drools :: Rete-OO Core</name>
     <groupId>drools</groupId>
     <artifactId>drools-core</artifactId>
-    <currentVersion>2.0-beta-13-dev</currentVersion>
+    <currentVersion>2.0-beta-15</currentVersion>
     <organization>
         <name>The Codehaus</name>
         <url>http://www.codehaus.org</url>

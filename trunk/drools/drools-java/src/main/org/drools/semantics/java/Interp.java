@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.9 2004-03-22 21:14:49 bob Exp $
+ $Id: Interp.java,v 1.10 2004-06-13 03:36:25 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,6 +56,7 @@ import org.drools.spi.Tuple;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map;
 
 /** Base class for BeanShell interpreter-based Java semantic components.
  *
@@ -65,7 +66,7 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.9 2004-03-22 21:14:49 bob Exp $
+ *  @version $Id: Interp.java,v 1.10 2004-06-13 03:36:25 bob Exp $
  */
 public class Interp
 {
@@ -179,6 +180,31 @@ public class Interp
                 ns.importClass( ((ClassObjectType)objectType).getType().getName() );
             }
         }
+
+        ns.setVariable( "drools$working$memory",
+                        tuple.getWorkingMemory(),
+                        false );
+
+        ns.setVariable( "drools$tuple",
+                        tuple,
+                        false );
+
+        Map appData = tuple.getWorkingMemory().getApplicationDataMap();
+
+        for (Iterator iterator = appData.entrySet().iterator(); iterator.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) iterator.next();
+
+            String key = (String) entry.getKey();
+
+            if ( key.startsWith( "bsh:" ) ) {
+                ns.importCommands( key.substring( 4 ) );
+            } else {
+                ns.setVariable(key, entry.getValue(), false);
+            }
+        }
+
+        evaluate( ns );
 
         return ns;
     }

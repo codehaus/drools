@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: DefaultSemanticsRepository.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ $Id: DefaultSemanticsRepository.java,v 1.2 2004-06-13 03:36:25 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,9 @@ package org.drools.smf;
 
 import java.net.URL;
 import java.util.Enumeration;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
 /** Default <code>SemanticsRepository</code> which uses discovery to autoload
  *  semantic modules.
@@ -64,7 +67,7 @@ import java.util.Enumeration;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefaultSemanticsRepository.java,v 1.1.1.1 2003-12-30 21:19:59 bob Exp $
+ *  @version $Id: DefaultSemanticsRepository.java,v 1.2 2004-06-13 03:36:25 bob Exp $
  */
 public final class DefaultSemanticsRepository
     implements SemanticsRepository
@@ -125,7 +128,8 @@ public final class DefaultSemanticsRepository
     //     Instance methods
     // ----------------------------------------------------------------------
 
-    /** Initialize and perform discovery.
+
+        /** Initialize and perform discovery.
      *
      *  @throws Exception If an error occurs while performing discovery
      *          and loading of the semantic modules.
@@ -133,20 +137,107 @@ public final class DefaultSemanticsRepository
     protected void init()
         throws Exception
     {
+        String droolsConfigProp = System.getProperty( "drools.config" );
+
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
-        Enumeration moduleDescriptors = cl.getResources( "META-INF/drools-semantics.properties" );
-        
-        SemanticsReader semanticsReader = new SemanticsReader();
-        
-        while ( moduleDescriptors.hasMoreElements() )
+        if ( cl == null )
         {
-            URL moduleDescriptor = (URL) moduleDescriptors.nextElement();
-
-            SemanticModule module = semanticsReader.read( moduleDescriptor );
-            
-            this.repository.registerSemanticModule( module );
+            cl = getClass().getClassLoader();
         }
+
+        if ( droolsConfigProp != null )
+        {
+            loadConfig( droolsConfigProp );
+        }
+        else
+        {
+            Enumeration configUrls = cl.getResources( "META-INF/drools.conf" );
+            
+            while ( configUrls.hasMoreElements() )
+            {
+                URL configUrl = (URL) configUrls.nextElement();
+                
+                loadConfig( configUrl );
+            }
+        }
+    }
+
+    protected void loadConfig(String path)
+        throws Exception
+    {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        if ( cl == null )
+        {
+            cl = getClass().getClassLoader();
+        }
+
+        System.err.println( "looading for [" + path + "]");
+        URL url = cl.getResource( path );
+
+        if ( url == null )
+        {
+            System.err.println( "INVALID PATH: [" + path + "]");
+            return;
+        }
+
+        loadConfig( url );
+    }
+
+    protected void loadConfig(URL url)
+        throws Exception
+    {
+        InputStream config = url.openStream();
+
+        BufferedReader in = new BufferedReader( new InputStreamReader( config ) );
+        
+        try
+        {
+            String line;
+            
+            while ( ( line = in.readLine() ) != null )
+            {
+                line = line.trim();
+
+                if ( line.equals( "" )
+                     ||
+                     line.startsWith( "#" ) )
+                {
+                    continue;
+                }
+                
+                loadSemantics( line );
+            }
+        }
+        finally
+        {
+            in.close();
+        } 
+    }
+
+    protected void loadSemantics(String configName)
+        throws Exception
+    {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        if ( cl == null )
+        {
+            cl = getClass().getClassLoader();
+        }
+
+        URL descriptor = cl.getResource( configName + ".conf");
+
+        if ( descriptor == null )
+        {
+            System.err.println( "cannot load " + configName );
+            return;
+        }
+        SemanticsReader semanticsReader = new SemanticsReader();
+
+        SemanticModule module = semanticsReader.read( descriptor );
+
+        this.repository.registerSemanticModule( module );
     }
 
     /** @see SemanticsRepository
