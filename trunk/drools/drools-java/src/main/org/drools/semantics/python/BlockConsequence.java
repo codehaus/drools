@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Exec.java,v 1.3 2002-08-27 20:10:23 bob Exp $
+ $Id: BlockConsequence.java,v 1.1 2002-08-27 20:10:23 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,103 +46,63 @@ package org.drools.semantics.python;
  
  */
 
+import org.drools.WorkingMemory;
+import org.drools.smf.ConfigurableConsequence;
+import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
 
-import org.drools.rule.Declaration;
-import org.drools.smf.ConfigurationException;
-
-import org.python.core.Py;
 import org.python.core.PyDictionary;
-import org.python.util.PythonInterpreter;
 
-import java.util.Hashtable;
-
-/** Base class for Jython statement-based Python semantic components.
- *
- *  @see BlockConsequence
+/** Python block semantics <code>Consequence</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Exec.java,v 1.3 2002-08-27 20:10:23 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.1 2002-08-27 20:10:23 bob Exp $
  */
-public class Exec extends Interp
+public class BlockConsequence extends Exec implements ConfigurableConsequence
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The interpreter. */
-    private PythonInterpreter interp;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
+     *
+     *  @param text The block text.
      */
-    protected Exec()
+    public BlockConsequence(String text)
     {
-        this.interp = new PythonInterpreter();
+        setText( text );
+    }
+
+    /** Construct, partially.
+     */
+    public BlockConsequence()
+    {
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Execute.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.spi.Consequence
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Execute the consequence for the supplied
+     *  matching <code>Tuple</code>.
      *
-     *  @param tuple Tuple containing variable bindings.
+     *  @param tuple The matching tuple.
+     *  @param workingMemory The working memory session.
+     *
+     *  @throws ConsequenceException If an error occurs while
+     *          attempting to invoke the consequence.
      */
-    public void execute(Tuple tuple) 
+    public void invoke(Tuple tuple,
+                       WorkingMemory workingMemory) throws ConsequenceException
     {
         PyDictionary dict = setUpDictionary( tuple );
-        
+
         execute( dict );
     }
-
-    /** Execute.
-     *
-     *  @param locals The evaluation dictionary.
-     */
-    protected void execute(PyDictionary locals) 
-    {
-        PyDictionary globals = new PyDictionary( new Hashtable() );
-        
-        Py.runCode( getCode(),
-                    locals,
-                    globals );
-    }
-
-    /** Execute.
-     */
-    protected void execute()
-    {
-        PyDictionary locals = new PyDictionary( new Hashtable() );
-        
-        execute( locals );
-    }
-    
-    /** Set the text to execute.
-     *
-     *  @param text The text.
-     */
-    protected void setText(String text)
-    {
-        setText( text,
-                 "exec" );
-    }
-
-    /** Configure.
-     *
-     *  @param text Configuration text.
-     *  @param availDecls Available declarations.
-     *
-     *  @throws ConfigurationException If an error occurs while
-     *          attempting to perform configuration.
-     */
-    public void configure(String text,
-                          Declaration[] availDecls) throws ConfigurationException
-    {
-        setText( text );
-    }
 }
+
