@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: RuleBaseImpl.java,v 1.11 2004-06-28 00:17:26 mproctor Exp $
+ $Id: RuleBaseImpl.java,v 1.12 2004-06-28 01:15:48 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -60,7 +60,7 @@ import java.io.ObjectInputStream;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseImpl.java,v 1.11 2004-06-28 00:17:26 mproctor Exp $
+ *  @version $Id: RuleBaseImpl.java,v 1.12 2004-06-28 01:15:48 mproctor Exp $
  */
 class RuleBaseImpl
     implements RuleBase
@@ -70,7 +70,7 @@ class RuleBaseImpl
     // ------------------------------------------------------------
 
     /** The root Rete-OO for this <code>RuleBase</code>. */
-    private transient Rete rete;
+    private Rete rete;
 
     /** Integrated rule-sets. */
     private RuleSet[] ruleSets;
@@ -100,11 +100,6 @@ class RuleBaseImpl
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException
-    {
-        s.defaultReadObject();
-        this.rete = new Rete();
-    }
 
     /** @see RuleBase
      */
