@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.12 2004-07-04 11:45:43 mproctor Exp $
+ $Id: Declaration.java,v 1.13 2004-07-09 00:42:21 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -164,7 +164,7 @@ public class Declaration implements Serializable
     public String dump(String indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(indent + "Decleration\n");
+        buffer.append(indent + "Declaration\n");
         buffer.append(indent + "-----------\n");
         buffer.append(indent + "identifier: ");
         buffer.append(indent + identifier);
