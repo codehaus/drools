@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
-$Id: FibonacciSerializedExample.java,v 1.2 2004-07-16 19:03:34 dbarnett Exp $
+$Id: FibonacciSerializedExample.java,v 1.3 2004-08-07 16:30:29 mproctor Exp $
 
 Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.io.RuleBaseBuilder;
 
 import java.io.ByteArrayOutputStream;
@@ -60,15 +61,13 @@ import java.io.ObjectInput;
 
 public class FibonacciSerializedExample
 {
-    private static RuleBase getSerializedRuleBase(String drl)
+    private static WorkingMemory getWorkingMemory(RuleBase ruleBase)
         throws Exception
     {
-        RuleBase ruleBaseIn = RuleBaseBuilder.buildFromUrl( FibonacciSerializedExample.class.getResource( drl ) );
-
         // Serialize to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
         ObjectOutput out = new ObjectOutputStream(bos) ;
-        out.writeObject(ruleBaseIn);
+        out.writeObject(ruleBase.newWorkingMemory());
         out.close();
 
         // Get the bytes of the serialized object
@@ -76,9 +75,28 @@ public class FibonacciSerializedExample
 
         // Deserialize from a byte array
         ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
-        RuleBase ruleBaseOut = (RuleBase) in.readObject();
+        WorkingMemory workingMemoryOut = (WorkingMemory) in.readObject();
         in.close();
-        return ruleBaseOut;
+        return workingMemoryOut;
+    }
+
+    private static WorkingMemory serializeWorkingMemory(WorkingMemory workingMemoryIn)
+        throws Exception
+    {
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+        ObjectOutput out = new ObjectOutputStream(bos) ;
+        out.writeObject(workingMemoryIn);
+        out.close();
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray();
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        WorkingMemory workingMemoryOut = (WorkingMemory) in.readObject();
+        in.close();
+        return workingMemoryOut;
     }
 
     public static void main(String[] args)
@@ -88,22 +106,27 @@ public class FibonacciSerializedExample
             System.out.println("Usage: " + FibonacciSerializedExample.class.getName() + " [drl file]");
             return;
         }
-        System.out.println("Using drl: " + args[0]);
+        System.err.println("Using drl: " + args[0]);
 
-        RuleBase ruleBase = getSerializedRuleBase(args[0]);
+        RuleBase ruleBase = RuleBaseBuilder.buildFromUrl( FibonacciSerializedExample.class.getResource( args[0] ) );
 
-        WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+
+        WorkingMemory workingMemory = getWorkingMemory(ruleBase);
 
         Fibonacci fibonacci = new Fibonacci( 50 );
 
         long start = System.currentTimeMillis();
 
-        workingMemory.assertObject( fibonacci );
+        FactHandle fibFact = workingMemory.assertObject( fibonacci );
+
+        workingMemory = serializeWorkingMemory( workingMemory );
 
         workingMemory.fireAllRules();
 
         long stop = System.currentTimeMillis();
 
-        System.out.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
+        fibonacci = (Fibonacci) workingMemory.getObject(fibFact);
+
+        System.err.println( "fibanacci(" + fibonacci.getSequence() + ") == " + fibonacci.getValue() + " took " + (stop-start) + "ms" );
     }
 }
