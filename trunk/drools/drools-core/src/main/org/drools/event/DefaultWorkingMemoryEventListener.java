@@ -33,6 +33,11 @@ public class DefaultWorkingMemoryEventListener implements
         // intentionally left blank
     }
 
+    public void activationCancelled(ActivationCancelledEvent event)
+    {
+        // intentionally left blank
+    }
+
     public void activationFired(ActivationFiredEvent event)
     {
         // intentionally left blank

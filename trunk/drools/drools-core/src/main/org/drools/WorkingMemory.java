@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.29 2004-10-27 22:46:56 simon Exp $
+ * $Id: WorkingMemory.java,v 1.30 2004-11-06 04:08:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -220,4 +220,10 @@ public interface WorkingMemory extends Serializable
      * @throws FactException If an error occurs.
      */
     void modifyObject(FactHandle handle, Object object) throws FactException;
+
+    /**
+     * Clear the Agenda
+     *
+     */
+    void clearAgenda();
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.15 2004-11-06 03:29:24 mproctor Exp $
+ * $Id: AgendaItem.java,v 1.16 2004-11-06 04:08:42 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -169,16 +169,16 @@ class AgendaItem implements Activation, Serializable
 
         consequence.invoke( tuple, workingMemory );
 
-        List listeners = workingMemory.getListeners();
-        if (!listeners.isEmpty())
+        List listeners = workingMemory.getListeners( );
+        if ( !listeners.isEmpty( ) )
         {
             ActivationFiredEvent activationFiredEvent =  new ActivationFiredEvent(workingMemory, consequence, tuple);
             Iterator iter = listeners.iterator();
             WorkingMemoryEventListener listener;
-            while ( iter.hasNext() )
+            while ( iter.hasNext( ) )
             {
-                listener = (WorkingMemoryEventListener) iter.next();
-                listener.activationFired(activationFiredEvent);
+                listener = ( WorkingMemoryEventListener ) iter.next( );
+                listener.activationFired( activationFiredEvent );
             }
         }
     }

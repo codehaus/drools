@@ -53,4 +53,9 @@ public class KnowledgeHelper
         return this.tuple.getWorkingMemory().getObjects( objectClass );
     }
 
+    public void clearAgenda()
+    {
+        this.tuple.getWorkingMemory().clearAgenda();
+    }
+
 }
