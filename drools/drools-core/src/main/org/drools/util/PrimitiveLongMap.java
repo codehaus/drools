@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.9 2004-11-19 02:15:18 mproctor Exp $
+ * $Id: PrimitiveLongMap.java,v 1.10 2004-12-04 00:26:29 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,7 @@ import java.util.Collection;
  */
 
 /**
- * 
+ *
  * @author Mark Proctor
  */
 public class PrimitiveLongMap
@@ -127,6 +127,11 @@ public class PrimitiveLongMap
     public Object put(long key,
                       Object value)
     {
+        if ( key < 0 )
+        {
+            throw new IllegalArgumentException( "-ve keys not supported: " + key );
+        }
+        
         // NULL is a placeholder to show the key exists
         // but contains a null value
         if ( value == null )
@@ -164,7 +169,7 @@ public class PrimitiveLongMap
 
     public Object get(long key)
     {
-        if ( key > this.maxKey )
+        if ( key > this.maxKey || key < 0 )
         {
             return null;
         }
@@ -194,7 +199,7 @@ public class PrimitiveLongMap
     public boolean containsKey(long key)
     {
         if (key < 0) return false;
-        
+
         return get( key ) != null;
     }
 
