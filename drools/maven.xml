@@ -172,31 +172,55 @@
         </fileset>
       </copy>
 
-      <zip destfile="target/drools-${pom.currentVersion}.zip"
-           excludes=".metadata/**, clover/**, **/target/**"
-           basedir=".">
-    		 <zipfileset dir="target/docs" prefix="docs"/>
-    		 <zipgroupfileset dir="." includes="*"/>
+      <zip destfile="target/drools-${pom.currentVersion}.zip">
+    		 <zipfileset dir="target/docs" prefix="docs" />
+
+    		 <zipfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
       </zip>
 
-      <tar destfile="target/drools-${pom.currentVersion}.tar.gz"
-           compression="gzip"
-           excludes=".metadata/**, clover/**, **/target/**"
-           basedir=".">
-    		 <tarfileset dir="target/docs" prefix="docs"/>
-    		 <targroupfileset dir="." includes="*"/>
-    	</tar>
+      <tar destfile="target/drools-${pom.currentVersion}.tar.gz" compression="gzip">
+    		 <tarfileset dir="target/docs" prefix="docs" />
 
+    		 <tarfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+      </tar>
+		</goal>
+
+    <goal name="drools-dist-deps" prereqs="javadoc-all">
+      <copy todir="./lib" flatten="true">
+        <fileset dir=".">
+          <include name="**/drools-*.jar"/>
+        </fileset>
+      </copy>
+
+      <j:set var="goal" value="get-deps"/>
+      <attainGoal name="multiproject:goal"/>
+
+      <zip destfile="target/drools-deps-${pom.currentVersion}.zip">
+    		 <zipfileset dir="target/docs" prefix="docs" />
+
+    		 <zipfileset dir="." prefix="lib" includes="drools-*/lib/**" />
+
+    		 <zipfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+      </zip>
+
+      <tar destfile="target/drools-deps-${pom.currentVersion}.tar.gz" compression="gzip">
+    		 <tarfileset dir="target/docs" prefix="docs" />
+
+    		 <tarfileset dir="." prefix="lib" includes="drools-*/lib/**" />
+
+    		 <tarfileset dir="." excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, drools-*/lib/**" />
+      </tar>
     </goal>
+
 
     <goal name="drools-src-dist">
       <zip destfile="target/drools-src-${pom.currentVersion}.zip"
-           excludes=".metadata/**, clover/**, **/target/**, lib/**"
+           excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="." />
 
       <tar destfile="target/drools-src-${pom.currentVersion}.tar.gz"
            compression="gzip"
-           excludes=".metadata/**, clover/**, **/target/**, lib/**"
+           excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**"
            basedir="." />
     </goal>
 </project>
