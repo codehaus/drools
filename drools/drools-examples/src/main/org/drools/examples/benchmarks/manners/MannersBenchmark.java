@@ -1,7 +1,7 @@
 package org.drools.examples.benchmarks.manners;
 
 /*
- * $Id: MannersBenchmark.java,v 1.1 2004-12-15 03:31:26 dbarnett Exp $
+ * $Id: MannersBenchmark.java,v 1.2 2004-12-16 18:48:14 dbarnett Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.drools.DroolsException;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
@@ -63,6 +64,7 @@ import org.drools.examples.benchmarks.manners.model.Guest;
 import org.drools.examples.benchmarks.manners.model.LastSeat;
 import org.drools.io.RuleBaseLoader;
 import org.drools.reteoo.Dumper;
+import org.xml.sax.SAXException;
 
 /**
  * A Drools implementation of the Miss Manners benchmark,
@@ -103,7 +105,10 @@ public class MannersBenchmark
      * @param args if an argument is provided,
      *             it is used as the name of the *.dat data file to use.
      */
-    public static void main( String[] args ) throws Exception
+    public static void main( String[] args )
+        throws DroolsException,
+               IOException,
+               SAXException
     {
         String datFile = "manners_16.dat";
         if ( args.length > 0 )
@@ -125,7 +130,10 @@ public class MannersBenchmark
      * 
      * @param datFile the input data file
      */
-    public MannersBenchmark( String datFile ) throws Exception
+    public MannersBenchmark( String datFile )
+        throws DroolsException,
+               IOException,
+               SAXException
     {
         System.out.println( "Loading DRL: " + DRL_FILE + "..." );
         RuleBase ruleBase = RuleBaseLoader.loadFromUrl(

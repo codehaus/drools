@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: RuleBaseLoader.java,v 1.3 2004-12-16 18:48:14 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,11 +42,15 @@ package org.drools.io;
 
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
+import org.drools.RuleIntegrationException;
+import org.drools.RuleSetIntegrationException;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.RuleBaseContext;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -88,9 +92,12 @@ public final class RuleBaseLoader
      *
      * @param url
      * @return RuleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromUrl( URL url ) throws Exception
+    public static RuleBase loadFromUrl( URL url )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromUrl( url, DefaultConflictResolver.getInstance( ) );
     }
@@ -101,9 +108,12 @@ public final class RuleBaseLoader
      * @param url
      * @param resolver
      * @return RuleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromUrl( URL url, ConflictResolver resolver ) throws Exception
+    public static RuleBase loadFromUrl( URL url, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromUrl( new URL[]{url}, resolver );
     }
@@ -117,9 +127,12 @@ public final class RuleBaseLoader
      *
      * @param urls
      * @return RuleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromUrl( URL[] urls ) throws Exception
+    public static RuleBase loadFromUrl( URL[] urls )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromUrl( urls, DefaultConflictResolver.getInstance( ) );
     }
@@ -131,9 +144,12 @@ public final class RuleBaseLoader
      * @param urls
      * @param resolver
      * @return RuleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromUrl( URL[] urls, ConflictResolver resolver ) throws Exception
+    public static RuleBase loadFromUrl( URL[] urls, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setConflictResolver( resolver );
@@ -157,9 +173,12 @@ public final class RuleBaseLoader
      *
      * @param in
      * @return ruleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromInputStream( InputStream in ) throws Exception
+    public static RuleBase loadFromInputStream( InputStream in )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromInputStream( in, DefaultConflictResolver.getInstance( ) );
     }
@@ -170,10 +189,13 @@ public final class RuleBaseLoader
      * @param in
      * @param resolver
      * @return ruleBase
-     * @throws Exception
      */
     public static RuleBase loadFromInputStream( InputStream in,
-                                                  ConflictResolver resolver ) throws Exception
+                                                ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromInputStream( new InputStream[]{in}, resolver );
     }
@@ -187,9 +209,12 @@ public final class RuleBaseLoader
      *
      * @param ins
      * @return ruleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromInputStream( InputStream[] ins ) throws Exception
+    public static RuleBase loadFromInputStream( InputStream[] ins )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromInputStream( ins, DefaultConflictResolver.getInstance( ) );
     }
@@ -200,10 +225,13 @@ public final class RuleBaseLoader
      * @param ins
      * @param resolver
      * @return ruleBase
-     * @throws Exception
      */
     public static RuleBase loadFromInputStream( InputStream[] ins,
-                                                  ConflictResolver resolver ) throws Exception
+                                                ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setConflictResolver( resolver );
@@ -228,9 +256,12 @@ public final class RuleBaseLoader
      *
      * @param in
      * @return ruleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromReader( Reader in ) throws Exception
+    public static RuleBase loadFromReader( Reader in )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromReader( in, DefaultConflictResolver.getInstance( ) );
     }
@@ -241,9 +272,12 @@ public final class RuleBaseLoader
      * @param in
      * @param resolver
      * @return ruleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromReader( Reader in, ConflictResolver resolver ) throws Exception
+    public static RuleBase loadFromReader( Reader in, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromReader( new Reader[]{in}, resolver );
     }
@@ -257,9 +291,12 @@ public final class RuleBaseLoader
      *
      * @param ins
      * @return ruleBase
-     * @throws Exception
      */
-    public static RuleBase loadFromReader( Reader[] ins ) throws Exception
+    public static RuleBase loadFromReader( Reader[] ins )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         return loadFromReader( ins, DefaultConflictResolver.getInstance( ) );
     }
@@ -270,10 +307,13 @@ public final class RuleBaseLoader
      * @param ins
      * @param resolver
      * @return ruleBase
-     * @throws Exception
      */
     public static RuleBase loadFromReader( Reader[] ins,
-                                             ConflictResolver resolver ) throws Exception
+                                             ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               RuleSetIntegrationException,
+               RuleIntegrationException
     {
         RuleBaseContext factoryContext = new RuleBaseContext( );
         
