@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.16 2004-09-14 21:19:02 mproctor Exp $
+ $Id: RuleSetReader.java,v 1.17 2004-09-15 13:58:38 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -96,7 +96,7 @@ import java.text.MessageFormat;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.16 2004-09-14 21:19:02 mproctor Exp $
+ *  @version $Id: RuleSetReader.java,v 1.17 2004-09-15 13:58:38 mproctor Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -108,11 +108,13 @@ public class RuleSetReader
     /** Namespace URI for the general tags. */
     public static final String RULES_NAMESPACE_URI = "http://drools.org/rules";
 
-    public static String SCHEMA_LANGUAGE =
+    private static final String JAXP_SCHEMA_LANGUAGE =
         "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
-    public static String XML_SCHEMA = 
+
+    static final String W3C_XML_SCHEMA =
         "http://www.w3.org/2001/XMLSchema";
-    public static String SCHEMA_SOURCE =
+    
+    private static String SCHEMA_SOURCE =
         "http://java.sun.com/xml/jaxp/properties/schemaSource";    
 
     private static final int STATE_NONE        = 0;
@@ -369,27 +371,28 @@ public class RuleSetReader
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
-            if (!System.getProperty("drools.schema.validating").equals("false"))
-            {
-              factory.setValidating(true);
-            }
+            String isValidating = System.getProperty("drools.schema.validating");
+            if (isValidating == null) isValidating = "true";
+
+            factory.setValidating(Boolean.valueOf(isValidating).booleanValue());
             parser = factory.newSAXParser();
             try
             {
-               parser.setProperty(SCHEMA_LANGUAGE,XML_SCHEMA);
-               InputStream java = cl.getResourceAsStream("java.xsd");
-               InputStream python = cl.getResourceAsStream("python.xsd");
-               InputStream groovy = cl.getResourceAsStream("groovy.xsd");
-               InputStream rules = cl.getResourceAsStream("rules.xsd");
+               InputStream java = cl.getResourceAsStream("META-INF/java.xsd");
+               InputStream python = cl.getResourceAsStream("META-INF/python.xsd");
+               InputStream groovy = cl.getResourceAsStream("META-INF/groovy.xsd");
+               InputStream rules = cl.getResourceAsStream("META-INF/rules.xsd");
                
                java.util.List schemaList = new java.util.ArrayList();
 
                if (java != null) schemaList.add(java);
                if (python != null) schemaList.add(python);
                if (groovy != null) schemaList.add(groovy);
-               if (rules != null) schemaList.add(rules);               
+               if (rules != null) schemaList.add(rules);                   
                
-               parser.setProperty(SCHEMA_SOURCE, (InputStream[]) schemaList.toArray(new InputStream[0]));
+               parser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
+               //parser.setProperty(SCHEMA_SOURCE, (InputStream[]) schemaList.toArray(new InputStream[0]));
+               parser.setProperty(SCHEMA_SOURCE, new InputStream[] {java, rules});               
             }
             catch(SAXNotRecognizedException e)
             {
