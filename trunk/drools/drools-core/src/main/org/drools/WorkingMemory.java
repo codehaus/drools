@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: WorkingMemory.java,v 1.23 2004-06-11 23:31:27 mproctor Exp $
+ $Id: WorkingMemory.java,v 1.24 2004-07-06 20:16:40 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -140,11 +140,17 @@ public interface WorkingMemory
     Object getObject(FactHandle handle)
         throws NoSuchFactObjectException;
 
-    /** Retieve all known objects.
+    /** Retrieve all known objects.
      *
      *  @return The list of all known objects.
      */
     List getObjects();
+
+    /** Retrieve all known Fact Handles.
+     *
+     *  @return The list of all known fact handles.
+     */
+    List getFactHandles();
 
     /** Determine if an object is associated with a <code>FactHandle</code>.
      *

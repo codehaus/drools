@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.8 2004-06-30 00:34:14 n_alex Exp $
+ $Id: RuleSetReader.java,v 1.9 2004-07-06 20:16:40 dbarnett Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -90,7 +90,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.8 2004-06-30 00:34:14 n_alex Exp $
+ *  @version $Id: RuleSetReader.java,v 1.9 2004-07-06 20:16:40 dbarnett Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -636,7 +636,8 @@ public class RuleSetReader
         throws SAXException
     {
         String salienceStr = attrs.getValue( "salience" );
-
+        String ruleDesc = attrs.getValue( "description" );
+        
         if ( ! ( salienceStr == null
                  ||
                  salienceStr.trim().equals( "" ) ) )
@@ -652,6 +653,13 @@ public class RuleSetReader
                 throw new SAXParseException( "invalid number value for 'salience' attribute: " + salienceStr.trim(),
                                              getLocator() );
             }
+        }
+        
+        if ( ! ( ruleDesc == null
+                 ||
+                 ruleDesc.trim().equals( "" ) ) )
+        {
+            rule.setDocumentation( ruleDesc );
         }
     }
 

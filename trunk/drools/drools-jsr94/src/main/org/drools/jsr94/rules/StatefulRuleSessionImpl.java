@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: StatefulRuleSessionImpl.java,v 1.10 2004-04-04 02:54:55 n_alex Exp $
+ $Id: StatefulRuleSessionImpl.java,v 1.11 2004-07-06 20:16:40 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -55,6 +55,7 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
 
 import javax.rules.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
@@ -279,6 +280,15 @@ public class StatefulRuleSessionImpl
 
     public List getHandles()
     {
-        throw new NotImplementedException();
+        List handles = new LinkedList();
+        for (Iterator i = getWorkingMemory().getFactHandles().iterator(); i.hasNext(); )
+        {
+            Object object = i.next();
+            if ( object instanceof Handle )
+            {
+                handles.add( object );
+            }
+        }
+        return handles;
     }
 }

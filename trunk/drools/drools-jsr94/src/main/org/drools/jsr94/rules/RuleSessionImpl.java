@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleSessionImpl.java,v 1.8 2004-06-15 17:41:32 bob Exp $
+ $Id: RuleSessionImpl.java,v 1.9 2004-07-06 20:16:40 dbarnett Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -49,7 +49,11 @@ package org.drools.jsr94.rules;
 import org.drools.WorkingMemory;
 import org.drools.event.DebugWorkingMemoryEventListener;
 import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
+import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
+
 import javax.rules.*;
+import javax.rules.admin.RuleExecutionSet;
+
 import java.util.Map;
 import java.util.List;
 import java.util.Iterator;
@@ -144,8 +148,25 @@ abstract class RuleSessionImpl
      */
     public RuleExecutionSetMetadata getRuleExecutionSetMetadata()
     {
-        // [TODO]
-        throw new NotImplementedException();
+        RuleExecutionSetRepository repository =
+            RuleExecutionSetRepository.getInstance();
+        
+        String theBindUri = null;
+        for (Iterator i = repository.getRegistrations().iterator(); i.hasNext(); )
+        {
+            String aBindUri = (String) i.next();
+            RuleExecutionSet aRuleSet = repository.getRuleExecutionSet(aBindUri);
+            if (aRuleSet == ruleSet)
+            {
+                theBindUri = aBindUri;
+                break;
+            }
+        }
+
+        return new RuleExecutionSetMetadataImpl(
+            theBindUri,
+            ruleSet.getName(),
+            ruleSet.getDescription());
     }
 
     /**
