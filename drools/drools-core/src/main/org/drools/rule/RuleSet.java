@@ -1,10 +1,10 @@
 package org.drools.rule;
 
 /*
- $Id: RuleSet.java,v 1.7 2003-11-21 04:18:13 bob Exp $
+ $Id: RuleSet.java,v 1.8 2004-06-25 01:57:26 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.rule;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
-    permission of The Werken Company. "drools" is a trademark of 
+    permission of The Werken Company. "drools" is a trademark of
     The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://werken.com/)
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.rule;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import java.util.List;
@@ -57,7 +57,7 @@ import java.util.HashSet;
  *
  *  @author <a href="mail:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSet.java,v 1.7 2003-11-21 04:18:13 bob Exp $
+ *  @version $Id: RuleSet.java,v 1.8 2004-06-25 01:57:26 mproctor Exp $
  */
 public class RuleSet
 {
@@ -152,7 +152,9 @@ public class RuleSet
         }
 
         this.ruleNames.add( name );
+        rule.setLoadOrder(rules.size());
         this.rules.add( rule );
+
     }
 
     /** Retrieve a <code>Rule</code> by name.
