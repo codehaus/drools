@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleIntegrationException.java,v 1.10 2005-01-11 16:11:56 mproctor Exp $
+ * $Id: IntegrationException.java,v 1.1 2005-01-11 16:11:55 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,69 +41,7 @@ package org.drools;
  *
  */
 
-import org.drools.rule.Rule;
-
-/**
- * Indicates an error integrating a <code>Rule</code> or <code>RuleSet</code>
- * into a <code>RuleBase</code>.
- *
- * @see RuleBase#addRule
- * @see RuleBase#addRuleSet
- *
- * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleIntegrationException.java,v 1.6 2004/09/17 00:14:06
- *          mproctor Exp $
- */
-public class RuleIntegrationException extends IntegrationException
+public class IntegrationException extends DroolsException
 {
-    // ------------------------------------------------------------
-    // Instance members
-    // ------------------------------------------------------------
-
-    /** The rule. */
-    private final Rule rule;
-
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
-    /**
-     * Construct.
-     *
-     * @param rule
-     *            The offending rule.
-     */
-    public RuleIntegrationException( Rule rule )
-    {
-        this.rule = rule;
-    }
-
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
-
-    /**
-     * Retrieve the <code>Rule</code>.
-     *
-     * @return The rule.
-     */
-    public Rule getRule( )
-    {
-        return this.rule;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Retrieve the error message.
-     *
-     * @return The erroe message.
-     */
-    public String getMessage( )
-    {
-        return this.getRule( ).getName( ) + " cannot be integrated";
-    }
+ 
 }
