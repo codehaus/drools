@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.36 2004-09-17 00:14:11 mproctor Exp $
+ * $Id: Rule.java,v 1.37 2004-09-23 23:13:01 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -66,7 +66,7 @@ import org.drools.spi.Duration;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Rule.java,v 1.36 2004-09-17 00:14:11 mproctor Exp $
+ * @version $Id: Rule.java,v 1.37 2004-09-23 23:13:01 mproctor Exp $
  */
 public class Rule implements Serializable
 {
@@ -116,6 +116,9 @@ public class Rule implements Serializable
 
     /** Load order in RuleSet */
     private long               loadOrder;
+    
+    /** is the consequence of the rule currently being executed? */
+    private boolean            noLoop;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -272,6 +275,16 @@ public class Rule implements Serializable
     public void setSalience(int salience)
     {
         this.salience = salience;
+    }
+
+    public boolean getNoLoop()
+    {
+        return this.noLoop;
+    }
+    
+    public void setNoLoop(boolean noLoop)
+    {
+        this.noLoop = noLoop;
     }
 
     /**
@@ -517,7 +530,7 @@ public class Rule implements Serializable
     {
         this.loadOrder = loadOrder;
     }
-
+    
     public String dump(String indent)
     {
         StringBuffer buffer = new StringBuffer( );

@@ -12,18 +12,21 @@ public class TerminalNodeTest extends DroolsTestCase
 {
     public void testAssertTuple() throws Exception
     {
-        final InstrumentedAgenda agenda = new InstrumentedAgenda(
-                                                                  null,
-                                                                  DefaultConflictResolver
-                                                                                         .getInstance( ) );
+        final Agenda[] agendas = new Agenda[1];
 
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
         {
             public Agenda getAgenda()
             {
-                return agenda;
+                return agendas[0];
             }
-        };
+        };       
+        
+        final InstrumentedAgenda agenda = new InstrumentedAgenda(
+                                                                  memory,
+                                                                  DefaultConflictResolver
+                                                                                         .getInstance( ) );
+        agendas[0] = agenda;         
 
         Rule rule = new Rule( "test-rule" );
 
