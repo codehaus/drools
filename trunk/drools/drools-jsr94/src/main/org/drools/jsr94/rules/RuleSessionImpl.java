@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.14 2004-11-15 01:12:22 dbarnett Exp $
+ * $Id: RuleSessionImpl.java,v 1.15 2004-11-17 01:29:39 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -78,23 +78,54 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
  */
 abstract class RuleSessionImpl implements RuleSession
 {
+    /**
+     * The Drools <code>WorkingMemory</code> associated
+     * with this <code>RuleSession</code>.
+     */
     private WorkingMemory workingMemory;
 
+    /**
+     * The Drools <code>RuleExecutionSet</code> associated
+     * with this <code>RuleSession</code>.
+     */
     private RuleExecutionSetImpl ruleSet;
 
+    /**
+     * A <code>Map</code> of <code>String</code>/<code>Object</code> pairs
+     * passed as application data to the Drools <code>WorkingMemory</code>.
+     */
     private Map properties;
 
+    /**
+     * Initialize this <code>RuleSession</code>
+     * with a new <code>WorkingMemory</code>.
+     *
+     * @see #newWorkingMemory()
+     */
     protected void initWorkingMemory( )
     {
         setWorkingMemory( newWorkingMemory( ) );
     }
 
+    /**
+     * Creates a new <code>WorkingMemory</code> for this
+     * <code>RuleSession</code>. All properties set prior to calling this method
+     * are added as application data to the new <code>WorkingMemory</code>.
+     * The created <code>WorkingMemory</code> uses the default conflict
+     * resolution strategy.
+     *
+     * @return the new <code>WorkingMemory</code>.
+     *
+     * @see #setProperties(Map)
+     * @see WorkingMemory#setApplicationData(String, Object)
+     * @see org.drools.conflict.DefaultConflictResolver
+     */
     protected WorkingMemory newWorkingMemory( )
     {
         WorkingMemory newWorkingMemory =
             getRuleExecutionSet( ).newWorkingMemory( );
 
-        Map props = this.getProperties( );
+        Map props = getProperties( );
         if ( props != null )
         {
             for ( Iterator iterator = props.entrySet( ).iterator( );
@@ -109,45 +140,100 @@ abstract class RuleSessionImpl implements RuleSession
         return newWorkingMemory;
     }
 
+    /**
+     * Sets additional properties used to create this <code>RuleSession</code>.
+     *
+     * @param properties additional properties used to create the
+     *        <code>RuleSession</code> implementation.
+     */
     protected void setProperties( Map properties )
     {
         this.properties = properties;
     }
 
+    /**
+     * Returns the additional properties used to create this
+     * <code>RuleSession</code>.
+     *
+     * @return the additional properties used to create this
+     *         <code>RuleSession</code>.
+     */
     protected Map getProperties( )
     {
-        return this.properties;
+        return properties;
     }
 
+    /**
+     * Sets the Drools <code>WorkingMemory</code> associated
+     * with this <code>RuleSession</code>.
+     *
+     * @param workingMemory the <code>WorkingMemory</code> to associate
+     *        with this <code>RuleSession</code>.
+     */
     protected void setWorkingMemory( WorkingMemory workingMemory )
     {
         this.workingMemory = workingMemory;
     }
 
+    /**
+     * Returns the Drools <code>WorkingMemory</code> associated
+     * with this <code>RuleSession</code>.
+     *
+     * @return the Drools <code>WorkingMemory</code> to associate
+     *         with this <code>RuleSession</code>.
+     */
     protected WorkingMemory getWorkingMemory( )
     {
-        return this.workingMemory;
+        return workingMemory;
     }
 
+    /**
+     * Sets the Drools <code>RuleExecutionSet</code> associated
+     * with this <code>RuleSession</code>.
+     *
+     * @param ruleSet the Drools <code>RuleExecutionSet</code> to associate
+     *        with this <code>RuleSession</code>.
+     */
     protected void setRuleExecutionSet( RuleExecutionSetImpl ruleSet )
     {
         this.ruleSet = ruleSet;
     }
 
+    /**
+     * Returns the Drools <code>RuleExecutionSet</code> associated
+     * with this <code>RuleSession</code>.
+     *
+     * @return the Drools <code>RuleExecutionSet</code> associated
+     * with this <code>RuleSession</code>.
+     */
     protected RuleExecutionSetImpl getRuleExecutionSet( )
     {
-        return this.ruleSet;
+        return ruleSet;
     }
 
+    /**
+     * Ensures this <code>RuleSession</code> is not
+     * in an illegal rule session state.
+     *
+     * @throws InvalidRuleSessionException on illegal rule session state.
+     */
     protected void checkRuleSessionValidity( )
         throws InvalidRuleSessionException
     {
-        if ( this.workingMemory == null )
+        if ( workingMemory == null )
         {
             throw new InvalidRuleSessionException( "invalid rule session" );
         }
     }
 
+    /**
+     * Applies the given <code>ObjectFilter</code> to the <code>List</code> of
+     * <code>Object</code>s, removing all <code>Object</code>s from the given
+     * <code>List</code> that do not pass the filter.
+     *
+     * @param objects <code>List</code> of <code>Object</code>s to be filtered
+     * @param objectFilter the <code>ObjectFilter</code> to be applied
+     */
     protected void applyFilter( List objects, ObjectFilter objectFilter )
     {
         if ( objectFilter != null )

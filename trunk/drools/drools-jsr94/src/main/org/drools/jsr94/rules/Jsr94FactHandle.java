@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandle.java,v 1.11 2004-11-17 00:45:13 dbarnett Exp $
+ * $Id: Jsr94FactHandle.java,v 1.12 2004-11-17 01:29:39 dbarnett Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,7 +67,7 @@ public class Jsr94FactHandle extends FactHandleImpl implements Handle
      * @param recency A value indicating the recency of this <code>Handle</code>
      *        (more recently created <code>Handle</code>s have greater recency
      *         values than <code>Handle</code>s created further in the past)
-     * 
+     *
      * @see org.drools.conflict.RecencyConflictResolver
      */
     Jsr94FactHandle( long id, long recency )
