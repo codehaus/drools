@@ -2,9 +2,51 @@
 
   <div class="sectionTitle">Semantics Provider Interface</div>
     <div class="subsection">
+      <div class="subsectionTitle">Overview</div>
+      <p>
+      The Semantic Provider Interface (SPI) allows for extending Drools to more natively
+      support the semantics of your domain.  The SPI defines a handful of interfaces that
+      may be implemented to create new rule primitives.   Rule primitives are the parts
+      that are stitched together to form a concrete rule.
+      </p>
+    </div>
+    <div class="subsection">
       <div class="subsectionTitle"><a href="TOP/api/org/drools/spi/ObjectType.html">ObjectType</a></div> 
       <p>
+      Each rule operates against some set of objects.  Each object may be categorized in one of many
+      ways.  An XML documentment might be categorized based upon the root element when viewed within
+      the semantics of XML.  But with the semantics of the Java language, each would simply be an
+      instance of some <code>Document</code> class, indifferentiable from others.
       <p>
+      <p>
+      An <a href="TOP/api/org/drools/spi/ObjectType.html">ObjectType</a> implementation is required
+      to contain only a single method, <a href="TOP/api/org/drools/spi/ObjectType.html#matches(java.lang.Object)">matches(...)</a>,
+      which serves the same role as the <code>instanceof</code> operator in Java.  It inspects
+      the given object and returns simple a boolean <code>true</code> if the object is considered
+      to match the type or <code>false</code> if not.
+      </p>
+
+      <p>
+      For example, an object-type used within an insurance system for a the employees of
+      a company might be used to differentiate young employees from old employees.
+      </p>
+
+      <div class="code">
+<pre>
+public boolean matches(Object object)
+{
+    if ( ! object instanceof Employee )
+    {
+        return false
+    }
+
+    Employee employee = (Employee) object;
+
+    return ( employee.getAge() > 50 );
+}
+</pre>
+      </div>
+
     </div>
     <div class="subsection">
       <div class="subsectionTitle"><a href="TOP/api/org/drools/spi/Condition.html">Condition</a></div> 
