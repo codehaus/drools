@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.42 2004-12-16 19:13:08 dbarnett Exp $
+ * $Id: RuleSetReader.java,v 1.43 2004-12-21 00:24:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -77,7 +77,7 @@ import java.util.Set;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.42 2004-12-16 19:13:08 dbarnett Exp $
+ * @version $Id: RuleSetReader.java,v 1.43 2004-12-21 00:24:37 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -163,6 +163,8 @@ public class RuleSetReader extends DefaultHandler
                                new ObjectTypeHandler( this ) );
         this.localNameMap.put( "class-field",
                                new ObjectTypeHandler( this ) );
+        this.localNameMap.put( "semaphore",
+                               new ObjectTypeHandler( this ) );        
         this.localNameMap.put( "condition",
                                new ConditionHandler( this ) );
         this.localNameMap.put( "duration",

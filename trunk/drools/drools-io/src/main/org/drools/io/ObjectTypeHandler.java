@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ObjectTypeHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: ObjectTypeHandler.java,v 1.4 2004-12-21 00:24:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,6 +39,8 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import java.util.HashSet;
+
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
@@ -50,8 +52,6 @@ import org.drools.spi.ObjectType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import java.util.HashSet;
 
 /**
  * @author mproctor
@@ -81,7 +81,7 @@ class ObjectTypeHandler extends BaseAbstractHandler
                         Attributes attrs) throws SAXException
     {
         this.ruleSetReader.startConfiguration( localName,
-                                          attrs );
+                                               attrs );
         return null;
     }
 
@@ -91,17 +91,21 @@ class ObjectTypeHandler extends BaseAbstractHandler
         Configuration config = this.ruleSetReader.endConfiguration( );
 
         SemanticModule module = this.ruleSetReader.lookupSemanticModule( uri,
-                                                                    localName );
+                                                                         localName );
 
         ObjectTypeFactory factory = module.getObjectTypeFactory( localName );
 
         try
         {
             Rule rule = (Rule) this.ruleSetReader.getParent( Rule.class );
+            Declaration declaration = (Declaration) this.ruleSetReader.getParent( Declaration.class );
+            ((DefaultConfiguration) config).setAttribute( "identifier",
+                                                          declaration.getIdentifier( ) );
+
             ObjectType objectType = factory.newObjectType( this.ruleSetReader.getFactoryContext( ),
                                                            config,
                                                            this.ruleSetReader.getRuleSet( ).getImports( ) );
-            Declaration declaration = (Declaration) this.ruleSetReader.getParent( Declaration.class );
+
             declaration.setObjectType( objectType );
         }
         catch ( FactoryException e )
