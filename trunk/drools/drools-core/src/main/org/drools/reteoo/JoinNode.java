@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.40 2004-12-06 06:54:48 simon Exp $
+ * $Id: JoinNode.java,v 1.41 2004-12-06 15:36:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -99,33 +99,6 @@ class JoinNode extends TupleSource
                                                    JoinNodeInput.LEFT ) );
         rightInput.addTupleSink( new JoinNodeInput( this,
                                                     JoinNodeInput.RIGHT ) );
-    }
-
-    public String toString()
-    {
-        return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + this.tupleDeclarations + "]";
-    }
-
-    public int hashCode()
-    {
-        return this.leftInput.hashCode( ) ^ this.rightInput.hashCode( );
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null || getClass( ) != object.getClass( ) )
-        {
-            return false;
-        }
-
-        JoinNode other = ( JoinNode ) object;
-
-        return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
     }
 
     // ------------------------------------------------------------
@@ -327,4 +300,33 @@ class JoinNode extends TupleSource
 
         return Collections.unmodifiableSet( decls );
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    public String toString()
+    {
+        return "[JoinNode: common=" + this.commonDeclarations + "; decls=" + this.tupleDeclarations + "]";
+    }
+
+    //    public int hashCode()
+    //    {
+    //        return this.leftInput.hashCode( ) ^ this.rightInput.hashCode( );
+    //    }
+    //
+    //    public boolean equals( Object object )
+    //    {
+    //        if ( this == object )
+    //        {
+    //            return true;
+    //        }
+    //
+    //        if ( object == null || getClass( ) != object.getClass( ) )
+    //        {
+    //            return false;
+    //        }
+    //
+    //        JoinNode other = ( JoinNode ) object;
+    //
+    //        return this.leftInput.equals( other.leftInput ) && this.rightInput.equals( other.rightInput );
+    //    }
 }

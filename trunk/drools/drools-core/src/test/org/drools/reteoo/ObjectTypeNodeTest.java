@@ -52,4 +52,3 @@ public class ObjectTypeNodeTest extends DroolsTestCase
         assertTrue( paramNodes.contains( paramNode ) );
     }
 }
-

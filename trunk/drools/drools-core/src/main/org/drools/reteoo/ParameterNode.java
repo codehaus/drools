@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.42 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: ParameterNode.java,v 1.43 2004-12-06 15:36:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -71,11 +71,14 @@ class ParameterNode extends TupleSource
     // Instance members
     // ------------------------------------------------------------
 
+    /** The object type node we attach to. */
+    private final ObjectTypeNode    objectTypeNode;
+
     /** The parameter declaration. */
-    private final Declaration declaration;
+    private final Declaration       declaration;
 
     /** The parameter declaration as a set. */
-    private final Set declarations;
+    private final Set               declarations;
 
     // ------------------------------------------------------------
     // Constructors
@@ -84,23 +87,28 @@ class ParameterNode extends TupleSource
     /**
      * Construct.
      *
-     * @param inputNode The <code>ObjectTypeNode</code> input to this.
+     * @param objectTypeNode The <code>ObjectTypeNode</code> input to this.
      * @param declaration The root fact object <code>Declaration</code>.
      */
-    public ParameterNode( ObjectTypeNode inputNode, Declaration declaration )
+    public ParameterNode( ObjectTypeNode objectTypeNode,
+                          Declaration declaration )
     {
+        this.objectTypeNode = objectTypeNode;
         this.declaration = declaration;
         this.declarations = Collections.singleton( declaration );
-
-        if ( inputNode != null )
-        {
-            inputNode.addParameterNode( this );
-        }
     }
 
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
+
+    /**
+     * Attaches this node into the network.
+     */
+    public void attach( )
+    {
+        this.objectTypeNode.addParameterNode( this );
+    }
 
     /**
      * Assert a new fact object into this <code>RuleBase</code> and the
@@ -112,9 +120,9 @@ class ParameterNode extends TupleSource
      *
      * @throws AssertionException if an error occurs during assertion.
      */
-    void assertObject(FactHandle handle,
-                      Object object,
-                      WorkingMemoryImpl workingMemory) throws AssertionException
+    void assertObject( FactHandle handle,
+                       Object object,
+                       WorkingMemoryImpl workingMemory ) throws AssertionException
     {
         ReteTuple tuple = new ReteTuple( workingMemory, getDeclaration( ),
                                          handle );
@@ -132,8 +140,8 @@ class ParameterNode extends TupleSource
      *
      * @throws RetractionException if an error occurs during retraction.
      */
-    void retractObject(FactHandle handle,
-                       WorkingMemoryImpl workingMemory) throws RetractionException
+    void retractObject( FactHandle handle,
+                        WorkingMemoryImpl workingMemory ) throws RetractionException
     {
         TupleKey key = new TupleKey( getDeclaration( ),
                                      handle );
@@ -155,9 +163,9 @@ class ParameterNode extends TupleSource
      *
      * @throws FactException if an error occurs during modification.
      */
-    void modifyObject(FactHandle handle,
-                      Object newObject,
-                      WorkingMemoryImpl workingMemory) throws FactException
+    void modifyObject( FactHandle handle,
+                       Object newObject,
+                       WorkingMemoryImpl workingMemory ) throws FactException
     {
         ReteTuple tuple = new ReteTuple( workingMemory, getDeclaration( ),
                                          handle );
@@ -199,23 +207,23 @@ class ParameterNode extends TupleSource
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    public int hashCode()
-    {
-        return this.declaration.hashCode( );
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null || getClass( ) != object.getClass( ) )
-        {
-            return false;
-        }
-
-        return this.declaration.equals( ( ( ParameterNode ) object ).declaration );
-    }
+//    public int hashCode()
+//    {
+//        return this.declaration.hashCode( );
+//    }
+//
+//    public boolean equals( Object object )
+//    {
+//        if ( this == object )
+//        {
+//            return true;
+//        }
+//
+//        if ( object == null || getClass( ) != object.getClass( ) )
+//        {
+//            return false;
+//        }
+//
+//        return this.declaration.equals( ( ( ParameterNode ) object ).declaration );
+//    }
 }
