@@ -17,7 +17,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ExtractionNode
+class ExtractionNode
     extends TupleSource
     implements TupleSink
 {

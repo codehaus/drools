@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class WorkingMemoryImpl
+class WorkingMemoryImpl
     implements WorkingMemory
 {
     // ------------------------------------------------------------

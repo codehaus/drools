@@ -54,9 +54,9 @@ public class Rete
      *
      *  @throws AssertionException if an error occurs during assertion.
      */
-    public void assertObject(FactHandle handle,
-                             Object object,
-                             WorkingMemoryImpl workingMemory)
+    void assertObject(FactHandle handle,
+                      Object object,
+                      WorkingMemoryImpl workingMemory)
         throws AssertionException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
@@ -80,9 +80,9 @@ public class Rete
      *
      *  @throws RetractionException if an error occurs during retraction.
      */
-    public void retractObject(FactHandle handle,
-                              Object object,
-                              WorkingMemoryImpl workingMemory)
+    void retractObject(FactHandle handle,
+                       Object object,
+                       WorkingMemoryImpl workingMemory)
         throws RetractionException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
@@ -110,9 +110,9 @@ public class Rete
      *
      *  @throws FactException if an error occurs during modification.
      */
-    public void modifyObject(FactHandle handle,
-                             Object object,
-                             WorkingMemoryImpl workingMemory)
+    void modifyObject(FactHandle handle,
+                      Object object,
+                      WorkingMemoryImpl workingMemory)
         throws FactException
     {
         Iterator           nodeIter = getObjectTypeNodeIterator();
@@ -149,7 +149,7 @@ public class Rete
      *
      *  @return The <code>Set</code> of <code>ObjectTypeNodes</code>.
      */
-    public Collection getObjectTypeNodes()
+    Collection getObjectTypeNodes()
     {
         return this.objectTypeNodes.values();
     }
@@ -172,7 +172,7 @@ public class Rete
      *  @return The matching <code>ObjectTypeNode</code> if one has already
      *          been created, else <code>null</code>.
      */
-    public ObjectTypeNode getObjectTypeNode(ObjectType objectType)
+    ObjectTypeNode getObjectTypeNode(ObjectType objectType)
     {
         return (ObjectTypeNode) this.objectTypeNodes.get( objectType );
     }
@@ -184,7 +184,7 @@ public class Rete
      *
      *  @return The matching <code>ObjectTypeNode</code>.
      */
-    public ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)
+    ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)
     {
         ObjectTypeNode node = getObjectTypeNode( objectType );
 

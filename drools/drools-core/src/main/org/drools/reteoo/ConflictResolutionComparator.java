@@ -5,7 +5,7 @@ import org.drools.spi.Activation;
 
 import java.util.Comparator;
 
-public class ConflictResolutionComparator
+class ConflictResolutionComparator
     implements Comparator
 {
     private ConflictResolutionStrategy strategy;
