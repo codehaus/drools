@@ -8,7 +8,7 @@
     <!-- assert each item in the shopping cart into the Working Memory -->
     <rule name="Explode Cart" salience="20">
         <parameter identifier="cart">
-            <groovy:class>org.drools.examples.petstore.ShoppingCart</groovy:class>
+            <class>org.drools.examples.petstore.ShoppingCart</class>
         </parameter>
 
         <groovy:condition>cart.getState( "Exploded" ) == false</groovy:condition>
@@ -25,10 +25,10 @@
     <!-- Free Fish Food sample when we buy a Gold Fish if we haven't already  bought Fish Food and dont already have a Fish Food Sample-->
     <rule name="Free Fish Food Sample">
         <parameter identifier="cart">
-            <groovy:class>org.drools.examples.petstore.ShoppingCart</groovy:class>
+            <class>org.drools.examples.petstore.ShoppingCart</class>
         </parameter>
         <parameter identifier="item">
-            <groovy:class>org.drools.examples.petstore.CartItem</groovy:class>
+            <class>org.drools.examples.petstore.CartItem</class>
         </parameter>
 
         <groovy:condition>cart.getItems( "Fish Food Sample" ).size() == 0</groovy:condition>
@@ -46,7 +46,7 @@
     <!-- Suggest a tank if we have bought more than 5 gold fish and dont already have one-->
     <rule name="Suggest Tank" salience="10">
         <parameter identifier="cart">
-            <groovy:class>org.drools.examples.petstore.ShoppingCart</groovy:class>
+            <class>org.drools.examples.petstore.ShoppingCart</class>
         </parameter>
 
         <groovy:condition>cart.getState( "Suggested Fish Tank" ) == false</groovy:condition>
@@ -74,7 +74,7 @@
     <!-- Give 5% discount if gross cost is more than 20.00 -->
     <rule name="Apply 5% Discount">
         <parameter identifier="cart">
-            <groovy:class>org.drools.examples.petstore.ShoppingCart</groovy:class>
+            <class>org.drools.examples.petstore.ShoppingCart</class>
         </parameter>
 
         <groovy:condition>cart.getGrossCost() &gt;= 10.00</groovy:condition>
@@ -91,7 +91,7 @@
     <!-- Give 10% discount if gross cost is more than 20.00 -->
     <rule name="Apply 10% Discount">
         <parameter identifier="cart">
-            <groovy:class>org.drools.examples.petstore.ShoppingCart</groovy:class>
+            <class>org.drools.examples.petstore.ShoppingCart</class>
         </parameter>
 
         <groovy:condition>cart.getGrossCost() &gt;= 20.00</groovy:condition>

@@ -6,10 +6,9 @@
 
     <rule name="Bootstrap">
         <parameter identifier="a">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class-field field="name" value="A">org.drools.examples.state.State</class-field>
         </parameter>
 
-        <java:condition>a.getName().equals("A")</java:condition>
         <java:condition>a.getState().equals("NOTRUN")</java:condition>
 
         <java:consequence>
@@ -21,10 +20,10 @@
 
     <rule name="AtoB" salience="30">
         <parameter identifier="a">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class-field field="name" value="A">org.drools.examples.state.State</class-field>
         </parameter>
         <parameter identifier="b">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class-field field="name" value="B">org.drools.examples.state.State</class-field>
         </parameter>
 
         <java:condition>a.getName().equals("A")</java:condition>
@@ -41,10 +40,10 @@
 
     <rule name="BtoC" salience="20">
         <parameter identifier="b">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class-field field="name" value="B">org.drools.examples.state.State</class-field>
         </parameter>
         <parameter identifier="c">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class-field field="name" value="C">org.drools.examples.state.State</class-field>
         </parameter>
 
         <java:condition>b.getName().equals("B")</java:condition>
@@ -63,10 +62,10 @@
 
     <rule name="BtoD" salience="10">
         <parameter identifier="b">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
         <parameter identifier="d">
-            <java:class>org.drools.examples.state.State</java:class>
+            <class>org.drools.examples.state.State</class>
         </parameter>
 
         <java:condition>b.getName().equals("B")</java:condition>

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.16 2004-10-24 00:58:03 mproctor Exp $
+ * $Id: Interp.java,v 1.17 2004-10-25 21:34:49 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -62,10 +62,11 @@ import org.python.core.PyDictionary;
 import org.python.core.PyModule;
 import org.python.core.PyObject;
 import org.python.core.PyString;
-import org.python.core.PyStringMap;
 import org.python.core.PySystemState;
 import org.python.core.parser;
 import org.python.parser.ast.modType;
+
+import org.drools.semantics.base.ClassObjectType;
 
 /**
  * Base class for Jython interpreter-based Python semantic components.
@@ -75,7 +76,7 @@ import org.python.parser.ast.modType;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Interp.java,v 1.16 2004-10-24 00:58:03 mproctor Exp $
+ * @version $Id: Interp.java,v 1.17 2004-10-25 21:34:49 mproctor Exp $
  */
 public class Interp
 {

@@ -6,7 +6,7 @@
 
   <rule name="Hello World">
     <parameter identifier="hello">
-      <groovy:class>java.lang.String</groovy:class>
+      <class>java.lang.String</class>
     </parameter>
     
     <groovy:condition>hello.equals("Hello")</groovy:condition>
@@ -18,7 +18,7 @@
 
   <rule name="Goodbye Cruel World">
     <parameter identifier="goodbye">
-      <groovy:class>java.lang.String</groovy:class>
+      <class>java.lang.String</class>
     </parameter>
     
     <groovy:condition>goodbye.equals("Goodbye")</groovy:condition>

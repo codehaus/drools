@@ -1,4 +1,4 @@
-package org.drools.semantics.python;
+package org.drools.semantics.base;
 
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;

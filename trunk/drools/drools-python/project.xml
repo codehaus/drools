@@ -35,6 +35,14 @@
         </dependency>
         <dependency>
             <groupId>drools</groupId>
+            <artifactId>drools-base</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
             <artifactId>drools-smftest</artifactId>
             <version>${pom.currentVersion}</version>
             <properties>

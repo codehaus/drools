@@ -6,7 +6,7 @@
 
   <rule name="Bootstrap 1"   salience="20">
     <parameter identifier="f">
-      <python:class>org.drools.examples.fibonacci.Fibonacci</python:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <python:condition>f.getSequence() == 1</python:condition>
     <python:condition>f.getValue() == -1</python:condition>
@@ -19,7 +19,7 @@
 
   <rule name="Bootstrap 2">
     <parameter identifier="f">
-      <python:class>org.drools.examples.fibonacci.Fibonacci</python:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <python:condition>f.getSequence() == 2</python:condition>
     <python:condition>f.getValue() == -1</python:condition>
@@ -32,7 +32,7 @@
 
   <rule name="Recurse" salience="10">
     <parameter identifier="f">
-      <python:class>org.drools.examples.fibonacci.Fibonacci</python:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <python:condition>f.getValue() == -1</python:condition>
     <python:consequence>
@@ -44,13 +44,13 @@
 
   <rule name="Calculate">
     <parameter identifier="f1">
-      <python:class>org.drools.examples.fibonacci.Fibonacci</python:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <parameter identifier="f2">
-      <python:class>org.drools.examples.fibonacci.Fibonacci</python:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <parameter identifier="f3">
-      <python:class>org.drools.examples.fibonacci.Fibonacci</python:class>
+      <class>org.drools.examples.fibonacci.Fibonacci</class>
     </parameter>
     <python:condition>f2.getSequence() == (f1.getSequence() + 1)</python:condition>
     <python:condition>f3.getSequence() == (f2.getSequence() + 1)</python:condition>

@@ -17,6 +17,7 @@ import net.janino.Parser;
 import net.janino.Scanner;
 import net.janino.util.PrimitiveWrapper;
 
+import org.drools.semantics.base.ClassObjectType;
 import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
 
@@ -258,6 +259,7 @@ public class DroolsScriptEvaluator extends EvaluatorBase
             declaration = declarations[i];
             identifier = declaration.getIdentifier( );
             objectType = declaration.getObjectType( );
+            
             clazz = ( ( ClassObjectType ) objectType ).getType( );
 
             type = clazz.getName( );

@@ -1,32 +1,32 @@
 package org.drools.examples.manners;
 
 /*
- * $Id: MannersNative.java,v 1.2 2004-09-17 00:37:54 mproctor Exp $
- * 
+ * $Id: MannersNative.java,v 1.3 2004-10-25 21:34:43 mproctor Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -56,7 +56,7 @@ import org.drools.examples.manners.model.Seating;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.drools.semantics.java.ClassObjectType;
+import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
@@ -100,13 +100,13 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <java:class>org.drools.examples.manners.model.Context</java:class>
+        //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
         final Declaration contextDecl = new Declaration( contextType, "context" );
         rule.addParameterDeclaration( contextDecl );
 
         // <parameter identifier="guest">
-        //   <java:class>org.drools.examples.manners.model.Guest</java:class>
+        //   <class>org.drools.examples.manners.model.Guest</class>
         // </parameter>
         final Declaration guestDecl = new Declaration( guestType, "guest" );
         rule.addParameterDeclaration( guestDecl );
@@ -186,20 +186,20 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <java:class>org.drools.examples.manners.model.Context</java:class>
+        //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
         //        final Declaration contextDecl = new Declaration(contextType,
         // "context");
         rule.addParameterDeclaration( contextDecl );
 
         // <parameter identifier="guest">
-        //   <java:class>org.drools.examples.manners.model.Guest</java:class>
+        //   <class>org.drools.examples.manners.model.Guest</class>
         // </parameter>
         //        final Declaration guestDecl = new Declaration(guestType, "guest");
         rule.addParameterDeclaration( guestDecl );
 
         // <parameter identifier="seating">
-        //     <java:class>org.drools.examples.manners.model.Seating</java:class>
+        //     <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
         final Declaration seatingDecl = new Declaration( seatingType, "seating" );
         rule.addParameterDeclaration( seatingDecl );
@@ -373,19 +373,19 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <java:class>org.drools.examples.manners.model.Context</java:class>
+        //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
         rule.addParameterDeclaration( contextDecl );
 
         // <parameter identifier="lastSeat">
-        //     <java:class>org.drools.examples.manners.model.LastSeat</java:class>
+        //     <class>org.drools.examples.manners.model.LastSeat</class>
         // </parameter>
         final Declaration lastSeatDecl = new Declaration( lastSeatType,
                                                           "lastSeat" );
         rule.addParameterDeclaration( lastSeatDecl );
 
         // <parameter identifier="seating">
-        //     <java:class>org.drools.examples.manners.model.Seating</java:class>
+        //     <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
         rule.addParameterDeclaration( seatingDecl );
 
@@ -510,17 +510,17 @@ public class MannersNative extends MannersBase
 
         // Build the declaration and specify it as a parameter of the Rule
         // <parameter identifier="context">
-        //   <java:class>org.drools.examples.manners.model.Context</java:class>
+        //   <class>org.drools.examples.manners.model.Context</class>
         // </parameter>
         rule.addParameterDeclaration( contextDecl );
 
         // <parameter identifier="lastSeat">
-        //     <java:class>org.drools.examples.manners.model.LastSeat</java:class>
+        //     <class>org.drools.examples.manners.model.LastSeat</class>
         // </parameter>
         rule.addParameterDeclaration( lastSeatDecl );
 
         // <parameter identifier="seating">
-        //     <java:class>org.drools.examples.manners.model.Seating</java:class>
+        //     <class>org.drools.examples.manners.model.Seating</class>
         // </parameter>
         rule.addParameterDeclaration( seatingDecl );
 
