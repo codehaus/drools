@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- $Id: RuleSetReader.java,v 1.3 2004-01-01 23:43:55 bob Exp $
+ $Id: RuleSetReader.java,v 1.4 2004-01-29 21:46:36 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -83,12 +83,13 @@ import java.util.LinkedList;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /** <code>RuleSet</code> loader.
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetReader.java,v 1.3 2004-01-01 23:43:55 bob Exp $
+ *  @version $Id: RuleSetReader.java,v 1.4 2004-01-29 21:46:36 bob Exp $
  */
 public class RuleSetReader
     extends DefaultHandler
@@ -354,6 +355,11 @@ public class RuleSetReader
         else
         {
             parser = this.parser;
+        }
+
+        if ( ! parser.isNamespaceAware() )
+        {
+            throw new ParserConfigurationException( "parser must be namespace-aware" );
         }
 
         if ( this.repo == null )
