@@ -11,15 +11,11 @@ public class AgendaItemTest extends DroolsTestCase
 {
     public void testConstruct() throws Exception
     {
-        Declaration decl = new Declaration( new MockObjectType( true ),
-                                            "cheese" );
-
         FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+        Declaration decl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
@@ -41,14 +37,10 @@ public class AgendaItemTest extends DroolsTestCase
 
     public void testSetTuple() throws Exception
     {
-        Declaration decl = new Declaration( new MockObjectType( true ),
-                                            "cheese" );
-
         FactHandleImpl handle = new FactHandleImpl( 1 );
         Rule rule = new Rule( "test-rule" );
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
+        Declaration decl = rule.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
+
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
@@ -79,15 +71,13 @@ public class AgendaItemTest extends DroolsTestCase
 
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        Declaration decl = new Declaration( new MockObjectType( true ),
-                                            "cheese" );
-
         FactHandleImpl handle = new FactHandleImpl( 1 );
 
         Rule rule = new Rule( "test-rule" );
 
-        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule,
-                                         decl, handle, new Object( ) );
+        Declaration decl = rule.addParameterDeclaration( "cheese", new MockObjectType( true ) );
+
+        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule, decl, handle, new Object() );
 
         InstrumentedConsequence consequence = new InstrumentedConsequence( );
 

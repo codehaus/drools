@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: DeclarationHandler.java,v 1.1 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: DeclarationHandler.java,v 1.2 2004-11-12 17:11:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,10 +39,6 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
@@ -50,9 +46,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import java.util.HashSet;
+
 /**
  * @author mproctor
- * 
+ *
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
@@ -61,8 +59,8 @@ class DeclarationHandler extends BaseAbstractHandler implements Handler
     DeclarationHandler( RuleSetReader ruleSetReader )
     {
         this.ruleSetReader = ruleSetReader;
-        
-        if ( (this.validParents == null) && (validPeers == null) )
+
+        if ( this.validParents == null && validPeers == null )
         {
             this.validParents = new HashSet( );
             this.validParents.add( Rule.class );
@@ -88,27 +86,12 @@ class DeclarationHandler extends BaseAbstractHandler implements Handler
                     ruleSetReader.getLocator( ) );
         }
 
-        return new Declaration( identifier.trim( ) );
+        return rule.addDeclaration( identifier.trim( ), null );
     }
 
     public Object end( String uri, String localName ) throws SAXException
     {
-        Declaration declaration = null;
-        Rule rule;
-
-        LinkedList parents = ruleSetReader.getParents( );
-        ListIterator it = parents.listIterator( parents.size( ) );
-        try
-        {
-            declaration = (Declaration) it.previous( );
-            rule = (Rule) it.previous( );
-
-        }
-        catch ( Exception e )
-        {
-            throw new SAXParseException( "unable to construct <declaration>",
-                    ruleSetReader.getLocator( ) );
-        }
+        Declaration declaration = ( Declaration ) ruleSetReader.getParent( Declaration.class );
 
         if ( declaration.getObjectType( ) == null )
         {
@@ -117,7 +100,6 @@ class DeclarationHandler extends BaseAbstractHandler implements Handler
                             .getLocator( ) );
         }
 
-        rule.addDeclaration( declaration );
         return null;
     }
 

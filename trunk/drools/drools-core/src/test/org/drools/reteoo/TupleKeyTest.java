@@ -2,52 +2,10 @@ package org.drools.reteoo;
 
 import junit.framework.TestCase;
 
-import org.drools.MockObjectType;
-import org.drools.rule.Declaration;
-
 public class TupleKeyTest extends TestCase
 {
-    private TupleKey       key;
-
-    private Declaration    decl1;
-
-    private Declaration    decl2;
-
-    private Object         obj1;
-
-    private Object         obj2;
-
-    private FactHandleImpl handle1;
-
-    private FactHandleImpl handle2;
-
-    public void setUp()
-    {
-        this.key = TupleKey.EMPTY;
-
-        this.decl1 = new Declaration( new MockObjectType( ), "declOne" );
-
-        this.decl2 = new Declaration( new MockObjectType( ), "declTwo" );
-
-        this.obj1 = new Object( );
-        this.obj2 = new Object( );
-
-        this.handle1 = new FactHandleImpl( 1 );
-        this.handle2 = new FactHandleImpl( 2 );
-    }
-
-    public void tearDown()
-    {
-        this.key = null;
-        this.decl1 = null;
-        this.decl2 = null;
-        this.obj1 = null;
-        this.obj2 = null;
-    }
-
     public void testNothing()
     {
-
     }
     /*
      * public void testPutAll() { this.key.put( this.decl1, this.handle1,

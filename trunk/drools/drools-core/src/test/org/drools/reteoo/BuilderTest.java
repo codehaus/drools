@@ -1,11 +1,6 @@
 package org.drools.reteoo;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import junit.framework.TestCase;
-
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
@@ -13,6 +8,10 @@ import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedExtractor;
 import org.drools.spi.MockObjectType;
 import org.drools.spi.ObjectType;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class BuilderTest extends TestCase
 {
@@ -37,13 +36,9 @@ public class BuilderTest extends TestCase
 
         this.rule1 = new Rule( "cheese" );
 
-        this.stringDecl = new Declaration( this.stringType, "string" );
+        this.stringDecl = this.rule1.addParameterDeclaration( "string", this.stringType );
 
-        this.objectDecl = new Declaration( this.objectType, "object" );
-
-        this.rule1.addParameterDeclaration( this.stringDecl );
-
-        this.rule1.addParameterDeclaration( this.objectDecl );
+        this.objectDecl = this.rule1.addParameterDeclaration( "object", this.objectType );
     }
 
     public void testCreateParameterNodes()
@@ -55,7 +50,7 @@ public class BuilderTest extends TestCase
         Set decls = new HashSet( );
 
         Iterator nodeIter = nodes.iterator( );
-        ParameterNode eachNode = null;
+        ParameterNode eachNode;
 
         while ( nodeIter.hasNext( ) )
         {
@@ -94,13 +89,13 @@ public class BuilderTest extends TestCase
     {
         Set sources = new HashSet( );
 
-        MockTupleSource source = null;
+        MockTupleSource source;
 
-        InstrumentedExtractor extractor = null;
+        InstrumentedExtractor extractor;
 
-        Extraction extract = null;
+        Extraction extract;
 
-        TupleSource found = null;
+        TupleSource found;
 
         // ----------------------------------------
         // ----------------------------------------
@@ -115,10 +110,9 @@ public class BuilderTest extends TestCase
 
         extractor.addDeclaration( this.stringDecl );
 
-        extract = new Extraction( this.objectDecl, extractor );
+        extract = rule1.addExtraction( "object", extractor );
 
-        found = this.builder.findMatchingTupleSourceForExtraction( extract,
-                                                                   sources );
+        found = this.builder.findMatchingTupleSourceForExtraction( extract, sources );
 
         //sources contains objectsDecl, not stringDecl
         //So extractor is not able to find a match for its stringDecl
@@ -172,7 +166,7 @@ public class BuilderTest extends TestCase
     {
         Set sources = new HashSet( );
 
-        MockTupleSource source = null;
+        MockTupleSource source;
 
         // ----------------------------------------
         // ----------------------------------------
@@ -187,7 +181,7 @@ public class BuilderTest extends TestCase
 
         cond.addDeclaration( this.stringDecl );
 
-        TupleSource found = null;
+        TupleSource found;
 
         found = this.builder
                             .findMatchingTupleSourceForCondition( cond, sources );

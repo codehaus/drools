@@ -3,10 +3,8 @@ package org.drools.reteoo;
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
 import org.drools.conflict.DefaultConflictResolver;
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
-import org.drools.spi.MockObjectType;
 
 public class TerminalNodeTest extends DroolsTestCase
 {
@@ -22,17 +20,11 @@ public class TerminalNodeTest extends DroolsTestCase
             }
         };
 
-        final InstrumentedAgenda agenda = new InstrumentedAgenda(
-                                                                  memory,
-                                                                  DefaultConflictResolver
-                                                                                         .getInstance( ) );
-        agendas[0] = agenda;
+        final InstrumentedAgenda agenda = new InstrumentedAgenda( memory, DefaultConflictResolver.getInstance() );
+        agendas[ 0 ] = agenda;
 
         Rule rule = new Rule( "test-rule" );
 
-        Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
-        rule.addParameterDeclaration( paramDecl );
         //add consequence
         rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition

@@ -38,17 +38,13 @@ public class HelloWorldNative
         /*
          * Build the declaration and specify it as a parameter of the hello Rule
          */
-        final Declaration helloDeclaration = new Declaration( StringType,
-                                                              "hello" );
-        helloRule.addParameterDeclaration( helloDeclaration );
+        final Declaration helloDeclaration = helloRule.addParameterDeclaration( "hello", StringType );
 
         /*
          * Build the declaration and specify it as a parameter of the goodbye
          * Rule
          */
-        final Declaration goodbyeDeclaration = new Declaration( StringType,
-                                                                "goodbye" );
-        goodbyeRule.addParameterDeclaration( goodbyeDeclaration );
+        final Declaration goodbyeDeclaration = goodbyeRule.addParameterDeclaration("goodbye",  StringType );
 
         /*
          * Build and Add the Condition to the hello Rule

@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciNative.java,v 1.4 2004-10-25 21:34:42 mproctor Exp $
+ * $Id: FibonacciNative.java,v 1.5 2004-11-12 17:11:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,29 +67,28 @@ public class FibonacciNative
         RuleSet ruleSet = new RuleSet( "fibonacci" );
 
         // <rule name="Bootstrap 1" salience="20">
-        Rule bootstrap1Rule = new Rule( "Bootstrap 1" );
+        final Rule bootstrap1Rule = new Rule( "Bootstrap 1" );
         bootstrap1Rule.setSalience( 20 );
 
         // Reuse the Java semantics ObjectType
         // so Drools can identify the Fibonacci class
-        ClassObjectType fibonacciType = new ClassObjectType( Fibonacci.class );
+        final ClassObjectType fibonacciType = new ClassObjectType( Fibonacci.class );
 
         // Build the declaration and specify it as a parameter of the Bootstrap1
         // Rule
         // <parameter identifier="f">
         //   <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration = new Declaration( fibonacciType, "f" );
-        bootstrap1Rule.addParameterDeclaration( fDeclaration );
+        final Declaration fDeclaration = bootstrap1Rule.addParameterDeclaration( "f", fibonacciType );
 
         // Build and Add the Condition to the Bootstrap1 Rule
         // <java:condition>f.getSequence() == 1</java:condition>
-        Condition conditionBootstrap1A = new Condition( )
+        final Condition conditionBootstrap1A = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
                 Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
-                return ( f.getSequence( ) == 1 );
+                return f.getSequence( ) == 1;
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -105,12 +104,12 @@ public class FibonacciNative
         bootstrap1Rule.addCondition( conditionBootstrap1A );
 
         // <java:condition>f.getValue() == -1</java:condition>
-        Condition conditionBootstrap1B = new Condition( )
+        final Condition conditionBootstrap1B = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
                 Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
-                return ( f.getValue( ) == -1 );
+                return f.getValue( ) == -1;
             }
 
             public Declaration[] getRequiredTupleMembers()
@@ -131,7 +130,7 @@ public class FibonacciNative
         //   System.err.println( f.getSequence() + " == " + f.getValue() );
         //   drools.modifyObject( f );
         // </java:consequence>
-        Consequence bootstrapConsequence = new Consequence( )
+        final Consequence bootstrapConsequence = new Consequence( )
         {
             public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
             {
@@ -141,11 +140,7 @@ public class FibonacciNative
 
                 try
                 {
-                    workingMemory
-                                 .modifyObject(
-                                                tuple
-                                                     .getFactHandleForObject( f ),
-                                                f );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f ), f );
                 }
                 catch ( FactException e )
                 {
@@ -157,27 +152,27 @@ public class FibonacciNative
         ruleSet.addRule( bootstrap1Rule );
 
         // <rule name="Bootstrap 2">
-        Rule bootstrap2Rule = new Rule( "Bootstrap 2" );
+        final Rule bootstrap2Rule = new Rule( "Bootstrap 2" );
 
         // Specify the declaration as a parameter of the Bootstrap2 Rule
         // <parameter identifier="f">
         //   <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        bootstrap2Rule.addParameterDeclaration( fDeclaration );
+        final Declaration fDeclaration2 = bootstrap2Rule.addParameterDeclaration( "f", fibonacciType  );
 
         // Build and Add the Conditions to the Bootstrap1 Rule
         // <java:condition>f.getSequence() == 2</java:condition>
-        Condition conditionBootstrap2A = new Condition( )
+        final Condition conditionBootstrap2A = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
-                return ( f.getSequence( ) == 2 );
+                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                return f.getSequence( ) == 2;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration};
+                return new Declaration[]{fDeclaration2};
             }
 
             public String toString()
@@ -188,17 +183,17 @@ public class FibonacciNative
         bootstrap2Rule.addCondition( conditionBootstrap2A );
 
         // <java:condition>f.getValue() == -1</java:condition>
-        Condition conditionBootstrap2B = new Condition( )
+        final Condition conditionBootstrap2B = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
-                return ( f.getValue( ) == -1 );
+                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration2 );
+                return f.getValue( ) == -1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration};
+                return new Declaration[]{fDeclaration2};
             }
 
             public String toString()
@@ -214,26 +209,26 @@ public class FibonacciNative
         ruleSet.addRule( bootstrap2Rule );
 
         // <rule name="Recurse" salience="10">
-        Rule recurseRule = new Rule( "Recurse" );
+        final Rule recurseRule = new Rule( "Recurse" );
         recurseRule.setSalience( 10 );
 
         // <parameter identifier="f">
         //   <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        recurseRule.addParameterDeclaration( fDeclaration );
+        final Declaration fDeclarationRecurse = recurseRule.addParameterDeclaration( "f", fibonacciType );
 
         // <java:condition>f.getValue() == -1</java:condition>
-        Condition conditionRecurse = new Condition( )
+        final Condition conditionRecurse = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
-                return ( f.getValue( ) == -1 );
+                Fibonacci f = ( Fibonacci ) tuple.get( fDeclarationRecurse );
+                return f.getValue( ) == -1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration};
+                return new Declaration[]{fDeclarationRecurse};
             }
 
             public String toString()
@@ -247,17 +242,15 @@ public class FibonacciNative
         //   System.err.println( "recurse for " + f.getSequence() );
         //   drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
         // </java:consequence>
-        Consequence recurseConsequence = new Consequence( )
+        final Consequence recurseConsequence = new Consequence( )
         {
             public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
             {
-                Fibonacci f = ( Fibonacci ) tuple.get( fDeclaration );
+                Fibonacci f = ( Fibonacci ) tuple.get( fDeclarationRecurse );
                 System.err.println( "recurse for " + f.getSequence( ) );
                 try
                 {
-                    workingMemory
-                                 .assertObject( new Fibonacci(
-                                                               f.getSequence( ) - 1 ) );
+                    workingMemory.assertObject( new Fibonacci( f.getSequence() - 1 ) );
                 }
                 catch ( FactException e )
                 {
@@ -269,40 +262,37 @@ public class FibonacciNative
         ruleSet.addRule( recurseRule );
 
         // <rule name="Calculate">
-        Rule calculateRule = new Rule( "Calculate" );
+        final Rule calculateRule = new Rule( "Calculate" );
 
         // <parameter identifier="f1">
         //   <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration1 = new Declaration( fibonacciType, "f1" );
-        calculateRule.addParameterDeclaration( fDeclaration1 );
+        final Declaration f1Declaration = calculateRule.addParameterDeclaration( "f1", fibonacciType );
 
         // <parameter identifier="f2">
         //   <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration2 = new Declaration( fibonacciType, "f2" );
-        calculateRule.addParameterDeclaration( fDeclaration2 );
+        final Declaration f2Declaration = calculateRule.addParameterDeclaration( "f2", fibonacciType );
 
         // <parameter identifier="f3">
         //   <class>org.drools.examples.fibonacci.Fibonacci</class>
         // </parameter>
-        final Declaration fDeclaration3 = new Declaration( fibonacciType, "f3" );
-        calculateRule.addParameterDeclaration( fDeclaration3 );
+        final Declaration f3Declaration = calculateRule.addParameterDeclaration( "f3", fibonacciType );
 
         // <java:condition>f2.getSequence() ==
         // (f1.getSequence()+1)</java:condition>
-        Condition conditionCalculateA = new Condition( )
+        final Condition conditionCalculateA = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( fDeclaration1 );
-                Fibonacci f2 = ( Fibonacci ) tuple.get( fDeclaration2 );
-                return ( f2.getSequence( ) == ( f1.getSequence( ) + 1 ) );
+                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
+                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                return f2.getSequence( ) == f1.getSequence( ) + 1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration1, fDeclaration2};
+                return new Declaration[]{f1Declaration, f2Declaration};
             }
 
             public String toString()
@@ -314,18 +304,18 @@ public class FibonacciNative
 
         // <java:condition>f3.getSequence() ==
         // (f2.getSequence()+1)</java:condition>
-        Condition conditionCalculateB = new Condition( )
+        final Condition conditionCalculateB = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f2 = ( Fibonacci ) tuple.get( fDeclaration2 );
-                Fibonacci f3 = ( Fibonacci ) tuple.get( fDeclaration3 );
-                return ( f3.getSequence( ) == ( f2.getSequence( ) + 1 ) );
+                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                return f3.getSequence( ) == f2.getSequence( ) + 1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration2, fDeclaration3};
+                return new Declaration[]{f2Declaration, f3Declaration};
             }
 
             public String toString()
@@ -336,17 +326,17 @@ public class FibonacciNative
         calculateRule.addCondition( conditionCalculateB );
 
         // <java:condition>f1.getValue() != -1</java:condition>
-        Condition conditionCalculateC = new Condition( )
+        final Condition conditionCalculateC = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( fDeclaration1 );
-                return ( f1.getValue( ) != -1 );
+                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
+                return f1.getValue( ) != -1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration1};
+                return new Declaration[]{f1Declaration};
             }
 
             public String toString()
@@ -357,17 +347,17 @@ public class FibonacciNative
         calculateRule.addCondition( conditionCalculateC );
 
         // <java:condition>f2.getValue() != -1</java:condition>
-        Condition conditionCalculateD = new Condition( )
+        final Condition conditionCalculateD = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f2 = ( Fibonacci ) tuple.get( fDeclaration2 );
-                return ( f2.getValue( ) != -1 );
+                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                return f2.getValue( ) != -1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration2};
+                return new Declaration[]{f2Declaration};
             }
 
             public String toString()
@@ -378,17 +368,17 @@ public class FibonacciNative
         calculateRule.addCondition( conditionCalculateD );
 
         // <java:condition>f3.getValue() == -1</java:condition>
-        Condition conditionCalculateE = new Condition( )
+        final Condition conditionCalculateE = new Condition( )
         {
             public boolean isAllowed(Tuple tuple)
             {
-                Fibonacci f3 = ( Fibonacci ) tuple.get( fDeclaration3 );
-                return ( f3.getValue( ) == -1 );
+                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
+                return f3.getValue( ) == -1;
             }
 
             public Declaration[] getRequiredTupleMembers()
             {
-                return new Declaration[]{fDeclaration3};
+                return new Declaration[]{f3Declaration};
             }
 
             public String toString()
@@ -404,27 +394,20 @@ public class FibonacciNative
         //   drools.modifyObject( f3 );
         //   drools.retractObject( f1 );
         // </java:consequence>
-        Consequence calculateConsequence = new Consequence( )
+        final Consequence calculateConsequence = new Consequence( )
         {
             public void invoke(Tuple tuple, WorkingMemory workingMemory) throws ConsequenceException
             {
-                Fibonacci f1 = ( Fibonacci ) tuple.get( fDeclaration1 );
-                Fibonacci f2 = ( Fibonacci ) tuple.get( fDeclaration2 );
-                Fibonacci f3 = ( Fibonacci ) tuple.get( fDeclaration3 );
+                Fibonacci f1 = ( Fibonacci ) tuple.get( f1Declaration );
+                Fibonacci f2 = ( Fibonacci ) tuple.get( f2Declaration );
+                Fibonacci f3 = ( Fibonacci ) tuple.get( f3Declaration );
 
                 f3.setValue( f1.getValue( ) + f2.getValue( ) );
-                System.err
-                          .println( f3.getSequence( ) + " == " + f3.getValue( ) );
+                System.err.println( f3.getSequence( ) + " == " + f3.getValue( ) );
                 try
                 {
-                    workingMemory
-                                 .modifyObject(
-                                                tuple
-                                                     .getFactHandleForObject( f3 ),
-                                                f3 );
-                    workingMemory
-                                 .retractObject( tuple
-                                                      .getFactHandleForObject( f1 ) );
+                    workingMemory.modifyObject( tuple.getFactHandleForObject( f3 ), f3 );
+                    workingMemory.retractObject( tuple.getFactHandleForObject( f1 ) );
                 }
                 catch ( FactException e )
                 {

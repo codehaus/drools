@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.40 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: Rule.java,v 1.41 2004-11-12 17:11:15 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,15 +43,16 @@ package org.drools.rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
+import org.drools.spi.Extractor;
+import org.drools.spi.ObjectType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -66,7 +67,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Rule.java,v 1.40 2004-11-03 22:54:36 mproctor Exp $
+ * @version $Id: Rule.java,v 1.41 2004-11-12 17:11:15 simon Exp $
  */
 public class Rule implements Serializable
 {
@@ -82,46 +83,39 @@ public class Rule implements Serializable
     // ------------------------------------------------------------
 
     /** Name of the rule. */
-    private String             name;
+    private final String        name;
 
     /** Documentation. */
-    private String             documentation;
+    private String              documentation;
 
     /** Salience value. */
-    private int                salience;
+    private int                 salience;
 
-    /** All declarations.
-     * */
-    private Set                allDeclarations;
+    /** All declarations. */
+    private final Set           allDeclarations         = new HashSet( );
 
     /** Formal parameter decls of the rule. */
-    private Set                parameterDeclarations;
-
-    /** Map holding the parameter addition order */
-    private Map                parameterOrderMap;
-
-    /** Counter used to provide the order number for the added */
-    private int                parameterCounter;
+    private final Set           parameterDeclarations   = new HashSet( );
 
     /** Conditions. */
-    private List               conditions;
+    private final List          conditions              = new ArrayList( );
 
     /** Extractions */
-    private Set                extractions;
+    private final Set           extractions             = new HashSet( );
 
     /** Consequence. */
-    private Consequence        consequence;
+    private Consequence         consequence;
 
     /** Truthness duration. */
-    private Duration           duration;
+    private Duration            duration;
 
     /** Load order in RuleSet */
-    private long               loadOrder;
+    private long                loadOrder;
 
     /** is the consequence of the rule currently being executed? */
-    private boolean            noLoop;
+    private boolean             noLoop;
 
-    private Set            imports;
+    private Set                 imports;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -135,13 +129,7 @@ public class Rule implements Serializable
     public Rule(String name)
     {
         this.name = name;
-
-        this.parameterDeclarations = Collections.EMPTY_SET;
-        this.allDeclarations = Collections.EMPTY_SET;
-
-        this.conditions = Collections.EMPTY_LIST;
-        this.extractions = Collections.EMPTY_SET;
-        this.parameterOrderMap = Collections.EMPTY_MAP;
+        this.imports = Collections.EMPTY_SET;
     }
 
     /**
@@ -291,39 +279,35 @@ public class Rule implements Serializable
     }
 
     /**
-     * Add a <i>root fact object </i> parameter <code>Declaration</code> for
-     * this <code>Rule</code>.
+     * Add a declaration.
      *
-     * @param declaration The <i>root fact object </i> <code>Declaration</code>
-     *        to add.
+     * @param identifier The identifier.
+     * @param objectType The type.
      */
-    public void addParameterDeclaration(Declaration declaration)
+    public Declaration addDeclaration( String identifier, ObjectType objectType )
     {
-        if ( this.parameterDeclarations == Collections.EMPTY_SET )
-        {
-            this.parameterDeclarations = new HashSet( );
-            this.parameterOrderMap = new HashMap( );
-        }
+        Declaration declaration = new Declaration( identifier, objectType, allDeclarations.size() );
 
-        this.parameterDeclarations.add( declaration );
-        parameterOrderMap.put( declaration.getIdentifier( ),
-                               new Integer( this.parameterCounter++ ) );
-        addDeclaration( declaration );
+        this.allDeclarations.add( declaration );
+
+        return declaration;
     }
 
     /**
-     * Add a declaration.
+     * Add a <i>root fact object </i> parameter <code>Declaration</code> for
+     * this <code>Rule</code>.
      *
-     * @param declaration The declaration.
+     * @param identifier The identifier.
+     * @param objectType The type.
+     * @return The declaration.
      */
-    public void addDeclaration(Declaration declaration)
+    public Declaration addParameterDeclaration( String identifier, ObjectType objectType )
     {
-        if ( this.allDeclarations == Collections.EMPTY_SET )
-        {
-            this.allDeclarations = new HashSet( );
-        }
+        Declaration declaration = addDeclaration( identifier, objectType );
 
-        this.allDeclarations.add( declaration );
+        this.parameterDeclarations.add( declaration );
+
+        return declaration;
     }
 
     /**
@@ -336,38 +320,23 @@ public class Rule implements Serializable
      */
     public Declaration getParameterDeclaration(String identifier)
     {
-        Iterator declIter = this.parameterDeclarations.iterator( );
-        Declaration eachDecl;
-
-        while ( declIter.hasNext( ) )
-        {
-            eachDecl = ( Declaration ) declIter.next( );
-
-            if ( eachDecl.getIdentifier( ).equals( identifier ) )
-            {
-                return eachDecl;
-            }
-        }
-
-        return null;
+        return getDeclaration( this.parameterDeclarations, identifier );
     }
 
     /**
-     * Must pass an existing Parameter otherwise a NullPointer RuntimeException
-     * will occur
+     * Add a consistent <code>Extraction</code> to this rule.
+     *
+     * @param identifier The declaration identifier.
+     * @param extractor The extractor.
+     * @return extraction the <code>Extraction</code> to add.
      */
-    public int getParameterOrder(Declaration declaration)
+    public Extraction addExtraction( String identifier, Extractor extractor )
     {
-        return getParameterOrder( declaration.getIdentifier( ) );
-    }
+        Extraction extraction = new Extraction( getDeclaration( identifier ), extractor );
 
-    /**
-     * Must pass an existing Parameter otherwise a NullPointer RuntimeException
-     * will occur
-     */
-    public int getParameterOrder(String identifier)
-    {
-        return ( ( Integer ) parameterOrderMap.get( identifier ) ).intValue( );
+        this.extractions.add( extraction );
+
+        return extraction;
     }
 
     /**
@@ -380,20 +349,7 @@ public class Rule implements Serializable
      */
     public Declaration getDeclaration(String identifier)
     {
-        Iterator declIter = this.allDeclarations.iterator( );
-        Declaration eachDecl;
-
-        while ( declIter.hasNext( ) )
-        {
-            eachDecl = ( Declaration ) declIter.next( );
-
-            if ( eachDecl.getIdentifier( ).equals( identifier ) )
-            {
-                return eachDecl;
-            }
-        }
-
-        return null;
+        return getDeclaration( this.allDeclarations, identifier );
     }
 
     /**
@@ -405,8 +361,7 @@ public class Rule implements Serializable
      */
     public Declaration[] getParameterDeclarations()
     {
-        return ( Declaration[] ) this.parameterDeclarations
-                                                           .toArray( Declaration.EMPTY_ARRAY );
+        return ( Declaration[] ) this.parameterDeclarations.toArray( Declaration.EMPTY_ARRAY );
     }
 
     /**
@@ -431,8 +386,7 @@ public class Rule implements Serializable
      */
     public Declaration[] getAllDeclarations()
     {
-        return ( Declaration[] ) this.allDeclarations
-                                                     .toArray( Declaration.EMPTY_ARRAY );
+        return ( Declaration[] ) this.allDeclarations.toArray( Declaration.EMPTY_ARRAY );
     }
 
     /**
@@ -442,31 +396,7 @@ public class Rule implements Serializable
      */
     public void addCondition(Condition condition)
     {
-        if ( this.conditions == Collections.EMPTY_LIST )
-        {
-            this.conditions = new ArrayList( );
-        }
-
         this.conditions.add( condition );
-    }
-
-    /**
-     * Add a consistent <code>Extraction</code> to this rule.
-     *
-     * @param extraction the <code>Extraction</code> to add.
-     */
-    public void addExtraction(Extraction extraction)
-    {
-        if ( this.extractions == Collections.EMPTY_SET )
-        {
-            this.extractions = new HashSet( );
-        }
-
-        this.extractions.add( extraction );
-
-        Declaration decl = extraction.getTargetDeclaration( );
-
-        addDeclaration( decl );
     }
 
     /**
@@ -493,8 +423,7 @@ public class Rule implements Serializable
      */
     public Extraction[] getExtractions()
     {
-        return ( Extraction[] ) this.extractions
-                                                .toArray( Extraction.EMPTY_ARRAY );
+        return ( Extraction[] ) this.extractions.toArray( Extraction.EMPTY_ARRAY );
     }
 
     /**
@@ -528,6 +457,16 @@ public class Rule implements Serializable
     void setLoadOrder(long loadOrder)
     {
         this.loadOrder = loadOrder;
+    }
+
+    public void setImports( Set imports )
+    {
+        this.imports = imports;
+    }
+
+    public Set getImports()
+    {
+        return this.imports;
     }
 
     public String dump(String indent)
@@ -572,13 +511,21 @@ public class Rule implements Serializable
         return buffer.toString( );
     }
 
-    public void setImports(Set imports)
+    private Declaration getDeclaration( Collection declarations, String identifier )
     {
-        this.imports = imports;
-    }
-    
-    public Set getImports()
-    {
-        return this.imports;
+        Declaration eachDecl;
+
+        Iterator declIter = declarations.iterator();
+        while ( declIter.hasNext() )
+        {
+            eachDecl = ( Declaration ) declIter.next();
+
+            if ( eachDecl.getIdentifier().equals( identifier ) )
+            {
+                return eachDecl;
+            }
+        }
+
+        return null;
     }
 }
