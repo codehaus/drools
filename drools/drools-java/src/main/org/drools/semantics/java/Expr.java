@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.9 2004-06-22 16:57:18 bob Exp $
+ $Id: Expr.java,v 1.10 2004-06-22 17:17:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.drools.rule.Declaration;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.9 2004-06-22 16:57:18 bob Exp $
+ *  @version $Id: Expr.java,v 1.10 2004-06-22 17:17:27 bob Exp $
  */
 public class Expr
     extends Interp
@@ -143,8 +143,6 @@ public class Expr
         method.append( "{" );
         method.append( "return " + text + ";" );
         method.append( "}" );
-        
-        System.err.println( "defining method: " + method );
         
         try
         {

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.12 2004-06-22 16:57:18 bob Exp $
+ $Id: ExprCondition.java,v 1.13 2004-06-22 17:17:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import org.drools.spi.ConditionException;
  * 
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.12 2004-06-22 16:57:18 bob Exp $
+ *  @version $Id: ExprCondition.java,v 1.13 2004-06-22 17:17:27 bob Exp $
  */
 public class ExprCondition
     extends Expr
@@ -133,15 +133,6 @@ public class ExprCondition
             {
                 return ((Boolean)result).booleanValue();
             }
-
-            /*
-            Object result = evaluate( tuple );
-
-            if ( result instanceof Boolean )
-            {
-                return ((Boolean)result).booleanValue();
-            }
-            */
         }
         catch (Exception e)
         {
