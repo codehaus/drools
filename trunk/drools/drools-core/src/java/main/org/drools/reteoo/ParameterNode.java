@@ -62,8 +62,10 @@ public class ParameterNode extends TupleSource
     protected void assertObject(Object object,
                                 WorkingMemory workingMemory) throws AssertionException
     {
-        ReteTuple tuple = new ParameterTuple( getDeclaration(),
-                                              object );
+        ReteTuple tuple = new ReteTuple();
+
+        tuple.putKeyColumn( getDeclaration(),
+                            object );
 
         propagateAssertTuple( tuple,
                               workingMemory );

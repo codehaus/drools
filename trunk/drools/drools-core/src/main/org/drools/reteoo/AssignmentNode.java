@@ -70,14 +70,16 @@ public class AssignmentNode extends TupleSource implements TupleSink
 
         Object value = getFactExtractor().extractFact( tuple );
 
-        ReteTuple newTuple = new ReteTuple();
+        ReteTuple newTuple = new ReteTuple( tuple );
 
+        /*
         newTuple.putAll( tuple );
+        */
 
-        newTuple.put( getTargetDeclaration(),
-                      value );
+        newTuple.putOtherColumn( getTargetDeclaration(),
+                                 value );
 
-        newTuple.addAllRootFactObjects( tuple.getRootFactObjects() );
+        // newTuple.addAllRootFactObjects( tuple.getRootFactObjects() );
 
         propagateAssertTuple( newTuple,
                               workingMemory );

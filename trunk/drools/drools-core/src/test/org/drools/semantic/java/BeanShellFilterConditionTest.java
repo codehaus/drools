@@ -15,7 +15,7 @@ public class BeanShellFilterConditionTest extends TestCase
     private Declaration objectDecl;
     private Declaration stringDecl;
 
-    private Tuple       tuple;
+    private ReteTuple   tuple;
 
     private Object      object;
     private String      string;
@@ -38,11 +38,11 @@ public class BeanShellFilterConditionTest extends TestCase
 
         this.tuple = new ReteTuple();
 
-        this.tuple.put( this.objectDecl,
-                        this.object );
+        this.tuple.putOtherColumn( this.objectDecl,
+                                   this.object );
 
-        this.tuple.put( this.stringDecl,
-                        this.string );
+        this.tuple.putOtherColumn( this.stringDecl,
+                                   this.string );
     }
 
     public void tearDown()

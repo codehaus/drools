@@ -29,7 +29,7 @@ class TupleSet
 
     public void addTuple(ReteTuple tuple)
     {
-        this.tuples.put( tuple.getRootFactObjects(),
+        this.tuples.put( tuple.getKeyColumns(),
                          tuple );
     }
 
@@ -43,13 +43,13 @@ class TupleSet
         Set matchingTuples = new HashSet();
 
         Iterator keyIter = getKeys().iterator();
-        Set      eachKey = null;
+        Map      eachKey = null;
 
         while ( keyIter.hasNext() )
         {
-            eachKey = (Set) keyIter.next();
+            eachKey = (Map) keyIter.next();
 
-            if ( eachKey.contains( rootFactObject ) )
+            if ( eachKey.containsValue( rootFactObject ) )
             {
                 matchingTuples.add( getTuple( eachKey ) );
             }
@@ -63,8 +63,8 @@ class TupleSet
         return this.tuples.keySet();
     }
 
-    public ReteTuple getTuple(Set rootFactObjects)
+    public ReteTuple getTuple(Map key)
     {
-        return (ReteTuple) this.tuples.get( rootFactObjects );
+        return (ReteTuple) this.tuples.get( key );
     }
 }

@@ -22,9 +22,9 @@ public interface Tuple
      *  @param declaration The <code>Declaration</code> key.
      *  @param value The value to bind.
      */
-    void put(Declaration declaration,
-             Object value);
-
+    // void put(Declaration declaration,
+    //        Object value);
+    
     /** Retrieve the <code>Collection</code> of all
      *  <code>Declarations</code> active in this tuple.
      *
