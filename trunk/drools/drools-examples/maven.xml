@@ -268,5 +268,29 @@
       </java>
     </goal>
 
+<!-- Prime Factors Examples -->
+    <goal name="primefactors-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.primefactors.PrimeFactors"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="1000"/> <!-- Iterations -->
+      </java>
+    </goal>
+
+    <goal name="primefactors-java-debug" prereqs="jar:jar">
+      <java classname="org.drools.examples.primefactors.PrimeFactors"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="20"/> <!-- Iterations -->
+        <arg value="true"/> <!-- Debug -->
+      </java>
+    </goal>
+
 </project>
 
