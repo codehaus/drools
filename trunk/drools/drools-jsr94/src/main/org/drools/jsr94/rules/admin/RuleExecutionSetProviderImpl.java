@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetProviderImpl.java,v 1.7 2004-04-02 22:30:24 n_alex Exp $
+ $Id: RuleExecutionSetProviderImpl.java,v 1.8 2004-04-04 02:54:55 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,7 @@ package org.drools.jsr94.rules.admin;
 
 import org.drools.jsr94.rules.NotImplementedException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
@@ -73,9 +74,9 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      * Creates a <code>RuleExecutionSet</code> implementation from an XML Document and additional
      * vendor-specific properties.
      *
-     * @see RuleExecutionSetProvider#createRuleExecutionSet(Document, Map)
+     * @see RuleExecutionSetProvider#createRuleExecutionSet(Element, Map)
      */
-    public RuleExecutionSet createRuleExecutionSet( Document document, Map properties ) throws RuleExecutionSetCreateException, RemoteException
+    public RuleExecutionSet createRuleExecutionSet( Element element, Map properties ) throws RuleExecutionSetCreateException, RemoteException
     {
         // [TODO]
         throw new NotImplementedException();

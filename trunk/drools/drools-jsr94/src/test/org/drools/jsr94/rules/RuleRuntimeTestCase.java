@@ -12,7 +12,7 @@ import java.io.Reader;
 import java.util.List;
 
 /*
- $Id: RuleRuntimeTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
+ $Id: RuleRuntimeTestCase.java,v 1.3 2004-04-04 02:54:55 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -103,7 +103,7 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase {
         statelessRuleSession = (StatelessRuleSession) ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATELESS_SESSION_TYPE);
         assertNotNull("cannot obtain StatelessRuleSession", statelessRuleSession);
 
-        ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
+        ruleAdministrator.deregisterRuleExecutionSet(RULES_RESOURCE, null);
     }
 
     /**
@@ -130,7 +130,7 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase {
         statefulRuleSession = (StatefulRuleSession) ruleRuntime.createRuleSession(RULES_RESOURCE, null, RuleRuntime.STATEFUL_SESSION_TYPE);
         assertNotNull("cannot obtain StatefulRuleSession", statefulRuleSession);
 
-        ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
+        ruleAdministrator.deregisterRuleExecutionSet(RULES_RESOURCE, null);
     }
 
     /**
@@ -149,7 +149,7 @@ public class RuleRuntimeTestCase extends RuleEngineTestBase {
         List list = ruleRuntime.getRegistrations();
         assertTrue("no registrations found", list.size() > 0);
 
-        ruleAdministrator.unregisterRuleExecutionSet(RULES_RESOURCE, null);
+        ruleAdministrator.deregisterRuleExecutionSet(RULES_RESOURCE, null);
     }
 
     public static void main(String[] args) {

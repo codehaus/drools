@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.5 2004-04-02 23:03:18 n_alex Exp $
+ $Id: LocalRuleExecutionSetProviderTestCase.java,v 1.6 2004-04-04 02:54:56 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,6 +48,7 @@ package org.drools.jsr94.rules.admin;
 
 import org.drools.io.RuleSetReader;
 import org.drools.RuleBase;
+import org.drools.jsr94.rules.RuleEngineTestBase;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;

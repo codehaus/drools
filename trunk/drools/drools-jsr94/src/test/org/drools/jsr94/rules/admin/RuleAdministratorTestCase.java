@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleAdministratorTestCase.java,v 1.2 2004-04-02 23:03:18 n_alex Exp $
+ $Id: RuleAdministratorTestCase.java,v 1.3 2004-04-04 02:54:56 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -45,6 +45,8 @@ package org.drools.jsr94.rules.admin;
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
  */
+
+import org.drools.jsr94.rules.RuleEngineTestBase;
 
 import javax.rules.admin.*;
 
@@ -95,14 +97,14 @@ public class RuleAdministratorTestCase extends RuleEngineTestBase {
    }
 
    /**
-    * Test unregisterRuleExecutionSet.
+    * Test deregisterRuleExecutionSet.
     */
    public void testUnregisterRuleExecutionSet() throws Exception {
       try {
          // that it works is tested else where
-         ruleAdministrator.unregisterRuleExecutionSet("test URI", null);
+         ruleAdministrator.deregisterRuleExecutionSet("test URI", null);
          fail("RuleExecutionSetUnregisterException expected");
-      } catch (RuleExecutionSetUnregisterException ex) {
+      } catch (RuleExecutionSetDeregistrationException ex) {
       }
    }
 }
