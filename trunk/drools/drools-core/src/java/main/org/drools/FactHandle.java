@@ -1,6 +1,9 @@
 package org.drools;
 
+import javax.rules.Handle;
+
 public class FactHandle
+    implements Handle
 {
     private long id;
 

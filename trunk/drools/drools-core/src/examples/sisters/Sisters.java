@@ -93,5 +93,7 @@ public class Sisters
         person.addSister("rebecca");
 
         workingMemory.assertObject(person);
+
+        workingMemory.fireAllRules();
     }
 }

@@ -1,13 +1,9 @@
-
-<rules xmlns="http://drools.org/rules"
-       xmlns:know="jelly:org.drools.tags.knowledge.KnowledgeTagLibrary">
+<rules xmlns="http://drools.org/rules">
 
   <semantics module="org.drools.semantics.java"/>
-  <semantics module="org.drools.semantics.jelly"/>
 
   <rule-set name="Sisters Rules"
-           xmlns:java="http://drools.org/semantics/java"
-           xmlns:jelly="http://drools.org/semantics/jelly">
+           xmlns:java="http://drools.org/semantics/java">
 
     <rule name="Find Sisters">
 
@@ -25,10 +21,10 @@
 
       <consequence>
 
-        <jelly:consequence>
-          <know:assert fact="${person}: I like cheese"/>
-          <know:assert fact="bob says: ${person} and ${sister} are sisters"/>
-        </jelly:consequence>
+        <java:consequence>
+          assertObject( person + ": I like cheese" );
+          assertObject( "bob says: " + person + " and " + sister + " are sisters" );
+        </java:consequence>
 
       </consequence>
 

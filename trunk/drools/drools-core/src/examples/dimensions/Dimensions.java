@@ -64,6 +64,8 @@ public class Dimensions
 				Length length = new Length(-1);
 				FactHandle lengthHandle = mem.assertObject(length);
 
+                                mem.fireAllRules();
+
 				width = new Width(100);
 				mem.modifyObject(widthHandle, width);
 

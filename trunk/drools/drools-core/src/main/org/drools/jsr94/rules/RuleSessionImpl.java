@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- $Id: RuleSessionImpl.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleSessionImpl.java,v 1.5 2003-10-16 03:48:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,20 +46,86 @@ package org.drools.jsr94.rules;
 
  */
 
+import org.drools.WorkingMemory;
+import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
 import javax.rules.*;
+import java.util.Map;
+import java.util.List;
+import java.util.Iterator;
 
-/**
- * This interface is a representation of a client session with a rules engine.
- * A rules engine session serves as an entry point into an underlying rules engine.
- * The <code>RuleSession</code> is bound to a rules engine instance and exposes a vendor-neutral
- * rule processing API for executing Rule(s) within a bound <code>RuleExecutionSet</code>.
+/** This interface is a representation of a client session with a rules engine.
+ *
+ *  <p>
+ *  A rules engine session serves as an entry point into an underlying rules engine.
+ *  The <code>RuleSession</code> is bound to a rules engine instance and exposes a vendor-neutral
+ *  rule processing API for executing Rule(s) within a bound <code>RuleExecutionSet</code>.
+ *  </p>
  *
  * @see RuleSession
  *
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler</a>
  */
-abstract class RuleSessionImpl implements RuleSession
+abstract class RuleSessionImpl
+    implements RuleSession
 {
+    private WorkingMemory workingMemory;
+
+    private RuleExecutionSetImpl ruleSet;
+
+    private Map properties;
+
+    protected void initWorkingMemory()
+    {
+        setWorkingMemory( newWorkingMemory() );
+    }
+
+    protected WorkingMemory newWorkingMemory()
+    {
+        WorkingMemory workingMemory = getRuleExecutionSet().getRuleBase().newWorkingMemory();
+
+        workingMemory.setApplicationData( getProperties() );
+
+        return workingMemory;
+    }
+
+    protected void setProperties(Map properties)
+    {
+        this.properties = properties;
+    }
+
+    protected Map getProperties()
+    {
+        return this.properties;
+    }
+
+    protected void setWorkingMemory(WorkingMemory workingMemory)
+    {
+        this.workingMemory = workingMemory;
+    }
+
+    protected WorkingMemory getWorkingMemory()
+    {
+        return this.workingMemory;
+    }
+
+    protected void setRuleExecutionSet(RuleExecutionSetImpl ruleSet)
+    {
+        this.ruleSet = ruleSet;
+    }
+
+    protected RuleExecutionSetImpl getRuleExecutionSet()
+    {
+        return this.ruleSet;
+    }
+
+    protected void checkRuleSessionValidity()
+        throws InvalidRuleSessionException
+    {
+        if ( this.workingMemory == null )
+        {
+            throw new InvalidRuleSessionException( "invalid rule session" );
+        }
+    }
 
     /**
      * Returns the meta data for the rule execution set bound to this rule session.
@@ -69,12 +135,6 @@ abstract class RuleSessionImpl implements RuleSession
         // [TODO]
         throw new NotImplementedException();
     }
-
-    /**
-     * Releases all resources used by this rule session.
-     * This method renders this rule session unusable until it is reacquired through the RuleRuntime.
-     */
-    abstract public void release();
 
     /**
      * Returns the type identifier for this RuleSession.
@@ -92,4 +152,31 @@ abstract class RuleSessionImpl implements RuleSession
         throw new InvalidRuleSessionException( "unknown type" );
     }
 
+    public void reset()
+    {
+        initWorkingMemory();
+    }
+
+    public void release()
+    {
+        setProperties( null );
+        setWorkingMemory( null );
+        setRuleExecutionSet( null );
+    }
+
+    protected void applyFilter(List objects,
+                               ObjectFilter objectFilter)
+    {
+        if ( objectFilter != null )
+        {
+            for ( Iterator objectIter = objects.iterator();
+                  objectIter.hasNext(); )
+            {
+                if ( objectFilter.filter( objectIter.next() ) == null )
+                {
+                    objectIter.remove();
+                }
+            }
+        }
+    }
 }
