@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: ExprConditionFactory.java,v 1.6 2004-11-29 12:14:43 simon Exp $
+ * $Id: GroovyConditionFactory.java,v 1.1 2004-12-07 15:17:10 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,16 +47,19 @@ import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Condition;
 
-public class ExprConditionFactory implements ConditionFactory
+public class GroovyConditionFactory
+    implements
+    ConditionFactory
 {
-    private static final ExprConditionFactory INSTANCE = new ExprConditionFactory( );
+    private static final GroovyConditionFactory INSTANCE = new GroovyConditionFactory( );
 
-    public static ExprConditionFactory getInstance()
+    public static GroovyConditionFactory getInstance()
     {
         return INSTANCE;
     }
 
-    public Condition newCondition(Configuration config, Rule rule) throws FactoryException
+    public Condition newCondition( Configuration config,
+                                   Rule rule ) throws FactoryException
     {
         try
         {

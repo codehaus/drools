@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ConditionFactory.java,v 1.5 2004-11-28 20:01:13 mproctor Exp $
+ * $Id: ConditionFactory.java,v 1.6 2004-12-07 15:17:10 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,5 +46,6 @@ import org.drools.spi.Condition;
 
 public interface ConditionFactory
 {
-    Condition newCondition(Configuration config, Rule rule) throws FactoryException;    
+    Condition newCondition( Configuration config,
+                            Rule rule ) throws FactoryException;
 }
