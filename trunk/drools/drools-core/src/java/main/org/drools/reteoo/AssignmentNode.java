@@ -77,11 +77,10 @@ public class AssignmentNode extends TupleSource implements TupleSink
                               workingMemory );
     }
 
-    public void retractObject(TupleSource tupleSource,
-                              Object object,
+    public void retractTuples(TupleKey key,
                               WorkingMemory workingMemory) throws RetractionException
     {
-        propagateRetractObject( object,
+        propagateRetractTuples( key,
                                 workingMemory );
     }
 }

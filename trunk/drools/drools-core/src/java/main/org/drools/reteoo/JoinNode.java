@@ -147,16 +147,14 @@ public class JoinNode extends TupleSource implements TupleSink
         }
     }
 
-    public void retractObject(TupleSource inputSource,
-                              Object object,
+    public void retractTuples(TupleKey key,
                               WorkingMemory workingMemory) throws RetractionException
     {
-        
         JoinMemory memory = workingMemory.getJoinMemory( this );
-        
-        memory.retractObject( object );
-        
-        propagateRetractObject( object,
+
+        memory.retractTuples( key );
+
+        propagateRetractTuples( key,
                                 workingMemory );
     }
 }

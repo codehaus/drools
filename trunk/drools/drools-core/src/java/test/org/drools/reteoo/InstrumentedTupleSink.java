@@ -10,6 +10,7 @@ public class InstrumentedTupleSink implements TupleSink
 {
     private List assertedTuples;
     private List retractedObjects;
+    private List retractedKeys;
 
     public InstrumentedTupleSink()
     {
@@ -36,8 +37,19 @@ public class InstrumentedTupleSink implements TupleSink
         this.retractedObjects.add( object );
     }
 
+    public void retractTuples(TupleKey key,
+                              WorkingMemory workingMemory)
+    {
+        this.retractedKeys.add( key );
+    }
+
     public List getRetractedObjects()
     {
         return this.retractedObjects;
+    }
+
+    public List getRetractedTupleKeys()
+    {
+        return this.retractedKeys;
     }
 }
