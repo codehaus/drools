@@ -1,10 +1,10 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.8 2004-07-10 00:06:37 dbarnett Exp $
+ $Id: Interp.java,v 1.9 2004-08-15 15:45:42 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.drools.semantics.python;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "drools" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "drools"
     nor may "drools" appear in their names without prior written
     permission of The Werken Company. "drools" is a registered
     trademark of The Werken Company.
- 
+
  5. Due credit should be given to The Werken Company.
     (http://drools.werken.com/).
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,7 +43,7 @@ package org.drools.semantics.python;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import java.io.BufferedReader;
@@ -51,6 +51,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -76,14 +77,14 @@ import org.python.util.PythonInterpreter;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.8 2004-07-10 00:06:37 dbarnett Exp $
+ *  @version $Id: Interp.java,v 1.9 2004-08-15 15:45:42 mproctor Exp $
  */
 public class Interp
 {
     /** The line separator system property ("\n" on UNIX). */
     private static final String LINE_SEPARATOR =
         System.getProperty("line.separator");
-    
+
     // ------------------------------------------------------------
     //     Class Initialization
     // ------------------------------------------------------------
@@ -120,12 +121,16 @@ public class Interp
                      String type)
     {
         this.text = stripOuterIndention(text);
+
+
+        this.text = text;
+
         this.node = (modType) parser.parse( this.text,
                                             type );
         this.code = Py.compile( this.node,
                                 "<jython>");
     }
-    
+
     /**
      * Trims leading indention from the block of text. Since Python relies on
      * indention as part of its syntax, any XML indention introduced needs to be
@@ -147,7 +152,7 @@ public class Interp
      * |    print "Bye"
      * |   &lt;/python:consequence&gt;
      * </pre>
-     * 
+     *
      * @param text the block of text to be stripped
      * @return the block of text stripped of its leading indention
      */
@@ -159,13 +164,13 @@ public class Interp
             {
                 return null;
             }
-            
+
             BufferedReader br = new BufferedReader(
                 new InputStreamReader(
                     new ByteArrayInputStream(text.getBytes())));
-            
+
             StringBuffer unindentedText = new StringBuffer(text.length());
-            
+
             int lineNo = 0;
             try
             {
@@ -179,14 +184,14 @@ public class Interp
                         unindentedText.append(line + LINE_SEPARATOR);
                         continue;
                     }
-                    
+
                     if (null == indent)
                     {
                         // The first non-bank line determines
                         //   the outer indention level
                         indent = line.substring(0, line.indexOf(line.trim()));
                     }
-                    
+
                     if (   (line.length() < indent.length())
                         || (!line.matches("^" + indent + ".*")) )
                     {
@@ -196,20 +201,20 @@ public class Interp
                             formatForException(line) + "|" + LINE_SEPARATOR +
                             formatForException(text));
                     }
-                    
+
                     // Remove the outer most indention from the line
                     unindentedText.append(
                         line.replaceFirst("^" + indent, "") + LINE_SEPARATOR);
                 }
-            } 
+            }
             catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
-            
+
             // Remove extraneous trailing LINE_SEPARATOR
             unindentedText.deleteCharAt(unindentedText.length() - 1);
-            
+
             return unindentedText.toString();
         }
         catch (Exception e)
@@ -222,16 +227,16 @@ public class Interp
             {
                 throw (RuntimeException) e;
             }
-            
+
             throw new RuntimeException(e);
         }
     }
-    
+
     /**
      * Helper method to format the text block for display in error messages.
      * Since Python syntax errors can easily occur due to bad indention,
      * this method replaces all tabs with "{{tab}}" and all spaces with ".".
-     * 
+     *
      * @param text the text to be formatted
      * @return the text with all tabs and spaces replaced for easier viewing
      */
@@ -277,32 +282,71 @@ public class Interp
      *
      *  @return The dictionary
      */
-    protected PyDictionary setUpDictionary(Tuple tuple) 
+    protected PyDictionary setUpDictionary(Tuple tuple) throws Exception
     {
         Hashtable table = new Hashtable();
 
-        Set         decls    = tuple.getDeclarations();
+        Set decls   = tuple.getDeclarations();
+        Set types   = new HashSet();
 
         Iterator    declIter = decls.iterator();
         Declaration eachDecl = null;
 
         ObjectType objectType = null;
+        String type = null;
+        Class clazz = null;
+        int nestedClassPosition;
+        int dotPosition;
 
         PyDictionary dict = new PyDictionary();
+
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+        if ( cl == null )
+        {
+            cl = Interp.class.getClassLoader();
+        }
 
         while ( declIter.hasNext() )
         {
             eachDecl = (Declaration) declIter.next();
-            
+
             dict.setdefault( new PyString( eachDecl.getIdentifier().intern() ),
                              Py.java2py( tuple.get( eachDecl ) ) );
+
+            objectType = eachDecl.getObjectType();
+
+            if ( objectType instanceof ClassObjectType )
+            {
+                clazz = ((ClassObjectType)objectType).getType();
+                type = clazz.getName();
+
+                nestedClassPosition = type.indexOf('$');
+
+                if (nestedClassPosition != -1)
+                {
+                    type = type.substring(0, nestedClassPosition);
+                    clazz = cl.loadClass( type );
+                }
+
+                if (type.indexOf("java.lang") == -1)
+                {
+                    dotPosition = type.lastIndexOf('.');
+                    if (dotPosition != -1)
+                    {
+                        type =  type.substring(dotPosition + 1);
+                    }
+                    System.err.println(type + ":" + clazz);
+                    dict.setdefault(new PyString( type.intern()),
+                                    Py.java2py(clazz));
+                }
         }
 
         WorkingMemory workingMemory = tuple.getWorkingMemory();
-        
+
         dict.setdefault( new PyString( "drools".intern() ),
                          Py.java2py( new KnowledgeHelper( tuple ) ) );
-        
+
         Map appDataMap = workingMemory.getApplicationDataMap();
 
         for ( Iterator keyIter = appDataMap.keySet().iterator();
@@ -313,6 +357,29 @@ public class Interp
 
             dict.setdefault( new PyString( key.intern() ),
                              Py.java2py( value ) );
+
+                clazz = value.getClass();
+                type = clazz.getName();
+
+                nestedClassPosition = type.indexOf('$');
+
+                if (nestedClassPosition != -1)
+                {
+                    type = type.substring(0, nestedClassPosition);
+                    clazz = cl.loadClass( type );
+                }
+
+                if (type.indexOf("java.lang") == -1)
+                {
+                    dotPosition = type.lastIndexOf('.');
+                    if (dotPosition != -1)
+                    {
+                        type =  type.substring(dotPosition + 1);
+                    }
+                    dict.setdefault(new PyString( type.intern()),
+                                    Py.java2py(clazz));
+                }
+            }
         }
 
         return dict;
