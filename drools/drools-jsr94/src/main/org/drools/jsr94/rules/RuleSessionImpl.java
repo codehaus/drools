@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.12 2004-11-05 20:49:33 dbarnett Exp $
+ * $Id: RuleSessionImpl.java,v 1.13 2004-11-06 11:02:27 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -104,8 +104,8 @@ abstract class RuleSessionImpl implements RuleSession
             }
         }
 
-        newWorkingMemory.addEventListener(
-            new DebugWorkingMemoryEventListener( ) );
+        //newWorkingMemory.addEventListener(
+        //    new DebugWorkingMemoryEventListener( ) );
 
         return newWorkingMemory;
     }
