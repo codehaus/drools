@@ -15,7 +15,7 @@ import java.io.FileReader;
  *
  * Autor: thomas.diesler@iotronics.com
  *
- * $Id: RemoveFromListTest.java,v 1.2 2003-08-21 01:09:21 tdiesler Exp $
+ * $Id: RemoveFromListTest.java,v 1.3 2003-08-21 01:10:04 tdiesler Exp $
  */
 public class RemoveFromListTest extends TestCase
 {
@@ -35,12 +35,7 @@ public class RemoveFromListTest extends TestCase
         RuleSetLoader loader = new RuleSetLoader();
         URL url = getClass().getResource( "RemoveFromListTest.drl" );
         assertNotNull( "cannot find drl file", url );
-        //loader.load(url, ruleBase);
-
-        // for debuging
-        FileReader reader = new FileReader( "src/java/test/org/drools/misc/RemoveFromListTest.drl" );
-        loader.load( reader, ruleBase );
-        reader.close();
+        loader.load(url, ruleBase);
 
         workingMemory = ruleBase.createWorkingMemory();
     }
