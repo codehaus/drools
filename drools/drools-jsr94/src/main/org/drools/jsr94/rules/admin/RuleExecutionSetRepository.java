@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- $Id: RuleExecutionSetRepository.java,v 1.4 2003-06-19 09:28:35 tdiesler Exp $
+ $Id: RuleExecutionSetRepository.java,v 1.5 2004-04-02 22:31:07 n_alex Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -59,7 +59,6 @@ import java.util.Map;
  */
 public class RuleExecutionSetRepository
 {
-
     // holds the registered <code>RuleExecutionSet</code> objects.
     private Map map = new HashMap();
 
