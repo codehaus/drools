@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonCondition.java,v 1.2 2004-12-08 23:23:19 simon Exp $
+ * $Id: PythonCondition.java,v 1.3 2004-12-29 15:55:09 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,6 +40,9 @@ package org.drools.semantics.python;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -108,7 +111,7 @@ public class PythonCondition extends PythonInterp implements Condition
         {
 
             PyObject result = __builtin__.eval( getCode( ),
-                                                setUpDictionary( tuple ),
+                                                setUpDictionary( tuple, declarationIterator( )  ),
                                                 getGlobals( ) );
 
             Object answer = result.__tojava__( Object.class );
@@ -159,4 +162,39 @@ public class PythonCondition extends PythonInterp implements Condition
 
         return this.getText( ).equals( ( ( PythonInterp ) object ).getText( ) );
     }
+    
+    /**
+     * PythonInterp needs a declaration iterator.
+     * BlockConsequence uses the Iterator from Set.
+     * So we emulate Iterator here so PythonInterp can be used for both.
+     * @return
+     */
+    public Iterator declarationIterator( ) 
+    {
+        return new Iterator()
+        {
+            private int index=0;
+            
+            public void remove()
+            {
+                //null;
+            }
+            
+            public boolean hasNext()
+            {
+                return (index < requiredDeclarations.length);
+            }            
+            
+            public Object next()
+            {
+                if ( !hasNext( ) )
+                {
+                    throw new NoSuchElementException( );
+                }
+                return requiredDeclarations[this.index++];
+            }
+            
+        };
+    }
+    
 }
