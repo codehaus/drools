@@ -18,6 +18,17 @@ public class WorkingMemoryEventListenerProcessorTest extends TestCase {
     public static class Listener_A extends DefaultWorkingMemoryEventListener { }
     public static class Listener_B extends DefaultWorkingMemoryEventListener { }
 
+    public void testWorkingMemoryNotSet() throws Exception {
+        WorkingMemoryEventListenerProcessor listener = new WorkingMemoryEventListenerProcessor();
+        try {
+            listener.afterPropertiesSet();
+            fail("expected IllegalArgumentException");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // expected
+        }
+    }
+
     public void testRegisterListeners() throws Exception {
         ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("org/drools/spring/event/workingmemory.appctx.xml");
         WorkingMemory workingMemory = (WorkingMemory) context.getBean("workingMemory");
