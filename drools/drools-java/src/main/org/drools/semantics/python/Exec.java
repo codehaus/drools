@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
+ $Id: Exec.java,v 1.1 2002-08-27 04:27:07 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,6 @@ import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
-import org.python.core.PyString;
 import org.python.core.__builtin__;
 import org.python.util.PythonInterpreter;
 
@@ -62,42 +61,22 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Iterator;
 
-/** Base class for Jython interpreter-based Python semantic components.
+/** Base class for Jython statement-based Python semantic components.
  *
- *  @see Eval
- *  @see Exec
+ *  @see BlockConsequence
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
+ *  @version $Id: Exec.java,v 1.1 2002-08-27 04:27:07 bob Exp $
  */
-public class Interp
+public class Exec extends Interp
 {
-    // ------------------------------------------------------------
-    //     Class Initialization
-    // ------------------------------------------------------------
-
-    /** Ensure jpython gets initialized.
-     */
-    static
-    {
-        // throw it away.  we only need it for setting up
-        // system state.
-        new PythonInterpreter();
-    }
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Interp. */
-    // private PythonInterpreter interp;
-
-    /** Interpreted text. */
-    private String text;
-
-    /** The code. */
-    private PyCode code;
+    /** The interpreter. */
+    private PythonInterpreter interp;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -105,69 +84,61 @@ public class Interp
 
     /** Construct.
      */
-    protected Interp()
+    protected Exec()
     {
-        this.text = null;
+        this.interp = new PythonInterpreter();
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the text to evaluate.
+    /** Execute.
      *
-     *  @return The text to evaluate.
+     *  @param tuple Tuple containing variable bindings.
+     *
+     *  @return The result of evaluation.
      */
-    public String getText()
+    public void execute(Tuple tuple) 
     {
-        return this.text;
+        PyDictionary dict = setUpDictionary( tuple );
+        
+        execute( dict );
     }
 
+    /** Execute.
+     *
+     *  @param dict The evaluation dictionary.
+     *
+     *  @return The result of evaluation.
+     */
+    protected void execute(PyDictionary locals) 
+    {
+        PyDictionary globals = new PyDictionary( new Hashtable() );
+        
+        Py.runCode( getCode(),
+                    locals,
+                    globals );
+    }
+
+    /** Execute.
+     *
+     *  @return The result of evaluation.
+     */
+    protected void execute()
+    {
+        PyDictionary locals = new PyDictionary( new Hashtable() );
+        
+        execute( locals );
+    }
+    
     /** Set the text to evaluate.
      *
      *  @param text The text.
      */
-    protected void setText(String text,
-                           String type)
+    protected void setText(String text)
     {
-        this.text = text;
-
-        this.code = __builtin__.compile( text, "<text>", type );
-    }
-
-    protected PyCode getCode()
-    {
-        return this.code;
-    }
-
-    /** Configure a <code>PyDictionary</code> using a <code>Tuple</code>
-     *  for variable bindings.
-     *
-     *  @param tuple Tuple containing variable bindings.
-     *
-     *  @return The dictionary
-     */
-    protected PyDictionary setUpDictionary(Tuple tuple) 
-    {
-        Hashtable table = new Hashtable();
-
-        Set         decls    = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-
-        ObjectType objectType = null;
-
-        PyDictionary dict = new PyDictionary();
-
-        while ( declIter.hasNext() )
-        {
-            eachDecl = (Declaration) declIter.next();
-            
-            dict.setdefault( new PyString( eachDecl.getIdentifier().intern() ),
-                             Py.java2py( tuple.get( eachDecl ) ) );
-        }
-
-        return dict;
+        setText( text,
+                 "exec" );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Interp.java,v 1.1 2002-08-26 23:04:34 bob Exp $
+ $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,6 +54,7 @@ import org.python.core.Py;
 import org.python.core.PyCode;
 import org.python.core.PyDictionary;
 import org.python.core.PyObject;
+import org.python.core.PyString;
 import org.python.core.__builtin__;
 import org.python.util.PythonInterpreter;
 
@@ -63,25 +64,37 @@ import java.util.Iterator;
 
 /** Base class for Jython interpreter-based Python semantic components.
  *
- *  @see ExprCondition
- *  @see ExprExtractor
- *  @see BlockConsequence
+ *  @see Eval
+ *  @see Exec
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.1 2002-08-26 23:04:34 bob Exp $
+ *  @version $Id: Interp.java,v 1.2 2002-08-27 04:27:07 bob Exp $
  */
 public class Interp
 {
     // ------------------------------------------------------------
+    //     Class Initialization
+    // ------------------------------------------------------------
+
+    /** Ensure jpython gets initialized.
+     */
+    static
+    {
+        // throw it away.  we only need it for setting up
+        // system state.
+        new PythonInterpreter();
+    }
+
+    // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
+    /** Interp. */
+    // private PythonInterpreter interp;
+
     /** Interpreted text. */
     private String text;
-
-    /** BeanShell interpreter. */
-    private PythonInterpreter interp;
 
     /** The code. */
     private PyCode code;
@@ -94,55 +107,12 @@ public class Interp
      */
     protected Interp()
     {
-        this.interp = new PythonInterpreter();
         this.text = null;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /** Evaluate.
-     *
-     *  @param tuple Tuple containing variable bindings.
-     *
-     *  @return The result of evaluation.
-     */
-    public Object evaluate(Tuple tuple) 
-    {
-        PyDictionary dict = setUpDictionary( tuple );
-        
-        return evaluate( dict );
-    }
-
-    /** Evaluate.
-     *
-     *  @param dict The evaluation dictionary.
-     *
-     *  @return The result of evaluation.
-     */
-    protected Object evaluate(PyDictionary locals) 
-    {
-        PyDictionary globals = new PyDictionary( new Hashtable() );
-
-        PyObject result =  __builtin__.eval( this.code,
-                                             locals,
-                                             globals );
-
-        return Py.tojava( result,
-                          Object.class );
-    }
-
-    /** Evaluate.
-     *
-     *  @return The result of evaluation.
-     */
-    protected Object evaluate()
-    {
-        PyDictionary locals = new PyDictionary( new Hashtable() );
-
-        return evaluate( locals );
-    }
 
     /** Retrieve the text to evaluate.
      *
@@ -157,11 +127,17 @@ public class Interp
      *
      *  @param text The text.
      */
-    protected void setText(String text)
+    protected void setText(String text,
+                           String type)
     {
         this.text = text;
 
-        this.code = __builtin__.compile( text, "<text>", "eval");
+        this.code = __builtin__.compile( text, "<text>", type );
+    }
+
+    protected PyCode getCode()
+    {
+        return this.code;
     }
 
     /** Configure a <code>PyDictionary</code> using a <code>Tuple</code>
@@ -182,14 +158,16 @@ public class Interp
 
         ObjectType objectType = null;
 
+        PyDictionary dict = new PyDictionary();
+
         while ( declIter.hasNext() )
         {
             eachDecl = (Declaration) declIter.next();
             
-            table.put( eachDecl.getIdentifier(),
-                       tuple.get( eachDecl ) );
+            dict.setdefault( new PyString( eachDecl.getIdentifier().intern() ),
+                             Py.java2py( tuple.get( eachDecl ) ) );
         }
 
-        return new PyDictionary( table );
+        return dict;
     }
 }
