@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Expr.java,v 1.15 2004-07-26 19:56:15 bob Exp $
+ $Id: Expr.java,v 1.16 2004-07-28 13:24:46 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,8 +46,12 @@ package org.drools.semantics.java;
 
  */
 import net.janino.ScriptEvaluator;
+import net.janino.Scanner;
+import java.io.StringReader;
 import org.drools.spi.Tuple;
 import org.drools.spi.KnowledgeHelper;
+
+import java.util.Map;
 
 import org.drools.rule.Declaration;
 
@@ -60,7 +64,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Expr.java,v 1.15 2004-07-26 19:56:15 bob Exp $
+ *  @version $Id: Expr.java,v 1.16 2004-07-28 13:24:46 mproctor Exp $
  */
 public class Expr
     extends Interp
@@ -79,7 +83,9 @@ public class Expr
     /** Required declarations. */
     private Declaration[] requiredDecls;
 
-    private ScriptEvaluator code;
+    private Script script;
+
+    private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
 
     private Class returnType;
 
@@ -127,8 +133,8 @@ public class Expr
 
     private void compile(Tuple tuple) throws Exception
     {
-        String[] paramNames = new String[this.requiredDecls.length + 2];
-        Class[] paramTypes = new Class[this.requiredDecls.length + 2];
+        String[] paramNames = new String[this.requiredDecls.length];
+        Class[] paramTypes = new Class[this.requiredDecls.length];
         String expr = getPreparedText(tuple, this.requiredDecls, paramNames, paramTypes);
 
         //System.err.println( "expr-----" );
@@ -137,10 +143,12 @@ public class Expr
 
         try
         {
-            code = new ScriptEvaluator( expr,
-                                        returnType,
-                                        paramNames,
-                                        paramTypes );
+            //code = new ScriptEvaluator( expr, returnType, paramNames, paramTypes );
+           script = (Script) ScriptEvaluator.createFastScriptEvaluator(
+                             new Scanner(null, new StringReader(expr)),
+                             Script.class,
+                             scriptParamNames,
+                             (ClassLoader) null);          // Use current thread's context class loader
         }
         catch (Exception e)
         {
@@ -167,10 +175,13 @@ public class Expr
         */
     }
 
-   public Object evaluate(Object[] paramValues, Tuple tuple) throws Exception
+   public Object evaluate(Tuple tuple) throws Exception
    {
-        if (code == null) compile(tuple);
-        return code.evaluate(paramValues);
+        if (script == null) compile(tuple);
+        return script.invoke(tuple,
+                             this.requiredDecls,
+                             new KnowledgeHelper( tuple ),
+                             tuple.getWorkingMemory().getApplicationDataMap());
    }
 
     protected Declaration[] analyze(String expr,
@@ -197,4 +208,13 @@ public class Expr
     {
         return this.returnType;
     }
+
+    public interface Script
+    {
+        public Object invoke(Tuple tuple,
+                             Declaration[] decls,
+                             KnowledgeHelper drools,
+                             Map applicationData) throws Exception;
+    }
+
 }

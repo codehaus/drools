@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: BlockConsequence.java,v 1.20 2004-07-27 04:12:46 bob Exp $
+ $Id: BlockConsequence.java,v 1.21 2004-07-28 13:24:46 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -50,7 +50,10 @@ import org.drools.WorkingMemory;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
+
 import net.janino.ScriptEvaluator;
+import net.janino.Scanner;
+import java.io.StringReader;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -71,15 +74,17 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: BlockConsequence.java,v 1.20 2004-07-27 04:12:46 bob Exp $
+ *  @version $Id: BlockConsequence.java,v 1.21 2004-07-28 13:24:46 mproctor Exp $
  */
 public class BlockConsequence extends Interp
     implements Consequence
 {
     /** Interpreted text. */
-    private String newline = System.getProperty("line.separator");    
+    private String newline = System.getProperty("line.separator");
 
-    private ScriptEvaluator code;
+    private Script script;
+
+    private static final String[] scriptParamNames = new String[] {"tuple", "decls", "drools", "applicationData"};
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -97,8 +102,8 @@ public class BlockConsequence extends Interp
 
     private void compile(Tuple tuple, Declaration[] availDecls) throws Exception
     {
-        String[] paramNames = new String[availDecls.length + 2];
-        Class[] paramTypes = new Class[availDecls.length + 2];        
+        String[] paramNames = new String[availDecls.length];
+        Class[] paramTypes = new Class[availDecls.length];
         String block = getPreparedText(tuple, availDecls, paramNames, paramTypes);
 
         //System.err.println("block-----" );
@@ -106,7 +111,13 @@ public class BlockConsequence extends Interp
         //System.err.println("----------" );
         try
         {
-            code = new ScriptEvaluator(block, Void.TYPE, paramNames, paramTypes, new Class[] {Exception.class});
+            //code = new ScriptEvaluator(block, Void.TYPE, paramNames, paramTypes, new Class[] {Exception.class});
+           script = (Script) ScriptEvaluator.createFastScriptEvaluator(
+                             new Scanner(null, new StringReader(block)),
+                             Script.class,
+                             scriptParamNames,
+                             (ClassLoader) null);          // Use current thread's context class loader
+
         }
         catch (Exception e)
         {
@@ -166,25 +177,31 @@ public class BlockConsequence extends Interp
                                                      Object right) {
                                       return ((Declaration)left).getIdentifier().compareTo( ((Declaration)right).getIdentifier() );
                                   }
-                                  
+
                               } );
 
-            
+
             Declaration[] params = (Declaration[]) decls.toArray(Declaration.EMPTY_ARRAY) ;
 
-            if ( code == null ) {
+            if ( script == null ) {
                 compile(tuple, params);
             }
-            
+            script.invoke(tuple,
+                               params,
+                               new KnowledgeHelper( tuple ),
+                               tuple.getWorkingMemory().getApplicationDataMap());
+
+            /*
             Object[] paramValues = new Object[ params.length + 2];
 
             paramValues[0] = new KnowledgeHelper( tuple );
             paramValues[1] = workingMemory.getApplicationDataMap();
-            
+
             for ( int i = 0 ; i < params.length ; i++ ) {
                 paramValues[i + 2] = tuple.get( params[i] );
             }
             code.evaluate( paramValues );
+            */
         }
         catch (Exception e)
         {
@@ -200,4 +217,13 @@ public class BlockConsequence extends Interp
    {
        return getText();
    }
+
+    public interface Script
+    {
+        public void invoke(Tuple tuple,
+                           Declaration[] decls,
+                           KnowledgeHelper drools,
+                           Map applicationData) throws Exception;
+    }
+
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprExtractor.java,v 1.11 2004-07-20 21:23:29 mproctor Exp $
+ $Id: ExprExtractor.java,v 1.12 2004-07-28 13:24:46 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,7 +56,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprExtractor.java,v 1.11 2004-07-20 21:23:29 mproctor Exp $
+ *  @version $Id: ExprExtractor.java,v 1.12 2004-07-28 13:24:46 mproctor Exp $
  */
 public class ExprExtractor
     extends Expr
@@ -111,6 +111,7 @@ public class ExprExtractor
     {
         try
         {
+          /*
             Declaration[] params = getRequiredTupleMembers();
 
             Object[] paramValues = new Object[ params.length + 2];
@@ -120,8 +121,8 @@ public class ExprExtractor
             for ( int i = 0 ; i < params.length ; i++ ) {
                 paramValues[i + 2] = tuple.get( params[i] );
             }
-
-            return evaluate(paramValues, tuple);
+            */
+            return evaluate(tuple);
         }
         catch (Exception e)
         {

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.18 2004-07-26 19:56:15 bob Exp $
+ $Id: Interp.java,v 1.19 2004-07-28 13:24:46 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.18 2004-07-26 19:56:15 bob Exp $
+ *  @version $Id: Interp.java,v 1.19 2004-07-28 13:24:46 mproctor Exp $
  */
 public class Interp implements Serializable
 {
@@ -132,7 +132,11 @@ public class Interp implements Serializable
         }
         newImports.append(newline);
         this.imports = newImports.toString();
-        if (this instanceof Expr)
+        if (this instanceof ExprCondition)
+        {
+            this.text = "return new Boolean((" + newText.toString().trim() + "));" + newline;
+        }
+        else if (this instanceof ExprExtractor)
         {
             this.text = "return (" + newText.toString().trim() + ");" + newline;
         }
@@ -160,18 +164,20 @@ public class Interp implements Serializable
         Declaration eachDecl = null;
         Declaration[] params = availDecls;
 
+        /*
         paramNames[0] = "drools";
         paramTypes[0] = KnowledgeHelper.class;
         paramNames[1] = "applicationData";
         paramTypes[1] = Map.class;
+        */
 
         String type;
         int nestedClassPosition;
         for ( int i = 0 ; i < params.length; i++ ) {
             eachDecl = params[i];
             objectType = eachDecl.getObjectType();
-            paramNames[i + 2] = eachDecl.getIdentifier();
-            paramTypes[i + 2] = ((ClassObjectType)objectType).getType();
+            paramNames[i] = eachDecl.getIdentifier();
+            paramTypes[i] = ((ClassObjectType)objectType).getType();
 
             //Import classes for each of the declarations
 
@@ -216,8 +222,18 @@ public class Interp implements Serializable
             }
             buffer.append("import " + object.getClass().getName() + ";" + newline);
         }
-
         buffer.append(imports);
+
+        //assign declarations
+        for ( int i = 0 ; i < availDecls.length ; i++ ) {
+            objectType =  availDecls[i].getObjectType();
+            buffer.append(((ClassObjectType)objectType).getType().getName());
+            buffer.append(" " + availDecls[i].getIdentifier() + " = ");
+            buffer.append("(" + ((ClassObjectType)objectType).getType().getName() + ")");
+            buffer.append("tuple.get(  decls[" + i + "] );" + newline);
+        }
+
+        //assign application data
         it = keys.iterator();
         while (it.hasNext())
         {
@@ -227,13 +243,16 @@ public class Interp implements Serializable
             {
                 object = appData.get(key);
                 buffer.append(object.getClass().getName());
-                buffer.append(" " + key + " ");
-                buffer.append("= (" + object.getClass().getName() + ")applicationData.get(\"" + key + "\");" + newline);
+                buffer.append(" " + key + " = ");
+                buffer.append("(" + object.getClass().getName() + ")applicationData.get(\"" + key + "\");" + newline);
             }
         }
 
-        return buffer.append(text).toString();
+        String script = buffer.append(text).toString();
+        //System.err.println(script);
+        return script;
     }
+
      /** Retrieve the text to evaluate.
      *
      *  @return The text to evaluate.
@@ -256,4 +275,5 @@ public class Interp implements Serializable
     {
         return "[[ " + this.imports + this.text + " ]]";
     }
+
 }

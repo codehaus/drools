@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: ExprCondition.java,v 1.15 2004-07-20 21:23:29 mproctor Exp $
+ $Id: ExprCondition.java,v 1.16 2004-07-28 13:24:46 mproctor Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -56,7 +56,7 @@ import org.drools.spi.KnowledgeHelper;
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  *
- *  @version $Id: ExprCondition.java,v 1.15 2004-07-20 21:23:29 mproctor Exp $
+ *  @version $Id: ExprCondition.java,v 1.16 2004-07-28 13:24:46 mproctor Exp $
  */
 public class ExprCondition
     extends Expr
@@ -111,7 +111,9 @@ public class ExprCondition
     {
         try
         {
+/*
             Declaration[] params = getRequiredTupleMembers();
+
 
             Object[] paramValues = new Object[ params.length + 2];
 
@@ -120,9 +122,9 @@ public class ExprCondition
             for ( int i = 0 ; i < params.length ; i++ ) {
                 paramValues[i + 2] = tuple.get( params[i] );
             }
-
-            Boolean result = (Boolean) evaluate(paramValues, tuple);
-            return ((Boolean)result).booleanValue();
+*/
+            Boolean result = (Boolean) evaluate(tuple);
+            return result.booleanValue();
         }
         catch (Exception e)
         {
