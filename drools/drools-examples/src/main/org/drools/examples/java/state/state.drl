@@ -15,7 +15,7 @@
         <java:consequence>
             System.err.println(a.getName() + " finished" );
             a.setState("FINISHED");
-            modifyObject(a);
+            drools.modifyObject(a);
         </java:consequence>
     </rule>
 
@@ -35,7 +35,7 @@
         <java:consequence>
             System.err.println(b.getName() + " finished" );
             b.setState("FINISHED");
-            modifyObject(b);
+            drools.modifyObject(b);
         </java:consequence>
     </rule>
 
@@ -55,7 +55,7 @@
         <java:consequence>
             System.err.println(c.getName() + " finished" );
             c.setState("FINISHED");
-            modifyObject(c);
+            drools.modifyObject(c);
         </java:consequence>
     </rule>
 
@@ -77,7 +77,7 @@
         <java:consequence>
             System.err.println(d.getName() + " finished" );
             d.setState("FINISHED");
-            modifyObject(d);
+            drools.modifyObject(d);
         </java:consequence>
     </rule>
 

@@ -21,11 +21,11 @@
             Iterator itemIter = cart.getItems().iterator();
             while ( itemIter.hasNext() )
             {
-                assertObject( itemIter.next() );
+                drools.assertObject( itemIter.next() );
             }
 
             cart.setState( "Exploded", true);
-            modifyObject( cart );
+            drools.modifyObject( cart );
         </java:consequence>
     </rule>
 
@@ -45,7 +45,7 @@
         <java:consequence>
             System.out.println( "Adding free Fish Food Sample to cart" );
             cart.addItem( new org.drools.examples.java.petstore.CartItem( "Fish Food Sample", 0.00 ) );
-            modifyObject( cart );
+            drools.modifyObject( cart );
         </java:consequence>
 
     </rule>
@@ -83,7 +83,7 @@
             }
 
             cart.setState( "Suggested Fish Tank", true );
-            modifyObject( cart );
+            drools.modifyObject( cart );
         </java:consequence>
     </rule>
 

@@ -16,7 +16,7 @@
       while ( itemIter.hasNext() )
       {
           final Object o = itemIter.next();
-          assertObject( o );
+          drools.assertObject( o );
       }
     </java:consequence>
   </rule>
@@ -35,7 +35,7 @@
       import java.util.Hashtable;
       Map theTree = new Hashtable();
       theTree.put( theChild, theParent );
-      assertObject( theTree );
+      drools.assertObject( theTree );
     </java:consequence>
   </rule>
 

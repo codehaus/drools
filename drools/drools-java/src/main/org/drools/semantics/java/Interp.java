@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.13 2004-06-22 16:57:18 bob Exp $
+ $Id: Interp.java,v 1.14 2004-06-30 21:46:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -53,6 +53,7 @@ import bsh.NameSpace;
 import org.drools.rule.Declaration;
 import org.drools.spi.ObjectType;
 import org.drools.spi.Tuple;
+import org.drools.spi.KnowledgeHelper;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -66,7 +67,7 @@ import java.util.Map;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.13 2004-06-22 16:57:18 bob Exp $
+ *  @version $Id: Interp.java,v 1.14 2004-06-30 21:46:32 bob Exp $
  */
 public class Interp
 {
@@ -171,8 +172,6 @@ public class Interp
     {
         NameSpace ns = new NameSpace( parent, interp.getClassManager(),  "" );
 
-        ns.importCommands( "org.drools.semantics.java.bsh" );
-
         Set         decls    = tuple.getDeclarations();
 
         Iterator    declIter = decls.iterator();
@@ -184,7 +183,7 @@ public class Interp
         {
             eachDecl = (Declaration) declIter.next();
 
-            ns.setVariable( eachDecl.getIdentifier(),
+            ns.setVariable( eachDecl.getIdentifier().intern(),
                             tuple.get( eachDecl ), false );
 
             objectType = eachDecl.getObjectType();
@@ -195,12 +194,8 @@ public class Interp
             }
         }
 
-        ns.setVariable( "drools$working$memory",
-                        tuple.getWorkingMemory(),
-                        false );
-
-        ns.setVariable( "drools$tuple",
-                        tuple,
+        ns.setVariable( "drools".intern(),
+                        new KnowledgeHelper( tuple ),
                         false );
 
         Map appData = tuple.getWorkingMemory().getApplicationDataMap();
@@ -211,11 +206,9 @@ public class Interp
 
             String key = (String) entry.getKey();
 
-            if ( key.startsWith( "bsh:" ) ) {
-                ns.importCommands( key.substring( 4 ) );
-            } else {
-                ns.setVariable(key, entry.getValue(), false);
-            }
+            ns.setVariable(key.intern(),
+                           entry.getValue(),
+                           false);
         }
 
         // evaluate( ns );
