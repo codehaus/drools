@@ -6,6 +6,10 @@ import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.MockObjectType;
+import org.drools.rule.RuleSet;
+import org.drools.conflict.SalienceConflictResolver;
+import org.drools.spi.ConflictResolver;
+import org.drools.RuleBase;
 
 public class AgendaItemTest
     extends DroolsTestCase
@@ -85,18 +89,22 @@ public class AgendaItemTest
     public void testFire()
         throws Exception
     {
+
+        RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());
+        
+    	
         Declaration decl = new Declaration( new MockObjectType(),
                                             "cheese" );
 
         MockFactHandle handle = new MockFactHandle( 1 );
 
-        ReteTuple tuple = new ReteTuple( null,
-                                         null,
-                                         decl,
-                                         handle,
-                                         new Object() );
-
         Rule rule = new Rule( "test-rule" );
+
+        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory(),
+            rule,
+            decl,
+            handle,
+            new Object() );
 
         InstrumentedConsequence consequence = new InstrumentedConsequence();
 
@@ -105,7 +113,7 @@ public class AgendaItemTest
         AgendaItem item = new AgendaItem( tuple,
                                           rule );
 
-        item.fire( null );
+        item.fire( tuple.getWorkingMemory() );
 
         assertEquals( 1,
                       consequence.getInvokedTuples().size() );

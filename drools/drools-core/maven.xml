@@ -1,4 +1,5 @@
-<project default="jar:jar">
+<project default="jar:jar"
+         xmlns:j="jelly:core">
 
     <!-- post goals ************************************************************************************************ -->
 
@@ -7,4 +8,13 @@
             file="${basedir}/target/docs/clover/pkgs-summary.html"/>
     </postGoal>
 
+
+    <preGoal name="java:compile">
+        <j:set var="aspects" value="${drools.aspects}"/>
+
+        <j:if test="${aspects == 'true'}">
+            <attainGoal name="aspectj:compile"/>
+        </j:if>
+
+    </preGoal>
 </project>

@@ -1,7 +1,10 @@
 package org.drools.reteoo;
 
 import org.drools.AssertionException;
+import org.drools.RuleBase;
+import org.drools.conflict.SalienceConflictResolver;
 import org.drools.rule.Declaration;
+import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.TrueCondition;
 import org.drools.spi.FalseCondition;
@@ -24,7 +27,8 @@ public class ConditionNodeTest
 
     public void setUp()
     {
-        this.tuple = new ReteTuple();
+    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());    	
+        this.tuple = new ReteTuple(ruleBase.newWorkingMemory(), null);
     }
 
     public void tearDown()
@@ -46,8 +50,9 @@ public class ConditionNodeTest
 
         try
         {
+        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());
             node.assertTuple( this.tuple,
-                              null );
+            		(WorkingMemoryImpl) ruleBase.newWorkingMemory() );
             
             List asserted = sink.getAssertedTuples();
             
@@ -79,8 +84,9 @@ public class ConditionNodeTest
 
         try
         {
+        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new RuleSet[0], new SalienceConflictResolver());        	
             node.assertTuple( this.tuple,
-                              null );
+                              (WorkingMemoryImpl) ruleBase.newWorkingMemory() );
             
             List asserted = sink.getAssertedTuples();
             
