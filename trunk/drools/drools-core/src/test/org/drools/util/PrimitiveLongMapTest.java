@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.3 2004-11-18 23:11:57 dbarnett Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.4 2004-12-04 00:26:29 simon Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,9 @@ package org.drools.util;
  *
  */
 
-import java.util.Collection;
-
 import junit.framework.TestCase;
+
+import java.util.Collection;
 
 public class PrimitiveLongMapTest extends TestCase
 {
@@ -55,15 +55,37 @@ public class PrimitiveLongMapTest extends TestCase
         assertNotNull("ValuesNotNullTest ", values);
         assertEquals("ValuesZeroSizeTest ", 0, values.size());
     }
-    
+
     public void testPaging()
     {
         PrimitiveLongMap map = new PrimitiveLongMap(2, 1);
-        
+
         for (int i = 0; i < 128; i++) {
             Object oldValue = map.put(i, new Integer(i));
             assertNull("OldValueNullTest ", oldValue);
             assertEquals("OldValueNullTest ", new Integer(i), map.get(i));
+        }
+    }
+
+    public void testGetWithNegativeKeyReturnsNull()
+    {
+        PrimitiveLongMap map = new PrimitiveLongMap( 2, 1 );
+
+        assertNull( map.get( -1 ) );
+    }
+
+    public void testPutWithNegativeKeyThrowsIllegalArgumentException()
+    {
+        PrimitiveLongMap map = new PrimitiveLongMap( 2, 1 );
+
+        try
+        {
+            map.put( -1, new Object( ) );
+            fail();
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // expected
         }
     }
 }
