@@ -5,11 +5,11 @@ import org.drools.spi.DefaultKnowledgeHelper;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
-class KnowledgeHelperParameterValue implements ParameterValue
+public class KnowledgeHelperArgumentSource implements ArgumentSource
 {
     private final Rule rule;
 
-    public KnowledgeHelperParameterValue(Rule rule)
+    public KnowledgeHelperArgumentSource(Rule rule)
     {
         if (rule == null)
         {

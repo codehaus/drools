@@ -18,7 +18,7 @@ public class PojoConsequenceTest extends TestCase
     private Mock<RuleReflectMethod> newMockRuleMethod() {
         return mocks.createMock(
                 RuleReflectMethod.class,
-                new Class[] {Rule.class, Object.class, Method.class, ParameterValue[].class},
+                new Class[] {Rule.class, Object.class, Method.class, ArgumentSource[].class},
                 new Object[] {null, null, null, null});
     }
 

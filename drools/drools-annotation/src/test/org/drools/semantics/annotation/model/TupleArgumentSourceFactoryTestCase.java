@@ -7,15 +7,17 @@ import java.lang.reflect.Method;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.semantics.annotation.DroolsParameter;
+import org.drools.semantics.annotation.model.ArgumentSource;
+import org.drools.semantics.annotation.model.TupleArgumentSourceFactory;
 import org.drools.semantics.base.ClassObjectType;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
 
-public class TupleParameterValueFactoryTestCase extends TestCase {
+public class TupleArgumentSourceFactoryTestCase extends TestCase {
 
     private EasymockContainer mocks = new EasymockContainer();
 
-    private static final String BASE_DEFAULT_IDENTIFIER = TupleParameterValueFactory.BASE_DEFAULT_IDENTIFIER;
+    private static final String BASE_DEFAULT_IDENTIFIER = TupleArgumentSourceFactory.BASE_DEFAULT_IDENTIFIER;
 
     private Mock<Rule> mockRule = mocks.createMock(Rule.class);
     private Mock<Declaration> mockDeclaration = mocks.createMock(Declaration.class);
@@ -29,7 +31,7 @@ public class TupleParameterValueFactoryTestCase extends TestCase {
         public void identifierDefaultedObject(@DroolsParameter TestObject value) {}
     }
 
-    private TupleParameterValueFactory factory = new TupleParameterValueFactory();
+    private TupleArgumentSourceFactory factory = new TupleArgumentSourceFactory();
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -58,7 +60,7 @@ public class TupleParameterValueFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ParameterValue parameterValue = factory.create(
+        ArgumentSource arg = factory.create(
                 mockRule.object, int.class,
                 getParameterAnnotations("identifierSpecified", int.class));
 
@@ -74,7 +76,7 @@ public class TupleParameterValueFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ParameterValue parameterValue = factory.create(
+        ArgumentSource arg = factory.create(
                 mockRule.object, int.class,
                 getParameterAnnotations("identifierSpecified", int.class));
 
@@ -96,7 +98,7 @@ public class TupleParameterValueFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ParameterValue parameterValue = factory.create(
+        ArgumentSource arg = factory.create(
                 mockRule.object, parameterType,
                 getParameterAnnotations(methodName, parameterType));
 
@@ -114,7 +116,7 @@ public class TupleParameterValueFactoryTestCase extends TestCase {
 
         mocks.replay();
 
-        ParameterValue parameterValue = factory.create(
+        ArgumentSource arg = factory.create(
                 mockRule.object, parameterType,
                 getParameterAnnotations(methodName, parameterType));
 

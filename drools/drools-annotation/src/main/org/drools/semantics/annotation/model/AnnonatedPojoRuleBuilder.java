@@ -12,7 +12,6 @@ import org.drools.rule.Rule;
 import org.drools.semantics.annotation.DroolsCondition;
 import org.drools.semantics.annotation.DroolsConsequence;
 import org.drools.spi.Consequence;
-import org.drools.semantics.annotation.model.ParameterValue;
 
 public class AnnonatedPojoRuleBuilder
 {
@@ -41,17 +40,17 @@ public class AnnonatedPojoRuleBuilder
 
     // TODO Extract the parameter factory registy to its own abstraction.
     // Or maybe just take extensions in the builder instance :)
-    private static final Set<ParameterValueFactory> parameterValueFatories
-            = new HashSet<ParameterValueFactory>();
+    private static final Set<ArgumentSourceFactory> parameterValueFatories
+            = new HashSet<ArgumentSourceFactory>();
 
     static {
-        registerParameterValueFactory(new KnowledgeHelperParameterValueFactory());
-        registerParameterValueFactory(new TupleParameterValueFactory());
-        registerParameterValueFactory(new ApplicationDataParameterValueFactory());
+        registerParameterValueFactory(new KnowledgeHelperArgumentSourceFactory());
+        registerParameterValueFactory(new TupleArgumentSourceFactory());
+        registerParameterValueFactory(new ApplicationDataArgumentSourceFactory());
     }
 
-    public static void registerParameterValueFactory( ParameterValueFactory factory) {
-        for (ParameterValueFactory registeredFactory : parameterValueFatories) {
+    public static void registerParameterValueFactory( ArgumentSourceFactory factory) {
+        for (ArgumentSourceFactory registeredFactory : parameterValueFatories) {
             if (factory.getParameterValueType() == registeredFactory.getParameterValueType()) {
                 throw new IllegalArgumentException("ParameterValueFactory already registered"
                                                    + ": type=" + factory.getParameterValueType()
@@ -65,7 +64,7 @@ public class AnnonatedPojoRuleBuilder
     //---- ---- ----
 
     private static interface ParameterValidator {
-        void assertParameter(ParameterValue newParameterValue, List<ParameterValue> parameterValues)
+        void assertParameter(ArgumentSource newParameterValue, List<ArgumentSource> parameterValues)
                 throws DroolsException;
     }
 
@@ -95,8 +94,10 @@ public class AnnonatedPojoRuleBuilder
                 ruleReflectMethods.add(newConsequenceRuleReflectMethod(rule, pojo, method));
             }
         }
+        // TODO Replace this check with a call to Rule.checkValidity
         if (ruleReflectMethods.isEmpty()) {
-            throw new MissingConsequenceMethodException( "Rule must define at least one consequence method" + ": class = " + ruleClass );
+            throw new MissingConsequenceMethodException( 
+                    "Rule must define at least one consequence method" + ": class = " + ruleClass);
         }
         consequence = new PojoConsequence(
                 ruleReflectMethods.toArray(new RuleReflectMethod[ruleReflectMethods.size()]));
@@ -111,9 +112,9 @@ public class AnnonatedPojoRuleBuilder
     }
 
     private static final class ConditionParameterValidator implements ParameterValidator {
-        public void assertParameter(ParameterValue newParameterValue,
-                                    List<ParameterValue> parameterValues) throws InvalidReturnTypeException {
-            if (newParameterValue instanceof KnowledgeHelperParameterValue) {
+        public void assertParameter(ArgumentSource newParameterValue,
+                                    List<ArgumentSource> parameterValues) throws InvalidReturnTypeException {
+            if (newParameterValue instanceof KnowledgeHelperArgumentSource) {
                 throw new InvalidReturnTypeException(
                         "Condition methods cannot declare a parameter of type KnowledgeHelper");
             }
@@ -131,9 +132,9 @@ public class AnnonatedPojoRuleBuilder
     private static final class ConsequenceParameterValidator implements ParameterValidator {
         private boolean hasDroolsParameterValue;
 
-        public void assertParameter(ParameterValue newParameterValue,
-                                    List<ParameterValue> parameterValues) throws InvalidReturnTypeException {
-            if (newParameterValue instanceof KnowledgeHelperParameterValue) {
+        public void assertParameter(ArgumentSource newParameterValue,
+                                    List<ArgumentSource> parameterValues) throws InvalidReturnTypeException {
+            if (newParameterValue instanceof KnowledgeHelperArgumentSource) {
                 if (hasDroolsParameterValue) {
                     throw new InvalidReturnTypeException(
                             "Consequence methods can only declare on parameter of type Drools" );
@@ -152,15 +153,15 @@ public class AnnonatedPojoRuleBuilder
         }
     }
 
-    private static ParameterValue[] getParameterValues(Rule rule, Method method, ParameterValidator validator)
+    private static ArgumentSource[] getParameterValues(Rule rule, Method method, ParameterValidator validator)
             throws DroolsException {
         Class<?>[] parameterClasses = method.getParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        List<ParameterValue> parameterValues = new ArrayList<ParameterValue>();
+        List<ArgumentSource> parameterValues = new ArrayList<ArgumentSource>();
 
         for (int i = 0; i < parameterClasses.length; i++) {
             Class<?> parameterClass = parameterClasses[i];
-            ParameterValue parameterValue = null;
+            ArgumentSource parameterValue = null;
             try {
                 parameterValue = getParameterValue(rule, parameterClass, parameterAnnotations[i]);
                 validator.assertParameter(parameterValue, parameterValues);
@@ -173,14 +174,14 @@ public class AnnonatedPojoRuleBuilder
             }
             parameterValues.add(parameterValue);
         }
-        return parameterValues.toArray(new ParameterValue[parameterValues.size()]);
+        return parameterValues.toArray(new ArgumentSource[parameterValues.size()]);
     }
 
-    private static ParameterValue getParameterValue(Rule rule, Class<?> parameterClass,
+    private static ArgumentSource getParameterValue(Rule rule, Class<?> parameterClass,
                                                     Annotation[] parameterAnnotations)
                                                     throws DroolsException {
-        ParameterValue parameterValue;
-        for (ParameterValueFactory factory : parameterValueFatories) {
+        ArgumentSource parameterValue;
+        for (ArgumentSourceFactory factory : parameterValueFatories) {
             parameterValue = factory.create(rule, parameterClass, parameterAnnotations);
             if (parameterValue != null) {
                 return parameterValue;
@@ -190,7 +191,7 @@ public class AnnonatedPojoRuleBuilder
                 "Method parameter type not recognized or not annotated" );
     }
 
-    private static void assertNonConflictingParameterAnnotation( ParameterValue parameterValue )
+    private static void assertNonConflictingParameterAnnotation( ArgumentSource parameterValue )
             throws InvalidParameterException {
         if (parameterValue != null) {
             throw new InvalidParameterException("Method parameter contains conflicting @Drools annotations");

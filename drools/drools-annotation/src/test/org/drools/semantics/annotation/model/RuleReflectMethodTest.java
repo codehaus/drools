@@ -23,11 +23,11 @@ public class RuleReflectMethodTest extends TestCase
 
     public void testGetParameterValues( ) throws Exception
     {
-        ParameterValue[] expectedParameterValues = new ParameterValue[] {};
+        ArgumentSource[] expectedParameterValues = new ArgumentSource[] {};
 
         RuleReflectMethod ruleMethod = new RuleReflectMethod( null, null, null,
                 expectedParameterValues );
-        ParameterValue[] parameterValues = ruleMethod.getParameterValues( );
+        ArgumentSource[] parameterValues = ruleMethod.getArguments( );
 
         assertSame( expectedParameterValues, parameterValues );
     }
@@ -44,10 +44,10 @@ public class RuleReflectMethodTest extends TestCase
                 String.class, Object.class } );
 
         Rule rule = new Rule( "test" );
-        Mock< ParameterValue > mockKnowledgeHelperParameterValue = mocks.createMock( ParameterValue.class );
-        Mock< ParameterValue > mockTupleParameterValue = mocks.createMock( ParameterValue.class );
-        Mock< ParameterValue > mockApplicationDataParameterValue = mocks
-                .createMock( ParameterValue.class );
+        Mock< ArgumentSource > mockKnowledgeHelperParameterValue = mocks.createMock( ArgumentSource.class );
+        Mock< ArgumentSource > mockTupleParameterValue = mocks.createMock( ArgumentSource.class );
+        Mock< ArgumentSource > mockApplicationDataParameterValue = mocks
+                .createMock( ArgumentSource.class );
 
         Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
         Mock< KnowledgeHelper > mockKnowledgeHelperDrools = mocks.createMock( KnowledgeHelper.class );
@@ -64,7 +64,7 @@ public class RuleReflectMethodTest extends TestCase
                 mockApplicationDataParameterValue.object.getValue( mockTuple.object ),
                 a1 );
 
-        ParameterValue[] parameterValues = new ParameterValue[] {
+        ArgumentSource[] parameterValues = new ArgumentSource[] {
                 mockKnowledgeHelperParameterValue.object,
                 mockTupleParameterValue.object,
                 mockApplicationDataParameterValue.object };
@@ -89,7 +89,7 @@ public class RuleReflectMethodTest extends TestCase
         }
     }
 
-    private static class TestParameterValue implements ParameterValue {
+    private static class TestArgumentSource implements ArgumentSource {
         public Object getValue(Tuple tuple)
         {
             return "VALUE";
@@ -98,8 +98,8 @@ public class RuleReflectMethodTest extends TestCase
 
     public void testSerialize() throws Exception {
         Rule rule = new Rule( "test" );
-        ParameterValue[] parameterValues = new ParameterValue[] {
-                 new TestParameterValue()};
+        ArgumentSource[] parameterValues = new ArgumentSource[] {
+                 new TestArgumentSource()};
 
         SerializablePojo pojo = new SerializablePojo( );
         Method pojoMethod = SerializablePojo.class.getMethod(
