@@ -18,7 +18,11 @@ import java.util.Iterator;
  */
 public class Builder
 {
+    /** Root node to build against. */
     private RootNode rootNode;
+
+    /** Total-ordering priority counter. */
+    private int priorityCounter;
 
     /** Construct a <code>Builder</code> against an existing
      *  {@link RootNode} in the network.
@@ -94,7 +98,8 @@ public class Builder
         TupleSource lastNode = (TupleSource) attachableNodes.iterator().next();
 
         TerminalNode terminal = new TerminalNode( lastNode,
-                                                  rule.getAction() );
+                                                  rule.getAction(),
+                                                  ++this.priorityCounter);
     }
 
     /** Create the {@link ParameterNode}s for the <code>Rule</code>,

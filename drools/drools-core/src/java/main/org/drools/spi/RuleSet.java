@@ -1,9 +1,10 @@
 
 package org.drools.spi;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -16,8 +17,11 @@ public class RuleSet
     /** The name of the ruleset. */
     private String name;
 
-    /** Collection of {@link Rule}s indexed by name. */
-    private Map rules;
+    /** Set of all rule-names in this <code>RuleSet</code>. */
+    private Set names;
+
+    /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
+    private List rules;
 
     /** Construct.
      *
@@ -26,7 +30,8 @@ public class RuleSet
     public RuleSet(String name)
     {
         this.name  = name;
-        this.rules = Collections.EMPTY_MAP;
+        this.names = new HashSet();
+        this.rules = new ArrayList();
     }
 
     /** Set the name of this <code>RuleSet</code>
@@ -57,19 +62,7 @@ public class RuleSet
      */
     public void addRule(Rule rule) throws DuplicateRuleNameException, InvalidRuleException
     {
-        /*
-        if ( ! rule.isValid() )
-        {
-            throw new InvalidRuleException( rule );
-        }
-        */
-
         rule.checkValidity();
-
-        if ( this.rules == Collections.EMPTY_MAP )
-        {
-            this.rules = new HashMap();
-        }
 
         String name = rule.getName();
 
@@ -80,8 +73,8 @@ public class RuleSet
                                                   rule );
         }
 
-        this.rules.put( name,
-                        rule );
+        this.names.add( name );
+        this.rules.add( rule );
     }
 
     /** Retrieve a <code>Rule</code> by name.
@@ -93,7 +86,20 @@ public class RuleSet
      */
     public Rule getRule(String name)
     {
-        return (Rule) this.rules.get( name );
+        Iterator ruleIter = getRuleIterator();
+        Rule     eachRule = null;
+
+        while ( ruleIter.hasNext() )
+        {
+            eachRule = (Rule) ruleIter.next();
+
+            if ( eachRule.getName().equals( name ) )
+            {
+                return eachRule;
+            }
+        }
+
+        return null;
     }
 
     /** Determine if this <code>RuleSet</code> contains a <code>Rule</code
@@ -106,18 +112,18 @@ public class RuleSet
      */
     public boolean containsRule(String name)
     {
-        return this.rules.containsKey( name );
+        return this.names.contains( name );
     }
 
-    /** Retrieve a <code>Collection</code> of all <code>Rules</code>
+    /** Retrieve a <code>List</code> of all <code>Rules</code>
      *  in this <code>RuleSet</code>.
      *
-     *  @return A <code>Collection</code> of all <code>Rules</code>
+     *  @return A <code>List</code> of all <code>Rules</code>
      *          in this <code>RuleSet</code>.
      */
-    public Collection getRules()
+    public List getRules()
     {
-        return this.rules.values();
+        return this.rules;
     }
 
     /** Retrieve an <code>Iterator</code> of all <code>Rules</code>
@@ -128,6 +134,6 @@ public class RuleSet
      */
     public Iterator getRuleIterator()
     {
-        return this.rules.values().iterator();
+        return getRules().iterator();
     }
 }

@@ -152,7 +152,7 @@ of the root element within the namespace.
 
 Two interfaces are provided by the \emph{drools engine} that related
 to \emph{object type differentiation}.  Each semantic module must 
-supply an implementation of the \verb|org.drools.semantic.ObjectType| 
+supply an implementation of the \verb|org.drools.spi.ObjectType| 
 interface Figure \ref{semantic.interface.object-type}).
 
 \begin{figure*}[p]
@@ -210,7 +210,7 @@ it is an extraction of a fact implicit in another already-known
 fact.
 
 The only interface that pertains to column generation is the
-\verb|org.drools.semantic.FactExtractor| (Figure
+\verb|org.drools.spi.FactExtractor| (Figure
 \ref{semantic.interface.fact-extractor}).
 Given an object, the \verb|FactExtractor| must perform whatever 
 duties necessary to extract the fact. In a Java semantic module, a 
@@ -312,14 +312,14 @@ populated before being passed to the extractor.
 Rules are constructed programmatically using the following classes:
 
 \begin{enumerate}
-	\item \verb|org.drools.Rule|\\
+	\item \verb|org.drools.spi.Rule|\\
 		A \verb|Rule| is the container for all conditions and
 		actions.
-	\item \verb|org.drools.Declaration|\\
+	\item \verb|org.drools.spi.Declaration|\\
 		A \verb|Declaration| represents either a
 		\emph{parameter object declaration} or one of a
 		rule's \emph{local fact object declarations}.
-	\item \verb|org.drools.semantic.ObjectType|\\
+	\item \verb|org.drools.spi.ObjectType|\\
 		An \verb|ObjectType| parameterizes all \verb|Declarations|,
 		to inform the system of the types of objects expected.
 	\item \verb|org.drools.Condition|
@@ -330,12 +330,12 @@ Rules are constructed programmatically using the following classes:
 			A \verb|FilterCondition| represents any boolean
 			condition that either allows or disallows single
 			\emph{tuple}.
-			\item \verb|org.drools.semantic.FactExtractor|\\
+			\item \verb|org.drools.spi.FactExtractor|\\
 			A \verb|FactExtractor| is responsible
 			for taking a well-formed \emph{tuple} and 
 			extracting a new fact.
 		\end{enumerate}
-	\item \verb|org.drools.Action|\\
+	\item \verb|org.drools.spi.Action|\\
 		An \verb|Action| performs the required tasks when 
 		a rules conditions are met.
 \end{enumerate}
