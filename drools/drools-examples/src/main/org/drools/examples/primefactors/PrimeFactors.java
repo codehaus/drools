@@ -1,7 +1,7 @@
 package org.drools.examples.primefactors;
 
 /*
-$Id: PrimeFactors.java,v 1.2 2004-08-02 23:38:32 dbarnett Exp $
+$Id: PrimeFactors.java,v 1.3 2004-09-01 20:23:34 dbarnett Exp $
 
 Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
 
@@ -310,7 +310,7 @@ public class PrimeFactors
             }
         } catch (IOException e) {
             throw new RuntimeException(
-                "Cannot access " + PRIMES_FILE + " properly", e);
+                "Cannot access " + PRIMES_FILE + " properly: " + e.getMessage());
         }
     }
 
