@@ -2,16 +2,27 @@
 <project default="jar:jar">
 
 <!-- Fibonacci Examples -->
-  <goal name="fibonacci-java" prereqs="jar:jar">
-    <java classname="org.drools.examples.fibonacci.FibonacciExample"
-          fork="true">
-      <classpath refid="maven.dependency.classpath"/>
-      <classpath>
-        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
-      </classpath>
-        <arg value="fibonacci.java.drl"/>
-    </java>
-  </goal>
+    <goal name="fibonacci-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+          <arg value="fibonacci.java.drl"/>
+      </java>
+    </goal>
+
+    <goal name="fibonacci-python" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.python.drl"/>
+      </java>
+    </goal>
 
     <goal name="fibonacci-groovy" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciExample"
@@ -154,6 +165,17 @@
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
         <arg value="helloworld.groovy.drl"/>
+      </java>
+    </goal>
+
+    <goal name="helloworld-python" prereqs="jar:jar">
+      <java classname="org.drools.examples.helloworld.HelloWorldExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="helloworld.python.drl"/>
       </java>
     </goal>
 
