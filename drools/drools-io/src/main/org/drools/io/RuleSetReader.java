@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.44 2005-01-23 18:16:19 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.45 2005-01-26 17:42:23 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -78,7 +78,7 @@ import java.util.Set;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.44 2005-01-23 18:16:19 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.45 2005-01-26 17:42:23 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -91,13 +91,16 @@ public class RuleSetReader extends DefaultHandler
 
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";
+    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";    
 
     // ----------------------------------------------------------------------
     // Instance members
     // ----------------------------------------------------------------------
     /** SAX parser. */
     private SAXParser           parser;
+    
+    /** isValidating */
+    private boolean             isValidating = true;
 
     /** Locator for errors. */
     private Locator             locator;
@@ -357,43 +360,65 @@ public class RuleSetReader extends DefaultHandler
     public RuleSet read(InputSource in) throws SAXException,
                                        IOException
     {
-        SAXParser parser;
-
+        SAXParser localParser = null;
         if ( this.parser == null )
         {
             SAXParserFactory factory = SAXParserFactory.newInstance( );
-            factory.setNamespaceAware( true );
-            String isValidating = System.getProperty( "drools.schema.validating" );
-            if ( isValidating == null )
+
+            factory.setNamespaceAware( true );                       
+            
+            String isValidatingString = System.getProperty( "drools.schema.validating" );
+            if ( System.getProperty( "drools.schema.validating" ) != null )
             {
-                isValidating = "true";
+                this.isValidating = Boolean.getBoolean("drools.schema.validating");
+            }
+            
+            if (this.isValidating == true)
+            {
+                factory.setValidating( true );
+                try
+                {
+                    localParser = factory.newSAXParser( );
+                }
+                catch ( ParserConfigurationException e )
+                {
+                    throw new RuntimeException( e.getMessage( ) );
+                }      
+                
+                try
+                {
+                    localParser.setProperty( JAXP_SCHEMA_LANGUAGE,
+                                             W3C_XML_SCHEMA );
+                }
+                catch ( SAXNotRecognizedException e )
+                {
+                    System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
+                    localParser = null;
+                }  
             }
 
-            factory.setValidating( Boolean.valueOf( isValidating ).booleanValue( ) );
-            try
+            if ( localParser == null )
             {
-                parser = factory.newSAXParser( );
+                // not jaxp1.2 compliant so turn off validation
+                try
+                {
+                    this.isValidating = false;
+                    factory.setValidating( this.isValidating ); 
+                    localParser= factory.newSAXParser( );
+                }
+                catch ( ParserConfigurationException e )
+                {
+                    throw new RuntimeException( e.getMessage( ) );
+                }     
             }
-            catch ( ParserConfigurationException e )
-            {
-                throw new RuntimeException( e.getMessage( ) );
-            }
-            try
-            {
-                parser.setProperty( JAXP_SCHEMA_LANGUAGE,
-                                    W3C_XML_SCHEMA );
-            }
-            catch ( SAXNotRecognizedException e )
-            {
-                System.err.println( "Your SAX parser is not JAXP 1.2 compliant." );
-            }
+            
         }
         else
         {
-            parser = this.parser;
+            localParser = this.parser;
         }
 
-        if ( !parser.isNamespaceAware( ) )
+        if ( !localParser.isNamespaceAware( ) )
         {
             throw new RuntimeException( "parser must be namespace-aware" );
         }
@@ -410,8 +435,8 @@ public class RuleSetReader extends DefaultHandler
             }
         }
 
-        parser.parse( in,
-                      this );
+        localParser.parse( in,
+                           this );
 
         return this.ruleSet;
     }
@@ -455,7 +480,8 @@ public class RuleSetReader extends DefaultHandler
     }
 
     public void startDocument()
-    {
+    {        
+        this.isValidating = true;
         this.ruleSet = null;
         this.current = null;
         this.peer = null;
