@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- $Id: Eval.java,v 1.4 2002-08-28 01:18:29 bob Exp $
+ $Id: Eval.java,v 1.5 2002-10-11 14:57:59 ckl Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -64,8 +64,9 @@ import java.util.Hashtable;
  *  @see ExprExtractor
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:christiaan@dacelo.nl">Christiaan ten Klooster</a>  
  *
- *  @version $Id: Eval.java,v 1.4 2002-08-28 01:18:29 bob Exp $
+ *  @version $Id: Eval.java,v 1.5 2002-10-11 14:57:59 ckl Exp $
  */
 public class Eval extends Interp
 {
@@ -75,9 +76,6 @@ public class Eval extends Interp
 
     /** Interpreted text. */
     private String text;
-
-    /** BeanShell interpreter. */
-    private PythonInterpreter interp;
 
     /** Required decls. */
     private Declaration[] decls;
@@ -124,10 +122,10 @@ public class Eval extends Interp
                                              locals,
                                              globals );
 
-        return Py.tojava( result,
-                          Object.class );
+        return result.__tojava__(Object.class); 
     }
-
+    
+    
     /** Evaluate.
      *
      *  @return The result of evaluation.
