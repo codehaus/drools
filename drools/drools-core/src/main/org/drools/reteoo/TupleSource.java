@@ -5,12 +5,11 @@ import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 
-import org.drools.spi.Tuple;
 import org.drools.spi.Declaration;
 
 import java.util.Set;
 
-/** A source of {@link Tuple}s for a {@link TupleSink}.
+/** A source of {@link ReteTuple}s for a {@link TupleSink}.
  *
  *  <p>
  *  Nodes that propagate <code>Tuples</code> extend this class.
@@ -68,7 +67,7 @@ public abstract class TupleSource
      *  @param tuple The <code>Tuple</code> to propagate.
      *  @param workingMemory the working memory session.
      */
-    protected void propagateAssertTuple(Tuple tuple,
+    protected void propagateAssertTuple(ReteTuple tuple,
                                         WorkingMemory workingMemory) throws AssertionException
     {
         // System.err.println( this + " -> propagateTuple(" + tuple + ")" );

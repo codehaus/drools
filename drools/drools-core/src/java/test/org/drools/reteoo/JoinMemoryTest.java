@@ -2,7 +2,6 @@
 package org.drools.reteoo;
 
 import org.drools.spi.Declaration;
-import org.drools.spi.Tuple;
 import org.drools.semantic.java.JavaObjectType;
 
 import junit.framework.TestCase;
@@ -14,10 +13,10 @@ public class JoinMemoryTest extends TestCase
     private Declaration joinDecl1;
     private Declaration joinDecl2;
 
-    private Tuple tuple1;
-    private Tuple tuple2;
-    private Tuple tuple3;
-    private Tuple tuple4;
+    private ReteTuple tuple1;
+    private ReteTuple tuple2;
+    private ReteTuple tuple3;
+    private ReteTuple tuple4;
 
     private MockTupleSource leftInput1;
     private MockTupleSource rightInput1;
@@ -119,7 +118,7 @@ public class JoinMemoryTest extends TestCase
      */
     public void testMultiColumnAttemptJoinSingleTuple()
     {
-        Tuple tuple = null;
+        ReteTuple tuple = null;
 
         // ----------------------------------------
 
@@ -162,7 +161,7 @@ public class JoinMemoryTest extends TestCase
      */
     public void testSingleColumnAttemptJoinSingleTuple()
     {
-        Tuple tuple = null;
+        ReteTuple tuple = null;
 
         // ----------------------------------------
 

@@ -6,7 +6,6 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.ModificationException;
 
-import org.drools.spi.Tuple;
 import org.drools.spi.Action;
 
 /** Leaf Rete-OO node responsible for enacting {@link Action}s
@@ -49,9 +48,10 @@ public class TerminalNode implements TupleSink
     }
 
     public void assertTuple(TupleSource inputSource,
-                            Tuple tuple,
+                            ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
+        /*
         Action action = getAction();
 
         if ( action != null )
@@ -59,6 +59,14 @@ public class TerminalNode implements TupleSink
             action.invoke( tuple,
                            workingMemory );
         }
+        */
+
+        Action action = getAction();
+
+        Agenda agenda = workingMemory.getAgenda();
+
+        agenda.addToAgenda( tuple,
+                            action );
     }
 
     public void retractObject(TupleSource inputSource,

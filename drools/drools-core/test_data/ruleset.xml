@@ -21,6 +21,10 @@
 
 			RuleSetReaderTest.RETURN_doc1 = doc1;
 			RuleSetReaderTest.RETURN_doc2 = doc2;
+
+			retractObject( doc1 );
+			modifyObject( doc2 );
+
 		</then>
 	</rule>
 

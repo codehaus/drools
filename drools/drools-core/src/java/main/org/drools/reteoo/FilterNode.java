@@ -6,13 +6,12 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.ModificationException;
 
-import org.drools.spi.Tuple;
 import org.drools.spi.Declaration;
 import org.drools.spi.FilterCondition;
 
 import java.util.Set;
 
-/** Node which filters {@link Tuple}s.
+/** Node which filters {@link ReteTuple}s.
  *
  *  <p>
  *  Using a semantic {@link FilterCondition}, this node
@@ -21,7 +20,6 @@ import java.util.Set;
  *  </p>
  *
  *  @see FilterCondition
- *  @see Tuple
  *
  *  @author <a href="mailto:bob@werken.com">bob@werken.com</a>
  */
@@ -66,7 +64,7 @@ public class FilterNode extends TupleSource implements TupleSink
     }
 
     public void assertTuple(TupleSource inputSource,
-                            Tuple tuple,
+                            ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
         if ( getFilterCondition().isAllowed( tuple ) )

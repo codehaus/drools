@@ -5,7 +5,6 @@ import org.drools.WorkingMemory;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
 
-import org.drools.spi.Tuple;
 import org.drools.spi.Declaration;
 
 import java.util.List;
@@ -115,7 +114,7 @@ public class JoinNode extends TupleSource implements TupleSink
     }
 
     public void assertTuple(TupleSource inputSource,
-                            Tuple tuple,
+                            ReteTuple tuple,
                             WorkingMemory workingMemory) throws AssertionException
     {
         JoinMemory memory = workingMemory.getJoinMemory( this );
@@ -137,11 +136,11 @@ public class JoinNode extends TupleSource implements TupleSink
         }
 
         Iterator tupleIter = joinedTuples.iterator();
-        Tuple    eachTuple = null;
+        ReteTuple    eachTuple = null;
 
         while ( tupleIter.hasNext() )
         {
-            eachTuple = (Tuple) tupleIter.next();
+            eachTuple = (ReteTuple) tupleIter.next();
 
             propagateAssertTuple( eachTuple,
                                   workingMemory );
@@ -152,6 +151,11 @@ public class JoinNode extends TupleSource implements TupleSink
                               Object object,
                               WorkingMemory workingMemory) throws RetractionException
     {
+
+        JoinMemory memory = workingMemory.getJoinMemory( this );
+
+        memory.retractObject( object );
+        
         propagateRetractObject( object,
                                 workingMemory );
     }

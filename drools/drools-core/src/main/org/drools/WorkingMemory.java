@@ -3,6 +3,7 @@ package org.drools;
 
 import org.drools.reteoo.JoinMemory;
 import org.drools.reteoo.JoinNode;
+import org.drools.reteoo.Agenda;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -19,12 +20,34 @@ public class WorkingMemory
     /** The actual memory for the {@link JoinNode}s. */
     private Map      joinMemories;
 
+    /** Rule-firing agenda. */
+    private Agenda   agenda;
+
     /** Construct a new working memory for a ruleBase.
      */
     protected WorkingMemory(RuleBase ruleBase)
     {
         this.ruleBase     = ruleBase;
         this.joinMemories = new HashMap();
+
+        this.agenda       = new Agenda( this );
+    }
+
+    /** Produce output suitable for debugging.
+     */
+    public String toString()
+    {
+        return "[WorkingMemory: " + this.joinMemories + "]";
+    }
+
+    /** Retrieve the rule-firing <code>Agenda</code> for
+     *  this <code>WorkingMemory</code>.
+     *
+     *  @return The <code>Agenda</code>.
+     */
+    public Agenda getAgenda()
+    {
+        return this.agenda;
     }
 
     /** Retrieve the <code>RuleBase</code>
@@ -47,6 +70,13 @@ public class WorkingMemory
     {
         getRuleBase().assertObject( object,
                                     this );
+
+        Agenda agenda = getAgenda();
+
+        while ( ! agenda.isEmpty() )
+        {
+            getAgenda().fireNextItem();
+        }
     }
 
     /** Retract a fact object from this working memory.

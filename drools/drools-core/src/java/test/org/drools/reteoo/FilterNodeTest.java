@@ -6,7 +6,6 @@ import org.drools.spi.Declaration;
 import org.drools.spi.FilterCondition;
 import org.drools.spi.TrueFilterCondition;
 import org.drools.spi.FalseFilterCondition;
-import org.drools.spi.Tuple;
 import org.drools.semantic.java.JavaObjectType;
 
 import junit.framework.TestCase;
@@ -16,7 +15,7 @@ import java.util.Set;
 
 public class FilterNodeTest extends TestCase
 {
-    private Tuple tuple;
+    private ReteTuple tuple;
 
     public FilterNodeTest(String name)
     {
@@ -56,7 +55,7 @@ public class FilterNodeTest extends TestCase
             assertEquals( 1,
                           asserted.size() );
             
-            Tuple tuple = (Tuple) asserted.get( 0 );
+            ReteTuple tuple = (ReteTuple) asserted.get( 0 );
             
             assertSame( this.tuple,
                         tuple );
