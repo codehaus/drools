@@ -4,7 +4,6 @@ package org.drools.semantic.java.io;
 import org.drools.semantic.java.JavaObjectType;
 
 import org.drools.rule.Declaration;
-import org.drools.rule.DeclarationAlreadyCompleteException;
 
 import org.dom4j.Element;
 import org.dom4j.ElementPath;

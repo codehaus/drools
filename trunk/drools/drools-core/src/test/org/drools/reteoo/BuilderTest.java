@@ -5,7 +5,6 @@ import org.drools.reteoo.impl.ReteImpl;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 import org.drools.rule.FactExtraction;
-import org.drools.rule.DeclarationAlreadyCompleteException;
 import org.drools.spi.ObjectType;
 import org.drools.spi.InstrumentedCondition;
 import org.drools.spi.InstrumentedFactExtractor;
@@ -45,22 +44,15 @@ public class BuilderTest extends TestCase
 
         this.rule1 = new Rule( "cheese" );
 
-        try
-        {
-            this.stringDecl = new Declaration( this.stringType,
-                                               "string" );
-
-            this.objectDecl = new Declaration( this.objectType,
-                                               "object" );
-
-            this.rule1.addParameterDeclaration( this.stringDecl );
-            
-            this.rule1.addParameterDeclaration( this.objectDecl );
-        }
-        catch (DeclarationAlreadyCompleteException e)
-        {
-            fail( e.toString() );
-        }
+        this.stringDecl = new Declaration( this.stringType,
+                                           "string" );
+        
+        this.objectDecl = new Declaration( this.objectType,
+                                           "object" );
+        
+        this.rule1.addParameterDeclaration( this.stringDecl );
+        
+        this.rule1.addParameterDeclaration( this.objectDecl );
     }
 
     public void tearDown()

@@ -6,7 +6,6 @@ import org.drools.reteoo.ReteConstructionException;
 import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 import org.drools.rule.FactExtraction;
-import org.drools.rule.DeclarationAlreadyCompleteException;
 import org.drools.spi.Tuple;
 import org.drools.spi.Action;
 import org.drools.spi.FactExtractor;
@@ -123,10 +122,6 @@ public class RoughDom4jTest extends TestCase
 
             assertSame( this.doc2,
                         RETURN_doc2 );
-        }
-        catch (DeclarationAlreadyCompleteException e)
-        {
-            fail( e.toString() );
         }
         catch (SAXPathException e)
         {
