@@ -48,28 +48,30 @@ equivalent to Rete's condition patterns against attributes.
 The assignment expressions map to place-holder variables in
 Forgy's algorithm.
 
+\newpage
+
 The types of nodes used in Rete-OO graph construction are
 listed here.  Those that are new or different from Rete are
 denoted with a '*'.
 
 \begin{itemize}
-	\item \emph{Object type.} \\
+	\item \emph{\textbf{Object type.}} \\
 		Object type nodes differentiate objects by
 		filtering on their defined type.
-	\item \emph{*Parameter.}\\
+	\item \emph{\textbf{*Parameter.}}\\
 		Parameter nodes create a tuple with a single
 		entry binding the object to the name.
-	\item \emph{Filter.}\\
+	\item \emph{\textbf{Filter.}}\\
 		Filter nodes simply tests a tuple against 
 		an a boolean expression.
-	\item \emph{*Assignment.}\\
+	\item \emph{\textbf{*Assignment.}}\\
 		Assignment nodes extract new attributes and
 		create new columns on tuples.
-	\item \emph{Join.}\\
+	\item \emph{\textbf{Join.}}\\
 		Join nodes connect the output arcs from two
 		other nodes and allows consistent tuples to
 		be merged and passed through.
-	\item \emph{Terminal.}\\
+	\item \emph{\textbf{Terminal.}}\\
 		Terminals effect the firing of the rule with
 		the valid tuples.
 \end{itemize}
@@ -78,6 +80,7 @@ The resulting Rete-OO graph is constructed in a different
 manner than the equivalent Rete graph, due to the addition
 and rearrangement of some nodes.
 
+\begin{figure}
 \begin{center}
 	\xymatrix @R-10pt{
 		\bullet \ar[d] \\
@@ -89,4 +92,6 @@ and rearrangement of some nodes.
 		 & terminal \\
 	}
 \end{center}
-
+\label{network.rete-oo}
+\caption{Rete-OO network}
+\end{figure}
