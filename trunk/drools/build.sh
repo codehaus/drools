@@ -38,7 +38,7 @@ target_all()
 
 target_site()
 {
-  #build javadoc
+  build javadoc pdf
 
   echo "building site"
 
@@ -51,6 +51,7 @@ target_site()
   done
 
   copy_tree $BASE/build/docs/api $BASE/build/site/api 
+  cp $BASE/build/docs/*.pdf $BASE/build/site/
 }
 
 module_site()
@@ -400,15 +401,22 @@ target_pdf()
   # fi 
   #done
 
-  copy_tree $BASE/src/latex/ $BASE/build/latex/ tex 
+  copy_tree $BASE/src/latex/ $BASE/build/latex/ tex pdf 
 
   local doc
  
-  for doc in $BASE/build/latex/* ; do
-    echo "test $doc"
-    if [ -d doc ] ; then 
-      echo "generating $doc"
-    fi
+  for doc in $(ls -d $BASE/build/latex/*) ; do
+    local docname="drools-$(basename $doc)-$VERSION.pdf"
+    echo "generating $docname"
+    cd ${doc}
+    pdflatex ${doc}/document.tex
+    makeindex ${doc}/document.idx
+    pdflatex ${doc}/document.tex
+    pdflatex ${doc}/document.tex
+    pdflatex ${doc}/document.tex
+    cd - 
+    mkdir -p $BASE/build/docs
+    cp $doc/document.pdf $BASE/build/docs/drools-$(basename $doc)-$VERSION.pdf
   done
 }
 
