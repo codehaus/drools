@@ -1,7 +1,5 @@
 package org.drools.semantics.java;
 
-import java.util.Map;
-
 import org.drools.rule.Rule;
 import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
@@ -21,7 +19,7 @@ public class ExprConditionFactory implements ConditionFactory
     {
         try
         {
-            return new ExprCondition( config.getText( ),
+            return new JavaCondition( config.getText( ),
                                       rule);
         }
         catch ( Exception e )
