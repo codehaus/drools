@@ -3,15 +3,15 @@
 <document>
 
   <properties>
-    <title>drools</title>
+    <title>Drools</title>
     <author email="bob@eng.werken.com">bob mcwhirter</author>
   </properties>
 
   <body>
 
-  <section name="drools">
+  <section name="Drools">
     <p>
-    <code>drools</code> is an augmented implementation of Forgy's Rete algorithm
+    Drools is an augmented implementation of Forgy's Rete algorithm
     tailored for the object-oriented language of Java.  Adapting
     Rete to an object-oriented interface allows for more natural
     expression of business rules with regards to business objects.
@@ -20,7 +20,7 @@
     <subsection name="Rete-OO">
 
       <p>
-      The <code>drools</code> engine uses a modified form of the Rete algorithm
+      The Drools engine uses a modified form of the Rete algorithm
       called the Rete-OO algorithm.  Internally it operates using the same
       concepts and methods as Forgy's original but adds some node types
       required for seemless integration with an object-oriented language.
@@ -31,7 +31,7 @@
     <subsection name="Semantics Provider Interface &amp; Framework">
 
       <p>
-      At the core, <code>drools</code> is purely a Rete-OO algorithmic
+      At the core, Drools is purely a Rete-OO algorithmic
       engine.  The engine works in terms of very abstracted concepts,
       such as <a href="./apidocs/org/drools/spi/Condition.html">Conditions</a>, 
       <a href="./apidocs/org/drools/spi/ObjectType.html">ObjectTypes</a> and
@@ -42,10 +42,9 @@
       </p>
 
       <p>
-      Currently, <code>drools</code> supports three semantic modules:
-      <a href="/apidocs/org/drools/semantics/java/package-summary.html">Java</a>,
-      <a href="/apidocs/org/drools/semantics/python/package-summary.html">Python</a>, and
-      <a href="/apidocs/org/drools/semantics/jelly/package-summary.html">Jelly</a>.
+      Currently, Drools supports two semantic modules:
+      <a href="/drools-java/apidocs/org/drools/semantics/java/package-summary.html">Java</a>,
+      <a href="/drools-python/apidocs/org/drools/semantics/python/package-summary.html">Python</a>, and
       </p>
 
     </subsection>

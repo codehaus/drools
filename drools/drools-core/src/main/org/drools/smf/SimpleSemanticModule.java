@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SimpleSemanticModule.java,v 1.9 2003-11-27 04:32:22 bob Exp $
+ $Id: SimpleSemanticModule.java,v 1.10 2003-12-30 00:43:31 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -86,6 +86,8 @@ public class SimpleSemanticModule
     /** Consequence factories. */
     private Map consequenceFactories;
 
+    private Map durationFactories;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -103,6 +105,7 @@ public class SimpleSemanticModule
         this.conditionFactories   = new HashMap();
         this.extractorFactories   = new HashMap();
         this.consequenceFactories = new HashMap();
+        this.durationFactories    = new HashMap();
     }
 
     // ------------------------------------------------------------
@@ -238,5 +241,22 @@ public class SimpleSemanticModule
     public Set getConsequenceFactoryNames()
     {
         return this.consequenceFactories.keySet();
+    }
+
+    public void addDurationFactory(String name,
+                                   DurationFactory factory)
+    {
+        this.durationFactories.put( name,
+                                    factory );
+    }
+
+    public DurationFactory getDurationFactory(String name)
+    {
+        return (DurationFactory) this.durationFactories.get( name );
+    }
+
+    public Set getDurationFactoryNames()
+    {
+        return this.durationFactories.keySet();
     }
 }

@@ -2,8 +2,8 @@
 <document>
 
   <properties>
-    <author email="bob@eng.werken.com">bob mcwhirter</author>
-    <title>CVS</title>
+    <author email="bob@codehaus.org">bob mcwhirter</author>
+    <title>CVS Access</title>
   </properties>
 
   <body>
@@ -16,9 +16,9 @@
       </p>
 
 <pre>
-    cvs -d:pserver:anonymous@cvs.werken.com:/cvsroot/drools login
+    cvs -d:pserver:anonymous@cvs.codehaus.org:/scm/cvs login
  
-    cvs -z3 -d:pserver:anonymous@cvs.werken.com:/cvsroot/drools co drools
+    cvs -z3 -d:pserver:anonymous@cvs.codehaus.org:/scm/cvs co drools
 </pre>
 
     <p>
@@ -37,7 +37,7 @@
 <pre>
     export CVS_RSH=ssh
  
-    cvs -z3 -d:ext:<b>developername</b>@cvs.werken.com:/cvsroot/drools co drools
+    cvs -z3 -d:ext:<b>developername</b>@cvs.codehaus.org:/scm/cvs co drools
 </pre>
 
     </section>
