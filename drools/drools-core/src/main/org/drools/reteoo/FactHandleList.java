@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
-* $Id: FactHandleList.java,v 1.3 2004-12-06 01:23:02 dbarnett Exp $
+* $Id: FactHandleList.java,v 1.4 2004-12-07 14:52:00 simon Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -123,7 +123,7 @@ final class FactHandleList implements Serializable
      * Obtains the handle at a specified index.
      * @param index The position from which the handle should be obtained.
      * @return The handle; or <code>null</code> if no handle exists.
-     * @throws ArrayIndexOutOfBoundsException if <code>index</code> &gt; {@link #length()}.
+     * @throws ArrayIndexOutOfBoundsException if <code>index</code> &gt; {@link #size()}.
      */
     public FactHandle get( int index )
     {
@@ -176,7 +176,7 @@ final class FactHandleList implements Serializable
      * Obtains the length of the list.
      * @return The length of the list, including all <code>null</code> values.
      */
-    public int length()
+    public int size()
     {
         return this.handles.length;
     }
@@ -193,11 +193,11 @@ final class FactHandleList implements Serializable
             return true;
         }
 
-        if ( object instanceof FactHandleList )
+        if ( object == null || getClass( ) != object.getClass( ) )
         {
-            return Arrays.equals( this.handles, ( ( FactHandleList ) object ).handles );
+            return false;
         }
 
-        return false;
+        return Arrays.equals( this.handles, ( ( FactHandleList ) object ).handles );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.4 2004-12-06 00:45:30 dbarnett Exp $
+ * $Id: ClassFieldObjectType.java,v 1.5 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.4 2004-12-06 00:45:30 dbarnett Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.5 2004-12-07 14:52:00 simon Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
@@ -137,7 +137,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
                 return false;
             }
         }
-        
+
         boolean result;
         try
         {
@@ -164,27 +164,28 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
     /**
      * Determine if another object is equal to this.
      *
-     * @param thatObj The object to test.
+     * @param object The object to test.
      *
-     * @return <code>true</code> if <code>thatObj</code> is equal to this,
+     * @return <code>true</code> if <code>object</code> is equal to this,
      *         otherwise <code>false</code>.
      */
-    public boolean equals( Object thatObj )
+    public boolean equals( Object object )
     {
-        if ( this == thatObj )
+        if ( this == object )
         {
             return true;
         }
-        ClassFieldObjectType thatClassField = ( ClassFieldObjectType ) thatObj;
 
-        if ( thatObj instanceof ClassFieldObjectType )
+        if ( object == null || getClass( ) != object.getClass( ) )
         {
-            return getType( ).equals( thatClassField.getType( ) )
-                   && getFieldName( ).equals( thatClassField.getFieldName( ) )
-                   && getFieldValue( ).equals( thatClassField.getFieldValue( ) );
+            return false;
         }
 
-        return false;
+        ClassFieldObjectType other = ( ClassFieldObjectType ) object;
+
+        return getType( ).equals( other.getType( ) )
+               && getFieldName().equals( other.getFieldName( ) )
+               && getFieldValue().equals( other.getFieldValue( ) );
     }
 
     /**

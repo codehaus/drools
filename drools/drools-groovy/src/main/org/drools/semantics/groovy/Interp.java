@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.13 2004-11-29 12:35:52 simon Exp $
+ * $Id: Interp.java,v 1.14 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,7 +48,6 @@ import groovy.lang.Script;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
@@ -66,7 +65,7 @@ import java.util.Map;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Interp.java,v 1.13 2004-11-29 12:35:52 simon Exp $
+ * @version $Id: Interp.java,v 1.14 2004-12-07 14:52:00 simon Exp $
  */
 public class Interp implements Serializable
 {
@@ -98,17 +97,13 @@ public class Interp implements Serializable
         try
         {
             StringBuffer newText = new StringBuffer( );
-            Iterator it = rule.getImports( ).iterator();
+            Iterator it = rule.getImports( GroovyImportEntry.class ).iterator();
             while (it.hasNext())
             {
-                ImportEntry importEntry = (ImportEntry) it.next();
-                if (importEntry instanceof GroovyImportEntry)
-                {
-                    newText.append("import ");
-                    newText.append(importEntry.getImportEntry());
-                    newText.append(";");
-                    newText.append(LINE_SEPARATOR);
-                }
+                newText.append("import ");
+                newText.append( it.next( ) );
+                newText.append(";");
+                newText.append(LINE_SEPARATOR);
             }
             newText.append(text);
             this.code = buildScript( newText.toString() );

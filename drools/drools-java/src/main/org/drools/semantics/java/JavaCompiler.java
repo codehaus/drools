@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.1 2004-12-07 14:27:55 simon Exp $
+ * $Id: JavaCompiler.java,v 1.2 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,11 +60,11 @@ class JavaCompiler
         try
         {
             return JavaScriptEvaluator.compile( expression,
-                                                  clazz,
-                                                  PARAM_NAMES,
-                                                  params,
-                                                  rule.getImports( JavaImportEntry.class ),
-                                                  rule.getApplicationData( ) );
+                                                clazz,
+                                                PARAM_NAMES,
+                                                params,
+                                                rule.getImports( JavaImportEntry.class ),
+                                                rule.getApplicationData( ) );
         }
         catch ( Scanner.LocatedException e )
         {

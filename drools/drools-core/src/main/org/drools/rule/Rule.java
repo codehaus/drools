@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.53 2004-12-07 14:27:54 simon Exp $
+ * $Id: Rule.java,v 1.54 2004-12-07 14:52:00 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -416,11 +416,6 @@ public class Rule
         this.imports = imports;
     }
 
-    public Set getImports()
-    {
-        return this.imports;
-    }
-
     public Set getImports( Class clazz )
     {
         Set imports = new HashSet();
@@ -432,7 +427,7 @@ public class Rule
             importEntry = ( ImportEntry ) i.next();
             if ( clazz.isInstance( importEntry ) )
             {
-                imports.add( importEntry.getImportEntry() );
+                imports.add( importEntry.getImportEntry( ) );
             }
         }
 
