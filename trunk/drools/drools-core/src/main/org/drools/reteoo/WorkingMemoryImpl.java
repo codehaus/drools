@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.29 2004-10-27 22:46:56 simon Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.30 2004-10-28 06:27:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,7 +62,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.29 2004-10-27 22:46:56 simon Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.30 2004-10-28 06:27:48 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -332,9 +332,9 @@ class WorkingMemoryImpl implements WorkingMemory
         {
             handle = newFactHandle( );
 
-            this.ruleBase.assertObject( handle, object, this );
-
             putObject( handle, object );
+
+            this.ruleBase.assertObject( handle, object, this );
         }
 
         return handle;

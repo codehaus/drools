@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.38 2004-10-27 22:46:56 simon Exp $
+ * $Id: ReteTuple.java,v 1.39 2004-10-28 06:27:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.38 2004-10-27 22:46:56 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.39 2004-10-28 06:27:48 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -195,16 +195,6 @@ class ReteTuple implements Tuple, Serializable
     TupleKey getKey()
     {
         return this.key;
-    }
-
-    /**
-     * Retrieve the other columns for this tuple.
-     *
-     * @return The other columns.
-     */
-    Map getOtherColumns()
-    {
-        return this.columns;
     }
 
     /**
