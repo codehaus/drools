@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConflictResolver.java,v 1.7 2004-10-06 13:52:26 mproctor Exp $
+ * $Id: ConflictResolver.java,v 1.8 2004-10-30 01:11:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,9 +59,9 @@ import java.util.Comparator;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
  *
- * @version $Id: ConflictResolver.java,v 1.7 2004-10-06 13:52:26 mproctor Exp $
+ * @version $Id: ConflictResolver.java,v 1.8 2004-10-30 01:11:48 simon Exp $
  */
 public interface ConflictResolver extends Serializable, Comparator
 {
-    int compare( Activation existing, Activation adding );
+    int compare( Activation lhs, Activation rhs );
 }
