@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleSetTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ $Id: RuleSetTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleSetTag.java,v 1.1 2002-08-19 16:43:46 bob Exp $
+ *  @version $Id: RuleSetTag.java,v 1.2 2002-08-19 18:05:10 bob Exp $
  */
 public class RuleSetTag extends RuleTagSupport
 {
@@ -70,6 +70,7 @@ public class RuleSetTag extends RuleTagSupport
     /** The rule-set. */
     private RuleSet ruleSet;
 
+    /** Var name. */
     private String var;
 
     // ------------------------------------------------------------
@@ -105,11 +106,19 @@ public class RuleSetTag extends RuleTagSupport
         return this.name;
     }
 
+    /** Set the variable in which to store the <code>RuleSet</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable in which to store the <code>RuleSet</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;

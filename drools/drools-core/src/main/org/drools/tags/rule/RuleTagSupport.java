@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: RuleTagSupport.java,v 1.2 2002-08-19 17:24:00 bob Exp $
+ $Id: RuleTagSupport.java,v 1.3 2002-08-19 18:05:10 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleTagSupport.java,v 1.2 2002-08-19 17:24:00 bob Exp $
+ *  @version $Id: RuleTagSupport.java,v 1.3 2002-08-19 18:05:10 bob Exp $
  */
 public abstract class RuleTagSupport extends TagSupport
 {
@@ -81,7 +81,7 @@ public abstract class RuleTagSupport extends TagSupport
      *  @return The current rule-set or <code>null</code> if
      *          no rule-set is in scope.
      */
-    protected RuleSet getRuleSet() throws JellyException
+    protected RuleSet getRuleSet() 
     {
         RuleSetTag ruleSetTag = (RuleSetTag) findAncestorWithClass( RuleSetTag.class );
 
