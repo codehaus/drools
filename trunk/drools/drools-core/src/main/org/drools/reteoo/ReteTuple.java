@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.19 2003-12-05 04:26:23 bob Exp $
+ $Id: ReteTuple.java,v 1.20 2004-03-26 15:16:27 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,9 @@ package org.drools.reteoo;
  */
 
 import org.drools.FactHandle;
+import org.drools.WorkingMemory;
 import org.drools.spi.Tuple;
+import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 
 import java.util.Map;
@@ -61,7 +63,7 @@ import java.util.HashSet;
  *  
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ReteTuple.java,v 1.19 2003-12-05 04:26:23 bob Exp $ 
+ *  @version $Id: ReteTuple.java,v 1.20 2004-03-26 15:16:27 bob Exp $ 
  */
 class ReteTuple
     implements Tuple
@@ -69,6 +71,10 @@ class ReteTuple
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
+
+    private WorkingMemory workingMemory;
+    
+    private Rule rule;
 
     /** Key colums for this tuple. */
     private TupleKey key;
@@ -84,8 +90,11 @@ class ReteTuple
     
     /** Construct.
      */
-    public ReteTuple()
+    public ReteTuple(WorkingMemory workingMemory,
+                     Rule rule)
     {
+        this.workingMemory  = workingMemory;
+        this.rule           = rule;
         this.key            = new TupleKey();
         this.columns        = new HashMap();
         this.objectToHandle = new HashMap();
@@ -97,6 +106,8 @@ class ReteTuple
      */
     ReteTuple(ReteTuple that)
     {
+        this.workingMemory  = that.workingMemory;
+        this.rule           = that.rule;
         this.key            = new TupleKey( that.key );
         this.columns        = new HashMap( that.columns );
         this.objectToHandle = new HashMap( that.objectToHandle );
@@ -108,14 +119,22 @@ class ReteTuple
      *  @param handle The fact-handle.
      *  @param value The column value.
      */
-    ReteTuple(Declaration declaration,
+    ReteTuple(WorkingMemory workingMemory,
+              Rule rule,
+              Declaration declaration,
               FactHandle handle,
               Object value)
     {
-        this();
+        this( workingMemory,
+              rule );
         putKeyColumn( declaration,
                       handle,
                       value );
+    }
+
+    ReteTuple()
+    {
+        this( null, null );
     }
 
     public String toString()
@@ -222,5 +241,15 @@ class ReteTuple
     public FactHandle getFactHandleForObject(Object object)
     {
         return (FactHandle) this.objectToHandle.get( object );
+    }
+
+    public Rule getRule()
+    {
+        return this.rule;
+    }
+
+    public WorkingMemory getWorkingMemory()
+    {
+        return this.workingMemory;
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.17 2003-12-05 04:26:23 bob Exp $
+ $Id: ParameterNode.java,v 1.18 2004-03-26 15:16:27 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -50,6 +50,7 @@ import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.AssertionException;
 import org.drools.RetractionException;
+import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 
 import java.io.Serializable;
@@ -78,6 +79,9 @@ class ParameterNode
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The rule. */
+    private Rule rule;
+
     /** The parameter declaration. */
     private Declaration declaration;
 
@@ -87,12 +91,15 @@ class ParameterNode
 
     /** Construct.
      *
+     *  @param rule The <code>Rule</code>.
      *  @param inputNode The <code>ObjectTypeNode</code> input to this.
      *  @param declaration The root fact object <code>Declaration</code>.
      */
-    public ParameterNode(ObjectTypeNode inputNode,
+    public ParameterNode(Rule rule,
+                         ObjectTypeNode inputNode,
                          Declaration declaration)
     {
+        this.rule        = rule;
         this.declaration = declaration;
 
         if ( inputNode != null )
@@ -119,7 +126,9 @@ class ParameterNode
                       WorkingMemoryImpl workingMemory)
         throws AssertionException
     {
-        ReteTuple tuple = new ReteTuple( getDeclaration(),
+        ReteTuple tuple = new ReteTuple( workingMemory,
+                                         this.rule,
+                                         getDeclaration(),
                                          handle,
                                          object );
 
@@ -164,7 +173,9 @@ class ParameterNode
                       WorkingMemoryImpl workingMemory)
         throws FactException
     {
-        ReteTuple tuple = new ReteTuple( getDeclaration(),
+        ReteTuple tuple = new ReteTuple( workingMemory,
+                                         this.rule,
+                                         getDeclaration(),
                                          handle,
                                          object );
         

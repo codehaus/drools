@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.38 2003-12-05 04:26:23 bob Exp $
+ $Id: Builder.java,v 1.39 2004-03-26 15:16:27 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -278,8 +278,9 @@ public class Builder
 
             objectTypeNode = ((Rete)getRete()).getOrCreateObjectTypeNode( objectType );
 
-            paramNode = new ParameterNode( objectTypeNode,
-                                               eachDecl );
+            paramNode = new ParameterNode( rule,
+                                           objectTypeNode,
+                                           eachDecl );
 
             leafNodes.add( paramNode );
             

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterTuple.java,v 1.10 2003-11-19 21:31:10 bob Exp $
+ $Id: ParameterTuple.java,v 1.11 2004-03-26 15:16:27 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,8 @@ package org.drools.reteoo;
  
  */
 
+import org.drools.WorkingMemory;
+import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 
 import java.util.Set;
@@ -81,9 +83,14 @@ class ParameterTuple
      *  @param declaration The parameter <code>Declaration</code>.
      *  @param object The object bound to the <code>Declaration</code>.
      */
-    ParameterTuple(Declaration declaration,
+    ParameterTuple(WorkingMemory workingMemory,
+                   Rule rule,
+                   Declaration declaration,
                    Object object)
     {
+        super( workingMemory,
+              rule );
+
         this.declaration = declaration;
         this.object      = object;
 

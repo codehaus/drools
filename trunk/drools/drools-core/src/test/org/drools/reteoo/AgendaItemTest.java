@@ -18,7 +18,9 @@ public class AgendaItemTest
 
         MockFactHandle handle = new MockFactHandle( 1 );
 
-        ReteTuple tuple = new ReteTuple( decl,
+        ReteTuple tuple = new ReteTuple( null,
+                                         null,
+                                         decl,
                                          handle,
                                          new Object() );
 
@@ -48,7 +50,9 @@ public class AgendaItemTest
         
         MockFactHandle handle = new MockFactHandle( 1 );
         
-        ReteTuple tuple = new ReteTuple( decl,
+        ReteTuple tuple = new ReteTuple( null,
+                                         null,
+                                         decl,
                                          handle,
                                          new Object() );
         
@@ -63,7 +67,9 @@ public class AgendaItemTest
         assertTrue( item.dependsOn( handle ) );
         assertFalse( item.dependsOn( new MockFactHandle( 2 ) ) );
 
-        ReteTuple newTuple = new ReteTuple( decl,
+        ReteTuple newTuple = new ReteTuple( null,
+                                            null,
+                                            decl,
                                             handle,
                                             new Object() );
         
@@ -84,7 +90,9 @@ public class AgendaItemTest
 
         MockFactHandle handle = new MockFactHandle( 1 );
 
-        ReteTuple tuple = new ReteTuple( decl,
+        ReteTuple tuple = new ReteTuple( null,
+                                         null,
+                                         decl,
                                          handle,
                                          new Object() );
 
