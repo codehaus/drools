@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.36 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.37 2004-11-08 14:54:20 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -69,7 +69,7 @@ import java.util.Map;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.36 2004-11-08 14:18:26 mproctor Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.37 2004-11-08 14:54:20 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -235,10 +235,7 @@ class WorkingMemoryImpl implements WorkingMemory
         return this.ruleBase;
     }
 
-    /**
-     * @see WorkingMemory
-     */
-    public synchronized void fireAllRules() throws FactException
+    public void fireAllRules(AgendaFilter agendaFilter) throws FactException
     {
         // If we're already firing a rule, then it'll pick up
         // the firing for any other assertObject(..) that get
@@ -255,14 +252,22 @@ class WorkingMemoryImpl implements WorkingMemory
 
                 while ( !agenda.isEmpty( ) )
                 {
-                    agenda.fireNextItem( );
+                    agenda.fireNextItem( agendaFilter );
                 }
             }
             finally
             {
                 this.firing = false;
             }
-        }
+        }        
+    }
+
+    /**
+     * @see WorkingMemory
+     */
+    public synchronized void fireAllRules() throws FactException
+    {
+        fireAllRules(null);
     }
 
     /**
@@ -458,9 +463,4 @@ class WorkingMemoryImpl implements WorkingMemory
     {
         return this.conditionCounter++;
     }
-    
-    public void setAgendaFilter(AgendaFilter agendaFilter)
-    {
-        this.agenda.setAgendaFilter(agendaFilter);
-    }    
 }

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.33 2004-11-08 14:18:26 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.34 2004-11-08 14:54:20 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -113,6 +113,14 @@ public interface WorkingMemory extends Serializable
     void fireAllRules() throws FactException;
 
     /**
+     * Fire all items on the agenda until empty, using the 
+     * given AgendaFiler
+     *
+     * @throws FactException If an error occurs.
+     */
+    void fireAllRules(AgendaFilter agendaFilter) throws FactException;    
+
+    /**
      * Retrieve the object associated with a <code>FactHandle</code>.
      *
      * @see #containsObject
@@ -208,6 +216,5 @@ public interface WorkingMemory extends Serializable
      *
      */
     void clearAgenda();
-    
-    void setAgendaFilter(AgendaFilter agendaFilter);    
+ 
 }
