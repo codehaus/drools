@@ -61,6 +61,7 @@
         <echo level="info" message="You can run the examples individually with the commands:"/>
         <echo level="info" message="    ant example-familytree"/>
         <echo level="info" message="    ant example-fibonacci"/>
+        <echo level="info" message="    ant example-state"/>
         <echo level="info" message="    ant example-petstore"/>
 
         <antcall target="usage.clover">
@@ -161,6 +162,7 @@
     <property name="lib.dir" value="${output.dir}/lib"/>
     <property name="meta-inf-base.dir" value="${output.dir}/META-INF-base"/>
     <property name="meta-inf-java.dir" value="${output.dir}/META-INF-java"/>
+    <property name="meta-inf-groovy.dir" value="${output.dir}/META-INF-groovy"/>
     <property name="meta-inf-python.dir" value="${output.dir}/META-INF-python"/>
 
     <!-- ================================================================== -->
@@ -295,6 +297,12 @@
             <fileset file="drools-java/src/conf/META-INF/drools-java.conf"/>
         </copy>
 
+        <mkdir dir="${meta-inf-groovy.dir}/META-INF"/>
+        <copy todir="${meta-inf-groovy.dir}/META-INF">
+            <fileset file="drools-groovy/src/conf/META-INF/drools.conf"/>
+            <fileset file="drools-groovy/src/conf/META-INF/drools-groovy.conf"/>
+        </copy>
+
         <mkdir dir="${meta-inf-python.dir}/META-INF"/>
         <copy todir="${meta-inf-python.dir}/META-INF">
             <fileset file="drools-python/src/conf/META-INF/drools.conf"/>
@@ -309,6 +317,7 @@
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
             <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
@@ -334,7 +343,7 @@
     <!-- ===========vvvv========== Example Tasks ===========vvvv=========== -->
     <!-- ================================================================== -->
 
-    <target name="examples" depends="example-familytree,example-fibonacci,example-petstore"
+    <target name="examples" depends="example-familytree,example-fibonacci,example-state,example-petstore"
             description="Run all examples."/>
 
     <target name="example-familytree" depends="compile,copy-resources"
@@ -343,6 +352,7 @@
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
             <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
@@ -359,6 +369,24 @@
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
+            <classpath path="${meta-inf-python.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
+            <classpath location="${lib.dir}/${bsh.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+        </java>
+    </target>
+
+    <target name="example-state" depends="compile,copy-resources"
+            description="Run the State example.">
+	<java classname="org.drools.examples.java.state.StateExample" fork="true">
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
             <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
@@ -375,6 +403,7 @@
             <classpath path="${classes.dir}"/>
             <classpath path="${meta-inf-base.dir}"/>
             <classpath path="${meta-inf-java.dir}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
             <classpath path="${meta-inf-python.dir}"/>
             <classpath location="${lib.dir}/${clover.jar}"/>
             <classpath location="${lib.dir}/${antlr.jar}"/>
