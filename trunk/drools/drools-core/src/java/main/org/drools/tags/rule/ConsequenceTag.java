@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConsequenceTag.java,v 1.2 2002-08-19 21:33:08 bob Exp $
+ $Id: ConsequenceTag.java,v 1.3 2002-08-25 22:22:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConsequenceTag.java,v 1.2 2002-08-19 21:33:08 bob Exp $
+ *  @version $Id: ConsequenceTag.java,v 1.3 2002-08-25 22:22:42 bob Exp $
  */
 public class ConsequenceTag extends RuleTagSupport
 {
@@ -147,7 +147,7 @@ public class ConsequenceTag extends RuleTagSupport
 
         if ( this.consequence == null )
         {
-            throw new JellyException( "Condition expected" );
+            throw new JellyException( "Consequence expected" );
         }
 
         if ( this.var != null )

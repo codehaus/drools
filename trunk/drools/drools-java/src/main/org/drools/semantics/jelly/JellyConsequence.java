@@ -1,7 +1,7 @@
 package org.drools.semantics.jelly;
 
 /*
- $Id: JellyConsequence.java,v 1.2 2002-08-25 21:59:08 bob Exp $
+ $Id: JellyConsequence.java,v 1.3 2002-08-25 22:22:42 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,6 +54,7 @@ import org.drools.rule.Declaration;
 
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.XMLOutput;
 
 import java.util.Set;
 import java.util.Iterator;
@@ -62,7 +63,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirteR</a>
  *
- *  @version $Id: JellyConsequence.java,v 1.2 2002-08-25 21:59:08 bob Exp $
+ *  @version $Id: JellyConsequence.java,v 1.3 2002-08-25 22:22:42 bob Exp $
  */
 public class JellyConsequence implements Consequence
 {
@@ -73,15 +74,20 @@ public class JellyConsequence implements Consequence
     /** The script. */
     private Script script;
 
+    /** The output sink. */
+    private XMLOutput output;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
     */
-    public JellyConsequence(Script script)
+    public JellyConsequence(Script script,
+                            XMLOutput output)
     {
         this.script = script;
+        this.output = output;
     }
 
     // ------------------------------------------------------------
@@ -120,5 +126,14 @@ public class JellyConsequence implements Consequence
                                  tuple.get( eachDecl ) );
         }
 
+        try
+        {
+            this.script.run( context,
+                             this.output  );
+        }
+        catch (Exception e)
+        {
+            throw new ConsequenceException( e );
+        }
     }
 }
