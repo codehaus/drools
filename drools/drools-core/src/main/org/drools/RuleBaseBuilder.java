@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- $Id: RuleBaseBuilder.java,v 1.5 2003-11-19 21:31:09 bob Exp $
+ $Id: RuleBaseBuilder.java,v 1.6 2003-11-23 02:28:46 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,7 @@ package org.drools;
 
 import org.drools.rule.RuleSet;
 import org.drools.reteoo.Builder;
+import org.drools.spi.ConflictResolutionStrategy;
 
 /** Factory for constructing a <code>RuleBase</code>.
  *
@@ -64,7 +65,7 @@ import org.drools.reteoo.Builder;
  *
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuleBaseBuilder.java,v 1.5 2003-11-19 21:31:09 bob Exp $
+ *  @version $Id: RuleBaseBuilder.java,v 1.6 2003-11-23 02:28:46 bob Exp $
  */
 public class RuleBaseBuilder
 {
@@ -117,5 +118,10 @@ public class RuleBaseBuilder
     public RuleBase build()
     {
         return this.builder.buildRuleBase();
+    }
+
+    public void setConflictResolutionStrategy(ConflictResolutionStrategy conflictResolutionStrategy)
+    {
+        this.builder.setConflictResolutionStrategy( conflictResolutionStrategy );
     }
 }

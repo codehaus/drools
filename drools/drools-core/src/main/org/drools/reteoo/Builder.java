@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.35 2003-11-21 04:18:13 bob Exp $
+ $Id: Builder.java,v 1.36 2003-11-23 02:28:46 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,12 +48,14 @@ package org.drools.reteoo;
 
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
+import org.drools.conflict.SalienceConflictResolutionStrategy;
 import org.drools.rule.Declaration;
 import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
 import org.drools.spi.ObjectType;
+import org.drools.spi.ConflictResolutionStrategy;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -85,6 +87,8 @@ public class Builder
     /** Rule-sets added. */
     private List ruleSets;
 
+    private ConflictResolutionStrategy conflictResolutionStrategy;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -96,6 +100,7 @@ public class Builder
     {
         this.rete     = new Rete();
         this.ruleSets = new ArrayList();
+        this.conflictResolutionStrategy = SalienceConflictResolutionStrategy.getInstance();
     }
 
     // ------------------------------------------------------------
@@ -119,12 +124,23 @@ public class Builder
     public RuleBase buildRuleBase()
     {
         RuleBase ruleBase = new RuleBaseImpl( getRete(),
-                                              (RuleSet[]) this.ruleSets.toArray( RuleSet.EMPTY_ARRAY ) );
+                                              (RuleSet[]) this.ruleSets.toArray( RuleSet.EMPTY_ARRAY ),
+                                              this.conflictResolutionStrategy );
 
         this.rete = null;
         this.ruleSets.clear();
+        this.conflictResolutionStrategy = SalienceConflictResolutionStrategy.getInstance();
 
         return ruleBase;
+    }
+
+    /** Set the <code>ConflictResolutionStrategy</code>.
+     *
+     *  @param conflictResolutionStrategy The conflict-resolution strategy.
+     */
+    public void setConflictResolutionStrategy(ConflictResolutionStrategy conflictResolutionStrategy)
+    {
+        this.conflictResolutionStrategy = conflictResolutionStrategy;
     }
 
     /** Add a <code>RuleSet</code> to the network.
