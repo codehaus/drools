@@ -1,0 +1,179 @@
+
+\chapter{Rule Assembly}
+
+\section{Overview}
+
+Only a handful of classes are required to assemble rules once a
+\emph{semantic module} has been selected.  Each rule is codified as an
+instance of the \verb|Rule| class which may be a member of a
+\verb|RuleSet| collection.  
+
+\begin{enumerate}
+	\item Instantiate a \verb|Rule|.
+	\item Add a \verb|Declaration| for each root fact object.
+	\item Add a \verb|FactExtraction| for each fact extraction.
+	\item Add a \verb|Condition| for each restrictive condition.
+	\item Add the \verb|Rule| to a \verb|RuleBase|.
+	\item Register the \verb|RuleBase| with a \verb|RuleBaseRepository|
+\end{enumerate}
+
+The \verb|FactExtraction| is a special condition related to
+fact extraction.  It couples a \verb|FactExtractor| with a target
+\verb|Declaration| as the location to deposit the extract fact
+within the \verb|Tuple|.
+
+When adding a \verb|Rule| toa  \verb|RuleBase|, it is possible that
+the rule cannot be integrated into the network.  This is caused
+by \verb|FactExtraction| or \verb|Condition| objects that expect
+\verb|Declarations| that are otherwise not present in the rule.
+
+\newpage
+
+\section{Rule Assembly Example}
+
+Rules may be assembled using classes from the \verb|org.drools.rule|
+package along with one or more semantic modules.  Additional tools
+to allow for assembling rules from a file or database are possible.
+
+\footnotesize
+\begin{alltt}
+// -- Create a new Rule
+
+Rule rule = new Rule("example");
+
+// -- Create the semantic Person object type
+// -- which maps directly to java Person type.
+
+ObjectType personType = new ObjectType() \{
+        public boolean matches(Object object) \{ 
+            return ( object instanceof Person );
+        \}
+    \};
+
+// -- Create the semantic String object type.
+
+ObjectType stringType = new ObjectType() \{
+        public boolean matches(Object object) \{ 
+            return ( object instanceof String );
+        \}
+    \};
+
+// -- Declare two root fact Person objects 
+// -- with the identifiers 'sisOne' and 'sisTwo'
+
+final Declaration sisOneDecl = new Declaration( personType,
+                                                "sisOne" );
+
+final Declaration sisTwoDecl = new Declaration( personType,
+                                                "sisTwo" );
+
+// -- Declare the extracted String object
+// -- with the identifier 'petName'
+
+final Declaration petNameDecl = new Declaration( stringType,
+                                                 "petName" );
+
+// -- Add the root fact Person declarations
+// -- to the rule.
+
+rule.addParameterDeclaration( sisOneDecl );
+rule.addParameterDeclaration( sisTwoDecl );
+
+\newpage
+
+// -- Create the fact extractor for the dog name
+
+FactExtractor dogNameExtractor = new FactExtractor() \{
+        public Declaration[] getRequiredTupleMembers() \{
+            return new Declaration[] \{ sisOneDecl \};
+        \}
+        public Object extractFact(Tuple tuple) \{
+            Person person = (Person) tuple.get( sisOneDecl );
+            return person.getDog().getName();
+        \}
+    \}
+      );
+
+// -- Create the fact extractor for the cat name
+
+FactExtractor catNameExtractor = new FactExtractor() \{
+        public Declaration[] getRequiredTupleMembers() \{
+            return new Declaration[] \{ sisTwoDecl \};
+        \}
+        public Object extractFact(Tuple tuple) \{
+            Person person = (Person) tuple.get( sisTwoDecl );
+            return person.getCat().getName();
+        \}
+    \}
+      );
+
+// -- Add the extractions for the dog and cat
+// -- name, both to the 'petName' variable.
+
+rule.addFactExtraction( new FactExtraction( petNameDecl,
+                                            dogNameExtractor ) );
+
+rule.addFactExtraction( new FactExtraction( petNameDecl,
+                                            catNameExtractor ) );
+
+// -- Add a filter that only allows two
+// -- Persons who are sisters to pass.
+
+rule.addCondition( new Condition() \{
+        public Declaration[] getRequiredTupleMembers() \{
+            return new Declaration[] \{ sisOneDecl, sisTwoDecl \};
+        \}
+        public boolean isAllowed(Tuple tuple) \{
+            Person sisOne = (Person) tuple.get( sisOneDecl ) 
+            Person sisTwo = (Person) tuple.get( sisTwoDecl ) 
+            return sisOne.hasSister( sisTwo )	;
+        \} 
+    \}
+      );
+
+\newpage
+
+// -- Attach an action to fire when matched.
+
+rule.setAction( new Action() \{
+        public void invoke(Tuple tuple, WorkingMemory memory) \{
+            System.err.println( "sisOne: " + tuple.get( sisOneDecl ) );
+            System.err.println( "sisTwo: " + tuple.get( sisTwoDecl ) );
+            System.err.println( "petName: " + tuple.get( petNameDecl ) );
+        \}
+    \}
+      );
+
+// -- Create a new rule base
+
+RuleBase ruleBase = new RuleBase();
+
+try
+\{
+    // -- Add the rule to the rule-base.
+    // 
+    // -- May throw a ReteConstructionException 
+    // -- if the Rule cannot be integrated into
+    // -- the Rete-OO network.
+
+    ruleBase.addRule( rule );
+\}
+catch (ReteConstructionException e)
+\{
+    e.printStackTrace();
+    return;
+\}
+
+// -- Create a repository.
+
+SimpleRepository repo = new SimpleRepository();
+
+// -- Register the RuleBase with the repository.
+	
+repo.registerRuleBase( "http://rules.werken.com/family-relationships",
+                       ruleBase );
+
+\end{alltt}
+\normalsize
+
+\newpage
