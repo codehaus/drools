@@ -29,3 +29,7 @@ stilton.getBitesLeft() == bites.intValue()
 stilton.equals(favouriteCheese)
 <!--drools-test--!>
 camembert.equals(favouriteCheese)
+<!--drools-test--!>
+camembert.getName().equals(favouriteCheese)
+<!--drools-test--!>
+camembert.getName().equals(favouriteCheese)
