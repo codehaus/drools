@@ -1,7 +1,7 @@
 package org.drools.event;
 
-public class DebugWorkingMemoryEventListener
-    implements WorkingMemoryEventListener
+public class DebugWorkingMemoryEventListener implements
+                                            WorkingMemoryEventListener
 {
     public DebugWorkingMemoryEventListener()
     {
@@ -12,6 +12,7 @@ public class DebugWorkingMemoryEventListener
     {
         System.err.println( event );
     }
+
     public void objectModified(ObjectModifiedEvent event)
     {
         System.err.println( event );

@@ -12,38 +12,30 @@ public class KnowledgeHelper
         this.tuple = tuple;
     }
 
-    public void assertObject(Object object)
-        throws FactException
+    public void assertObject(Object object) throws FactException
     {
-        this.tuple.getWorkingMemory().assertObject( object );
+        this.tuple.getWorkingMemory( ).assertObject( object );
     }
 
-    public void modifyObject(Object object)
-        throws FactException
+    public void modifyObject(Object object) throws FactException
     {
         FactHandle handle = this.tuple.getFactHandleForObject( object );
 
-        this.tuple.getWorkingMemory().modifyObject( handle,
-                                                    object );
+        this.tuple.getWorkingMemory( ).modifyObject( handle, object );
     }
 
-    public void modifyObject(Object oldObject,
-                             Object newObject)
-        throws FactException
+    public void modifyObject(Object oldObject, Object newObject) throws FactException
     {
         FactHandle handle = this.tuple.getFactHandleForObject( oldObject );
 
-        this.tuple.getWorkingMemory().modifyObject( handle,
-                                                    newObject );
+        this.tuple.getWorkingMemory( ).modifyObject( handle, newObject );
     }
 
-    public void retractObject(Object object)
-        throws FactException
+    public void retractObject(Object object) throws FactException
     {
         FactHandle handle = this.tuple.getFactHandleForObject( object );
 
-        this.tuple.getWorkingMemory().retractObject( handle );
+        this.tuple.getWorkingMemory( ).retractObject( handle );
     }
 
-                             
 }

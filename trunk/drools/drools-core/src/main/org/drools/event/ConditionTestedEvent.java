@@ -5,14 +5,15 @@ import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Tuple;
 
-
-public class ConditionTestedEvent
-    extends WorkingMemoryEvent
+public class ConditionTestedEvent extends WorkingMemoryEvent
 {
-    private Rule rule;
+    private Rule      rule;
+
     private Condition condition;
-    private Tuple tuple;
-    private boolean passed;
+
+    private Tuple     tuple;
+
+    private boolean   passed;
 
     public ConditionTestedEvent(WorkingMemory workingMemory,
                                 Rule rule,
@@ -22,10 +23,10 @@ public class ConditionTestedEvent
     {
         super( workingMemory );
 
-        this.rule      = rule;
+        this.rule = rule;
         this.condition = condition;
-        this.tuple     = tuple;
-        this.passed    = passed;
+        this.tuple = tuple;
+        this.passed = passed;
     }
 
     public Rule getRule()
@@ -50,7 +51,9 @@ public class ConditionTestedEvent
 
     public String toString()
     {
-        return "[ConditionTested: rule=" + this.rule.getName() + "; condition=" + this.condition + "; passed=" + this.passed + "; tuple=" + this.tuple + "]";
+        return "[ConditionTested: rule=" + this.rule.getName( )
+               + "; condition=" + this.condition + "; passed=" + this.passed
+               + "; tuple=" + this.tuple + "]";
     }
 }
 

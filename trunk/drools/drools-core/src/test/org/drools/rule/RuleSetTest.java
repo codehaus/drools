@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import org.drools.DroolsTestCase;
 import org.drools.spi.MockObjectType;
 
-
 public class RuleSetTest extends DroolsTestCase
 {
     private RuleSet ruleSet;
@@ -32,46 +31,42 @@ public class RuleSetTest extends DroolsTestCase
 
     public void testBasics()
     {
-        assertEquals( "rule_set",
-                      this.ruleSet.getName() );
+        assertEquals( "rule_set", this.ruleSet.getName( ) );
     }
 
     public void testDocumentation()
     {
-        assertNull( this.ruleSet.getDocumentation() );
+        assertNull( this.ruleSet.getDocumentation( ) );
 
         this.ruleSet.setDocumentation( "the cheesiest!" );
 
-        assertEquals( "the cheesiest!",
-                      this.ruleSet.getDocumentation() );
+        assertEquals( "the cheesiest!", this.ruleSet.getDocumentation( ) );
     }
 
-    /** A RuleSet MUST accept any Rule that does not have
-     *  a conflicting name.
+    /**
+     * A RuleSet MUST accept any Rule that does not have a conflicting name.
      */
-    public void testAddRule()
-        throws Exception
+    public void testAddRule() throws Exception
     {
         InstrumentedRule rule;
 
         rule = new InstrumentedRule( "cheese" );
         rule.isValid( true );
         this.ruleSet.addRule( rule );
-        assertEquals(0, rule.getLoadOrder());
+        assertEquals( 0, rule.getLoadOrder( ) );
 
         rule = new InstrumentedRule( "meat" );
         rule.isValid( true );
         this.ruleSet.addRule( rule );
-        assertEquals(1, rule.getLoadOrder());
+        assertEquals( 1, rule.getLoadOrder( ) );
 
         rule = new InstrumentedRule( "vegetables" );
         rule.isValid( true );
         this.ruleSet.addRule( rule );
-        assertEquals(2, rule.getLoadOrder());
+        assertEquals( 2, rule.getLoadOrder( ) );
     }
 
-    public void testGetRule()
-        throws Exception
+    public void testGetRule() throws Exception
     {
         assertNull( this.ruleSet.getRule( "cheese" ) );
 
@@ -81,18 +76,16 @@ public class RuleSetTest extends DroolsTestCase
 
         this.ruleSet.addRule( rule );
 
-        assertSame( rule,
-                    this.ruleSet.getRule( "cheese" ) );
+        assertSame( rule, this.ruleSet.getRule( "cheese" ) );
 
         assertNull( this.ruleSet.getRule( "betty" ) );
     }
 
-    /** A RuleSet MUST throw a DuplicateRuleNameException
-     *  if an attempt to add a Rule whose name conflicts
-     *  with an already added Rule.
+    /**
+     * A RuleSet MUST throw a DuplicateRuleNameException if an attempt to add a
+     * Rule whose name conflicts with an already added Rule.
      */
-    public void testAddRuleDuplicate()
-        throws Exception
+    public void testAddRuleDuplicate() throws Exception
     {
         InstrumentedRule rule1 = new InstrumentedRule( "cheese" );
         InstrumentedRule rule2 = new InstrumentedRule( "cheese" );
@@ -108,16 +101,13 @@ public class RuleSetTest extends DroolsTestCase
 
             fail( "Should have thrown DuplicateRuleNameException" );
         }
-        catch (DuplicateRuleNameException e)
+        catch ( DuplicateRuleNameException e )
         {
-            assertSame( this.ruleSet,
-                        e.getRuleSet() );
+            assertSame( this.ruleSet, e.getRuleSet( ) );
 
-            assertSame( rule1,
-                        e.getOriginalRule() );
+            assertSame( rule1, e.getOriginalRule( ) );
 
-            assertSame( rule2,
-                        e.getConflictingRule() );
+            assertSame( rule2, e.getConflictingRule( ) );
         }
     }
 
@@ -130,62 +120,59 @@ public class RuleSetTest extends DroolsTestCase
         Declaration localDecl = new Declaration( new MockObjectType( true ),
                                                  "localVar" );
 
-        Extraction extraction = new Extraction( localDecl,
-                                                null );
+        Extraction extraction = new Extraction( localDecl, null );
 
         rule1.addParameterDeclaration( paramDecl );
         rule1.addExtraction( extraction );
 
         //add consequence
-        rule1.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule1.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
         //add conditions
-        rule1.addCondition( new org.drools.spi.InstrumentedCondition() );
-        rule1.addCondition( new org.drools.spi.InstrumentedCondition() );
+        rule1.addCondition( new org.drools.spi.InstrumentedCondition( ) );
+        rule1.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
         rule1.setSalience( 42 );
         rule1.setLoadOrder( 22 );
 
         Rule rule2 = new Rule( "test-rule 2" );
-        paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );
+        paramDecl = new Declaration( new MockObjectType( true ), "paramVar" );
 
-        localDecl = new Declaration( new MockObjectType( true ),
-                                                 "localVar" );
+        localDecl = new Declaration( new MockObjectType( true ), "localVar" );
 
-        extraction = new Extraction( localDecl,
-                                                null );
+        extraction = new Extraction( localDecl, null );
 
         rule2.addParameterDeclaration( paramDecl );
         rule2.addExtraction( extraction );
 
         //add consequence
-        rule2.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule2.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
 
         //add conditions
-        rule2.addCondition( new org.drools.spi.InstrumentedCondition() );
-        rule2.addCondition( new org.drools.spi.InstrumentedCondition() );
+        rule2.addCondition( new org.drools.spi.InstrumentedCondition( ) );
+        rule2.addCondition( new org.drools.spi.InstrumentedCondition( ) );
         rule2.setSalience( 12 );
         rule2.setLoadOrder( 2 );
 
-        RuleSet ruleSet= new RuleSet( "rule_set" );
-        ruleSet.addRule(rule1);
-        ruleSet.addRule(rule2);
+        RuleSet ruleSet = new RuleSet( "rule_set" );
+        ruleSet.addRule( rule1 );
+        ruleSet.addRule( rule2 );
 
         // Serialize to a byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
-        ObjectOutput out = new ObjectOutputStream(bos) ;
-        out.writeObject(ruleSet);
-        out.close();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
+        ObjectOutput out = new ObjectOutputStream( bos );
+        out.writeObject( ruleSet );
+        out.close( );
 
         // Get the bytes of the serialized object
-        byte[] bytes = bos.toByteArray();
+        byte[] bytes = bos.toByteArray( );
 
         // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(bytes));
-        ruleSet = (RuleSet) in.readObject();
-        in.close();
+        ObjectInput in = new ObjectInputStream(
+                                                new ByteArrayInputStream( bytes ) );
+        ruleSet = ( RuleSet ) in.readObject( );
+        in.close( );
 
-        assertLength(2, ruleSet.getRules());
+        assertLength( 2, ruleSet.getRules( ) );
     }
 }

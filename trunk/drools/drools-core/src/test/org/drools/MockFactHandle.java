@@ -1,7 +1,6 @@
 package org.drools;
 
-public class MockFactHandle
-    implements FactHandle
+public class MockFactHandle implements FactHandle
 {
     private int id;
 
@@ -24,7 +23,7 @@ public class MockFactHandle
     {
         if ( thatObj instanceof MockFactHandle )
         {
-            return ((MockFactHandle)thatObj).id == this.id;
+            return ( ( MockFactHandle ) thatObj ).id == this.id;
         }
 
         return false;

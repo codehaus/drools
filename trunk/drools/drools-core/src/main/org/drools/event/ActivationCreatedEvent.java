@@ -4,16 +4,17 @@ import org.drools.WorkingMemory;
 import org.drools.spi.Consequence;
 import org.drools.spi.Tuple;
 
-public class ActivationCreatedEvent
-    extends WorkingMemoryEvent
+public class ActivationCreatedEvent extends WorkingMemoryEvent
 {
     private WorkingMemory workingMemory;
-    private Consequence consequence;
-    private Tuple tuple;
+
+    private Consequence   consequence;
+
+    private Tuple         tuple;
 
     public ActivationCreatedEvent(WorkingMemory workingMemory,
                                   Consequence consequence,
-                                   Tuple tuple)
+                                  Tuple tuple)
     {
         super( workingMemory );
 
@@ -39,6 +40,7 @@ public class ActivationCreatedEvent
 
     public String toString()
     {
-        return "[ActivationCreated: rule=" + this.tuple.getRule().getName() + "; tuple=" + this.tuple + "]";
+        return "[ActivationCreated: rule=" + this.tuple.getRule( ).getName( )
+               + "; tuple=" + this.tuple + "]";
     }
 }

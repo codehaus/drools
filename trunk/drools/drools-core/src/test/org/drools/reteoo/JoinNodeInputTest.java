@@ -2,8 +2,7 @@ package org.drools.reteoo;
 
 import junit.framework.TestCase;
 
-public class JoinNodeInputTest
-    extends TestCase
+public class JoinNodeInputTest extends TestCase
 {
     public void setUp()
     {
@@ -20,16 +19,12 @@ public class JoinNodeInputTest
 
     public void testGetSide()
     {
-        JoinNodeInput left = new JoinNodeInput( null,
-                                                JoinNodeInput.LEFT );
+        JoinNodeInput left = new JoinNodeInput( null, JoinNodeInput.LEFT );
 
-        JoinNodeInput right = new JoinNodeInput( null,
-                                                 JoinNodeInput.RIGHT );
+        JoinNodeInput right = new JoinNodeInput( null, JoinNodeInput.RIGHT );
 
-        assertEquals( JoinNodeInput.LEFT,
-                      left.getSide() );
+        assertEquals( JoinNodeInput.LEFT, left.getSide( ) );
 
-        assertEquals( JoinNodeInput.RIGHT,
-                      right.getSide() );
+        assertEquals( JoinNodeInput.RIGHT, right.getSide( ) );
     }
 }

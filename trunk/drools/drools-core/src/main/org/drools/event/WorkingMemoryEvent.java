@@ -4,8 +4,7 @@ import java.util.EventObject;
 
 import org.drools.WorkingMemory;
 
-public class WorkingMemoryEvent
-    extends EventObject
+public class WorkingMemoryEvent extends EventObject
 {
     public WorkingMemoryEvent(WorkingMemory workingMemory)
     {
@@ -14,7 +13,7 @@ public class WorkingMemoryEvent
 
     public WorkingMemory getWorkingMemory()
     {
-        return (WorkingMemory) getSource();
+        return ( WorkingMemory ) getSource( );
     }
 }
 

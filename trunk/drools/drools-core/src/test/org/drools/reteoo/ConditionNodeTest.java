@@ -14,8 +14,7 @@ import org.drools.spi.FalseCondition;
 import org.drools.spi.MockObjectType;
 import org.drools.spi.TrueCondition;
 
-public class ConditionNodeTest
-    extends TestCase
+public class ConditionNodeTest extends TestCase
 {
     private ReteTuple tuple;
 
@@ -26,109 +25,103 @@ public class ConditionNodeTest
 
     public void setUp()
     {
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
+                                              new DefaultConflictResolver( ) );
         Rule rule = new Rule( "test-rule 1" );
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
-                                                 "paramVar" );                                                 
+                                                 "paramVar" );
         rule.addParameterDeclaration( paramDecl );
         //add consequence
-        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition() );        
-        this.tuple = new ReteTuple(ruleBase.newWorkingMemory(), rule);
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
+        this.tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule );
     }
 
     public void tearDown()
     {
     }
 
-    /** If a condition allows an incoming Object, then
-     *  the Object MUST be propagated.
+    /**
+     * If a condition allows an incoming Object, then the Object MUST be
+     * propagated.
      */
     public void testAllowed()
     {
-        ConditionNode node = new ConditionNode( null,
-                                                new TrueCondition(), 
-                                                0);
+        ConditionNode node = new ConditionNode( null, new TrueCondition( ), 0 );
 
-
-        InstrumentedTupleSink sink = new InstrumentedTupleSink();
+        InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
         node.setTupleSink( sink );
 
         try
         {
-        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-            node.assertTuple( this.tuple,
-            		(WorkingMemoryImpl) ruleBase.newWorkingMemory() );
+            RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
+                                                  new DefaultConflictResolver( ) );
+            node
+                .assertTuple( this.tuple,
+                              ( WorkingMemoryImpl ) ruleBase.newWorkingMemory( ) );
 
-            List asserted = sink.getAssertedTuples();
+            List asserted = sink.getAssertedTuples( );
 
-            assertEquals( 1,
-                          asserted.size() );
+            assertEquals( 1, asserted.size( ) );
 
-            ReteTuple tuple = (ReteTuple) asserted.get( 0 );
+            ReteTuple tuple = ( ReteTuple ) asserted.get( 0 );
 
-            assertSame( this.tuple,
-                        tuple );
+            assertSame( this.tuple, tuple );
         }
-        catch (AssertionException e)
+        catch ( AssertionException e )
         {
-            fail( e.toString() );
+            fail( e.toString( ) );
         }
     }
 
-    /** If a Condition does not allow an incoming Object,
-     *  then the object MUST NOT be propagated.
+    /**
+     * If a Condition does not allow an incoming Object, then the object MUST
+     * NOT be propagated.
      */
     public void testNotAllowed()
     {
-        ConditionNode node = new ConditionNode( null,
-                                                new FalseCondition(), 
-                                                0);
+        ConditionNode node = new ConditionNode( null, new FalseCondition( ), 0 );
 
-        InstrumentedTupleSink sink = new InstrumentedTupleSink();
+        InstrumentedTupleSink sink = new InstrumentedTupleSink( );
 
         node.setTupleSink( sink );
 
         try
         {
-        	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-            node.assertTuple( this.tuple,
-                              (WorkingMemoryImpl) ruleBase.newWorkingMemory() );
+            RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
+                                                  new DefaultConflictResolver( ) );
+            node
+                .assertTuple( this.tuple,
+                              ( WorkingMemoryImpl ) ruleBase.newWorkingMemory( ) );
 
-            List asserted = sink.getAssertedTuples();
+            List asserted = sink.getAssertedTuples( );
 
-            assertEquals( 0,
-                          asserted.size() );
+            assertEquals( 0, asserted.size( ) );
         }
-        catch (AssertionException e)
+        catch ( AssertionException e )
         {
-            fail( e.toString() );
+            fail( e.toString( ) );
         }
     }
 
-    /** A FilterNode MUST delegate to its input source
-     *  for getTupleDeclarations() since it does not alter
-     *  the structure of the Tuples.
+    /**
+     * A FilterNode MUST delegate to its input source for getTupleDeclarations()
+     * since it does not alter the structure of the Tuples.
      */
     public void testGetTupleDeclarations()
     {
         Declaration decl = new Declaration( new MockObjectType( Object.class ),
                                             "object" );
 
-        ParameterNode paramNode = new ParameterNode( null,
-                                                     null,
-                                                     decl );
+        ParameterNode paramNode = new ParameterNode( null, null, decl );
 
-        ConditionNode condNode = new ConditionNode( paramNode,
-                                                    null,
-                                                    0);
+        ConditionNode condNode = new ConditionNode( paramNode, null, 0 );
 
-        Set decls = condNode.getTupleDeclarations();
+        Set decls = condNode.getTupleDeclarations( );
 
-        assertEquals( 1,
-                      decls.size() );
+        assertEquals( 1, decls.size( ) );
 
         assertTrue( decls.contains( decl ) );
     }

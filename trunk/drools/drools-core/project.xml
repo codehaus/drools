@@ -16,6 +16,21 @@
     <build>
       <aspectSourceDirectory>src/aspects</aspectSourceDirectory>
 
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <resources>
+                <resource>
+                    <directory>src/test</directory>
+                    <includes>
+                        <include>**/*.drl</include>
+                    </includes>
+                    <filtering>false</filtering>
+                </resource>
+            </resources>
+        </unitTest>
+
     </build>
 
 </project>

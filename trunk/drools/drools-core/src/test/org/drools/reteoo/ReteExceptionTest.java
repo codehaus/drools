@@ -14,7 +14,6 @@ public class ReteExceptionTest extends TestCase
         Exception root = new Exception( "root cause" );
         ReteException e = new ReteException( root );
 
-        assertSame( root,
-                    e.getRootCause() );
+        assertSame( root, e.getRootCause( ) );
     }
 }

@@ -8,124 +8,108 @@ import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
 import org.drools.spi.MockObjectType;
 
-public class TerminalNodeTest
-    extends DroolsTestCase
+public class TerminalNodeTest extends DroolsTestCase
 {
-    public void testAssertTuple()
-        throws Exception
+    public void testAssertTuple() throws Exception
     {
-        final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  DefaultConflictResolver.getInstance() );
+        final InstrumentedAgenda agenda = new InstrumentedAgenda(
+                                                                  null,
+                                                                  DefaultConflictResolver
+                                                                                         .getInstance( ) );
 
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+        {
+            public Agenda getAgenda()
             {
-                public Agenda getAgenda()
-                {
-                    return agenda;
-                }
-            };
-
-
+                return agenda;
+            }
+        };
 
         Rule rule = new Rule( "test-rule" );
 
         Declaration paramDecl = new Declaration( new MockObjectType( true ),
-        "paramVar" );                                                 
+                                                 "paramVar" );
         rule.addParameterDeclaration( paramDecl );
         //add consequence
-        rule.setConsequence( new org.drools.spi.InstrumentedConsequence() );
+        rule.setConsequence( new org.drools.spi.InstrumentedConsequence( ) );
         //add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition() );        
+        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        TerminalNode node = new TerminalNode( new MockTupleSource(),
-                                              rule );
+        TerminalNode node = new TerminalNode( new MockTupleSource( ), rule );
 
-    	RuleBase ruleBase = new RuleBaseImpl( new Rete(), new DefaultConflictResolver());
-        
-        ReteTuple tuple = new ReteTuple(ruleBase.newWorkingMemory(), rule);
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
+                                              new DefaultConflictResolver( ) );
 
-        node.assertTuple( tuple,
-                          memory );
+        ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule );
 
-        assertLength( 1,
-                      agenda.getAdded() );
+        node.assertTuple( tuple, memory );
 
-        assertContains( tuple,
-                        agenda.getAdded() );
+        assertLength( 1, agenda.getAdded( ) );
+
+        assertContains( tuple, agenda.getAdded( ) );
     }
 
-    public void testRetractTuples()
-        throws Exception
+    public void testRetractTuples() throws Exception
     {
-        final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  DefaultConflictResolver.getInstance() );
+        final InstrumentedAgenda agenda = new InstrumentedAgenda(
+                                                                  null,
+                                                                  DefaultConflictResolver
+                                                                                         .getInstance( ) );
 
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+        {
+            public Agenda getAgenda()
             {
-                public Agenda getAgenda()
-                {
-                    return agenda;
-                }
-            };
-
-
+                return agenda;
+            }
+        };
 
         Rule rule = new Rule( "test-rule" );
 
-        InstrumentedConsequence consequence = new InstrumentedConsequence();
+        InstrumentedConsequence consequence = new InstrumentedConsequence( );
 
         rule.setConsequence( consequence );
 
-        TerminalNode node = new TerminalNode( new MockTupleSource(),
-                                              rule );
+        TerminalNode node = new TerminalNode( new MockTupleSource( ), rule );
 
-        TupleKey key = new TupleKey();
+        TupleKey key = new TupleKey( );
 
-        node.retractTuples( key,
-                            memory );
+        node.retractTuples( key, memory );
 
-        assertLength( 1,
-                      agenda.getRemoved() );
+        assertLength( 1, agenda.getRemoved( ) );
 
-        assertContains( key,
-                        agenda.getRemoved() );
+        assertContains( key, agenda.getRemoved( ) );
     }
 
-    public void testModifyTuples()
-        throws Exception
+    public void testModifyTuples() throws Exception
     {
-        final InstrumentedAgenda agenda = new InstrumentedAgenda( null,
-                                                                  DefaultConflictResolver.getInstance() );
+        final InstrumentedAgenda agenda = new InstrumentedAgenda(
+                                                                  null,
+                                                                  DefaultConflictResolver
+                                                                                         .getInstance( ) );
 
         WorkingMemoryImpl memory = new WorkingMemoryImpl( null )
+        {
+            public Agenda getAgenda()
             {
-                public Agenda getAgenda()
-                {
-                    return agenda;
-                }
-            };
-
-
+                return agenda;
+            }
+        };
 
         Rule rule = new Rule( "test-rule" );
 
-        InstrumentedConsequence consequence = new InstrumentedConsequence();
+        InstrumentedConsequence consequence = new InstrumentedConsequence( );
 
         rule.setConsequence( consequence );
 
-        TerminalNode node = new TerminalNode( new MockTupleSource(),
-                                              rule );
+        TerminalNode node = new TerminalNode( new MockTupleSource( ), rule );
 
         FactHandleImpl handle = new FactHandleImpl( 42 );
 
-        node.modifyTuples( handle,
-                           new TupleSet(),
-                           memory );
+        node.modifyTuples( handle, new TupleSet( ), memory );
 
-        assertLength( 1,
-                      agenda.getModified() );
+        assertLength( 1, agenda.getModified( ) );
 
-        assertContains( handle,
-                        agenda.getModified() );
+        assertContains( handle, agenda.getModified( ) );
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.event;
 
-public class DefaultWorkingMemoryEventListener
-    implements WorkingMemoryEventListener
+public class DefaultWorkingMemoryEventListener implements
+                                              WorkingMemoryEventListener
 {
     public DefaultWorkingMemoryEventListener()
     {
@@ -12,6 +12,7 @@ public class DefaultWorkingMemoryEventListener
     {
         // intentionally left blank
     }
+
     public void objectModified(ObjectModifiedEvent event)
     {
         // intentionally left blank

@@ -2,25 +2,22 @@ package org.drools;
 
 import junit.framework.TestCase;
 
-public class NoSuchFactObjectExceptionTest
-    extends TestCase
+public class NoSuchFactObjectExceptionTest extends TestCase
 {
     public void testConstruct()
     {
-        FactHandle handle = new FactHandle()
+        FactHandle handle = new FactHandle( )
+        {
+            public String toExternalForm()
             {
-                public String toExternalForm()
-                {
-                    return "cheese";
-                }
-            };
+                return "cheese";
+            }
+        };
 
         NoSuchFactObjectException e = new NoSuchFactObjectException( handle );
 
-        assertSame( handle,
-                    e.getFactHandle() );
+        assertSame( handle, e.getFactHandle( ) );
 
-        assertEquals( "no such fact object for handle: cheese",
-                      e.getMessage() );
+        assertEquals( "no such fact object for handle: cheese", e.getMessage( ) );
     }
 }

@@ -5,14 +5,13 @@ import java.util.Set;
 
 import org.drools.rule.Declaration;
 
-public class MockTupleSource
-    extends TupleSource
+public class MockTupleSource extends TupleSource
 {
     private Set declarations;
 
     public MockTupleSource()
     {
-        this.declarations = new HashSet();
+        this.declarations = new HashSet( );
     }
 
     public void addTupleDeclaration(Declaration decl)

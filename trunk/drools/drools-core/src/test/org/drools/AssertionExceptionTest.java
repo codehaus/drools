@@ -2,24 +2,22 @@ package org.drools;
 
 import junit.framework.TestCase;
 
-public class AssertionExceptionTest
-    extends TestCase
+public class AssertionExceptionTest extends TestCase
 {
     public void testConstruct()
     {
-        AssertionException e = new AssertionException();
+        AssertionException e = new AssertionException( );
 
-        assertNull( e.getRootCause() );
+        assertNull( e.getRootCause( ) );
     }
 
     public void testConstruct_WithRootCause()
     {
-        Exception rootCause = new Exception();
+        Exception rootCause = new Exception( );
 
         AssertionException e = new AssertionException( rootCause );
 
-        assertSame( rootCause,
-                    e.getRootCause() );
+        assertSame( rootCause, e.getRootCause( ) );
     }
 
 }

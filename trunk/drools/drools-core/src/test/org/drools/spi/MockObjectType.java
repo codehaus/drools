@@ -3,8 +3,10 @@ package org.drools.spi;
 public class MockObjectType implements ObjectType
 {
     private boolean predetermined;
+
     private boolean matches;
-    private Class type;    
+
+    private Class   type;
 
     public MockObjectType(boolean matches)
     {
@@ -14,9 +16,9 @@ public class MockObjectType implements ObjectType
 
     public MockObjectType()
     {
-        
+
     }
-    
+
     public MockObjectType(Class type)
     {
         this.type = type;
@@ -24,15 +26,15 @@ public class MockObjectType implements ObjectType
 
     public boolean matches(Object object)
     {
-        if (this.predetermined) 
+        if ( this.predetermined )
         {
             return this.predetermined;
         }
-        
+
         if ( this.type == null )
         {
             return true;
-        }       
+        }
 
         return this.type.isInstance( object );
     }
@@ -41,18 +43,14 @@ public class MockObjectType implements ObjectType
     {
         if ( thatObj instanceof MockObjectType )
         {
-            MockObjectType that = (MockObjectType) thatObj;
+            MockObjectType that = ( MockObjectType ) thatObj;
 
-            if ( this.type == null
-                 &&
-                 that.type == null )
+            if ( this.type == null && that.type == null )
             {
                 return true;
             }
 
-            if ( this.type == null
-                 ||
-                 that.type == null)
+            if ( this.type == null || that.type == null )
             {
                 return false;
             }
@@ -70,8 +68,7 @@ public class MockObjectType implements ObjectType
             return 0;
         }
 
-        return this.type.hashCode();
-    }    
+        return this.type.hashCode( );
+    }
 
-    
 }

@@ -4,8 +4,7 @@ import junit.framework.TestCase;
 
 import org.drools.rule.Rule;
 
-public class RuleIntegrationExceptionTest
-    extends TestCase
+public class RuleIntegrationExceptionTest extends TestCase
 {
     public void testConstruct()
     {
@@ -13,10 +12,8 @@ public class RuleIntegrationExceptionTest
 
         RuleIntegrationException e = new RuleIntegrationException( rule );
 
-        assertSame( rule,
-                    e.getRule() );
+        assertSame( rule, e.getRule( ) );
 
-        assertEquals( "cheese cannot be integrated",
-                      e.getMessage() );
+        assertEquals( "cheese cannot be integrated", e.getMessage( ) );
     }
 }

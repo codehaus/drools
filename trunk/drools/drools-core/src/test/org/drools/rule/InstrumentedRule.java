@@ -25,20 +25,20 @@ public class InstrumentedRule extends Rule
     {
         if ( this.isValid == null )
         {
-            return super.isValid();
+            return super.isValid( );
         }
 
-        return this.isValid.booleanValue();
+        return this.isValid.booleanValue( );
     }
 
     public void checkValidity() throws InvalidRuleException
     {
         if ( this.isValid == null )
         {
-            super.checkValidity();
+            super.checkValidity( );
             return;
         }
-        else if ( this.isValid.booleanValue() )
+        else if ( this.isValid.booleanValue( ) )
         {
             return;
         }

@@ -2,8 +2,7 @@ package org.drools.reteoo;
 
 import org.drools.FactHandle;
 
-public class DefaultFactHandleFactory
-    implements FactHandleFactory
+public class DefaultFactHandleFactory implements FactHandleFactory
 {
     private long counter;
 
