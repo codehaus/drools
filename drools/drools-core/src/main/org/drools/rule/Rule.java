@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Rule.java,v 1.27 2004-06-27 22:24:14 mproctor Exp $
+ $Id: Rule.java,v 1.28 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -70,7 +70,7 @@ import java.io.Serializable;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Rule.java,v 1.27 2004-06-27 22:24:14 mproctor Exp $
+ *  @version $Id: Rule.java,v 1.28 2004-07-04 11:45:43 mproctor Exp $
  */
 public class Rule implements Serializable
 {
@@ -458,5 +458,42 @@ public class Rule implements Serializable
     void setLoadOrder(long loadOrder)
     {
       this.loadOrder = loadOrder;
+    }
+
+    public String dump(String indent)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(indent + "Rule\n");
+        buffer.append(indent + "----\n");
+        buffer.append(indent + "name: ");
+        buffer.append(this.name);
+        buffer.append("\n");
+        buffer.append(indent + "salience: ");
+        buffer.append(this.salience);
+        buffer.append("\n");
+        buffer.append(indent + "load order: ");
+        buffer.append(this.loadOrder);
+        buffer.append("\n");
+        buffer.append(indent + "duration: ");
+        buffer.append(this.duration);
+        buffer.append("\n");
+        Declaration[] declarations = getAllDeclarations();
+        for (int i = 0; i < declarations.length; i++)
+        {
+          buffer.append(declarations[i].dump(indent + " "));
+        }
+
+        Condition[] conditions = getConditions();
+        for (int i = 0; i < conditions.length; i++)
+        {
+          buffer.append(indent + "condition:\n");
+          buffer.append(indent + conditions[i]);
+        }
+
+        buffer.append("\n");
+        buffer.append(indent + "consequence:\n");
+        buffer.append(indent + this.consequence);
+        buffer.append("\n");
+        return buffer.toString();
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: RandomConflictResolver.java,v 1.1 2004-06-27 15:30:01 mproctor Exp $
+ $Id: RandomConflictResolver.java,v 1.2 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -51,8 +51,6 @@ import java.util.ListIterator;
 import java.util.LinkedList;
 import java.util.Random;
 
-import java.io.Serializable;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -70,7 +68,7 @@ import org.drools.spi.ConflictResolver;
  * @version $Id: RandomConflictResolver.java,v 1.1 2004/06/25 01:55:16
  *          mproctor Exp $
  */
-public class RandomConflictResolver implements ConflictResolver, Serializable
+public class RandomConflictResolver implements ConflictResolver
 {
 	// ----------------------------------------------------------------------
 	//     Class members

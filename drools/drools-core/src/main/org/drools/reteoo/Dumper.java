@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: TupleSink.java,v 1.13 2004-07-04 11:45:43 mproctor Exp $
+ $Id: Dumper.java,v 1.1 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -46,50 +46,26 @@ package org.drools.reteoo;
 
  */
 
-import org.drools.FactHandle;
-import org.drools.AssertionException;
-import org.drools.RetractionException;
-import org.drools.FactException;
+import org.drools.RuleBase;
+import java.io.PrintStream;
 
-import java.io.Serializable;
-
-/** Receiver of propagated <code>ReteTuple</code>s from a <code>TupleSource</code>.
+/** Implementation of <code>RuleBase</code>.
  *
- *  @see TupleSource
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @version $Id: Dumper.java,v 1.1 2004-07-04 11:45:43 mproctor Exp $
  */
-interface TupleSink extends Serializable
+public class Dumper
 {
-    /** Assert a new <code>Tuple</code>.
-     *
-     *  @param tuple The <code>Tuple</code> being asserted.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws AssertionException If an error occurs while asserting.
-     */
-    void assertTuple(ReteTuple tuple,
-                     WorkingMemoryImpl workingMemory) throws AssertionException;
+    private RuleBaseImpl ruleBase;
 
-    /** Retract tuples.
-     *
-     *  @param key The tuple key.
-     *  @param workingMemory The working memory seesion.
-     *
-     *  @throws RetractionException If an error occurs while retracting.
-     */
-    void retractTuples(TupleKey key,
-                       WorkingMemoryImpl workingMemory) throws RetractionException;
+    public Dumper(RuleBase ruleBase)
+    {
+        this.ruleBase = (RuleBaseImpl) ruleBase;
+    }
 
-    /** Modify tuples.
-     *
-     *  @param trigger The root fact object handle.
-     *  @param newTuples Modification replacement tuples.
-     *  @param workingMemory The working memory session.
-     *
-     *  @throws FactException If an error occurs while modifying.
-     */
-    void modifyTuples(FactHandle trigger,
-                      TupleSet newTuples,
-                      WorkingMemoryImpl workingMemory) throws FactException;
+    public void dumpRete(PrintStream out)
+    {
+      out.println(ruleBase.dumpRete());
+    }
 }

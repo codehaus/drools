@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: ComplexityConflictResolver.java,v 1.4 2004-06-26 17:54:53 mproctor Exp $
+ $Id: ComplexityConflictResolver.java,v 1.5 2004-07-04 11:45:43 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -49,8 +49,6 @@ package org.drools.conflict;
 import java.util.List;
 import java.util.ListIterator;
 
-import java.io.Serializable;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -58,17 +56,17 @@ import org.drools.spi.ConflictResolver;
 /**
  * <code>ConflictResolver</code> that uses the numConditions of rules to
  * resolve conflict.
- * 
+ *
  * @see #getInstance
  * @see Rule#setSalience
  * @see Rule#getSalience
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
+ *
  * @version $Id: SalienceConflictResolver.java,v 1.3 2004/06/25 02:46:39
  *          mproctor Exp $
  */
-public class ComplexityConflictResolver implements ConflictResolver, Serializable
+public class ComplexityConflictResolver implements ConflictResolver
 {
 	// ----------------------------------------------------------------------
 	//     Class members
@@ -83,7 +81,7 @@ public class ComplexityConflictResolver implements ConflictResolver, Serializabl
 
 	/**
 	 * Retrieve the singleton instance.
-	 * 
+	 *
 	 * @return The singleton instance.
 	 */
 	public static ConflictResolver getInstance()

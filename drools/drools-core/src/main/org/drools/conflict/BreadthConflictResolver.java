@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- $Id: BreadthConflictResolver.java,v 1.1 2004-06-27 12:31:16 mproctor Exp $
+ $Id: BreadthConflictResolver.java,v 1.2 2004-07-04 11:45:42 mproctor Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 
@@ -49,8 +49,6 @@ package org.drools.conflict;
 import java.util.List;
 import java.util.ListIterator;
 
-import java.io.Serializable;
-
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConflictResolver;
@@ -68,7 +66,7 @@ import org.drools.spi.ConflictResolver;
  * @version $Id: SalienceConflictResolver.java,v 1.3 2004/06/25 02:46:39
  *          mproctor Exp $
  */
-public class BreadthConflictResolver implements ConflictResolver, Serializable
+public class BreadthConflictResolver implements ConflictResolver
 {
 	// ----------------------------------------------------------------------
 	//     Class members
