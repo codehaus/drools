@@ -1,0 +1,62 @@
+<div class="section">
+  <div class="sectionTitle">Building from source</div>
+  <p>
+  Previous releases relied upon the <a href="http://maven.apache.org/">Maven</a> build-system.
+  Unfortunately, the structure of Drools grew to a point that it wasn't conveniently supported
+  by Maven.  So, instead of futzing around, we now have a custom bash script to do the builds.
+  No, it's not sexy, but it works pretty well.  
+  </p>
+
+  <p>
+  So, you either need to be using a respectable operation system that includes a bash
+  interpreter, else you need to install <a href="http://cygwin.com/">Cygwin</a> on 
+  your Windows machine.
+  </p>
+
+  <p>
+  After you've either upacked a <a href="releases.html">source release</a> or 
+  <a href="cvs.html">used CVS to obtain a source tree</a>, locate the <code>buid.sh</code>
+  script in the top-level directory.
+  </p>
+
+  <p>
+  The <code>build.sh</code> is basically a poor man's version of Make. Run the
+  <code>build.sh</code> script with zero or more of the following arguments:
+  </p>
+
+  <ul>
+    <li>all (the default if no arguments are specified)</li>
+    <li>site (build the website)</li>
+    <li>javadoc (build the javadocs)</li>
+    <li>compile (build the jars)</li>
+  </ul>
+
+  <p>
+  The simplest way to build everything is to simply type:
+  </p>
+
+<div class="code">
+<pre>
+./build.sh
+</pre>
+</div>
+
+  <p>
+  When the build completes, a new directory named <code>./build/</code> will
+  have been created in the top-level directory of the source tree.  
+  </p>
+
+  <p>
+  The directory
+  <code>./build/lib/</code> contains all constructed jars along with all matching
+  dependencies.  Simply deploy all of the produces jars within you \\$CLASSPATH
+  to have a fully functional installation.
+  </p>
+
+  <p>
+  The directory <code>./build/site/</code> contains a full replica of the
+  project website, including <a href="TOP/api/index.html">JavaDocs</a> and, if possible given the build
+  environment, the <a href="">PDF documentation</a>.
+  </p>
+
+</div>
