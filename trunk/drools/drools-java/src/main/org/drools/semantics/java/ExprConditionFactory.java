@@ -7,6 +7,7 @@ import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 
 public class ExprConditionFactory
+    implements ConditionFactory
 {
     private static final ExprConditionFactory INSTANCE = new ExprConditionFactory();
 

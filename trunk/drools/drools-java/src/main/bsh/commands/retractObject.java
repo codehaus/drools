@@ -1,7 +1,7 @@
 package bsh.commands;
 
 /*
- $Id: retractObject.java,v 1.3 2003-10-15 20:03:59 bob Exp $
+ $Id: retractObject.java,v 1.4 2003-12-05 06:02:26 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,7 @@ import bsh.NameSpace;
 import bsh.EvalError;
 
 import org.drools.WorkingMemory;
+import org.drools.FactHandle;
 import org.drools.FactException;
 import org.drools.spi.Tuple;
 
@@ -78,6 +79,8 @@ public class retractObject
         WorkingMemory workingMemory = (WorkingMemory) interp.get( "drools$working$memory" );
         Tuple         tuple         = (Tuple) interp.get( "drools$tuple" );
 
-        workingMemory.retractObject( tuple.getFactHandleForObject( object ) );
+        FactHandle handle = tuple.getFactHandleForObject( object );
+
+        workingMemory.retractObject( handle );
     }
 }
