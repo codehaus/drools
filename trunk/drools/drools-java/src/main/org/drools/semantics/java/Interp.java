@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- $Id: Interp.java,v 1.12 2004-06-15 18:24:17 bob Exp $
+ $Id: Interp.java,v 1.13 2004-06-22 16:57:18 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -66,7 +66,7 @@ import java.util.Map;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Interp.java,v 1.12 2004-06-15 18:24:17 bob Exp $
+ *  @version $Id: Interp.java,v 1.13 2004-06-22 16:57:18 bob Exp $
  */
 public class Interp
 {
@@ -95,6 +95,11 @@ public class Interp
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    protected Interpreter getInterpreter()
+    {
+        return this.interp;
+    }
 
     /** Evaluate.
      *
@@ -157,7 +162,14 @@ public class Interp
      */
     protected NameSpace setUpNameSpace(Tuple tuple) throws UtilEvalError, EvalError
     {
-        NameSpace ns = new NameSpace(interp.getClassManager(),  "" );
+        return setUpNameSpace( tuple,
+                               null );
+    }
+
+    protected NameSpace setUpNameSpace(Tuple tuple,
+                                       NameSpace parent) throws UtilEvalError, EvalError
+    {
+        NameSpace ns = new NameSpace( parent, interp.getClassManager(),  "" );
 
         ns.importCommands( "org.drools.semantics.java.bsh" );
 
