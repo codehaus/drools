@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- $Id: SemanticsRepository.java,v 1.1 2002-08-02 19:43:11 bob Exp $
+ $Id: SemanticsRepository.java,v 1.2 2003-10-28 07:37:19 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -63,9 +63,4 @@ public interface SemanticsRepository
      */
     SemanticModule lookupSemanticModule(String uri) throws NoSuchSemanticModuleException;
 
-    /** Register a <code>SemanticModule</code> by a URI.
-     *
-     *  @param module The module.
-     */
-    void registerSemanticModule(SemanticModule module);
 }

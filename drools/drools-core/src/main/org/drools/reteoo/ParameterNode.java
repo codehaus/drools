@@ -6,6 +6,7 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.Collections;
 
@@ -25,6 +26,7 @@ import java.util.Collections;
  */
 class ParameterNode
     extends TupleSource
+    implements Serializable
 {
     // ------------------------------------------------------------
     //     Instance members

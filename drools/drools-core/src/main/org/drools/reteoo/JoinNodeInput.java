@@ -5,6 +5,8 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.FactException;
 
+import java.io.Serializable;
+
 /** Input <code>TupleSinkImpl</code> for a <code>JoinNodeImpl</code>.
  *
  *  @see JoinNode
@@ -12,7 +14,7 @@ import org.drools.FactException;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 class JoinNodeInput
-    implements TupleSink
+    implements TupleSink, Serializable
 {
     // ------------------------------------------------------------
     //     Constants

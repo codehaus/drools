@@ -6,6 +6,7 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
@@ -22,7 +23,8 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Rete
+class Rete
+    implements Serializable
 {
     // ------------------------------------------------------------
     //     Instance members

@@ -9,7 +9,7 @@ import org.drools.rule.RuleSet;
 
 import java.util.Iterator;
 
-public class RuleBaseImpl
+class RuleBaseImpl
     implements RuleBase
 {
     // ------------------------------------------------------------

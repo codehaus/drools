@@ -6,6 +6,7 @@ import org.drools.AssertionException;
 import org.drools.RetractionException;
 import org.drools.spi.Condition;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import java.util.Iterator;
  */
 class ConditionNode
     extends TupleSource
-    implements TupleSink
+    implements TupleSink, Serializable
 {
     // ------------------------------------------------------------
     //     Instance members

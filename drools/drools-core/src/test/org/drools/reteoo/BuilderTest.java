@@ -16,7 +16,6 @@ import java.util.Iterator;
 
 public class BuilderTest extends TestCase
 {
-    private Rete rete;
     private Builder  builder;
 
     private ObjectType stringType;
@@ -27,15 +26,9 @@ public class BuilderTest extends TestCase
 
     private Rule rule1;
 
-    public BuilderTest(String name)
-    {
-        super( name );
-    }
-
     public void setUp()
     {
-        this.rete     = new Rete();
-        this.builder  = new Builder( this.rete );
+        this.builder  = new Builder();
 
         this.stringType = new MockObjectType();
         this.objectType = new MockObjectType();
@@ -51,17 +44,6 @@ public class BuilderTest extends TestCase
         this.rule1.addParameterDeclaration( this.stringDecl );
         
         this.rule1.addParameterDeclaration( this.objectDecl );
-    }
-
-    public void tearDown()
-    {
-        this.rete    = null;
-        this.builder = null;
-
-        this.stringType = null;
-        this.objectType = null;
-
-        this.rule1 = null;
     }
 
     public void testCreateParameterNodes()
