@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetRepository.java,v 1.6 2004-09-17 00:29:40 mproctor Exp $
+ * $Id: RuleExecutionSetRepository.java,v 1.7 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -56,20 +56,24 @@ import javax.rules.admin.RuleExecutionSet;
 public class RuleExecutionSetRepository
 {
     // holds the registered <code>RuleExecutionSet</code> objects.
-    private Map                               map = new HashMap( );
+    private Map map = new HashMap( );
 
-    private static RuleExecutionSetRepository repository;
+    private static RuleExecutionSetRepository REPOSITORY;
 
     /** Hide the constructor. */
-    private RuleExecutionSetRepository()
+    private RuleExecutionSetRepository( )
     {
+        // Hide the constructor.
     }
 
     /** Get the class instance of a <code>RuleExecutionSetRepository</code>. */
-    public static RuleExecutionSetRepository getInstance()
+    public static RuleExecutionSetRepository getInstance( )
     {
-        if ( repository != null ) return repository;
-        return repository = new RuleExecutionSetRepository( );
+        if ( REPOSITORY != null )
+        {
+            return REPOSITORY;
+        }
+        return REPOSITORY = new RuleExecutionSetRepository( );
     }
 
     /**
@@ -78,7 +82,7 @@ public class RuleExecutionSetRepository
      * 
      * An empty list is returned is there are no associations.
      */
-    public List getRegistrations()
+    public List getRegistrations( )
     {
         List list = new ArrayList( );
         list.addAll( map.keySet( ) );
@@ -89,7 +93,7 @@ public class RuleExecutionSetRepository
      * Get the <code>RuleExecutionSet</code> bound to this URI, or return
      * null.
      */
-    public RuleExecutionSet getRuleExecutionSet(String bindUri)
+    public RuleExecutionSet getRuleExecutionSet( String bindUri )
     {
         return ( RuleExecutionSet ) map.get( bindUri );
     }
@@ -97,24 +101,29 @@ public class RuleExecutionSetRepository
     /**
      * Register a <code>RuleExecutionSet</code> under the given URI.
      */
-    public void registerRuleExecutionSet(String bindUri,
-                                         RuleExecutionSet ruleSet)
+    public void registerRuleExecutionSet(
+        String bindUri, RuleExecutionSet ruleSet )
     {
-        if ( bindUri == null ) throw new NullPointerException(
-                                                               "bindUri cannot be null" );
-        if ( ruleSet == null ) throw new NullPointerException(
-                                                               "ruleSet cannot be null" );
+        if ( bindUri == null )
+        {
+            throw new NullPointerException( "bindUri cannot be null" );
+        }
+        if ( ruleSet == null )
+        {
+            throw new NullPointerException( "ruleSet cannot be null" );
+        }
         map.put( bindUri, ruleSet );
     }
 
     /**
      * Unregister a <code>RuleExecutionSet</code> from the given URI.
      */
-    public void unregisterRuleExecutionSet(String bindUri)
+    public void unregisterRuleExecutionSet( String bindUri )
     {
-        if ( bindUri == null ) throw new NullPointerException(
-                                                               "bindUri cannot be null" );
+        if ( bindUri == null )
+        {
+            throw new NullPointerException( "bindUri cannot be null" );
+        }
         map.remove( bindUri );
     }
-
 }

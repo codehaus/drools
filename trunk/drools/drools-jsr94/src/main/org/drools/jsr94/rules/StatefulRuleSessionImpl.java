@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatefulRuleSessionImpl.java,v 1.12 2004-09-17 00:29:38 mproctor Exp $
+ * $Id: StatefulRuleSessionImpl.java,v 1.13 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -91,21 +91,21 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
      * @throws RuleExecutionSetNotFoundException if there is no rule set under
      *         the given URI
      */
-    StatefulRuleSessionImpl(String bindUri, Map properties) throws RuleExecutionSetNotFoundException
+    StatefulRuleSessionImpl( String bindUri, Map properties )
+        throws RuleExecutionSetNotFoundException
     {
         setProperties( properties );
 
-        RuleExecutionSetRepository repository = RuleExecutionSetRepository
-                                                                          .getInstance( );
+        RuleExecutionSetRepository repository =
+            RuleExecutionSetRepository.getInstance( );
 
-        RuleExecutionSetImpl ruleSet = ( RuleExecutionSetImpl ) repository
-                                                                          .getRuleExecutionSet( bindUri );
+        RuleExecutionSetImpl ruleSet =
+            ( RuleExecutionSetImpl ) repository.getRuleExecutionSet( bindUri );
 
         if ( ruleSet == null )
         {
             throw new RuleExecutionSetNotFoundException(
-                                                         "no execution set bound to: "
-                                                                                                                                                                                                                                    + bindUri );
+                "no execution set bound to: " + bindUri );
         }
 
         setRuleExecutionSet( ruleSet );
@@ -120,7 +120,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public boolean containsObject(Handle handle)
+    public boolean containsObject( Handle handle )
     {
         if ( handle instanceof FactHandle )
         {
@@ -133,7 +133,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public Handle addObject(Object object) throws InvalidRuleSessionException
+    public Handle addObject( Object object ) throws InvalidRuleSessionException
     {
         checkRuleSessionValidity( );
 
@@ -150,7 +150,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public List addObjects(List objects) throws InvalidRuleSessionException
+    public List addObjects( List objects ) throws InvalidRuleSessionException
     {
         checkRuleSessionValidity( );
 
@@ -166,8 +166,8 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public void updateObject(Handle handle, Object object) throws InvalidRuleSessionException,
-                                                          InvalidHandleException
+    public void updateObject( Handle handle, Object object )
+        throws InvalidRuleSessionException, InvalidHandleException
     {
         checkRuleSessionValidity( );
 
@@ -175,13 +175,13 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
         {
             try
             {
-                getWorkingMemory( )
-                                   .modifyObject( ( FactHandle ) handle, object );
+                getWorkingMemory( ).modifyObject(
+                    ( FactHandle ) handle, object );
             }
             catch ( FactException e )
             {
-                throw new InvalidRuleSessionException( "cannot update object",
-                                                       e );
+                throw new InvalidRuleSessionException(
+                    "cannot update object", e );
             }
         }
         else
@@ -194,8 +194,8 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public void removeObject(Handle handle) throws InvalidRuleSessionException,
-                                           InvalidHandleException
+    public void removeObject( Handle handle )
+        throws InvalidRuleSessionException, InvalidHandleException
     {
         checkRuleSessionValidity( );
 
@@ -207,8 +207,8 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
             }
             catch ( FactException e )
             {
-                throw new InvalidRuleSessionException( "cannot remove object",
-                                                       e );
+                throw new InvalidRuleSessionException(
+                    "cannot remove object", e );
             }
         }
         else
@@ -220,7 +220,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public List getObjects() throws InvalidRuleSessionException
+    public List getObjects( ) throws InvalidRuleSessionException
     {
         checkRuleSessionValidity( );
 
@@ -230,7 +230,8 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public List getObjects(ObjectFilter objectFilter) throws InvalidRuleSessionException
+    public List getObjects( ObjectFilter objectFilter )
+        throws InvalidRuleSessionException
     {
         checkRuleSessionValidity( );
 
@@ -246,7 +247,7 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public void executeRules() throws InvalidRuleSessionException
+    public void executeRules( ) throws InvalidRuleSessionException
     {
         checkRuleSessionValidity( );
 
@@ -263,8 +264,8 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
     /**
      * @see StatefulRuleSessionImpl
      */
-    public Object getObject(Handle handle) throws InvalidRuleSessionException,
-                                          InvalidHandleException
+    public Object getObject( Handle handle )
+        throws InvalidRuleSessionException, InvalidHandleException
     {
         checkRuleSessionValidity( );
 
@@ -285,11 +286,11 @@ public class StatefulRuleSessionImpl extends RuleSessionImpl implements
         }
     }
 
-    public List getHandles()
+    public List getHandles( )
     {
         List handles = new LinkedList( );
-        for ( Iterator i = getWorkingMemory( ).getFactHandles( ).iterator( ); i
-                                                                               .hasNext( ); )
+        for ( Iterator i = getWorkingMemory( ).getFactHandles( ).iterator( );
+              i.hasNext( ); )
         {
             Object object = i.next( );
             if ( object instanceof Handle )

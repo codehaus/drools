@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.14 2004-10-27 06:47:19 simon Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.15 2004-11-05 20:08:36 dbarnett Exp $
  *
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -85,7 +85,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      * <code>RuleExecutionSetImpl</code> corresponds with an
      * <code>org.drools.RuleSet</code> object.
      */
-    RuleExecutionSetImpl(RuleSet ruleSet, Map properties)
+    RuleExecutionSetImpl( RuleSet ruleSet, Map properties )
     {
         this.properties = properties;
         this.ruleSet = ruleSet;
@@ -107,14 +107,14 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
     /**
      * Get an instance of the default filter, or null.
      */
-    public synchronized ObjectFilter getObjectFilter()
+    public synchronized ObjectFilter getObjectFilter( )
     {
         if ( this.objectFilter == null )
         {
             if ( this.defaultObjectFilterClassName != null )
             {
-                ClassLoader cl = Thread.currentThread( )
-                                       .getContextClassLoader( );
+                ClassLoader cl =
+                    Thread.currentThread( ).getContextClassLoader( );
 
                 if ( cl == null )
                 {
@@ -123,10 +123,10 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
 
                 try
                 {
-                    Class filterClass = cl
-                                          .loadClass( defaultObjectFilterClassName );
-                    this.objectFilter = ( ObjectFilter ) filterClass
-                                                                    .newInstance( );
+                    Class filterClass =
+                        cl.loadClass( defaultObjectFilterClassName );
+                    this.objectFilter =
+                        ( ObjectFilter ) filterClass.newInstance( );
                 }
                 catch ( Exception e )
                 {
@@ -143,38 +143,38 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      *
      * @return
      */
-    public WorkingMemory newWorkingMemory()
+    public WorkingMemory newWorkingMemory( )
     {
         return this.ruleBase.newWorkingMemory( );
     }
 
     // JSR94 interface methods start here -------------------------------------
-    public String getName()
+    public String getName( )
     {
         return this.ruleSet.getName( );
     }
 
-    public String getDescription()
+    public String getDescription( )
     {
         return description;
     }
 
-    public Object getProperty(Object key)
+    public Object getProperty( Object key )
     {
         return properties.get( key );
     }
 
-    public void setProperty(Object key, Object val)
+    public void setProperty( Object key, Object val )
     {
         properties.put( key, val );
     }
 
-    public void setDefaultObjectFilter(String objectFilterClassname)
+    public void setDefaultObjectFilter( String objectFilterClassname )
     {
         this.defaultObjectFilterClassName = objectFilterClassname;
     }
 
-    public String getDefaultObjectFilter()
+    public String getDefaultObjectFilter( )
     {
         return defaultObjectFilterClassName;
     }
@@ -184,17 +184,16 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      *
      * @return
      */
-    public List getRules()
+    public List getRules( )
     {
         List jsr94Rules = new ArrayList( );
+
+        Rule[] rules = ( ruleSet.getRules( ) );
+        for ( int i = 0; i < rules.length; i++ )
         {
-            int i;
-            Rule[] rules = ( ruleSet.getRules( ) );
-            for ( i = 0; i < rules.length; i++ )
-            {
-                jsr94Rules.add( new RuleImpl( rules[i] ) );
-            }
+            jsr94Rules.add( new RuleImpl( rules[i] ) );
         }
+
         return jsr94Rules;
     }
 }

@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetProviderImpl.java,v 1.12 2004-09-17 00:29:40 mproctor Exp $
+ * $Id: RuleExecutionSetProviderImpl.java,v 1.13 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -83,11 +83,10 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      * 
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Element, Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(Element element,
-                                                   Map properties) throws RuleExecutionSetCreateException,
-                                                                  RemoteException
+    public RuleExecutionSet createRuleExecutionSet(
+            Element element, Map properties )
+        throws RuleExecutionSetCreateException, RemoteException
     {
-
         // Prepare the DOM source
         Source source = new DOMSource( element );
 
@@ -95,15 +94,14 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         try
         {
             // Create a reader to handle the SAX events
-            reader = new RuleSetReader(
-                                        DefaultSemanticsRepository
-                                                                  .getInstance( ) );
+            reader =
+                new RuleSetReader( DefaultSemanticsRepository.getInstance( ) );
         }
         catch ( Exception e )
         {
             throw new RuleExecutionSetCreateException(
-                                                       "Couldn't get an instance of the DefaultSemanticsRepository: "
-                                                                                                                                                                                                                            + e );
+                "Couldn't get an instance of the DefaultSemanticsRepository: "
+                + e );
         }
 
         try
@@ -112,8 +110,8 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
             SAXResult result = new SAXResult( reader );
 
             // Create a transformer
-            Transformer xformer = TransformerFactory.newInstance( )
-                                                    .newTransformer( );
+            Transformer xformer =
+                TransformerFactory.newInstance( ).newTransformer( );
 
             // Traverse the DOM tree
             xformer.transform( source, result );
@@ -123,24 +121,21 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         catch ( TransformerException e )
         {
             throw new RuleExecutionSetCreateException(
-                                                       "could not create RuleExecutionSet: "
-                                                                                                                                                                                                                            + e );
+                "could not create RuleExecutionSet: " + e );
         }
 
         try
         {
             RuleSet ruleSet = reader.getRuleSet( );
-            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl( );
-            return localRuleExecutionSetProvider
-                                                .createRuleExecutionSet(
-                                                                         ruleSet,
-                                                                         properties );
+            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider =
+                new LocalRuleExecutionSetProviderImpl( );
+            return localRuleExecutionSetProvider.createRuleExecutionSet(
+                ruleSet, properties );
         }
         catch ( Exception e )
         {
             throw new RuleExecutionSetCreateException(
-                                                       "could not create RuleExecutionSet: "
-                                                                                                                                                                                                                            + e );
+                "could not create RuleExecutionSet: " + e );
         }
     }
 
@@ -158,26 +153,22 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      * 
      * @see RuleExecutionSetProvider#createRuleExecutionSet(Serializable, Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(Serializable serializable,
-                                                   Map properties) throws RuleExecutionSetCreateException,
-                                                                  RemoteException
+    public RuleExecutionSet createRuleExecutionSet(
+            Serializable serializable, Map properties )
+        throws RuleExecutionSetCreateException, RemoteException
     {
         if ( serializable instanceof RuleSet )
         {
-            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl( );
-            return localRuleExecutionSetProvider
-                                                .createRuleExecutionSet(
-                                                                         serializable,
-                                                                         properties );
+            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider =
+                new LocalRuleExecutionSetProviderImpl( );
+            return localRuleExecutionSetProvider.createRuleExecutionSet(
+                serializable, properties );
         }
         else
         {
-            throw new IllegalArgumentException(
-                                                "Serializable object must be "
-                                                                                                                                                                                                + "an instance of org.drools.rule.RuleSet.  It was "
-                                                                                                                                                                                                + serializable
-                                                                                                                                                                                                              .getClass( )
-                                                                                                                                                                                                              .getName( ) );
+            throw new IllegalArgumentException( "Serializable object must be "
+                + "an instance of org.drools.rule.RuleSet.  It was "
+                + serializable.getClass( ).getName( ) );
         }
     }
 
@@ -186,21 +177,19 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
      * 
      * @see RuleExecutionSetProvider#createRuleExecutionSet(String,Map)
      */
-    public RuleExecutionSet createRuleExecutionSet(String ruleExecutionSetUri,
-                                                   Map properties) throws RuleExecutionSetCreateException,
-                                                                  IOException,
-                                                                  RemoteException
+    public RuleExecutionSet createRuleExecutionSet(
+            String ruleExecutionSetUri, Map properties )
+        throws RuleExecutionSetCreateException, IOException, RemoteException
     {
         InputStream in = null;
         try
         {
-            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider = new LocalRuleExecutionSetProviderImpl( );
+            LocalRuleExecutionSetProviderImpl localRuleExecutionSetProvider =
+                new LocalRuleExecutionSetProviderImpl( );
             in = new URL( ruleExecutionSetUri ).openStream( );
             Reader reader = new InputStreamReader( in );
-            return localRuleExecutionSetProvider
-                                                .createRuleExecutionSet(
-                                                                         reader,
-                                                                         properties );
+            return localRuleExecutionSetProvider.createRuleExecutionSet(
+                reader, properties );
         }
         catch ( IOException ex )
         {
@@ -209,8 +198,7 @@ public class RuleExecutionSetProviderImpl implements RuleExecutionSetProvider
         catch ( Exception ex )
         {
             throw new RuleExecutionSetCreateException(
-                                                       "cannot create rule set",
-                                                       ex );
+                "cannot create rule set", ex );
         }
         finally
         {

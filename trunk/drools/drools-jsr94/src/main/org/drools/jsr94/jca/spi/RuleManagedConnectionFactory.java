@@ -1,9 +1,9 @@
 package org.drools.jsr94.jca.spi;
 
 /*
- * $Id: RuleManagedConnectionFactory.java,v 1.6 2004-09-17 00:29:37 mproctor Exp $
+ * $Id: RuleManagedConnectionFactory.java,v 1.7 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -60,11 +60,9 @@ import javax.security.auth.Subject;
  * 
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-public class RuleManagedConnectionFactory implements
-                                         ManagedConnectionFactory,
-                                         Serializable
+public class RuleManagedConnectionFactory
+    implements ManagedConnectionFactory, Serializable
 {
-
     private PrintWriter logWriter;
 
     /**
@@ -72,10 +70,11 @@ public class RuleManagedConnectionFactory implements
      * gets initialized with the passed ConnectionManager. In the managed
      * scenario, ConnectionManager is provided by the application server.
      */
-    public Object createConnectionFactory(ConnectionManager cxManager) throws ResourceException
+    public Object createConnectionFactory( ConnectionManager cxManager )
+        throws ResourceException
     {
-        logWriter
-                 .println( "RuleManagedConnectionFactory.createConnectionFactory" );
+        logWriter.println(
+            "RuleManagedConnectionFactory.createConnectionFactory" );
         return new RuleConnectionFactory( this, cxManager );
     }
 
@@ -84,7 +83,7 @@ public class RuleManagedConnectionFactory implements
      * gets initialized with a default ConnectionManager provided by the
      * resource adapter.
      */
-    public Object createConnectionFactory() throws ResourceException
+    public Object createConnectionFactory( ) throws ResourceException
     {
         logWriter.println( "RuleManagedConnectionFactory.createManagedFactory" );
         return new RuleConnectionFactory( this, null );
@@ -98,11 +97,11 @@ public class RuleManagedConnectionFactory implements
      * ResourceAdapter and opaque to application server) to create this new
      * connection.
      */
-    public ManagedConnection createManagedConnection(Subject subject,
-                                                     ConnectionRequestInfo info)
+    public ManagedConnection createManagedConnection(
+        Subject subject, ConnectionRequestInfo info )
     {
-        logWriter
-                 .println( "RuleManagedConnectionFactory.createManagedConnection" );
+        logWriter.println(
+            "RuleManagedConnectionFactory.createManagedConnection" );
         return null;
     }
 
@@ -119,12 +118,12 @@ public class RuleManagedConnectionFactory implements
      * for handling the connection allocation request.
      *  
      */
-    public ManagedConnection matchManagedConnections(Set connectionSet,
-                                                     Subject subject,
-                                                     ConnectionRequestInfo info) throws ResourceException
+    public ManagedConnection matchManagedConnections(
+            Set connectionSet, Subject subject, ConnectionRequestInfo info )
+        throws ResourceException
     {
-        logWriter
-                 .println( "RuleManagedConnectionFactory.matchManagedConnections" );
+        logWriter.println(
+            "RuleManagedConnectionFactory.matchManagedConnections" );
         return null;
     }
 
@@ -147,7 +146,7 @@ public class RuleManagedConnectionFactory implements
      * using ManagedConnection.setLogWriter to set ManagedConnection specific
      * logging and tracing.
      */
-    public void setLogWriter(PrintWriter logWriter) throws ResourceException
+    public void setLogWriter( PrintWriter logWriter ) throws ResourceException
     {
         this.logWriter = logWriter;
     }
@@ -164,7 +163,7 @@ public class RuleManagedConnectionFactory implements
      * created the log writer is initially null, in other words, logging is
      * disabled.
      */
-    public PrintWriter getLogWriter() throws ResourceException
+    public PrintWriter getLogWriter( ) throws ResourceException
     {
         return logWriter;
     }

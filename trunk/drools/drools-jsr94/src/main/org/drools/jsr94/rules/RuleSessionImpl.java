@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleSessionImpl.java,v 1.10 2004-09-17 00:29:38 mproctor Exp $
+ * $Id: RuleSessionImpl.java,v 1.11 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -82,63 +82,66 @@ abstract class RuleSessionImpl implements RuleSession
 
     private Map                  properties;
 
-    protected void initWorkingMemory()
+    protected void initWorkingMemory( )
     {
         setWorkingMemory( newWorkingMemory( ) );
     }
 
-    protected WorkingMemory newWorkingMemory()
+    protected WorkingMemory newWorkingMemory( )
     {
-        WorkingMemory workingMemory = getRuleExecutionSet( ).newWorkingMemory( );
+        WorkingMemory newWorkingMemory =
+            getRuleExecutionSet( ).newWorkingMemory( );
 
         Map props = this.getProperties( );
         if ( props != null )
         {
-            for ( Iterator iterator = props.entrySet( ).iterator( ); iterator
-                                                                             .hasNext( ); )
+            for ( Iterator iterator = props.entrySet( ).iterator( );
+                  iterator.hasNext( ); )
             {
                 Map.Entry entry = ( Map.Entry ) iterator.next( );
-                workingMemory.setApplicationData( ( String ) entry.getKey( ),
-                                                  entry.getValue( ) );
+                newWorkingMemory.setApplicationData(
+                    ( String ) entry.getKey( ), entry.getValue( ) );
             }
         }
 
-        workingMemory.addEventListener( new DebugWorkingMemoryEventListener( ) );
+        newWorkingMemory.addEventListener(
+            new DebugWorkingMemoryEventListener( ) );
 
-        return workingMemory;
+        return newWorkingMemory;
     }
 
-    protected void setProperties(Map properties)
+    protected void setProperties( Map properties )
     {
         this.properties = properties;
     }
 
-    protected Map getProperties()
+    protected Map getProperties( )
     {
         return this.properties;
     }
 
-    protected void setWorkingMemory(WorkingMemory workingMemory)
+    protected void setWorkingMemory( WorkingMemory workingMemory )
     {
         this.workingMemory = workingMemory;
     }
 
-    protected WorkingMemory getWorkingMemory()
+    protected WorkingMemory getWorkingMemory( )
     {
         return this.workingMemory;
     }
 
-    protected void setRuleExecutionSet(RuleExecutionSetImpl ruleSet)
+    protected void setRuleExecutionSet( RuleExecutionSetImpl ruleSet )
     {
         this.ruleSet = ruleSet;
     }
 
-    protected RuleExecutionSetImpl getRuleExecutionSet()
+    protected RuleExecutionSetImpl getRuleExecutionSet( )
     {
         return this.ruleSet;
     }
 
-    protected void checkRuleSessionValidity() throws InvalidRuleSessionException
+    protected void checkRuleSessionValidity( )
+        throws InvalidRuleSessionException
     {
         if ( this.workingMemory == null )
         {
@@ -150,18 +153,18 @@ abstract class RuleSessionImpl implements RuleSession
      * Returns the meta data for the rule execution set bound to this rule
      * session.
      */
-    public RuleExecutionSetMetadata getRuleExecutionSetMetadata()
+    public RuleExecutionSetMetadata getRuleExecutionSetMetadata( )
     {
-        RuleExecutionSetRepository repository = RuleExecutionSetRepository
-                                                                          .getInstance( );
+        RuleExecutionSetRepository repository =
+            RuleExecutionSetRepository.getInstance( );
 
         String theBindUri = null;
-        for ( Iterator i = repository.getRegistrations( ).iterator( ); i
-                                                                        .hasNext( ); )
+        for ( Iterator i = repository.getRegistrations( ).iterator( );
+              i.hasNext( ); )
         {
             String aBindUri = ( String ) i.next( );
-            RuleExecutionSet aRuleSet = repository
-                                                  .getRuleExecutionSet( aBindUri );
+            RuleExecutionSet aRuleSet =
+                repository.getRuleExecutionSet( aBindUri );
             if ( aRuleSet == ruleSet )
             {
                 theBindUri = aBindUri;
@@ -169,43 +172,47 @@ abstract class RuleSessionImpl implements RuleSession
             }
         }
 
-        return new RuleExecutionSetMetadataImpl( theBindUri,
-                                                 ruleSet.getName( ),
-                                                 ruleSet.getDescription( ) );
+        return new RuleExecutionSetMetadataImpl(
+            theBindUri, ruleSet.getName( ), ruleSet.getDescription( ) );
     }
 
     /**
      * Returns the type identifier for this RuleSession. The type identifiers
      * are defined in the RuleRuntime interface.
      */
-    public int getType() throws InvalidRuleSessionException
+    public int getType( ) throws InvalidRuleSessionException
     {
+        if ( this instanceof StatelessRuleSession )
+        {
+            return RuleRuntime.STATELESS_SESSION_TYPE;
+        }
 
-        if ( this instanceof StatelessRuleSession ) return RuleRuntime.STATELESS_SESSION_TYPE;
-
-        if ( this instanceof StatefulRuleSession ) return RuleRuntime.STATEFUL_SESSION_TYPE;
+        if ( this instanceof StatefulRuleSession )
+        {
+            return RuleRuntime.STATEFUL_SESSION_TYPE;
+        }
 
         throw new InvalidRuleSessionException( "unknown type" );
     }
 
-    public void reset()
+    public void reset( )
     {
         initWorkingMemory( );
     }
 
-    public void release()
+    public void release( )
     {
         setProperties( null );
         setWorkingMemory( null );
         setRuleExecutionSet( null );
     }
 
-    protected void applyFilter(List objects, ObjectFilter objectFilter)
+    protected void applyFilter( List objects, ObjectFilter objectFilter )
     {
         if ( objectFilter != null )
         {
-            for ( Iterator objectIter = objects.iterator( ); objectIter
-                                                                       .hasNext( ); )
+            for ( Iterator objectIter = objects.iterator( );
+                  objectIter.hasNext( ); )
             {
                 if ( objectFilter.filter( objectIter.next( ) ) == null )
                 {

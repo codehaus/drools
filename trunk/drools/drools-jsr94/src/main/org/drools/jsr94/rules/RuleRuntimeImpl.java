@@ -1,9 +1,9 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: RuleRuntimeImpl.java,v 1.9 2004-09-17 00:29:38 mproctor Exp $
+ * $Id: RuleRuntimeImpl.java,v 1.10 2004-11-05 20:08:36 dbarnett Exp $
  * 
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  * 
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -65,30 +65,28 @@ public class RuleRuntimeImpl implements RuleRuntime
      * 
      * @see RuleRuntime#createRuleSession
      */
-    public RuleSession createRuleSession(String bindUri,
-                                         Map properties,
-                                         int ruleSessionType) throws RuleExecutionSetNotFoundException,
-                                                             RuleSessionTypeUnsupportedException
+    public RuleSession createRuleSession(
+            String bindUri, Map properties, int ruleSessionType )
+        throws RuleExecutionSetNotFoundException,
+               RuleSessionTypeUnsupportedException
     {
 
         if ( ruleSessionType == RuleRuntime.STATELESS_SESSION_TYPE )
         {
-            StatelessRuleSessionImpl session = new StatelessRuleSessionImpl(
-                                                                             bindUri,
-                                                                             properties );
+            StatelessRuleSessionImpl session =
+                new StatelessRuleSessionImpl( bindUri, properties );
             return session;
         }
 
         if ( ruleSessionType == RuleRuntime.STATEFUL_SESSION_TYPE )
         {
-            StatefulRuleSessionImpl session = new StatefulRuleSessionImpl(
-                                                                           bindUri,
-                                                                           properties );
+            StatefulRuleSessionImpl session =
+                new StatefulRuleSessionImpl( bindUri, properties );
             return session;
         }
 
-        throw new RuleSessionTypeUnsupportedException( "invalid session type: "
-                                                       + ruleSessionType );
+        throw new RuleSessionTypeUnsupportedException(
+            "invalid session type: " + ruleSessionType );
     }
 
     /**
@@ -99,10 +97,10 @@ public class RuleRuntimeImpl implements RuleRuntime
      * 
      * @see RuleRuntime#getRegistrations
      */
-    public List getRegistrations()
+    public List getRegistrations( )
     {
-        RuleExecutionSetRepository repository = RuleExecutionSetRepository
-                                                                          .getInstance( );
+        RuleExecutionSetRepository repository =
+            RuleExecutionSetRepository.getInstance( );
         return repository.getRegistrations( );
     }
 }
