@@ -1,6 +1,8 @@
 package org.drools.spi;
 
 import org.drools.FactHandle;
+import org.drools.WorkingMemory;
+import org.drools.rule.Rule;
 import org.drools.rule.Declaration;
 
 import java.util.Set;
@@ -9,6 +11,9 @@ import java.util.HashMap;
 
 public class MockTuple implements Tuple
 {
+    private Rule rule;
+    private WorkingMemory workingMemory;
+
     private Map tuple;
 
     public MockTuple()
@@ -36,5 +41,25 @@ public class MockTuple implements Tuple
     public FactHandle getFactHandleForObject(Object object)
     {
         return null;
+    }
+
+    public void setRule(Rule rule)
+    {
+        this.rule = rule;
+    }
+
+    public Rule getRule()
+    {
+        return this.rule;
+    }
+
+    public void setWorkingMemory(WorkingMemory workingMemory)
+    {
+        this.workingMemory = workingMemory;
+    }
+
+    public WorkingMemory getWorkingMemory()
+    {
+        return this.workingMemory;
     }
 }

@@ -103,6 +103,7 @@ public class ConditionNodeTest
                                             "object" );
 
         ParameterNode paramNode = new ParameterNode( null,
+                                                     null,
                                                      decl );
 
         ConditionNode condNode = new ConditionNode( paramNode,

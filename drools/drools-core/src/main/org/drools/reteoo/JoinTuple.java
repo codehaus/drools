@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: JoinTuple.java,v 1.10 2003-11-19 21:31:10 bob Exp $
+ $Id: JoinTuple.java,v 1.11 2004-03-26 15:16:27 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -67,6 +67,8 @@ class JoinTuple
     JoinTuple(ReteTuple left,
               ReteTuple right)
     {
+        super( left.getWorkingMemory(),
+               left.getRule() );
 
         putAll( left );
         putAll( right );

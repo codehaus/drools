@@ -36,6 +36,7 @@ public class ParameterNodeTest
         Object object1 = new String( "cheese" );
         
         ParameterNode node = new ParameterNode( null,
+                                                null,
                                                 this.decl );
         
         InstrumentedTupleSink sink = new InstrumentedTupleSink();
@@ -66,6 +67,7 @@ public class ParameterNodeTest
     public void testGetTupleDeclarations()
     {
         ParameterNode node = new ParameterNode( null,
+                                                null,
                                                 this.decl );
 
         Set decls = node.getTupleDeclarations();

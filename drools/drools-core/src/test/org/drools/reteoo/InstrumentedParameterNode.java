@@ -18,7 +18,8 @@ public class InstrumentedParameterNode
     public InstrumentedParameterNode(ObjectTypeNode inputNode,
                                      Declaration decl)
     {
-        super( inputNode,
+        super( null,
+               inputNode,
                decl );
 
         this.assertedObjects  = new ArrayList();
