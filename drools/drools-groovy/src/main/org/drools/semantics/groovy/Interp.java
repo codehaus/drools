@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: Interp.java,v 1.12 2004-11-29 12:14:43 simon Exp $
+ * $Id: Interp.java,v 1.13 2004-11-29 12:35:52 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -66,10 +66,11 @@ import java.util.Map;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: Interp.java,v 1.12 2004-11-29 12:14:43 simon Exp $
+ * @version $Id: Interp.java,v 1.13 2004-11-29 12:35:52 simon Exp $
  */
 public class Interp implements Serializable
 {
+    private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
     // ------------------------------------------------------------
     //     Instance members
@@ -82,8 +83,6 @@ public class Interp implements Serializable
     private final Rule rule;
 
     private transient Script code;
-
-    private String newline = System.getProperty( "line.separator" );
 
     // ------------------------------------------------------------
     //     Constructors
@@ -108,7 +107,7 @@ public class Interp implements Serializable
                     newText.append("import ");
                     newText.append(importEntry.getImportEntry());
                     newText.append(";");
-                    newText.append(newline);
+                    newText.append(LINE_SEPARATOR);
                 }
             }
             newText.append(text);

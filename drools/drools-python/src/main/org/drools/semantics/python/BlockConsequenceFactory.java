@@ -1,6 +1,5 @@
 package org.drools.semantics.python;
 
-import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.ConsequenceFactory;
@@ -9,7 +8,6 @@ import org.drools.spi.Consequence;
 
 public class BlockConsequenceFactory implements ConsequenceFactory
 {
-
     private static final BlockConsequenceFactory INSTANCE = new BlockConsequenceFactory( );
 
     public static BlockConsequenceFactory getInstance()
@@ -17,9 +15,10 @@ public class BlockConsequenceFactory implements ConsequenceFactory
         return INSTANCE;
     }
 
-    public Consequence newConsequence(Configuration config,
-                                      Rule rule) throws FactoryException
+    public Consequence newConsequence( Configuration config,
+                                       Rule rule ) throws FactoryException
     {
-        return new BlockConsequence( config.getText( ), rule.getImports() );
+        return new BlockConsequence( config.getText( ),
+                                     rule );
     }
 }

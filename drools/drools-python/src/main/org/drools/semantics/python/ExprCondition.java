@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: ExprCondition.java,v 1.12 2004-11-28 02:22:18 simon Exp $
+ * $Id: ExprCondition.java,v 1.13 2004-11-29 12:35:52 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,19 +41,17 @@ package org.drools.semantics.python;
  *
  */
 
+import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
-
-import java.util.Set;
-import java.util.List;
 
 /**
  * Python expression semantics <code>Condition</code>.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: ExprCondition.java,v 1.12 2004-11-28 02:22:18 simon Exp $
+ * @version $Id: ExprCondition.java,v 1.13 2004-11-29 12:35:52 simon Exp $
  */
 public class ExprCondition extends Eval implements Condition
 {
@@ -66,9 +64,9 @@ public class ExprCondition extends Eval implements Condition
      *
      * @param expr The expression.
      */
-    public ExprCondition(String expr, Set imports, List availDecls) throws Exception
+    public ExprCondition( String expr, Rule rule ) throws Exception
     {
-        super( expr, imports, availDecls );
+        super( expr, rule );
     }
 
     // ------------------------------------------------------------
@@ -105,7 +103,9 @@ public class ExprCondition extends Eval implements Condition
         }
         catch ( Exception e )
         {
-            throw new ConditionException( e, tuple.getRule( ), this.getText( ) );
+            throw new ConditionException( e,
+                                          getRule( ),
+                                          getText( ) );
         }
     }
 }
