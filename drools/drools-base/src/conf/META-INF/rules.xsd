@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"            
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://drools.org/rules"
            elementFormDefault="qualified"
-           xmlns:rules="http://drools.org/rules"  
+           xmlns:rules="http://drools.org/rules"
            xmlns:java="http://drools.org/semantics/java"
            xmlns:groovy="http://drools.org/semantics/groovy"
            xmlns:python="http://drools.org/semantics/python">
-       
+
   <xs:import namespace="http://drools.org/semantics/java"/>
   <xs:import namespace="http://drools.org/semantics/groovy"/>
-  <xs:import namespace="http://drools.org/semantics/python"/>             
+  <xs:import namespace="http://drools.org/semantics/python"/>
 
   <xs:element name="rule-set">
     <xs:complexType>
@@ -18,18 +18,18 @@
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:string"/>
       <xs:attribute name="description" type="xs:string"/>
-    </xs:complexType>   
+    </xs:complexType>
     <!-- All rules must have unique names -->
     <xs:key name="ruleName">
       <xs:selector xpath="rules:rule" />
       <xs:field xpath="@name" />
-    </xs:key>       
+    </xs:key>
   </xs:element>
-  
+
   <xs:element name="rule">
-    <xs:complexType>  
+    <xs:complexType>
       <xs:sequence>
-        
+
         <xs:element name="parameter" maxOccurs="unbounded" >
           <xs:complexType>
             <xs:choice>
@@ -40,8 +40,8 @@
             <xs:attribute name="identifier" use="required" type="xs:string"/>
           </xs:complexType>
         </xs:element>
-        
-        <xs:choice minOccurs="0" maxOccurs="unbounded">          
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="declaration" minOccurs="0" maxOccurs="unbounded" >
               <xs:complexType>
                 <xs:choice>
@@ -50,17 +50,17 @@
                   <xs:element ref="python:class"/>
                 </xs:choice>
                 <xs:attribute name="identifier" use="required" type="xs:string"/>
-              </xs:complexType>          
-            </xs:element>              
-          <xs:element minOccurs="0" maxOccurs="unbounded" ref="java:extractor" />                          
-        </xs:choice>             
-                
+              </xs:complexType>
+            </xs:element>
+          <xs:element minOccurs="0" maxOccurs="unbounded" ref="java:extractor" />
+        </xs:choice>
+
         <xs:choice maxOccurs="unbounded">
           <xs:element ref="java:condition"/>
           <xs:element ref="groovy:condition"/>
           <xs:element ref="python:condition"/>
         </xs:choice>
-        
+
         <xs:element name="duration" minOccurs="0" >
           <xs:complexType>
             <xs:attribute name="days" type="xs:nonNegativeInteger"/>
@@ -69,31 +69,31 @@
             <xs:attribute name="seconds" type="xs:nonNegativeInteger"/>
           </xs:complexType>
         </xs:element>
-        
+
         <xs:choice>
           <xs:element ref="java:consequence"/>
           <xs:element ref="groovy:consequence"/>
           <xs:element ref="python:consequence"/>
         </xs:choice>
-        
+
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:string"/>
-      <xs:attribute name="salience" type="xs:integer"/>     
-      <xs:attribute name="no-loop" type="xs:boolean"/>   
-      <xs:attribute name="description" type="xs:string"/>  
-    </xs:complexType>  
-    
-    <!-- make sure extractor targets are specified 
+      <xs:attribute name="salience" type="xs:integer"/>
+      <xs:attribute name="no-loop" type="xs:boolean"/>
+      <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType>
+
+    <!-- make sure extractor targets are specified
          after decleration identifiers -->
     <xs:key name="identifierKey">
       <xs:selector xpath="rules:declaration | rules:parameter" />
       <xs:field xpath="@identifier" />
-    </xs:key>           
-    <xs:keyref name="targetToIdentifier" 
+    </xs:key>
+    <xs:keyref name="targetToIdentifier"
                refer="rules:identifierKey">
-      <xs:selector xpath="java:extractor" />
+      <xs:selector xpath="java:extractor | python:extractor | groovy:extractor" />
       <xs:field xpath="@target" />
-    </xs:keyref>              
+    </xs:keyref>
   </xs:element>
-  
+
 </xs:schema>
