@@ -1,5 +1,15 @@
 package org.drools.semantics.java;
 
+import net.janino.EvaluatorBase;
+import net.janino.Java;
+import net.janino.Mod;
+import net.janino.Parser;
+import net.janino.Scanner;
+import net.janino.util.PrimitiveWrapper;
+import org.drools.rule.Declaration;
+import org.drools.semantics.base.ClassObjectType;
+import org.drools.spi.ObjectType;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
@@ -9,17 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import net.janino.EvaluatorBase;
-import net.janino.Java;
-import net.janino.Mod;
-import net.janino.Parser;
-import net.janino.Scanner;
-import net.janino.util.PrimitiveWrapper;
-
-import org.drools.semantics.base.ClassObjectType;
-import org.drools.rule.Declaration;
-import org.drools.spi.ObjectType;
 
 public class DroolsScriptEvaluator extends EvaluatorBase
 {
@@ -95,20 +94,19 @@ public class DroolsScriptEvaluator extends EvaluatorBase
 
         Scanner.Location loc = scanner.peek( ).getLocation( );
         Iterator it = imports.iterator( );
-        String importString;
         String type;
         List list;
         StringTokenizer st;
         String token;
-        boolean importOnDemand = false;
+        boolean importOnDemand;
         while ( it.hasNext( ) )
-        {    
-            importOnDemand = false;   
+        {
+            importOnDemand = false;
             list = new ArrayList( );
             type = (String) it.next( );
-            st = new StringTokenizer( type, "." );                  
+            st = new StringTokenizer( type, "." );
             while ( st.hasMoreTokens( ) )
-            {                
+            {
                 token = st.nextToken( );
                 if (!token.equals("*"))
                 {
@@ -118,15 +116,15 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                 {
                     importOnDemand = true;
                 }
-            }            
+            }
             if (importOnDemand)
             {
                 compilationUnit
                 .addTypeImportOnDemand(( String[] ) list
                                                        .toArray( new String[list
-                                                                                .size( )] ) );                
+                                                                                .size( )] ) );
             }
-            else 
+            else
             {
             compilationUnit
                            .addSingleTypeImport(
@@ -142,8 +140,8 @@ public class DroolsScriptEvaluator extends EvaluatorBase
             block.addStatement( parser.parseBlockStatement( block ) );
         }
 
-        //UnparseVisitor.unparse(compilationUnit, new BufferedWriter( new OutputStreamWriter(System.err))); 
-        
+        //UnparseVisitor.unparse(compilationUnit, new BufferedWriter( new OutputStreamWriter(System.err)));
+
         // Compile and load it.
         Class c;
         try
@@ -215,11 +213,11 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                         new Java.MethodInvocation(
                                                                                    // value
                                                                                    loc, // location
-                                                                                   ( Java.Scope ) block, // enclosingScope
+                                                                                   block, // enclosingScope
                                                                                    new Java.AmbiguousName(
                                                                                                            // optionalTarget
                                                                                                            loc,
-                                                                                                           ( Java.Scope ) block,
+                                                                                                           block,
                                                                                                            new String[]{"applicationData"} ),
                                                                                    "get", // methodName
                                                                                    new Java.Rvalue[]{ // arguments
@@ -259,7 +257,7 @@ public class DroolsScriptEvaluator extends EvaluatorBase
             declaration = declarations[i];
             identifier = declaration.getIdentifier( );
             objectType = declaration.getObjectType( );
-            
+
             clazz = ( ( ClassObjectType ) objectType ).getType( );
 
             type = clazz.getName( );
@@ -288,18 +286,18 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                         new Java.MethodInvocation(
                                                                                    // value
                                                                                    loc, // location
-                                                                                   ( Java.Scope ) block, // enclosingScope
+                                                                                   block, // enclosingScope
                                                                                    new Java.AmbiguousName(
                                                                                                            // optionalTarget
                                                                                                            loc,
-                                                                                                           ( Java.Scope ) block,
+                                                                                                           block,
                                                                                                            new String[]{"tuple"} ),
                                                                                    "get", // methodName
                                                                                    new Java.Rvalue[]{new Java.ArrayAccessExpression(
                                                                                                                                      loc,
                                                                                                                                      new Java.AmbiguousName(
                                                                                                                                                              loc,
-                                                                                                                                                             ( Java.Scope ) block,
+                                                                                                                                                             block,
                                                                                                                                                              new String[]{"decls"} ),
                                                                                                                                      new Java.ConstantValue(
                                                                                                                                                              loc,
@@ -335,7 +333,7 @@ public class DroolsScriptEvaluator extends EvaluatorBase
                                                                            declarations,
                                                                            applicationData,
                                                                            imports );
-        
+
         try
         {
             return scriptEvaluator.getMethod().getDeclaringClass().newInstance();

@@ -1,6 +1,6 @@
 package org.drools.util;
 /*
-* $Id: PrimitiveLongStack.java,v 1.2 2004-11-16 13:52:01 simon Exp $
+* $Id: PrimitiveLongStack.java,v 1.3 2004-11-16 14:35:33 simon Exp $
 *
 * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
 *
@@ -147,10 +147,9 @@ public class PrimitiveLongStack
             return this.branch[ this.lastKey-- ];
         }
 
-        public boolean push(long value )
+        public void push(long value )
         {
             this.branch[ ++this.lastKey ] = value;
-            return true;
         }
 
         public int getPosition()

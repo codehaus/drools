@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.31 2004-11-16 13:37:53 simon Exp $
+ * $Id: RuleSetReader.java,v 1.32 2004-11-16 14:35:31 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -75,7 +75,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.31 2004-11-16 13:37:53 simon Exp $
+ * @version $Id: RuleSetReader.java,v 1.32 2004-11-16 14:35:31 simon Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -279,13 +279,7 @@ public class RuleSetReader extends DefaultHandler
      */
     public RuleSet read( InputSource in ) throws Exception
     {
-        SAXParser parser = null;
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        if ( cl == null )
-        {
-            cl = RuleSetReader.class.getClassLoader( );
-        }
+        SAXParser parser;
 
         if ( this.parser == null )
         {
@@ -389,7 +383,7 @@ public class RuleSetReader extends DefaultHandler
                              Attributes attrs ) throws SAXException
     {
         //going down so no peer
-        if ( this.lastWasEndElement == false )
+        if ( !this.lastWasEndElement )
         {
             this.peer = null;
         }
@@ -419,13 +413,13 @@ public class RuleSetReader extends DefaultHandler
         Object node = handler.end( uri, localName );
 
         //next
-        if ( (node != null) && (this.lastWasEndElement == false) )
+        if ( node != null && !this.lastWasEndElement )
         {
             this.peer = node;
         }
         //up or no children
-        else if ( (this.lastWasEndElement == true)
-                || (this.parents.getLast( )).getClass( )
+        else if ( this.lastWasEndElement
+                || ( this.parents.getLast( ) ).getClass( )
                         .isInstance( this.current ) )
         {
             this.peer = this.parents.removeLast( );
@@ -464,15 +458,15 @@ public class RuleSetReader extends DefaultHandler
         {
             Object allowedParent;
             Iterator it = validParents.iterator( );
-            while ( (validParent == false) && it.hasNext( ) )
+            while ( !validParent && it.hasNext( ) )
             {
                 allowedParent = it.next( );
-                if ( (parent == null) && (allowedParent == null) )
+                if ( parent == null && allowedParent == null )
                 {
                     validParent = true;
                 }
-                else if ( (allowedParent != null)
-                        && ((Class) allowedParent).isInstance( parent ) )
+                else if ( allowedParent != null
+                        && ( ( Class ) allowedParent).isInstance( parent ) )
                 {
                     validParent = true;
                 }
@@ -490,15 +484,15 @@ public class RuleSetReader extends DefaultHandler
 
         Object allowedPeer;
         Iterator it = validPeers.iterator( );
-        while ( (validPeer == false) && it.hasNext( ) )
+        while ( !validPeer && it.hasNext( ) )
         {
             allowedPeer = it.next( );
-            if ( (peer == null) && (allowedPeer == null) )
+            if ( peer == null && allowedPeer == null )
             {
                 validPeer = true;
             }
-            else if ( (allowedPeer != null)
-                    && ((Class) allowedPeer).isInstance( peer ) )
+            else if ( allowedPeer != null
+                    && ( ( Class ) allowedPeer).isInstance( peer ) )
             {
                 validPeer = true;
             }
@@ -509,10 +503,10 @@ public class RuleSetReader extends DefaultHandler
                     + "> is after an invalid element", getLocator( ) );
         }
 
-        if ( allowNesting == false )
+        if ( !allowNesting )
         {
             it = this.parents.iterator( );
-            while ( (invalidNesting == false) && it.hasNext( ) )
+            while ( !invalidNesting && it.hasNext( ) )
             {
                 if ( nodeClass.isInstance( it.next( ) ) )
                 {

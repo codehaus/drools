@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: Interp.java,v 1.19 2004-11-15 07:11:54 simon Exp $
+ * $Id: Interp.java,v 1.20 2004-11-16 14:35:33 simon Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: Interp.java,v 1.19 2004-11-15 07:11:54 simon Exp $
+ * @version $Id: Interp.java,v 1.20 2004-11-16 14:35:33 simon Exp $
  */
 public class Interp
 {
