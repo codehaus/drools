@@ -17,15 +17,15 @@
 
         <groovy:consequence>
             println "${a.name} finished"
-            a.state = "FINISHED";
-            drools.modifyObject(a);
+            a.state = "FINISHED"
+            drools.modifyObject(a)
         </groovy:consequence>
     </rule>
 
     <rule name="AtoB" salience="30">
         <parameter identifier="a">
             <class-field field="name" value="A">State</class-field>
-        </parameter>
+       </parameter>
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
@@ -35,8 +35,8 @@
 
         <groovy:consequence>
             println "${b.name} finished"
-            b.state = "FINISHED";
-            drools.modifyObject(b);
+            b.state = "FINISHED"
+            drools.modifyObject(b)
         </groovy:consequence>
     </rule>
 
