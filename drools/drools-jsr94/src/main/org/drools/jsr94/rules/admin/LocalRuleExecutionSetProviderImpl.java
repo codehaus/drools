@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.17 2004-11-27 00:59:54 dbarnett Exp $
+ * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.18 2004-12-04 04:33:58 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,17 +41,19 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
+import org.xml.sax.SAXException;
 
 /**
  * The Drools implementation of the <code>LocalRuleExecutionSetProvider</code>
@@ -102,10 +104,20 @@ public class LocalRuleExecutionSetProviderImpl
             RuleSet ruleSet = setReader.read( ruleExecutionSetStream );
             return this.createRuleExecutionSet( ruleSet, properties );
         }
-        catch ( Exception ex )
+        catch ( SAXException e )
         {
             throw new RuleExecutionSetCreateException(
-                "cannot create rule set", ex );
+                "cannot create rule set", e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "cannot create rule set", e );
+        }
+        catch ( IOException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "cannot create rule set", e );
         }
     }
 
@@ -135,10 +147,20 @@ public class LocalRuleExecutionSetProviderImpl
             RuleSet ruleSet = setReader.read( ruleExecutionSetReader );
             return this.createRuleExecutionSet( ruleSet, properties );
         }
-        catch ( Exception ex )
+        catch ( SAXException e )
         {
             throw new RuleExecutionSetCreateException(
-                "cannot create rule set", ex );
+                "cannot create rule set", e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "cannot create rule set", e );
+        }
+        catch ( IOException e )
+        {
+            throw new RuleExecutionSetCreateException(
+                "cannot create rule set", e );
         }
     }
 
@@ -161,24 +183,12 @@ public class LocalRuleExecutionSetProviderImpl
             Object ruleExecutionSetAst, Map properties )
         throws RuleExecutionSetCreateException
     {
-        if ( properties == null )
-        {
-            properties = new HashMap( );
-        }
         if ( ruleExecutionSetAst instanceof RuleSet )
         {
-            try
-            {
-                RuleSet ruleSet = ( RuleSet ) ruleExecutionSetAst;
-                return this.createRuleExecutionSet( ruleSet, properties );
-            }
-            catch ( Exception ex )
-            {
-                throw new RuleExecutionSetCreateException(
-                    "cannot create rule set", ex );
-            }
+            RuleSet ruleSet = ( RuleSet ) ruleExecutionSetAst;
+            return this.createRuleExecutionSet( ruleSet, properties );
         }
-        throw new IllegalArgumentException(
+        throw new RuleExecutionSetCreateException(
             " Incoming AST object must be an org.drools.rule.RuleSet.  Was "
             + ruleExecutionSetAst.getClass( ) );
     }
@@ -190,7 +200,7 @@ public class LocalRuleExecutionSetProviderImpl
      * @param ruleSet a Drools <code>org.drools.rule.RuleSet</code>
      *        representation of a rule execution set.
      * @param properties additional properties used to create the
-     *        RuleExecutionSet implementation. May be null.
+     *        RuleExecutionSet implementation. May be <code>null</code>.
      *
      * @return The created <code>RuleExecutionSet</code>.
      */

@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.18 2004-11-28 20:01:13 mproctor Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.19 2004-12-04 04:33:58 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,6 +42,7 @@ package org.drools.jsr94.rules.admin;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -111,11 +112,18 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      * @param ruleSet The <code>RuleSet</code> to associate with this
      *        <code>RuleExecutionSet</code>.
      * @param properties A <code>Map</code> of user-defined and
-     *        Drools-defined properties.
+     *        Drools-defined properties. May be <code>null</code>.
      */
     RuleExecutionSetImpl( RuleSet ruleSet, Map properties )
     {
-        this.properties = properties;
+        if ( null == properties )
+        {
+            this.properties = new HashMap( );
+        }
+        else
+        {
+            this.properties = properties;
+        }
         this.ruleSet = ruleSet;
         this.description = ruleSet.getDocumentation( );
 
@@ -143,29 +151,37 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      */
     public synchronized ObjectFilter getObjectFilter( )
     {
-        if ( this.objectFilter == null )
+        if ( this.objectFilter != null )
         {
-            if ( this.defaultObjectFilterClassName != null )
+            return this.objectFilter;
+        }
+        
+        if ( this.defaultObjectFilterClassName != null )
+        {
+            ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+    
+            if ( cl == null )
             {
-                ClassLoader cl =
-                    Thread.currentThread( ).getContextClassLoader( );
-
-                if ( cl == null )
-                {
-                    cl = RuleExecutionSetImpl.class.getClassLoader( );
-                }
-
-                try
-                {
-                    Class filterClass =
-                        cl.loadClass( this.defaultObjectFilterClassName );
-                    this.objectFilter =
-                        ( ObjectFilter ) filterClass.newInstance( );
-                }
-                catch ( Exception e )
-                {
-                    throw new RuntimeException( e.toString( ) );
-                }
+                cl = RuleExecutionSetImpl.class.getClassLoader( );
+            }
+    
+            try
+            {
+                Class filterClass =
+                    cl.loadClass( this.defaultObjectFilterClassName );
+                this.objectFilter = ( ObjectFilter ) filterClass.newInstance( );
+            }
+            catch ( ClassNotFoundException e )
+            {
+                throw new RuntimeException( e.toString( ) );
+            }
+            catch ( InstantiationException e )
+            {
+                throw new RuntimeException( e.toString( ) );
+            }
+            catch ( IllegalAccessException e )
+            {
+                throw new RuntimeException( e.toString( ) );
             }
         }
 
@@ -267,7 +283,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         List jsr94Rules = new ArrayList( );
 
         Rule[] rules = ( this.ruleSet.getRules( ) );
-        for ( int i = 0; i < rules.length; i++ )
+        for ( int i = 0; i < rules.length; ++i )
         {
             jsr94Rules.add( new RuleImpl( rules[i] ) );
         }
