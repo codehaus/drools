@@ -1,16 +1,22 @@
 package org.drools.io;
 
 import org.drools.rule.Declaration;
+import org.drools.rule.Extraction;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
 import org.drools.semantics.java.ClassObjectType;
+import org.drools.semantics.java.ExprExtractor;
+import org.drools.semantics.java.ExprCondition;
+import org.drools.semantics.java.BlockConsequence;
 
 import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class RuleSetLoaderTest extends TestCase
 {
@@ -69,6 +75,13 @@ public class RuleSetLoaderTest extends TestCase
 
         Declaration decl = null;
         ClassObjectType type = null;
+
+        Extraction extraction = null;
+        ExprExtractor extractor = null;
+
+        ExprCondition condition = null;
+
+        BlockConsequence consequence = null;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
         //     ruleset.1
@@ -130,6 +143,52 @@ public class RuleSetLoaderTest extends TestCase
         assertNotNull( type );
 
         assertTrue( type.getType() == Integer.class );
+
+        assertEquals( 1,
+                      rule.getExtractions().size() );
+
+        extraction = (Extraction) rule.getExtractions().iterator().next();
+
+        assertNotNull( extraction );
+
+        assertEquals( rule.getDeclaration( "strLen" ),
+                      extraction.getTargetDeclaration() );
+
+        extractor = (ExprExtractor) extraction.getExtractor();
+
+        assertNotNull( extractor );
+
+        assertEquals( "str.length()",
+                      extractor.getExpression() );
+
+        Set conditionExprs = new HashSet();
+        conditionExprs.add( "strLen > 5" );
+        conditionExprs.add( "strLen.intValue() < maxLen.intValue()" );
+
+        assertEquals( 2,
+                      rule.getConditions().size() );
+
+        Iterator conditionIter = rule.getConditions().iterator();
+
+        condition = (ExprCondition) conditionIter.next();
+
+        assertTrue( conditionExprs.remove( condition.getExpression() ) );
+
+        condition = (ExprCondition) conditionIter.next();
+
+        assertTrue( conditionExprs.remove( condition.getExpression() ) );
+
+        assertTrue( conditionExprs.isEmpty() );
+
+        consequence = (BlockConsequence) rule.getConsequence();
+
+        assertNotNull( consequence );
+
+        assertEquals( "System.err.println( \"str: \" + str );\n"
+                      + "          System.err.println( \"strLen: \" + strLen );\n"
+                      + "          System.err.println( \"maxLen: \" + maxLen );",
+                      consequence.getText() );
+        
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
         //     ruleset.2
