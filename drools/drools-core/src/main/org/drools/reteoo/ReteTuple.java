@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.62 2004-11-28 09:45:28 simon Exp $
+ * $Id: ReteTuple.java,v 1.63 2004-11-29 12:50:32 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,6 @@ import org.drools.NoSuchFactHandleException;
 import org.drools.NoSuchFactObjectException;
 import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
 import org.drools.spi.Tuple;
 
 import java.io.Serializable;
@@ -68,8 +67,6 @@ class ReteTuple
 
     private final WorkingMemoryImpl workingMemory;
 
-    private final Rule rule;
-
     private final TupleKey key;
 
     private FactHandleImpl mostRecentFact;
@@ -80,11 +77,9 @@ class ReteTuple
     // Constructors
     // ------------------------------------------------------------
 
-    ReteTuple(WorkingMemoryImpl workingMemory,
-                     Rule rule)
+    ReteTuple( WorkingMemoryImpl workingMemory )
     {
         this.workingMemory = workingMemory;
-        this.rule = rule;
         this.key = TupleKey.EMPTY;
     }
 
@@ -92,18 +87,13 @@ class ReteTuple
               ReteTuple right)
     {
         this.workingMemory = left.workingMemory;
-        this.rule = left.rule;
         this.key = new TupleKey( left.key,
                                  right.key );
     }
 
-    ReteTuple(WorkingMemoryImpl workingMemory,
-              Rule rule,
-              Declaration declaration,
-              FactHandle handle)
+    ReteTuple( WorkingMemoryImpl workingMemory, Declaration declaration, FactHandle handle )
     {
         this.workingMemory = workingMemory;
-        this.rule = rule;
         this.key = new TupleKey( declaration,
                                  handle );
     }
@@ -176,11 +166,6 @@ class ReteTuple
         {
             return null;
         }
-    }
-
-    public Rule getRule()
-    {
-        return this.rule;
     }
 
     public WorkingMemory getWorkingMemory()

@@ -46,11 +46,6 @@ public class MockTuple implements Tuple
         this.rule = rule;
     }
 
-    public Rule getRule()
-    {
-        return this.rule;
-    }
-
     public void setWorkingMemory(WorkingMemory workingMemory)
     {
         this.workingMemory = workingMemory;

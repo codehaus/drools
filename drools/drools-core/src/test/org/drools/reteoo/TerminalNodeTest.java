@@ -34,7 +34,7 @@ public class TerminalNodeTest extends DroolsTestCase
 
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
-        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ), rule );
+        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) ruleBase.newWorkingMemory( ) );
 
         node.assertTuple( tuple, memory );
 

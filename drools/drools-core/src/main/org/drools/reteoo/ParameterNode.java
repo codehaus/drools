@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ParameterNode.java,v 1.37 2004-11-21 12:33:52 simon Exp $
+ * $Id: ParameterNode.java,v 1.38 2004-11-29 12:50:32 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,6 @@ import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RetractionException;
 import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
 
 import java.util.Collections;
 import java.util.Set;
@@ -72,9 +71,6 @@ class ParameterNode extends TupleSource
     // Instance members
     // ------------------------------------------------------------
 
-    /** The rule. */
-    private final Rule rule;
-
     /** The parameter declaration. */
     private final Declaration declaration;
 
@@ -88,18 +84,11 @@ class ParameterNode extends TupleSource
     /**
      * Construct.
      *
-     * @param rule
-     *            The <code>Rule</code>.
-     * @param inputNode
-     *            The <code>ObjectTypeNode</code> input to this.
-     * @param declaration
-     *            The root fact object <code>Declaration</code>.
+     * @param inputNode The <code>ObjectTypeNode</code> input to this.
+     * @param declaration The root fact object <code>Declaration</code>.
      */
-    public ParameterNode(Rule rule,
-                         ObjectTypeNode inputNode,
-                         Declaration declaration)
+    public ParameterNode( ObjectTypeNode inputNode, Declaration declaration )
     {
-        this.rule = rule;
         this.declaration = declaration;
         this.declarations = Collections.singleton( declaration );
 
@@ -131,9 +120,7 @@ class ParameterNode extends TupleSource
                       Object object,
                       WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        ReteTuple tuple = new ReteTuple( workingMemory,
-                                         this.rule,
-                                         getDeclaration( ),
+        ReteTuple tuple = new ReteTuple( workingMemory, getDeclaration( ),
                                          handle );
 
         propagateAssertTuple( tuple,
@@ -183,9 +170,7 @@ class ParameterNode extends TupleSource
                       Object newObject,
                       WorkingMemoryImpl workingMemory) throws FactException
     {
-        ReteTuple tuple = new ReteTuple( workingMemory,
-                                         this.rule,
-                                         getDeclaration( ),
+        ReteTuple tuple = new ReteTuple( workingMemory, getDeclaration( ),
                                          handle );
 
         propagateModifyTuples( handle,

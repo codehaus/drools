@@ -1,13 +1,12 @@
 package org.drools.reteoo;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
+
+import java.util.List;
 
 public class TupleSourceTest extends TestCase
 {
@@ -28,7 +27,7 @@ public class TupleSourceTest extends TestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) workingMemory, rule );
+        ReteTuple tuple = new ReteTuple( (WorkingMemoryImpl) workingMemory );
 
         try
         {

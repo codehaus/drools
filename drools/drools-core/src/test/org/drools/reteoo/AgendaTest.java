@@ -41,7 +41,7 @@ public class AgendaTest extends DroolsTestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( workingMemory, rule );
+        ReteTuple tuple = new ReteTuple( workingMemory );
 
         assertEquals( 0, agenda.size( ) );
 
@@ -91,7 +91,7 @@ public class AgendaTest extends DroolsTestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( workingMemory, rule );
+        ReteTuple tuple = new ReteTuple( workingMemory );
 
         assertEquals( 0, agenda.size( ) );
 
@@ -166,7 +166,7 @@ public class AgendaTest extends DroolsTestCase
         //add condition
         rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
-        ReteTuple tuple = new ReteTuple( workingMemory, rule );
+        ReteTuple tuple = new ReteTuple( workingMemory );
 
         assertEquals( 0, agenda.size( ) );
 
