@@ -13,3 +13,5 @@ q(camembert.getBitesLeft() + stilton.getBitesLeft() == 6, SMFTestFrameWork.Chees
 q(camembert.getBitesLeft() + stilton.getBitesLeft() == 6, SMFTestFrameWork.Cheese("cheddar"), SMFTestFrameWork.Cheese("mozzerella"))
 <!--drools-test--!> // 7
 SMFTestFrameWork.extractionExceptionTest()
+<!--drools-test--!> // 8
+BigInteger("1").toString() + Cheese("brie").getName()

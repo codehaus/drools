@@ -1,5 +1,6 @@
 package org.drools.semantics.python;
 
+import org.drools.rule.Imports;
 import org.drools.smf.SMFTestFrameWork;
 
 /**
@@ -16,6 +17,10 @@ public class PythonSemanticTest extends SMFTestFrameWork
 
     public void setUp() throws Exception
     {
-        super.setUp( "python" );
+        Imports imports = new Imports();               
+        imports.addImportEntry(new PythonImportEntry("from java.math import *"));
+        imports.addImportEntry(new PythonImportEntry("from org.drools.smf import SMFTestFrameWork"));
+        imports.addImportEntry(new PythonImportEntry("from org.drools.smf.SMFTestFrameWork import Cheese"));
+        super.setUp( "python", imports );
     }
 }
