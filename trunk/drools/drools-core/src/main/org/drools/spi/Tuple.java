@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.19 2004-11-16 09:10:49 simon Exp $
+ * $Id: Tuple.java,v 1.20 2004-11-16 11:15:39 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -53,6 +54,8 @@ import java.util.Set;
  * @see Declaration
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ *
+ * @version $Id: Tuple.java,v 1.20 2004-11-16 11:15:39 mproctor Exp $
  */
 public interface Tuple
 {
@@ -75,6 +78,14 @@ public interface Tuple
     Set getDeclarations();
 
     /**
+     * Returns a reference to the <code>Rule</code> associated with this
+     * object.
+     *
+     * @return Rule
+     */
+    Rule getRule();
+
+    /**
      * Retrieve the <code>FactHandle</code> for a given object.
      *
      * <p>
@@ -89,15 +100,7 @@ public interface Tuple
      * @return The fact-handle or <code>null</code> if the supplied object is
      *         not a root fact object.
      */
-    FactHandle getFactHandleForObject(Object object);
-
-    /**
-     * Returns a reference to the <code>Rule</code> associated with this
-     * object.
-     *
-     * @return Rule
-     */
-    Rule getRule();
+    FactHandle getFactHandleForObject(Object object);    
 
     /**
      * Returns a reference to the <code>WorkingMemory</code> associated with
