@@ -1,0 +1,185 @@
+\chapter{Administrative API}
+\label{admin.api}
+
+\section{Introduction}
+
+The administrative functions of drools include the assembly
+and deployment of rules.  These activities may certainly be
+performed by the same application that acts as the client,
+The API has been designed to allow for the separation between
+the client and administrative responsibilities.
+
+\section{Building rules}
+
+Programmatically building rules using the Java API is covered
+in Chapter~\vref{rule.assembly}.  The next section discusses
+loading rules that were built using the Drools Rule Language,
+which is described in depth in Chapter~\vref{drl}.
+
+\section{Building a \indexClass{RuleBase}}
+
+\subsection{Loading rules}
+\label{admin.rules.loading}
+
+Rule-sets can be loaded using the \indexClass{RuleSetReader} from
+a variety of sources including \class{URL}, \class{InputStream} and
+\class{Reader} objects.  A \class{RuleSetReader} builds a
+\indexClass{RuleSet} from the contents of a DRL document (Chapter~\vref{drl}).
+
+The \indexClass{RuleSetReader} by default may use any and all semantic
+modules available on the classpath (see Chapter~\vref{smf}).  It may
+be optionally parameterized with a \indexClass{SAXReader} and a
+\indexClass{SemanticsRepository}.  By default, the
+\indexClass{RuleSetReader} uses the Java API for XML Parsing (JAXP) \index{JAXP}
+for reading the XML documents. See Figure~\vref{rulesetreader} for an
+example of loading a \indexClass{RuleSet} from a \class{URL}.
+
+\begin{figure}
+\begin{javaCodelisting}
+RuleSetReader reader     = new RuleSetReader();
+URL           ruleSetUrl = new URL( "http://myco.com/theRuleSet.xml" );
+RuleSet       ruleSet    = reader.read( ruleSetUrl );
+\end{javaCodelisting}
+\caption{Loading a \indexClass{RuleSet} from a \class{URL}}
+\label{rulesetreader}
+\end{figure}
+
+\subsection{Conflict resolution}
+
+When constructing a \indexClass{RuleBase}, a \emph{conflict resolution
+strategy} must be selected.  Conflict resolution is described fully in
+Chapter~\vref{conflict}, but a summary of available strategies appears
+in Figure~\vref{admin.conflict.strategies}.
+
+\begin{figure}[hb]
+\begin{center}
+\begin{tabular}{|l|p{0.4\textwidth}|}
+\hline
+\textsf{\textbf{Class}} & \textsf{\textbf{Description}} \\
+\hline
+\footnotesize
+\indexClass{SalienceConflictResolutionStrategy} & 
+  \footnotesize Resolve conflicts based upon the 
+  \emph{salience} of the rules. If two conflicting rules 
+  have the same salience, one is selected 
+  \emph{at random} to be fired first.\\
+\hline
+\footnotesize
+\indexClass{ComplexityConflictResolutionStrategy} & 
+  \footnotesize
+  Resolves conflicts based upon the complexity of 
+  the rules as measured by the number of conditions.  
+  Rules with more conditions have higher priority than 
+  those with fewer conditions.  If two conflicting rules 
+  have the same measure of complexity, conflict is then 
+  resolved as with the salience conflict resolution strategy. \\
+\hline
+\footnotesize
+\indexClass{SimplicityConflictResolutionStrategy} & 
+  \footnotesize
+  Resolves conflicts based upon the simplicity of 
+  the rules as measured by the number of conditions.  
+  Rules with fewer conditions have higher priority than 
+  those with more conditions.  If two conflicting rules 
+  have the same measure of complexity, conflict is then 
+  resolved as with the salience conflict resolution strategy. \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Conflict-resolution strategies}
+\label{admin.conflict.strategies}
+\end{figure}
+
+\begin{figure}
+\begin{javaCodelisting}
+RuleBaseBuilder builder = new RuleBaseBuilder();
+
+builder.addRuleSet( theRuleSet );
+
+builder.setConflictResolutionStrategy( 
+                            SalienceConflictResolutionStrategy.getInstance() );
+
+RuleBase ruleBase = builder.buildRuleBase();
+\end{javaCodelisting}
+\caption{Using \indexClass{RuleBaseBuilder} to build a \indexClass{RuleBase} from a \indexClass{RuleSet}}
+\label{rulebasebuilder}
+\end{figure}
+
+\section{Deploying a \indexClass{RuleBase} to a JNDI\index{JNDI} data store}
+
+A fully-constructed \indexClass{RuleBase} may be serialized and stored
+within a JNDI-accessible \index{JNDI} directory
+(Figure~\vref{deploy.jndi}).  This method allows for an administrator
+to deploy a \class{RuleBase} as a managed object.  Multiple
+applications may use the JNDI-accessible \class{RuleBase} without
+being concerned with parsing DRL documents and building a
+\class{RuleBase} directly.  Additionally, the deployed
+\class{RuleBase} may be easily replaced, with the replacement being
+immediately accessible to a running application.
+
+All components of the \class{Rule} \emph{must} be serializable 
+in order for the constructed \class{RuleBase} to be deployed against
+a JNDI datastore.  The various semantic component interfaces and
+rule-assembly classes have already been marked as
+\indexClass{Serializable}.  The class definition files must be
+in the application's classpath in order to deserialize the object
+structure once retrieved from the directory.  Failure to have
+the classes available will result in an exception being thrown.
+
+\begin{figure}
+\begin{javaCodelisting}
+DirContext ctx = new InitialDirContext( props );
+ctx.bind( "cn='MyRuleBase'" );
+\end{javaCodelisting}
+\caption{Deploying a \indexClass{RuleBase} to a JNDI data store}
+\label{deploy.jndi}
+\end{figure}
+
+\subsection{JNDI deployment utility}
+
+\begin{implnote}
+...Not yet done
+\end{implnote}
+
+The command-line utility \texttt{name-me-please} is available to
+assist in the creation of a serialized \indexClass{RuleBase} in
+a JNDI directory from a DRL rule definition file (Chapter~\vref{drl}).
+
+\begin{javaCodelisting}
+\texttt{name-me-please} -Dprop=value --classpath xx:yy:zz myRules.drl 'cn=MyRules'
+\end{javaCodelisting}
+
+\section{Serializing a \indexClass{RuleBase} to a file}
+
+A \indexClass{RuleBase} can be serialized in full to a file
+on disk (Figure~\vref{serialize.file}).  This method allows for a rule-base to be ``frozen'' prior
+to deployment.  An application merely has to unserialize the
+file to use the contained \indexClass{RuleBase}.
+
+\begin{figure}
+\begin{javaCodelisting}
+File ruleBaseFile = new File( pathToFile );
+
+FileOutputStream   fileOut = new FileOutputStream( ruleBaseFile );
+ObjectOutputStream objOut  = new ObjectOutputStream( fileOut );
+
+objOut.writeObject( ruleBase );
+\end{javaCodelisting}
+\caption{Serializing a \indexClass{RuleBase} to a file}
+\label{serialize.file}
+\end{figure}
+
+\subsection{Serialization utility}
+
+\begin{implnote}
+...Not yet done
+\end{implnote}
+
+The command-line utility \texttt{name-me-please} is available to
+assist in the creation of a serialized \indexClass{RuleBase} from 
+a DRL rule definition file (Chapter~\vref{drl}).
+
+\begin{javaCodelisting}
+\texttt{name-me-please} --classpath xx:yy:zz myRules.drl myRules.ser
+\end{javaCodelisting}
+

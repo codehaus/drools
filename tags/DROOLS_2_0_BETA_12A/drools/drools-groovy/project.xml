@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<project>
+
+    <pomVersion>3</pomVersion>
+    <name>drools-groovy</name>
+    <id>drools-groovy</id>
+    <groupId>drools</groupId>
+    <currentVersion>2.0-beta-12-dev</currentVersion>
+
+    <organization>
+        <name>The Codehaus</name>
+        <url>http://www.codehaus.org</url>
+        <logo>http://www.codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2001</inceptionYear>
+    <package>org.drools</package>
+    <logo>http://images.werken.com/drools.gif</logo>
+
+    <shortDescription>Groovy plugin for drools</shortDescription>
+
+    <description>
+    	This drools semantic module adds support for the Groovy scripting language for the JVM
+    </description>
+
+    <url>http://drools.org</url>
+
+    <siteAddress>drools.codehaus.org</siteAddress>
+    <siteDirectory>/www/drools.codehaus.org</siteDirectory>
+    <issueTrackingUrl>http://jira.codehaus.org/BrowseProject.jspa?id=10000&amp;report=roadmap</issueTrackingUrl>
+
+    <repository>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:drools/drools-groovy</connection>
+        <url>http://cvs.drools.codehaus.org/</url>
+    </repository>
+
+    <versions/>
+    <branches/>
+
+    <mailingLists>
+        <mailingList>
+            <name>drools interest</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-interest</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/drools-interest/</archive>
+        </mailingList>
+        <mailingList>
+            <name>drools cvs messages</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/drools-cvs</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/drools-cvs/</archive>
+        </mailingList>
+    </mailingLists>
+
+    <developers>
+
+        <developer>
+            <name>Bob McWhirter</name>
+            <id>bob</id>
+            <email>bob@werken.com</email>
+            <organization>The Werken Company</organization>
+            <roles>
+                <role>Founder</role>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>James Strachan</name>
+            <id>jstrachan</id>
+            <email>james_strachan@yahoo.co.uk</email>
+            <organization>Core Developers Network</organization>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+        
+    </developers>
+
+    <dependencies>
+	    <dependency>
+	        <groupId>groovy</groupId>
+	        <artifactId>groovy</artifactId>
+	        <version>1.0-alpha-2</version>
+	    </dependency>
+	    <dependency>
+	      <id>commons-logging</id>
+	      <version>1.0.3</version>
+	      <url>http://jakarta.apache.org/commons/logging.html</url>
+	    </dependency>
+	    <dependency>
+	      <id>asm</id>
+	      <version>1.3.4</version>
+	      <url>http://asm.objectweb.org/</url>
+	    </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>2.0-beta-12-dev</version>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-smf</artifactId>
+            <version>2.0-beta-12-dev</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <nagEmailAddress>drools-cvs@lists.codehaus.org</nagEmailAddress>
+        <sourceDirectory>src/main</sourceDirectory>
+        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+        <integrationUnitTestSourceDirectory/>
+        <aspectSourceDirectory/>
+
+        <!-- Unit test classes -->
+
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <resources>
+                <resource>
+                    <directory>src/test</directory>
+                    <includes>
+                        <include>**/*.drl</include>
+                    </includes>
+                </resource>
+            </resources>
+        </unitTest>
+
+        <!-- Integration unit test classes -->
+
+        <integrationUnitTestPatterns>
+        </integrationUnitTestPatterns>
+
+        <!-- J A R  R E S O U R C E S -->
+        <!-- Resources that are packaged up inside the JAR file -->
+
+        <resources>
+            <resource>
+                <directory>src/conf</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
+
+</project>
+

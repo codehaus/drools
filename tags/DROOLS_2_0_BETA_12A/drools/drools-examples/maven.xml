@@ -1,0 +1,13 @@
+
+<project default="jar:jar">
+
+  <goal name="fibonacci" prereqs="jar:jar">
+    <java classname="org.drools.examples.fibonacci.FibonacciExample"
+          fork="true">
+      <classpath refid="maven.dependency.classpath"/>
+      <classpath>
+        <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+      </classpath>
+    </java>
+  </goal>
+</project>

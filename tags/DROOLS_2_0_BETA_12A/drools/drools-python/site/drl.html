@@ -1,0 +1,107 @@
+<div class="section">
+
+  <div class="sectionTitle">Python Semantic Module DRL Reference</div>
+    <div class="subsection">
+      <div class="subsectionTitle">Namespace URI</div>
+  <p>
+  The Python Semantic Module is available through the Drools Rule Language (DRL)
+  by binding the namespace of <code>http://drools.org/semantics/python</code> to
+  either the default namespace or a specific prefix.  Typically it is bound to
+  the <code>python</code> prefix.
+  <p>
+
+      <div class="code">
+<pre>
+&lt;rule-set <span class="highlight">xmlns:python="http://drools.org/semantics/python"</span>
+          ...&gt;
+</pre>
+      </div>
+
+    </div>
+    <div class="subsection">
+      <div class="subsectionTitle">Tag Reference</div>
+        <div class="subsubsection">
+          <div class="subsubsectionTitle">&lt;python:class&gt;</div>
+            <p>
+            The <code>&lt;python:class&gt;</code> tag provides access to the
+            <a href="TOP/python/reference.html#ClassObjectType">ClassObjectType</a>
+            object-type differentiator based upon the Java class hierarchy.
+            <p>
+
+            <p>
+            The fully-qualified name of the class or interface to match
+            is provided as the content of the tag.
+            </p>
+         
+            <div class="code">
+<pre>
+&lt;python:class&gt;<span class="highlight">com.mycompany.Person</span>&lt/python:class&gt;
+</pre>
+            </div>
+        </div>
+        <div class="subsubsection">
+          <div class="subsubsectionTitle">&lt;python:condition&gt;</div>
+            <p>
+            The <code>&lt;python:condition&gt;</code> tag provides access to
+            the <a href="TOP/python/reference.html#ExprCondition">ExprCondition</a>
+            condition based upon Python boolean expressions.
+            <p>
+
+            <p>
+            An expression that yields a boolean result is the content
+            of the tag.  Currently logical-or (<code>||</code>) expressions
+            are disallowed. Since valid python expressions may use the
+            characters <code>&lt;</code> and <code>&gt;</code>, these
+            characters <b>must</b> be escaped using their character entities,
+            <code>&amp;lt;</code> and <code>&amp;gt;</code>, respectively.
+            </p>
+
+            <div class="code">
+<pre>
+&lt;python:condition&gt;<span class="highlight">employee.getSlackRatio() &amp;gt; 0.25</span>&lt/python:condition&gt;
+</pre>
+            </div>
+        </div>
+        <div class="subsubsection">
+          <div class="subsubsectionTitle">&lt;python:extractor&gt;</div>
+        </div>
+        <div class="subsubsection">
+          <div class="subsubsectionTitle">&lt;python:consequence&gt;</div>
+            <p>
+            The <code>&lt;python:consequence&gt;</code> tag provides access to the 
+            <a href="TOP/python/reference.html#BlockConsequence">BlockConsequence</a>
+            consequence based upon a list of Python statements.
+            </p>
+
+            <p>
+            A Python statement block is the content of the tag.  The block is
+            eventually interpreted by <a href="http://jython.org/">Jython</a>.
+            All fact objects are available
+            within the consequence as is a special variable, <code>appData</code>,
+            which is the application data object provided through the working-memory.
+            </p>
+
+            <p>
+            Three global functions are also available with the consequence:
+            </p>
+
+            <ul>
+              <li><code>assertObject(Object object)</code> <br> To assert a new object into the working-memory.</li>
+              <li><code>modifyObject(Object object)</code> <br> To assert a change in an existing fact in the working-memory.</li>
+              <li><code>modifyObject(Object oldObject, newObject)</code> <br> To assert a new value for an existing fact in the working-memory.</li>
+              <li><code>retractObject(Object object)</code> <br> To retract a fact from the working-memory.</li>
+            </ul>
+
+            <div class="code">
+<pre>
+&lt;python:consequence&gt;
+  ChipperShredder.accept( employee )
+
+  <span class="highlight">modifyObject( employee )</span>;
+&lt;/python:consequence&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
