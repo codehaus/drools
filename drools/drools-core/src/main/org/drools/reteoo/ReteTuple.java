@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.40 2004-10-30 01:11:48 simon Exp $
+ * $Id: ReteTuple.java,v 1.41 2004-10-30 12:43:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 
 /**
  * Base Rete-OO <code>Tuple</code> implementation.
@@ -60,7 +61,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: ReteTuple.java,v 1.40 2004-10-30 01:11:48 simon Exp $
+ * @version $Id: ReteTuple.java,v 1.41 2004-10-30 12:43:28 simon Exp $
  */
 class ReteTuple implements Tuple, Serializable
 {
@@ -68,121 +69,72 @@ class ReteTuple implements Tuple, Serializable
     //     Instance members
     // ------------------------------------------------------------
 
-    private final WorkingMemory  workingMemory;
+    private final WorkingMemory workingMemory;
 
-    private final Rule           rule;
+    private final Rule          rule;
 
-    /** Key columns for this tuple. */
-    private final TupleKey       key;
+    /** Key objects for this tuple. */
+    private final TupleKey      key;
 
-    /** Value columns in this tuple. */
-    private final Map            columns;
+    /** Value objects in this tuple. */
+    private final Map           objects;
 
-    /** return array of condition time stamps */
-    private final long conditionTimeStamps[];
+    private FactHandleImpl      mostRecentFact;
 
-    private FactHandleImpl mostRecentFact;
-
-    private FactHandleImpl leastRecentFact;
-
-    private boolean        isChanged = true;
+    private FactHandleImpl      leastRecentFact;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
-    /**
-     * Construct.
-     */
     public ReteTuple(WorkingMemory workingMemory, Rule rule)
     {
         this.workingMemory = workingMemory;
         this.rule = rule;
-        this.key = new TupleKey( );
-        this.columns = new HashMap( );
-
-        this.conditionTimeStamps = new long[rule.getConditionSize( )];
+        this.key = TupleKey.EMPTY;
+        this.objects = Collections.EMPTY_MAP;
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param that The tuple to copy.
-     */
-    ReteTuple(ReteTuple that)
+    ReteTuple(ReteTuple left, ReteTuple right)
+    {
+        this.workingMemory = left.workingMemory;
+        this.rule = left.rule;
+        this.key = new TupleKey( left.key, right.key );
+        this.objects = new HashMap( left.objects );
+        this.objects.putAll( right.objects );
+    }
+
+    ReteTuple(ReteTuple that,
+              Declaration declaration,
+              Object value)
     {
         this.workingMemory = that.workingMemory;
         this.rule = that.rule;
         this.key = new TupleKey( that.key );
-        this.columns = new HashMap( that.columns );
-        this.conditionTimeStamps = that.getConditionTimeStamps();
+        this.objects = new HashMap( that.objects );
+        this.objects.put( declaration, value );
     }
 
-    /**
-     * Construct a simple 1-column tuple.
-     *
-     * @param declaration The column declaration.
-     * @param handle The fact-handle.
-     * @param value The column value.
-     */
     ReteTuple(WorkingMemory workingMemory,
               Rule rule,
               Declaration declaration,
               FactHandle handle,
               Object value)
     {
-        this( workingMemory, rule );
-
-        key.put( declaration, handle );
-
-        putTargetDeclarationColumn( declaration, value );
+        this.workingMemory = workingMemory;
+        this.rule = rule;
+        this.key = new TupleKey( declaration, handle );
+        this.objects = Collections.singletonMap( declaration, value );
     }
 
     public String toString()
     {
-        return "{" + this.columns + "}";
+        return "{" + this.objects + "}";
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /**
-     * Add all columns from another tuple.
-     *
-     * @param that The column source tuple.
-     */
-    public void putAll(ReteTuple that)
-    {
-        this.key.putAll( that.key );
-        this.columns.putAll( that.columns );
-        this.isChanged = true;
-
-        long[] conditionTimeStamps = that.getConditionTimeStamps( );
-        for ( int i = 0; i < conditionTimeStamps.length; i++ )
-        {
-            if ( conditionTimeStamps[i] > 0 )
-            {
-                this.conditionTimeStamps[i] = conditionTimeStamps[i];
-            }
-        }
-
-        this.isChanged = true;
-    }
-
-    /**
-     * Extractors may not have a key, so need to keep track
-     * of Columns derived from extractors
-     *
-     * @param declaration
-     * @param value
-     */
-    public void putTargetDeclarationColumn(Declaration declaration, Object value)
-    {
-        this.columns.put( declaration, value );
-
-        this.isChanged = true;
-    }
 
     /**
      * Retrieve the key for this tuple.
@@ -214,7 +166,7 @@ class ReteTuple implements Tuple, Serializable
      */
     public Object get(Declaration declaration)
     {
-        return this.columns.get( declaration );
+        return this.objects.get( declaration );
     }
 
     /**
@@ -222,7 +174,7 @@ class ReteTuple implements Tuple, Serializable
      */
     public Set getDeclarations()
     {
-        return this.columns.keySet( );
+        return this.objects.keySet( );
     }
 
     /**
@@ -266,26 +218,11 @@ class ReteTuple implements Tuple, Serializable
         return ( leastRecentFact != null ) ? leastRecentFact.getRecency() : -1;
     }
 
-    public void setConditionTimeStamp(int order, long timeStamp)
-    {
-        this.conditionTimeStamps[order] = timeStamp;
-    }
-
-    public long getConditionTimeStamp(int order)
-    {
-        return this.conditionTimeStamps[order];
-    }
-
-    long[] getConditionTimeStamps()
-    {
-        return this.conditionTimeStamps;
-    }
-
     private FactHandleImpl getMostRecentFact()
     {
-        if ( this.isChanged )
+        if ( this.mostRecentFact != null )
         {
-            long currentRecency = ( this.mostRecentFact != null ) ? this.mostRecentFact.getRecency() : Long.MIN_VALUE;
+            long currentRecency = Long.MIN_VALUE;
             FactHandleImpl fact;
             long recency;
 
@@ -299,17 +236,15 @@ class ReteTuple implements Tuple, Serializable
                     this.mostRecentFact = fact;
                 }
             }
-
-            this.isChanged = false;
         }
         return this.mostRecentFact;
     }
 
     private FactHandleImpl getLeastRecentFact()
     {
-        if ( this.isChanged )
+        if ( this.mostRecentFact != null )
         {
-            long currentRecency = ( this.mostRecentFact != null ) ? this.mostRecentFact.getRecency() : Long.MAX_VALUE;
+            long currentRecency = Long.MAX_VALUE;
             FactHandleImpl fact;
             long recency;
 
@@ -323,8 +258,6 @@ class ReteTuple implements Tuple, Serializable
                     this.leastRecentFact = fact;
                 }
             }
-
-            this.isChanged = false;
         }
         return this.leastRecentFact;
     }

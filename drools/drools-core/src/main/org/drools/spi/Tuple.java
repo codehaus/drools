@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Tuple.java,v 1.14 2004-10-27 22:46:56 simon Exp $
+ * $Id: Tuple.java,v 1.15 2004-10-30 12:43:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,7 +54,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: Tuple.java,v 1.14 2004-10-27 22:46:56 simon Exp $
+ * @version $Id: Tuple.java,v 1.15 2004-10-30 12:43:28 simon Exp $
  */
 public interface Tuple
 {
@@ -113,5 +113,5 @@ public interface Tuple
 
     long getLeastRecentFactTimeStamp();
 
-    long getConditionTimeStamp(int i);
+//    long getConditionTimeStamp(int i);
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ExtractionNode.java,v 1.20 2004-10-27 07:15:54 simon Exp $
+ * $Id: ExtractionNode.java,v 1.21 2004-10-30 12:43:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -168,9 +168,7 @@ class ExtractionNode extends TupleSource implements TupleSink
             return;
         }
 
-        ReteTuple newTuple = new ReteTuple( tuple );
-
-        newTuple.putTargetDeclarationColumn( getTargetDeclaration( ), value );
+        ReteTuple newTuple = new ReteTuple( tuple, getTargetDeclaration( ), value );
 
         propagateAssertTuple( newTuple, workingMemory );
     }

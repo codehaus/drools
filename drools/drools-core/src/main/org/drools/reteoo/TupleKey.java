@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.17 2004-10-28 07:04:47 simon Exp $
+ * $Id: TupleKey.java,v 1.18 2004-10-30 12:43:28 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,6 +48,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  * A composite key to match tuples.
@@ -58,12 +59,14 @@ import java.util.Map;
  */
 class TupleKey implements Serializable
 {
+    public static final TupleKey EMPTY = new TupleKey();
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
     /** Columns. */
-    private Map columns;
+    private final Map handles;
 
     /** Cached hashCode. */
     private int hashCode;
@@ -72,62 +75,35 @@ class TupleKey implements Serializable
     //     Constructors
     // ------------------------------------------------------------
 
-    /**
-     * Construct.
-     */
     public TupleKey()
     {
-        this.columns = new HashMap( );
+        handles = Collections.EMPTY_MAP;
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param that The tuple key to copy.
-     */
     public TupleKey(TupleKey that)
     {
-        this( );
-        putAll( that );
+        handles = new HashMap( that.handles );
     }
 
-    public TupleKey(Declaration declaration, FactHandle factHandle)
+    public TupleKey(TupleKey left, TupleKey right)
     {
-        this( );
-        put( declaration, factHandle );
+        this( left );
+        this.handles.putAll( right.handles );
+    }
+
+    public TupleKey(Declaration declaration, FactHandle handle)
+    {
+        handles = Collections.singletonMap( declaration, handle );
     }
 
     public String toString()
     {
-        return "[TupleKey: columns=" + this.columns + "]";
+        return "[TupleKey: handles=" + this.handles + "]";
     }
 
     // ------------------------------------------------------------
     //
     // ------------------------------------------------------------
-
-    /**
-     * Put all values from another key into this key.
-     *
-     * @param key The source value key.
-     */
-    public void putAll(TupleKey key)
-    {
-        this.columns.putAll( key.columns );
-        this.hashCode = 0;
-    }
-
-    /**
-     * Put a value for a declaration.
-     *
-     * @param declaration Column declaration.
-     * @param handle The handle.
-     */
-    public void put(Declaration declaration, FactHandle handle)
-    {
-        this.columns.put( declaration, handle );
-        this.hashCode = 0;
-    }
 
     /**
      * Retrieve a <code>FactHandle</code> by declaration.
@@ -138,7 +114,7 @@ class TupleKey implements Serializable
      */
     public FactHandle get(Declaration declaration)
     {
-        return ( FactHandle ) this.columns.get( declaration );
+        return ( FactHandle ) this.handles.get( declaration );
     }
 
     /**
@@ -151,7 +127,7 @@ class TupleKey implements Serializable
      */
     public boolean containsRootFactHandle(FactHandle handle)
     {
-        return this.columns.values( ).contains( handle );
+        return this.handles.values( ).contains( handle );
     }
 
     /**
@@ -163,9 +139,9 @@ class TupleKey implements Serializable
      */
     public boolean containsAll(TupleKey that)
     {
-        // return this.columns.containsAll( that.columns );
+        // return this.handles.containsAll( that.handles );
 
-        for ( Iterator declIter = that.columns.keySet( ).iterator( ); declIter
+        for ( Iterator declIter = that.handles.keySet( ).iterator( ); declIter
                                                                                .hasNext( ); )
         {
             Declaration eachDecl = ( Declaration ) declIter.next( );
@@ -196,7 +172,7 @@ class TupleKey implements Serializable
 
         if ( thatObj instanceof TupleKey )
         {
-            return this.columns.equals( ( ( TupleKey ) thatObj ).columns );
+            return this.handles.equals( ( ( TupleKey ) thatObj ).handles );
         }
 
         return false;
@@ -204,7 +180,7 @@ class TupleKey implements Serializable
 
     public Iterator iterator()
     {
-        return this.columns.keySet( ).iterator( );
+        return this.handles.keySet( ).iterator( );
     }
 
     /**
@@ -214,7 +190,7 @@ class TupleKey implements Serializable
     {
         if ( this.hashCode == 0 )
         {
-            this.hashCode = this.columns.hashCode( );
+            this.hashCode = this.handles.hashCode( );
         }
 
         return hashCode;
