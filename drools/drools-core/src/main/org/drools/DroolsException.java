@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: DroolsException.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
+ * $Id: DroolsException.java,v 1.16 2004-12-06 01:23:02 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,7 +48,7 @@ import java.io.PrintWriter;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: DroolsException.java,v 1.15 2004-11-19 02:12:12 mproctor Exp $
+ * @version $Id: DroolsException.java,v 1.16 2004-12-06 01:23:02 dbarnett Exp $
  */
 public class DroolsException extends Exception
 {

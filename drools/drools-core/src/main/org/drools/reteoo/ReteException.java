@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteException.java,v 1.6 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ReteException.java,v 1.7 2004-12-06 01:23:02 dbarnett Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 

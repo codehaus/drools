@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReflectiveVisitor.java,v 1.4 2004-11-19 02:13:46 mproctor Exp $
+ * $Id: ReflectiveVisitor.java,v 1.5 2004-12-06 01:23:02 dbarnett Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 
