@@ -101,7 +101,9 @@
             <property name="max" value="120"/>
         </module>
         <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber"> 
+            <property name="max" value="7"/> 
+        </module> 
 
 
         <!-- Checks for whitespace                               -->
@@ -153,12 +155,12 @@
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="HiddenField">
-	    <!-- TODO We probably shouldn't be ignoring hidden fields -->
-            <property name="severity" value="ignore"/>
 	    <property name="ignoreConstructorParameter" value="true"/>
 	    <property name="ignoreSetter" value="true"/>
         </module>
-        <module name="IllegalInstantiation"/>
+        <module name="IllegalInstantiation"> 
+            <property name="classes" value="java.lang.Boolean,java.lang.String"/> 
+        </module> 
         <module name="InnerAssignment"/>
         <module name="MagicNumber">
             <!-- <property name="ignoreNumbers" value="-1, 0, 1, 2, 7, 24, 10, 60, 100, 1000"/> -->
@@ -188,11 +190,47 @@
         <module name="ArrayTypeStyle"/>
         <!--
         <module name="FinalParameters"/>
-        <module name="GenericIllegalRegexp"/>
         -->
+        <module name="GenericIllegalRegexp"> 
+            <property name="format" value="System\.out\.print|System\.err\.print|\.printStackTrace"/> 
+        </module> 
         <module name="TodoComment"/>
         <module name="UpperEll"/>
+
+	<!-- Programming Practice -->
+        <module name="ReturnCountCheck"/> 
+        <module name="AbstractClassNameCheck"/> 
+        <module name="NestedTryDepthCheck"/> 
+        <module name="NestedIfDepthCheck"/> 
+        <module name="IllegalCatchCheck"/> 
+        <module name="ThrowsCountCheck"/> 
+        <module name="IllegalTypeCheck"/> 
+        <module name="IllegalTokenCheck"/> 
+        <module name="ParameterAssignmentCheck"/> 
+        <module name="PackageDeclarationCheck"/> 
+        <module name="MutableExceptionCheck"/> 
+        <module name="BooleanExpressionComplexityCheck"/> 
+        <module name="CyclomaticComplexityCheck"/> 
+        <module name="NPathComplexityCheck"/> 
+        <module name="ExecutableStatementCountCheck"/> 
+        <module name="ClassFanOutComplexityCheck"/> 
+        <module name="ClassDataAbstractionCouplingCheck"> 
+            <property name="max" value="10"/> 
+        </module> 
+
+	<!--
+	Looks like we will need Simon's own CheckStyle Check JAR to use these:
+	http://www.redhillconsulting.com.au/blogs/simon/archives/000137.html
+	<module name="au.com.redhillconsulting.jamaica.tools.checkstyle.FinalFieldCheck"/>
+        <module name="au.com.redhillconsulting.jamaica.tools.checkstyle.ReturnFromCatchCheck"/> 
+        <module name="au.com.redhillconsulting.jamaica.tools.checkstyle.ReturnFromFinallyCheck"/> 
+	-->
+	<!--
+	I have no idea where this check is supposed to come from:
+        <module name="IllegalThrowsCheck"/> 
+	-->
 
     </module>
 
 </module>
+
