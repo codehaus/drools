@@ -1,16 +1,14 @@
 package org.drools.reteoo;
 
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.drools.AssertionException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
+
+import java.util.List;
 
 public class TupleSourceTest extends TestCase
 {
@@ -31,8 +29,7 @@ public class TupleSourceTest extends TestCase
 
         source.setTupleSink( sink );
 
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
-                                              new DefaultConflictResolver( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 
         Rule rule = new Rule( "test-rule" );

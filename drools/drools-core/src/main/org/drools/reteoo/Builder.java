@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Builder.java,v 1.45 2004-09-17 00:14:10 mproctor Exp $
- * 
+ * $Id: Builder.java,v 1.46 2004-10-22 15:20:48 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,15 +37,8 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
@@ -58,13 +51,20 @@ import org.drools.spi.Condition;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ObjectType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Builds the Rete-OO network for a <code>RuleSet</code>.
- * 
+ *
  * @see org.drools.rule.RuleSet
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
+ *
  * @task Make joinForCondition actually be intelligent enough to build optimal
  *       joins. Currently using forgy's original description of 2-input nodes,
  *       which I feel (but don't know for sure, is sub-optimal.
@@ -76,12 +76,14 @@ public class Builder
     // ------------------------------------------------------------
 
     /** Rete network to build against. */
-    private Rete             rete;
+    private Rete                rete;
 
     /** Rule-sets added. */
-    private List             ruleSets;
+    private List                ruleSets;
 
-    private ConflictResolver conflictResolver;
+    private FactHandleFactory   factHandleFactory;
+
+    private ConflictResolver    conflictResolver;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -93,9 +95,7 @@ public class Builder
      */
     public Builder()
     {
-        this.rete = new Rete( );
-        this.ruleSets = new ArrayList( );
-        this.conflictResolver = DefaultConflictResolver.getInstance( );
+        reset( );
     }
 
     // ------------------------------------------------------------
@@ -103,34 +103,32 @@ public class Builder
     // ------------------------------------------------------------
 
     /**
-     * Retrieve the <code>Rete</code> this <code>Builder</code> appends to.
-     * 
-     * @return The <code>Rete</code>.
-     */
-    public Rete getRete()
-    {
-        return this.rete;
-    }
-
-    /**
      * Build the <code>RuleBase</code>.
-     * 
+     *
      * @return The rule-base.
      */
     public RuleBase buildRuleBase()
     {
-        RuleBase ruleBase = new RuleBaseImpl( getRete( ), this.conflictResolver );
+        RuleBase ruleBase = new RuleBaseImpl( this.rete, this.conflictResolver, this.factHandleFactory );
 
-        this.rete = null;
-        this.ruleSets.clear( );
-        this.conflictResolver = DefaultConflictResolver.getInstance( );
+        reset();
 
         return ruleBase;
     }
 
     /**
+     * Set the <code>FactHandleFactory</code>.
+     *
+     * @param factHandleFactory The fact handle factory.
+     */
+    public void setFactHandleFactory( FactHandleFactory factHandleFactory )
+    {
+        this.factHandleFactory = factHandleFactory;
+    }
+
+    /**
      * Set the <code>ConflictResolver</code>.
-     * 
+     *
      * @param conflictResolver The conflict resolver.
      */
     public void setConflictResolver(ConflictResolver conflictResolver)
@@ -140,9 +138,9 @@ public class Builder
 
     /**
      * Add a <code>RuleSet</code> to the network.
-     * 
+     *
      * @param ruleSet The rule-set to add.
-     * 
+     *
      * @throws RuleIntegrationException if an error prevents complete
      *         construction of the network for the <code>Rule</code>.
      */
@@ -160,10 +158,10 @@ public class Builder
 
     /**
      * Add a <code>Rule</code> to the network.
-     * 
+     *
      * @param ruleSet The rule-set containing the rule.
      * @param rule The rule to add.
-     * 
+     *
      * @throws RuleIntegrationException if an error prevents complete
      *         construction of the network for the <code>Rule</code>.
      */
@@ -233,9 +231,9 @@ public class Builder
     /**
      * Create the <code>ParameterNode</code> s for the <code>Rule</code>,
      * and link into the network.
-     * 
+     *
      * @param rule The rule.
-     * 
+     *
      * @return A <code>Set</code> of <code>ParameterNodes</code> created and
      *         linked into the network.
      */
@@ -261,8 +259,7 @@ public class Builder
 
             objectType = eachDecl.getObjectType( );
 
-            objectTypeNode = ( ( Rete ) getRete( ) )
-                                                    .getOrCreateObjectTypeNode( objectType );
+            objectTypeNode = this.rete.getOrCreateObjectTypeNode( objectType );
 
             paramNode = new ParameterNode( rule, objectTypeNode, eachDecl );
 
@@ -275,14 +272,14 @@ public class Builder
 
     /**
      * Create and attach <code>Condition</code> s to the network.
-     * 
+     *
      * <p>
      * It may not be possible to satisfy all filder conditions on the first
      * pass. This method removes satisfied conditions from the
      * <code>Condition</code> parameter, and leaves unsatisfied ones in the
      * <code>Set</code>.
      * </p>
-     * 
+     *
      * @param conds Set of <code>Conditions</code> to attempt attaching.
      * @param leafNodes The current attachable leaf nodes of the network.
      */
@@ -318,10 +315,10 @@ public class Builder
     /**
      * Join two arbitrary leaves in order to satisfy a filter that currently
      * cannot be applied.
-     * 
+     *
      * @param conds The filter conditions remaining.
      * @param leafNodes Available leaf nodes.
-     * 
+     *
      * @return <code>true</code> if a join was possible, otherwise,
      *         <code>false</code>.
      */
@@ -333,9 +330,9 @@ public class Builder
     /**
      * Join two arbitrary leaves in order to satisfy a filter that currently
      * cannot be applied.
-     * 
+     *
      * @param leafNodes Available leaf nodes.
-     * 
+     *
      * @return <code>true</code> if successfully joined some nodes, otherwise
      *         <code>false</code>.
      */
@@ -365,19 +362,19 @@ public class Builder
 
     /**
      * Create and attach <code>JoinNode</code> s to the network.
-     * 
+     *
      * <p>
      * It may not be possible to join all <code>leafNodes</code>.
      * </p>
-     * 
+     *
      * <p>
      * Any <code>leafNodes</code> member that particiates in a <i>join </i> is
      * removed from the <code>leafNodes</code> collection, and replaced by the
      * joining <code>JoinNode</code>.
      * </p>
-     * 
+     *
      * @param leafNodes The current attachable leaf nodes of the network.
-     * 
+     *
      * @return <code>true</code> if at least one <code>JoinNode</code> was
      *         created, else <code>false</code>.
      */
@@ -433,10 +430,10 @@ public class Builder
 
     /**
      * Determine if two <code>TupleSource</code> s can be joined.
-     * 
+     *
      * @param left The left tuple source
      * @param right The right tuple source
-     * 
+     *
      * @return <code>true</code> if they can be joined (they share at least
      *         one common member declaration), else <code>false</code>.
      */
@@ -458,17 +455,17 @@ public class Builder
 
     /**
      * Create and attach <code>Extraction</code> s to the network.
-     * 
+     *
      * <p>
      * It may not be possible to satisfy all <code>Extraction</code>, in
      * which case, unsatisfied conditions will remain in the <code>Set</code>
      * passed in as <code>Extraction</code>.
      * </p>
-     * 
+     *
      * @param factExtracts Set of <code>Extractions</code> to attach to the
      *        network.
      * @param leafNodes The current attachable leaf nodes of the network.
-     * 
+     *
      * @return <code>true</code> if fact extractions have been attached,
      *         otherwise <code>false</code>.
      */
@@ -526,10 +523,10 @@ public class Builder
     /**
      * Locate a <code>TupleSource</code> suitable for attaching the
      * <code>Condition</code>.
-     * 
+     *
      * @param condition The <code>Condition</code> to attach.
      * @param sources Candidate <code>TupleSources</code>.
-     * 
+     *
      * @return Matching <code>TupleSource</code> if a suitable one can be
      *         found, else <code>null</code>.
      */
@@ -559,10 +556,10 @@ public class Builder
     /**
      * Locate a <code>TupleSource</code> suitable for attaching the
      * <code>Extraction</code>.
-     * 
+     *
      * @param extract The <code>Extraction</code> to attach.
      * @param sources Candidate <code>TupleSources</code>.
-     * 
+     *
      * @return Matching <code>TupleSource</code> if a suitable one can be
      *         found, else <code>null</code>.
      */
@@ -599,11 +596,11 @@ public class Builder
     /**
      * Determine if a set of <code>Declarations</code> match those required by
      * a <code>Condition</code>.
-     * 
+     *
      * @param condition The <code>Condition</code>.
      * @param declarations The set of <code>Declarations</code> to compare
      *        against.
-     * 
+     *
      * @return <code>true</code> if the set of <code>Declarations</code> is
      *         a super-set of the <code>Declarations</code> required by the
      *         <code>Condition</code>.
@@ -616,11 +613,11 @@ public class Builder
     /**
      * Determine if a set of <code>Declarations</code> match those required by
      * a <code>Extraction</code>.
-     * 
+     *
      * @param extract The <code>Extraction</code>.
      * @param declarations The set of <code>Declarations</code> to compare
      *        against.
-     * 
+     *
      * @return <code>true</code> if the set of <code>Declarations</code> is
      *         a super-set of the <code>Declarations</code> required by the
      *         <code>Condition</code>.
@@ -633,11 +630,11 @@ public class Builder
     /**
      * Determine if a set of <code>Declarations</code> is a super set of
      * required <code>Declarations</code>
-     * 
+     *
      * @param requiredDecls The required <code>Declarations</code>.
      * @param declarations The set of <code>Declarations</code> to compare
      *        against.
-     * 
+     *
      * @return <code>true</code> if the set of <code>Declarations</code> is
      *         a super-set of the <code>Declarations</code> required by the
      *         <code>Condition</code>.
@@ -655,4 +652,14 @@ public class Builder
         return true;
     }
 
+    /**
+     * Reset the internal state.
+     */
+    private void reset()
+    {
+        this.rete = new Rete();
+        this.ruleSets = new ArrayList();
+        this.factHandleFactory = new DefaultFactHandleFactory();
+        this.conflictResolver = DefaultConflictResolver.getInstance();
+    }
 }

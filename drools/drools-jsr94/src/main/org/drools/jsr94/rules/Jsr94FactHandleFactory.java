@@ -12,7 +12,7 @@ public class Jsr94FactHandleFactory implements FactHandleFactory
         this.counter = 0;
     }
 
-    public FactHandle newFactHandle()
+    public synchronized FactHandle newFactHandle()
     {
         return new Jsr94FactHandle( ++this.counter );
     }

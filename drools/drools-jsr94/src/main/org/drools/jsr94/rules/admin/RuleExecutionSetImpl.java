@@ -1,32 +1,32 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.12 2004-09-17 00:29:40 mproctor Exp $
- * 
+ * $Id: RuleExecutionSetImpl.java,v 1.13 2004-10-22 15:20:51 simon Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,34 +38,36 @@ package org.drools.jsr94.rules.admin;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.rules.ObjectFilter;
-import javax.rules.admin.RuleExecutionSet;
 
 import org.drools.RuleBase;
 import org.drools.RuleIntegrationException;
 import org.drools.WorkingMemory;
+import org.drools.jsr94.rules.Jsr94FactHandleFactory;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
+
+import javax.rules.ObjectFilter;
+import javax.rules.admin.RuleExecutionSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A named set of executable <code>Rule</code> instances. A
  * <code>RuleExecutionSet</code> can be executed by a rules engine via the
  * <code>RuleSession</code> interface.
- * 
+ *
  * @see RuleExecutionSet
- * 
+ *
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
 public class RuleExecutionSetImpl implements RuleExecutionSet
 {
+    private static final Jsr94FactHandleFactory FACT_HANDLE_FACTORY = new Jsr94FactHandleFactory( );
+
     private String       description;
 
     private String       defaultObjectFilterClassName;
@@ -92,6 +94,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         this.description = ruleSet.getDocumentation( );
 
         org.drools.RuleBaseBuilder builder = new org.drools.RuleBaseBuilder( );
+        builder.setFactHandleFactory( FACT_HANDLE_FACTORY );
         try
         {
             builder.addRuleSet( ruleSet );
@@ -139,7 +142,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
 
     /**
      * Returns a new WorkingMemory object
-     * 
+     *
      * @return
      */
     public WorkingMemory newWorkingMemory()
@@ -180,7 +183,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
 
     /**
      * Returns a list of RuleImpl objects.
-     * 
+     *
      * @return
      */
     public List getRules()

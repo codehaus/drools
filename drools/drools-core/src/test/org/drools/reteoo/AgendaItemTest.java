@@ -2,7 +2,6 @@ package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
-import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.InstrumentedConsequence;
@@ -78,8 +77,7 @@ public class AgendaItemTest extends DroolsTestCase
     public void testFire() throws Exception
     {
 
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
-                                              new DefaultConflictResolver( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
         Declaration decl = new Declaration( new MockObjectType( true ),
                                             "cheese" );

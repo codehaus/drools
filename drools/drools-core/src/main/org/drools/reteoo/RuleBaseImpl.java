@@ -1,31 +1,31 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.20 2004-09-17 00:14:10 mproctor Exp $
- * 
+ * $Id: RuleBaseImpl.java,v 1.21 2004-10-22 15:20:48 simon Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,21 +37,22 @@ package org.drools.reteoo;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.conflict.DefaultConflictResolver;
 import org.drools.spi.ConflictResolver;
 
 /**
  * Implementation of <code>RuleBase</code>.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: RuleBaseImpl.java,v 1.20 2004-09-17 00:14:10 mproctor Exp $
+ *
+ * @version $Id: RuleBaseImpl.java,v 1.21 2004-10-22 15:20:48 simon Exp $
  */
 class RuleBaseImpl implements RuleBase
 {
@@ -60,10 +61,13 @@ class RuleBaseImpl implements RuleBase
     // ------------------------------------------------------------
 
     /** The root Rete-OO for this <code>RuleBase</code>. */
-    private Rete             rete;
+    private final Rete             rete;
+
+    /** The fact handle factory. */
+    private final FactHandleFactory factHandleFactory;
 
     /** Conflict resolution strategy. */
-    private ConflictResolver conflictResolver;
+    private final ConflictResolver conflictResolver;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -71,13 +75,25 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Construct.
-     * 
+     *
+     * @param rete The rete network.
+     */
+    RuleBaseImpl( Rete rete )
+    {
+        this( rete, DefaultConflictResolver.getInstance(), new DefaultFactHandleFactory( ) );
+    }
+
+    /**
+     * Construct.
+     *
      * @param rete The rete network.
      * @param conflictResolver The conflict resolver.
+     * @param factHandleFactory The fact handle factory.
      */
-    RuleBaseImpl(Rete rete, ConflictResolver conflictResolver)
+    RuleBaseImpl( Rete rete, ConflictResolver conflictResolver, FactHandleFactory factHandleFactory )
     {
         this.rete = rete;
+        this.factHandleFactory = factHandleFactory;
         this.conflictResolver = conflictResolver;
     }
 
@@ -90,7 +106,15 @@ class RuleBaseImpl implements RuleBase
      */
     public WorkingMemory newWorkingMemory()
     {
-        return new WorkingMemoryImpl( this, getConflictResolver( ) );
+        return new WorkingMemoryImpl( this );
+    }
+
+    /**
+     * @see RuleBase
+     */
+    public FactHandleFactory getFactHandleFactory()
+    {
+        return this.factHandleFactory;
     }
 
     /**
@@ -103,7 +127,7 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Retrieve the Rete-OO network for this <code>RuleBase</code>.
-     * 
+     *
      * @return The RETE-OO network.
      */
     Rete getRete()
@@ -113,11 +137,11 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Assert a fact object.
-     * 
+     *
      * @param handle The handle.
      * @param object The fact.
      * @param workingMemory The working-memory.
-     * 
+     *
      * @throws FactException If an error occurs while performing the assertion.
      */
     void assertObject(FactHandle handle,
@@ -129,10 +153,10 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Retract a fact object.
-     * 
+     *
      * @param handle The handle.
      * @param workingMemory The working-memory.
-     * 
+     *
      * @throws FactException If an error occurs while performing the retraction.
      */
     void retractObject(FactHandle handle, WorkingMemoryImpl workingMemory) throws FactException
@@ -142,11 +166,11 @@ class RuleBaseImpl implements RuleBase
 
     /**
      * Modify a fact object.
-     * 
+     *
      * @param handle The handle.
      * @param object The fact.
      * @param workingMemory The working-memory.
-     * 
+     *
      * @throws FactException If an error occurs while performing the
      *         modification.
      */
