@@ -15,48 +15,47 @@ public class PojoConsequenceTest extends TestCase
 {
     private EasymockContainer mocks = new EasymockContainer( );
 
-    private Mock< RuleReflectMethod > newMockRuleMethod( )
-    {
-        return mocks.createMock( RuleReflectMethod.class, new Class[] { Rule.class, Object.class,
-                Method.class, ParameterValue[].class }, new Object[] { null, null, null, null } );
+    private Mock<RuleReflectMethod> newMockRuleMethod() {
+        return mocks.createMock(
+                RuleReflectMethod.class,
+                new Class[] {Rule.class, Object.class, Method.class, ParameterValue[].class},
+                new Object[] {null, null, null, null});
     }
 
-    public void testPojoMethodThrowsException( ) throws Exception
-    {
-        Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
-        Mock< RuleReflectMethod > mockRuleMethod = newMockRuleMethod( );
-        mockRuleMethod.control.expectAndThrow( mockRuleMethod.object
-                .invokeMethod( mockTuple.object ), new RuntimeException( "test" ) );
+    public void testPojoMethodThrowsException() throws Exception {
+        Mock<Tuple> mockTuple = mocks.createMock(Tuple.class);
+        Mock<RuleReflectMethod> mockRuleMethod = newMockRuleMethod();
+        mockRuleMethod.control.expectAndThrow(
+                mockRuleMethod.object.invokeMethod(mockTuple.object),
+                new RuntimeException("test"));
+        RuleReflectMethod[] mockRuleMethods = new RuleReflectMethod[]{mockRuleMethod.object};
 
-        mocks.replay( );
+        mocks.replay();
 
-        PojoConsequence pojoConsequence = new PojoConsequence( mockRuleMethod.object );
-        try
-        {
-            pojoConsequence.invoke( mockTuple.object );
+        PojoConsequence pojoConsequence = new PojoConsequence(mockRuleMethods);
+        try {
+            pojoConsequence.invoke(mockTuple.object);
             fail( "Expected ConsequenceException" );
         }
-        catch (ConsequenceException e)
-        {
+        catch (ConsequenceException e) {
             // expected
         }
 
-        mocks.verify( );
+        mocks.verify();
     }
 
-    public void testInvoke( ) throws Exception
-    {
-        Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
-        Mock< RuleReflectMethod > mockRuleMethod = newMockRuleMethod( );
-        mockRuleMethod.control.expectAndReturn( mockRuleMethod.object
-                .invokeMethod( mockTuple.object ), null );
+    public void testInvoke() throws Exception {
+        Mock<Tuple> mockTuple = mocks.createMock(Tuple.class);
+        Mock<RuleReflectMethod> mockRuleMethod = newMockRuleMethod();
+        mockRuleMethod.control.expectAndReturn(
+                mockRuleMethod.object.invokeMethod(mockTuple.object), null);
+        RuleReflectMethod[] mockRuleMethods = new RuleReflectMethod[]{mockRuleMethod.object};
 
-        mocks.replay( );
+        mocks.replay();
 
-        PojoConsequence pojoConsequence = new PojoConsequence( mockRuleMethod.object );
-        pojoConsequence.invoke( mockTuple.object );
+        PojoConsequence pojoConsequence = new PojoConsequence(mockRuleMethods);
+        pojoConsequence.invoke(mockTuple.object);
 
-        mocks.verify( );
+        mocks.verify();
     }
-
 }

@@ -16,6 +16,29 @@ import org.drools.semantics.annotation.model.ParameterValue;
 
 public class AnnonatedPojoRuleBuilder
 {
+    public static final class InvalidReturnTypeException extends DroolsException {
+        InvalidReturnTypeException(String message) {
+            super(message);
+        }
+    }
+
+    public static final class InvalidParameterException extends DroolsException {
+        InvalidParameterException(String message) {
+            super(message);
+        }
+        InvalidParameterException(String message, Throwable t) {
+            super(message, t);
+        }
+    }
+
+    public static final class MissingConsequenceMethodException extends DroolsException {
+        MissingConsequenceMethodException(String message) {
+            super(message);
+        }
+    }
+
+    //---- ---- ----
+
     // TODO Extract the parameter factory registy to its own abstraction.
     // Or maybe just take extensions in the builder instance :)
     private static final Set<ParameterValueFactory> parameterValueFatories
@@ -27,8 +50,7 @@ public class AnnonatedPojoRuleBuilder
         registerParameterValueFactory(new ApplicationDataParameterValueFactory());
     }
 
-    public static void registerParameterValueFactory( ParameterValueFactory factory)
-    {
+    public static void registerParameterValueFactory( ParameterValueFactory factory) {
         for (ParameterValueFactory registeredFactory : parameterValueFatories) {
             if (factory.getParameterValueType() == registeredFactory.getParameterValueType()) {
                 throw new IllegalArgumentException("ParameterValueFactory already registered"
@@ -42,64 +64,57 @@ public class AnnonatedPojoRuleBuilder
 
     //---- ---- ----
 
-    private static interface ParameterValidator
-    {
-        void assertParameter( ParameterValue newParameterValue, List<ParameterValue> parameterValues )
+    private static interface ParameterValidator {
+        void assertParameter(ParameterValue newParameterValue, List<ParameterValue> parameterValues)
                 throws DroolsException;
     }
 
-    public Rule buildRule( Rule rule, Object pojo ) throws DroolsException
-    {
-        Class< ? > ruleClass = pojo.getClass( );
-        buildConditions( rule, ruleClass, pojo );
-        buildConsequence( rule, ruleClass, pojo );
+    public Rule buildRule(Rule rule, Object pojo) throws DroolsException {
+        Class< ? > ruleClass = pojo.getClass();
+        buildConditions(rule, ruleClass, pojo);
+        buildConsequence(rule, ruleClass, pojo);
         return rule;
     }
 
-    private static void buildConditions( Rule rule, Class< ? > ruleClass, Object pojo )
-            throws DroolsException
-    {
-        for (Method method : ruleClass.getMethods( ))
-        {
-            DroolsCondition conditionAnnotation = method.getAnnotation( DroolsCondition.class );
-            if (conditionAnnotation != null)
-            {
-                PojoCondition condition = newPojoCondition( rule, pojo, method );
-                rule.addCondition( condition );
+    private static void buildConditions(Rule rule, Class<?> ruleClass, Object pojo) throws DroolsException {
+        for (Method method : ruleClass.getMethods()) {
+            DroolsCondition conditionAnnotation = method.getAnnotation(DroolsCondition.class);
+            if (conditionAnnotation != null) {
+                PojoCondition condition = newPojoCondition(rule, pojo, method);
+                rule.addCondition(condition);
             }
         }
     }
 
-    private static void buildConsequence( Rule rule, Class< ? > ruleClass, Object pojo )
-            throws DroolsException
-    {
+    private static void buildConsequence(Rule rule, Class< ? > ruleClass, Object pojo) throws DroolsException {
         Consequence consequence = null;
-        for (Method method : ruleClass.getMethods( ))
-        {
-            DroolsConsequence consequenceAnnotation = method.getAnnotation( DroolsConsequence.class );
-            if (consequenceAnnotation != null)
-            {
-                if (consequence != null)
-                {
-                    throw new DroolsException( "Rule must only contain one consequence method"
-                            + ": class = " + ruleClass + ", method = " + method );
-                }
-                consequence = newPojoConsequence( rule, pojo, method );
-                rule.setConsequence( consequence );
+        List<RuleReflectMethod> ruleReflectMethods = new ArrayList<RuleReflectMethod>();
+        for (Method method : ruleClass.getMethods()) {
+            DroolsConsequence consequenceAnnotation = method.getAnnotation(DroolsConsequence.class);
+            if (consequenceAnnotation != null) {
+                ruleReflectMethods.add(newConsequenceRuleReflectMethod(rule, pojo, method));
             }
         }
-        if (consequence == null)
-        {
-            throw new DroolsException( "Rule must define a consequence method" + ": class = " + ruleClass );
+        if (ruleReflectMethods.isEmpty()) {
+            throw new MissingConsequenceMethodException( "Rule must define at least one consequence method" + ": class = " + ruleClass );
         }
+        consequence = new PojoConsequence(
+                ruleReflectMethods.toArray(new RuleReflectMethod[ruleReflectMethods.size()]));
+        rule.setConsequence( consequence );
     }
 
+    private static RuleReflectMethod newConsequenceRuleReflectMethod(Rule rule, Object pojo,
+            Method pojoMethod) throws DroolsException {
+        assertReturnType(pojoMethod, void.class);
+        return new RuleReflectMethod(rule, pojo, pojoMethod, getParameterValues(rule, pojoMethod,
+                new ConsequenceParameterValidator()));
+    }
 
     private static final class ConditionParameterValidator implements ParameterValidator {
         public void assertParameter(ParameterValue newParameterValue,
-                List<ParameterValue> parameterValues) throws DroolsException {
+                                    List<ParameterValue> parameterValues) throws InvalidReturnTypeException {
             if (newParameterValue instanceof KnowledgeHelperParameterValue) {
-                throw new DroolsException(
+                throw new InvalidReturnTypeException(
                         "Condition methods cannot declare a parameter of type KnowledgeHelper");
             }
         }
@@ -117,10 +132,10 @@ public class AnnonatedPojoRuleBuilder
         private boolean hasDroolsParameterValue;
 
         public void assertParameter(ParameterValue newParameterValue,
-                                    List<ParameterValue> parameterValues) throws DroolsException {
+                                    List<ParameterValue> parameterValues) throws InvalidReturnTypeException {
             if (newParameterValue instanceof KnowledgeHelperParameterValue) {
                 if (hasDroolsParameterValue) {
-                    throw new DroolsException(
+                    throw new InvalidReturnTypeException(
                             "Consequence methods can only declare on parameter of type Drools" );
                 }
                 hasDroolsParameterValue = true;
@@ -128,54 +143,42 @@ public class AnnonatedPojoRuleBuilder
         }
     };
 
-    private static PojoConsequence newPojoConsequence( Rule rule, Object pojo, Method pojoMethod )
-            throws DroolsException
-    {
-        assertReturnType( pojoMethod, void.class );
-        return new PojoConsequence( new RuleReflectMethod( rule, pojo, pojoMethod,
-                getParameterValues( rule, pojoMethod, new ConsequenceParameterValidator() ) ) );
-    }
-
-    private static void assertReturnType( Method method, Class returnClass ) throws DroolsException
-    {
-        if (method.getReturnType( ) != returnClass)
-        {
-            throw new DroolsException( "Rule method returns the wrong class" + ": method = "
+    private static void assertReturnType(Method method, Class returnClass) throws InvalidReturnTypeException {
+        if (method.getReturnType( ) != returnClass) {
+            throw new InvalidReturnTypeException(
+                    "Rule method returns the wrong class" + ": method = "
                     + method + ", expected return class = " + returnClass
                     + ", actual return class = " + method.getReturnType( ) );
         }
     }
 
-    private static ParameterValue[] getParameterValues( Rule rule, Method method,
-                                                       ParameterValidator validator )
-            throws DroolsException
-    {
-        Class< ? >[] parameterClasses = method.getParameterTypes( );
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations( );
-        List<ParameterValue> parameterValues = new ArrayList<ParameterValue>( );
+    private static ParameterValue[] getParameterValues(Rule rule, Method method, ParameterValidator validator)
+            throws DroolsException {
+        Class<?>[] parameterClasses = method.getParameterTypes();
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        List<ParameterValue> parameterValues = new ArrayList<ParameterValue>();
 
-        for (int i = 0; i < parameterClasses.length; i++)
-        {
-            Class< ? > parameterClass = parameterClasses[i];
+        for (int i = 0; i < parameterClasses.length; i++) {
+            Class<?> parameterClass = parameterClasses[i];
             ParameterValue parameterValue = null;
-            try
-            {
-                parameterValue = getParameterValue( rule, parameterClass, parameterAnnotations[i] );
-                validator.assertParameter( parameterValue, parameterValues );
+            try {
+                parameterValue = getParameterValue(rule, parameterClass, parameterAnnotations[i]);
+                validator.assertParameter(parameterValue, parameterValues);
             }
-            catch (DroolsException e)
-            {
-                throwContextDroolsException( method, i, parameterClass, e );
+            catch (DroolsException e) {
+              throw new InvalidParameterException(
+                      e.getMessage() +
+                      ": method = " + method + ", parameter[" + i +
+                      "] = " + parameterClass, e );
             }
-            parameterValues.add( parameterValue );
+            parameterValues.add(parameterValue);
         }
-        return parameterValues.toArray( new ParameterValue[parameterValues.size( )] );
+        return parameterValues.toArray(new ParameterValue[parameterValues.size()]);
     }
 
-    private static ParameterValue getParameterValue( Rule rule, Class< ? > parameterClass,
-                                                     Annotation[] parameterAnnotations )
-                                                     throws DroolsException
-    {
+    private static ParameterValue getParameterValue(Rule rule, Class<?> parameterClass,
+                                                    Annotation[] parameterAnnotations)
+                                                    throws DroolsException {
         ParameterValue parameterValue;
         for (ParameterValueFactory factory : parameterValueFatories) {
             parameterValue = factory.create(rule, parameterClass, parameterAnnotations);
@@ -183,24 +186,14 @@ public class AnnonatedPojoRuleBuilder
                 return parameterValue;
             }
         }
-        throw new DroolsException(
+        throw new InvalidParameterException(
                 "Method parameter type not recognized or not annotated" );
     }
 
-    private static void throwContextDroolsException( Method method, int i,
-                                                     Class< ? > parameterClass, Exception e )
-             throws DroolsException
-     {
-         throw new DroolsException( e.getMessage( ) + ": method = " + method + ", parameter[" + i
-                 + "] = " + parameterClass, e );
-     }
-
     private static void assertNonConflictingParameterAnnotation( ParameterValue parameterValue )
-            throws DroolsException
-    {
-        if (parameterValue != null)
-        {
-            throw new DroolsException( "Method parameter contains conflicting @Drools annotations" );
+            throws InvalidParameterException {
+        if (parameterValue != null) {
+            throw new InvalidParameterException("Method parameter contains conflicting @Drools annotations");
         }
     }
 }

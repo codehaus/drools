@@ -2,43 +2,34 @@ package org.drools.semantics.annotation.model;
 
 import java.util.List;
 
-import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.semantics.annotation.*;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
+import org.drools.spi.Tuple;
 import org.drools.semantics.annotation.DroolsParameter;
 import org.drools.semantics.annotation.DroolsApplicationData;
 import org.drools.semantics.annotation.DroolsCondition;
+import org.drools.semantics.annotation.model.AnnonatedPojoRuleBuilder.InvalidReturnTypeException;
+import org.drools.semantics.annotation.model.AnnonatedPojoRuleBuilder.InvalidParameterException;
+import org.drools.semantics.annotation.model.AnnonatedPojoRuleBuilder.MissingConsequenceMethodException;
+import org.easymock.container.EasymockContainer;
+import org.easymock.container.EasymockContainer.Mock;
 
 import junit.framework.TestCase;
 
 public class AnnonatedPojoRuleBuilderTest extends TestCase
 {
+    private EasymockContainer mocks = new EasymockContainer( );
     private Rule rule = new Rule("test");
 
     private AnnonatedPojoRuleBuilder builder = new AnnonatedPojoRuleBuilder();
 
-    public void testInvalidConsequenceReturnType() throws Exception {
-        class Pojo {
-            @DroolsConsequence
-            public int consequence() {
-                return 1;
-            }
-        }
-        Pojo pojo = new Pojo();
+    //---- Condition
 
-        try {
-            builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
-    }
-
-    public void testInvalidConditionReturnType() throws Exception {
+    public void testConditionInvalidReturnType() throws Exception {
         class Pojo {
             @DroolsCondition
             public void condition() {}
@@ -47,56 +38,48 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
         try {
             builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
+            fail("Expected InvalidReturnTypeException");
+        } catch (InvalidReturnTypeException e) {
             // expected
         }
     }
 
-    public void testMultipleConsequences() throws Exception {
+    public void testConditionUnannoatedParameter() throws Exception {
         class Pojo {
-            @DroolsConsequence
-            public void consequenceOne() {}
-
-            @DroolsConsequence
-            public void consequenceTwo() {}
-        }
-        Pojo pojo = new Pojo();
-
-        try {
-            builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
-    }
-
-    public void testMissingConsequence() throws Exception {
-        class Pojo {
-            public void consequence() {
-                // did not annotate!
+            @DroolsCondition
+            public boolean condition(String parameter,
+                                     @DroolsParameter("object") Object object) {
+                return true;
             }
         }
         Pojo pojo = new Pojo();
 
         try {
             builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
+            fail("Expected InvalidParameterException");
+        } catch (InvalidParameterException e) {
             // expected
         }
     }
 
-    public void testConsequenceParameterAnnotation() throws Exception {
-        class Pojo1 {
+    public void testConditionIllegalKnowledgeHelperParameter() throws Exception {
+        class Pojo {
+            @DroolsCondition
+            public boolean condition(KnowledgeHelper knowledgeHelper) {
+                return true;
+            }
+
             @DroolsConsequence
-            public void consequence(@Deprecated @DroolsApplicationData("a2") String p) {}
+            public void consequence() {}
         }
-        Pojo1 pojo1 = new Pojo1();
+        Pojo pojo = new Pojo();
 
-        builder.buildRule(rule, pojo1);
-
-        assertNotNull(rule.getConsequence());
+        try {
+            builder.buildRule(rule, pojo);
+            fail("Expected InvalidParameterException");
+        } catch (InvalidParameterException e) {
+            // expected
+        }
     }
 
     public void testConditionParameterAnnotation() throws Exception {
@@ -116,7 +99,42 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         assertEquals(1, declarations.size());
     }
 
-    public void testUnannoatedConsequenceParameter() throws Exception {
+    //---- Consequence
+
+    public void testConsequenceNoMethod() throws Exception {
+        class Pojo {
+            public void consequence() {
+                // did not annotate!
+            }
+        }
+        Pojo pojo = new Pojo();
+
+        try {
+            builder.buildRule(rule, pojo);
+            fail("Expected MissingConsequenceMethodException");
+        } catch (MissingConsequenceMethodException e) {
+            // expected
+        }
+    }
+
+    public void testConsequenceInvalidReturnType() throws Exception {
+        class Pojo {
+            @DroolsConsequence
+            public int consequence() {
+                return 1;
+            }
+        }
+        Pojo pojo = new Pojo();
+
+        try {
+            builder.buildRule(rule, pojo);
+            fail("Expected DroolsException");
+        } catch (InvalidReturnTypeException e) {
+            // expected
+        }
+    }
+
+    public void testConsequenceUnannoatedParameter() throws Exception {
         class Pojo {
             @DroolsConsequence
             public void consequence(String parameter,
@@ -127,64 +145,68 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
 
         try {
             builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
+            fail("Expected InvalidParameterException");
+        } catch (InvalidParameterException e) {
             // expected
         }
     }
 
-    public void testUnannoatedConditionParameter() throws Exception {
-        class Pojo {
-            @DroolsCondition
-            public boolean condition(String parameter,
-                                     @DroolsParameter("object") Object object) {
-                return true;
-            }
-        }
-        Pojo pojo = new Pojo();
-
-        try {
-            builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
-    }
-
-    public void testMultipleConsequenceDroolsParameters() throws Exception {
+    public void testConsequenceMultipleKnowledgeHelperParameters() throws Exception {
         class Pojo {
             @DroolsConsequence
             public void consequence(KnowledgeHelper kh1, KnowledgeHelper kn2) {}
         }
         Pojo pojo = new Pojo();
 
+
         try {
             builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
+            fail("Expected InvalidParameterException");
+        } catch (InvalidParameterException e) {
             // expected
         }
     }
 
-    public void testConditionDroolsParameter() throws Exception {
+    public void testConsequenceParameterAnnotation() throws Exception {
+        class Pojo1 {
+            @DroolsConsequence
+            public void consequence(@Deprecated @DroolsApplicationData("a2") String p) {}
+        }
+        Pojo1 pojo1 = new Pojo1();
+
+        builder.buildRule(rule, pojo1);
+
+        assertNotNull(rule.getConsequence());
+    }
+
+    public void testMultipleConsequenceMethods() throws Exception {
         class Pojo {
-            @DroolsCondition
-            public boolean condition(KnowledgeHelper knowledgeHelper) {
-                return true;
+            public int consequenceOneCallCount;
+            public int consequenceTwoCallCount;
+
+            @DroolsConsequence
+            public void consequenceOne() {
+                consequenceOneCallCount++;
             }
 
             @DroolsConsequence
-            public void consequence() {}
+            public void consequenceTwo() {
+                consequenceTwoCallCount++;
+            }
         }
         Pojo pojo = new Pojo();
+        Mock< Tuple > mockTuple = mocks.createMock( Tuple.class );
 
-        try {
-            builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
+        Rule returnedRule = builder.buildRule(rule, pojo);
+        Consequence compositeConsequence = returnedRule.getConsequence();
+
+        compositeConsequence.invoke(mockTuple.object);
+
+        assertEquals(1, pojo.consequenceOneCallCount);
+        assertEquals(1, pojo.consequenceTwoCallCount);
     }
+
+    //---- ---- ----
 
     public void testBuild() throws Exception {
         class Pojo {

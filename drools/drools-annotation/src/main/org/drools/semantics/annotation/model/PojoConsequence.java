@@ -6,26 +6,24 @@ import org.drools.spi.Tuple;
 
 class PojoConsequence implements Consequence
 {
-    private final RuleReflectMethod ruleMethod;
+    private final RuleReflectMethod[] ruleMethods;
 
-    public PojoConsequence( RuleReflectMethod ruleMethod )
-    {
-        this.ruleMethod = ruleMethod;
+    public PojoConsequence(RuleReflectMethod[] ruleMethods) {
+        this.ruleMethods = ruleMethods;
     }
 
-    public void invoke( Tuple tuple ) throws ConsequenceException
-    {
-        try
-        {
-            ruleMethod.invokeMethod( tuple );
-        }
-        catch (Exception e)
-        {
+    public void invoke(Tuple tuple) throws ConsequenceException {
+        try {
+            for (RuleReflectMethod ruleMethod : ruleMethods) {
+                ruleMethod.invokeMethod( tuple );
+            }
+        } catch (Exception e) {
             throw new ConsequenceException( e );
         }
     }
 
     public String toString() {
-        return ruleMethod.toString();
+        // TODO Ensure this is clear
+        return ruleMethods.toString();
     }
 }
