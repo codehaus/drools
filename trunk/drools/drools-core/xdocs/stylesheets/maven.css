@@ -25,7 +25,7 @@ table {
 
 .app h3 a {
 	font-weight:800;
-	font-size:10pt;
+	font-size:9pt;
 	font-stretch:expanded;
 }
 
@@ -92,6 +92,7 @@ div#banner {
 	max-width: 5in;
 	margin-left: 36pt;
 	line-height: 1.6em;
+	font-size: 10pt;
 }
 
 #banner, #banner td { 
@@ -204,7 +205,6 @@ a:link.selfref, a:visited.selfref {
  font-family: sans-serif;
  color:#000099;
  text-decoration: none;
- font-weight: 900;
 }
 
 .app a:active, .app a:hover {
