@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Agenda.java,v 1.22 2003-11-19 21:31:10 bob Exp $
+ $Id: Agenda.java,v 1.23 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -96,6 +96,7 @@ class Agenda
     /** Items time-delayed. */
     private Set scheduledItems;
 
+    /** Flag to determine if a conflict-resoluting sort is required. */
     private boolean needsSort;
 
     // ------------------------------------------------------------
@@ -105,6 +106,7 @@ class Agenda
     /** Construct.
      *
      *  @param workingMemory The <code>WorkingMemory</code> of this agenda.
+     *  @param conflictResolutionStrategy Conflict-resolution strategy.
      */
     public Agenda(WorkingMemory workingMemory,
                   ConflictResolutionStrategy conflictResolutionStrategy)

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ReteTuple.java,v 1.17 2003-11-19 21:31:10 bob Exp $
+ $Id: ReteTuple.java,v 1.18 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -60,6 +60,8 @@ import java.util.HashSet;
  *  @see Tuple
  *  
  *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ReteTuple.java,v 1.18 2003-11-21 04:18:13 bob Exp $ 
  */
 class ReteTuple
     implements Tuple
@@ -99,6 +101,7 @@ class ReteTuple
     /** Construct a simple 1-column tuple.
      *
      *  @param declaration The column declaration.
+     *  @param handle The fact-handle.
      *  @param value The column value.
      */
     ReteTuple(Declaration declaration,
@@ -118,6 +121,7 @@ class ReteTuple
     /** Set a key column's value.
      *
      *  @param declaration The column declaration.
+     *  @param handle The fact-handle.
      *  @param value The value.
      */
     public void putKeyColumn(Declaration declaration,
@@ -183,14 +187,8 @@ class ReteTuple
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.spi.Tuple
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the value of a particular declaration column.
-     *
-     *  @param declaration The declaration.
-     *
-     *  @return The value.
+    /** @see Tuple
      */
     public Object get(Declaration declaration)
     {
@@ -202,9 +200,7 @@ class ReteTuple
         return this.otherColumns.get( declaration );
     }
 
-    /** Retrieve all declarations participating in this tuple.
-     *
-     *  @return Set of all declarations.
+    /** @see Tuple
      */
     public Set getDeclarations()
     {
@@ -217,6 +213,8 @@ class ReteTuple
         return decls;
     }
 
+    /** @see Tuple
+     */
     public FactHandle getFactHandleForObject(Object object)
     {
         return this.keyColumns.getRootFactHandle( object );

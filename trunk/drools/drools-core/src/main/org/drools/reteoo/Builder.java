@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Builder.java,v 1.34 2003-11-19 21:31:10 bob Exp $
+ $Id: Builder.java,v 1.35 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -66,7 +66,7 @@ import java.util.Arrays;
  *
  *  @see org.drools.rule.RuleSet
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  *
  *  @task Make joinForCondition actually be intelligent enough to
  *        build optimal joins.  Currently using forgy's original
@@ -82,6 +82,7 @@ public class Builder
     /** Rete network to build against. */
     private Rete rete;
 
+    /** Rule-sets added. */
     private List ruleSets;
 
     // ------------------------------------------------------------
@@ -90,8 +91,6 @@ public class Builder
 
     /** Construct a <code>Builder</code> against an existing
      *  <code>Rete</code> network.
-     *
-     *  @param rete The network to add to.
      */
     public Builder()
     {
@@ -113,6 +112,10 @@ public class Builder
         return this.rete;
     }
 
+    /** Build the <code>RuleBase</code>.
+     *
+     *  @return The rule-base.
+     */
     public RuleBase buildRuleBase()
     {
         RuleBase ruleBase = new RuleBaseImpl( getRete(),
@@ -124,6 +127,13 @@ public class Builder
         return ruleBase;
     }
 
+    /** Add a <code>RuleSet</code> to the network.
+     *
+     *  @param ruleSet The rule-set to add.
+     *
+     *  @throws RuleIntegrationException if an error prevents complete
+     *          construction of the network for the <code>Rule</code>.
+     */
     public void addRuleSet(RuleSet ruleSet)
         throws RuleIntegrationException
     {
@@ -140,6 +150,7 @@ public class Builder
 
     /** Add a <code>Rule</code> to the network.
      *
+     *  @param ruleSet The rule-set containing the rule.
      *  @param rule The rule to add.
      *
      *  @throws RuleIntegrationException if an error prevents complete
@@ -326,6 +337,9 @@ public class Builder
      *  that currently cannot be applied.
      *
      *  @param leafNodes Available leaf nodes.
+     *
+     *  @return <code>true</code> if successfully joined some nodes,
+     *          otherwise <code>false</code>.
      */
     boolean joinArbitrary(Set leafNodes)
     {

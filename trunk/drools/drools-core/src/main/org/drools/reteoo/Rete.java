@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: Rete.java,v 1.9 2003-11-19 21:31:10 bob Exp $
+ $Id: Rete.java,v 1.10 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -95,10 +95,11 @@ class Rete
     /** Assert a new fact object into this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
+     *  @param handle The fact handle.
      *  @param object The object to assert.
      *  @param workingMemory The working memory session.
      *
-     *  @throws AssertionException if an error occurs during assertion.
+     *  @throws FactException if an error occurs during assertion.
      */
     void assertObject(FactHandle handle,
                       Object object,
@@ -121,10 +122,10 @@ class Rete
     /** Retract a fact object from this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
-     *  @param object The object to retract.
+     *  @param handle The handle of the fact to retract.
      *  @param workingMemory The working memory session.
      *
-     *  @throws RetractionException if an error occurs during retraction.
+     *  @throws FactException if an error occurs during retraction.
      */
     void retractObject(FactHandle handle,
                        WorkingMemoryImpl workingMemory)
@@ -149,7 +150,8 @@ class Rete
      *  a fact object is semantically equivelent to retracting and
      *  re-asserting it.
      *
-     *  @param object The object to modify.
+     *  @param handle The fact handle.
+     *  @param object The modified value object.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException if an error occurs during modification.

@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- $Id: Declaration.java,v 1.8 2003-11-19 21:31:11 bob Exp $
+ $Id: Declaration.java,v 1.9 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -90,6 +90,10 @@ public class Declaration
         this.identifier = identifier;
     }
 
+    /** Construct.
+     *
+     *  @param identifier The name of the variable.
+     */
     public Declaration(String identifier)
     {
         this.identifier = identifier;
@@ -99,14 +103,18 @@ public class Declaration
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the <code>ObjectType</code>.
+     *
+     *  @param objectType The object-type.
+     */
     public void setObjectType(ObjectType objectType)
     {
         this.objectType = objectType;
     }
 
-    /** Retrieve the <code>ObjectType</code> of this <code>Declaration</code>.
+    /** Retrieve the <code>ObjectType</code>.
      *
-     *  @return The <code>ObjectType</code> of this <code>Declaration</code>.
+     *  @return The object-type.
      */
     public ObjectType getObjectType()
     {
@@ -123,16 +131,8 @@ public class Declaration
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Determine if another <code>Declaration</code> is
-     *  <b>semantically</b> equivelent to this one.
-     *
-     *  @param thatObj The object to compare to.
-     *
-     *  @return <code>true</code> if <code>thatObj</code> is
-     *          semantically equal to this object.
+    /** @see Object
      */
     public boolean equals(Object thatObj)
     {
@@ -148,6 +148,8 @@ public class Declaration
         return false;
     }
 
+    /** @see Object
+     */
     public int hashCode()
     {
         return ( this.objectType.hashCode() + this.identifier.hashCode() );

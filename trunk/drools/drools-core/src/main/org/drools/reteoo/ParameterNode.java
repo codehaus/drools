@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: ParameterNode.java,v 1.15 2003-11-19 21:31:10 bob Exp $
+ $Id: ParameterNode.java,v 1.16 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -108,6 +108,7 @@ class ParameterNode
     /** Assert a new fact object into this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
+     *  @param handle The fact handle.
      *  @param object The object to assert.
      *  @param workingMemory The working memory session.
      *
@@ -129,7 +130,7 @@ class ParameterNode
     /** Retract a fact object from this <code>RuleBase</code>
      *  and the specified <code>WorkingMemory</code>.
      *
-     *  @param object The object to retract.
+     *  @param handle The handle to the fact to retract.
      *  @param workingMemory The working memory session.
      *
      *  @throws RetractionException if an error occurs during retraction.
@@ -151,7 +152,8 @@ class ParameterNode
      *  a fact object is semantically equivelent to retracting and
      *  re-asserting it.
      *
-     *  @param object The object to modify.
+     *  @param handle The fact handle.
+     *  @param object The new fact value object.
      *  @param workingMemory The working memory session.
      *
      *  @throws FactException if an error occurs during modification.

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: FactHandleImpl.java,v 1.3 2003-11-19 21:31:10 bob Exp $
+ $Id: FactHandleImpl.java,v 1.4 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -48,16 +48,41 @@ package org.drools.reteoo;
 
 import org.drools.FactHandle;
 
+/** Implementation of <code>FactHandle</code>.
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: FactHandleImpl.java,v 1.4 2003-11-21 04:18:13 bob Exp $
+ */
 class FactHandleImpl
     implements FactHandle
 {
+    // ----------------------------------------------------------------------
+    //     Instance members
+    // ----------------------------------------------------------------------
+
+    /** Handle id. */
     private long id;
 
+    // ----------------------------------------------------------------------
+    //     Constructors
+    // ----------------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param id Handle id.
+     */
     FactHandleImpl(long id)
     {
         this.id = id;
     }
 
+    // ----------------------------------------------------------------------
+    //     Instance members
+    // ----------------------------------------------------------------------
+
+    /** @see Object
+     */
     public boolean equals(Object thatObj)
     {
         if ( thatObj instanceof FactHandleImpl )
@@ -68,16 +93,22 @@ class FactHandleImpl
         return false;
     }
 
+    /** @see Object
+     */
     public int hashCode()
     {
         return (int) ( this.id % (long) Integer.MAX_VALUE );
     }
 
+    /** @see FactHandle
+     */
     public String toExternalForm()
     {
         return "[fid:" + this.id + "]";
     }
 
+    /** @see Object
+     */
     public String toString()
     {
         return toExternalForm();

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- $Id: AgendaItem.java,v 1.8 2003-11-19 21:31:10 bob Exp $
+ $Id: AgendaItem.java,v 1.9 2003-11-21 04:18:13 bob Exp $
 
  Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  
@@ -103,7 +103,7 @@ class AgendaItem
     /** Determine if this tuple depends on the values 
      *  derrived from a particular root object.
      *
-     *  @param object The root object handle.
+     *  @param handle The root object handle.
      *
      *  @return <code>true<code> if this agenda item depends
      *          upon the item, otherwise <code>false</code>.
@@ -131,6 +131,10 @@ class AgendaItem
         return this.tuple;
     }
 
+    /** Retrieve the <code>TupleKey</code>.
+     *
+     *  @return The key to the tuple in this item.
+     */
     TupleKey getKey()
     {
         return this.tuple.getKey();
