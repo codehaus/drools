@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.21 2004-09-17 00:14:10 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.22 2004-10-06 13:33:38 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -40,12 +40,6 @@ package org.drools.reteoo;
  *  
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.NoSuchFactObjectException;
@@ -55,12 +49,19 @@ import org.drools.conflict.DefaultConflictResolver;
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.spi.ConflictResolver;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Implementation of <code>WorkingMemory</code>.
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  * 
- * @version $Id: WorkingMemoryImpl.java,v 1.21 2004-09-17 00:14:10 mproctor Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.22 2004-10-06 13:33:38 mproctor Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
@@ -90,10 +91,13 @@ class WorkingMemoryImpl implements WorkingMemory
     /** Handle-to-object mapping. */
     private Map                      objects;
 
+    /** Object-to-handle mapping to ensure uniqueness of facts. */
+    private final Map                handles;
+
     private static FactHandleFactory factHandleFactory;
 
     /** Array of listeners */
-    private ArrayList                listeners                    = new ArrayList( );
+    private List                     listeners                    = new ArrayList( );
 
     private long                     conditionCounter             = 0;
 
@@ -123,6 +127,7 @@ class WorkingMemoryImpl implements WorkingMemory
         this.ruleBase = ruleBase;
         this.joinMemories = new HashMap( );
         this.objects = new HashMap( );
+        this.handles = new HashMap( );
         this.applicationData = new HashMap( );
 
         this.agenda = new Agenda( this, conflictResolver );
@@ -146,7 +151,10 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public void addEventListener(WorkingMemoryEventListener listener)
     {
-        listeners.add( listener );
+        if ( !listeners.contains( listener ) )
+        {
+            listeners.add( listener );
+        }
     }
 
     /**
@@ -156,10 +164,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public void removeEventListener(WorkingMemoryEventListener listener)
     {
-        while ( listeners.contains( listener ) )
-        {
-            listeners.remove( listener );
-        }
+        listeners.remove( listener );
     }
 
     /**
@@ -177,7 +182,6 @@ class WorkingMemoryImpl implements WorkingMemory
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
 
         Class jsrHandleFactoryClass = null;
-        Class jsrHandle = null;
 
         if ( cl != null )
         {
@@ -185,7 +189,8 @@ class WorkingMemoryImpl implements WorkingMemory
             {
                 jsrHandleFactoryClass = cl
                                           .loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
-                jsrHandle = cl.loadClass( JSR_HANDLE_CLASS );
+
+                cl.loadClass( JSR_HANDLE_CLASS );
             }
             catch ( ClassNotFoundException e )
             {
@@ -193,6 +198,7 @@ class WorkingMemoryImpl implements WorkingMemory
                 // swallow
             }
         }
+
         if ( jsrHandleFactoryClass == null )
         {
             cl = getClass( ).getClassLoader( );
@@ -201,7 +207,8 @@ class WorkingMemoryImpl implements WorkingMemory
             {
                 jsrHandleFactoryClass = cl
                                           .loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
-                jsrHandle = cl.loadClass( JSR_HANDLE_CLASS );
+
+                cl.loadClass( JSR_HANDLE_CLASS );
             }
             catch ( ClassNotFoundException e2 )
             {
@@ -330,12 +337,14 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public Object getObject(FactHandle handle) throws NoSuchFactObjectException
     {
-        if ( !this.objects.containsKey( handle ) )
+        Object object = this.objects.get( handle );
+
+        if ( object == null )
         {
             throw new NoSuchFactObjectException( handle );
         }
 
-        return this.objects.get( handle );
+        return object;
     }
 
     /**
@@ -367,11 +376,16 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public synchronized FactHandle assertObject(Object object) throws FactException
     {
-        FactHandle handle = newFactHandle( );
+        FactHandle handle = ( FactHandle ) this.handles.get( object );
 
-        this.ruleBase.assertObject( handle, object, this );
+        if ( handle == null )
+        {
+            handle = newFactHandle( );
 
-        putObject( handle, object );
+            this.ruleBase.assertObject( handle, object, this );
+
+            putObject( handle, object );
+        }
 
         return handle;
     }
@@ -385,6 +399,8 @@ class WorkingMemoryImpl implements WorkingMemory
     void putObject(FactHandle handle, Object object)
     {
         this.objects.put( handle, object );
+
+        this.handles.put( object, handle );
     }
 
     /**
@@ -393,6 +409,8 @@ class WorkingMemoryImpl implements WorkingMemory
     public synchronized void retractObject(FactHandle handle) throws FactException
     {
         this.ruleBase.retractObject( handle, this );
+
+        this.handles.remove( objects.get( handle ) );
 
         this.objects.remove( handle );
     }
