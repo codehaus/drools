@@ -86,35 +86,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         }
     }
     
-    public void testConflictingConsequenceParameterAnnotation() throws Exception {
-        class Pojo1 {
-            @DroolsConsequence
-            public void consequence(@DroolsParameter("p1") @DroolsApplicationData("a2") String p) {}
-        }
-        Pojo1 pojo1 = new Pojo1();
-
-        try {
-            builder.buildRule(rule, pojo1);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
-
-        class Pojo2 {
-            @DroolsConsequence
-            public void consequence(@DroolsApplicationData("a1") @DroolsParameter("p1") String p) {}
-        }
-        Pojo2 pojo2 = new Pojo2();
-
-        try {
-            builder.buildRule(rule, pojo2);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
-    }
-
-    public void testNonConflictingConsequenceParameterAnnotation() throws Exception {
+    public void testConsequenceParameterAnnotation() throws Exception {
         class Pojo1 {
             @DroolsConsequence
             public void consequence(@Deprecated @DroolsApplicationData("a2") String p) {}
@@ -126,24 +98,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         assertNotNull(rule.getConsequence());
     }
 
-    public void testConflictingConditionParameterAnnotation() throws Exception {
-        class Pojo {
-            @DroolsCondition
-            public boolean condition(@DroolsParameter("p1") @DroolsApplicationData("p2") String p) {
-                return false;
-            }
-        }
-        Pojo pojo = new Pojo();
-
-        try {
-            builder.buildRule(rule, pojo);
-            fail("Expected DroolsException");
-        } catch (DroolsException e) {
-            // expected
-        }
-    }
-
-    public void testNonConflictingConditionParameterAnnotation() throws Exception {
+    public void testConditionParameterAnnotation() throws Exception {
         class Pojo {
             @DroolsCondition
             public boolean condition(@DroolsParameter("p1") @Deprecated String p) {
@@ -173,6 +128,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
             builder.buildRule(rule, pojo);
             fail("Expected DroolsException");
         } catch (DroolsException e) {
+            e.printStackTrace();
             // expected
         }
     }

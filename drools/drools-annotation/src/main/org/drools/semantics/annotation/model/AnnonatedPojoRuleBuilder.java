@@ -3,7 +3,9 @@ package org.drools.semantics.annotation.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.drools.DroolsException;
 import org.drools.rule.Declaration;
@@ -19,6 +21,29 @@ import org.drools.spi.Consequence;
 
 public class AnnonatedPojoRuleBuilder
 {
+    // TODO Extract the parameter factory registy to its own abstraction
+    private static final Set<ParameterValueFactory> parameterValueFatories 
+            = new HashSet<ParameterValueFactory>();
+
+    static {
+        registerParameterValueFactory(new DroolsContextParameterValueFactory());
+        registerParameterValueFactory(new DroolsTupleParameterValueFactory());
+        registerParameterValueFactory(new DroolsApplicationDataParameterValueFactory());
+    }
+
+    public static void registerParameterValueFactory( ParameterValueFactory factory) 
+    {
+        for (ParameterValueFactory registeredFactory : parameterValueFatories) {
+            if (factory.getParameterValueType() == registeredFactory.getParameterValueType()) {
+                throw new IllegalArgumentException("ParameterValueFactory already registered"
+                                                   + ": type=" + factory.getParameterValueType() 
+                                                   + ", factory =" + factory
+                                                   + ", registered factory=" + registeredFactory);
+            }
+        }
+        parameterValueFatories.add(factory);
+    }
+
     private static interface ParameterValidator
     {
         void assertParameter( ParameterValue newParameterValue, List<ParameterValue> parameterValues )
@@ -144,14 +169,6 @@ public class AnnonatedPojoRuleBuilder
             try
             {
                 parameterValue = getParameterValue( rule, parameterClass, parameterAnnotations[i] );
-            }
-            catch (DroolsException e)
-            {
-                throwContextDroolsException( method, i, parameterClass, e );
-            }
-
-            try
-            {
                 validator.assertParameter( parameterValue, parameterValues );
             }
             catch (DroolsException e)
@@ -163,55 +180,125 @@ public class AnnonatedPojoRuleBuilder
         return parameterValues.toArray( new ParameterValue[parameterValues.size( )] );
     }
 
-    private static void throwContextDroolsException( Method method, int i,
-                                                    Class< ? > parameterClass, Exception e )
-            throws DroolsException
+    // TODO Extract all these classes to file-level.
+    public interface ParameterValueFactory 
     {
-        throw new DroolsException( e.getMessage( ) + ": method = " + method + ", parameter[" + i
-                + "] = " + parameterClass, e );
+        Class<? extends ParameterValue> getParameterValueType();
+        
+        ParameterValue create ( Rule rule, Class< ? > parameterClass, 
+                                Annotation[] parameterAnnotations) throws DroolsException;
     }
-
-    private static ParameterValue getParameterValue( Rule rule, Class< ? > parameterClass,
-                                                    Annotation[] parameterAnnotations )
-            throws InvalidRuleException, DroolsException
+    
+    public static abstract class AnnotationParameterValueFactory implements ParameterValueFactory 
     {
-
-        ParameterValue parameterValue = null;
-        if (parameterClass == DroolsContext.class)
-        {
-            parameterValue = new DroolsContextParameterValue( rule );
+        private final Class<? extends Annotation> annotationClass;
+        
+        protected AnnotationParameterValueFactory(Class<? extends Annotation> annotationClass) {
+            this.annotationClass = annotationClass;
         }
-        else
-        {
-            for (Annotation annotation : parameterAnnotations)
-            {
-                if (annotation instanceof DroolsParameter)
-                {
-                    assertNonConflictingParameterAnnotation( parameterValue );
-                    String parameterId = ((DroolsParameter) annotation).value( );
-                    Declaration declaration = rule.getParameterDeclaration( parameterId );
-                    if (declaration == null)
-                    {
-                        ClassObjectType classObjectType = new ClassObjectType( parameterClass );
-                        declaration = rule.addParameterDeclaration( parameterId, classObjectType );
-                    }
-                    parameterValue = new TupleParameterValue( declaration );
-                }
-                else if (annotation instanceof DroolsApplicationData)
-                {
-                    assertNonConflictingParameterAnnotation( parameterValue );
-                    String parameterId = ((DroolsApplicationData) annotation).value( );
-                    parameterValue = new ApplicationDataParameterValue( parameterId, parameterClass );
+        
+        protected abstract ParameterValue doCreate( Rule rule, 
+                                                    Class< ? > parameterClass, 
+                                                    Annotation annotation) throws InvalidRuleException;
+        
+        public ParameterValue create ( Rule rule, Class< ? > parameterClass, 
+                                       Annotation[] parameterAnnotations) throws DroolsException {
+            Annotation annotation = getAnnotation(annotationClass, parameterAnnotations);
+            if (annotation == null) {
+                return null;
+            }
+            return doCreate(rule, parameterClass, annotation);
+        }        
+
+        private Annotation getAnnotation(Class<? extends Annotation> annotationClass, Annotation[] parameterAnnotations) {
+            for (Annotation annotation : parameterAnnotations) {
+                if (annotationClass.isAssignableFrom(annotation.getClass())) {
+                    return annotation;
                 }
             }
-        }
-        if (parameterValue == null)
-        {
-            throw new DroolsException(
-                    "Method parameter not annoated with either @Drools.Parameter or @Drools.ApplicationData" );
-        }
-        return parameterValue;
+            return null;
+        }        
     }
+    
+    public static class DroolsContextParameterValueFactory implements ParameterValueFactory 
+    {
+        public Class<? extends ParameterValue> getParameterValueType() {
+            return DroolsContextParameterValue.class;
+        }
+        
+        public ParameterValue create ( Rule rule, Class< ? > parameterClass, 
+                                       Annotation[] parameterAnnotations) {
+            if (parameterClass != DroolsContext.class) {
+                return null;
+            }
+            return new DroolsContextParameterValue( rule );
+        }        
+    }
+
+    public static class DroolsTupleParameterValueFactory extends AnnotationParameterValueFactory 
+    {
+        public DroolsTupleParameterValueFactory() {
+            super(DroolsParameter.class);
+        }
+        
+        public Class<? extends ParameterValue> getParameterValueType() {
+            return TupleParameterValue.class;
+        }
+        
+        @Override
+        public ParameterValue doCreate ( Rule rule, Class< ? > parameterClass, 
+                                         Annotation annotation) throws InvalidRuleException {
+            String parameterId = ((DroolsParameter) annotation).value( );
+            Declaration declaration = rule.getParameterDeclaration( parameterId );
+            if (declaration == null)
+            {
+                ClassObjectType classObjectType = new ClassObjectType( parameterClass );
+                declaration = rule.addParameterDeclaration( parameterId, classObjectType );
+            }
+            return new TupleParameterValue( declaration );
+        }        
+    }
+    
+    public static class DroolsApplicationDataParameterValueFactory extends AnnotationParameterValueFactory 
+    {
+        public DroolsApplicationDataParameterValueFactory() {
+            super(DroolsApplicationData.class);
+        }
+        
+        public Class<? extends ParameterValue> getParameterValueType() {
+            return ApplicationDataParameterValue.class;
+        }
+        
+        @Override
+        public ParameterValue doCreate ( Rule rule, Class< ? > parameterClass, 
+                                         Annotation annotation) {
+            String parameterId = ((DroolsApplicationData) annotation).value( );
+            return new ApplicationDataParameterValue( parameterId, parameterClass );
+        }        
+    }
+    
+    private static ParameterValue getParameterValue( Rule rule, Class< ? > parameterClass,
+                                                     Annotation[] parameterAnnotations )
+                                                     throws DroolsException
+    {
+        ParameterValue parameterValue;
+        for (ParameterValueFactory factory : parameterValueFatories) {
+            parameterValue = factory.create(rule, parameterClass, parameterAnnotations);
+            if (parameterValue != null) {
+                return parameterValue;
+            }
+        }
+        throw new DroolsException(
+                "Method parameter type not recognized or not annotated" );
+    }
+    
+    private static void throwContextDroolsException( Method method, int i,
+                                                     Class< ? > parameterClass, Exception e )
+             throws DroolsException
+     {
+         throw new DroolsException( e.getMessage( ) + ": method = " + method + ", parameter[" + i
+                 + "] = " + parameterClass, e );
+     }
 
     private static void assertNonConflictingParameterAnnotation( ParameterValue parameterValue )
             throws DroolsException
