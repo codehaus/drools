@@ -49,31 +49,31 @@ public class JoinMemoryTest extends TestCase
         this.tuple4 = new ReteTuple();
 
         //     | cheese | toast |
-        this.tuple1.put( this.joinDecl1,
+        this.tuple1.putOtherColumn( this.joinDecl1,
                          "one-cheese" );
 
-        this.tuple1.put( this.joinDecl2,
+        this.tuple1.putOtherColumn( this.joinDecl2,
                          "two-toast" );
 
         //     | cheese | sneeze | 
-        this.tuple2.put( this.joinDecl1,
+        this.tuple2.putOtherColumn( this.joinDecl1,
                          "one-cheese" );
 
-        this.tuple2.put( this.joinDecl2,
+        this.tuple2.putOtherColumn( this.joinDecl2,
                          "two-sneeze" );
 
         //     | toast | sneeze |
-        this.tuple3.put( this.joinDecl1,
+        this.tuple3.putOtherColumn( this.joinDecl1,
                          "one-toast" );
 
-        this.tuple3.put( this.joinDecl2,
+        this.tuple3.putOtherColumn( this.joinDecl2,
                          "two-sneeze" );
 
         //     | cheese | sneeze |
-        this.tuple4.put( this.joinDecl1,
+        this.tuple4.putOtherColumn( this.joinDecl1,
                          "one-cheese" );
 
-        this.tuple4.put( this.joinDecl2,
+        this.tuple4.putOtherColumn( this.joinDecl2,
                          "two-sneeze" );
 
         // ----------------------------------------

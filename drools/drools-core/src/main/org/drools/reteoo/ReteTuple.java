@@ -18,89 +18,89 @@ import java.util.Iterator;
  */
 public class ReteTuple implements Tuple
 {
-    private Map tuple;
-    private Set rootFactObjects;
+    private Map keyColumns;
+    private Map otherColumns;
 
+    
     /** Construct.
      */
     public ReteTuple()
     {
-        this.tuple           = new HashMap();
-        this.rootFactObjects = new HashSet( 11 );
+        // this.tuple           = new HashMap();
+        this.keyColumns      = new HashMap();
+        this.otherColumns    = new HashMap();
     }
 
-    void addRootFactObject(Object object)
+    public ReteTuple(ReteTuple that)
     {
-        this.rootFactObjects.add( object );
+        this.keyColumns      = new HashMap( that.keyColumns );
+        this.otherColumns    = new HashMap( that.otherColumns );
     }
 
-    void addAllRootFactObjects(Set objects)
+    public void putKeyColumn(Declaration declaration,
+                      Object value)
     {
-        this.rootFactObjects.addAll( objects );
+        this.keyColumns.put( declaration,
+                             value );
     }
 
-    Set getRootFactObjects()
+    public void putAllKeyColumns(Map otherColumns)
     {
-        return this.rootFactObjects;
+        this.keyColumns.putAll( otherColumns );
     }
 
-    boolean containsRootFactObject(Object object)
+    public void putOtherColumn(Declaration declaration,
+                        Object value)
     {
-        return this.rootFactObjects.contains( object );
+        this.otherColumns.put( declaration,
+                               value );
     }
 
-    /** Construct.
-     *
-     *  @param sizeHint Hint as to total number of entries
-     *         in this <code>Tuple</code>.
-     */
-    public ReteTuple(int sizeHint)
+    public void putAllOtherColumns(Map otherColumns)
     {
-        this.tuple = new HashMap( sizeHint );
+        this.otherColumns.putAll( otherColumns );
     }
 
-    public void put(Declaration declaration,
-                    Object value)
+    public Map getKeyColumns()
     {
-        this.tuple.put( declaration,
-                        value );
+        return this.keyColumns;
+    }
+
+    public Map getOtherColumns()
+    {
+        return this.otherColumns;
+    }
+
+    public boolean containsRootFactObject(Object object)
+    {
+        return this.keyColumns.containsValue( object );
     }
 
     public Object get(Declaration declaration)
     {
-        return this.tuple.get( declaration );
-    }
-
-    /** Put the entire contents of another <code>Tuple</code>
-     *  into this <code>Tuple</code>.
-     *
-     *  @param tuple The source <code>Tuple</code>.
-     */
-    public void putAll(Tuple tuple)
-    {
-        Set decls = tuple.getDeclarations();
-
-        Iterator    declIter = decls.iterator();
-        Declaration eachDecl = null;
-
-        while ( declIter.hasNext() )
+        if ( this.keyColumns.containsKey( declaration ) )
         {
-            eachDecl = (Declaration) declIter.next();
-
-            put( eachDecl,
-                 tuple.get( eachDecl ) );
+            return this.keyColumns.get( declaration );
         }
+        
+        return this.otherColumns.get( declaration );
     }
 
     public Set getDeclarations()
     {
-        return tuple.keySet();
+        Set decls = new HashSet( this.keyColumns.size() 
+                                 + this.otherColumns.size() );
+
+        decls.addAll( this.keyColumns.keySet() );
+        decls.addAll( this.otherColumns.keySet() );
+
+        return decls;
     }
 
     /** Produce output suitable for debugging.
      */
     public String toString()
     {
-        return "[ReteTuple: tuple=" + this.tuple + "]";
+        return "[ReteTuple: keys=" + this.keyColumns + "; others=" + this.otherColumns + "]";
     }
 }

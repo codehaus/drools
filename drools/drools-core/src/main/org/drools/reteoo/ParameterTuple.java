@@ -30,7 +30,7 @@ public class ParameterTuple extends ReteTuple
         this.declaration = declaration;
         this.object      = object;
 
-        addRootFactObject( object );
+        // addRootFactObject( object );
     }
 
     /** Retrieve the object for the parameter.

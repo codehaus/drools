@@ -18,7 +18,7 @@ public class BeanShellActionTest extends TestCase
     private Declaration objectDecl;
     private Declaration stringDecl;
 
-    private Tuple       tuple;
+    private ReteTuple   tuple;
 
     private Object      object;
     private String      string;
@@ -45,11 +45,11 @@ public class BeanShellActionTest extends TestCase
 
         this.tuple = new ReteTuple();
 
-        this.tuple.put( this.objectDecl,
-                        this.object );
+        this.tuple.putKeyColumn( this.objectDecl,
+                                 this.object );
 
-        this.tuple.put( this.stringDecl,
-                        this.string );
+        this.tuple.putKeyColumn( this.stringDecl,
+                                 this.string );
     }
 
     public void tearDown()

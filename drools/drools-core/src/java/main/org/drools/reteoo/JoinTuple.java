@@ -16,12 +16,10 @@ public class JoinTuple extends ReteTuple
                      ReteTuple right)
     {
 
-        // System.err.println( "\n\n\n\n left = " + left.getRootFactObjects() );
-        // System.err.println( "\n\n\n\n right = " + right.getRootFactObjects() );
-        this.putAll( left );
-        this.putAll( right );
+        this.putAllKeyColumns( left.getKeyColumns() );
+        this.putAllKeyColumns( right.getKeyColumns() );
 
-        addAllRootFactObjects( left.getRootFactObjects() );
-        addAllRootFactObjects( right.getRootFactObjects() );
+        this.putAllOtherColumns( left.getOtherColumns() );
+        this.putAllOtherColumns( right.getOtherColumns() );
     }
 }
