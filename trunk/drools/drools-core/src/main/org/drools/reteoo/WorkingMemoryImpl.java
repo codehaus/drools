@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.24 2004-10-20 12:51:00 bob Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.25 2004-10-22 15:20:48 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,16 +45,14 @@ import org.drools.FactHandle;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.conflict.DefaultConflictResolver;
 import org.drools.event.WorkingMemoryEventListener;
-import org.drools.spi.ConflictResolver;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
 
 /**
  * Implementation of <code>WorkingMemory</code>.
@@ -62,42 +60,41 @@ import java.util.Iterator;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  *
- * @version $Id: WorkingMemoryImpl.java,v 1.24 2004-10-20 12:51:00 bob Exp $
+ * @version $Id: WorkingMemoryImpl.java,v 1.25 2004-10-22 15:20:48 simon Exp $
  */
 class WorkingMemoryImpl implements WorkingMemory
 {
-    private static final String      JSR_FACT_HANDLE_FACTORY_NAME = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
-
-    private static final String      JSR_HANDLE_CLASS             = "javax.rules.Handle";
+//    private static final String      JSR_FACT_HANDLE_FACTORY_NAME = "org.drools.jsr94.rules.Jsr94FactHandleFactory";
+//
+//    private static final String      JSR_HANDLE_CLASS             = "javax.rules.Handle";
 
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The <code>RuleBase</code> with which this memory is associated. */
-    private RuleBaseImpl             ruleBase;
 
     /** The actual memory for the <code>JoinNode</code>s. */
-    private Map                      joinMemories;
-
-    /** Rule-firing agenda. */
-    private Agenda                   agenda;
-
-    /** Flag to determine if a rule is currently being fired. */
-    private boolean                  firing;
+    private final Map                joinMemories                 = new HashMap( );
 
     /** Application data which is associated with this memory. */
-    private Map                      applicationData;
+    private final Map                applicationData              = new HashMap( );
 
     /** Handle-to-object mapping. */
-    private Map                      objects;
-
-    private static FactHandleFactory factHandleFactory;
+    private final Map                objects                      = new HashMap( );
 
     /** Array of listeners */
-    private List                     listeners                    = new ArrayList( );
+    private final List               listeners                    = new ArrayList( );
 
-    private long                     conditionCounter             = 0;
+    /** The <code>RuleBase</code> with which this memory is associated. */
+    private final RuleBaseImpl ruleBase;
+
+    /** Rule-firing agenda. */
+    private final Agenda agenda;
+
+    /** Flag to determine if a rule is currently being fired. */
+    private boolean firing;
+
+    private long conditionCounter = 0;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -110,31 +107,8 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     public WorkingMemoryImpl(RuleBaseImpl ruleBase)
     {
-        this( ruleBase, DefaultConflictResolver.getInstance( ) );
-    }
-
-    /**
-     * Construct.
-     *
-     * @param ruleBase The backing rule-base.
-     * @param conflictResolver The conflict resolver.
-     */
-    public WorkingMemoryImpl(RuleBaseImpl ruleBase,
-                             ConflictResolver conflictResolver)
-    {
         this.ruleBase = ruleBase;
-        this.joinMemories = new HashMap( );
-        this.objects = new HashMap( );
-        this.applicationData = new HashMap( );
-
-        this.agenda = new Agenda( this, conflictResolver );
-        synchronized ( getClass( ) )
-        {
-            if ( factHandleFactory == null )
-            {
-                initializeFactHandleFactory( );
-            }
-        }
+        this.agenda = new Agenda( this, ruleBase.getConflictResolver() );
     }
 
     // ------------------------------------------------------------
@@ -174,57 +148,6 @@ class WorkingMemoryImpl implements WorkingMemory
         return Collections.unmodifiableList( listeners );
     }
 
-    protected void initializeFactHandleFactory()
-    {
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        Class jsrHandleFactoryClass = null;
-
-        if ( cl != null )
-        {
-            try
-            {
-                jsrHandleFactoryClass = cl
-                                          .loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
-
-                cl.loadClass( JSR_HANDLE_CLASS );
-            }
-            catch ( ClassNotFoundException e )
-            {
-                jsrHandleFactoryClass = null;
-                // swallow
-            }
-        }
-
-        if ( jsrHandleFactoryClass == null )
-        {
-            cl = getClass( ).getClassLoader( );
-
-            try
-            {
-                jsrHandleFactoryClass = cl
-                                          .loadClass( JSR_FACT_HANDLE_FACTORY_NAME );
-
-                cl.loadClass( JSR_HANDLE_CLASS );
-            }
-            catch ( ClassNotFoundException e2 )
-            {
-                jsrHandleFactoryClass = null;
-                // swallow
-            }
-        }
-
-        try
-        {
-            factHandleFactory = ( FactHandleFactory ) jsrHandleFactoryClass
-                                                                           .newInstance( );
-        }
-        catch ( Exception e2 )
-        {
-            factHandleFactory = new DefaultFactHandleFactory( );
-        }
-    }
-
     /**
      * Create a new <code>FactHandle</code>.
      *
@@ -232,10 +155,7 @@ class WorkingMemoryImpl implements WorkingMemory
      */
     protected FactHandle newFactHandle()
     {
-        synchronized ( getClass( ) )
-        {
-            return factHandleFactory.newFactHandle( );
-        }
+        return this.ruleBase.getFactHandleFactory().newFactHandle( );
     }
 
     /**

@@ -20,13 +20,13 @@ public class TerminalNodeTest extends DroolsTestCase
             {
                 return agendas[0];
             }
-        };       
-        
+        };
+
         final InstrumentedAgenda agenda = new InstrumentedAgenda(
                                                                   memory,
                                                                   DefaultConflictResolver
                                                                                          .getInstance( ) );
-        agendas[0] = agenda;         
+        agendas[0] = agenda;
 
         Rule rule = new Rule( "test-rule" );
 
@@ -40,8 +40,7 @@ public class TerminalNodeTest extends DroolsTestCase
 
         TerminalNode node = new TerminalNode( new MockTupleSource( ), rule );
 
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ),
-                                              new DefaultConflictResolver( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
         ReteTuple tuple = new ReteTuple( ruleBase.newWorkingMemory( ), rule );
 

@@ -2,23 +2,18 @@ package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
-import org.drools.conflict.DefaultConflictResolver;
+import org.drools.WorkingMemory;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.MockObjectType;
-import org.drools.WorkingMemory;
 
 public class AgendaTest extends DroolsTestCase
 {
     public void testAddToAgenda() throws Exception
     {
-        RuleBase ruleBase = new RuleBaseImpl(
-                                              new Rete( ),
-                                              DefaultConflictResolver
-                                                                     .getInstance( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
 
-        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase
-                                                                        .newWorkingMemory( );
+        WorkingMemoryImpl workingMemory = ( WorkingMemoryImpl ) ruleBase.newWorkingMemory();
         final Agenda agenda = workingMemory.getAgenda( );
 
         Rule rule = new Rule( "test-rule" );

@@ -1,12 +1,10 @@
 package org.drools.reteoo;
 
 import org.drools.RuleBase;
-import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Condition;
-import org.drools.spi.ConflictResolver;
 import org.drools.spi.ObjectType;
 
 /**
@@ -22,12 +20,9 @@ public class HelloWorldBuilder
 
     Rule[]           rules;
 
-    ConflictResolver conflictResolver;
-
     public HelloWorldBuilder(RuleSet ruleSet)
     {
         this.rete = new Rete( );
-        this.conflictResolver = DefaultConflictResolver.getInstance( );
         this.rules = ruleSet.getRules( );
     }
 
@@ -61,7 +56,7 @@ public class HelloWorldBuilder
                 }
             }
         }
-        RuleBase ruleBase = new RuleBaseImpl( this.rete, this.conflictResolver );
+        RuleBase ruleBase = new RuleBaseImpl( this.rete );
         return ruleBase;
     }
 }
