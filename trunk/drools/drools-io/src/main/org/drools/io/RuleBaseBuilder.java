@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.9 2004-12-04 07:15:50 simon Exp $
+ * $Id: RuleBaseBuilder.java,v 1.10 2004-12-04 07:29:57 simon Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -64,8 +64,16 @@ import java.net.URL;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public class RuleBaseBuilder
+public final class RuleBaseBuilder
 {
+    /**
+     * Default constructor - marked private to prevent instantiation.
+     */
+    private RuleBaseBuilder( )
+    {
+        throw new UnsupportedOperationException( );
+    }
+
     /**
      * Builds a RuleBase from a URL using the default ConflictResolver
      *
