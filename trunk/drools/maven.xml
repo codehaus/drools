@@ -6,6 +6,7 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
+    <!-- adding comment to test damagecontrol.  please ignore -->
     <goal name="default">
       <attainGoal name="multiproject:install"/>
     </goal>
