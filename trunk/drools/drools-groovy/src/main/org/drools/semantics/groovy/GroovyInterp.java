@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.3 2004-12-29 16:13:08 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -156,11 +156,10 @@ public class GroovyInterp implements Serializable
      *
      * @return The dictionary
      */
-    protected Binding setUpDictionary(Tuple tuple)
+    protected Binding setUpDictionary(Tuple tuple, Iterator declIter)
     {
         Binding dict = new Binding( );
-        Declaration eachDecl;
-        Iterator declIter = this.rule.getParameterDeclarations( ).iterator( );
+        Declaration eachDecl;         
         while ( declIter.hasNext( ) )
         {
             eachDecl = ( Declaration ) declIter.next( );
