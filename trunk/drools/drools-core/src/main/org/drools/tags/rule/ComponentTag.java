@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConsequenceTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ $Id: ComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,31 +46,29 @@ package org.drools.tags.rule;
  
  */
 
-import org.drools.rule.Rule;
-import org.drools.spi.Consequence;
-
-import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.beanutils.ConvertingWrapDynaBean;
+import org.apache.commons.jelly.DynaBeanTagSupport;
 import org.apache.commons.jelly.JellyException;
 
-/** Construct a <code>Consequence</code> for a <code>Rule</code>.
+/** Base for dynamic semantic component tags.
  *
- *  @see Consequence
+ *  @see SemanticsTagLibrary
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConsequenceTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
+ *  @version $Id: ComponentTag.java,v 1.1 2002-09-27 20:55:32 bob Exp $
  */
-public class ConsequenceTag extends RuleTagSupport implements ConsequenceReceptor
+abstract class ComponentTag extends DynaBeanTagSupport
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The consequence. */
-    private Consequence consequence;
+    /** Class of the component. */
+    private Class componentClass;
 
-    /** The variable. */
-    private String var;
+    /** The component. */
+    private Object component;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -78,100 +76,71 @@ public class ConsequenceTag extends RuleTagSupport implements ConsequenceRecepto
 
     /** Construct.
      */
-    public ConsequenceTag()
+    ComponentTag()
     {
-        this.consequence = null;
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the <code>Consequence</code>.
+    /** Set the component class.
      *
-     *  @param consequence The consequence.
+     *  @param componentClass The component class.
      */
-    public void setConsequence(Consequence consequence)
+    void setComponentClass(Class componentClass)
     {
-        this.consequence = consequence;
+        this.componentClass = componentClass;
     }
 
-    /** Retrieve the <code>Consequence</code>.
+    /** Retrieve the component class.
      *
-     *  @return The consequence.
+     *  @return The component class.
      */
-    public Consequence getConsequence()
+    Class getComponentClass()
     {
-        return this.consequence;
+        return this.componentClass;
     }
 
-    /** Set the variable in which to store the <code>Consequence</code>.
+    /** Retrieve the component.
      *
-     *  @param var The variable name.
+     *  @return The component.
      */
-    public void setVar(String var)
+    protected Object getComponent()
     {
-        this.var = var;
+        return this.component;
     }
-
-    /** Retrieve the variable in which to store the <code>Consequence</code>.
-     *
-     *  @return The variable name.
-     */
-    public String getVar()
-    {
-        return this.var;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.drools.tags.rule.ConsequenceReceptor
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Receive a <code>Consequence</code>.
-     *
-     *  @param consequence The consequence.
-     */
-    public void receiveConsequence(Consequence consequence)
-    {
-        setConsequence( consequence );
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.apache.commons.jelly.Tag
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
-    /** Perform this tag.
+    /** Set an attribute on this tag.
      *
-     *  @param output The output sink.
+     *  @param name The attribute name.
+     *  @param value The value.
      *
      *  @throws Exception If an error occurs while attempting
-     *          to perform this tag.
+     *          to set the attribute value.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void setAttribute(String name,
+                             Object value) throws Exception
     {
-        Rule rule = getRule();
+        super.setAttribute( name,
+                            value );
+    }
 
-        if ( rule == null )
+    /** Hook before attributes are set for initialization.
+     *
+     *  @throws Exception If an error occurs.
+     */
+    public void beforeSetAttributes() throws Exception
+    {
+        try
         {
-            throw new JellyException( "No rule available" );
+            this.component = getComponentClass().newInstance();
+            setDynaBean( new ConvertingWrapDynaBean( this.component ) );
         }
-
-        invokeBody( output );
-
-        if ( this.consequence == null )
+        catch (Exception e)
         {
-            throw new JellyException( "Consequence expected" );
+            throw new JellyException( "Unable to instantiate: " + getComponentClass().getName() );
         }
-
-        if ( this.var != null )
-        {
-            getContext().setVariable( this.var,
-                                      this.consequence );
-        }
-
-        getContext().setVariable( "org.drools.consequence",
-                                  this.consequence );
-
-        rule.setConsequence( this.consequence );
     }
 }

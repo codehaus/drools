@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConsequenceTag.java,v 1.3 2002-08-25 22:22:42 bob Exp $
+ $Id: ConsequenceTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,9 +58,9 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConsequenceTag.java,v 1.3 2002-08-25 22:22:42 bob Exp $
+ *  @version $Id: ConsequenceTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
  */
-public class ConsequenceTag extends RuleTagSupport
+public class ConsequenceTag extends RuleTagSupport implements ConsequenceReceptor
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -121,6 +121,19 @@ public class ConsequenceTag extends RuleTagSupport
     public String getVar()
     {
         return this.var;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.tags.rule.ConsequenceReceptor
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Receive a <code>Consequence</code>.
+     *
+     *  @param consequence The consequence.
+     */
+    public void receiveConsequence(Consequence consequence)
+    {
+        setConsequence( consequence );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

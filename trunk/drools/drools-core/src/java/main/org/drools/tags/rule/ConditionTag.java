@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: ConditionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
+ $Id: ConditionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,9 +58,9 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ConditionTag.java,v 1.3 2002-08-19 21:15:42 bob Exp $
+ *  @version $Id: ConditionTag.java,v 1.4 2002-09-27 20:55:32 bob Exp $
  */
-public class ConditionTag extends RuleTagSupport
+public class ConditionTag extends RuleTagSupport implements ConditionReceptor
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -91,7 +91,7 @@ public class ConditionTag extends RuleTagSupport
      *
      *  @param condition The condition.
      */
-    protected void setCondition(Condition condition)
+    public void setCondition(Condition condition)
     {
         this.condition = condition;
     }
@@ -121,6 +121,19 @@ public class ConditionTag extends RuleTagSupport
     public String getVar()
     {
         return this.var;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.tags.rule.ConditionReceptor
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Receive a <code>Condition</code>.
+     *
+     *  @param condition The condition.
+     */
+    public void receiveCondition(Condition condition)
+    {
+        setCondition( condition );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

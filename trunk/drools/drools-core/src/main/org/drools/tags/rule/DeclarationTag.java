@@ -1,7 +1,7 @@
 package org.drools.tags.rule;
 
 /*
- $Id: DeclarationTag.java,v 1.4 2002-08-20 05:06:24 bob Exp $
+ $Id: DeclarationTag.java,v 1.5 2002-09-27 20:55:32 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -60,9 +60,9 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DeclarationTag.java,v 1.4 2002-08-20 05:06:24 bob Exp $
+ *  @version $Id: DeclarationTag.java,v 1.5 2002-09-27 20:55:32 bob Exp $
  */
-public class DeclarationTag extends RuleTagSupport
+public class DeclarationTag extends RuleTagSupport implements ObjectTypeReceptor
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -106,11 +106,11 @@ public class DeclarationTag extends RuleTagSupport
         return this.identifier;
     }
 
-    /** Set the <code>ObjectType</code>
+    /** Set the <code>ObjectType</code>.
      *
      *  @param objectType The object type.
      */
-    protected void setObjectType(ObjectType objectType)
+    public void setObjectType(ObjectType objectType)
     {
         this.objectType = objectType;
     }
@@ -166,6 +166,19 @@ public class DeclarationTag extends RuleTagSupport
                                             getIdentifier() );
 
         return decl;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.drools.tags.rule.ObjectTypeReceptor
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Receive the <code>ObjectType</code>.
+     *
+     *  @param objectType The object type.
+     */
+    public void receiveObjectType(ObjectType objectType)
+    {
+        setObjectType( objectType );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
