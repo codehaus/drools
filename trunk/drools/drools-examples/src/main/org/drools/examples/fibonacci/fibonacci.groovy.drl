@@ -4,9 +4,13 @@
           xmlns="http://drools.org/rules"
           xmlns:groovy="http://drools.org/semantics/groovy">
 
+   <imports>
+     <groovy:import>org.drools.examples.fibonacci.Fibonacci</groovy:import>
+   </imports>
+
   <rule name="Bootstrap 1"   salience="20">
     <parameter identifier="f">
-      <class>org.drools.examples.fibonacci.Fibonacci</class>
+      <class>Fibonacci</class>
     </parameter>
     <groovy:condition>f.getSequence() == 1</groovy:condition>
     <groovy:condition>f.getValue() == -1</groovy:condition>
@@ -19,7 +23,7 @@
 
   <rule name="Bootstrap 2">
     <parameter identifier="f">
-      <class>org.drools.examples.fibonacci.Fibonacci</class>
+      <class>Fibonacci</class>
     </parameter>
     <groovy:condition>f.getSequence() == 2</groovy:condition>
     <groovy:condition>f.getValue() == -1</groovy:condition>
@@ -32,7 +36,7 @@
 
   <rule name="Recurse" salience="10">
     <parameter identifier="f">
-      <class>org.drools.examples.fibonacci.Fibonacci</class>
+      <class>Fibonacci</class>
     </parameter>
     <groovy:condition>f.getValue() == -1</groovy:condition>
     <groovy:consequence>
@@ -43,13 +47,13 @@
 
   <rule name="Calculate">
     <parameter identifier="f1">
-      <class>org.drools.examples.fibonacci.Fibonacci</class>
+      <class>Fibonacci</class>
     </parameter>
     <parameter identifier="f2">
-      <class>org.drools.examples.fibonacci.Fibonacci</class>
+      <class>Fibonacci</class>
     </parameter>
     <parameter identifier="f3">
-      <class>org.drools.examples.fibonacci.Fibonacci</class>
+      <class>Fibonacci</class>
     </parameter>
     <groovy:condition>f2.getSequence() == (f1.getSequence() + 1)</groovy:condition>
     <groovy:condition>f3.getSequence() == (f2.getSequence() + 1)</groovy:condition>

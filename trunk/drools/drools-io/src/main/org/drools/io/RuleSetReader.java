@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.24 2004-10-25 21:34:45 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.25 2004-10-26 09:22:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -91,7 +91,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.24 2004-10-25 21:34:45 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.25 2004-10-26 09:22:28 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -1030,7 +1030,7 @@ public class RuleSetReader extends DefaultHandler
 
         try
         {
-            ObjectType objectType = factory.newObjectType( config );
+            ObjectType objectType = factory.newObjectType( config, this.imports );
 
             this.declaration.setObjectType( objectType );
         }
