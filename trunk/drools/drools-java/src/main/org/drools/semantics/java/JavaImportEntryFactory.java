@@ -9,13 +9,6 @@ import org.drools.spi.RuleBaseContext;
 
 public class JavaImportEntryFactory implements ImportEntryFactory
 {
-    private static final JavaImportEntryFactory INSTANCE = new JavaImportEntryFactory( );
-
-    public static JavaImportEntryFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public ImportEntry newImportEntry(RuleSet ruleSet,
                                       RuleBaseContext context,
                                       Configuration config) throws FactoryException

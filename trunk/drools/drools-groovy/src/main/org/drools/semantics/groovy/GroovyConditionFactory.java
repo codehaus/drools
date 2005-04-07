@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyConditionFactory.java,v 1.4 2005-01-23 18:16:18 mproctor Exp $
+ * $Id: GroovyConditionFactory.java,v 1.5 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,13 +52,6 @@ public class GroovyConditionFactory
     implements
     ConditionFactory
 {
-    private static final GroovyConditionFactory INSTANCE = new GroovyConditionFactory( );
-
-    public static GroovyConditionFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Condition[] newCondition( Rule rule,
                                    RuleBaseContext context,
                                    Configuration config ) throws FactoryException

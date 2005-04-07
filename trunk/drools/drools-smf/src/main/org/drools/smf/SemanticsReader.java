@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReader.java,v 1.9 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: SemanticsReader.java,v 1.10 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,7 +67,7 @@ import java.util.Properties;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: SemanticsReader.java,v 1.9 2004-12-14 21:00:29 mproctor Exp $
+ * @version $Id: SemanticsReader.java,v 1.10 2005-04-07 17:42:14 mproctor Exp $
  */
 public class SemanticsReader
 {
@@ -108,6 +108,11 @@ public class SemanticsReader
     // Instance methods
     // ----------------------------------------------------------------------
 
+    public SemanticModule read(URL url) throws IOException, SemanticsReaderException
+    {
+		return read(url, Thread.currentThread( ).getContextClassLoader( ));
+    }
+	
     /**
      * Read a semantic module descriptor from a <code>URL</code>.
      * 
@@ -117,14 +122,14 @@ public class SemanticsReader
      * @throws IOException
      * @throws SemanticsReaderException
      */
-    public SemanticModule read(URL url) throws IOException,
+    public SemanticModule read(URL url, ClassLoader cl) throws IOException,
                                        SemanticsReaderException
     {
         InputStream in = url.openStream( );
 
         try
         {
-            return read( in );
+            return read( in, cl );
         }
         finally
         {
@@ -145,16 +150,8 @@ public class SemanticsReader
      * @throws SemanticsReaderException
      *             If an error occurs while loading the module.
      */
-    public SemanticModule read(InputStream in) throws IOException,
-                                              SemanticsReaderException
+    public SemanticModule read(InputStream in, ClassLoader cl) throws IOException, SemanticsReaderException
     {
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        if ( cl == null )
-        {
-            cl = SemanticsReader.class.getClassLoader( );
-        }
-
         Properties props = new Properties( );
 
         props.load( in );

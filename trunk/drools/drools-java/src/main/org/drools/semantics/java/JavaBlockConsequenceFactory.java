@@ -11,13 +11,6 @@ public class JavaBlockConsequenceFactory
     implements
     ConsequenceFactory
 {
-    private static final JavaBlockConsequenceFactory INSTANCE = new JavaBlockConsequenceFactory( );
-
-    public static JavaBlockConsequenceFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Consequence newConsequence( Rule rule,
                                        RuleBaseContext context,
                                        Configuration config) throws FactoryException

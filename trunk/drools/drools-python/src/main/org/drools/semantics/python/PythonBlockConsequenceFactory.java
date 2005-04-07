@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
-* $Id: PythonBlockConsequenceFactory.java,v 1.3 2004-12-14 21:00:29 mproctor Exp $
+* $Id: PythonBlockConsequenceFactory.java,v 1.4 2005-04-07 17:42:14 mproctor Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -52,13 +52,6 @@ public class PythonBlockConsequenceFactory
     implements
     ConsequenceFactory
 {
-    private static final PythonBlockConsequenceFactory INSTANCE = new PythonBlockConsequenceFactory( );
-
-    public static PythonBlockConsequenceFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Consequence newConsequence( Rule rule,
                                        RuleBaseContext context,
                                        Configuration config ) throws FactoryException

@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectTypeFactory.java,v 1.7 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: ClassObjectTypeFactory.java,v 1.8 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -87,7 +87,21 @@ public class ClassObjectTypeFactory
                 importSet.add( importEntry.getImportEntry( ) );
             }
         }
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+
+        ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
+        if ( cl == null )
+        {
+            cl = Thread.currentThread( ).getContextClassLoader( );
+            context.put( "smf-classLoader",
+                         cl );
+        }
+
+        if ( cl == null )
+        {
+            cl = getClass( ).getClassLoader( );
+            context.put( "smf-classLoader",
+                         cl );
+        }
 
         Class clazz = null;
         /* first try loading className */

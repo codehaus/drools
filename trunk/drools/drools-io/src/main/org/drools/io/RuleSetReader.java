@@ -1,7 +1,8 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.47 2005-03-29 00:16:58 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.48 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.48 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -76,10 +77,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <code>RuleSet</code> loader.
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: RuleSetReader.java,v 1.47 2005-03-29 00:16:58 mproctor Exp $
+ *
+ * @version $Id: RuleSetReader.java,v 1.48 2005-04-07 17:42:14 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -92,16 +93,16 @@ public class RuleSetReader extends DefaultHandler
 
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";    
+    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";
 
     // ----------------------------------------------------------------------
     // Instance members
     // ----------------------------------------------------------------------
     /** SAX parser. */
     private SAXParser           parser;
-    
+
     /** isValidating */
-    private boolean             isValidating = true;
+    private boolean             isValidating         = true;
 
     /** Locator for errors. */
     private Locator             locator;
@@ -138,7 +139,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * <p>
      * Uses the default JAXP SAX parser and the default classpath-based
      * <code>DefaultSemanticModule</code>.
@@ -177,11 +178,11 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * <p>
      * Uses the default classpath-based <code>DefaultSemanticModule</code>.
      * </p>
-     * 
+     *
      * @param parser
      *            The SAX parser.
      */
@@ -193,7 +194,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param repo
      *            The semantics repository.
      */
@@ -205,7 +206,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param factoryContext
      */
     public RuleSetReader(RuleBaseContext factoryContext)
@@ -216,7 +217,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param repo
      *            The semantics repository.
      * @param parser
@@ -231,7 +232,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param repo
      *            The semantics repository.
      */
@@ -245,9 +246,9 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param parser
-     * 
+     *
      * @param repo
      *            The semantics repository.
      */
@@ -261,7 +262,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param parser
      * @param context
      */
@@ -275,7 +276,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     * 
+     *
      * @param repo
      *            The semantics repository.
      * @param parser
@@ -296,10 +297,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>URL</code>.
-     * 
+     *
      * @param url
      *            The rule-set URL.
-     * 
+     *
      * @return The rule-set.
      */
     public RuleSet read(URL url) throws SAXException,
@@ -310,10 +311,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>Reader</code>.
-     * 
+     *
      * @param reader
      *            The reader containing the rule-set.
-     * 
+     *
      * @return The rule-set.
      */
     public RuleSet read(Reader reader) throws SAXException,
@@ -324,10 +325,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputStream</code>.
-     * 
+     *
      * @param inputStream
      *            The input-stream containing the rule-set.
-     * 
+     *
      * @return The rule-set.
      */
     public RuleSet read(InputStream inputStream) throws SAXException,
@@ -338,10 +339,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a URL.
-     * 
+     *
      * @param url
      *            The rule-set URL.
-     * 
+     *
      * @return The rule-set.
      */
     public RuleSet read(String url) throws SAXException,
@@ -352,10 +353,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputSource</code>.
-     * 
+     *
      * @param in
      *            The rule-set input-source.
-     * 
+     *
      * @return The rule-set.
      */
     public RuleSet read(InputSource in) throws SAXException,
@@ -366,15 +367,15 @@ public class RuleSetReader extends DefaultHandler
         {
             SAXParserFactory factory = SAXParserFactory.newInstance( );
 
-            factory.setNamespaceAware( true );                       
-            
+            factory.setNamespaceAware( true );
+
             String isValidatingString = System.getProperty( "drools.schema.validating" );
             if ( System.getProperty( "drools.schema.validating" ) != null )
             {
-                this.isValidating = Boolean.getBoolean("drools.schema.validating");
+                this.isValidating = Boolean.getBoolean( "drools.schema.validating" );
             }
-            
-            if (this.isValidating == true)
+
+            if ( this.isValidating == true )
             {
                 factory.setValidating( true );
                 try
@@ -384,8 +385,8 @@ public class RuleSetReader extends DefaultHandler
                 catch ( ParserConfigurationException e )
                 {
                     throw new RuntimeException( e.getMessage( ) );
-                }      
-                
+                }
+
                 try
                 {
                     localParser.setProperty( JAXP_SCHEMA_LANGUAGE,
@@ -395,7 +396,7 @@ public class RuleSetReader extends DefaultHandler
                 {
                     System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
                     localParser = null;
-                }  
+                }
             }
 
             if ( localParser == null )
@@ -404,15 +405,15 @@ public class RuleSetReader extends DefaultHandler
                 try
                 {
                     this.isValidating = false;
-                    factory.setValidating( this.isValidating ); 
-                    localParser= factory.newSAXParser( );
+                    factory.setValidating( this.isValidating );
+                    localParser = factory.newSAXParser( );
                 }
                 catch ( ParserConfigurationException e )
                 {
                     throw new RuntimeException( e.getMessage( ) );
-                }     
+                }
             }
-            
+
         }
         else
         {
@@ -472,7 +473,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Get the <code>Locator</code>.
-     * 
+     *
      * @return The locator.
      */
     public Locator getLocator()
@@ -481,7 +482,7 @@ public class RuleSetReader extends DefaultHandler
     }
 
     public void startDocument()
-    {        
+    {
         this.isValidating = true;
         this.ruleSet = null;
         this.current = null;
@@ -494,6 +495,14 @@ public class RuleSetReader extends DefaultHandler
         {
             this.factoryContext = new RuleBaseContext( );
         }
+
+        // now assign the smf classloader so smf implementations can access it
+        ClassLoader classLoader = (ClassLoader) this.factoryContext.get( "smf-classLoader" );
+        if ( classLoader == null )
+        {
+            this.factoryContext.put( "smf-classLoader",
+                                     repo.getSemanticModuleClassLoader( ) );
+        }
     }
 
     /**
@@ -503,7 +512,7 @@ public class RuleSetReader extends DefaultHandler
      * @param attrs
      * @throws SAXException
      * @see org.xml.sax.ContentHandler
-     * 
+     *
      * @todo: better way to manage unhandled elements
      */
     public void startElement(String uri,
@@ -687,7 +696,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Start a configuration node.
-     * 
+     *
      * @param name
      *            Tag name.
      * @param attrs
@@ -739,7 +748,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * End a configuration node.
-     * 
+     *
      * @return The configuration.
      */
     protected Configuration endConfiguration()
@@ -772,8 +781,9 @@ public class RuleSetReader extends DefaultHandler
     }
 
     /**
-     * Returned Handler can be null.
-     * Calling method decides whether to throw an exception or not.
+     * Returned Handler can be null. Calling method decides whether to throw an
+     * exception or not.
+     *
      * @param uri
      * @param localName
      * @return
@@ -913,8 +923,8 @@ public class RuleSetReader extends DefaultHandler
         catch ( Exception e )
         {
         }
-        
-        cl = ClassLoader.getSystemClassLoader();
+
+        cl = ClassLoader.getSystemClassLoader( );
 
         // Try looking in META-INF
         try
@@ -950,7 +960,7 @@ public class RuleSetReader extends DefaultHandler
         }
         catch ( Exception e )
         {
-        }        
+        }
         return null;
     }
 

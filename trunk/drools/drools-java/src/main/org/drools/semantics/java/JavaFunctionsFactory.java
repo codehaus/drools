@@ -17,13 +17,6 @@ public class JavaFunctionsFactory
     FunctionsFactory
 {
 
-    private static final FunctionsFactory INSTANCE = new JavaFunctionsFactory( );
-
-    public static FunctionsFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Functions newFunctions(RuleSet ruleSet,
                                   RuleBaseContext context,
                                   Configuration config) throws FactoryException

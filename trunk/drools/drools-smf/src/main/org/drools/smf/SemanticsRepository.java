@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsRepository.java,v 1.2 2004-09-17 00:32:24 mproctor Exp $
+ * $Id: SemanticsRepository.java,v 1.3 2005-04-07 17:42:14 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -64,4 +64,6 @@ public interface SemanticsRepository
      * @return All semantic modules.
      */
     SemanticModule[] getSemanticModules();
+	
+	ClassLoader getSemanticModuleClassLoader(); 
 }

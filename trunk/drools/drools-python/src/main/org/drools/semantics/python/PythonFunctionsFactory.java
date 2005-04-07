@@ -10,13 +10,6 @@ import org.drools.spi.RuleBaseContext;
 public class PythonFunctionsFactory implements FunctionsFactory
 {
 
-    private static final FunctionsFactory INSTANCE = new PythonFunctionsFactory( );
-
-    public static FunctionsFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Functions newFunctions(RuleSet ruleSet,
                                   RuleBaseContext context,
                                   Configuration config) throws FactoryException
