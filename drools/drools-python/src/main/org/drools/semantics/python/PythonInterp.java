@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.7 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: PythonInterp.java,v 1.8 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,6 +55,7 @@ import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.DefaultKnowledgeHelper;
 import org.drools.spi.Functions;
 import org.drools.spi.ObjectType;
+import org.drools.spi.RuleBaseContext;
 import org.drools.spi.Tuple;
 import org.python.core.Py;
 import org.python.core.PyCode;
@@ -204,14 +205,16 @@ public class PythonInterp
      * 
      * <pre>
      * 
-     * 
-     *   |   &lt;python:consequence&gt;
-     *   |       if hello == 'Hello':
-     *   |           print &quot;Hi&quot;
-     *   |       else:
-     *   |           print &quot;Bye&quot;
-     *   |   &lt;/python:consequence&gt;
-     * 
+     *  
+     *  
+     *    |   &lt;python:consequence&gt;
+     *    |       if hello == 'Hello':
+     *    |           print &quot;Hi&quot;
+     *    |       else:
+     *    |           print &quot;Bye&quot;
+     *    |   &lt;/python:consequence&gt;
+     *  
+     *   
      *  
      * </pre>
      * 
@@ -219,14 +222,16 @@ public class PythonInterp
      * 
      * <pre>
      * 
-     * 
-     *   |   &lt;python:consequence&gt;
-     *   |if hello == 'Hello':
-     *   |    print &quot;Hi&quot;
-     *   |else:
-     *   |    print &quot;Bye&quot;
-     *   |   &lt;/python:consequence&gt;
-     * 
+     *  
+     *  
+     *    |   &lt;python:consequence&gt;
+     *    |if hello == 'Hello':
+     *    |    print &quot;Hi&quot;
+     *    |else:
+     *    |    print &quot;Bye&quot;
+     *    |   &lt;/python:consequence&gt;
+     *  
+     *   
      *  
      * </pre>
      * 
@@ -392,7 +397,8 @@ public class PythonInterp
      * 
      * @return The dictionary
      */
-    protected PyDictionary setUpDictionary(Tuple tuple, Iterator declIter) throws Exception
+    protected PyDictionary setUpDictionary(Tuple tuple,
+                                           Iterator declIter) throws Exception
     {
         Declaration eachDecl;
 
@@ -407,11 +413,20 @@ public class PythonInterp
         // dict.setdefault( new PyString( "q" ), qFunc ); //add tenerary
         // function
 
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+        RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
+        ClassLoader cl = (ClassLoader) ruleBaseContext.get( "smf-classLoader" );
+        if ( cl == null )
+        {
+            cl = Thread.currentThread( ).getContextClassLoader( );
+            ruleBaseContext.put( "smf-classLoader",
+                                 cl );
+        }
 
         if ( cl == null )
         {
-            cl = PythonInterp.class.getClassLoader( );
+            cl = getClass( ).getClassLoader( );
+            ruleBaseContext.put( "smf-classLoader",
+                                 cl );
         }
 
         while ( declIter.hasNext( ) )
@@ -453,7 +468,7 @@ public class PythonInterp
 
             dict.setdefault( new PyString( "drools".intern( ) ),
                              Py.java2py( new DefaultKnowledgeHelper( this.rule,
-                                                              tuple ) ) );
+                                                                     tuple ) ) );
 
             Map appDataMap = workingMemory.getApplicationDataMap( );
 

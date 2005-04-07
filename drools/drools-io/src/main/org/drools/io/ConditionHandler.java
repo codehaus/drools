@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConditionHandler.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: ConditionHandler.java,v 1.6 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,6 +39,9 @@ package org.drools.io;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.HashSet;
 
 import org.drools.rule.Declaration;
@@ -112,7 +115,7 @@ class ConditionHandler extends BaseAbstractHandler
             }
         }
         catch ( FactoryException e )
-        {
+        {		
             throw new SAXParseException( "error constructing condition",
                                          this.ruleSetReader.getLocator( ),
                                          e );

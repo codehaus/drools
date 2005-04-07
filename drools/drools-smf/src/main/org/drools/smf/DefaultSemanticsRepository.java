@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DefaultSemanticsRepository.java,v 1.9 2005-03-29 00:16:58 mproctor Exp $
+ * $Id: DefaultSemanticsRepository.java,v 1.10 2005-04-07 17:42:14 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -69,17 +69,21 @@ import java.util.Set;
  * @version $Id: DefaultSemanticsRepository.java,v 1.4 2004/06/22 17:17:27 bob
  *          Exp $
  */
-public final class DefaultSemanticsRepository implements SemanticsRepository
+public final class DefaultSemanticsRepository
+    implements
+    SemanticsRepository
 {
     // ----------------------------------------------------------------------
-    //     Class members
+    // Class members
     // ----------------------------------------------------------------------
 
     /** Singleton instance, lazily initialized. */
     private static SemanticsRepository INSTANCE;
 
+    private ClassLoader                classLoader;
+
     // ----------------------------------------------------------------------
-    //     Class methods
+    // Class methods
     // ----------------------------------------------------------------------
 
     /**
@@ -87,10 +91,12 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
      *
      * @return The singleton instance.
      *
-     * @throws Exception If an error occurs while performing discovery and
-     *         loading of the semantic modules.
+     * @throws Exception
+     *             If an error occurs while performing discovery and loading of
+     *             the semantic modules.
      */
-    public static synchronized SemanticsRepository getInstance() throws IOException, SemanticsReaderException
+    public static synchronized SemanticsRepository getInstance() throws IOException,
+                                                                SemanticsReaderException
     {
         if ( INSTANCE == null )
         {
@@ -101,7 +107,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
     }
 
     // ----------------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ----------------------------------------------------------------------
 
     private Set                       loadedSemantics;
@@ -110,16 +116,18 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
     private SimpleSemanticsRepository repository;
 
     // ----------------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ----------------------------------------------------------------------
 
     /**
      * Construct.
      *
-     * @throws Exception If an error occurs while performing discovery and
-     *         loading of the semantic modules.
+     * @throws Exception
+     *             If an error occurs while performing discovery and loading of
+     *             the semantic modules.
      */
-    private DefaultSemanticsRepository() throws IOException, SemanticsReaderException
+    private DefaultSemanticsRepository() throws IOException,
+                                        SemanticsReaderException
     {
         this.loadedSemantics = new HashSet( );
         this.repository = new SimpleSemanticsRepository( );
@@ -127,16 +135,18 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
     }
 
     // ----------------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ----------------------------------------------------------------------
 
     /**
      * Initialize and perform discovery.
      *
-     * @throws Exception If an error occurs while performing discovery and
-     *         loading of the semantic modules.
+     * @throws Exception
+     *             If an error occurs while performing discovery and loading of
+     *             the semantic modules.
      */
-    protected void init() throws IOException, SemanticsReaderException
+    protected void init() throws IOException,
+                         SemanticsReaderException
     {
         String droolsConfigProp = System.getProperty( "drools.conf" );
 
@@ -150,35 +160,35 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         if ( cl == null )
         {
             cl = getClass( ).getClassLoader( );
-        }        
+        }
 
         Enumeration configUrls = cl.getResources( "META-INF/drools.conf" );
-        
-        if (! configUrls.hasMoreElements( ) )
-        {
-        	cl = ClassLoader.getSystemClassLoader();
-        	configUrls = cl.getResources( "META-INF/drools.conf" );
-        }
 
-        while ( configUrls.hasMoreElements( ) )
-        {
-            URL configUrl = ( URL ) configUrls.nextElement( );
-
-            loadConfig( configUrl );
-        }
-    }
-
-    protected void loadConfig(String path) throws IOException, SemanticsReaderException
-    {
-
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        if ( cl == null )
+        if ( !configUrls.hasMoreElements( ) )
         {
             cl = getClass( ).getClassLoader( );
+            configUrls = cl.getResources( "META-INF/drools.conf" );
         }
 
-        URL url = cl.getResource( path );
+        if ( !configUrls.hasMoreElements( ) )
+        {
+            cl = ClassLoader.getSystemClassLoader( );
+            configUrls = cl.getResources( "META-INF/drools.conf" );
+        }
+
+        this.classLoader = cl;
+        while ( configUrls.hasMoreElements( ) )
+        {
+            URL configUrl = (URL) configUrls.nextElement( );
+            loadConfig( configUrl );
+        }
+
+    }
+
+    protected void loadConfig(String path) throws IOException,
+                                          SemanticsReaderException
+    {
+        URL url = this.classLoader.getResource( path );
 
         if ( url == null )
         {
@@ -189,7 +199,8 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         loadConfig( url );
     }
 
-    protected void loadConfig(URL url) throws IOException, SemanticsReaderException
+    protected void loadConfig(URL url) throws IOException,
+                                      SemanticsReaderException
     {
         InputStream config = url.openStream( );
 
@@ -199,7 +210,7 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         {
             String line;
 
-            while ( ( line = in.readLine( ) ) != null )
+            while ( (line = in.readLine( )) != null )
             {
                 line = line.trim( );
 
@@ -217,7 +228,8 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
         }
     }
 
-    protected void loadSemantics(String semanticsName) throws IOException, SemanticsReaderException
+    protected void loadSemantics(String semanticsName) throws IOException,
+                                                      SemanticsReaderException
     {
         if ( this.loadedSemantics.contains( semanticsName ) )
         {
@@ -226,16 +238,9 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
 
         this.loadedSemantics.add( semanticsName );
 
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        if ( cl == null )
-        {
-            cl = getClass( ).getClassLoader( );
-        }
-
         String semanticsFile = "META-INF/" + semanticsName + ".conf";
 
-        URL descriptor = cl.getResource( semanticsFile );
+        URL descriptor = this.classLoader.getResource( semanticsFile );
 
         if ( descriptor == null )
         {
@@ -245,7 +250,8 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
 
         SemanticsReader semanticsReader = new SemanticsReader( );
 
-        SemanticModule module = semanticsReader.read( descriptor );
+        SemanticModule module = semanticsReader.read( descriptor,
+                                                      this.classLoader );
 
         this.repository.registerSemanticModule( module );
     }
@@ -264,5 +270,10 @@ public final class DefaultSemanticsRepository implements SemanticsRepository
     public SemanticModule[] getSemanticModules()
     {
         return this.repository.getSemanticModules( );
+    }
+
+    public ClassLoader getSemanticModuleClassLoader()
+    {
+        return this.classLoader;
     }
 }
