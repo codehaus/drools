@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
-* $Id: PythonConditionFactory.java,v 1.4 2005-01-23 18:16:20 mproctor Exp $
+* $Id: PythonConditionFactory.java,v 1.4.2.1 2005-04-07 17:32:15 mproctor Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -52,14 +52,8 @@ public class PythonConditionFactory
     implements
     ConditionFactory
 {
-    private static final PythonConditionFactory INSTANCE = new PythonConditionFactory( );
 
-    public static PythonConditionFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
-    public Condition[] newCondition( Rule rule,
+	public Condition[] newCondition( Rule rule,
                                    RuleBaseContext context,
                                    Configuration config ) throws FactoryException
     {

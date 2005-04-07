@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.7 2005-02-05 02:06:14 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.7.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,10 +42,10 @@ package org.drools.semantics.java;
  */
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import net.janino.ByteArrayClassLoader;
 import net.janino.Scanner;
+
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.RuleBaseContext;
@@ -66,20 +66,38 @@ class JavaCompiler
         {
             RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
             ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
+
             if ( classLoader == null )
             {
-                classLoader = new ByteArrayClassLoader( Thread.currentThread().getContextClassLoader());
+                ClassLoader cl = (ClassLoader) ruleBaseContext.get( "smf-classLoader" );
+
+                if ( cl == null )
+                {
+                    cl = Thread.currentThread( ).getContextClassLoader( );
+                    ruleBaseContext.put( "smf-classLoader",
+                                         cl );
+                }
+
+                if ( cl == null )
+                {
+                    cl = JavaCompiler.class.getClassLoader( );
+                    ruleBaseContext.put( "smf-classLoader",
+                                         cl );
+                }
+
+                classLoader = new ByteArrayClassLoader( cl );
+
                 ruleBaseContext.put( "java-classLoader",
                                      classLoader );
             }
-            JavaFunctions functions = (JavaFunctions) rule.getRuleSet().getFunctions("java");
-            Class functionsClass = null; 
-            
+            JavaFunctions functions = (JavaFunctions) rule.getRuleSet( ).getFunctions( "java" );
+            Class functionsClass = null;
+
             if ( functions != null )
             {
-                functionsClass = functions.getFunctionsClass();
+                functionsClass = functions.getFunctionsClass( );
             }
-            
+
             return JavaScriptEvaluator.compile( expression,
                                                 className,
                                                 clazz,
@@ -94,8 +112,8 @@ class JavaCompiler
         {
             throw new CompilationException( rule,
                                             originalExpression,
-                                            e.getLocation() != null ? e.getLocation( ).getLineNumber( ) : -1,
-                                            e.getLocation() != null ? e.getLocation( ).getColumnNumber( ) : -1,
+                                            e.getLocation( ) != null ? e.getLocation( ).getLineNumber( ) : -1,
+                                            e.getLocation( ) != null ? e.getLocation( ).getColumnNumber( ) : -1,
                                             e.getMessage( ) );
         }
     }

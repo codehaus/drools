@@ -9,14 +9,6 @@ import org.drools.spi.RuleBaseContext;
 
 public class GroovyFunctionsFactory implements FunctionsFactory
 {
-
-    private static final FunctionsFactory INSTANCE = new GroovyFunctionsFactory( );
-
-    public static FunctionsFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Functions newFunctions(RuleSet ruleSet,
                                   RuleBaseContext context,
                                   Configuration config) throws FactoryException

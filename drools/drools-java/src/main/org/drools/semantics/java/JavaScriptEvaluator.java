@@ -16,7 +16,9 @@ import net.janino.Java;
 import net.janino.Mod;
 import net.janino.Parser;
 import net.janino.Scanner;
+import net.janino.Scanner.StringLiteralToken;
 import net.janino.util.PrimitiveWrapper;
+
 import org.drools.rule.Declaration;
 import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.ObjectType;
@@ -45,6 +47,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                      IOException
     {
         super( classLoader );
+			
         Scanner scanner = new Scanner( null,
                                        new StringReader( code ) );
 

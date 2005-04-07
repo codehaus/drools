@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SimpleSemanticsRepository.java,v 1.2.2.1 2005-03-29 00:04:01 mproctor Exp $
+ * $Id: SimpleSemanticsRepository.java,v 1.2.2.2 2005-04-07 17:32:15 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -56,6 +56,8 @@ public class SimpleSemanticsRepository implements SemanticsRepository
 
     /** Semantic modules, indexed by URI. */
     private Map modules;
+	
+	private ClassLoader classLoader;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -76,6 +78,11 @@ public class SimpleSemanticsRepository implements SemanticsRepository
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.drools.smf.SemanticsRepository
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	
+	void setClassLoader(ClassLoader classLoader) 
+	{
+		this.classLoader = classLoader;
+	}
 
     /**
      * Register a <code>SemanticModule</code> with a URI.
@@ -107,4 +114,9 @@ public class SimpleSemanticsRepository implements SemanticsRepository
     {
         return ( SemanticModule[] ) this.modules.values( ).toArray(SemanticModule.EMPTY_ARRAY );
     }
+	
+	public ClassLoader getSemanticModuleClassLoader() 
+	{
+		return this.classLoader;
+	}	
 }

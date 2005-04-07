@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.7 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,7 +52,9 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
 
-public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
+public class ClassFieldObjectTypeFactory
+    implements
+    ObjectTypeFactory
 {
     private static final ClassFieldObjectTypeFactory INSTANCE = new ClassFieldObjectTypeFactory( );
 
@@ -61,9 +63,9 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType( RuleBaseContext context,
-                                     Configuration config, 
-                                     Set imports ) throws FactoryException
+    public ObjectType newObjectType(RuleBaseContext context,
+                                    Configuration config,
+                                    Set imports) throws FactoryException
     {
         String className = config.getText( );
         String fieldName = config.getAttribute( "field" );
@@ -86,7 +88,7 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
 
         try
         {
-            //get imports
+            // get imports
             Set importSet = new HashSet( );
             if ( imports != null )
             {
@@ -94,11 +96,25 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
                 ImportEntry importEntry;
                 while ( it.hasNext( ) )
                 {
-                    importEntry = ( ImportEntry ) it.next( );
+                    importEntry = (ImportEntry) it.next( );
                     importSet.add( importEntry.getImportEntry( ) );
                 }
             }
-            ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+
+            ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
+            if ( cl == null )
+            {
+                cl = Thread.currentThread( ).getContextClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
+            }
+
+            if ( cl == null )
+            {
+                cl = getClass( ).getClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
+            }
 
             Class clazz = null;
             /* first try loading className */
@@ -112,22 +128,25 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
                 Iterator it = importSet.iterator( );
                 while ( it.hasNext( ) && clazz == null )
                 {
-                    clazz = importClass( cl, ( String ) it.next( ), className.trim( ) ) ;
+                    clazz = importClass( cl,
+                                         (String) it.next( ),
+                                         className.trim( ) );
                 }
             }
-            
+
             /* We still can't find the class so throw an exception */
             if ( clazz == null )
             {
                 throw new FactoryException( "Unable to find class " + className );
             }
 
-            //make sure field getter exists
-            clazz.getMethod(
-                "get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
-                null );
+            // make sure field getter exists
+            clazz.getMethod( "get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
+                             null );
 
-            return new ClassFieldObjectType( clazz, fieldName, fieldValue );
+            return new ClassFieldObjectType( clazz,
+                                             fieldName,
+                                             fieldValue );
         }
         catch ( SecurityException e )
         {
@@ -139,11 +158,13 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         }
     }
 
-    private Class importClass( ClassLoader cl, String importText, String className )
+    private Class importClass(ClassLoader cl,
+                              String importText,
+                              String className)
     {
         String qualifiedClass = null;
         Class clazz = null;
-        
+
         String convertedImportText;
         if ( importText.startsWith( "from " ) )
         {
@@ -153,11 +174,12 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         {
             convertedImportText = importText;
         }
-        
-        //not python
+
+        // not python
         if ( convertedImportText.endsWith( "*" ) )
         {
-            qualifiedClass = convertedImportText.substring( 0, convertedImportText.indexOf( '*' ) ) + className;
+            qualifiedClass = convertedImportText.substring( 0,
+                                                            convertedImportText.indexOf( '*' ) ) + className;
         }
         else if ( convertedImportText.endsWith( className ) )
         {
@@ -178,13 +200,13 @@ public class ClassFieldObjectTypeFactory implements ObjectTypeFactory
         return clazz;
     }
 
-    private String converPythonImport( String packageText )
+    private String converPythonImport(String packageText)
     {
         String fromString = "from ";
         String importString = "import ";
         int fromIndex = packageText.indexOf( fromString );
         int importIndex = packageText.indexOf( importString );
-        return packageText.substring( fromIndex + fromString.length(), importIndex ).trim( ) + "."
-             + packageText.substring( importIndex + importString.length() ).trim( );
+        return packageText.substring( fromIndex + fromString.length( ),
+                                      importIndex ).trim( ) + "." + packageText.substring( importIndex + importString.length( ) ).trim( );
     }
 }

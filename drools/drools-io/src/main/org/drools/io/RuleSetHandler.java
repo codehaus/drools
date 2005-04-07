@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetHandler.java,v 1.1 2004-11-03 22:54:36 mproctor Exp $
+ * $Id: RuleSetHandler.java,v 1.1.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -84,7 +84,7 @@ class RuleSetHandler extends BaseAbstractHandler implements Handler
                             .getLocator( ) );
         }
 
-        RuleSet ruleSet = new RuleSet( ruleSetName.trim( ) );
+        RuleSet ruleSet = new RuleSet( ruleSetName.trim( ), this.ruleSetReader.getFactoryContext( ) );
 
         if ( ruleSetDesc == null || ruleSetDesc.trim( ).equals( "" ) )
         {
