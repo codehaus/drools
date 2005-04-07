@@ -202,7 +202,7 @@
             <include name="**/drools.conf"/>
         </patternset>
         <fileset dir="${basedir}">
-            <include name="target/drools-annotation-${pom.currentVersion}.jar"/>
+            <include name="target/drools-base-${pom.currentVersion}.jar"/>
         </fileset>
       </ant:unjar>
 
@@ -237,7 +237,7 @@
         <fileset dir="target/all-stage/drools-conf" includes="**/drools.conf" />
       </ant:concat>
 
-      <ant:jar destfile="${basedir}/target/drools-all-${pom.currentVersion}.jar" basedir="${basedir}/target/all-stage/drools-all"/>
+      <ant:jar compress="false" destfile="${basedir}/target/drools-all-${pom.currentVersion}.jar" basedir="${basedir}/target/all-stage/drools-all"/>
 
       <ant:delete includeEmptyDirs="true">
         <fileset dir="${basedir}/target/all-stage"/>

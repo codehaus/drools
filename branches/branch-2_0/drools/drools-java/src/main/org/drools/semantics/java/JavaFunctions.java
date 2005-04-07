@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.4 2005-02-05 02:06:14 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.4.2.1 2005-04-07 17:32:15 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,7 +41,6 @@ package org.drools.semantics.java;
  *  
  */
 import java.io.IOException;
-import java.util.HashMap;
 
 import net.janino.ByteArrayClassLoader;
 import net.janino.ClassBodyEvaluator;
@@ -49,6 +48,7 @@ import net.janino.Scanner;
 import net.janino.Java.CompileException;
 import net.janino.Parser.ParseException;
 import net.janino.Scanner.ScanException;
+
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
 import org.drools.spi.RuleBaseContext;
@@ -58,18 +58,18 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.4 2005-02-05 02:06:14 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.4.2.1 2005-04-07 17:32:15 mproctor Exp $
  */
 public class JavaFunctions
     implements
     Functions
 {
 
-    private String text;    
+    private String              text;
 
-    private transient Class functionsClass;
-    
-    private RuleSet ruleSet;
+    private transient Class     functionsClass;
+
+    private RuleSet             ruleSet;
 
     // private
 
@@ -81,30 +81,56 @@ public class JavaFunctions
 
     /**
      * Construct.
+     * 
      * @param classLoader
      * 
-     * @param text The block text.
+     * @param text
+     *            The block text.
      * @throws IOException
      * @throws ScanException
      * @throws ParseException
      * @throws CompileException
      */
-    public JavaFunctions(RuleSet ruleSet, String text) throws ScanException, IOException, CompileException, ParseException
+    public JavaFunctions(RuleSet ruleSet,
+                         String text) throws ScanException,
+                                     IOException,
+                                     CompileException,
+                                     ParseException
     {
         this.text = text;
         this.ruleSet = ruleSet;
-        
+
         RuleBaseContext ruleBaseContext = ruleSet.getRuleBaseContext( );
         ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
+
         if ( classLoader == null )
         {
-            classLoader = new ByteArrayClassLoader( Thread.currentThread().getContextClassLoader());
+            ClassLoader cl = (ClassLoader) ruleBaseContext.get( "smf-classLoader" );
+
+            if ( cl == null )
+            {
+                cl = Thread.currentThread( ).getContextClassLoader( );
+                ruleBaseContext.put( "smf-classLoader",
+                                     cl );
+            }
+
+            if ( cl == null )
+            {
+                cl = JavaCompiler.class.getClassLoader( );
+                ruleBaseContext.put( "smf-classLoader",
+                                     cl );
+            }
+
+            classLoader = new ByteArrayClassLoader( cl );
+
             ruleBaseContext.put( "java-classLoader",
                                  classLoader );
         }
-        
-        ClassBodyEvaluator classBody = new ClassBodyEvaluator(new Scanner(null, new java.io.StringReader(this.text)), classLoader);
-        this.functionsClass = classBody.evaluate();        
+
+        ClassBodyEvaluator classBody = new ClassBodyEvaluator( new Scanner( null,
+                                                                            new java.io.StringReader( this.text ) ),
+                                                               classLoader );
+        this.functionsClass = classBody.evaluate( );
     }
 
     /*

@@ -9,13 +9,6 @@ import org.drools.spi.RuleBaseContext;
 
 public class GroovyImportEntryFactory implements ImportEntryFactory
 {
-    private static final GroovyImportEntryFactory INSTANCE = new GroovyImportEntryFactory( );
-
-    public static GroovyImportEntryFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public ImportEntry newImportEntry(RuleSet ruleSet,
                                       RuleBaseContext context,
                                       Configuration config) throws FactoryException

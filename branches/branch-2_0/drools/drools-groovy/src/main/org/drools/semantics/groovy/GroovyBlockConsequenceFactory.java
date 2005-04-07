@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequenceFactory.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: GroovyBlockConsequenceFactory.java,v 1.3.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,13 +52,6 @@ public class GroovyBlockConsequenceFactory
     implements
     ConsequenceFactory
 {
-    private static final GroovyBlockConsequenceFactory INSTANCE = new GroovyBlockConsequenceFactory( );
-
-    public static GroovyBlockConsequenceFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
     public Consequence newConsequence( Rule rule,
                                        RuleBaseContext context,
                                        Configuration config) throws FactoryException

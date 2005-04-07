@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.6 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.6.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,63 +58,67 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.DefaultKnowledgeHelper;
 import org.drools.spi.Functions;
+import org.drools.spi.RuleBaseContext;
 import org.drools.spi.Tuple;
 
 /**
  * Base class for Groovy based semantic components.
- *
+ * 
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  */
-public class GroovyInterp implements Serializable
+public class GroovyInterp
+    implements
+    Serializable
 {
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** Text. */
-    private final String text;
+    private final String        text;
 
     /** The rule. */
-    private final Rule rule;
+    private final Rule          rule;
 
-    private transient Script code;
+    private transient Script    code;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      */
-    protected GroovyInterp( String text, Rule rule )
+    protected GroovyInterp(String text,
+                           Rule rule)
     {
         this.rule = rule;
         this.text = text;
         try
         {
             StringBuffer newText = new StringBuffer( );
-                       
-            Iterator it = rule.getImports( GroovyImportEntry.class ).iterator();
+
+            Iterator it = rule.getImports( GroovyImportEntry.class ).iterator( );
             while ( it.hasNext( ) )
             {
                 newText.append( "import " );
                 newText.append( it.next( ) );
-                newText.append( ";");
+                newText.append( ";" );
                 newText.append( LINE_SEPARATOR );
             }
 
-            Functions functions = this.rule.getRuleSet( ).getFunctions("groovy");        
-            if (functions != null)
+            Functions functions = this.rule.getRuleSet( ).getFunctions( "groovy" );
+            if ( functions != null )
             {
-                newText.append(functions.getText( ));
-            }  
-            
-            if (this instanceof GroovyCondition)
+                newText.append( functions.getText( ) );
+            }
+
+            if ( this instanceof GroovyCondition )
             {
-                text = "return (" + text +")";
+                text = "return (" + text + ")";
             }
             newText.append( text );
             this.code = buildScript( newText.toString( ) );
@@ -126,12 +130,12 @@ public class GroovyInterp implements Serializable
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Retrieve the text to evaluate.
-     *
+     * 
      * @return The text to evaluate.
      */
     public String getText()
@@ -152,34 +156,40 @@ public class GroovyInterp implements Serializable
     /**
      * Configure a <code>ScriptContext</code> using a <code>Tuple</code> for
      * variable bindings.
-     *
-     * @param tuple Tuple containing variable bindings.
-     *
+     * 
+     * @param tuple
+     *            Tuple containing variable bindings.
+     * 
      * @return The dictionary
      */
-    protected Binding setUpDictionary(Tuple tuple, Iterator declIter)
+    protected Binding setUpDictionary(Tuple tuple,
+                                      Iterator declIter)
     {
         Binding dict = new Binding( );
-        Declaration eachDecl;         
+        Declaration eachDecl;
         while ( declIter.hasNext( ) )
         {
-            eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = (Declaration) declIter.next( );
 
-            dict.setVariable( eachDecl.getIdentifier( ).intern( ), tuple.get( eachDecl ) );
+            dict.setVariable( eachDecl.getIdentifier( ).intern( ),
+                              tuple.get( eachDecl ) );
         }
 
         WorkingMemory workingMemory = tuple.getWorkingMemory( );
 
-        dict.setVariable( "drools".intern( ), new DefaultKnowledgeHelper( this.rule, tuple ) );
+        dict.setVariable( "drools".intern( ),
+                          new DefaultKnowledgeHelper( this.rule,
+                                                      tuple ) );
 
         Map appDataMap = workingMemory.getApplicationDataMap( );
 
-        for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter.hasNext(); )
+        for ( Iterator keyIter = appDataMap.keySet( ).iterator( ); keyIter.hasNext( ); )
         {
-            String key = ( String ) keyIter.next( );
+            String key = (String) keyIter.next( );
             Object value = appDataMap.get( key );
 
-            dict.setVariable( key, value );
+            dict.setVariable( key,
+                              value );
         }
 
         return dict;
@@ -190,18 +200,34 @@ public class GroovyInterp implements Serializable
         GroovyCodeSource codeSource = new GroovyCodeSource( text,
                                                             "groovy.script",
                                                             "groovy.script" );
-        
-        GroovyClassLoader loader = new GroovyClassLoader( Thread.currentThread( ).getContextClassLoader( ) );
-        
+
+        RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
+        ClassLoader cl = (ClassLoader) ruleBaseContext.get( "smf-classLoader" );
+        if ( cl == null )
+        {
+            cl = Thread.currentThread( ).getContextClassLoader( );
+            ruleBaseContext.put( "smf-classLoader",
+                                 cl );
+        }
+
+        if ( cl == null )
+        {
+            cl = getClass( ).getClassLoader( );
+            ruleBaseContext.put( "smf-classLoader",
+                                 cl );
+        }
+
+        GroovyClassLoader loader = new GroovyClassLoader( cl );
+
         Class clazz = loader.parseClass( codeSource );
 
-        return ( Script ) clazz.newInstance( );
+        return (Script) clazz.newInstance( );
     }
 
     /**
      * Extra work for serialization...
      */
-    private void writeObject( ObjectOutputStream out ) throws IOException
+    private void writeObject(ObjectOutputStream out) throws IOException
     {
         this.code = null;
         out.defaultWriteObject( );
@@ -211,7 +237,8 @@ public class GroovyInterp implements Serializable
      * Extra work for serialization. re-creates the script object that is not
      * serialized
      */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    private void readObject(ObjectInputStream in) throws IOException,
+                                                 ClassNotFoundException
     {
         in.defaultReadObject( );
         try
@@ -220,8 +247,7 @@ public class GroovyInterp implements Serializable
         }
         catch ( Exception e )
         {
-            throw new IOException( "Error re-serializing Code Object. Error:"
-                                   + e.getMessage( ) );
+            throw new IOException( "Error re-serializing Code Object. Error:" + e.getMessage( ) );
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReaderException.java,v 1.1 2004-12-05 20:30:55 dbarnett Exp $
+ * $Id: SemanticsReaderException.java,v 1.1.2.1 2005-04-07 17:32:15 mproctor Exp $
  * 
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -76,5 +76,5 @@ public class SemanticsReaderException extends SemanticModuleException
     public String getMessage()
     {
         return detailMessage;
-    }
+    }	
 }

@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.46.2.1 2005-03-29 00:04:00 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.46.2.2 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.46.2.1 2005-03-29 00:04:00 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.46.2.2 2005-04-07 17:32:15 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -92,16 +92,16 @@ public class RuleSetReader extends DefaultHandler
 
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";    
+    private static final String W3C_XML_SCHEMA       = "http://www.w3.org/2001/XMLSchema";
 
     // ----------------------------------------------------------------------
     // Instance members
     // ----------------------------------------------------------------------
     /** SAX parser. */
     private SAXParser           parser;
-    
+
     /** isValidating */
-    private boolean             isValidating = true;
+    private boolean             isValidating         = true;
 
     /** Locator for errors. */
     private Locator             locator;
@@ -366,15 +366,15 @@ public class RuleSetReader extends DefaultHandler
         {
             SAXParserFactory factory = SAXParserFactory.newInstance( );
 
-            factory.setNamespaceAware( true );                       
-            
+            factory.setNamespaceAware( true );
+
             String isValidatingString = System.getProperty( "drools.schema.validating" );
             if ( System.getProperty( "drools.schema.validating" ) != null )
             {
-                this.isValidating = Boolean.getBoolean("drools.schema.validating");
+                this.isValidating = Boolean.getBoolean( "drools.schema.validating" );
             }
-            
-            if (this.isValidating == true)
+
+            if ( this.isValidating == true )
             {
                 factory.setValidating( true );
                 try
@@ -384,8 +384,8 @@ public class RuleSetReader extends DefaultHandler
                 catch ( ParserConfigurationException e )
                 {
                     throw new RuntimeException( e.getMessage( ) );
-                }      
-                
+                }
+
                 try
                 {
                     localParser.setProperty( JAXP_SCHEMA_LANGUAGE,
@@ -395,7 +395,7 @@ public class RuleSetReader extends DefaultHandler
                 {
                     System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
                     localParser = null;
-                }  
+                }
             }
 
             if ( localParser == null )
@@ -404,15 +404,15 @@ public class RuleSetReader extends DefaultHandler
                 try
                 {
                     this.isValidating = false;
-                    factory.setValidating( this.isValidating ); 
-                    localParser= factory.newSAXParser( );
+                    factory.setValidating( this.isValidating );
+                    localParser = factory.newSAXParser( );
                 }
                 catch ( ParserConfigurationException e )
                 {
                     throw new RuntimeException( e.getMessage( ) );
-                }     
+                }
             }
-            
+
         }
         else
         {
@@ -481,7 +481,7 @@ public class RuleSetReader extends DefaultHandler
     }
 
     public void startDocument()
-    {        
+    {
         this.isValidating = true;
         this.ruleSet = null;
         this.current = null;
@@ -493,6 +493,14 @@ public class RuleSetReader extends DefaultHandler
         if ( this.factoryContext == null )
         {
             this.factoryContext = new RuleBaseContext( );
+        }
+
+        // now assign the smf classloader so smf implementations can access it
+        ClassLoader classLoader = (ClassLoader) this.factoryContext.get( "smf-classLoader" );
+        if ( classLoader == null )
+        {
+            this.factoryContext.put( "smf-classLoader",
+                                     repo.getSemanticModuleClassLoader( ) );
         }
     }
 
@@ -772,8 +780,9 @@ public class RuleSetReader extends DefaultHandler
     }
 
     /**
-     * Returned Handler can be null.
-     * Calling method decides whether to throw an exception or not.
+     * Returned Handler can be null. Calling method decides whether to throw an
+     * exception or not.
+     * 
      * @param uri
      * @param localName
      * @return
@@ -913,8 +922,8 @@ public class RuleSetReader extends DefaultHandler
         catch ( Exception e )
         {
         }
-        
-        cl = ClassLoader.getSystemClassLoader();
+
+        cl = ClassLoader.getSystemClassLoader( );
 
         // Try looking in META-INF
         try
@@ -950,7 +959,7 @@ public class RuleSetReader extends DefaultHandler
         }
         catch ( Exception e )
         {
-        }        
+        }
         return null;
     }
 
