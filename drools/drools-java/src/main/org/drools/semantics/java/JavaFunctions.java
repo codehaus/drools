@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.4.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.4.2.2 2005-04-11 15:46:32 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,6 +41,9 @@ package org.drools.semantics.java;
  *  
  */
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import net.janino.ByteArrayClassLoader;
 import net.janino.ClassBodyEvaluator;
@@ -51,6 +54,7 @@ import net.janino.Scanner.ScanException;
 
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.RuleBaseContext;
 
 /**
@@ -58,7 +62,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.4.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.4.2.2 2005-04-11 15:46:32 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -127,10 +131,22 @@ public class JavaFunctions
                                  classLoader );
         }
 
-        ClassBodyEvaluator classBody = new ClassBodyEvaluator( new Scanner( null,
-                                                                            new java.io.StringReader( this.text ) ),
-                                                               classLoader );
-        this.functionsClass = classBody.evaluate( );
+
+        Set imports = new HashSet();
+
+        Iterator i = ruleSet.getImports().iterator();
+        ImportEntry importEntry;
+        while ( i.hasNext() )
+        {
+            importEntry = ( ImportEntry ) i.next();
+            if ( importEntry instanceof JavaImportEntry )
+            {
+                imports.add( importEntry.getImportEntry( ) );
+            }
+        }
+
+        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
+        this.functionsClass = classBody.evaluate();
     }
 
     /*
