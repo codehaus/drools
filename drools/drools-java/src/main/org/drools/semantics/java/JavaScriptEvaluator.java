@@ -10,14 +10,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import net.janino.DebuggingInformation;
-import net.janino.EvaluatorBase;
-import net.janino.Java;
-import net.janino.Mod;
-import net.janino.Parser;
-import net.janino.Scanner;
-import net.janino.Scanner.StringLiteralToken;
-import net.janino.util.PrimitiveWrapper;
+import org.codehaus.janino.DebuggingInformation;
+import org.codehaus.janino.EvaluatorBase;
+import org.codehaus.janino.Java;
+import org.codehaus.janino.Mod;
+import org.codehaus.janino.Parser;
+import org.codehaus.janino.Scanner;
+import org.codehaus.janino.Location;
+import org.codehaus.janino.Scanner.LiteralToken;
+import org.codehaus.janino.util.PrimitiveWrapper;
 
 import org.drools.rule.Declaration;
 import org.drools.semantics.base.ClassObjectType;
@@ -92,7 +93,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                     imports,
                     applicationData );
 
-        Scanner.Location loc = scanner.peek( ).getLocation( );
+        Location loc = scanner.peek( ).getLocation( );
         Iterator it = imports.iterator( );
         String type;
         List list;
@@ -120,12 +121,13 @@ public class JavaScriptEvaluator extends EvaluatorBase
             }
             if ( importOnDemand )
             {
-                compilationUnit.addTypeImportOnDemand( (String[]) list.toArray( new String[list.size( )] ) );
+                compilationUnit.addImportDeclaration( new Java.TypeImportOnDemandDeclaration( loc,
+                                                                                              (String[]) list.toArray( new String[list.size( )] ) ) );
             }
             else
             {
-                compilationUnit.addSingleTypeImport( loc,
-                                                     (String[]) list.toArray( new String[list.size( )] ) );
+                compilationUnit.addImportDeclaration( new Java.SingleTypeImportDeclaration( loc,
+                                                                                            (String[]) list.toArray( new String[list.size( )] ) ) );
             }
         }
 
@@ -192,7 +194,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
 
             imports.add( type );
 
-            Scanner.Location loc = scanner.peek( ).getLocation( );
+            Location loc = scanner.peek( ).getLocation( );
 
             Java.VariableDeclarator[] variables = new Java.VariableDeclarator[]{ // variableDeclarators
             new Java.VariableDeclarator( loc, // location
@@ -207,7 +209,8 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                                                            block,
                                                                                                            new String[]{"applicationData"} ),
                                                                                    "get", // methodName
-                                                                                   new Java.Rvalue[]{new Java.Literal( scanner.new StringLiteralToken( key ) )} ) ) )};
+                                                                                   new Java.Rvalue[]{new Java.Literal( loc, 
+                                                                                                                       key )} ) ) )};
 
             block.addStatement( new Java.LocalVariableDeclarationStatement( loc, // location
                                                                             block, // declaringBock
@@ -250,7 +253,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
 
             imports.add( type );
 
-            Scanner.Location loc = scanner.peek( ).getLocation( );
+            Location loc = scanner.peek( ).getLocation( );
 
             Java.VariableDeclarator[] variables = new Java.VariableDeclarator[]{ // variableDeclarators
             new Java.VariableDeclarator( loc, // location

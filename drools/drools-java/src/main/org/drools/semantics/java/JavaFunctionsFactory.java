@@ -2,9 +2,9 @@ package org.drools.semantics.java;
 
 import java.io.IOException;
 
-import net.janino.Java.CompileException;
-import net.janino.Parser.ParseException;
-import net.janino.Scanner.ScanException;
+import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
