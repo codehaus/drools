@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.4.2.2 2005-04-11 15:46:32 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.4.2.3 2005-04-12 00:24:41 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -41,17 +41,16 @@ package org.drools.semantics.java;
  *  
  */
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.janino.ByteArrayClassLoader;
-import net.janino.ClassBodyEvaluator;
-import net.janino.Scanner;
-import net.janino.Java.CompileException;
-import net.janino.Parser.ParseException;
-import net.janino.Scanner.ScanException;
-
+import org.codehaus.janino.ByteArrayClassLoader;
+import org.codehaus.janino.Scanner;
+import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
@@ -62,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.4.2.2 2005-04-11 15:46:32 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.4.2.3 2005-04-12 00:24:41 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -125,7 +124,8 @@ public class JavaFunctions
                                      cl );
             }
 
-            classLoader = new ByteArrayClassLoader( cl );
+            classLoader = new ByteArrayClassLoader( new HashMap( ), 
+                                                    cl );
 
             ruleBaseContext.put( "java-classLoader",
                                  classLoader );

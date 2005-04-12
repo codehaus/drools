@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.7.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.7.2.2 2005-04-12 00:24:41 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,9 +42,10 @@ package org.drools.semantics.java;
  */
 
 import java.io.IOException;
+import java.util.HashMap;
 
-import net.janino.ByteArrayClassLoader;
-import net.janino.Scanner;
+import org.codehaus.janino.ByteArrayClassLoader;
+import org.codehaus.janino.Scanner;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -85,7 +86,8 @@ class JavaCompiler
                                          cl );
                 }
 
-                classLoader = new ByteArrayClassLoader( cl );
+                classLoader = new ByteArrayClassLoader( new HashMap( ), 
+                                                        cl );
 
                 ruleBaseContext.put( "java-classLoader",
                                      classLoader );
