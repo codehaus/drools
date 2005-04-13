@@ -17,7 +17,6 @@ import org.codehaus.janino.Mod;
 import org.codehaus.janino.Parser;
 import org.codehaus.janino.Scanner;
 import org.codehaus.janino.Location;
-import org.codehaus.janino.Scanner.LiteralToken;
 import org.codehaus.janino.util.PrimitiveWrapper;
 
 import org.drools.rule.Declaration;
@@ -84,6 +83,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
         Parser parser = new Parser( scanner );
 
         // block.addStatement(
+        
         addDeclarations( scanner,
                          block,
                          declarations,
@@ -136,6 +136,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
             block.addStatement( parser.parseBlockStatement( block ) );
         }
 
+        // do not remove comments, usefull for debugging
         // UnparseVisitor.unparse(compilationUnit, new BufferedWriter( new
         // OutputStreamWriter(System.err)));
 
@@ -147,8 +148,9 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                      DebuggingInformation.ALL,
                                      className );
         }
-        catch ( ClassNotFoundException e )
+        catch ( Exception e )
         {
+            e.printStackTrace();
             throw new RuntimeException( );
         }
 

@@ -9,7 +9,7 @@
 
   <java:import>java.lang.Object</java:import>
   <java:import>java.lang.String</java:import>
-
+  
   <java:functions>
   	public void helloWorld(String hello)
   	{
@@ -21,7 +21,6 @@
   		System.out.println(goodbye + " Cruel World");
   	}
   </java:functions>
-
 
   <rule name="Hello World">
     <parameter identifier="hello">

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.4.2.3 2005-04-12 00:24:41 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.4.2.4 2005-04-13 23:29:44 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.4.2.3 2005-04-12 00:24:41 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.4.2.4 2005-04-13 23:29:44 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -73,6 +73,8 @@ public class JavaFunctions
     private transient Class     functionsClass;
 
     private RuleSet             ruleSet;
+
+    private String              className;    
 
     // private
 
@@ -95,6 +97,7 @@ public class JavaFunctions
      * @throws CompileException
      */
     public JavaFunctions(RuleSet ruleSet,
+                         int id,
                          String text) throws ScanException,
                                      IOException,
                                      CompileException,
@@ -103,6 +106,8 @@ public class JavaFunctions
         this.text = text;
         this.ruleSet = ruleSet;
 
+        this.className = "Function_" + id;        
+        
         RuleBaseContext ruleBaseContext = ruleSet.getRuleBaseContext( );
         ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
 
@@ -126,9 +131,6 @@ public class JavaFunctions
 
             classLoader = new ByteArrayClassLoader( new HashMap( ), 
                                                     cl );
-
-            ruleBaseContext.put( "java-classLoader",
-                                 classLoader );
         }
 
 
@@ -145,8 +147,11 @@ public class JavaFunctions
             }
         }
 
-        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
+        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
         this.functionsClass = classBody.evaluate();
+
+        ruleBaseContext.put( "java-classLoader",
+                             this.functionsClass.getClassLoader() );        
     }
 
     /*

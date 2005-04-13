@@ -26,9 +26,6 @@ import org.codehaus.janino.Scanner.ScanException;
  */
 public class ImporterClassBodyEvaluator extends EvaluatorBase
 {
-
-    private static final String DEFAULT_CLASS_NAME = "SC";
-
     private final Class         clazz;
 
     /**
@@ -48,6 +45,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
      * @throws CompileException
      */
     public ImporterClassBodyEvaluator(Set imports,
+                                      String className,                                      
                                       Scanner scanner,
                                       ClassLoader classLoader) throws ScanException,
                                                               IOException,
@@ -56,7 +54,6 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
     {
         super( classLoader );
 
-        String className = DEFAULT_CLASS_NAME;
         Class optionalExtendedType = (Class) null;
         Class[] implementedTypes = new Class[0];
 

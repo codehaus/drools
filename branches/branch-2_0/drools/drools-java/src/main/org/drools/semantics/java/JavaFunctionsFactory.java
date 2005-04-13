@@ -23,7 +23,16 @@ public class JavaFunctionsFactory
     {
         try
         {
+            Integer id = (Integer) context.get( "java-functions-id" );
+            if ( id == null )
+            {
+                id = new Integer( 0 );
+            }
+            context.put( "java-functions-id",
+                         new Integer( id.intValue( ) + 1 ) );  
+            
             return new JavaFunctions( ruleSet,
+                                      id.intValue( ),
                                       config.getText( ) );
         }
         catch ( IOException e )
