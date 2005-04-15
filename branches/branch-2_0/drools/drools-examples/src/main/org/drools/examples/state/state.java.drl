@@ -22,7 +22,7 @@
         </java:consequence>
     </rule>
 
-    <rule name="AtoB">
+    <rule name="AtoB" salience="30">
         <parameter identifier="a">
             <class-field field="name" value="A">State</class-field>
         </parameter>
@@ -39,7 +39,7 @@
         </java:consequence>
     </rule>
 
-    <rule name="BtoC">
+    <rule name="BtoC" salience="20">
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
@@ -56,7 +56,7 @@
         </java:consequence>
     </rule>
 
-    <rule name="BtoD">
+    <rule name="BtoD" salience="10">
         <parameter identifier="b">
             <class-field field="name" value="B">State</class-field>
         </parameter>
