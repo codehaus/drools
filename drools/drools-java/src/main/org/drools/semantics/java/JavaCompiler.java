@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.7.2.2 2005-04-12 00:24:41 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.7.2.3 2005-04-15 01:07:04 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -65,6 +65,14 @@ class JavaCompiler
     {
         try
         {
+            JavaFunctions functions = (JavaFunctions) rule.getRuleSet( ).getFunctions( "java" );
+            Class functionsClass = null;
+
+            if ( functions != null )
+            {
+                functionsClass = functions.getFunctionsClass( );
+            }
+            
             RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
             ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
 
@@ -91,13 +99,6 @@ class JavaCompiler
 
                 ruleBaseContext.put( "java-classLoader",
                                      classLoader );
-            }
-            JavaFunctions functions = (JavaFunctions) rule.getRuleSet( ).getFunctions( "java" );
-            Class functionsClass = null;
-
-            if ( functions != null )
-            {
-                functionsClass = functions.getFunctionsClass( );
             }
 
             return JavaScriptEvaluator.compile( expression,
