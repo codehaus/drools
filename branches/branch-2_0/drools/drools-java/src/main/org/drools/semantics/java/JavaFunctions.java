@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.4.2.4 2005-04-13 23:29:44 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.4.2.5 2005-04-15 01:07:04 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.4.2.4 2005-04-13 23:29:44 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.4.2.5 2005-04-15 01:07:04 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -108,6 +108,11 @@ public class JavaFunctions
 
         this.className = "Function_" + id;        
         
+        compile();
+    }
+    
+    private void compile() throws ScanException, CompileException, ParseException, IOException
+    {
         RuleBaseContext ruleBaseContext = ruleSet.getRuleBaseContext( );
         ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
 
@@ -164,8 +169,12 @@ public class JavaFunctions
         return this.text;
     }
 
-    public Class getFunctionsClass()
+    public Class getFunctionsClass() throws ScanException, CompileException, ParseException, IOException
     {
+        if (functionsClass == null)
+        {
+            compile();
+        }
         return functionsClass;
     }
 
