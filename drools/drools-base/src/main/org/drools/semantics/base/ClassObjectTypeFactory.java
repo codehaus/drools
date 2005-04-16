@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectTypeFactory.java,v 1.7.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * $Id: ClassObjectTypeFactory.java,v 1.7.2.2 2005-04-16 14:10:50 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -157,10 +157,14 @@ public class ClassObjectTypeFactory
             qualifiedClass = convertedImportText.substring( 0,
                                                             convertedImportText.indexOf( '*' ) ) + className;
         }
-        else if ( convertedImportText.endsWith( className ) )
+        else if ( convertedImportText.endsWith( "." + className ) )
+        {
+            qualifiedClass = convertedImportText;
+        } else if ( convertedImportText.equals( className ) )
         {
             qualifiedClass = convertedImportText;
         }
+            
 
         if ( qualifiedClass != null )
         {
