@@ -10,10 +10,7 @@
         <attainGoal name="jar:install"/>
     </goal>
 
-    <postGoal name="clover">
-        <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
-            file="${basedir}/target/docs/clover/pkgs-summary.html"/>
-    </postGoal>
+    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
 
     <goal name="get-deps">
       <j:forEach var="dep" items="${pom.artifacts}">
