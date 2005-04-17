@@ -24,6 +24,22 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
+    <goal name="drools:clover">
+
+      <!-- Exclude distribution/ subproject and testdata projects when building the site -->
+      <j:set var="maven.multiproject.excludes"
+             value="drools-examples/**,drools-examples-jdk5/**,drools-annotation/**"/>
+
+      <j:set var="goal" value="drools:clover" />
+      <attainGoal name="multiproject:goal"/>
+
+      <j:set var="maven.clover.database"
+             value="${basedir}/target/clover/database/clover_coverage.db"/>
+
+      <attainGoal name="clover:on"/>
+      <attainGoal name="clover:report"/>
+    </goal>
+
     <goal name="damagecontrol">
       <ant:delete includeEmptyDirs="true" verbose="true">
 	      <ant:fileset dir="." includes="drools-*/target"/>
@@ -84,47 +100,47 @@
       </ant:path>
 
       <maven:addPath id="maven.dependency.classpath"
-                  refid="extra.dependency.path"/>
+                     refid="extra.dependency.path"/>
     </goal>
 
-      <goal name="ydoc-all" description="Generates Javadoc including cool UMLdiagrams">
-         <attainGoal name="tweak-compile.src.set"/>
-         <javadoc
-           destdir="target/docs/apidocs"
-           author="true"
-           additionalparam="-J-Djava.awt.headless=true">
+    <goal name="ydoc-all" description="Generates Javadoc including cool UMLdiagrams">
+       <attainGoal name="tweak-compile.src.set"/>
+       <javadoc
+         destdir="target/docs/apidocs"
+         author="true"
+         additionalparam="-J-Djava.awt.headless=true">
 
-           <ant:classpath>
-             <ant:path refid="maven.dependency.classpath"/>
-           </ant:classpath>
+         <ant:classpath>
+           <ant:path refid="maven.dependency.classpath"/>
+         </ant:classpath>
 
-           <fileset dir=".">
-             <include name="drools-*/src/main/**/*.java" />
-           </fileset>
+         <fileset dir=".">
+           <include name="drools-*/src/main/**/*.java" />
+         </fileset>
 
-           <doclet
-                   name="ydoc.doclets.YStandard">
-                   <ant:path>
-                     <ant:pathelement location="./ydoc/lib/ydoc.jar" />
-                     <ant:pathelement location="./ydoc/lib/class2svg.jar" />
-                     <ant:pathelement location="./ydoc/lib/styleed.jar" />
-                     <ant:pathelement location="./ydoc/resources"/>
-                     <ant:path refid="maven.dependency.classpath"/>
-                   </ant:path>
-                   <param name="-generic"    value=""/>
-                   <param name="-umlautogen" value=""/>
-                   <param name="-filter" value="ydoc.filters.ExcludeFilter"/>
-                   <param name="-tag" value="y.precondition"/>
-                   <param name="-tag" value="y.postcondition"/>
-                   <param name="-tag" value="y.complexity"/>
-                   <param name="-tag" value="param"/>
-                   <param name="-tag" value="return"/>
-                   <param name="-tag" value="see"/>
-                   <param name="-tag" value="y.uml"/>
-                   <param name="-breakiterator"/>
-           </doclet>
-         </javadoc>
-       </goal>
+         <doclet
+                 name="ydoc.doclets.YStandard">
+                 <ant:path>
+                   <ant:pathelement location="./ydoc/lib/ydoc.jar" />
+                   <ant:pathelement location="./ydoc/lib/class2svg.jar" />
+                   <ant:pathelement location="./ydoc/lib/styleed.jar" />
+                   <ant:pathelement location="./ydoc/resources"/>
+                   <ant:path refid="maven.dependency.classpath"/>
+                 </ant:path>
+                 <param name="-generic"    value=""/>
+                 <param name="-umlautogen" value=""/>
+                 <param name="-filter" value="ydoc.filters.ExcludeFilter"/>
+                 <param name="-tag" value="y.precondition"/>
+                 <param name="-tag" value="y.postcondition"/>
+                 <param name="-tag" value="y.complexity"/>
+                 <param name="-tag" value="param"/>
+                 <param name="-tag" value="return"/>
+                 <param name="-tag" value="see"/>
+                 <param name="-tag" value="y.uml"/>
+                 <param name="-breakiterator"/>
+         </doclet>
+       </javadoc>
+     </goal>
 
     <goal name="javadoc-all" prereqs="jar-all,drools:get-deps">
       <attainGoal name="tweak-compile.src.set"/>

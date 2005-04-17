@@ -234,40 +234,40 @@
             <classpath location="${lib.dir}/${jython.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
         </javac>
-<!--
+
         <path id="smf-impl-classpath">
-            <classpath path="${classes.dir}"/>
-            <classpath path="${meta-inf-base.dir}"/>
-            <classpath location="${lib.dir}/${clover.jar}"/>
-            <classpath location="${lib.dir}/${jsr94.jar}"/>
-            <classpath location="${lib.dir}/${xerces.jar}"/>
-            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+            <pathelement path="${classes.dir}"/>
+            <pathelement path="${meta-inf-base.dir}"/>
+            <pathelement location="${lib.dir}/${clover.jar}"/>
+            <pathelement location="${lib.dir}/${jsr94.jar}"/>
+            <pathelement location="${lib.dir}/${xerces.jar}"/>
+            <pathelement location="${lib.dir}/${xml-apis.jar}"/>
         </path>
 
         <path id="java-classpath">
-            <classpath path="${smf-impl-classpath}"/>
-            <classpath path="${meta-inf-java.dir}"/>
-            <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${janino.jar}"/>
+            <pathelement path="${smf-impl-classpath}"/>
+            <pathelement path="${meta-inf-java.dir}"/>
+            <pathelement location="${lib.dir}/${antlr.jar}"/>
+            <pathelement location="${lib.dir}/${janino.jar}"/>
         </path>
 
         <path id="groovy-classpath">
-            <classpath path="${smf-impl-classpath}"/>
-            <classpath path="${meta-inf-groovy.dir}"/>
-            <classpath location="${lib.dir}/${groovy.jar}"/>
+            <pathelement path="${smf-impl-classpath}"/>
+            <pathelement path="${meta-inf-groovy.dir}"/>
+            <pathelement location="${lib.dir}/${groovy.jar}"/>
         </path>
 
         <path id="python-classpath">
-            <classpath path="${smf-impl-classpath}"/>
-            <classpath path="${meta-inf-python.dir}"/>
-            <classpath location="${lib.dir}/${jython.jar}"/>
+            <pathelement path="${smf-impl-classpath}"/>
+            <pathelement path="${meta-inf-python.dir}"/>
+            <pathelement location="${lib.dir}/${jython.jar}"/>
         </path>
 
         <path id="examples-classpath">
-            <classpath path="${smf-impl-classpath}"/>
-            <classpath path="${meta-inf-examples.dir}"/>
+            <pathelement path="${smf-impl-classpath}"/>
+            <pathelement path="${meta-inf-examples.dir}"/>
         </path>
--->
+
     </target>
 
     <target name="copy-resources"
