@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReflectiveVisitor.java,v 1.5 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: ReflectiveVisitor.java,v 1.5.2.1 2005-04-17 13:15:16 mproctor Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -70,9 +70,9 @@ public abstract class ReflectiveVisitor
             else
             {
                 Method method = getClass( ).getMethod( "visitNull",
-                                                       null );
+                                                       ( Class[] ) null );
                 method.invoke( this,
-                               null );
+                               ( Object[] ) null );
             }
         }
         catch ( Exception e )

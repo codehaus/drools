@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.7 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: ClassFieldObjectType.java,v 1.7.2.1 2005-04-17 13:18:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ import org.drools.spi.ObjectType;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.7 2005-02-04 02:13:36 mproctor Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.7.2.1 2005-04-17 13:18:43 mproctor Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
@@ -129,7 +129,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
                                  + fieldName.substring( 1 );
             try
             {
-                this.getterMethod = getType( ).getMethod( fieldGetter, null );
+                this.getterMethod = getType( ).getMethod( fieldGetter, ( Class[] ) null );
             }
             catch ( NoSuchMethodException e )
             {
@@ -141,7 +141,7 @@ public class ClassFieldObjectType extends ClassObjectType implements ObjectType
         boolean result;
         try
         {
-            result = this.getterMethod.invoke( object, null ).equals( this.getFieldValue( ) );
+            result = this.getterMethod.invoke( object, ( Object[] )null ).equals( this.getFieldValue( ) );
         }
         catch ( IllegalAccessException e )
         {

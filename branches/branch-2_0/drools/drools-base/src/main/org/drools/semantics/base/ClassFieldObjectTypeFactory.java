@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.2 2005-04-16 14:10:50 mproctor Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.3 2005-04-17 13:18:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -142,7 +142,7 @@ public class ClassFieldObjectTypeFactory
 
             // make sure field getter exists
             clazz.getMethod( "get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
-                             null );
+                             ( Class[] ) null );
 
             return new ClassFieldObjectType( clazz,
                                              fieldName,
