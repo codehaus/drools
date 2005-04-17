@@ -114,13 +114,15 @@
     <!-- Configure JAR versions here. -->
     <property name="antlr.jar" value="antlr-2.7.2.jar"/>
     <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
-    <property name="janino.jar" value="janino-2.1.0.jar"/>
+    <property name="janino.jar" value="janino-2.3.2.jar"/>
     <property name="clover.jar" value="clover-1.2.3.jar"/>
-    <property name="groovy.jar" value="groovy-all-1.0-beta-9.jar"/>
+    <property name="groovy.jar" value="groovy-all-1.0-jsr-01.jar"/>
     <property name="jsr94.jar" value="jsr94-1.1.jar"/>
     <property name="jsr94-tck.jar" value="jsr94-tck-1.1.jar"/>
     <property name="sigtest.jar" value="sigtest-1.1.jar"/>
     <property name="xerces.jar" value="xercesImpl-2.6.2.jar"/>
+    <property name="xml-apis.jar" value="xml-apis-1.0.b2.jar"/>
+    <property name="junit.jar" value="junit-3.8.jar"/>
 
     <!-- These configure where all the output goes. -->
     <property name="output.dir" value="clover"/>
@@ -130,10 +132,12 @@
     <property name="clover-db.dir" value="${output.dir}/db"/>
     <property name="reports.dir" value="${output.dir}/reports"/>
     <property name="lib.dir" value="${output.dir}/lib"/>
+
     <property name="meta-inf-base.dir" value="${output.dir}/META-INF-base"/>
     <property name="meta-inf-java.dir" value="${output.dir}/META-INF-java"/>
     <property name="meta-inf-groovy.dir" value="${output.dir}/META-INF-groovy"/>
     <property name="meta-inf-python.dir" value="${output.dir}/META-INF-python"/>
+    <property name="meta-inf-examples.dir" value="${output.dir}/META-INF-examples"/>
 
     <!-- ================================================================== -->
     <!-- ===========vvvv============ Core Tasks ============vvvv=========== -->
@@ -162,14 +166,25 @@
             src="http://www.ibiblio.org/maven/janino/jars/${janino.jar}"/>
         <get dest="${lib.dir}/${xerces.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
+        <get dest="${lib.dir}/${xml-apis.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/xml-apis/jars/${xml-apis.jar}"/>
+
+        <get dest="${lib.dir}/${junit.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+            src="http://www.ibiblio.org/maven/junit/jars/${junit.jar}"/>
+
+       <copy file="${basedir}/lib/${jsr94.jar}" tofile="${lib.dir}/${jsr94.jar}"/>
+       <copy file="${basedir}/lib/${jsr94-tck.jar}" tofile="${lib.dir}/${jsr94-tck.jar}"/>
+       <copy file="${basedir}/lib/${sigtest.jar}" tofile="${lib.dir}/${sigtest.jar}"/>
 
         <!-- Local JARs not found at ibiblio -->
+        <!--
         <get dest="${lib.dir}/${jsr94.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
-            src="file://${basedir}/lib/${jsr94.jar}"/>
+             src="file://${basedir}/lib/${jsr94.jar}"/>
         <get dest="${lib.dir}/${jsr94-tck.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="file://${basedir}/lib/${jsr94-tck.jar}"/>
         <get dest="${lib.dir}/${sigtest.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
             src="file://${basedir}/lib/${sigtest.jar}"/>
+        -->
     </target>
 
     <target name="merge-src"
@@ -209,12 +224,50 @@
         <javac destdir="${classes.dir}" debug="true" debuglevel="source,lines">
             <src path="${src.dir}"/>
             <src path="${test-src.dir}"/>
+            <classpath location="${lib.dir}/${junit.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${jsr94-tck.jar}"/>
             <classpath location="${lib.dir}/${jython.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
         </javac>
+<!--
+        <path id="smf-impl-classpath">
+            <classpath path="${classes.dir}"/>
+            <classpath path="${meta-inf-base.dir}"/>
+            <classpath location="${lib.dir}/${clover.jar}"/>
+            <classpath location="${lib.dir}/${jsr94.jar}"/>
+            <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
+        </path>
+
+        <path id="java-classpath">
+            <classpath path="${smf-impl-classpath}"/>
+            <classpath path="${meta-inf-java.dir}"/>
+            <classpath location="${lib.dir}/${antlr.jar}"/>
+            <classpath location="${lib.dir}/${janino.jar}"/>
+        </path>
+
+        <path id="groovy-classpath">
+            <classpath path="${smf-impl-classpath}"/>
+            <classpath path="${meta-inf-groovy.dir}"/>
+            <classpath location="${lib.dir}/${groovy.jar}"/>
+        </path>
+
+        <path id="python-classpath">
+            <classpath path="${smf-impl-classpath}"/>
+            <classpath path="${meta-inf-python.dir}"/>
+            <classpath location="${lib.dir}/${jython.jar}"/>
+        </path>
+
+        <path id="examples-classpath">
+            <classpath path="${smf-impl-classpath}"/>
+            <classpath path="${meta-inf-examples.dir}"/>
+        </path>
+-->
     </target>
 
     <target name="copy-resources"
@@ -272,6 +325,13 @@
             <fileset file="drools-python/src/conf/META-INF/drools-python.conf"/>
             <fileset file="drools-python/src/conf/META-INF/python.xsd"/>
         </copy>
+
+       <mkdir dir="${meta-inf-examples.dir}/META-INF"/>
+        <copy todir="${meta-inf-examples.dir}/META-INF">
+            <fileset file="drools-examples/src/conf/META-INF/drools.conf"/>
+            <fileset file="drools-examples/src/conf/META-INF/drools-house.conf"/>
+            <fileset file="drools-examples/src/conf/META-INF/house.xsd"/>
+        </copy>
     </target>
 
     <target name="test" depends="compile,copy-resources"
@@ -280,25 +340,18 @@
             <formatter type="brief" usefile="no"/>
             <classpath path="${classes.dir}"/>
             <classpath path="${classes.dir}/data"/>
-            <classpath path="${meta-inf-base.dir}"/>
-            <classpath path="${meta-inf-java.dir}"/>
-            <classpath path="${meta-inf-groovy.dir}"/>
-            <classpath path="${meta-inf-python.dir}"/>
-            <classpath location="${lib.dir}/${clover.jar}"/>
-            <classpath location="${lib.dir}/${antlr.jar}"/>
-            <classpath location="${lib.dir}/${janino.jar}"/>
-            <classpath location="${lib.dir}/${jsr94.jar}"/>
-            <classpath location="${lib.dir}/${jsr94-tck.jar}"/>
-            <classpath location="${lib.dir}/${sigtest.jar}"/>
-            <classpath location="${lib.dir}/${groovy.jar}"/>
-            <classpath location="${lib.dir}/${jython.jar}"/>
+            <classpath path="${java-classpath}"/>
+            <classpath path="${groovy-classpath}"/>
+            <classpath path="${python-classpath}"/>
+
             <batchtest>
                 <fileset dir="${test-src.dir}">
                     <include name="**/*Test.java"/>
-                    <include name="**/jsr94/**/*TestCase.java"/>
+                    <include>**/org/drools/jsr94/AllTests.java</include>
 		    <!-- TODO: Need to fixup build.xml to run JSR94 TCK tests -->
 		    <!--<include name="**/org/jcp/jsr94/tck/AllTests.java"/>-->
                     <exclude name="**/PythonSemanticTest.java"/>
+                    <exclude>**/org/drools/jsr94/**</exclude>
                 </fileset>
             </batchtest>
             <batchtest fork="yes">
@@ -332,6 +385,7 @@
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
@@ -355,6 +409,7 @@
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
@@ -370,6 +425,7 @@
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
@@ -384,6 +440,7 @@
             <classpath location="${lib.dir}/${jsr94.jar}"/>
             <classpath location="${lib.dir}/${groovy.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
@@ -399,6 +456,7 @@
             <classpath location="${lib.dir}/${antlr.jar}"/>
             <classpath location="${lib.dir}/${janino.jar}"/>
             <classpath location="${lib.dir}/${xerces.jar}"/>
+            <classpath location="${lib.dir}/${xml-apis.jar}"/>
         </java>
     </target>
 
