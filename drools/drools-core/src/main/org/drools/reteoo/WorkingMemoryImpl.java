@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.62 2005-02-05 18:03:49 memelet Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.62.2.1 2005-04-17 10:14:56 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -228,7 +228,7 @@ class WorkingMemoryImpl
         return this.ruleBase;
     }
 
-    public void fireAllRules(AgendaFilter agendaFilter) throws FactException
+    public synchronized void fireAllRules(AgendaFilter agendaFilter) throws FactException
     {
         // If we're already firing a rule, then it'll pick up
         // the firing for any other assertObject(..) that get
@@ -256,7 +256,7 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public synchronized void fireAllRules() throws FactException
+    public void fireAllRules() throws FactException
     {
         fireAllRules( null );
     }
