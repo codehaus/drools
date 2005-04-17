@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: SemaphoreFactory.java,v 1.2 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: SemaphoreFactory.java,v 1.2.2.1 2005-04-17 13:18:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -96,7 +96,7 @@ public class SemaphoreFactory
 
             // make sure field getter exists
             clazz.getMethod( "get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
-                             null );
+                             ( Class[] ) null );
 
             return new ClassFieldObjectType( clazz,
                                              fieldName,
