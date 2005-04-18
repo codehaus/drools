@@ -262,6 +262,8 @@
       <classpath refid="lib-deps"/>
     </javac>
 
+    <mkdir dir="${module-name}/target/test-reports" />
+
     <junit printsummary="yes" haltonfailure="yes" fork="${fork-test}">
       <classpath>
         <pathelement path="${module-name}/target/test-classes"/>
