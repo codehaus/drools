@@ -121,7 +121,7 @@ consistentAssignmentExpression
 
 ruleCondition
 	:
-		inclusiveOrExpression
+		logicalOrExpression
 	;
 //			consistentAssignmentExpression
 //		|	inclusiveOrExpression
