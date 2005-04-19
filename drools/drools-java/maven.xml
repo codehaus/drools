@@ -10,6 +10,13 @@
         <attainGoal name="jar:install"/>
     </goal>
 
+    <goal name="drools:antlr">
+      <j:set var="maven.antlr.src.dir" value="src/main"/>
+      <j:set var="maven.antlr.target.dir" value="src/main"/>
+      <j:set var="maven.antlr.grammars" value="org/drools/semantics/java/parser/java.g org/drools/semantics/java/parser/java.tree.g"/>
+      <attainGoal name="antlr:generate"/>
+    </goal>
+
     <goal name="drools:clover" prereqs="clover:on, jar:jar" />
 
     <goal name="get-deps">
