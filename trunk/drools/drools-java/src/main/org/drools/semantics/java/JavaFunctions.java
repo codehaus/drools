@@ -1,32 +1,32 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.5 2005-04-07 17:42:14 mproctor Exp $
- * 
+ * $Id: JavaFunctions.java,v 1.6 2005-04-19 22:34:40 mproctor Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a registered trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company.
  * (http://drools.werken.com/).
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,27 +38,30 @@ package org.drools.semantics.java;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
-import net.janino.ByteArrayClassLoader;
-import net.janino.ClassBodyEvaluator;
-import net.janino.Scanner;
-import net.janino.Java.CompileException;
-import net.janino.Parser.ParseException;
-import net.janino.Scanner.ScanException;
-
+import org.codehaus.janino.ByteArrayClassLoader;
+import org.codehaus.janino.Scanner;
+import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.RuleBaseContext;
 
 /**
  * Python block semantics <code>Consequence</code>.
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- * 
- * @version $Id: JavaFunctions.java,v 1.5 2005-04-07 17:42:14 mproctor Exp $
+ *
+ * @version $Id: JavaFunctions.java,v 1.6 2005-04-19 22:34:40 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -71,6 +74,8 @@ public class JavaFunctions
 
     private RuleSet             ruleSet;
 
+    private String              className;
+
     // private
 
     /** The line separator system property ("\n" on UNIX). */
@@ -81,9 +86,9 @@ public class JavaFunctions
 
     /**
      * Construct.
-     * 
+     *
      * @param classLoader
-     * 
+     *
      * @param text
      *            The block text.
      * @throws IOException
@@ -92,6 +97,7 @@ public class JavaFunctions
      * @throws CompileException
      */
     public JavaFunctions(RuleSet ruleSet,
+                         int id,
                          String text) throws ScanException,
                                      IOException,
                                      CompileException,
@@ -100,6 +106,13 @@ public class JavaFunctions
         this.text = text;
         this.ruleSet = ruleSet;
 
+        this.className = "Function_" + id;
+
+        compile();
+    }
+
+    private void compile() throws ScanException, CompileException, ParseException, IOException
+    {
         RuleBaseContext ruleBaseContext = ruleSet.getRuleBaseContext( );
         ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
 
@@ -121,21 +134,35 @@ public class JavaFunctions
                                      cl );
             }
 
-            classLoader = new ByteArrayClassLoader( cl );
-
-            ruleBaseContext.put( "java-classLoader",
-                                 classLoader );
+            classLoader = new ByteArrayClassLoader( new HashMap( ),
+                                                    cl );
         }
 
-        ClassBodyEvaluator classBody = new ClassBodyEvaluator( new Scanner( null,
-                                                                            new java.io.StringReader( this.text ) ),
-                                                               classLoader );
-        this.functionsClass = classBody.evaluate( );
+
+        Set imports = new HashSet();
+
+        Iterator i = ruleSet.getImports().iterator();
+        ImportEntry importEntry;
+        while ( i.hasNext() )
+        {
+            importEntry = ( ImportEntry ) i.next();
+            if ( importEntry instanceof JavaImportEntry )
+            {
+                imports.add( importEntry.getImportEntry( ) );
+            }
+        }
+
+
+        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
+        this.functionsClass = classBody.evaluate();
+
+        ruleBaseContext.put( "java-classLoader",
+                             this.functionsClass.getClassLoader() );
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.drools.spi.Functions#getText()
      */
     public String getText()
@@ -143,14 +170,18 @@ public class JavaFunctions
         return this.text;
     }
 
-    public Class getFunctionsClass()
+    public Class getFunctionsClass() throws ScanException, CompileException, ParseException, IOException
     {
+        if (functionsClass == null)
+        {
+            compile();
+        }
         return functionsClass;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.drools.spi.Functions#getSemantic()
      */
     public String getSemantic()
@@ -164,7 +195,7 @@ public class JavaFunctions
      * it.hasNext( ) ) { importEntry = (ImportEntry) it.next( ); if (
      * importEntry instanceof JavaImportEntry ) { imports.add(
      * importEntry.getImportEntry( ) ); } } }
-     * 
+     *
      * return (Script) Interp.compile( rule, Script.class, this.block,
      * this.block, SCRIPT_PARAM_NAMES, this.declarations, imports,
      * rule.getApplicationData( ) ); }

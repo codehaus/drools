@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ObjectTypeHandler.java,v 1.4 2004-12-21 00:24:37 mproctor Exp $
+ * $Id: ObjectTypeHandler.java,v 1.5 2005-04-19 22:34:31 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -101,7 +101,7 @@ class ObjectTypeHandler extends BaseAbstractHandler
             Declaration declaration = (Declaration) this.ruleSetReader.getParent( Declaration.class );
             ((DefaultConfiguration) config).setAttribute( "identifier",
                                                           declaration.getIdentifier( ) );
-
+			
             ObjectType objectType = factory.newObjectType( this.ruleSetReader.getFactoryContext( ),
                                                            config,
                                                            this.ruleSetReader.getRuleSet( ).getImports( ) );

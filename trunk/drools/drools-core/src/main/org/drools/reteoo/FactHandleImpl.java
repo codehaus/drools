@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: FactHandleImpl.java,v 1.19 2004-12-07 14:52:00 simon Exp $
+ * $Id: FactHandleImpl.java,v 1.20 2005-04-19 22:34:31 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -96,7 +96,7 @@ public class FactHandleImpl
             return true;
         }
 
-        if ( object == null || getClass( ) != object.getClass( ) )
+        if ( object == null || ! ( object instanceof FactHandle ) )
         {
             return false;
         }

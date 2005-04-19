@@ -2,9 +2,9 @@ package org.drools.semantics.java;
 
 import java.io.IOException;
 
-import net.janino.Java.CompileException;
-import net.janino.Parser.ParseException;
-import net.janino.Scanner.ScanException;
+import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
@@ -23,7 +23,16 @@ public class JavaFunctionsFactory
     {
         try
         {
+            Integer id = (Integer) context.get( "java-functions-id" );
+            if ( id == null )
+            {
+                id = new Integer( 0 );
+            }
+            context.put( "java-functions-id",
+                         new Integer( id.intValue( ) + 1 ) );  
+            
             return new JavaFunctions( ruleSet,
+                                      id.intValue( ),
                                       config.getText( ) );
         }
         catch ( IOException e )
