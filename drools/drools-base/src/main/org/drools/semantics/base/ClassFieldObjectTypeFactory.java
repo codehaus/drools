@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.8 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.9 2005-04-19 22:34:31 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -142,7 +142,7 @@ public class ClassFieldObjectTypeFactory
 
             // make sure field getter exists
             clazz.getMethod( "get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
-                             null );
+                             ( Class[] ) null );
 
             return new ClassFieldObjectType( clazz,
                                              fieldName,
@@ -181,10 +181,15 @@ public class ClassFieldObjectTypeFactory
             qualifiedClass = convertedImportText.substring( 0,
                                                             convertedImportText.indexOf( '*' ) ) + className;
         }
-        else if ( convertedImportText.endsWith( className ) )
+        else if ( convertedImportText.endsWith( "." + className ) )
+        {
+            qualifiedClass = convertedImportText;
+        } else if ( convertedImportText.equals( className ) )
         {
             qualifiedClass = convertedImportText;
         }
+            
+
 
         if ( qualifiedClass != null )
         {

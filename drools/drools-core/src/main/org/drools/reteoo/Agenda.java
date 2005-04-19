@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.54 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: Agenda.java,v 1.55 2005-04-19 22:34:31 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -283,8 +283,6 @@ class Agenda
             eachItem = (AgendaItem) itemIter.next( );
 
             cancelItem( eachItem );
-
-            itemIter.remove( );
 
             this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
                                                                            eachItem.getTuple( ) );

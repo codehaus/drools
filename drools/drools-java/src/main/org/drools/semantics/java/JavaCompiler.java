@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.8 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.9 2005-04-19 22:34:40 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,9 +42,10 @@ package org.drools.semantics.java;
  */
 
 import java.io.IOException;
+import java.util.HashMap;
 
-import net.janino.ByteArrayClassLoader;
-import net.janino.Scanner;
+import org.codehaus.janino.ByteArrayClassLoader;
+import org.codehaus.janino.Scanner;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
@@ -64,6 +65,14 @@ class JavaCompiler
     {
         try
         {
+            JavaFunctions functions = (JavaFunctions) rule.getRuleSet( ).getFunctions( "java" );
+            Class functionsClass = null;
+
+            if ( functions != null )
+            {
+                functionsClass = functions.getFunctionsClass( );
+            }
+
             RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
             ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
 
@@ -85,17 +94,11 @@ class JavaCompiler
                                          cl );
                 }
 
-                classLoader = new ByteArrayClassLoader( cl );
+                classLoader = new ByteArrayClassLoader( new HashMap( ),
+                                                        cl );
 
                 ruleBaseContext.put( "java-classLoader",
                                      classLoader );
-            }
-            JavaFunctions functions = (JavaFunctions) rule.getRuleSet( ).getFunctions( "java" );
-            Class functionsClass = null;
-
-            if ( functions != null )
-            {
-                functionsClass = functions.getFunctionsClass( );
             }
 
             return JavaScriptEvaluator.compile( expression,

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.11 2005-02-05 02:06:14 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.12 2005-04-19 22:34:40 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,7 +47,7 @@ import java.util.Map;
 
 import javax.naming.ConfigurationException;
 
-import net.janino.Scanner;
+import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;

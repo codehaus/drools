@@ -1,8 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.48 2005-04-07 17:42:14 mproctor Exp $
- * $Id: RuleSetReader.java,v 1.48 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.49 2005-04-19 22:34:35 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -80,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.48 2005-04-07 17:42:14 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.49 2005-04-19 22:34:35 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -531,7 +530,7 @@ public class RuleSetReader extends DefaultHandler
 
         if ( handler == null )
         {
-            if ( this.parents.getLast( ).getClass( ).isInstance( Rule.class ) || this.parents.getLast( ).getClass( ).isInstance( RuleSet.class ) )
+            if ( this.parents.getLast( ) instanceof Rule || this.parents.getLast( ) instanceof RuleSet )
             {
                 throw new SAXParseException( "unable to handle element <" + localName + ">",
                                              getLocator( ) );
