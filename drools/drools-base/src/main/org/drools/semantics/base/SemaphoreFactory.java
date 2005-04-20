@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: SemaphoreFactory.java,v 1.3 2005-04-19 22:34:31 mproctor Exp $
+ * $Id: SemaphoreFactory.java,v 1.4 2005-04-20 00:03:06 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *

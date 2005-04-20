@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaImportEntry.java,v 1.5 2005-04-19 22:34:40 mproctor Exp $
+ * $Id: JavaImportEntry.java,v 1.6 2005-04-20 00:03:07 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -85,5 +85,5 @@ public class JavaImportEntry implements ImportEntry
 
         return this.importEntry.equals( ( ( ImportEntry ) object ).getImportEntry( ) );
     }
-    
+
 }

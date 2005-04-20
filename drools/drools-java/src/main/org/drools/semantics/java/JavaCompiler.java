@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.9 2005-04-19 22:34:40 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.10 2005-04-20 00:03:06 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *

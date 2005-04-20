@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectType.java,v 1.8 2005-04-19 22:34:31 mproctor Exp $
+ * $Id: ClassFieldObjectType.java,v 1.9 2005-04-20 00:03:06 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ import org.drools.spi.ObjectType;
  *
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  *
- * @version $Id: ClassFieldObjectType.java,v 1.8 2005-04-19 22:34:31 mproctor Exp $
+ * @version $Id: ClassFieldObjectType.java,v 1.9 2005-04-20 00:03:06 mproctor Exp $
  */
 public class ClassFieldObjectType extends ClassObjectType implements ObjectType
 {
