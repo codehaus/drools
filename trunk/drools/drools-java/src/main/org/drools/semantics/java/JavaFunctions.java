@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.6 2005-04-19 22:34:40 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.7 2005-04-20 00:03:07 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: JavaFunctions.java,v 1.6 2005-04-19 22:34:40 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.7 2005-04-20 00:03:07 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -138,7 +138,6 @@ public class JavaFunctions
                                                     cl );
         }
 
-
         Set imports = new HashSet();
 
         Iterator i = ruleSet.getImports().iterator();
@@ -151,7 +150,6 @@ public class JavaFunctions
                 imports.add( importEntry.getImportEntry( ) );
             }
         }
-
 
         ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
         this.functionsClass = classBody.evaluate();

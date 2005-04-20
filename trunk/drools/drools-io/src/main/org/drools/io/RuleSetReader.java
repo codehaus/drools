@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.49 2005-04-19 22:34:35 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.50 2005-04-20 00:03:06 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSetReader.java,v 1.49 2005-04-19 22:34:35 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.50 2005-04-20 00:03:06 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
