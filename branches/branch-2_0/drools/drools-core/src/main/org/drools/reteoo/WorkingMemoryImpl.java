@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImpl.java,v 1.62.2.1 2005-04-17 10:14:56 mproctor Exp $
+ * $Id: WorkingMemoryImpl.java,v 1.62.2.2 2005-04-26 02:43:49 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -184,13 +184,22 @@ class WorkingMemoryImpl
         // Make sure the application data has been declared in the RuleBase
         Map applicationDataDefintions = this.ruleBase.getApplicationData( );
         Class type = (Class) applicationDataDefintions.get( name );
-        if ( (type == null) || (!type.isInstance( value )) )
+        if ( ( type == null ) )
         {
-            throw new RuntimeException( "Invalid Class for name [" + name + "]" );
+            throw new RuntimeException( "Unexpected application data [" + name + "]" );
         }
-
-        this.applicationData.put( name,
-                                  value );
+        else if  ( !type.isInstance( value ) )
+        {
+            throw new RuntimeException( "Illegal class for application data. " +
+                                        "Expected [" + type.getName() + "], " + 
+                                        "found [" + value.getClass().getName() + "]." );            
+                                        
+        }
+        else
+        {
+          this.applicationData.put( name,
+                                    value );
+        }
     }
 
     /**
