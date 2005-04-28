@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.46.2.4 2005-04-28 00:15:30 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.46.2.5 2005-04-28 01:25:51 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.46.2.4 2005-04-28 00:15:30 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.46.2.5 2005-04-28 01:25:51 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -129,7 +129,9 @@ public class RuleSetReader extends DefaultHandler
     private RuleSet             ruleSet;
 
     private RuleBaseContext     factoryContext;
-
+    
+    private boolean             inHandledRuleSubElement;
+    
     private MessageFormat       message              = new MessageFormat( "({0}: {1}, {2}): {3}" );
 
     // ----------------------------------------------------------------------
@@ -531,13 +533,35 @@ public class RuleSetReader extends DefaultHandler
 
         Handler handler = getHandler( uri,
                                       localName );
+        
+        if ( ( handler != null ) && ( !this.parents.isEmpty() && this.parents.getLast() instanceof Rule ) )
+        {
+            this.inHandledRuleSubElement = true;            
+        }
 
         if ( handler == null )
         {
-            if ( this.parents.getLast( ) instanceof Rule || this.parents.getLast( ) instanceof RuleSet )
+            if ( ( ( this.inHandledRuleSubElement == false) && ( this.parents.getLast( ) instanceof Rule ) ) 
+                    ||  ( this.parents.getLast( ) instanceof RuleSet ) )
             {
-                throw new SAXParseException( "unable to handle element <" + localName + ">",
-                                             getLocator( ) );
+                
+                /* see if the uri is registered */
+                try
+                {
+                    this.repo.lookupSemanticModule( uri );
+                    /* uri is registered, but the element is not mapped correctly to a handler */
+                    throw new SAXParseException( "unknown tag '" + localName + "' in namespace '" + uri + "'",
+                                                 getLocator( ) );                    
+                }
+                catch ( NoSuchSemanticModuleException e )
+                {
+                    /* uri is not registered, so incorrect uri, missing drools.conf or classloader issues*/
+                    throw new SAXParseException( "no semantic module for namespace '" + uri + "' (" + localName + ")",
+                                                 getLocator() );
+                }
+                
+                
+
             }
             // no handler so build up the configuration
             startConfiguration( localName,
@@ -574,6 +598,12 @@ public class RuleSetReader extends DefaultHandler
     {
         Handler handler = getHandler( uri,
                                       localName );
+
+        if ( ( handler != null ) && ( !this.parents.isEmpty() && this.parents.getLast() instanceof Rule ) )
+        {
+            this.inHandledRuleSubElement = false;            
+        }        
+        
         if ( handler == null )
         {
             if ( this.configurationStack.size( ) >= 1 )
