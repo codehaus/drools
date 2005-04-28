@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.46.2.3 2005-04-12 22:11:14 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.46.2.4 2005-04-28 00:15:30 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.46.2.3 2005-04-12 22:11:14 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.46.2.4 2005-04-28 00:15:30 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -393,7 +393,11 @@ public class RuleSetReader extends DefaultHandler
                 }
                 catch ( SAXNotRecognizedException e )
                 {
-                    System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
+                    boolean hideWarnings = Boolean.getBoolean( "drools.schema.hidewarnings" );
+                    if ( !hideWarnings )
+                    {
+                        System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
+                    }
                     localParser = null;
                 }
             }
