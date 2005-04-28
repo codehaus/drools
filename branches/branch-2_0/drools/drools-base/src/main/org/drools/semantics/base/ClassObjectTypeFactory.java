@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectTypeFactory.java,v 1.7.2.2 2005-04-16 14:10:50 mproctor Exp $
+ * $Id: ClassObjectTypeFactory.java,v 1.7.2.3 2005-04-28 01:59:14 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -113,22 +113,51 @@ public class ClassObjectTypeFactory
         {
             clazz = null;
         }
+                
+        /* Now try the ruleset object type cache */
+        if ( clazz == null )
+        {        
+        }
 
         /* Now try the className with each of the given imports */
         if ( clazz == null )
         {
-            Iterator it = importSet.iterator( );
-            while ( it.hasNext( ) && clazz == null )
+           Set validClazzCandidates = new HashSet();
+           
+           Iterator it = importSet.iterator( );
+            while ( it.hasNext( ) )
             {
                 clazz = importClass( cl,
                                      (String) it.next( ),
                                      className.trim( ) );
+                if ( clazz != null )
+                {
+                    validClazzCandidates.add( clazz );
+                }             
             }
+            
+            /* If there are more than one possible resolutions, complain about the ambiguity */
+            if ( validClazzCandidates.size( ) > 1 )
+            {
+                StringBuffer sb = new StringBuffer( );
+                Iterator clazzCandIter = validClazzCandidates.iterator( );
+                while ( clazzCandIter.hasNext( ) )
+                {
+                    if ( 0 !=  sb.length( ) )
+                    {
+                        sb.append( ", " );
+                    }
+                    sb.append( ( (Class)clazzCandIter.next( ) ).getName( ) );
+                }
+                throw new FactoryException( "Unable to find unambiguously defined class '" + className + "', candidates are: [" + sb.toString() + "]" );                
+            }                            
         }
+        
+        
         /* We still can't find the class so throw an exception */
         if ( clazz == null )
         {
-            throw new FactoryException( "Unable to find class " + className );
+            throw new FactoryException( "Unable to find class '" + className + "'");
         }
 
         return new ClassObjectType( clazz );

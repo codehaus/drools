@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.3 2005-04-17 13:18:43 mproctor Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.4 2005-04-28 01:59:14 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -124,20 +124,61 @@ public class ClassFieldObjectTypeFactory
             }
             catch ( ClassNotFoundException e )
             {
-                /* Now try the className with each of the given imports */
-                Iterator it = importSet.iterator( );
-                while ( it.hasNext( ) && clazz == null )
+                clazz = null;
+            }
+                    
+
+            /* Now try the ruleset object type cache */
+            if ( clazz == null )
+            {        
+            }
+
+            /* Now try the className with each of the given imports */
+            if ( clazz == null )
+            {
+               Set validClazzCandidates = new HashSet();
+               
+               Iterator it = importSet.iterator( );
+                while ( it.hasNext( ) )
                 {
                     clazz = importClass( cl,
                                          (String) it.next( ),
                                          className.trim( ) );
+                    if ( clazz != null )
+                    {
+                        validClazzCandidates.add( clazz );
+                    }             
+                }
+                
+                /* If there are more than one possible resolutions, complain about the ambiguity */
+                if ( validClazzCandidates.size( ) > 1 )
+                {
+                    StringBuffer sb = new StringBuffer( );
+                    Iterator clazzCandIter = validClazzCandidates.iterator( );
+                    while ( clazzCandIter.hasNext( ) )
+                    {
+                        if ( 0 !=  sb.length( ) )
+                        {
+                            sb.append( ", " );
+                        }
+                        sb.append( ( (Class)clazzCandIter.next( ) ).getName( ) );
+                    }
+                    throw new FactoryException( "Unable to find unambiguously defined class '" + className + "', candidates are: [" + sb.toString() + "]" );                
+                } 
+                else if ( validClazzCandidates.size( ) == 1 )
+                {
+                    clazz = (Class) validClazzCandidates.toArray()[0];
+                }
+                else
+                {
+                    clazz = null;
                 }
             }
 
             /* We still can't find the class so throw an exception */
             if ( clazz == null )
             {
-                throw new FactoryException( "Unable to find class " + className );
+                throw new FactoryException( "Unable to find class '" + className + "'" );
             }
 
             // make sure field getter exists
@@ -150,11 +191,11 @@ public class ClassFieldObjectTypeFactory
         }
         catch ( SecurityException e )
         {
-            throw new FactoryException( "Field " + fieldName + " is not accessible for Class " + className );
+            throw new FactoryException( "Field '" + fieldName + "' is not accessible for Class '" + className + "'" );
         }
         catch ( NoSuchMethodException e )
         {
-            throw new FactoryException( "Field " + fieldName + " does not exist for Class " + className );
+            throw new FactoryException( "Field '" + fieldName + "' does not exist for Class '" + className + "'" );
         }
     }
 
