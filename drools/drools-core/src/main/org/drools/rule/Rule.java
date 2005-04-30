@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.56 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: Rule.java,v 1.56.2.1 2005-04-30 12:37:34 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,6 +53,7 @@ import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
 /**
@@ -105,9 +106,9 @@ public class Rule
     /** is the consequence of the rule currently being executed? */
     private boolean noLoop;
 
-    private Set imports;
-
     private Map applicationData;
+    
+    private Importer importer;
 
     // ------------------------------------------------------------
     // Constructors
@@ -123,7 +124,6 @@ public class Rule
     {
         this.name = name;
         this.ruleSet = ruleSet;
-        this.imports = Collections.EMPTY_SET;
         this.applicationData = Collections.EMPTY_MAP;
     }
 
@@ -410,29 +410,16 @@ public class Rule
     {
         this.loadOrder = loadOrder;
     }
-
-    public void setImports(Set imports)
+    
+    public Importer getImporter()
     {
-        this.imports = imports;
+        return this.importer;
     }
-
-    public Set getImports( Class clazz )
+    
+    public void setImporter(Importer importer)
     {
-        Set imports = new HashSet();
-
-        Iterator i = this.imports.iterator();
-        ImportEntry importEntry;
-        while ( i.hasNext() )
-        {
-            importEntry = ( ImportEntry ) i.next();
-            if ( clazz.isInstance( importEntry ) )
-            {
-                imports.add( importEntry.getImportEntry( ) );
-            }
-        }
-
-        return imports;
-    }
+        this.importer = importer;
+    }      
 
     public void setApplicationData(Map applicationData)
     {

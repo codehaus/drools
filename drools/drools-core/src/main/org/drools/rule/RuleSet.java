@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.19 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: RuleSet.java,v 1.19.2.1 2005-04-30 12:37:34 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,7 @@ import java.util.Set;
 
 import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 
 /**
@@ -59,7 +60,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSet.java,v 1.19 2005-02-02 00:23:22 mproctor Exp $
+ * @version $Id: RuleSet.java,v 1.19.2.1 2005-04-30 12:37:34 mproctor Exp $
  */
 public class RuleSet
     implements
@@ -88,7 +89,7 @@ public class RuleSet
     /** Ordered list of all <code>Rules</code> in this <code>RuleSet</code>. */
     private List                  rules;
 
-    private Set                   imports;
+    private Importer              importer;
 
     private Map                   applicationData;
 
@@ -111,7 +112,6 @@ public class RuleSet
         this.name = name;
         this.ruleNames = new HashSet( );
         this.rules = new ArrayList( );
-        this.imports = new HashSet( );
         this.applicationData = new HashMap( );
         this.functions = new HashMap( );
         this.ruleBaseContext = new RuleBaseContext( );
@@ -130,7 +130,6 @@ public class RuleSet
         this.name = name;
         this.ruleNames = new HashSet( );
         this.rules = new ArrayList( );
-        this.imports = new HashSet( );
         this.applicationData = new HashMap( );
         this.functions = new HashMap( );
         this.ruleBaseContext = ruleBaseContext;
@@ -199,7 +198,7 @@ public class RuleSet
 
         this.ruleNames.add( name );
         rule.setLoadOrder( rules.size( ) );
-        rule.setImports( this.imports );
+        rule.setImporter( this.importer );
         this.rules.add( rule );
     }
 
@@ -252,15 +251,15 @@ public class RuleSet
         return (Rule[]) this.rules.toArray( new Rule[this.rules.size( )] );
     }
 
-    public void addImport(ImportEntry importEntry)
+    public Importer getImporter()
     {
-        this.imports.add( importEntry );
+        return this.importer;
     }
-
-    public Set getImports()
+    
+    public void setImporter(Importer importer)
     {
-        return this.imports;
-    }
+        this.importer = importer;
+    }    
 
     public void addApplicationData(ApplicationData applicationData)
     {
