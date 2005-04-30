@@ -54,14 +54,10 @@
 		<includes>
 		  <include>**/*Test.java</include>
 		</includes>
-<!--
-		<excludes>
-		  <exclude>**/PythonSemanticTest.java</exclude>
-		</excludes>
--->
+
             <resources>
                 <resource>
-                    <directory>src/test/data</directory>
+                    <directory>src/test</directory>
                     <includes>
                         <include>**/*.data</include>
                     </includes>

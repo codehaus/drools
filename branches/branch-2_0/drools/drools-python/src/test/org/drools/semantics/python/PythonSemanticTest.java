@@ -3,7 +3,9 @@ package org.drools.semantics.python;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.drools.smf.DefaultImporter;
 import org.drools.smf.SMFTestFrameWork;
+import org.drools.spi.Importer;
 
 /**
  * Extends SMFTestFrameWork specifying the python Semantic Module. The
@@ -18,11 +20,11 @@ public class PythonSemanticTest extends SMFTestFrameWork
     }
 
     public void setUp() throws Exception
-    {
-        Set imports = new HashSet();
-        imports.add(new PythonImportEntry("from java.math import *"));
-        imports.add(new PythonImportEntry("from org.drools.smf import SMFTestFrameWork"));
-        imports.add(new PythonImportEntry("from org.drools.smf.SMFTestFrameWork import Cheese"));
-        super.setUp( "python", imports );
+    {        
+        Importer importer = new DefaultImporter();
+        importer.addImport(new PythonImportEntry("from java.math import *"));
+        importer.addImport(new PythonImportEntry("from org.drools.smf import SMFTestFrameWork"));
+        importer.addImport(new PythonImportEntry("from org.drools.smf.SMFTestFrameWork import Cheese"));
+        super.setUp( "python", importer );        
     }
 }

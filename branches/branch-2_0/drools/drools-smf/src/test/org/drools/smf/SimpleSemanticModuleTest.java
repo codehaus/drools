@@ -133,9 +133,9 @@ public class SimpleSemanticModuleTest extends DroolsTestCase
         ObjectTypeFactory
     {
 
-        public ObjectType newObjectType(RuleBaseContext context,
-                                        Configuration config,
-                                        Set imports)
+        public ObjectType newObjectType(Rule rule,
+                                        RuleBaseContext context,
+                                        Configuration config)
         {
 
             return null;

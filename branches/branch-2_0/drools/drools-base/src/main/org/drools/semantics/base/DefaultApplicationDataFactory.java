@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: DefaultApplicationDataFactory.java,v 1.5 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: DefaultApplicationDataFactory.java,v 1.5.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,7 @@ import org.drools.smf.ApplicationDataFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 
 public class DefaultApplicationDataFactory
@@ -59,56 +60,40 @@ public class DefaultApplicationDataFactory
 {
     public ApplicationData newApplicationData(RuleSet ruleSet,
                                               RuleBaseContext context,
-                                              Configuration config,
-                                              Set imports) throws FactoryException
+                                              Configuration config ) throws FactoryException
 
     {
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        Class clazz = null;
-        /* first try loading className */
         String className = config.getText( ).trim( );
+        
+        Class clazz = null;
         try
         {
-            clazz = cl.loadClass( className );
-        }
-        catch ( Exception e )
-        {
-            // ignore for now
-        }
-
-        if ( null == clazz )
-        {
-            // get imports
-            Set importSet = new HashSet( );
-            if ( imports != null )
+            ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
+            if ( cl == null )
             {
-
-                Iterator it = imports.iterator( );
-                ImportEntry importEntry;
-                while ( it.hasNext( ) )
-                {
-                    importEntry = (ImportEntry) it.next( );
-                    importSet.add( importEntry.getImportEntry( ) );
-                }
+                cl = Thread.currentThread( ).getContextClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
             }
 
-            /* Now try the className with each of the given imports */
-            if ( clazz == null )
+            if ( cl == null )
             {
-                Iterator it = importSet.iterator( );
-                while ( it.hasNext( ) && clazz == null )
-                {
-                    clazz = importClass( cl,
-                                         (String) it.next( ),
-                                         className );
-                }
+                cl = getClass( ).getClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
             }
-        }
 
-        if ( null == clazz )
+            Importer importer = ruleSet.getImporter( );
+            clazz = importer.importClass( cl,
+                                          className );
+        }
+        catch ( ClassNotFoundException e )
         {
-            throw new FactoryException( "Cannot find class [" + className + "] for application data identifier [" + config.getAttribute( "identifier" ) + "]" );
+            throw new FactoryException( e.getMessage( ) );
+        }
+        catch ( Error e )
+        {
+            throw new FactoryException( e.getMessage( ) );
         }
 
         return new ApplicationData( ruleSet,
@@ -116,46 +101,4 @@ public class DefaultApplicationDataFactory
                                     clazz );
     }
 
-    private Class importClass(ClassLoader cl,
-                              String importText,
-                              String className)
-    {
-        String qualifiedClass = null;
-        Class clazz = null;
-        if ( importText.startsWith( "from " ) )
-        {
-            importText = converPythonImport( importText );
-        }
-        // not python
-        if ( importText.endsWith( "*" ) )
-        {
-            qualifiedClass = importText.substring( 0,
-                                                   importText.indexOf( '*' ) ) + className;
-        }
-        else if ( importText.endsWith( className ) )
-        {
-            qualifiedClass = importText;
-        }
-
-        if ( qualifiedClass != null )
-        {
-            try
-            {
-                clazz = cl.loadClass( qualifiedClass );
-            }
-            catch ( Exception e )
-            {
-                // swallow
-            }
-        }
-        return clazz;
-    }
-
-    private String converPythonImport(String packageText)
-    {
-        int fromIndex = packageText.indexOf( "from " );
-        int importIndex = packageText.indexOf( "import " );
-        return packageText.substring( fromIndex + 5,
-                                      importIndex ).trim( ) + "." + packageText.substring( importIndex + 7 ).trim( );
-    }
 }

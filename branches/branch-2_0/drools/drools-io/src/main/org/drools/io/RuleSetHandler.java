@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetHandler.java,v 1.1.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * $Id: RuleSetHandler.java,v 1.1.2.2 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools.io;
 import java.util.HashSet;
 
 import org.drools.rule.RuleSet;
+import org.drools.smf.DefaultImporter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -94,6 +95,8 @@ class RuleSetHandler extends BaseAbstractHandler implements Handler
         {
             ruleSet.setDocumentation( ruleSetDesc );
         }
+        
+        ruleSet.setImporter( new DefaultImporter( ) );
 
         ruleSetReader.setRuleSet( ruleSet );
         return ruleSet;

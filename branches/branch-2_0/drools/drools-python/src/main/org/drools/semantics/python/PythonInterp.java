@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.7.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * $Id: PythonInterp.java,v 1.7.2.2 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -132,7 +132,7 @@ public class PythonInterp
         this.origininalText = text;
         StringBuffer globalText = new StringBuffer( );
 
-        Iterator it = rule.getImports( PythonImportEntry.class ).iterator( );
+        Iterator it = rule.getImporter( ).getImports( PythonImportEntry.class ).iterator( );
 
         while ( it.hasNext( ) )
         {
