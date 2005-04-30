@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: SemaphoreFactory.java,v 1.2.2.1 2005-04-17 13:18:43 mproctor Exp $
+ * $Id: SemaphoreFactory.java,v 1.2.2.2 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,6 +43,7 @@ package org.drools.semantics.base;
 
 import java.util.Set;
 
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
@@ -60,9 +61,9 @@ public class SemaphoreFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType(RuleBaseContext context,
-                                    Configuration config,
-                                    Set imports) throws FactoryException
+    public ObjectType newObjectType(Rule rule,
+                                    RuleBaseContext context,
+                                    Configuration config) throws FactoryException
     {
         String className = "org.drools.semantics.base." + config.getAttribute( "type" ) + "Semaphore";
         String fieldName = "identifier";

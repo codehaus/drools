@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.4.2.5 2005-04-15 01:07:04 mproctor Exp $
+ * $Id: JavaFunctions.java,v 1.4.2.6 2005-04-30 13:49:43 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -54,6 +54,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 
 /**
@@ -61,7 +62,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: JavaFunctions.java,v 1.4.2.5 2005-04-15 01:07:04 mproctor Exp $
+ * @version $Id: JavaFunctions.java,v 1.4.2.6 2005-04-30 13:49:43 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -140,7 +141,8 @@ public class JavaFunctions
 
 
         Set imports = new HashSet();
-
+        Importer importer = ruleSet.getImporter();
+        /*
         Iterator i = ruleSet.getImports().iterator();
         ImportEntry importEntry;
         while ( i.hasNext() )
@@ -151,8 +153,9 @@ public class JavaFunctions
                 imports.add( importEntry.getImportEntry( ) );
             }
         }
+        */
 
-        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
+        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(importer, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
         this.functionsClass = classBody.evaluate();
 
         ruleBaseContext.put( "java-classLoader",

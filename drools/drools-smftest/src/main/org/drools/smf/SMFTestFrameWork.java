@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.29 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: SMFTestFrameWork.java,v 1.29.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,6 +61,7 @@ import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.Importer;
 import org.drools.spi.MockTuple;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
@@ -101,7 +102,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
     private String              newline = System.getProperty( "line.separator" );
 
-    private Set                 imports;
+    private Importer            importer;
 
     private RuleBaseContext     ruleBaseContext;
 
@@ -117,7 +118,7 @@ public abstract class SMFTestFrameWork extends TestCase
      * the delimter <!--drools-test--!>
      */
     public void setUp(String semantic,
-                      Set imports) throws Exception
+                      Importer importer) throws Exception
     {
         if ( !"conditions".equals( testType ) && !"consequences".equals( testType ) )
         {
@@ -125,7 +126,7 @@ public abstract class SMFTestFrameWork extends TestCase
         }
 
         ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-        URL semanticTests = cl.getResource( semantic + "-" + testType + ".data" );
+        URL semanticTests = cl.getResource( "data/" + semantic + "-" + testType + ".data" );
         BufferedReader in = new BufferedReader( new InputStreamReader( semanticTests.openStream( ) ) );
         StringBuffer buffer = new StringBuffer( );
         String blockMarker = "<!--drools-test--!>";
@@ -149,7 +150,7 @@ public abstract class SMFTestFrameWork extends TestCase
         this.repository = DefaultSemanticsRepository.getInstance( );
         module = this.repository.lookupSemanticModule( "http://drools.org/semantics/" + semantic );
 
-        this.imports = imports;
+        this.importer = importer;
 
         this.ruleBaseContext = new RuleBaseContext( );
 
@@ -172,12 +173,13 @@ public abstract class SMFTestFrameWork extends TestCase
                                              this.ruleBaseContext );
         final Rule rule = new Rule( "Test Rule 1",
                                     ruleSet );
-        ObjectType cheeseType = objectTypeFactory.newObjectType( this.ruleBaseContext,
-                                                                 cheeseConfiguration,
-                                                                 new HashSet( ) );
+        rule.setImporter( new DefaultImporter( ) );
+        ObjectType cheeseType = objectTypeFactory.newObjectType( rule,
+                                                                 this.ruleBaseContext,
+                                                                 cheeseConfiguration );
 
         tuple = new MockTuple( );
-        rule.setImports( new HashSet( ) );
+        rule.setImporter( new DefaultImporter( ) );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
@@ -215,7 +217,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         // condition check with a single declaration
         tuple = new MockTuple( );
-        rule.setImports( new HashSet( ) );
+        rule.setImporter( new DefaultImporter( ) );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl,
@@ -229,7 +231,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         // condition check with two declarations
         tuple = new MockTuple( );
-        rule.setImports( new HashSet( ) );
+        rule.setImporter( new DefaultImporter( ) );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl,
@@ -277,7 +279,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         // test code works no matter what the order of decl are
         tuple = new MockTuple( );
-        rule.setImports( new HashSet( ) );
+        rule.setImporter( new DefaultImporter( ) );
         rule.setApplicationData( new HashMap( ) );
         tuple.setRule( rule );
         workingMemory = new MockWorkingMemory( );
@@ -285,9 +287,9 @@ public abstract class SMFTestFrameWork extends TestCase
 
         MockConfiguration stringConfiguration = new MockConfiguration( "test2" );
         stringConfiguration.setText( String.class.getName( ) );
-        ObjectType stringType = objectTypeFactory.newObjectType( this.ruleBaseContext,
-                                                                 stringConfiguration,
-                                                                 new HashSet( ) );
+        ObjectType stringType = objectTypeFactory.newObjectType( rule,
+                                                                 this.ruleBaseContext,
+                                                                 stringConfiguration );
         Declaration favouriteCheeseDecl = rule.addParameterDeclaration( "favouriteCheese",
                                                                         stringType );
 
@@ -308,7 +310,7 @@ public abstract class SMFTestFrameWork extends TestCase
                                    rule ) ); // 18
 
         // test exceptions
-        rule.setImports( this.imports );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         try
         {
@@ -330,7 +332,7 @@ public abstract class SMFTestFrameWork extends TestCase
         // 20
         // test imports
         tuple = new MockTuple( );
-        rule.setImports( this.imports );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         workingMemory = new MockWorkingMemory( );
         tuple.setWorkingMemory( workingMemory );
@@ -371,12 +373,14 @@ public abstract class SMFTestFrameWork extends TestCase
                                              this.ruleBaseContext );
         Rule rule = new Rule( "Test Rule 1",
                               ruleSet );
-        ObjectType cheeseType = objectTypeFactory.newObjectType( this.ruleBaseContext,
-                                                                 cheeseConfiguration,
-                                                                 null );
+        
+        rule.setImporter( new DefaultImporter( ) );
+        ObjectType cheeseType = objectTypeFactory.newObjectType( rule,
+                                                                 this.ruleBaseContext,
+                                                                 cheeseConfiguration );
 
         tuple = new MockTuple( );
-        rule.setImports( this.imports );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
 
@@ -454,7 +458,7 @@ public abstract class SMFTestFrameWork extends TestCase
         // test exceptions
         rule = new Rule( "Test Rule 1",
                          ruleSet );
-        rule.setImports( this.imports );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         try
         {
@@ -474,7 +478,7 @@ public abstract class SMFTestFrameWork extends TestCase
         tuple = new MockTuple( );
         rule = new Rule( "Test Rule 1",
                          ruleSet );
-        rule.setImports( this.imports );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         workingMemory = new MockWorkingMemory( );
         tuple.setWorkingMemory( workingMemory );

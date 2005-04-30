@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.7.2.3 2005-04-15 01:07:04 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.7.2.4 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -106,7 +106,7 @@ class JavaCompiler
                                                 clazz,
                                                 PARAM_NAMES,
                                                 params,
-                                                rule.getImports( JavaImportEntry.class ),
+                                                rule.getImporter( ),
                                                 rule.getApplicationData( ),
                                                 functionsClass,
                                                 classLoader );

@@ -21,6 +21,7 @@ import org.codehaus.janino.util.PrimitiveWrapper;
 
 import org.drools.rule.Declaration;
 import org.drools.semantics.base.ClassObjectType;
+import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
 public class JavaScriptEvaluator extends EvaluatorBase
@@ -34,14 +35,14 @@ public class JavaScriptEvaluator extends EvaluatorBase
     }
 
     public JavaScriptEvaluator(String code,
-                                 String className,
-                                 Class interfaceToImplement,
-                                 String[] parameterNames,
-                                 Declaration[] declarations,
-                                 Set imports,
-                                 Map applicationData,
-                                 Class baseClass,
-                                 ClassLoader classLoader) throws Scanner.ScanException,
+                               String className,
+                               Class interfaceToImplement,
+                               String[] parameterNames,
+                               Declaration[] declarations,
+                               Importer importer,
+                               Map applicationData,
+                               Class baseClass,
+                               ClassLoader classLoader) throws Scanner.ScanException,
                                                      Parser.ParseException,
                                                      Java.CompileException,
                                                      IOException
@@ -78,6 +79,8 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                 parameterNames, // parameterNames
                                                                 parameterTypes, // parameterTypes
                                                                 methodToImplement.getExceptionTypes( ) );// thrownExceptions
+        
+        Set imports = importer.getImports( JavaImportEntry.class );
 
         // Parse block statements.
         Parser parser = new Parser( scanner );
@@ -90,10 +93,12 @@ public class JavaScriptEvaluator extends EvaluatorBase
                          imports );
         addAppData( scanner,
                     block,
-                    imports,
-                    applicationData );
+                    applicationData,
+                    imports);
 
         Location loc = scanner.peek( ).getLocation( );
+        
+        
         Iterator it = imports.iterator( );
         String type;
         List list;
@@ -130,7 +135,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                                             (String[]) list.toArray( new String[list.size( )] ) ) );
             }
         }
-
+        
         while ( !scanner.peek( ).isEOF( ) )
         {
             block.addStatement( parser.parseBlockStatement( block ) );
@@ -170,8 +175,8 @@ public class JavaScriptEvaluator extends EvaluatorBase
 
     private void addAppData(Scanner scanner,
                             Java.Block block,
-                            Set imports,
-                            Map appData)
+                            Map appData,
+                            Set imports )
     {
         Set keys = appData.keySet( );
         Iterator it = keys.iterator( );
@@ -220,7 +225,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                             this.classToType( loc,
                                                                                               clazz ), // type
                                                                             variables ) );
-        }
+        }        
     }
 
     private void addDeclarations(Scanner scanner,
@@ -284,6 +289,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                                               clazz ), // type
                                                                             variables ) );
         }
+
     }
 
     public static Object compile(String block,
@@ -291,7 +297,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                  Class interfaceToImplement,
                                  String[] parameterNames,
                                  Declaration[] declarations,
-                                 Set imports,
+                                 Importer importer,
                                  Map applicationData,
                                  Class baseClass,
                                  ClassLoader classLoader) throws Java.CompileException,
@@ -304,7 +310,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                        interfaceToImplement,
                                                                        parameterNames,
                                                                        declarations,
-                                                                       imports,
+                                                                       importer,
                                                                        applicationData,
                                                                        baseClass,
                                                                        classLoader );

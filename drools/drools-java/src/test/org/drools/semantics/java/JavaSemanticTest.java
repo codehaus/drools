@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaSemanticTest.java,v 1.9 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: JavaSemanticTest.java,v 1.9.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,7 +43,9 @@ package org.drools.semantics.java;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.drools.smf.DefaultImporter;
 import org.drools.smf.SMFTestFrameWork;
+import org.drools.spi.Importer;
 
 /**
  * Extends SMFTestFrameWork specifying the Java Semantic Module. The
@@ -59,10 +61,10 @@ public class JavaSemanticTest extends SMFTestFrameWork
 
     public void setUp( ) throws Exception
     {
-        Set imports = new HashSet( );
-        imports.add(new JavaImportEntry( "java.math.*" ) );
-        imports.add(new JavaImportEntry( "org.drools.smf.SMFTestFrameWork" ) );
+        Importer importer = new DefaultImporter( );        
+        importer.addImport(new JavaImportEntry( "java.math.*" ) );
+        importer.addImport(new JavaImportEntry( "org.drools.smf.SMFTestFrameWork" ) );
         super.setUp( "java",
-                     imports );
+                     importer );
     }
 }

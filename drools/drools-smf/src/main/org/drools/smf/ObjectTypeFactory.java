@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ObjectTypeFactory.java,v 1.7 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: ObjectTypeFactory.java,v 1.7.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,12 +43,13 @@ package org.drools.smf;
 
 import java.util.Set;
 
+import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
 
 public interface ObjectTypeFactory
 {
-    ObjectType newObjectType(RuleBaseContext context,
-                             Configuration config,
-                             Set imports) throws FactoryException;
+    ObjectType newObjectType(Rule rule,
+                             RuleBaseContext context,
+                             Configuration config) throws FactoryException;
 }

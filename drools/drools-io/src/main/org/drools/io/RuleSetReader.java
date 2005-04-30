@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.46.2.5 2005-04-28 01:25:51 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.46.2.6 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,7 +79,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.46.2.5 2005-04-28 01:25:51 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.46.2.6 2005-04-30 13:49:43 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -418,7 +418,6 @@ public class RuleSetReader extends DefaultHandler
                     throw new RuntimeException( e.getMessage( ) );
                 }
             }
-
         }
         else
         {

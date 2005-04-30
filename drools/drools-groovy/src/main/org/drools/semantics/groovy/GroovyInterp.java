@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.6.2.1 2005-04-07 17:32:15 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.6.2.2 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -101,7 +101,7 @@ public class GroovyInterp
         {
             StringBuffer newText = new StringBuffer( );
 
-            Iterator it = rule.getImports( GroovyImportEntry.class ).iterator( );
+            Iterator it = rule.getImporter( ).getImports( GroovyImportEntry.class ).iterator( );
             while ( it.hasNext( ) )
             {
                 newText.append( "import " );

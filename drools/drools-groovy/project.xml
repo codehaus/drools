@@ -59,7 +59,7 @@
             </includes>
             <resources>
                 <resource>
-                    <directory>src/test/data</directory>
+                    <directory>src/test</directory>
                     <includes>
                         <include>**/*.data</include>
                     </includes>

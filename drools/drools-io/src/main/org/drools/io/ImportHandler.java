@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ImportHandler.java,v 1.2 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: ImportHandler.java,v 1.2.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import org.drools.smf.FactoryException;
 import org.drools.smf.ImportEntryFactory;
 import org.drools.smf.SemanticModule;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -91,12 +92,13 @@ class ImportHandler extends BaseAbstractHandler implements Handler
 
         Configuration config = ruleSetReader.endConfiguration( );
         ImportEntry importEntry;
+        Importer importer = ruleSetReader.getRuleSet().getImporter();
         try
         {
             importEntry = factory.newImportEntry( this.ruleSetReader.getRuleSet( ),
                                                   this.ruleSetReader.getFactoryContext( ),
                                                   config );
-            ruleSetReader.getRuleSet( ).addImport( importEntry );
+            importer.addImport( importEntry );
         }
         catch ( FactoryException e )
         {

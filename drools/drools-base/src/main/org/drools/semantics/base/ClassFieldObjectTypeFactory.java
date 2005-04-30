@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.4 2005-04-28 01:59:14 mproctor Exp $
+ * $Id: ClassFieldObjectTypeFactory.java,v 1.7.2.5 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,10 +45,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
 
@@ -63,9 +65,9 @@ public class ClassFieldObjectTypeFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType(RuleBaseContext context,
-                                    Configuration config,
-                                    Set imports) throws FactoryException
+    public ObjectType newObjectType(Rule rule,
+                                    RuleBaseContext context,
+                                    Configuration config) throws FactoryException
     {
         String className = config.getText( );
         String fieldName = config.getAttribute( "field" );
@@ -85,22 +87,9 @@ public class ClassFieldObjectTypeFactory
         {
             throw new FactoryException( "no field value specified" );
         }
-
+        Class clazz = null;
         try
         {
-            // get imports
-            Set importSet = new HashSet( );
-            if ( imports != null )
-            {
-                Iterator it = imports.iterator( );
-                ImportEntry importEntry;
-                while ( it.hasNext( ) )
-                {
-                    importEntry = (ImportEntry) it.next( );
-                    importSet.add( importEntry.getImportEntry( ) );
-                }
-            }
-
             ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
             if ( cl == null )
             {
@@ -116,78 +105,14 @@ public class ClassFieldObjectTypeFactory
                              cl );
             }
 
-            Class clazz = null;
-            /* first try loading className */
-            try
-            {
-                clazz = cl.loadClass( className );
-            }
-            catch ( ClassNotFoundException e )
-            {
-                clazz = null;
-            }
-                    
-
-            /* Now try the ruleset object type cache */
-            if ( clazz == null )
-            {        
-            }
-
-            /* Now try the className with each of the given imports */
-            if ( clazz == null )
-            {
-               Set validClazzCandidates = new HashSet();
-               
-               Iterator it = importSet.iterator( );
-                while ( it.hasNext( ) )
-                {
-                    clazz = importClass( cl,
-                                         (String) it.next( ),
-                                         className.trim( ) );
-                    if ( clazz != null )
-                    {
-                        validClazzCandidates.add( clazz );
-                    }             
-                }
-                
-                /* If there are more than one possible resolutions, complain about the ambiguity */
-                if ( validClazzCandidates.size( ) > 1 )
-                {
-                    StringBuffer sb = new StringBuffer( );
-                    Iterator clazzCandIter = validClazzCandidates.iterator( );
-                    while ( clazzCandIter.hasNext( ) )
-                    {
-                        if ( 0 !=  sb.length( ) )
-                        {
-                            sb.append( ", " );
-                        }
-                        sb.append( ( (Class)clazzCandIter.next( ) ).getName( ) );
-                    }
-                    throw new FactoryException( "Unable to find unambiguously defined class '" + className + "', candidates are: [" + sb.toString() + "]" );                
-                } 
-                else if ( validClazzCandidates.size( ) == 1 )
-                {
-                    clazz = (Class) validClazzCandidates.toArray()[0];
-                }
-                else
-                {
-                    clazz = null;
-                }
-            }
-
-            /* We still can't find the class so throw an exception */
-            if ( clazz == null )
-            {
-                throw new FactoryException( "Unable to find class '" + className + "'" );
-            }
+            Importer importer = rule.getImporter( );
+            clazz = importer.importClass( cl,
+                                          className );
 
             // make sure field getter exists
             clazz.getMethod( "get" + fieldName.toUpperCase( ).charAt( 0 ) + fieldName.substring( 1 ),
-                             ( Class[] ) null );
+                             (Class[]) null );
 
-            return new ClassFieldObjectType( clazz,
-                                             fieldName,
-                                             fieldValue );
         }
         catch ( SecurityException e )
         {
@@ -197,61 +122,17 @@ public class ClassFieldObjectTypeFactory
         {
             throw new FactoryException( "Field '" + fieldName + "' does not exist for Class '" + className + "'" );
         }
-    }
-
-    private Class importClass(ClassLoader cl,
-                              String importText,
-                              String className)
-    {
-        String qualifiedClass = null;
-        Class clazz = null;
-
-        String convertedImportText;
-        if ( importText.startsWith( "from " ) )
+        catch ( ClassNotFoundException e )
         {
-            convertedImportText = converPythonImport( importText );
+            throw new FactoryException( e.getMessage( ) );
         }
-        else
+        catch ( Error e )
         {
-            convertedImportText = importText;
+            throw new FactoryException( e.getMessage( ) );
         }
 
-        // not python
-        if ( convertedImportText.endsWith( "*" ) )
-        {
-            qualifiedClass = convertedImportText.substring( 0,
-                                                            convertedImportText.indexOf( '*' ) ) + className;
-        }
-        else if ( convertedImportText.endsWith( "." + className ) )
-        {
-            qualifiedClass = convertedImportText;
-        } else if ( convertedImportText.equals( className ) )
-        {
-            qualifiedClass = convertedImportText;
-        }
-            
-
-        if ( qualifiedClass != null )
-        {
-            try
-            {
-                clazz = cl.loadClass( qualifiedClass );
-            }
-            catch ( ClassNotFoundException e )
-            {
-                clazz = null;
-            }
-        }
-        return clazz;
-    }
-
-    private String converPythonImport(String packageText)
-    {
-        String fromString = "from ";
-        String importString = "import ";
-        int fromIndex = packageText.indexOf( fromString );
-        int importIndex = packageText.indexOf( importString );
-        return packageText.substring( fromIndex + fromString.length( ),
-                                      importIndex ).trim( ) + "." + packageText.substring( importIndex + importString.length( ) ).trim( );
+        return new ClassFieldObjectType( clazz,
+                                         fieldName,
+                                         fieldValue );
     }
 }

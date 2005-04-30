@@ -1,5 +1,5 @@
 /*
- * $Id: RuleHandler.java,v 1.3 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: RuleHandler.java,v 1.3.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -160,7 +160,7 @@ class RuleHandler extends BaseAbstractHandler
             rule.setDocumentation( ruleDesc );
         }
 
-        rule.setImports( this.ruleSetReader.getRuleSet( ).getImports( ) );
+        rule.setImporter( this.ruleSetReader.getRuleSet( ).getImporter( ) );
         rule.setApplicationData( this.ruleSetReader.getRuleSet( ).getApplicationData( ) );
     }
 
