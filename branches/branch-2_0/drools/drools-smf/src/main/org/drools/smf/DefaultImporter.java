@@ -11,7 +11,7 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 
 /*
- * $Id: DefaultImporter.java,v 1.1.2.1 2005-04-30 13:49:43 mproctor Exp $
+ * $Id: DefaultImporter.java,v 1.1.2.2 2005-05-01 00:01:17 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,7 +58,7 @@ public class DefaultImporter
 
     private Map importMap = Collections.EMPTY_MAP;
 
-    private Map cachedImports;
+    private Map cachedImports = Collections.EMPTY_MAP;
 
     public DefaultImporter()
     {
@@ -82,12 +82,12 @@ public class DefaultImporter
      */
     public Set getImports(Class clazz)
     {
-        Set imports = (Set) importMap.get( clazz );
-        
         if ( importMap == Collections.EMPTY_MAP )
         {
             importMap = new HashMap( );
         }
+        
+        Set imports = (Set) importMap.get( clazz );        
 
         if ( imports == null )
         {
@@ -126,7 +126,7 @@ public class DefaultImporter
 
     public Class lookupFromCache(String className)
     {
-        if ( cachedImports == null )
+        if ( cachedImports == Collections.EMPTY_MAP )
         {
             return null;
         }
@@ -263,7 +263,7 @@ public class DefaultImporter
 
         if ( clazz != null )
         {
-            if ( this.cachedImports == null )
+            if ( this.cachedImports == Collections.EMPTY_MAP  )
             {
                 this.cachedImports = new HashMap( );
             }
