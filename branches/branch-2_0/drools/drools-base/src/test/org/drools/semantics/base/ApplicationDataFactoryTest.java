@@ -4,6 +4,7 @@ import org.drools.rule.ApplicationData;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.smf.ApplicationDataFactory;
+import org.drools.smf.DefaultConfiguration;
 import org.drools.smf.DefaultImporter;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
@@ -21,7 +22,7 @@ public class ApplicationDataFactoryTest extends TestCase
     {
         RuleBaseContext ruleBaseContext = new RuleBaseContext( );
 
-        MockConfiguration configuration = new MockConfiguration( "test1" );
+        DefaultConfiguration configuration = new DefaultConfiguration( "test1" );
         configuration.setText( "java.util.HashMap" );
         configuration.setAttribute( "identifier",
                                     "map" );
@@ -49,7 +50,7 @@ public class ApplicationDataFactoryTest extends TestCase
     {
         RuleBaseContext ruleBaseContext = new RuleBaseContext( );
 
-        MockConfiguration configuration = new MockConfiguration( "test1" );
+        DefaultConfiguration configuration = new DefaultConfiguration( "test1" );
         configuration.setText( "HashMap" );
         configuration.setAttribute( "identifier",
                                     "map" );
@@ -78,7 +79,7 @@ public class ApplicationDataFactoryTest extends TestCase
     {
         RuleBaseContext ruleBaseContext = new RuleBaseContext( );
 
-        MockConfiguration configuration = new MockConfiguration( "test1" );
+        DefaultConfiguration configuration = new DefaultConfiguration( "test1" );
         configuration.setText( "HashMap" );
         configuration.setAttribute( "identifier",
                                     "map" );
