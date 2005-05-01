@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ObjectTypeHandler.java,v 1.4.2.2 2005-04-30 13:49:43 mproctor Exp $
+ * $Id: ObjectTypeHandler.java,v 1.4.2.3 2005-05-01 03:20:28 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ import java.util.HashSet;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
+import org.drools.smf.DefaultConfiguration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.smf.SemanticModule;

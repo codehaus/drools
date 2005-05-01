@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.29.2.1 2005-04-30 13:49:43 mproctor Exp $
+ * $Id: SMFTestFrameWork.java,v 1.29.2.2 2005-05-01 03:20:28 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -165,7 +165,7 @@ public abstract class SMFTestFrameWork extends TestCase
         int testNumber = 0;
         MockTuple tuple;
 
-        MockConfiguration cheeseConfiguration = new MockConfiguration( "test1" );
+        DefaultConfiguration cheeseConfiguration = new DefaultConfiguration( "test1" );
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory( "class" );
 
@@ -285,7 +285,7 @@ public abstract class SMFTestFrameWork extends TestCase
         workingMemory = new MockWorkingMemory( );
         tuple.setWorkingMemory( workingMemory );
 
-        MockConfiguration stringConfiguration = new MockConfiguration( "test2" );
+        DefaultConfiguration stringConfiguration = new DefaultConfiguration( "test2" );
         stringConfiguration.setText( String.class.getName( ) );
         ObjectType stringType = objectTypeFactory.newObjectType( rule,
                                                                  this.ruleBaseContext,
@@ -350,7 +350,7 @@ public abstract class SMFTestFrameWork extends TestCase
                                   Rule rule) throws Exception
     {
         ConditionFactory conditionFactory = module.getConditionFactory( "condition" );
-        MockConfiguration conditionConfiguration = new MockConfiguration( "test" + testNumber );
+        DefaultConfiguration conditionConfiguration = new DefaultConfiguration( "test" + testNumber );
         conditionConfiguration.setText( (String) tests.get( testNumber ) );
         Condition condition = conditionFactory.newCondition( rule,
                                                              this.ruleBaseContext,
@@ -365,7 +365,7 @@ public abstract class SMFTestFrameWork extends TestCase
     {
         MockTuple tuple;
 
-        MockConfiguration cheeseConfiguration = new MockConfiguration( "test1" );
+        DefaultConfiguration cheeseConfiguration = new DefaultConfiguration( "test1" );
         cheeseConfiguration.setText( Cheese.class.getName( ) );
         ObjectTypeFactory objectTypeFactory = module.getObjectTypeFactory( "class" );
 
@@ -502,7 +502,7 @@ public abstract class SMFTestFrameWork extends TestCase
                                  Rule rule) throws Exception
     {
         ConsequenceFactory consequenceFactory = module.getConsequenceFactory( "consequence" );
-        MockConfiguration consequenceConfiguration = new MockConfiguration( "test" + testNumber );
+        DefaultConfiguration consequenceConfiguration = new DefaultConfiguration( "test" + testNumber );
         consequenceConfiguration.setText( (String) tests.get( testNumber ) );
         Consequence consequence = consequenceFactory.newConsequence( rule,
                                                                      this.ruleBaseContext,

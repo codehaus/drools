@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: SemaphoreFactory.java,v 1.2.2.2 2005-04-30 13:49:43 mproctor Exp $
+ * $Id: SemaphoreFactory.java,v 1.2.2.3 2005-05-01 03:20:27 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -64,8 +64,8 @@ public class SemaphoreFactory
     public ObjectType newObjectType(Rule rule,
                                     RuleBaseContext context,
                                     Configuration config) throws FactoryException
-    {
-        String className = "org.drools.semantics.base." + config.getAttribute( "type" ) + "Semaphore";
+    {       
+        String className = config.getAttribute( "type" );
         String fieldName = "identifier";
         String fieldValue = config.getAttribute( "identifier" );
 
@@ -73,7 +73,8 @@ public class SemaphoreFactory
         {
             throw new FactoryException( "no Semaphore type specified" );
         }
-
+        className = "org.drools.semantics.base." + className + "Semaphore";
+        
         if ( fieldValue == null || fieldValue.trim( ).equals( "" ) )
         {
             throw new FactoryException( "no Semaphore identifier specified" );
@@ -82,9 +83,13 @@ public class SemaphoreFactory
         try
         {
             ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+            if ( cl == null )
+            {
+                cl = getClass().getClassLoader();
+            }
 
             Class clazz = null;
-            /* first try loading className */
+            /* All semaphore types should be in system classloader*/
             try
             {
                 clazz = cl.loadClass( className );
@@ -92,7 +97,7 @@ public class SemaphoreFactory
             catch ( ClassNotFoundException e )
             {
                 // Semaphore type does not exist
-                throw new FactoryException( "Unable create Semaphore for type [" + config.getAttribute( "type" ) + "]" );
+                throw new FactoryException( "Unable create Semaphore for type '" + config.getAttribute( "type" ) + "'" );
             }
 
             // make sure field getter exists
@@ -105,11 +110,11 @@ public class SemaphoreFactory
         }
         catch ( SecurityException e )
         {
-            throw new FactoryException( "Field " + fieldName + " is not accessible for Class " + className );
+            throw new FactoryException( "Field '" + fieldName + "' is not accessible for Class '" + className + "'" );
         }
         catch ( NoSuchMethodException e )
         {
-            throw new FactoryException( "Field " + fieldName + " does not exist for Class " + className );
+            throw new FactoryException( "Field '" + fieldName + "' does not exist for Class '" + className + "'" );
         }
     }
 
