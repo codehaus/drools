@@ -157,6 +157,29 @@
       </java>
     </goal>
 
+    <goal name="fibonacci-python-serialized" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.python.drl"/>
+      </java>
+    </goal>    
+
+    <goal name="fibonacci-python-jndi" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
+            fork="true">
+          <arg value="org.osjava.jndi.PropertiesFactory"/>
+          <arg value="fibonacci.python.drl"/>
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>    
+
     <goal name="fibonacci-native" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciNative"
             fork="true">
