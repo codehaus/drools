@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.6.2.3 2005-05-01 01:03:52 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.6.2.4 2005-05-01 13:39:13 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -78,7 +78,9 @@ public class GroovyInterp
     // ------------------------------------------------------------
 
     /** Text. */
-    private final String        text;
+    private final String        originalText;
+    
+    private String              text;
 
     /** The rule. */
     private final Rule          rule;
@@ -96,7 +98,7 @@ public class GroovyInterp
                            Rule rule)
     {
         this.rule = rule;
-        this.text = text;
+        this.originalText = text;
         try
         {
             StringBuffer newText = new StringBuffer( );
@@ -121,7 +123,8 @@ public class GroovyInterp
                 text = "return (" + text + ")";
             }
             newText.append( text );
-            this.code = buildScript( newText.toString( ) );
+            this.text = newText.toString();
+            this.code = buildScript( );
         }
         catch ( Exception e )
         {
@@ -140,7 +143,7 @@ public class GroovyInterp
      */
     public String getText()
     {
-        return this.text;
+        return this.originalText;
     }
 
     protected Script getCode()
@@ -149,7 +152,7 @@ public class GroovyInterp
         {
             try
             {
-                this.code = buildScript( this.getText( ) );
+                this.code = buildScript( );
             }
             catch( Exception e )
             {
@@ -206,9 +209,9 @@ public class GroovyInterp
         return dict;
     }
 
-    private Script buildScript(String text) throws Exception
+    private Script buildScript() throws Exception
     {
-        GroovyCodeSource codeSource = new GroovyCodeSource( text,
+        GroovyCodeSource codeSource = new GroovyCodeSource( this.text,
                                                             "groovy.script",
                                                             "groovy.script" );
 
