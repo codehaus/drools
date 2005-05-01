@@ -76,6 +76,8 @@
     <echo level="info" message="    ant fibonacci-java-serialized"/>
     <echo level="info" message="    ant fibonacci-groovy-jndi"/>
     <echo level="info" message="    ant fibonacci-groovy-serialized"/>
+    <echo level="info" message="    ant fibonacci-python-jndi"/>
+    <echo level="info" message="    ant fibonacci-python-serialized"/>    
     <echo level="info" message="    ant fibonacci-native"/>
     <echo level="info" message=" "/>
     <echo level="info" message="# Hello World Examples"/>
