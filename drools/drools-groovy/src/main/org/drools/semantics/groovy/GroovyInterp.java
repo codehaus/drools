@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.6.2.2 2005-04-30 13:49:43 mproctor Exp $
+ * $Id: GroovyInterp.java,v 1.6.2.3 2005-05-01 01:03:52 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -125,7 +125,7 @@ public class GroovyInterp
         }
         catch ( Exception e )
         {
-            e.printStackTrace( );
+            throw new RuntimeException( e.getLocalizedMessage( ) );
         }
     }
 
@@ -145,6 +145,17 @@ public class GroovyInterp
 
     protected Script getCode()
     {
+        if ( this.code == null )
+        {
+            try
+            {
+                this.code = buildScript( this.getText( ) );
+            }
+            catch( Exception e )
+            {
+                throw new RuntimeException( e.getLocalizedMessage( ) );
+            }
+        }
         return this.code;
     }
 
@@ -224,30 +235,4 @@ public class GroovyInterp
         return (Script) clazz.newInstance( );
     }
 
-    /**
-     * Extra work for serialization...
-     */
-    private void writeObject(ObjectOutputStream out) throws IOException
-    {
-        this.code = null;
-        out.defaultWriteObject( );
-    }
-
-    /**
-     * Extra work for serialization. re-creates the script object that is not
-     * serialized
-     */
-    private void readObject(ObjectInputStream in) throws IOException,
-                                                 ClassNotFoundException
-    {
-        in.defaultReadObject( );
-        try
-        {
-            this.code = buildScript( this.getText( ) );
-        }
-        catch ( Exception e )
-        {
-            throw new IOException( "Error re-serializing Code Object. Error:" + e.getMessage( ) );
-        }
-    }
 }
