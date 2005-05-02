@@ -67,7 +67,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
 
         // The difference from plain ClassBodyEvaluator: add extra imports.
         Location loc = scanner.peek( ).getLocation( );
-        /*
+        Set imports = importer.getImports( JavaImportEntry.class );
         Iterator it = imports.iterator( );
         String type;
         List list;
@@ -104,7 +104,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
                                                                                             (String[]) list.toArray( new String[list.size( )] ) ) );
             }
         }
-*/
+        
         // Add class declaration.
         Java.ClassDeclaration cd = this.addPackageMemberClassDeclaration( scanner.peek( ).getLocation( ),
                                                                           compilationUnit,
