@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.46.2.7 2005-05-01 03:20:28 mproctor Exp $
+ * $Id: RuleSetReader.java,v 1.46.2.8 2005-05-02 01:51:50 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -80,7 +80,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleSetReader.java,v 1.46.2.7 2005-05-01 03:20:28 mproctor Exp $
+ * @version $Id: RuleSetReader.java,v 1.46.2.8 2005-05-02 01:51:50 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -438,7 +438,7 @@ public class RuleSetReader extends DefaultHandler
             }
             catch ( Exception e )
             {
-                throw new SAXException( "Unable to reference a Semantics Repository" );
+                throw new SAXException( "Unable to reference a Semantics Repository:\n" + e.getMessage() );
             }
         }
 

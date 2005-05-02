@@ -166,7 +166,7 @@
         </classpath>
         <arg value="fibonacci.python.drl"/>
       </java>
-    </goal>    
+    </goal>
 
     <goal name="fibonacci-python-jndi" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
@@ -178,7 +178,7 @@
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
       </java>
-    </goal>    
+    </goal>
 
     <goal name="fibonacci-native" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciNative"
@@ -400,6 +400,29 @@
     <goal name="house" prereqs="jar:jar">
       <java classname="org.drools.examples.house.HouseExample">
             fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+<!-- Conway's Game of Life -->
+    <goal name="conway-dsl" prereqs="jar:jar">
+      <java classname="org.drools.examples.conway.ui.ConwayGUI"
+            fork="true">
+        <arg value="conway.dsl.drl"/>
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="conway-java" prereqs="jar:jar">
+      <java classname="org.drools.examples.conway.ui.ConwayGUI"
+            fork="true">
+        <arg value="conway.java.drl"/>
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
