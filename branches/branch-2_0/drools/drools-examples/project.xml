@@ -118,6 +118,18 @@
             <version>2.6.2</version>
         </dependency>
 
+        <dependency>
+            <id>jgoodies</id>
+            <version>1.0.4</version>
+            <artifactId>forms</artifactId>
+        </dependency>
+
+        <dependency>
+            <id>foxtrot</id>
+            <version>2.0</version>
+            <artifactId>foxtrot</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -131,13 +143,16 @@
                     <include>**/*.drl</include>
                     <include>**/*.dat</include>
                     <include>**/primes.txt.gz</include>
+                    <include>**/*.gif</include>
                 </includes>
             </resource>
+
             <resource>
                 <directory>src/conf</directory>
                 <includes>
                     <include>**/*.conf</include>
                     <include>**/*.xsd</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>
