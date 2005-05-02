@@ -227,6 +227,7 @@
       <fileset dir="${module-name}/src/main">
         <include name="**/*.drl"/>
         <include name="**/*.dat"/>
+        <include name="**/*.gif"/>
       </fileset>
     </copy>
 
@@ -301,7 +302,7 @@
   </target>
 
   <target name="copy-test-data" if="test-data-exists">
-     <copy todir="${module-name}/target/test-classes">
+     <copy todir="${module-name}/target/test-classes/data">
        <fileset dir="${module-name}/src/test/data"/>
      </copy>
   </target>
