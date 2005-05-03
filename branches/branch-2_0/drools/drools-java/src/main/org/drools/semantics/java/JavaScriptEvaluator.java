@@ -80,7 +80,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                 parameterTypes, // parameterTypes
                                                                 methodToImplement.getExceptionTypes( ) );// thrownExceptions
         
-        Set imports = importer.getImports( JavaImportEntry.class );
+        Set imports = importer.getImports( );
 
         // Parse block statements.
         Parser parser = new Parser( scanner );

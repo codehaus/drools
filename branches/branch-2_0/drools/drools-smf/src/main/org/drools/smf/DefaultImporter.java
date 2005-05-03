@@ -11,7 +11,7 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 
 /*
- * $Id: DefaultImporter.java,v 1.1.2.2 2005-05-01 00:01:17 mproctor Exp $
+ * $Id: DefaultImporter.java,v 1.1.2.3 2005-05-03 23:45:47 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,9 +54,9 @@ public class DefaultImporter
     implements
     Importer
 {
-    private Set importSet = Collections.EMPTY_SET;
+    private Set importEntrySet = Collections.EMPTY_SET;
 
-    private Map importMap = Collections.EMPTY_MAP;
+    private Set importSet = Collections.EMPTY_SET;
 
     private Map cachedImports = Collections.EMPTY_MAP;
 
@@ -70,9 +70,9 @@ public class DefaultImporter
      * 
      * @see org.drools.semantics.base.Importer#getImports()
      */
-    public Set getImports()
+    public Set getImportEntries()
     {
-        return this.importSet;
+        return this.importEntrySet;
     }
 
     /*
@@ -80,34 +80,24 @@ public class DefaultImporter
      * 
      * @see org.drools.semantics.base.Importer#getImports( Class clazz )
      */
-    public Set getImports(Class clazz)
+    public Set getImports()
     {
-        if ( importMap == Collections.EMPTY_MAP )
-        {
-            importMap = new HashMap( );
-        }
-        
-        Set imports = (Set) importMap.get( clazz );        
+        if (! importEntrySet.isEmpty( ) )
+        {       
+            if ( importSet == Collections.EMPTY_SET )
+            {
+                importSet = new HashSet( );
+            }       
 
-        if ( imports == null )
-        {
-            imports = new HashSet( );
-            importMap.put( clazz,
-                           imports );        
-
-            Iterator i = this.importSet.iterator( );
+            Iterator i = this.importEntrySet.iterator( );
             ImportEntry importEntry;
             while ( i.hasNext( ) )
             {
-                importEntry = (ImportEntry) i.next( );
-                if ( clazz.isInstance( importEntry ) )
-                {
-                    imports.add( importEntry.getImportEntry( ) );
-                }
+                importSet.add( ( (ImportEntry) i.next( ) ).getImportEntry() );               
             }
         }
         
-        return imports;
+        return importSet;
     }
 
     /*
@@ -117,11 +107,11 @@ public class DefaultImporter
      */
     public void addImport(ImportEntry importEntry)
     {
-        if ( this.importSet == Collections.EMPTY_SET )
+        if ( this.importEntrySet == Collections.EMPTY_SET )
         {
-            this.importSet = new HashSet( );
+            this.importEntrySet = new HashSet( );
         }
-        this.importSet.add( importEntry );
+        this.importEntrySet.add( importEntry );
     }
 
     public Class lookupFromCache(String className)
@@ -167,7 +157,7 @@ public class DefaultImporter
         {
             Set validClazzCandidates = new HashSet( );
 
-            Iterator it = importSet.iterator( );
+            Iterator it = importEntrySet.iterator( );
             while ( it.hasNext( ) )
             {
                 clazz = importClass( cl,
@@ -227,13 +217,13 @@ public class DefaultImporter
         String convertedImportText;
         if ( importText.startsWith( "from " ) )
         {
-            convertedImportText = converPythonImport( importText );
+            convertedImportText = convertFromPythonImport( importText );
         }
         else
         {
             convertedImportText = importText;
         }
-
+        
         // not python
         if ( convertedImportText.endsWith( "*" ) )
         {
@@ -274,8 +264,8 @@ public class DefaultImporter
 
         return clazz;
     }
-
-    private String converPythonImport(String packageText)
+    
+    private String convertFromPythonImport(String packageText)
     {
         String fromString = "from ";
         String importString = "import ";
@@ -283,10 +273,10 @@ public class DefaultImporter
         int importIndex = packageText.indexOf( importString );
         return packageText.substring( fromIndex + fromString.length( ),
                                       importIndex ).trim( ) + "." + packageText.substring( importIndex + importString.length( ) ).trim( );
-    }
+    }    
 
     public boolean isEmpty()
     {
-        return this.importSet.isEmpty( );
+        return this.importEntrySet.isEmpty( );
     }
 }
