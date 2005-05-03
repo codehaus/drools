@@ -1,26 +1,26 @@
 package org.drools.examples.conway;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * A <code>Cell</code> represents a single cell within a <code>CellGrid</code>.
  * A cell may be either live or dead. <p/>
- * 
+ *
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: Cell.java,v 1.1.2.1 2005-05-02 01:51:50 mproctor Exp $
+ * @version $Id: Cell.java,v 1.1.2.2 2005-05-03 01:36:16 brownj Exp $
  * @see CellState
  * @see CellGrid
  */
 public class Cell
 {
 
-    private Set neighbors   = new HashSet( );
+    private Set neighbors         = new HashSet( );
 
-    private int state       = CellState.DEAD;
+    private CellState state       = CellState.DEAD;
 
-    private int queuedState = CellState.NONE;
+    private CellState queuedState = null;
 
     /**
      * @return the number of neighbors that this cell has
@@ -38,13 +38,12 @@ public class Cell
     public int getNumberOfLiveNeighbors()
     {
         int numberOfLiveNeighbors = 0;
-        // for (Cell cell : neighbors) {
         Iterator it = neighbors.iterator( );
         Cell cell = null;
         while ( it.hasNext( ) )
         {
             cell = (Cell) it.next( );
-            if ( cell.getCellState( ) == CellState.LIVE )
+            if (cell.getCellState( ) == CellState.LIVE)
             {
                 numberOfLiveNeighbors++;
             }
@@ -54,7 +53,7 @@ public class Cell
 
     /**
      * ads a new neighbor to this neighbor
-     * 
+     *
      * @param neighbor
      *            new neighbor
      */
@@ -69,14 +68,14 @@ public class Cell
      * cell will be in after the cell is transitioned (after the next
      * iteration). This transition state is necessary because of the 2 phase
      * process involved in evolution.
-     * 
+     *
      * @param nextLiveState
      *            this cell's next live state
      * @see CellState
      * @see #getCellState()
      * @see #transitionState()
      */
-    public void queueNextCellState(int nextLiveState)
+    public void queueNextCellState(CellState nextLiveState)
     {
         if ( nextLiveState != state )
         {
@@ -86,17 +85,17 @@ public class Cell
 
     /**
      * Transitions this cell to its next state of evolution
-     * 
+     *
      * @return <code>true</code> if the state changed, otherwise false
-     * @see #queueNextCellState(int)
+     * @see #queueNextCellState(CellState)
      */
     public boolean transitionState()
     {
         boolean stateChanged = false;
-        if ( queuedState != CellState.NONE )
+        if ( queuedState != null )
         {
             state = queuedState;
-            queuedState = CellState.NONE;
+            queuedState = null;
             stateChanged = true;
         }
         return stateChanged;
@@ -104,22 +103,22 @@ public class Cell
 
     /**
      * @return this cell's current life state
-     * @see #queueNextCellState(int)
+     * @see #queueNextCellState(org.drools.examples.conway.CellState)
      * @see CellState
      */
-    public int getCellState()
+    public CellState getCellState()
     {
         return state;
     }
 
     /**
      * Sets this cells state
-     * 
+     *
      * @param newState
      *            new state for this cell
      * @see CellState
      */
-    public void setCellState(int newState)
+    public void setCellState(CellState newState)
     {
         state = newState;
     }
