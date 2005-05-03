@@ -388,7 +388,7 @@
   <!-- =========================== Examples ============================= -->
   <!-- ================================================================== -->
 
-  <target name="run-example">
+  <target name="run-example" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -407,7 +407,7 @@
     </java>
   </target>
 
-  <target name="run-example-1">
+  <target name="run-example-1" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -427,7 +427,7 @@
     </java>
   </target>
 
-  <target name="run-example-2">
+  <target name="run-example-2" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -448,7 +448,7 @@
     </java>
   </target>
 
-  <target name="run-example-4">
+  <target name="run-example-4" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
