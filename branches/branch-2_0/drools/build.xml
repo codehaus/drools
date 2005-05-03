@@ -285,12 +285,13 @@
         <path refid="lib-deps"/>
       </classpath>
 
+      <formatter type="plain"/>
+      <formatter type="xml"/>
+
       <batchtest todir="${module-name}/target/test-reports" fork="${fork-test}">
         <fileset dir="${module-name}/target/test-classes">
           <include name="**/*Test.class"/>
         </fileset>
-        <formatter type="plain"/>
-        <formatter type="xml"/>
       </batchtest>
     </junit>
   </target>
