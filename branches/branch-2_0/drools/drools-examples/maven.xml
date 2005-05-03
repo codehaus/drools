@@ -12,6 +12,8 @@
         <attainGoal name="fibonacci-java-serialized"/>
         <attainGoal name="fibonacci-groovy-jndi"/>
         <attainGoal name="fibonacci-groovy-serialized"/>
+        <attainGoal name="fibonacci-python-jndi"/>
+        <attainGoal name="fibonacci-python-serialized"/>
         <attainGoal name="fibonacci-native"/>
         <attainGoal name="escalation-java"/>
         <attainGoal name="state-java"/>
@@ -30,51 +32,63 @@
         <attainGoal name="primefactors-java-verbose"/>
         <attainGoal name="petstore-java"/>
         <attainGoal name="petstore-groovy"/>
+        <attainGoal name="conway-java"/>
+        <attainGoal name="conway-dsl"/>
     </goal>
 
     <goal name="run-all-java">
-	<attainGoal name="fibonacci-java"/>
-	<attainGoal name="fibonacci-java-jndi"/>
-	<attainGoal name="fibonacci-java-serialized"/>
+	    <attainGoal name="fibonacci-java"/>
+	    <attainGoal name="fibonacci-java-jndi"/>
+	    <attainGoal name="fibonacci-java-serialized"/>
         <attainGoal name="escalation-java"/>
-	<attainGoal name="state-java"/>
-	<attainGoal name="helloworld-java"/>
-	<attainGoal name="manners-java"/>
-	<attainGoal name="primefactors-java"/>
-	<attainGoal name="primefactors-java-verbose"/>
-	<attainGoal name="petstore-java"/>
+    	<attainGoal name="state-java"/>
+    	<attainGoal name="helloworld-java"/>
+    	<attainGoal name="manners-java"/>
+    	<attainGoal name="primefactors-java"/>
+    	<attainGoal name="primefactors-java-verbose"/>
+    	<attainGoal name="petstore-java"/>
+    	<attainGoal name="conway-java"/>
     </goal>
 
     <goal name="run-all-groovy">
-	<attainGoal name="fibonacci-groovy"/>
-	<attainGoal name="fibonacci-groovy-jndi"/>
-	<attainGoal name="fibonacci-groovy-serialized"/>
-	<attainGoal name="state-groovy"/>
-	<attainGoal name="helloworld-groovy"/>
-	<attainGoal name="manners-groovy"/>
-	<attainGoal name="petstore-groovy"/>
+    	<attainGoal name="fibonacci-groovy"/>
+    	<attainGoal name="fibonacci-groovy-jndi"/>
+    	<attainGoal name="fibonacci-groovy-serialized"/>
+    	<attainGoal name="state-groovy"/>
+    	<attainGoal name="helloworld-groovy"/>
+    	<attainGoal name="manners-groovy"/>
+    	<attainGoal name="petstore-groovy"/>
     </goal>
 
     <goal name="run-all-python">
-	<attainGoal name="fibonacci-python"/>
-	<attainGoal name="helloworld-python"/>
-	<attainGoal name="state-python"/>
+    	<attainGoal name="fibonacci-python"/>
+    	<attainGoal name="fibonacci-python-jndi"/>
+        <attainGoal name="fibonacci-python-serialized"/>
+    	<attainGoal name="helloworld-python"/>
+    	<attainGoal name="state-python"/>
     </goal>
 
     <goal name="run-all-native">
-	<attainGoal name="fibonacci-native"/>
-	<attainGoal name="helloworld-native"/>
-	<attainGoal name="manners-native"/>
+    	<attainGoal name="fibonacci-native"/>
+    	<attainGoal name="helloworld-native"/>
+    	<attainGoal name="manners-native"/>
     </goal>
 
     <goal name="run-all-jndi">
-	<attainGoal name="fibonacci-java-jndi"/>
-	<attainGoal name="fibonacci-groovy-jndi"/>
+    	<attainGoal name="fibonacci-java-jndi"/>
+    	<attainGoal name="fibonacci-groovy-jndi"/>
+    	<attainGoal name="fibonacci-python-jndi"/>
     </goal>
 
     <goal name="run-all-serialized">
-	<attainGoal name="fibonacci-java-serialized"/>
-	<attainGoal name="fibonacci-groovy-serialized"/>
+        <attainGoal name="fibonacci-java-serialized"/>
+        <attainGoal name="fibonacci-groovy-serialized"/>
+        <attainGoal name="fibonacci-python-serialized"/>
+    </goal>
+
+    <goal name="run-all-dsl">
+    	<attainGoal name="house"/>
+    	<attainGoal name="conqaw_dsl"/>
     </goal>
 
 <!-- Fibonacci Examples -->
