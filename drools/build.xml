@@ -296,8 +296,8 @@
   </target>
 
   <target name="copy-meta-inf" if="meta-inf-exists">
-     <copy todir="${module-name}/target/classes/META-INF">
-       <fileset dir="${module-name}/src/conf/META-INF"/>
+     <copy todir="${module-name}/target/classes/">
+       <fileset dir="${module-name}/src/conf/**"/>
      </copy>
   </target>
 
