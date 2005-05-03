@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.29.2.2 2005-05-01 03:20:28 mproctor Exp $
+ * $Id: SMFTestFrameWork.java,v 1.29.2.3 2005-05-03 23:45:47 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -204,7 +204,7 @@ public abstract class SMFTestFrameWork extends TestCase
                                                                   cheeseType );
         Declaration stiltonDecl = rule.addParameterDeclaration( "stilton",
                                                                 cheeseType );
-
+        rule.setImporter( this.importer );
         // condition check with a single declaration
         tuple.put( camembertDecl,
                    new Cheese( "camembert" ) );
@@ -217,7 +217,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         // condition check with a single declaration
         tuple = new MockTuple( );
-        rule.setImporter( new DefaultImporter( ) );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl,
@@ -231,7 +231,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         // condition check with two declarations
         tuple = new MockTuple( );
-        rule.setImporter( new DefaultImporter( ) );
+        rule.setImporter( this.importer );
         tuple.setRule( rule );
         tuple.setWorkingMemory( new MockWorkingMemory( ) );
         tuple.put( stiltonDecl,
@@ -279,7 +279,7 @@ public abstract class SMFTestFrameWork extends TestCase
 
         // test code works no matter what the order of decl are
         tuple = new MockTuple( );
-        rule.setImporter( new DefaultImporter( ) );
+        rule.setImporter( this.importer );
         rule.setApplicationData( new HashMap( ) );
         tuple.setRule( rule );
         workingMemory = new MockWorkingMemory( );

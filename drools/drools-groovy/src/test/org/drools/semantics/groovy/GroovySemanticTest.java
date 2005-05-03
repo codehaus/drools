@@ -3,6 +3,7 @@ package org.drools.semantics.groovy;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.drools.semantics.base.BaseImportEntry;
 import org.drools.smf.DefaultImporter;
 import org.drools.smf.SMFTestFrameWork;
 import org.drools.spi.Importer;
@@ -21,9 +22,10 @@ public class GroovySemanticTest extends SMFTestFrameWork
 
     public void setUp() throws Exception
     {
-        Importer importer = new DefaultImporter();
-        importer.addImport(new GroovyImportEntry("java.math.*"));
-        importer.addImport(new GroovyImportEntry("org.drools.smf.SMFTestFrameWork.Cheese"));
-        super.setUp( "groovy", importer );
+        Importer importer = new DefaultImporter( );
+        importer.addImport( new BaseImportEntry( "java.math.*" ) );
+        importer.addImport( new BaseImportEntry( "org.drools.smf.SMFTestFrameWork.Cheese" ) );
+        super.setUp( "groovy",
+                     importer );
     }
 }

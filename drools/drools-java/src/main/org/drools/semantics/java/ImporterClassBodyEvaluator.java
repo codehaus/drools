@@ -67,7 +67,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
 
         // The difference from plain ClassBodyEvaluator: add extra imports.
         Location loc = scanner.peek( ).getLocation( );
-        Set imports = importer.getImports( JavaImportEntry.class );
+        Set imports = importer.getImports( );
         Iterator it = imports.iterator( );
         String type;
         List list;

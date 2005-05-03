@@ -8,7 +8,7 @@ import org.drools.spi.Importer;
 import junit.framework.TestCase;
 
 /*
- * $Id: DefaultImporterTest.java,v 1.1.2.1 2005-04-30 13:49:43 mproctor Exp $
+ * $Id: DefaultImporterTest.java,v 1.1.2.2 2005-05-03 23:45:47 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -175,22 +175,12 @@ public class DefaultImporterTest extends TestCase
         importer.addImport( new DefaultImportEntry( "java.awt.*" ) );
         importer.addImport( new DefaultImportEntry( "java.util.Map" ) );
 
-        importer.addImport( new AlternateImportEntry( "java.io.*" ) );
-        importer.addImport( new AlternateImportEntry( "java.math.BigDecimal" ) );
-
         Set set;
-        set = importer.getImports( DefaultImportEntry.class );
+        set = importer.getImports( );
         assertTrue( set.contains( "java.awt.*" ) );
         assertTrue( set.contains( "java.util.Map" ) );
         assertEquals( 2,
                       set.size( ) );
-
-        set = importer.getImports( AlternateImportEntry.class );
-        assertTrue( set.contains( "java.io.*" ) );
-        assertTrue( set.contains( "java.math.BigDecimal" ) );
-        assertEquals( 2,
-                      set.size( ) );        
-
     }
 
     private class DefaultImportEntry
@@ -200,23 +190,6 @@ public class DefaultImporterTest extends TestCase
         private String importEntry;
 
         public DefaultImportEntry(String importEntry)
-        {
-            this.importEntry = importEntry;
-        }
-
-        public String getImportEntry()
-        {
-            return this.importEntry;
-        }
-    }
-
-    private class AlternateImportEntry
-        implements
-        ImportEntry
-    {
-        private String importEntry;
-
-        public AlternateImportEntry(String importEntry)
         {
             this.importEntry = importEntry;
         }

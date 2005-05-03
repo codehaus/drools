@@ -1,9 +1,16 @@
-package org.drools.semantics.groovy;
+package org.drools.semantics.base;
+
+import org.drools.rule.RuleSet;
+import org.drools.smf.Configuration;
+import org.drools.smf.FactoryException;
+import org.drools.smf.ImportEntryFactory;
+import org.drools.spi.ImportEntry;
+import org.drools.spi.RuleBaseContext;
 
 /*
- * $Id: GroovyImportEntry.java,v 1.4 2004-12-07 14:52:00 simon Exp $
+ * $Id: BaseImportEntryFactory.java,v 1.1.2.1 2005-05-03 23:45:24 mproctor Exp $
  *
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -22,10 +29,9 @@ package org.drools.semantics.groovy;
  *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
- * Company. "drools" is a registered trademark of The Werken Company.
+ * Company. "drools" is a trademark of The Werken Company.
  *
- * 5. Due credit should be given to The Werken Company.
- * (http://drools.werken.com/).
+ * 5. Due credit should be given to The Werken Company. (http://werken.com/)
  *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -41,48 +47,19 @@ package org.drools.semantics.groovy;
  *
  */
 
-import org.drools.spi.ImportEntry;
-
-public class GroovyImportEntry implements ImportEntry
+public class BaseImportEntryFactory implements ImportEntryFactory
 {
-
-    private String importEntry;
-
-    public GroovyImportEntry(String importEntry)
+    public ImportEntry newImportEntry(RuleSet ruleSet,
+                                      RuleBaseContext context,
+                                      Configuration config) throws FactoryException
     {
-        this.importEntry = importEntry;
-    }
-
-    /* (non-Javadoc)
-     * @see org.drools.spi.ImportEntry#getImportEntry()
-     */
-    public String getImportEntry()
-    {
-        return this.importEntry;
-    }
-
-    public String toString()
-    {
-        return "[Import Entry: " + this.importEntry + "]";
-    }
-
-    public int hashCode()
-    {
-        return this.importEntry.hashCode();
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
+        try
         {
-            return true;
+            return new BaseImportEntry( config.getText() );
         }
-
-        if ( object == null || getClass( ) != object.getClass( ) )
+        catch ( Exception e )
         {
-            return false;
+            throw new FactoryException( e );
         }
-
-        return this.importEntry.equals( ( ( ImportEntry ) object ).getImportEntry( ) );
     }
 }

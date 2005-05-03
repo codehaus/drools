@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.7.2.3 2005-05-01 01:03:52 mproctor Exp $
+ * $Id: PythonInterp.java,v 1.7.2.4 2005-05-03 23:45:46 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -143,11 +143,11 @@ public class PythonInterp implements Serializable
     {
         StringBuffer globalText = new StringBuffer( );
         
-        Iterator it = rule.getImporter( ).getImports( PythonImportEntry.class ).iterator( );
+        Iterator it = rule.getImporter( ).getImports( ).iterator( );
 
         while ( it.hasNext( ) )
         {
-            globalText.append( it.next( ) );
+            globalText.append( convertToPythonImport( ( String ) it.next( ) ) );
             globalText.append( ";" );
             globalText.append( LINE_SEPARATOR );
         }
@@ -183,6 +183,14 @@ public class PythonInterp implements Serializable
             throw new RuntimeException( e.getLocalizedMessage( ) );
         }        
     }
+
+    private String convertToPythonImport(String importEntry)
+    {
+        int lastDot = importEntry.lastIndexOf( '.' );
+        String packageText = importEntry.substring( 0, lastDot );
+        String className = importEntry.substring( lastDot + 1, importEntry.length( ) );
+        return "from " + packageText + " import " + className;         
+    }    
 
     /**
      * Parses a python script and returns the globals It is used to be able to

@@ -33,7 +33,7 @@ public class ApplicationDataFactoryTest extends TestCase
         Importer importer = new DefaultImporter( );
         ruleSet.setImporter( importer );
 
-        ApplicationDataFactory factory = new DefaultApplicationDataFactory( );
+        ApplicationDataFactory factory = new BaseApplicationDataFactory( );
 
         ApplicationData applicationData = (ApplicationData) factory.newApplicationData( ruleSet,
                                                                                         ruleBaseContext,
@@ -62,7 +62,7 @@ public class ApplicationDataFactoryTest extends TestCase
         importer.addImport( new DefaultImportEntry( "java.util.HashMap" ) );
         ruleSet.setImporter( importer );
 
-        ApplicationDataFactory factory = new DefaultApplicationDataFactory( );
+        ApplicationDataFactory factory = new BaseApplicationDataFactory( );
 
         ApplicationData applicationData = (ApplicationData) factory.newApplicationData( ruleSet,
                                                                                         ruleBaseContext,
@@ -91,7 +91,7 @@ public class ApplicationDataFactoryTest extends TestCase
         importer.addImport( new DefaultImportEntry( "java.util.*" ) );
         ruleSet.setImporter( importer );
 
-        ApplicationDataFactory factory = new DefaultApplicationDataFactory( );
+        ApplicationDataFactory factory = new BaseApplicationDataFactory( );
 
         ApplicationData applicationData = (ApplicationData) factory.newApplicationData( ruleSet,
                                                                                         ruleBaseContext,
