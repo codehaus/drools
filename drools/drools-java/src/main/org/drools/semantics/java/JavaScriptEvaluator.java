@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,9 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                                                 parameterTypes, // parameterTypes
                                                                 methodToImplement.getExceptionTypes( ) );// thrownExceptions
         
-        Set imports = importer.getImports( );
+        //make a copy as we will be adding app data declaration imports
+        //but do not want to feed that back into the main import cache
+        Set imports = new HashSet( importer.getImports( ) );
 
         // Parse block statements.
         Parser parser = new Parser( scanner );

@@ -7,7 +7,7 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/groovy groovy.xsd">
 
-    <groovy:import>org.drools.examples.state.State</groovy:import>
+    <import>org.drools.examples.state.State</import>
 
     <rule name="Bootstrap">
         <parameter identifier="a">

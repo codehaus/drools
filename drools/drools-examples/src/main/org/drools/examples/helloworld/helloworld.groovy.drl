@@ -7,8 +7,8 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/groovy groovy.xsd">
 
-  <groovy:import>java.lang.Object</groovy:import>
-  <groovy:import>java.lang.String</groovy:import>
+  <import>java.lang.Object</import>
+  <import>java.lang.String</import>
 
   <groovy:functions>
   	def helloWorld(String hello)
