@@ -5,7 +5,7 @@
     xmlns:conway="http://drools.org/semantics/conway"
     xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
     xs:schemaLocation="http://drools.org/rules rules.xsd
-                       http://ociweb.com/semantics/conway conway.xsd">
+                       http://drools.org/semantics/conway conway.xsd">
 
     <rule name="Kill The Overcrowded">
         <conway:condition>
