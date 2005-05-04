@@ -81,7 +81,8 @@
         <ant:pathelement path="drools-jsr94/src/main"/>
         <ant:pathelement path="drools-groovy/src/main"/>
         <ant:pathelement path="drools-python/src/main"/>
-        <ant:pathelement path="drools-annotation/src/main"/>
+        <ant:pathelement path="drools-spring/src/main"/>
+        <ant:pathelement path="drools-spring-jdk5/src/main"/>
         <ant:pathelement path="drools-smftest/src/main"/>
       </ant:path>
 
@@ -484,9 +485,14 @@
       <attainGoal name="drools-jdk5-mavenl"/>
     </postGoal>
 
+    <!-- TODO{bk} What is this for? -->
     <postGoal name="clean-all:prepare">
+      <!--
       <touch file="${maven.build.dir}/drools-annotation-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-annotation-examples-${pom.currentVersion}.jar"/>
+      -->
+      <touch file="${maven.build.dir}/drools-spring-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-spring-jdk5-${pom.currentVersion}.jar"/>
     </postGoal>
 
     <preGoal name="clean-all">
@@ -533,4 +539,3 @@
       </j:choose>
     </goal>
 </project>
-
