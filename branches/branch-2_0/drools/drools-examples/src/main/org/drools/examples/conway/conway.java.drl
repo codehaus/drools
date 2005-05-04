@@ -7,9 +7,9 @@
     xs:schemaLocation="http://drools.org/rules rules.xsd
                        http://drools.org/semantics/java java.xsd">
 
-    <java:import>org.drools.examples.conway.Cell</java:import>
-    <java:import>org.drools.examples.conway.CellGrid</java:import>
-    <java:import>org.drools.examples.conway.CellState</java:import>
+    <import>org.drools.examples.conway.Cell</import>
+    <import>org.drools.examples.conway.CellGrid</import>
+    <import>org.drools.examples.conway.CellState</import>
 
     <rule name="Kill The Lonely">
         <parameter identifier="c">

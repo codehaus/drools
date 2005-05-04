@@ -76,6 +76,8 @@
     </xs:complexType>
   </xs:element>
 
+  <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport" />  
+
 
   <xs:element name="semaphore" >
     <xs:complexType>
