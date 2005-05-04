@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<rule-set name="conway"
+    xmlns="http://drools.org/rules"
+    xmlns:java="http://drools.org/semantics/java"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+    xs:schemaLocation="http://drools.org/rules rules.xsd
+                       http://drools.org/semantics/java java.xsd">
+
+    <import>org.drools.examples.conway.Cell</import>
+    <import>org.drools.examples.conway.CellGrid</import>
+    <import>org.drools.examples.conway.CellState</import>
+
+    <rule name="Kill The Lonely">
+        <parameter identifier="c">
+            <class>Cell</class>
+        </parameter>
+
+        <java:condition>c.getCellState() == CellState.LIVE</java:condition>
+        <java:condition>c.getNumberOfLiveNeighbors() &lt; 2</java:condition>
+        <java:consequence>
+          c.queueNextCellState(CellState.DEAD);
+        </java:consequence>
+    </rule>
+
+    <rule name="Kill The Overcrowded">
+        <parameter identifier="c">
+            <class>Cell</class>
+        </parameter>
+
+        <java:condition>c.getCellState() == CellState.LIVE</java:condition>
+        <java:condition>c.getNumberOfLiveNeighbors() &gt; 3</java:condition>
+        <java:consequence>
+          c.queueNextCellState(CellState.DEAD);
+        </java:consequence>
+    </rule>
+
+    <rule name="Give Birth">
+        <parameter identifier="c">
+            <class>Cell</class>
+        </parameter>
+
+        <java:condition>c.getCellState() == CellState.DEAD</java:condition>
+        <java:condition>c.getNumberOfLiveNeighbors() == 3</java:condition>
+        <java:consequence>
+          c.queueNextCellState(CellState.LIVE);
+        </java:consequence>
+    </rule>
+</rule-set>

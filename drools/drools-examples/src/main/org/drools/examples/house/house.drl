@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<rule-set name="fibonacci"
+<rule-set name="house"
           xmlns="http://drools.org/rules"
           xmlns:house="http://drools.org/semantics/house"
           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"

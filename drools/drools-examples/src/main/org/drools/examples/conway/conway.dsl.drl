@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<rule-set name="conway"
+    xmlns="http://drools.org/rules"
+    xmlns:conway="http://drools.org/semantics/conway"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+    xs:schemaLocation="http://drools.org/rules rules.xsd
+                       http://drools.org/semantics/conway conway.xsd">
+
+    <rule name="Kill The Overcrowded">
+        <conway:condition>
+            <conway:cell name="cell">
+                <conway:liveNeighborCountGreaterThan>3</conway:liveNeighborCountGreaterThan>
+            </conway:cell>
+        </conway:condition>
+
+        <conway:actions>
+            <conway:cell name="cell">
+                <conway:queueState>dead</conway:queueState>
+            </conway:cell>
+        </conway:actions>
+    </rule>
+
+    <rule name="Kill The Lonely">
+        <conway:condition>
+            <conway:cell name="cell">
+                <conway:liveNeighborCountLessThan>2</conway:liveNeighborCountLessThan>
+            </conway:cell>
+        </conway:condition>
+
+        <conway:actions>
+            <conway:cell name="cell">
+                <conway:queueState>dead</conway:queueState>
+            </conway:cell>
+        </conway:actions>
+    </rule>
+
+    <rule name="Give Birth">
+        <conway:condition>
+            <conway:cell name="cell">
+                <conway:liveNeighborCountEquals>3</conway:liveNeighborCountEquals>
+            </conway:cell>
+        </conway:condition>
+
+        <conway:actions>
+            <conway:cell name="cell">
+                <conway:queueState>live</conway:queueState>
+            </conway:cell>
+        </conway:actions>
+    </rule>
+</rule-set>

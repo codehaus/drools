@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: MockConfiguration.java,v 1.2 2004-09-17 00:33:17 mproctor Exp $
+ * $Id: DefaultConfiguration.java,v 1.2 2005-05-04 16:58:40 memelet Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -46,14 +46,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Default implementation of <code>Configuration</code>.
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: MockConfiguration.java,v 1.2 2004-09-17 00:33:17 mproctor Exp $
+ * @version $Id: DefaultConfiguration.java,v 1.2 2004/09/17 00:25:09 mproctor
+ *          Exp $
  */
-class MockConfiguration implements Configuration
+public class DefaultConfiguration implements Configuration
 {
     // ----------------------------------------------------------------------
     //     Class members
@@ -67,16 +69,16 @@ class MockConfiguration implements Configuration
     // ----------------------------------------------------------------------
 
     /** Node name. */
-    private String                name;
+    private String name;
 
     /** Node text. */
-    private String                text;
+    private String text = "";
 
     /** Node attributes. */
-    private Map                   attrs;
+    private Map attrs;
 
     /** Children nodes. */
-    private List                  children;
+    private List children;
 
     // ----------------------------------------------------------------------
     //     Constructors
@@ -85,9 +87,10 @@ class MockConfiguration implements Configuration
     /**
      * Construct.
      * 
-     * @param name The name of the node.
+     * @param name
+     *            The name of the node.
      */
-    MockConfiguration(String name)
+    public DefaultConfiguration( String name )
     {
         this.name = name;
         this.attrs = new HashMap( );
@@ -105,9 +108,10 @@ class MockConfiguration implements Configuration
     /**
      * Set the node text.
      * 
-     * @param text The text.
+     * @param text
+     *            The text.
      */
-    void setText(String text)
+    public void setText( String text )
     {
         this.text = text;
     }
@@ -115,7 +119,7 @@ class MockConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public String getText()
+    public String getText()    
     {
         return this.text;
     }
@@ -123,10 +127,12 @@ class MockConfiguration implements Configuration
     /**
      * Set an attribute value.
      * 
-     * @param name The attribute name.
-     * @param value The attribute value.
+     * @param name
+     *            The attribute name.
+     * @param value
+     *            The attribute value.
      */
-    void setAttribute(String name, String value)
+    public void setAttribute( String name, String value )
     {
         this.attrs.put( name, value );
     }
@@ -134,9 +140,9 @@ class MockConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public String getAttribute(String name)
+    public String getAttribute( String name )
     {
-        return ( String ) this.attrs.get( name );
+        return (String) this.attrs.get( name );
     }
 
     /**
@@ -144,15 +150,16 @@ class MockConfiguration implements Configuration
      */
     public String[] getAttributeNames()
     {
-        return ( String[] ) this.attrs.keySet( ).toArray( EMPTY_STRING_ARRAY );
+        return (String[]) this.attrs.keySet( ).toArray( EMPTY_STRING_ARRAY );
     }
 
     /**
      * Add a child <code>Configuration</code>.
      * 
-     * @param config The child.
+     * @param config
+     *            The child.
      */
-    void addChild(Configuration config)
+    public void addChild( Configuration config )
     {
         this.children.add( config );
     }
@@ -160,12 +167,12 @@ class MockConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public Configuration getChild(String name)
+    public Configuration getChild( String name )
     {
         for ( Iterator childIter = this.children.iterator( ); childIter
-                                                                       .hasNext( ); )
+                .hasNext( ); )
         {
-            Configuration eachConfig = ( Configuration ) childIter.next( );
+            Configuration eachConfig = (Configuration) childIter.next( );
 
             if ( eachConfig.getName( ).equals( name ) )
             {
@@ -179,14 +186,14 @@ class MockConfiguration implements Configuration
     /**
      * @see Configuration
      */
-    public Configuration[] getChildren(String name)
+    public Configuration[] getChildren( String name )
     {
         List result = new ArrayList( );
 
         for ( Iterator childIter = this.children.iterator( ); childIter
-                                                                       .hasNext( ); )
+                .hasNext( ); )
         {
-            Configuration eachConfig = ( Configuration ) childIter.next( );
+            Configuration eachConfig = (Configuration) childIter.next( );
 
             if ( eachConfig.getName( ).equals( name ) )
             {
@@ -194,7 +201,7 @@ class MockConfiguration implements Configuration
             }
         }
 
-        return ( Configuration[] ) result.toArray( Configuration.EMPTY_ARRAY );
+        return (Configuration[]) result.toArray( Configuration.EMPTY_ARRAY );
     }
 
     /**
@@ -202,7 +209,7 @@ class MockConfiguration implements Configuration
      */
     public Configuration[] getChildren()
     {
-        return ( Configuration[] ) this.children
-                                                .toArray( Configuration.EMPTY_ARRAY );
+        return (Configuration[]) this.children
+                .toArray( Configuration.EMPTY_ARRAY );
     }
 }

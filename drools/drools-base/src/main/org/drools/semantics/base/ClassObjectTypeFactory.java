@@ -1,8 +1,6 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: ClassObjectTypeFactory.java,v 1.10 2005-04-20 00:03:06 mproctor Exp $
- *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -45,10 +43,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
 
@@ -63,9 +63,9 @@ public class ClassObjectTypeFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType(RuleBaseContext context,
-                                    Configuration config,
-                                    Set imports) throws FactoryException
+    public ObjectType newObjectType(Rule rule,
+                                    RuleBaseContext context,
+                                    Configuration config) throws FactoryException
     {
         String className = config.getText( ).trim( );
 
@@ -74,120 +74,63 @@ public class ClassObjectTypeFactory
             throw new FactoryException( "no class name specified" );
         }
 
-        // get imports
-        Set importSet = new HashSet( );
-        if ( imports != null )
-        {
-
-            Iterator it = imports.iterator( );
-            ImportEntry importEntry;
-            while ( it.hasNext( ) )
-            {
-                importEntry = (ImportEntry) it.next( );
-                importSet.add( importEntry.getImportEntry( ) );
-            }
-        }
-
-        ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
-        if ( cl == null )
-        {
-            cl = Thread.currentThread( ).getContextClassLoader( );
-            context.put( "smf-classLoader",
-                         cl );
-        }
-
-        if ( cl == null )
-        {
-            cl = getClass( ).getClassLoader( );
-            context.put( "smf-classLoader",
-                         cl );
-        }
-
         Class clazz = null;
-        /* first try loading className */
         try
         {
-            clazz = cl.loadClass( className );
+            ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
+            if ( cl == null )
+            {
+                cl = Thread.currentThread( ).getContextClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
+            }
+
+            if ( cl == null )
+            {
+                cl = getClass( ).getClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
+            }
+
+            Importer importer = rule.getImporter( );
+            clazz = importer.importClass( cl,
+                                          className );
         }
         catch ( ClassNotFoundException e )
         {
-            clazz = null;
+            throw new FactoryException( e.getMessage( ) );
         }
-
-        /* Now try the className with each of the given imports */
-        if ( clazz == null )
+        catch ( Error e )
         {
-            Iterator it = importSet.iterator( );
-            while ( it.hasNext( ) && clazz == null )
-            {
-                clazz = importClass( cl,
-                                     (String) it.next( ),
-                                     className.trim( ) );
-            }
-        }
-        /* We still can't find the class so throw an exception */
-        if ( clazz == null )
-        {
-            throw new FactoryException( "Unable to find class " + className );
+            throw new FactoryException( e.getMessage( ) );
         }
 
         return new ClassObjectType( clazz );
     }
-
-    private Class importClass(ClassLoader cl,
-                              String importText,
-                              String className)
-    {
-        String qualifiedClass = null;
-        Class clazz = null;
-
-        String convertedImportText;
-        if ( importText.startsWith( "from " ) )
-        {
-            convertedImportText = converPythonImport( importText );
-        }
-        else
-        {
-            convertedImportText = importText;
-        }
-
-        // not python
-        if ( convertedImportText.endsWith( "*" ) )
-        {
-            qualifiedClass = convertedImportText.substring( 0,
-                                                            convertedImportText.indexOf( '*' ) ) + className;
-        }
-        else if ( convertedImportText.endsWith( "." + className ) )
-        {
-            qualifiedClass = convertedImportText;
-        } else if ( convertedImportText.equals( className ) )
-        {
-            qualifiedClass = convertedImportText;
-        }
-
-
-
-        if ( qualifiedClass != null )
-        {
-            try
-            {
-                clazz = cl.loadClass( qualifiedClass );
-            }
-            catch ( ClassNotFoundException e )
-            {
-                clazz = null;
-            }
-        }
-        return clazz;
-    }
-
-    private String converPythonImport(String packageText)
-    {
-        String fromString = "from ";
-        String importString = "import ";
-        int fromIndex = packageText.indexOf( fromString );
-        int importIndex = packageText.indexOf( importString );
-        return packageText.substring( fromIndex + fromString.length( ),
-                                      importIndex ).trim( ) + "." + packageText.substring( importIndex + importString.length( ) ).trim( );
-    }
+    /*
+     * private Class importClass(ClassLoader cl, String importText, String
+     * className) { String qualifiedClass = null; Class clazz = null;
+     * 
+     * String convertedImportText; if ( importText.startsWith( "from " ) ) {
+     * convertedImportText = converPythonImport( importText ); } else {
+     * convertedImportText = importText; }
+     *  // not python if ( convertedImportText.endsWith( "*" ) ) {
+     * qualifiedClass = convertedImportText.substring( 0,
+     * convertedImportText.indexOf( '*' ) ) + className; } else if (
+     * convertedImportText.endsWith( "." + className ) ) { qualifiedClass =
+     * convertedImportText; } else if ( convertedImportText.equals( className ) ) {
+     * qualifiedClass = convertedImportText; }
+     * 
+     * 
+     * if ( qualifiedClass != null ) { try { clazz = cl.loadClass(
+     * qualifiedClass ); } catch ( ClassNotFoundException e ) { clazz = null; } }
+     * return clazz; }
+     * 
+     * private String converPythonImport(String packageText) { String fromString =
+     * "from "; String importString = "import "; int fromIndex =
+     * packageText.indexOf( fromString ); int importIndex = packageText.indexOf(
+     * importString ); return packageText.substring( fromIndex +
+     * fromString.length( ), importIndex ).trim( ) + "." +
+     * packageText.substring( importIndex + importString.length( ) ).trim( ); }
+     */
 }

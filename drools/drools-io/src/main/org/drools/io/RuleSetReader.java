@@ -1,8 +1,6 @@
 package org.drools.io;
 
 /*
- * $Id: RuleSetReader.java,v 1.50 2005-04-20 00:03:06 mproctor Exp $
- *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -61,6 +59,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
+import org.drools.smf.DefaultConfiguration;
 import org.drools.smf.DefaultSemanticsRepository;
 import org.drools.smf.NoSuchSemanticModuleException;
 import org.drools.smf.SemanticModule;
@@ -78,8 +77,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * <code>RuleSet</code> loader.
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleSetReader.java,v 1.50 2005-04-20 00:03:06 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -129,7 +126,9 @@ public class RuleSetReader extends DefaultHandler
     private RuleSet             ruleSet;
 
     private RuleBaseContext     factoryContext;
-
+    
+    private boolean             inHandledRuleSubElement;
+    
     private MessageFormat       message              = new MessageFormat( "({0}: {1}, {2}): {3}" );
 
     // ----------------------------------------------------------------------
@@ -393,7 +392,11 @@ public class RuleSetReader extends DefaultHandler
                 }
                 catch ( SAXNotRecognizedException e )
                 {
-                    System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
+                    boolean hideWarnings = Boolean.getBoolean( "drools.schema.hidewarnings" );
+                    if ( !hideWarnings )
+                    {
+                        System.err.println( "Your SAX parser is not JAXP 1.2 compliant - turning off validation." );
+                    }
                     localParser = null;
                 }
             }
@@ -412,7 +415,6 @@ public class RuleSetReader extends DefaultHandler
                     throw new RuntimeException( e.getMessage( ) );
                 }
             }
-
         }
         else
         {
@@ -432,7 +434,7 @@ public class RuleSetReader extends DefaultHandler
             }
             catch ( Exception e )
             {
-                throw new SAXException( "Unable to reference a Semantics Repository" );
+                throw new SAXException( "Unable to reference a Semantics Repository:\n" + e.getMessage() );
             }
         }
 
@@ -527,13 +529,35 @@ public class RuleSetReader extends DefaultHandler
 
         Handler handler = getHandler( uri,
                                       localName );
+        
+        if ( ( handler != null ) && ( !this.parents.isEmpty() && this.parents.getLast() instanceof Rule ) )
+        {
+            this.inHandledRuleSubElement = true;            
+        }
 
         if ( handler == null )
         {
-            if ( this.parents.getLast( ) instanceof Rule || this.parents.getLast( ) instanceof RuleSet )
+            if ( ( ( this.inHandledRuleSubElement == false) && ( this.parents.getLast( ) instanceof Rule ) ) 
+                    ||  ( this.parents.getLast( ) instanceof RuleSet ) )
             {
-                throw new SAXParseException( "unable to handle element <" + localName + ">",
-                                             getLocator( ) );
+                
+                /* see if the uri is registered */
+                try
+                {
+                    this.repo.lookupSemanticModule( uri );
+                    /* uri is registered, but the element is not mapped correctly to a handler */
+                    throw new SAXParseException( "unknown tag '" + localName + "' in namespace '" + uri + "'",
+                                                 getLocator( ) );                    
+                }
+                catch ( NoSuchSemanticModuleException e )
+                {
+                    /* uri is not registered, so incorrect uri, missing drools.conf or classloader issues*/
+                    throw new SAXParseException( "no semantic module for namespace '" + uri + "' (" + localName + ")",
+                                                 getLocator() );
+                }
+                
+                
+
             }
             // no handler so build up the configuration
             startConfiguration( localName,
@@ -570,6 +594,12 @@ public class RuleSetReader extends DefaultHandler
     {
         Handler handler = getHandler( uri,
                                       localName );
+
+        if ( ( handler != null ) && ( !this.parents.isEmpty() && this.parents.getLast() instanceof Rule ) )
+        {
+            this.inHandledRuleSubElement = false;            
+        }        
+        
         if ( handler == null )
         {
             if ( this.configurationStack.size( ) >= 1 )

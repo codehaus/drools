@@ -7,7 +7,7 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/java java.xsd">
 
-  <java:import>org.drools.examples.fibonacci.Fibonacci</java:import>
+  <import>org.drools.examples.fibonacci.Fibonacci</import>
 
   <rule name="Bootstrap 1" salience="20">
     <parameter identifier="f">

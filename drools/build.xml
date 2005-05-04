@@ -75,6 +75,8 @@
     <echo level="info" message="    ant fibonacci-java-serialized"/>
     <echo level="info" message="    ant fibonacci-groovy-jndi"/>
     <echo level="info" message="    ant fibonacci-groovy-serialized"/>
+    <echo level="info" message="    ant fibonacci-python-jndi"/>
+    <echo level="info" message="    ant fibonacci-python-serialized"/>
     <echo level="info" message="    ant fibonacci-native"/>
     <echo level="info" message=" "/>
     <echo level="info" message="# Hello World Examples"/>
@@ -107,6 +109,9 @@
     <echo level="info" message="# Benchmarks"/>
     <echo level="info" message="    ant manners-benchmark"/>
     <echo level="info" message="    ant altz-benchmark"/>
+    <echo level="info" message="# Conway's Game Of Life"/>
+    <echo level="info" message="    ant conway-dsl"/>
+    <echo level="info" message="    ant conway-java"/>
   </target>
 
   <!-- ================================================================== -->
@@ -125,12 +130,14 @@
   <property name="xml-apis.jar" value="xml-apis-1.0.b2.jar"/>
   <property name="junit.jar" value="junit-3.8.jar"/>
   <property name="simple-jndi.jar" value="simple-jndi-0.10.jar"/>
+  <property name="forms.jar" value="forms-1.0.4.jar"/>
+  <property name="foxtrot.jar" value="foxtrot-2.0.jar"/>
 
   <!-- Configure directories. -->
   <property name="lib.dir" value="lib"/>
 
 
-  <property name="drools-version" value="2.0-beta-21"/>
+  <property name="drools-version" value="2.0-rc1-dev"/>
 
   <!-- ================================================================== -->
   <!-- =========================== Core Tasks =========================== -->
@@ -171,6 +178,11 @@
           src="http://www.ibiblio.org/maven/xml-apis/jars/${xml-apis.jar}"/>
       <get dest="${lib.dir}/${simple-jndi.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
           src="http://www.ibiblio.org/maven/simple-jndi/jars/${simple-jndi.jar}"/>
+
+      <get dest="${lib.dir}/${forms.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/jgoodies/jars/${forms.jar}"/>
+      <get dest="${lib.dir}/${foxtrot.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/foxtrot/jars/${foxtrot.jar}"/>
 
       <get dest="${lib.dir}/${junit.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
           src="http://www.ibiblio.org/maven/junit/jars/${junit.jar}"/>
@@ -214,6 +226,7 @@
       <fileset dir="${module-name}/src/main">
         <include name="**/*.drl"/>
         <include name="**/*.dat"/>
+        <include name="**/*.gif"/>
       </fileset>
     </copy>
 
@@ -271,24 +284,25 @@
         <path refid="lib-deps"/>
       </classpath>
 
-      <batchtest todir="${module-name}/target/test-reports">
+      <formatter type="plain"/>
+      <formatter type="xml"/>
+
+      <batchtest todir="${module-name}/target/test-reports" fork="${fork-test}">
         <fileset dir="${module-name}/target/test-classes">
           <include name="**/*Test.class"/>
         </fileset>
-        <formatter type="plain"/>
-        <formatter type="xml"/>
       </batchtest>
     </junit>
   </target>
 
   <target name="copy-meta-inf" if="meta-inf-exists">
-     <copy todir="${module-name}/target/classes/META-INF">
-       <fileset dir="${module-name}/src/conf/META-INF"/>
+     <copy todir="${module-name}/target/classes">
+       <fileset dir="${module-name}/src/conf"/>
      </copy>
   </target>
 
   <target name="copy-test-data" if="test-data-exists">
-     <copy todir="${module-name}/target/test-classes">
+     <copy todir="${module-name}/target/test-classes/data">
        <fileset dir="${module-name}/src/test/data"/>
      </copy>
   </target>
@@ -373,7 +387,7 @@
   <!-- =========================== Examples ============================= -->
   <!-- ================================================================== -->
 
-  <target name="run-example">
+  <target name="run-example" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -392,7 +406,7 @@
     </java>
   </target>
 
-  <target name="run-example-1">
+  <target name="run-example-1" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -412,7 +426,7 @@
     </java>
   </target>
 
-  <target name="run-example-2">
+  <target name="run-example-2" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -433,7 +447,7 @@
     </java>
   </target>
 
-  <target name="run-example-4">
+  <target name="run-example-4" depends="get-deps">
     <path id="module-deps">
       <fileset dir=".">
         <include name="drools-*/target/*.jar"/>
@@ -456,6 +470,7 @@
     </java>
   </target>
 
+<!-- Hello World -->
   <target name="helloword-java">
     <antcall target="run-example-1">
       <param name="class-name" value="org.drools.examples.helloworld.HelloWorldExample"/>
@@ -483,6 +498,7 @@
     </antcall>
   </target>
 
+<!-- Fibonacci -->
   <target name="fibonacci-java">
     <antcall target="run-example-1">
       <param name="class-name" value="org.drools.examples.fibonacci.FibonacciExample"/>
@@ -555,6 +571,7 @@
     </antcall>
   </target>
 
+<!-- State -->
   <target name="state-java">
     <antcall target="run-example-1">
       <param name="class-name" value="org.drools.examples.state.StateExample"/>
@@ -576,6 +593,8 @@
     </antcall>
   </target>
 
+
+<!-- Escalation -->
   <target name="escalation-java">
     <antcall target="run-example-1">
       <param name="class-name" value="org.drools.examples.escalation.Escalation"/>
@@ -583,6 +602,7 @@
     </antcall>
   </target>
 
+<!-- Pet Store -->
   <target name="petstore-java">
     <antcall target="run-example-1">
       <param name="class-name" value="org.drools.examples.petstore.PetStore"/>
@@ -597,6 +617,7 @@
     </antcall>
   </target>
 
+<!-- Miss Manners -->
   <target name="manners-java">
     <antcall target="run-example-1">
       <param name="class-name" value="org.drools.examples.manners.MannersExample"/>
@@ -623,12 +644,16 @@
     </antcall>
   </target>
 
+
+<!-- House -->
   <target name="house">
     <antcall target="run-example">
       <param name="class-name" value="org.drools.examples.house.HouseExample"/>
     </antcall>
   </target>
 
+
+<!-- Prime Factors -->
   <target name="primefactors-java">
     <antcall target="run-example-4">
       <param name="class-name" value="org.drools.examples.primefactors.PrimeFactors"/>
@@ -660,6 +685,21 @@
   <target name="waltz-benchmark">
     <antcall target="run-example">
       <param name="class-name" value="org.drools.examples.benchmarks.waltz.WaltzBenchmark"/>
+    </antcall>
+  </target>
+
+<!-- Conway's Game of Life -->
+  <target name="conway-dsl">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.conway.ui.ConwayGUI"/>
+      <param name="arg1" value="conway.dsl.drl"/>
+    </antcall>
+  </target>
+
+  <target name="conway-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.conway.ui.ConwayGUI"/>
+      <param name="arg1" value="conway.java.drl"/>
     </antcall>
   </target>
 

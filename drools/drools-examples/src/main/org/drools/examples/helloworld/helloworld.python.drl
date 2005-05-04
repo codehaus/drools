@@ -7,8 +7,8 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/python python.xsd">
 
-  <python:import>from java.lang import Object</python:import>
-  <python:import>from java.lang import String</python:import>
+  <import>from java.lang import Object</import>
+  <import>from java.lang import String</import>
 
   <python:functions>
     def helloWorld(hello):
