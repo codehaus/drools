@@ -24,7 +24,6 @@ public class WorkingMemoryEventListenerProcessorTest extends TestCase {
             listener.afterPropertiesSet();
             fail("expected IllegalArgumentException");
         } catch (Exception e) {
-            e.printStackTrace();
             // expected
         }
     }

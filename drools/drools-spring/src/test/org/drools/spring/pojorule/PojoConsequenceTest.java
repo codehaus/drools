@@ -30,7 +30,7 @@ public class PojoConsequenceTest extends TestCase {
         MockControl controlRuleMethod = newMockRuleMethod();
         RuleReflectMethod mockRuleMethod = (RuleReflectMethod) controlRuleMethod.getMock();
         controlRuleMethod.expectAndThrow(mockRuleMethod.invokeMethod(mockTuple),
-                new RuntimeException("test"));
+                new RuntimeException("test-exception"));
         RuleReflectMethod[] mockRuleMethods = new RuleReflectMethod[]{mockRuleMethod};
 
         mocks.replay();
