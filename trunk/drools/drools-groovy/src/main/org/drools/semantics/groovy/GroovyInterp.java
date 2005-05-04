@@ -1,8 +1,6 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyInterp.java,v 1.7 2005-04-07 17:42:14 mproctor Exp $
- *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -78,7 +76,9 @@ public class GroovyInterp
     // ------------------------------------------------------------
 
     /** Text. */
-    private final String        text;
+    private final String        originalText;
+    
+    private String              text;
 
     /** The rule. */
     private final Rule          rule;
@@ -96,12 +96,12 @@ public class GroovyInterp
                            Rule rule)
     {
         this.rule = rule;
-        this.text = text;
+        this.originalText = text;
         try
         {
             StringBuffer newText = new StringBuffer( );
 
-            Iterator it = rule.getImports( GroovyImportEntry.class ).iterator( );
+            Iterator it = rule.getImporter( ).getImports( ).iterator( );
             while ( it.hasNext( ) )
             {
                 newText.append( "import " );
@@ -121,11 +121,12 @@ public class GroovyInterp
                 text = "return (" + text + ")";
             }
             newText.append( text );
-            this.code = buildScript( newText.toString( ) );
+            this.text = newText.toString();
+            this.code = buildScript( );
         }
         catch ( Exception e )
         {
-            e.printStackTrace( );
+            throw new RuntimeException( e.getLocalizedMessage( ) );
         }
     }
 
@@ -140,11 +141,22 @@ public class GroovyInterp
      */
     public String getText()
     {
-        return this.text;
+        return this.originalText;
     }
 
     protected Script getCode()
     {
+        if ( this.code == null )
+        {
+            try
+            {
+                this.code = buildScript( );
+            }
+            catch( Exception e )
+            {
+                throw new RuntimeException( e.getLocalizedMessage( ) );
+            }
+        }
         return this.code;
     }
 
@@ -195,9 +207,9 @@ public class GroovyInterp
         return dict;
     }
 
-    private Script buildScript(String text) throws Exception
+    private Script buildScript() throws Exception
     {
-        GroovyCodeSource codeSource = new GroovyCodeSource( text,
+        GroovyCodeSource codeSource = new GroovyCodeSource( this.text,
                                                             "groovy.script",
                                                             "groovy.script" );
 
@@ -224,30 +236,4 @@ public class GroovyInterp
         return (Script) clazz.newInstance( );
     }
 
-    /**
-     * Extra work for serialization...
-     */
-    private void writeObject(ObjectOutputStream out) throws IOException
-    {
-        this.code = null;
-        out.defaultWriteObject( );
-    }
-
-    /**
-     * Extra work for serialization. re-creates the script object that is not
-     * serialized
-     */
-    private void readObject(ObjectInputStream in) throws IOException,
-                                                 ClassNotFoundException
-    {
-        in.defaultReadObject( );
-        try
-        {
-            this.code = buildScript( this.getText( ) );
-        }
-        catch ( Exception e )
-        {
-            throw new IOException( "Error re-serializing Code Object. Error:" + e.getMessage( ) );
-        }
-    }
 }

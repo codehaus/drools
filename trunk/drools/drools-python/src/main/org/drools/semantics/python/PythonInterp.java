@@ -1,8 +1,6 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonInterp.java,v 1.8 2005-04-07 17:42:14 mproctor Exp $
- *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -45,6 +43,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -72,7 +71,7 @@ import org.python.parser.ast.modType;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class PythonInterp
+public class PythonInterp implements Serializable
 {
     /** The line separator system property ("\n" on UNIX). */
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
@@ -89,18 +88,20 @@ public class PythonInterp
     private final Rule          rule;
 
     /** Text. */
-    private final String        text;
+    private transient String        text;
 
     /** Original Text */
     private final String        origininalText;
 
+    private final String            type;        
+
     /** The code. */
-    private final PyCode        code;
+    private transient PyCode        code;
 
     /** The AST node. */
-    private final modType       node;
+    private transient modType       node;
 
-    private PyDictionary        globals;
+    private transient PyDictionary  globals;    
 
     /**
      * Initialise Jython's PySystemState
@@ -130,13 +131,21 @@ public class PythonInterp
     {
         this.rule = rule;
         this.origininalText = text;
-        StringBuffer globalText = new StringBuffer( );
+        this.type = type;
+        
+        compile( );
 
-        Iterator it = rule.getImports( PythonImportEntry.class ).iterator( );
+    }
+    
+    private void compile()
+    {
+        StringBuffer globalText = new StringBuffer( );
+        
+        Iterator it = rule.getImporter( ).getImports( ).iterator( );
 
         while ( it.hasNext( ) )
         {
-            globalText.append( it.next( ) );
+            globalText.append( convertToPythonImport( ( String ) it.next( ) ) );
             globalText.append( ";" );
             globalText.append( LINE_SEPARATOR );
         }
@@ -146,6 +155,7 @@ public class PythonInterp
         globalText.append( "    return on_true\n" );
         globalText.append( "  else:\n" );
         globalText.append( "    return on_false\n" );
+        
         Functions functions = rule.getRuleSet( ).getFunctions( "python" );
         if ( functions != null )
         {
@@ -157,7 +167,7 @@ public class PythonInterp
             this.globals = getGlobals( globalText.toString( ) );
         }
 
-        this.text = stripOuterIndention( text );
+        this.text = stripOuterIndention( this.origininalText );
 
         try
         {
@@ -168,10 +178,17 @@ public class PythonInterp
         }
         catch ( Exception e )
         {
-            e.printStackTrace( );
             throw new RuntimeException( e.getLocalizedMessage( ) );
-        }
+        }        
     }
+
+    private String convertToPythonImport(String importEntry)
+    {
+        int lastDot = importEntry.lastIndexOf( '.' );
+        String packageText = importEntry.substring( 0, lastDot );
+        String className = importEntry.substring( lastDot + 1, importEntry.length( ) );
+        return "from " + packageText + " import " + className;         
+    }    
 
     /**
      * Parses a python script and returns the globals It is used to be able to
@@ -370,6 +387,10 @@ public class PythonInterp
      */
     protected PyCode getCode()
     {
+        if ( this.code == null )
+        {
+            compile( );
+        }
         return this.code;
     }
 

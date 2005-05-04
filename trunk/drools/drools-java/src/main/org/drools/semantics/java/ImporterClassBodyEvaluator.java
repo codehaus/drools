@@ -16,6 +16,7 @@ import org.codehaus.janino.Scanner;
 import org.codehaus.janino.Java.CompileException;
 import org.codehaus.janino.Parser.ParseException;
 import org.codehaus.janino.Scanner.ScanException;
+import org.drools.spi.Importer;
 
 /**
  * Class body evaluator that pays attention to imports defined outside the class
@@ -44,7 +45,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
      * @throws ParseException
      * @throws CompileException
      */
-    public ImporterClassBodyEvaluator(Set imports,
+    public ImporterClassBodyEvaluator(Importer importer,
                                       String className,                                      
                                       Scanner scanner,
                                       ClassLoader classLoader) throws ScanException,
@@ -66,6 +67,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
 
         // The difference from plain ClassBodyEvaluator: add extra imports.
         Location loc = scanner.peek( ).getLocation( );
+        Set imports = importer.getImports( );
         Iterator it = imports.iterator( );
         String type;
         List list;
@@ -102,7 +104,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
                                                                                             (String[]) list.toArray( new String[list.size( )] ) ) );
             }
         }
-
+        
         // Add class declaration.
         Java.ClassDeclaration cd = this.addPackageMemberClassDeclaration( scanner.peek( ).getLocation( ),
                                                                           compilationUnit,

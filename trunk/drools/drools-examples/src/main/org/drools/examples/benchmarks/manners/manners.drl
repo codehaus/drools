@@ -7,14 +7,14 @@
         xs:schemaLocation="http://drools.org/rules rules.xsd
                            http://drools.org/semantics/java java.xsd">
 
-    <java:import>org.drools.examples.benchmarks.manners.MannersWMEL</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.Chosen</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.Context</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.Count</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.Guest</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.LastSeat</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.Path</java:import>
-    <java:import>org.drools.examples.benchmarks.manners.model.Seating</java:import>
+    <import>org.drools.examples.benchmarks.manners.MannersWMEL</import>
+    <import>org.drools.examples.benchmarks.manners.model.Chosen</import>
+    <import>org.drools.examples.benchmarks.manners.model.Context</import>
+    <import>org.drools.examples.benchmarks.manners.model.Count</import>
+    <import>org.drools.examples.benchmarks.manners.model.Guest</import>
+    <import>org.drools.examples.benchmarks.manners.model.LastSeat</import>
+    <import>org.drools.examples.benchmarks.manners.model.Path</import>
+    <import>org.drools.examples.benchmarks.manners.model.Seating</import>
 
     <rule name="assign_first_seat">
         <parameter identifier="context"><class>Context</class></parameter>

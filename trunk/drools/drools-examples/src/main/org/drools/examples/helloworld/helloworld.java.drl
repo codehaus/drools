@@ -7,8 +7,8 @@
           xs:schemaLocation="http://drools.org/rules rules.xsd
                              http://drools.org/semantics/java java.xsd">
 
-  <java:import>java.lang.Object</java:import>
-  <java:import>java.lang.String</java:import>
+  <import>java.lang.Object</import>
+  <import>java.lang.String</import>
   
   <java:functions>
   	public void helloWorld(String hello)

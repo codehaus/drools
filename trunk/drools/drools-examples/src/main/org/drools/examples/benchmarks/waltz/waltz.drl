@@ -10,12 +10,12 @@ The Waltz Algorithm
         xs:schemaLocation="http://drools.org/rules rules.xsd
                            http://drools.org/semantics/java java.xsd">
 
-    <java:import>org.drools.examples.benchmarks.waltz.WaltzUtil</java:import>
-    <java:import>org.drools.examples.benchmarks.waltz.WaltzWMEL</java:import>
-    <java:import>org.drools.examples.benchmarks.waltz.model.Edge</java:import>
-    <java:import>org.drools.examples.benchmarks.waltz.model.Junction</java:import>
-    <java:import>org.drools.examples.benchmarks.waltz.model.Line</java:import>
-    <java:import>org.drools.examples.benchmarks.waltz.model.Stage</java:import>
+    <import>org.drools.examples.benchmarks.waltz.WaltzUtil</import>
+    <import>org.drools.examples.benchmarks.waltz.WaltzWMEL</import>
+    <import>org.drools.examples.benchmarks.waltz.model.Edge</import>
+    <import>org.drools.examples.benchmarks.waltz.model.Junction</import>
+    <import>org.drools.examples.benchmarks.waltz.model.Line</import>
+    <import>org.drools.examples.benchmarks.waltz.model.Stage</import>
 
     <!--
     Our starting production.  It checks to see if the start flag is in WM,

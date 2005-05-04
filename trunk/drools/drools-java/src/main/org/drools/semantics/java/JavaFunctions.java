@@ -1,8 +1,6 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.7 2005-04-20 00:03:07 mproctor Exp $
- *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -54,14 +52,13 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 
 /**
  * Python block semantics <code>Consequence</code>.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- *
- * @version $Id: JavaFunctions.java,v 1.7 2005-04-20 00:03:07 mproctor Exp $
  */
 public class JavaFunctions
     implements
@@ -139,7 +136,8 @@ public class JavaFunctions
         }
 
         Set imports = new HashSet();
-
+        Importer importer = ruleSet.getImporter();
+        /*
         Iterator i = ruleSet.getImports().iterator();
         ImportEntry importEntry;
         while ( i.hasNext() )
@@ -150,8 +148,9 @@ public class JavaFunctions
                 imports.add( importEntry.getImportEntry( ) );
             }
         }
+        */
 
-        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(imports, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
+        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(importer, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
         this.functionsClass = classBody.evaluate();
 
         ruleBaseContext.put( "java-classLoader",

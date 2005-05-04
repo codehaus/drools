@@ -1,8 +1,6 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: SemaphoreFactory.java,v 1.4 2005-04-20 00:03:06 mproctor Exp $
- *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -43,6 +41,7 @@ package org.drools.semantics.base;
 
 import java.util.Set;
 
+import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
@@ -60,11 +59,11 @@ public class SemaphoreFactory
         return INSTANCE;
     }
 
-    public ObjectType newObjectType(RuleBaseContext context,
-                                    Configuration config,
-                                    Set imports) throws FactoryException
-    {
-        String className = "org.drools.semantics.base." + config.getAttribute( "type" ) + "Semaphore";
+    public ObjectType newObjectType(Rule rule,
+                                    RuleBaseContext context,
+                                    Configuration config) throws FactoryException
+    {       
+        String className = config.getAttribute( "type" );
         String fieldName = "identifier";
         String fieldValue = config.getAttribute( "identifier" );
 
@@ -72,7 +71,8 @@ public class SemaphoreFactory
         {
             throw new FactoryException( "no Semaphore type specified" );
         }
-
+        className = "org.drools.semantics.base." + className + "Semaphore";
+        
         if ( fieldValue == null || fieldValue.trim( ).equals( "" ) )
         {
             throw new FactoryException( "no Semaphore identifier specified" );
@@ -81,9 +81,13 @@ public class SemaphoreFactory
         try
         {
             ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+            if ( cl == null )
+            {
+                cl = getClass().getClassLoader();
+            }
 
             Class clazz = null;
-            /* first try loading className */
+            /* All semaphore types should be in system classloader*/
             try
             {
                 clazz = cl.loadClass( className );
@@ -91,7 +95,7 @@ public class SemaphoreFactory
             catch ( ClassNotFoundException e )
             {
                 // Semaphore type does not exist
-                throw new FactoryException( "Unable create Semaphore for type [" + config.getAttribute( "type" ) + "]" );
+                throw new FactoryException( "Unable create Semaphore for type '" + config.getAttribute( "type" ) + "'" );
             }
 
             // make sure field getter exists
@@ -104,11 +108,11 @@ public class SemaphoreFactory
         }
         catch ( SecurityException e )
         {
-            throw new FactoryException( "Field " + fieldName + " is not accessible for Class " + className );
+            throw new FactoryException( "Field '" + fieldName + "' is not accessible for Class '" + className + "'" );
         }
         catch ( NoSuchMethodException e )
         {
-            throw new FactoryException( "Field " + fieldName + " does not exist for Class " + className );
+            throw new FactoryException( "Field '" + fieldName + "' does not exist for Class '" + className + "'" );
         }
     }
 

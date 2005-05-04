@@ -1,7 +1,7 @@
-package org.drools.semantics.python;
+package org.drools.semantics.base;
 
 /*
- * $Id: PythonImportEntry.java,v 1.4 2004-12-07 14:52:00 simon Exp $
+ * $Id: BaseImportEntry.java,v 1.2 2005-05-04 16:58:39 memelet Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,13 +43,17 @@ package org.drools.semantics.python;
 
 import org.drools.spi.ImportEntry;
 
-public class PythonImportEntry implements ImportEntry
+public class BaseImportEntry implements ImportEntry
 {
 
     private String importEntry;
 
-    public PythonImportEntry(String importEntry)
+    public BaseImportEntry(String importEntry)
     {
+        if ( importEntry.startsWith( "from " ) )
+        {
+            importEntry = convertFromPythonImport( importEntry );
+        }
         this.importEntry = importEntry;
     }
 
@@ -65,6 +69,16 @@ public class PythonImportEntry implements ImportEntry
     {
         return "[Import Entry: " + this.importEntry + "]";
     }
+    
+    private String convertFromPythonImport(String packageText)
+    {
+        String fromString = "from ";
+        String importString = "import ";
+        int fromIndex = packageText.indexOf( fromString );
+        int importIndex = packageText.indexOf( importString );
+        return packageText.substring( fromIndex + fromString.length( ),
+                                      importIndex ).trim( ) + "." + packageText.substring( importIndex + importString.length( ) ).trim( );
+    }     
 
     public int hashCode()
     {
@@ -85,4 +99,5 @@ public class PythonImportEntry implements ImportEntry
 
         return this.importEntry.equals( ( ( ImportEntry ) object ).getImportEntry( ) );
     }
+    
 }

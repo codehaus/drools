@@ -1,7 +1,7 @@
-package org.drools.semantics.java;
+package org.drools.semantics.base;
 
 /*
- * $Id: JavaImportEntry.java,v 1.6 2005-04-20 00:03:07 mproctor Exp $
+ * $Id: BaseApplicationDataFactory.java,v 1.2 2005-05-04 16:58:39 memelet Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,49 +41,64 @@ package org.drools.semantics.java;
  *
  */
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.drools.rule.ApplicationData;
+import org.drools.rule.RuleSet;
+import org.drools.smf.ApplicationDataFactory;
+import org.drools.smf.Configuration;
+import org.drools.smf.FactoryException;
 import org.drools.spi.ImportEntry;
+import org.drools.spi.Importer;
+import org.drools.spi.RuleBaseContext;
 
-public class JavaImportEntry implements ImportEntry
+public class BaseApplicationDataFactory
+    implements
+    ApplicationDataFactory
 {
+    public ApplicationData newApplicationData(RuleSet ruleSet,
+                                              RuleBaseContext context,
+                                              Configuration config ) throws FactoryException
 
-    private String importEntry;
-
-    public JavaImportEntry(String importEntry)
     {
-        this.importEntry = importEntry;
-    }
-
-    /* (non-Javadoc)
-     * @see org.drools.spi.ImportEntry#getImportEntry()
-     */
-    public String getImportEntry()
-    {
-        return this.importEntry;
-    }
-
-    public String toString()
-    {
-        return "[Import Entry: " + this.importEntry + "]";
-    }
-
-    public int hashCode()
-    {
-        return this.importEntry.hashCode();
-    }
-
-    public boolean equals(Object object)
-    {
-        if ( this == object )
+        String className = config.getText( ).trim( );
+        
+        Class clazz = null;
+        try
         {
-            return true;
+            ClassLoader cl = (ClassLoader) context.get( "smf-classLoader" );
+            if ( cl == null )
+            {
+                cl = Thread.currentThread( ).getContextClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
+            }
+
+            if ( cl == null )
+            {
+                cl = getClass( ).getClassLoader( );
+                context.put( "smf-classLoader",
+                             cl );
+            }
+
+            Importer importer = ruleSet.getImporter( );
+            clazz = importer.importClass( cl,
+                                          className );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new FactoryException( e.getMessage( ) );
+        }
+        catch ( Error e )
+        {
+            throw new FactoryException( e.getMessage( ) );
         }
 
-        if ( object == null || getClass( ) != object.getClass( ) )
-        {
-            return false;
-        }
-
-        return this.importEntry.equals( ( ( ImportEntry ) object ).getImportEntry( ) );
+        return new ApplicationData( ruleSet,
+                                    config.getAttribute( "identifier" ),
+                                    clazz );
     }
 
 }

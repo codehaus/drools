@@ -60,7 +60,7 @@
         <groovy:consequence>
             import javax.swing.JOptionPane;
 
-            options = new Object[] {"Yes", "No"};
+            Object[] options = ["Yes", "No"];
             int n = JOptionPane.showOptionDialog(frame, "Would you like to buy a tank for your " + cart.getItems( "Gold Fish" ).size() + " fish?","Purchase Suggestion",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             println "SUGGESTION: Would you like to buy a tank for your " + cart.getItems( "Gold Fish" ).size() + " fish? - " ;
             if (n == 0) {
