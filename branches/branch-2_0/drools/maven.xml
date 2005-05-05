@@ -88,15 +88,21 @@
                   refid="uber.compile.src.set"/>
 
       <ant:path id="extra.dependency.path">
-        <fileset dir="lib/">
-          <include name="*.jar"/>
-        </fileset>
+
         <fileset dir="target/">
           <include name="*.jar"/>
         </fileset>
+      <!-- leaving out other deps for now, as they stop ydoc from working -->
+      <!--
+        <fileset dir="lib/">
+          <include name="*.jar"/>
+        </fileset>
+        -->
+        <!--
         <fileset dir="target/dependencies/">
           <include name="*.jar"/>
         </fileset>
+        -->
       </ant:path>
 
       <maven:addPath id="maven.dependency.classpath"
@@ -142,7 +148,7 @@
        </javadoc>
      </goal>
 
-    <goal name="javadoc-all" prereqs="jar-all,drools:get-deps">
+    <goal name="javadoc-all" prereqs="jar-all">
       <attainGoal name="tweak-compile.src.set"/>
       <u:file name="${basedir}/ydoc/" var="ydoc" />
 
@@ -309,7 +315,7 @@
       <ant:mkdir dir="${basedir}/target/dist/"/>
     </goal>
 
-    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src,drools:jar-all">
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:jar-all,drools:get-deps,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
       <!-- intentionally left blank -->
     </goal>
 
@@ -355,19 +361,18 @@
 			and all dependencies
 		-->
     <goal name="drools:dist-bin-withdeps" prereqs="drools:dist-prepare,javadoc-all">
-
-      <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin-withdeps.zip">
-    		 <zipfileset dir="${basedir}/target/docs"
+        <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin-withdeps.zip">
+            <zipfileset dir="${basedir}/target/docs"
                              prefix="drools-${pom.currentVersion}/docs" />
-   		   <zipfileset dir="${basedir}/target/dependencies"
+   		    <zipfileset dir="${basedir}/target/dependencies"
                              prefix="drools-${pom.currentVersion}/lib" />
-    		 <zipfileset dir="${basedir}/target/"
+    		<zipfileset dir="${basedir}/target/"
                              prefix="drools-${pom.currentVersion}/lib"
                              includes="drools-*.jar"/>
-    		 <zipfileset dir="${basedir}"
+    		<zipfileset dir="${basedir}"
                              prefix="drools-${pom.currentVersion}"
                              includes="*.txt"/>
-      </zip>
+        </zip>
 
       <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin-withdeps.tar.gz" compression="gzip">
     		 <tarfileset dir="${basedir}/target/docs"
