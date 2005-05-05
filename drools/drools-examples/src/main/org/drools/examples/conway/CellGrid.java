@@ -10,7 +10,7 @@ import org.drools.examples.conway.rules.RuleBaseFactory;
  * <p/>
  * 
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: CellGrid.java,v 1.1.2.1 2005-05-02 01:51:50 mproctor Exp $
+ * @version $Id: CellGrid.java,v 1.1.2.2 2005-05-05 13:10:59 brownj Exp $
  * @see Cell
  */
 public class CellGrid
@@ -114,14 +114,12 @@ public class CellGrid
             for ( int i = 0; i < cells.length; i++ )
             {
                 rowOfCells = cells[i];
-                // for (Cell cell : rowOfCells) {
                 for ( int j = 0; j < rowOfCells.length; j++ )
                 {
                     cell = rowOfCells[j];
                     workingMemory.assertObject( cell );
                 }
             }
-            workingMemory.assertObject( this );
             workingMemory.fireAllRules( );
             didStateChange = transitionState( );
         }
