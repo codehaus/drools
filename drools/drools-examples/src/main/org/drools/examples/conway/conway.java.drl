@@ -8,42 +8,41 @@
                        http://drools.org/semantics/java java.xsd">
 
     <import>org.drools.examples.conway.Cell</import>
-    <import>org.drools.examples.conway.CellGrid</import>
     <import>org.drools.examples.conway.CellState</import>
 
     <rule name="Kill The Lonely">
-        <parameter identifier="c">
+        <parameter identifier="cell">
             <class>Cell</class>
         </parameter>
 
-        <java:condition>c.getCellState() == CellState.LIVE</java:condition>
-        <java:condition>c.getNumberOfLiveNeighbors() &lt; 2</java:condition>
+        <java:condition>cell.getCellState() == CellState.LIVE</java:condition>
+        <java:condition>cell.getNumberOfLiveNeighbors() &lt; 2</java:condition>
         <java:consequence>
-          c.queueNextCellState(CellState.DEAD);
+          cell.queueNextCellState(CellState.DEAD);
         </java:consequence>
     </rule>
 
     <rule name="Kill The Overcrowded">
-        <parameter identifier="c">
+        <parameter identifier="cell">
             <class>Cell</class>
         </parameter>
 
-        <java:condition>c.getCellState() == CellState.LIVE</java:condition>
-        <java:condition>c.getNumberOfLiveNeighbors() &gt; 3</java:condition>
+        <java:condition>cell.getCellState() == CellState.LIVE</java:condition>
+        <java:condition>cell.getNumberOfLiveNeighbors() &gt; 3</java:condition>
         <java:consequence>
-          c.queueNextCellState(CellState.DEAD);
+          cell.queueNextCellState(CellState.DEAD);
         </java:consequence>
     </rule>
 
     <rule name="Give Birth">
-        <parameter identifier="c">
+        <parameter identifier="cell">
             <class>Cell</class>
         </parameter>
 
-        <java:condition>c.getCellState() == CellState.DEAD</java:condition>
-        <java:condition>c.getNumberOfLiveNeighbors() == 3</java:condition>
+        <java:condition>cell.getCellState() == CellState.DEAD</java:condition>
+        <java:condition>cell.getNumberOfLiveNeighbors() == 3</java:condition>
         <java:consequence>
-          c.queueNextCellState(CellState.LIVE);
+          cell.queueNextCellState(CellState.LIVE);
         </java:consequence>
     </rule>
 </rule-set>
