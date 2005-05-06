@@ -5,13 +5,13 @@ import java.util.List;
 
 class AuditService {
 
-    private List auditLogs = new ArrayList();
+    private List<String> auditLogs = new ArrayList<String>();
 
     public void auditMessage(Person person, String message) {
         auditLogs.add("Set person " + person.getName() + " message to " + message);
     }
 
-    public List getAuditLogs() {
+    public List<String> getAuditLogs() {
         return auditLogs;
     }
 }
