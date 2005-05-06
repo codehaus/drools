@@ -241,8 +241,8 @@
     <jar destfile="${module-name}/target/${module-name}-${drools-version}.jar"
          basedir="${module-name}/target/classes" />
 
-    <mkdir dir="target\"/>
-    <copy file="${module-name}/target/${module-name}-${drools-version}.jar" todir="target\"/>
+    <mkdir dir="target"/>
+    <copy file="${module-name}/target/${module-name}-${drools-version}.jar" todir="target"/>
 
   </target>
 
