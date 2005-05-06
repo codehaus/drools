@@ -158,6 +158,24 @@
       <delete dir="drools-examples/target"/>
   </target>
 
+  <target name="clean-deps" unless="noget"
+          description="Deletes downloaded JAR files.">
+      <delete file="${lib.dir}/${antlr.jar}"/>
+      <delete file="${lib.dir}/${jython.jar}"/>
+      <delete file="${lib.dir}/${groovy.jar}"/>
+      <delete file="${lib.dir}/${janino.jar}"/>
+      <delete file="${lib.dir}/${xerces.jar}"/>
+      <delete file="${lib.dir}/${xml-apis.jar}"/>
+      <delete file="${lib.dir}/${simple-jndi.jar}"/>
+      <delete file="${lib.dir}/${forms.jar}"/>
+      <delete file="${lib.dir}/${foxtrot.jar}"/>
+      <delete file="${lib.dir}/${junit.jar}"/>
+  </target>
+
+  <target name="realclean"
+          description="Deletes entire output directory and the downloaded JAR files."
+          depends="clean,clean-deps"/>
+
   <!-- <property name="noget" value="true"/> -->
   <target name="get-deps" unless="noget"
           description="Downloads required JAR files.">
@@ -186,6 +204,9 @@
 
       <get dest="${lib.dir}/${junit.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
           src="http://www.ibiblio.org/maven/junit/jars/${junit.jar}"/>
+
+      <!-- Developer's Note: If you add more JARs to this target,
+           be sure to also add them to the "clean-deps" target. -->
 
       <!-- Local JARs not found at ibiblio -->
      <copy file="lib/${jsr94.jar}" tofile="${lib.dir}/${jsr94.jar}"/>
