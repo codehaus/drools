@@ -516,6 +516,8 @@
 | Executing JDK5 Project: ${jdk5.project.file}
 +-------------------------------------------------
               </ant:echo>
+              <!-- Mac OS X requires this be set to "../Classes/classes.jar" -->
+              <j:set var="drools.jdk5.tools.jar" value="${drools.jdk5.tools.jar}" defaultValue="lib/tools.jar"/>
               <ant:java
                 classname="com.werken.forehead.Forehead"
                 jvm="${drools.jdk5.home}/bin/java"
@@ -525,7 +527,7 @@
                 <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=${javax.xml.parsers.SAXParserFactory}"/>
                 <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=${javax.xml.parsers.DocumentBuilderFactory}"/>
                 <jvmarg value="-Djava.endorsed.dirs=${drools.jdk5.home}/lib/endorsed${path.separator}${maven.home}/lib/endorsed"/>
-                <jvmarg value="-Dtools.jar=${drools.jdk5.home}/lib/tools.jar"/>
+                <jvmarg value="-Dtools.jar=${drools.jdk5.home}/${drools.jdk5.tools.jar}"/>
                 <jvmarg value="-Dforehead.conf.file=${forehead.conf.file}"/>
                 <arg value="-b"/>
                 <arg value="-p${jdk5.project.file}"/>
