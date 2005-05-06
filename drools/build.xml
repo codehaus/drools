@@ -261,10 +261,11 @@
       </fileset>
     </path>
 
-    <available file="${module-name}/src/test/data" type="dir" property="test-data-exists"/>
-    <antcall target="copy-test-data">
-       <param name="module-name" value="${module-name}"/>
-    </antcall>
+    <copy todir="${module-name}/target/test-classes" includeEmptyDirs="no">
+      <fileset dir="${module-name}/src/test">
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
 
     <javac destdir="${module-name}/target/test-classes"
            srcdir="${module-name}/src/test">
@@ -290,6 +291,7 @@
       <batchtest todir="${module-name}/target/test-reports" fork="${fork-test}">
         <fileset dir="${module-name}/target/test-classes">
           <include name="**/*Test.class"/>
+          <include name="org/drools/jsr94/AllTests.class"/>
         </fileset>
       </batchtest>
     </junit>
@@ -298,12 +300,6 @@
   <target name="copy-meta-inf" if="meta-inf-exists">
      <copy todir="${module-name}/target/classes">
        <fileset dir="${module-name}/src/conf"/>
-     </copy>
-  </target>
-
-  <target name="copy-test-data" if="test-data-exists">
-     <copy todir="${module-name}/target/test-classes/data">
-       <fileset dir="${module-name}/src/test/data"/>
      </copy>
   </target>
 
