@@ -482,7 +482,7 @@
 
     <postGoal name="crlf-all">
       <j:set var="goal" value="crlf"/>
-      <attainGoal name="drools-jdk5-mavenl"/>
+      <attainGoal name="drools-jdk5-maven"/>
     </postGoal>
 
     <!-- TODO{bk} What is this for? -->
