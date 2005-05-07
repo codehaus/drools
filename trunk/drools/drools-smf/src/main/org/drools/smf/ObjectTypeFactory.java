@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ObjectTypeFactory.java,v 1.8 2005-05-04 16:58:40 memelet Exp $
+ * $Id: ObjectTypeFactory.java,v 1.9 2005-05-07 04:39:30 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,8 +40,6 @@ package org.drools.smf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-import java.util.Set;
 
 import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;

@@ -1,9 +1,9 @@
 package org.drools.smf;
 
 /*
- * $Id: FactoryException.java,v 1.4 2004-11-28 06:45:25 simon Exp $
+ * $Id: FactoryException.java,v 1.5 2005-05-07 04:39:30 dbarnett Exp $
  *
- * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2005 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -52,7 +52,7 @@ import org.drools.DroolsException;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: FactoryException.java,v 1.4 2004-11-28 06:45:25 simon Exp $
+ * @version $Id: FactoryException.java,v 1.5 2005-05-07 04:39:30 dbarnett Exp $
  */
 public class FactoryException extends DroolsException
 {
@@ -82,5 +82,6 @@ public class FactoryException extends DroolsException
 
     public FactoryException()
     {
+        super();
     }
 }

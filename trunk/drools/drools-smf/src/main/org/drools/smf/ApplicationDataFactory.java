@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ApplicationDataFactory.java,v 1.4 2005-05-04 16:58:40 memelet Exp $
+ * $Id: ApplicationDataFactory.java,v 1.5 2005-05-07 04:39:30 dbarnett Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,8 @@ package org.drools.smf;
  *
  */
 
-import java.util.Set;
-
 import org.drools.rule.ApplicationData;
 import org.drools.rule.RuleSet;
-import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 
 public interface ApplicationDataFactory
