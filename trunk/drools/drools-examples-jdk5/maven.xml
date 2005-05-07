@@ -13,7 +13,7 @@
 
     <goal name="helloworld-native" prereqs="jar:jar">
       <java 
-        classname="org.drools.semantics.annotation.examples.HelloWorldNative"
+        classname="org.drools.semantics.annotation.examples.helloworld.HelloWorldNativeExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
@@ -24,7 +24,7 @@
 
     <goal name="helloworld-spring-inner-pojos" prereqs="jar:jar">
       <java 
-        classname="org.drools.semantics.annotation.examples.HelloWorldSpringInnerPojosExample"
+        classname="org.drools.semantics.annotation.examples.helloworld.HelloWorldSpringInnerPojosExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
@@ -33,9 +33,9 @@
       </java>
     </goal>
 
-    <goal name="helloworld-spring-outter-pojo" prereqs="jar:jar">
+    <goal name="helloworld-spring-outter-pojos" prereqs="jar:jar">
       <java 
-        classname="org.drools.semantics.annotation.examples.HelloWorldSpringOuterPojosExample"
+        classname="org.drools.semantics.annotation.examples.helloworld.HelloWorldSpringOuterPojosExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
@@ -46,7 +46,7 @@
 
     <goal name="helloworld-drl" prereqs="jar:jar">
       <java 
-        classname="org.drools.semantics.annotation.examples.HelloWorldDrlExample"
+        classname="org.drools.semantics.annotation.examples.helloworld.HelloWorldDrlExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
@@ -57,7 +57,7 @@
 
     <goal name="helloworld-drl-mixed" prereqs="jar:jar">
       <java 
-        classname="org.drools.semantics.annotation.examples.HelloWorldDrlMixedExample"
+        classname="org.drools.semantics.annotation.examples.helloworld.HelloWorldDrlMixedExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
