@@ -10,7 +10,6 @@
     </links>
     <menu name="drools">
       <item name="Releases"           href="/releases.html"/> 
-      <item name="Overview"           href="/index.html"/>
  
       <item name="Drools-Core Javadocs" href="/apidocs/org/drools/semantics/java/package-summary.html"/>
       <item name="Drools-Java Javadocs" href="/drools-java/apidocs/org/drools/semantics/java/package-summary.html"/>
