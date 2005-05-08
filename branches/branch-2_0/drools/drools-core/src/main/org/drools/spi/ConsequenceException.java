@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConsequenceException.java,v 1.6 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: ConsequenceException.java,v 1.6.2.1 2005-05-08 00:57:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -44,15 +44,16 @@ import org.drools.AssertionException;
 import org.drools.rule.Rule;
 
 /**
- * Indicates an error during a <code>Consequence</code> invokation.
- * 
- * @see Consequence
- * 
- * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * Indicates an error while applying a <code>Consequence<code>.
+ *
+ *  @see Consequence
+ *
+ *  @author <a href="mailto:bob@werken.com">bob mcwhirter</a>
  */
 public class ConsequenceException extends AssertionException
 {
-    private Rule rule;
+    private Rule   rule;
+    private String info;
 
     // ------------------------------------------------------------
     // Constructors
@@ -66,35 +67,81 @@ public class ConsequenceException extends AssertionException
         // intentionally left blank
     }
 
-    public ConsequenceException(String message,
-                                Rule rule)
+    public ConsequenceException(String message)
     {
         super( message );
-        this.rule = rule;
     }
 
     /**
      * Construct with a root cause.
      * 
      * @param rootCause
-     *            The root cause of this exception.
+     *        The root cause of this exception.
      */
     public ConsequenceException(Throwable rootCause)
     {
         super( rootCause );
     }
 
+    public ConsequenceException(Rule rule)
+    {
+        this.rule = rule;
+    }
+    
     /**
-     * Construct with a root cause.
+     * Construct with a message. Keep this from old ConsequenceException 
+     * for backward compatability
      * 
      * @param rootCause
      *            The root cause of this exception.
+     *            
+     *            
+     */    
+    public ConsequenceException(String message,
+                                Rule rule)
+    {
+        super( message );
+        this.rule = rule;
+    }    
+    
+    /**
+     * Construct with a root cause. Keep this from old ConsequenceException 
+     * for backward compatability
+     * 
+     * @param rootCause
+     *            The root cause of this exception.
+     *            
+     *            
      */
     public ConsequenceException(Throwable rootCause,
                                 Rule rule)
     {
         super( rootCause );
         this.rule = rule;
+    }    
+
+    public ConsequenceException(String message,
+                                Rule rule,
+                                String info)
+    {
+        super( message );
+        this.rule = rule;
+        this.info = info;
+    }
+
+    /**
+     * Construct with a root cause.
+     * 
+     * @param rootCause
+     *        The root cause of this exception.
+     */
+    public ConsequenceException(Throwable rootCause,
+                                Rule rule,
+                                String info)
+    {
+        super( rootCause );
+        this.rule = rule;
+        this.info = info;
     }
 
     public void setRule(Rule rule)
@@ -105,5 +152,23 @@ public class ConsequenceException extends AssertionException
     public Rule getRule()
     {
         return this.rule;
+    }
+
+    /**
+     * Set arbitrary extra information about the condition.
+     * 
+     * <p>
+     * The info property may be used to communicate the actual block text or
+     * other information in the case that Consequence does not have block text.
+     * </p>
+     */
+    public void setInfo(String info)
+    {
+        this.info = info;
+    }
+
+    public String getInfo()
+    {
+        return this.info;
     }
 }
