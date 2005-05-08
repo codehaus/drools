@@ -3,7 +3,6 @@ package org.drools.spring.metadata;
 import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.semantics.base.ClassObjectType;
 import org.drools.spring.pojorule.Argument;
 import org.drools.spring.pojorule.FactArgument;
 
@@ -37,7 +36,7 @@ public final class FactArgumentMetadata implements ArgumentMetadata {
     public Argument createArgument(Rule rule) throws DroolsException {
         Declaration declaration = rule.getParameterDeclaration(identifier);
         if (declaration == null) {
-            ClassObjectType objectType = new ClassObjectType(parameterClass);
+            BeanObjectType objectType = new BeanObjectType(parameterClass);
             declaration = rule.addParameterDeclaration(identifier, objectType);
         }
         return new FactArgument(declaration);

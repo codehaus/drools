@@ -4,7 +4,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.drools.WorkingMemory;
 import org.drools.spring.SpringTestSetup;
 
 public class RuleSetFactoryBeanApplicationDataTest extends TestCase {

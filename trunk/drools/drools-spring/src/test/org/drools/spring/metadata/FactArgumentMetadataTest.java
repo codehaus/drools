@@ -1,15 +1,13 @@
 package org.drools.spring.metadata;
 
+import junit.framework.TestCase;
+
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.semantics.base.ClassObjectType;
-import org.drools.spring.metadata.FactArgumentMetadata;
 import org.drools.spring.pojorule.Argument;
 import org.drools.spring.pojorule.FactArgument;
 import org.easymock.MockControl;
 import org.easymock.container.EasymockContainer;
-
-import junit.framework.TestCase;
 
 public class FactArgumentMetadataTest extends TestCase {
 
@@ -44,7 +42,7 @@ public class FactArgumentMetadataTest extends TestCase {
         FactArgumentMetadata metadata = new FactArgumentMetadata(explicitIdentifier, String.class);
 
         Declaration declaration = createDeclaration(explicitIdentifier);
-        ClassObjectType objectType = new ClassObjectType(String.class);
+        BeanObjectType objectType = new BeanObjectType(String.class);
         controlRule.expectAndReturn(mockRule.getParameterDeclaration(explicitIdentifier), null);
         controlRule.expectAndReturn(mockRule.addParameterDeclaration(explicitIdentifier, objectType), declaration);
 
