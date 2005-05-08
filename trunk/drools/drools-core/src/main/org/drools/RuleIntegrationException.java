@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleIntegrationException.java,v 1.10 2005-01-11 16:11:56 mproctor Exp $
+ * $Id: RuleIntegrationException.java,v 1.11 2005-05-08 17:45:59 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,31 +57,32 @@ import org.drools.rule.Rule;
  */
 public class RuleIntegrationException extends IntegrationException
 {
-    // ------------------------------------------------------------
-    // Instance members
-    // ------------------------------------------------------------
-
     /** The rule. */
     private final Rule rule;
 
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
     /**
-     * Construct.
+     * @see java.lang.Exception#Exception()
      *
      * @param rule
      *            The offending rule.
      */
     public RuleIntegrationException( Rule rule )
     {
+        super( createMessage( rule ) );
         this.rule = rule;
     }
 
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
+    /**
+     * @see java.lang.Exception#Exception(Throwable cause)
+     *
+     * @param rule
+     *            The offending rule.
+     */
+    public RuleIntegrationException( Rule rule, Throwable cause )
+    {
+        super( createMessage( rule ), cause );
+        this.rule = rule;
+    }
 
     /**
      * Retrieve the <code>Rule</code>.
@@ -93,17 +94,7 @@ public class RuleIntegrationException extends IntegrationException
         return this.rule;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Retrieve the error message.
-     *
-     * @return The erroe message.
-     */
-    public String getMessage( )
-    {
-        return this.getRule( ).getName( ) + " cannot be integrated";
+    private static String createMessage( Rule rule ) {
+        return rule.getName( ) + " cannot be integrated";
     }
 }

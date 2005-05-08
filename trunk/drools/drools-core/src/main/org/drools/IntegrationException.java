@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: IntegrationException.java,v 1.1 2005-01-11 16:11:55 mproctor Exp $
+ * $Id: IntegrationException.java,v 1.2 2005-05-08 17:45:59 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,5 +43,35 @@ package org.drools;
 
 public class IntegrationException extends DroolsException
 {
- 
+    /**
+     * @see java.lang.Exception#Exception()
+     */
+    public IntegrationException( )
+    {
+        super();
+    }
+
+    /**
+     * @see java.lang.Exception#Exception(String message)
+     */
+    public IntegrationException( String message )
+    {
+        super( message );
+    }
+
+    /**
+     * @see java.lang.Exception#Exception(String message, Throwable cause)
+     */
+    public IntegrationException( String message, Throwable cause )
+    {
+        super( message );
+    }
+
+    /**
+     * @see java.lang.Exception#Exception(Throwable cause)
+     */
+    public IntegrationException( Throwable cause )
+    {
+        super( cause );
+    }
 }

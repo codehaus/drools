@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: InvalidRuleException.java,v 1.6 2005-03-06 13:34:15 memelet Exp $
+ * $Id: InvalidRuleException.java,v 1.7 2005-05-08 17:46:20 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,30 +47,23 @@ package org.drools.rule;
  */
 public class InvalidRuleException extends RuleConstructionException
 {
-    // ------------------------------------------------------------
-    // Instance members
-    // ------------------------------------------------------------
-
     /** The invalid rule. */
     private Rule rule;
 
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
     /**
-     * Construct.
+     * @see java.lang.Exception#Exception()
      *
      * @param rule
      *            The invalid <code>Rule</code>.
      */
     public InvalidRuleException( Rule rule )
     {
+        super();
         this.rule = rule;
     }
 
     /**
-     * Construct.
+     * @see java.lang.Exception#Exception(String message)
      *
      * @param message
      * @param rule
@@ -81,9 +74,17 @@ public class InvalidRuleException extends RuleConstructionException
         this.rule = rule;
     }
 
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
+    /**
+     * @see java.lang.Exception#Exception(String message, Throwable cause)
+     *
+     * @param message
+     * @param rule
+     */
+    public InvalidRuleException( String message, Rule rule, Throwable cause )
+    {
+        super( message, cause );
+        this.rule = rule;
+    }
 
     /**
      * Retrieve the invalid <code>Rule</code>.

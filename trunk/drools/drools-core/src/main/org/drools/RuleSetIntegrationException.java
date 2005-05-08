@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleSetIntegrationException.java,v 1.4 2005-01-11 16:11:56 mproctor Exp $
+ * $Id: RuleSetIntegrationException.java,v 1.5 2005-05-08 17:45:59 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,31 +57,32 @@ import org.drools.rule.RuleSet;
  */
 public class RuleSetIntegrationException extends IntegrationException
 {
-    // ------------------------------------------------------------
-    // Instance members
-    // ------------------------------------------------------------
-
     /** The rule. */
     private final RuleSet ruleSet;
 
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
     /**
-     * Construct.
+     * @see java.lang.Exception#Exception()
      *
      * @param ruleSet
      *            The offending rule.
      */
     public RuleSetIntegrationException( RuleSet ruleSet )
     {
+        super( createMessage( ruleSet ) );
         this.ruleSet = ruleSet;
     }
 
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
+    /**
+     * @see java.lang.Exception#Exception(Throwable cause)
+     *
+     * @param ruleSet
+     *            The offending rule.
+     */
+    public RuleSetIntegrationException( RuleSet ruleSet, Throwable cause )
+    {
+        super( createMessage( ruleSet ),  cause );
+        this.ruleSet = ruleSet;
+    }
 
     /**
      * Retrieve the <code>RuleSet</code>.
@@ -93,17 +94,7 @@ public class RuleSetIntegrationException extends IntegrationException
         return this.ruleSet;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // java.lang.Throwable
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Retrieve the error message.
-     *
-     * @return The error message.
-     */
-    public String getMessage( )
-    {
-        return this.getRuleSet( ).getName( ) + " cannot be integrated";
+    private static String createMessage( RuleSet ruleSet ) {
+        return ruleSet.getName( ) + " cannot be integrated";
     }
 }
