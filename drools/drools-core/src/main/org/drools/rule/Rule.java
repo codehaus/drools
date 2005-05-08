@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.58 2005-05-08 16:13:33 memelet Exp $
+ * $Id: Rule.java,v 1.59 2005-05-08 19:54:47 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,70 +54,76 @@ import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
 /**
- * A set of <code>Condition</code> s and a <code>Consequence</code>.
- *
- * The <code>Conditions</code> describe the circumstances that represent a
- * match for this rule. The <code>Consequence</code> gets fired when the
- * <code>Conditions</code> match.
+ * A <code>Rule</code> contains a set of <code>Condition</code>s and a
+ * <code>Consequence</code>.
+ * <p>
+ * The <code>Condition</code>s describe the circumstances that
+ * representrepresent a match for this rule. The <code>Consequence</code> gets
+ * fired when the Conditions match.
  *
  * @see Condition
  * @see Consequence
- *
- * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
+ * @author <a href="mailto:bob@eng.werken.com"> bob mcwhirter </a>
+ * @author <a href="mailto:simon@redhillconsulting.com.au"> Simon Harris </a>
+ * @author <a href="mailto:mproctor@codehaus.org"> mark pro </a>
  */
 public class Rule
     implements
     Serializable
 {
+    /**   */
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
-
-    private RuleSet ruleSet;
+    /** The parent ruleSet */
+    private RuleSet      ruleSet;
 
     /** Name of the rule. */
     private final String name;
 
     /** Documentation. */
-    private String documentation;
+    private String       documentation;
 
     /** Salience value. */
-    private int salience;
+    private int          salience;
 
     /** Formal parameter declarations. */
-    private final List parameterDeclarations = new ArrayList( );
+    private final List   parameterDeclarations = new ArrayList( );
 
     /** Conditions. */
-    private final List conditions = new ArrayList( );
+    private final List   conditions            = new ArrayList( );
 
     /** Consequence. */
-    private Consequence consequence;
+    private Consequence  consequence;
 
     /** Truthness duration. */
-    private Duration duration;
+    private Duration     duration;
 
     /** Load order in RuleSet */
-    private long loadOrder;
+    private long         loadOrder;
 
     /** is the consequence of the rule currently being executed? */
-    private boolean noLoop;
+    private boolean      noLoop;
 
-    private Map applicationData;
+    /** A map valid Application names and types */
+    private Map          applicationData;
 
-    private Importer importer;
+    /** The Importer to use, as specified by the RuleSet */
+    private Importer     importer;
 
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
 
     /**
-     * Construct.
+     * Construct a
+     * <code>Rule<code> with the given name for the specified ruleSet parent
      *
      * @param name
      *            The name of this rule.
      */
-    public Rule(String name, RuleSet ruleSet)
+    public Rule(String name,
+                RuleSet ruleSet)
     {
         this.name = name;
         this.ruleSet = ruleSet;
@@ -125,21 +131,26 @@ public class Rule
     }
 
     /**
-     * Construct.
+     * Construct a <code>Rule</code> for the given name with null for the
+     * parent <code>RuleSet</code>
+     * <code>Rule</code>s will nearly always
+     * want to be in a RuleSet. This is more of a convenience constructor for
+     * the times you dont, ie during unit testing.
      *
      * @param name
-     *            The name of this rule.
+     *        The name of this rule.
      */
     public Rule(String name)
     {
-        this( name, null );
+        this( name,
+              null );
     }
 
     /**
      * Set the documentation.
      *
-     * @param documentation
-     *            The documentation.
+     * @param documentation -
+     *        The documentation.
      */
     public void setDocumentation(String documentation)
     {
@@ -157,7 +168,9 @@ public class Rule
     }
 
     /**
-     * Set the truthness duration.
+     * Set the truthness duration. This causes a delay before the firing of the
+     * <code>Consequence</code> if the rule is still true at the end of the
+     * duration.
      *
      * <p>
      * This is merely a convenience method for calling
@@ -167,9 +180,8 @@ public class Rule
      * @see #setDuration(Duration)
      * @see FixedDuration
      *
-     * @param seconds
-     *            The number of seconds the rule must hold true in order to
-     *            fire.
+     * @param seconds -
+     *        The number of seconds the rule must hold true in order to fire.
      */
     public void setDuration(long seconds)
     {
@@ -177,10 +189,12 @@ public class Rule
     }
 
     /**
-     * Set the truthness duration object.
+     * Set the truthness duration object. This causes a delay before the firing of the
+     * <code>Consequence</code> if the rule is still true at the end of the
+     * duration.
      *
      * @param duration
-     *            The truth duration object.
+     *        The truth duration object.
      */
     public void setDuration(Duration duration)
     {
@@ -200,12 +214,18 @@ public class Rule
     /**
      * Determine if this rule is internally consistent and valid.
      *
+     * No exception is thrown.
+     * <p>
+     * A <code>Rule</code> must include at least one parameter declaration and
+     * one condition.
+     * </p>
+     *
      * @return <code>true</code> if this rule is valid, else
      *         <code>false</code>.
      */
     public boolean isValid()
     {
-        return !( getParameterDeclarations( ).isEmpty( ) || getConditions( ).isEmpty( ) ) && getConsequence( ) != null;
+        return !(getParameterDeclarations( ).isEmpty( ) || getConditions( ).isEmpty( ) ) && getConsequence( ) != null;
     }
 
     /**
@@ -218,6 +238,7 @@ public class Rule
      *
      * <pre>
      * NoParameterDeclarationException
+     * NoConsequenceException
      * </pre>
      *
      * <p>
@@ -226,7 +247,7 @@ public class Rule
      * </p>
      *
      * @throws InvalidRuleException
-     *             if this rule is in any way invalid.
+     *         if this rule is in any way invalid.
      */
     public void checkValidity() throws InvalidRuleException
     {
@@ -289,8 +310,10 @@ public class Rule
      * Add a <i>root fact object </i> parameter <code>Declaration</code> for
      * this <code>Rule</code>.
      *
-     * @param identifier The identifier.
-     * @param objectType The type.
+     * @param identifier
+     *        The identifier.
+     * @param objectType
+     *        The type.
      * @return The declaration.
      */
     public Declaration addParameterDeclaration(String identifier,
@@ -313,7 +336,8 @@ public class Rule
     /**
      * Retrieve a parameter <code>Declaration</code> by identifier.
      *
-     * @param identifier The identifier.
+     * @param identifier
+     *        The identifier.
      *
      * @return The declaration or <code>null</code> if no declaration matches
      *         the <code>identifier</code>.
@@ -323,11 +347,11 @@ public class Rule
         Declaration eachDecl;
 
         Iterator declIter = this.parameterDeclarations.iterator( );
-        while ( declIter.hasNext() )
+        while ( declIter.hasNext( ) )
         {
-            eachDecl = ( Declaration ) declIter.next();
+            eachDecl = (Declaration) declIter.next( );
 
-            if ( eachDecl.getIdentifier().equals( identifier ) )
+            if ( eachDecl.getIdentifier( ).equals( identifier ) )
             {
                 return eachDecl;
             }
@@ -340,7 +364,8 @@ public class Rule
      * Retrieve the set of all <i>root fact object </i> parameter
      * <code>Declarations</code>.
      *
-     * @return The Set of <code>Declarations</code> in order which specify the <i>root fact objects</i>.
+     * @return The Set of <code>Declarations</code> in order which specify the
+     *         <i>root fact objects</i>.
      */
     public List getParameterDeclarations()
     {
@@ -351,7 +376,7 @@ public class Rule
      * Add a <code>Condition</code> to this rule.
      *
      * @param condition
-     *            The <code>Condition</code> to add.
+     *        The <code>Condition</code> to add.
      */
     public void addCondition(Condition condition)
     {
@@ -379,8 +404,7 @@ public class Rule
      * match of this rule.
      *
      * @param consequence
-     *            The <code>Consequence</code> to attach to this
-     *            <code>Rule</code>.
+     *        The <code>Consequence</code> to attach to this <code>Rule</code>.
      */
     public void setConsequence(Consequence consequence)
     {

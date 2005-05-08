@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.6 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: JavaBlockConsequence.java,v 1.7 2005-05-08 19:54:48 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,8 +45,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.DefaultKnowledgeHelper;
@@ -81,9 +83,9 @@ public class JavaBlockConsequence
      * Construct.
      * 
      * @param block
-     *            The statement block.
+     *        The statement block.
      * @param rule
-     *            The rule.
+     *        The rule.
      */
     public JavaBlockConsequence(Rule rule,
                                 int id,
@@ -111,13 +113,12 @@ public class JavaBlockConsequence
      * Execute the consequence for the supplied matching <code>Tuple</code>.
      * 
      * @param tuple
-     *            The matching tuple.
+     *        The matching tuple.
      * @param workingMemory
-     *            The working memory session.
+     *        The working memory session.
      * 
      * @throws ConsequenceException
-     *             If an error occurs while attempting to invoke the
-     *             consequence.
+     *         If an error occurs while attempting to invoke the consequence.
      */
     public void invoke(Tuple tuple) throws ConsequenceException
     {
@@ -133,10 +134,23 @@ public class JavaBlockConsequence
                                                             tuple ),
                                 tuple.getWorkingMemory( ).getApplicationDataMap( ) );
         }
+        catch ( Scanner.LocatedException e )
+        {
+            throw new ConsequenceException( e,
+                                            this.rule,
+                                            this.block );
+        }
+        catch ( CompilationException e )
+        {
+            throw new ConsequenceException( e.getMessage( ),
+                                            e.getRule( ),
+                                            e.getText( ) );
+        }
         catch ( Exception e )
         {
             throw new ConsequenceException( e,
-                                            this.rule );
+                                            this.rule,
+                                            this.block );
         }
     }
 
@@ -148,6 +162,11 @@ public class JavaBlockConsequence
                                               this.block,
                                               this.block,
                                               this.declarations );
+    }
+
+    public String toString()
+    {
+        return "[Consequence: " + this.block + "]";
     }
 
     public static interface Script

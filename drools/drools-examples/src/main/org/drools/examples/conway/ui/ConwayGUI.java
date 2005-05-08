@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 
 /**
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: ConwayGUI.java,v 1.2 2005-05-04 16:58:40 memelet Exp $
+ * @version $Id: ConwayGUI.java,v 1.3 2005-05-08 19:54:48 mproctor Exp $
  */
 public class ConwayGUI extends JPanel
 {

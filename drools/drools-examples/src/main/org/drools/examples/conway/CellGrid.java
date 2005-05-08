@@ -10,7 +10,7 @@ import org.drools.examples.conway.rules.RuleBaseFactory;
  * <p/>
  * 
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: CellGrid.java,v 1.3 2005-05-05 13:24:41 brownj Exp $
+ * @version $Id: CellGrid.java,v 1.4 2005-05-08 19:54:48 mproctor Exp $
  * @see Cell
  */
 public class CellGrid

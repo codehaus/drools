@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: CompilationException.java,v 1.4 2005-05-07 04:47:56 dbarnett Exp $
+ * $Id: CompilationException.java,v 1.5 2005-05-08 19:54:48 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,27 +43,36 @@ package org.drools.semantics.java;
 
 import org.drools.DroolsException;
 import org.drools.rule.Rule;
+import org.drools.rule.RuleSet;
 
 public class CompilationException
     extends DroolsException
 {
     private final Rule rule;
+    private final RuleSet ruleSet;
     private final String text;
     private final int lineNumber;
     private final int columnNumber;
     private final String errorMessage;
 
-    public CompilationException(Rule rule,
+    public CompilationException(RuleSet ruleSet,
+                                Rule rule,
                                 String text,
                                 int lineNumber,
                                 int columnNumber,
                                 String errorMessage)
     {
+        this.ruleSet = ruleSet;
         this.rule = rule;
         this.text = text;
         this.lineNumber = lineNumber;
         this.columnNumber = columnNumber;
         this.errorMessage = errorMessage;
+    }
+
+    public RuleSet getRuleSet()
+    {
+        return this.ruleSet;
     }
 
     public Rule getRule()
@@ -93,6 +102,29 @@ public class CompilationException
 
     public String getMessage()
     {
-        return getRule().getName() + ":" + getLineNumber() + ":" + getColumNumber() + ":\n    " + getText( ) + "\n" + getErrorMessage();
+        StringBuffer error = new StringBuffer();
+        if ( this.ruleSet != null )
+        {
+            error.append( "RuleSet '" );
+            error.append( getRuleSet( ).getName( ) );
+            error.append( "' " );
+            error.append( ":" );
+        }
+        if ( this.rule != null )
+        {
+            error.append( "Rule '" );
+            error.append( getRule( ).getName( ) );
+            error.append( "' " );
+            error.append( ":" );
+        }
+        error.append( getLineNumber( ) );
+        error.append( " : " );
+        error.append( getColumNumber() );
+        error.append( ":\n    " );
+        error.append( getText( ) );
+        error.append( "\n" );
+        error.append( getErrorMessage() );
+
+        return error.toString();
     }
 }

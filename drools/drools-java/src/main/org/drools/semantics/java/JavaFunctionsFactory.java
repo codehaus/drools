@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctionsFactory.java,v 1.7 2005-05-07 04:47:56 dbarnett Exp $
+ * $Id: JavaFunctionsFactory.java,v 1.8 2005-05-08 19:54:48 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -76,21 +76,10 @@ public class JavaFunctionsFactory
                                       id.intValue( ),
                                       config.getText( ) );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             throw new FactoryException( e );
         }
-        catch ( ScanException e )
-        {
-            throw new FactoryException( e );
-        }
-        catch ( CompileException e )
-        {
-            throw new FactoryException( e );
-        }
-        catch ( ParseException e )
-        {
-            throw new FactoryException( e );
-        }
+
     }
 }

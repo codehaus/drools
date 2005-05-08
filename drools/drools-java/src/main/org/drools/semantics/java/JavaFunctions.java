@@ -1,6 +1,8 @@
 package org.drools.semantics.java;
 
 /*
+ * $Id: JavaFunctions.java,v 1.9 2005-05-08 19:54:48 mproctor Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -88,6 +90,9 @@ public class JavaFunctions
      *
      * @param text
      *            The block text.
+     * @throws ClassNotFoundException
+     * @throws IOException
+     * @throws CompilationException
      * @throws IOException
      * @throws ScanException
      * @throws ParseException
@@ -95,10 +100,7 @@ public class JavaFunctions
      */
     public JavaFunctions(RuleSet ruleSet,
                          int id,
-                         String text) throws ScanException,
-                                     IOException,
-                                     CompileException,
-                                     ParseException
+                         String text) throws CompilationException, IOException, ClassNotFoundException
     {
         this.text = text;
         this.ruleSet = ruleSet;
@@ -108,7 +110,7 @@ public class JavaFunctions
         compile();
     }
 
-    private void compile() throws ScanException, CompileException, ParseException, IOException
+    private void compile() throws IOException, CompilationException, ClassNotFoundException
     {
         RuleBaseContext ruleBaseContext = ruleSet.getRuleBaseContext( );
         ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
@@ -137,21 +139,21 @@ public class JavaFunctions
 
         Set imports = new HashSet();
         Importer importer = ruleSet.getImporter();
-        /*
-        Iterator i = ruleSet.getImports().iterator();
-        ImportEntry importEntry;
-        while ( i.hasNext() )
-        {
-            importEntry = ( ImportEntry ) i.next();
-            if ( importEntry instanceof JavaImportEntry )
-            {
-                imports.add( importEntry.getImportEntry( ) );
-            }
-        }
-        */
 
-        ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(importer, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
-        this.functionsClass = classBody.evaluate();
+        try
+        {
+            ImporterClassBodyEvaluator classBody = new ImporterClassBodyEvaluator(importer, this.className, new Scanner(null, new java.io.StringReader(this.text)), classLoader);
+            this.functionsClass = classBody.evaluate();
+        }
+        catch ( Scanner.LocatedException e )
+        {
+            throw new CompilationException( ruleSet,
+                                            null,
+                                            this.text,
+                                            e.getLocation( ) != null ? e.getLocation( ).getLineNumber( ) : -1,
+                                            e.getLocation( ) != null ? e.getLocation( ).getColumnNumber( ) : -1,
+                                            e.getMessage( ) );
+        }
 
         ruleBaseContext.put( "java-classLoader",
                              this.functionsClass.getClassLoader() );
@@ -167,7 +169,7 @@ public class JavaFunctions
         return this.text;
     }
 
-    public Class getFunctionsClass() throws ScanException, CompileException, ParseException, IOException
+    public Class getFunctionsClass() throws CompilationException, IOException, ClassNotFoundException
     {
         if (functionsClass == null)
         {
@@ -185,16 +187,5 @@ public class JavaFunctions
     {
         return "java";
     }
-    /*
-     * private Script compile(Rule rule) throws Exception { Set imports = new
-     * HashSet( ); if ( rule.getImports( ) != null ) { Iterator it =
-     * rule.getImports( ).iterator( ); ImportEntry importEntry; while (
-     * it.hasNext( ) ) { importEntry = (ImportEntry) it.next( ); if (
-     * importEntry instanceof JavaImportEntry ) { imports.add(
-     * importEntry.getImportEntry( ) ); } } }
-     *
-     * return (Script) Interp.compile( rule, Script.class, this.block,
-     * this.block, SCRIPT_PARAM_NAMES, this.declarations, imports,
-     * rule.getApplicationData( ) ); }
-     */
+
 }
