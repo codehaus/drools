@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConditionExceptionTest.java,v 1.3 2005-05-08 04:05:13 dbarnett Exp $
+ * $Id: ConditionExceptionTest.java,v 1.4 2005-05-08 20:41:04 dbarnett Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,7 @@ public class ConditionExceptionTest extends DroolsTestCase
     {
         ConditionException e = new ConditionException( );
 
-        assertNull( e.getRootCause( ) );
+        assertNull( e.getCause( ) );
     }
 
     public void testConstruct_WithRootCause()
@@ -58,7 +58,7 @@ public class ConditionExceptionTest extends DroolsTestCase
 
         ConditionException e = new ConditionException( rootCause );
 
-        assertSame( rootCause, e.getRootCause( ) );
+        assertSame( rootCause, e.getCause( ) );
     }
 
 }

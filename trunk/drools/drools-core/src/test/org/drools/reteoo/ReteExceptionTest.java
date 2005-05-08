@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteExceptionTest.java,v 1.3 2005-05-08 04:05:13 dbarnett Exp $
+ * $Id: ReteExceptionTest.java,v 1.4 2005-05-08 20:41:04 dbarnett Exp $
  *
  * Copyright 2002-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,6 +55,6 @@ public class ReteExceptionTest extends TestCase
         Exception root = new Exception( "root cause" );
         ReteException e = new ReteException( root );
 
-        assertSame( root, e.getRootCause( ) );
+        assertSame( root, e.getCause( ) );
     }
 }
