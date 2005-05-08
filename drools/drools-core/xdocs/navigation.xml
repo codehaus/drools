@@ -9,8 +9,6 @@
       <item name="The Codehaus" href="http://codehaus.org/"/>
     </links>
     <menu name="drools">
-      <item name="Releases"           href="/releases.html"/> 
- 
       <item name="Drools-Core Javadocs" href="/apidocs/org/drools/semantics/java/package-summary.html"/>
       <item name="Drools-Java Javadocs" href="/drools-java/apidocs/org/drools/semantics/java/package-summary.html"/>
       <item name="Drools-Python Javadocs" href="/drools-python/apidocs/org/drools/semantics/python/package-summary.html"/>
