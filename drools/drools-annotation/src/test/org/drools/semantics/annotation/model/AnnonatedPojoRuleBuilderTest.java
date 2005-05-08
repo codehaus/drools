@@ -254,7 +254,7 @@ public class AnnonatedPojoRuleBuilderTest extends TestCase
         assertEquals("p1", declarations.get(0).getIdentifier());
         assertEquals("p2", declarations.get(1).getIdentifier());
 
-        List conditions = rule.getConditions();
+        List<Condition> conditions = rule.getConditions();
         assertEquals(2, conditions.size());
         assertTrue(conditions.get(0) instanceof PojoCondition);
         assertTrue(conditions.get(1) instanceof PojoCondition);
