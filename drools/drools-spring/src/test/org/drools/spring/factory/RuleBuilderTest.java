@@ -11,15 +11,14 @@ import junit.framework.TestCase;
 import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.semantics.base.ClassObjectType;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
-import org.drools.spring.factory.RuleBuilder;
-import org.drools.spring.metadata.DataArgumentMetadata;
 import org.drools.spring.metadata.ArgumentMetadata;
 import org.drools.spring.metadata.ArgumentMetadataSource;
+import org.drools.spring.metadata.BeanObjectType;
+import org.drools.spring.metadata.DataArgumentMetadata;
 import org.drools.spring.metadata.FactArgumentMetadata;
 import org.drools.spring.metadata.KnowledgeHelperArgumentMetadata;
 import org.drools.spring.metadata.MethodMetadata;
@@ -99,7 +98,7 @@ public class RuleBuilderTest extends TestCase {
                 conditionOneArgumentMetadata = new ArgumentMetadata[]{
                         new FactArgumentMetadata(null, String.class)
                 };
-                expectedDeclarationObjectTypes.add(new ClassObjectType(String.class));
+                expectedDeclarationObjectTypes.add(new BeanObjectType(String.class));
                 expectedConditionMethodNames.add(conditionOneMethod.getName());
 
                 // conditionTwo
@@ -110,7 +109,7 @@ public class RuleBuilderTest extends TestCase {
                         new FactArgumentMetadata(null, long.class),
                         new DataArgumentMetadata("value", int.class)
                 };
-                expectedDeclarationObjectTypes.add(new ClassObjectType(long.class));
+                expectedDeclarationObjectTypes.add(new BeanObjectType(long.class));
                 expectedConditionMethodNames.add(conditionTwoMethod.getName());
 
                 // consequenceOne
@@ -135,8 +134,8 @@ public class RuleBuilderTest extends TestCase {
                         new DataArgumentMetadata("value", int.class),
                         new KnowledgeHelperArgumentMetadata()
                 };
-                expectedDeclarationObjectTypes.add(new ClassObjectType(Object.class));
-                expectedDeclarationObjectTypes.add(new ClassObjectType(long.class));
+                expectedDeclarationObjectTypes.add(new BeanObjectType(Object.class));
+                expectedDeclarationObjectTypes.add(new BeanObjectType(long.class));
                 expectedConsequenceMethodNames.add(consequenceTwoMethod.getName());
 
             } catch (Exception e) {
