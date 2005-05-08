@@ -1,6 +1,8 @@
 package org.drools.semantics.java;
 
 /*
+ * $Id: JavaCompiler.java,v 1.12 2005-05-08 19:54:48 mproctor Exp $
+ *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -59,7 +61,8 @@ class JavaCompiler
                                  String expression,
                                  String originalExpression,
                                  Declaration[] params) throws IOException,
-                                                      CompilationException
+                                                      CompilationException,
+                                                      ClassNotFoundException
     {
         try
         {
@@ -111,7 +114,8 @@ class JavaCompiler
         }
         catch ( Scanner.LocatedException e )
         {
-            throw new CompilationException( rule,
+            throw new CompilationException( rule.getRuleSet(),
+                                            rule,
                                             originalExpression,
                                             e.getLocation( ) != null ? e.getLocation( ).getLineNumber( ) : -1,
                                             e.getLocation( ) != null ? e.getLocation( ).getColumnNumber( ) : -1,

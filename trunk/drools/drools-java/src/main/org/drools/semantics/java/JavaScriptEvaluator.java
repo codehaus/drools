@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaScriptEvaluator.java,v 1.9 2005-05-07 04:47:56 dbarnett Exp $
+ * $Id: JavaScriptEvaluator.java,v 1.10 2005-05-08 19:54:48 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,6 +59,9 @@ import org.codehaus.janino.Mod;
 import org.codehaus.janino.Parser;
 import org.codehaus.janino.Scanner;
 import org.codehaus.janino.Location;
+import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 import org.codehaus.janino.util.PrimitiveWrapper;
 
 import org.drools.rule.Declaration;
@@ -87,7 +90,8 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                ClassLoader classLoader) throws Scanner.ScanException,
                                                      Parser.ParseException,
                                                      Java.CompileException,
-                                                     IOException
+                                                     IOException,
+                                                     ClassNotFoundException
     {
         super( classLoader );
 			
@@ -191,17 +195,17 @@ public class JavaScriptEvaluator extends EvaluatorBase
 
         // Compile and load it.
         Class c;
-        try
-        {
+        //try
+        //{
             c = this.compileAndLoad( compilationUnit,
                                      DebuggingInformation.ALL,
                                      className );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            throw new RuntimeException( );
-        }
+        //}
+        //catch ( Exception e )
+        //{
+            //e.printStackTrace();
+            //throw new RuntimeException( );
+        //}
 
         // Find script method by name.
         try
@@ -344,10 +348,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                  Importer importer,
                                  Map applicationData,
                                  Class baseClass,
-                                 ClassLoader classLoader) throws Java.CompileException,
-                                                     Parser.ParseException,
-                                                     Scanner.ScanException,
-                                                     IOException
+                                 ClassLoader classLoader) throws ScanException, ParseException, CompileException, IOException, ClassNotFoundException 
     {
         JavaScriptEvaluator scriptEvaluator = new JavaScriptEvaluator( block,
                                                                        className,
