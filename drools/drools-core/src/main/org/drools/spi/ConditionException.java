@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ConditionException.java,v 1.6 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: ConditionException.java,v 1.6.2.1 2005-05-08 00:57:36 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -52,7 +52,7 @@ import org.drools.rule.Rule;
  */
 public class ConditionException extends AssertionException
 {
-    private Rule rule;
+    private Rule   rule;
     private String info;
 
     // ------------------------------------------------------------
@@ -76,7 +76,7 @@ public class ConditionException extends AssertionException
      * Construct with a root cause.
      * 
      * @param rootCause
-     *            The root cause of this exception.
+     *        The root cause of this exception.
      */
     public ConditionException(Throwable rootCause)
     {
@@ -101,7 +101,7 @@ public class ConditionException extends AssertionException
      * Construct with a root cause.
      * 
      * @param rootCause
-     *            The root cause of this exception.
+     *        The root cause of this exception.
      */
     public ConditionException(Throwable rootCause,
                               Rule rule,

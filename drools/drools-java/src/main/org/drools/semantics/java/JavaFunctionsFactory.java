@@ -35,21 +35,10 @@ public class JavaFunctionsFactory
                                       id.intValue( ),
                                       config.getText( ) );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             throw new FactoryException( e );
         }
-        catch ( ScanException e )
-        {
-            throw new FactoryException( e );
-        }
-        catch ( CompileException e )
-        {
-            throw new FactoryException( e );
-        }
-        catch ( ParseException e )
-        {
-            throw new FactoryException( e );
-        }
+
     }
 }

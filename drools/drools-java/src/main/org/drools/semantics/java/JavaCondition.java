@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.11.2.1 2005-04-12 00:24:41 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.11.2.2 2005-05-08 00:57:36 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -157,7 +157,6 @@ public class JavaCondition
         }
         catch ( CompilationException e )
         {
-            System.err.println( "[" + e.getText( ) + "]" );
             throw new ConditionException( e.getMessage( ),
                                           e.getRule( ),
                                           e.getText( ) );
@@ -215,7 +214,7 @@ public class JavaCondition
 
     public String toString()
     {
-        return "[Condition: " + originalExpression + "]";
+        return "[Condition: " + this.originalExpression + "]";
     }
 
     public static interface Script

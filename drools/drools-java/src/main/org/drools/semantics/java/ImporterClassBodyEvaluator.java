@@ -27,31 +27,32 @@ import org.drools.spi.Importer;
  */
 public class ImporterClassBodyEvaluator extends EvaluatorBase
 {
-    private final Class         clazz;
+    private final Class clazz;
 
     /**
      * Construct.
      * 
      * @param imports
-     *            <code>Set&lt;String&gt;</code> of imported java classes and
-     *            packages.
+     *        <code>Set&lt;String&gt;</code> of imported java classes and
+     *        packages.
      * @param scanner
-     *            The lexer.
+     *        The lexer.
      * @param classLoader
-     *            Class loader for resolving other classes referred to by the
-     *            currently constructed class.
+     *        Class loader for resolving other classes referred to by the
+     *        currently constructed class.
      * @throws IOException
      * @throws ScanException
      * @throws ParseException
      * @throws CompileException
      */
     public ImporterClassBodyEvaluator(Importer importer,
-                                      String className,                                      
+                                      String className,
                                       Scanner scanner,
                                       ClassLoader classLoader) throws ScanException,
                                                               IOException,
                                                               CompileException,
-                                                              ParseException
+                                                              ParseException,
+                                                              ClassNotFoundException
     {
         super( classLoader );
 
@@ -104,7 +105,7 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
                                                                                             (String[]) list.toArray( new String[list.size( )] ) ) );
             }
         }
-        
+
         // Add class declaration.
         Java.ClassDeclaration cd = this.addPackageMemberClassDeclaration( scanner.peek( ).getLocation( ),
                                                                           compilationUnit,
@@ -118,18 +119,9 @@ public class ImporterClassBodyEvaluator extends EvaluatorBase
             parser.parseClassBodyDeclaration( cd );
         }
 
-        // Compile and load it.
-        try
-        {
-            this.clazz = this.compileAndLoad( compilationUnit, // compilationUnit
-                                              DebuggingInformation.SOURCE.add( DebuggingInformation.LINES ), // debuggingInformation
-                                              className );
-        }
-        catch ( ClassNotFoundException e )
-        {
-            throw new RuntimeException( );
-        }
-
+        this.clazz = this.compileAndLoad( compilationUnit, // compilationUnit
+                                          DebuggingInformation.SOURCE.add( DebuggingInformation.LINES ), // debuggingInformation
+                                          className );
     }
 
     public Class evaluate()
