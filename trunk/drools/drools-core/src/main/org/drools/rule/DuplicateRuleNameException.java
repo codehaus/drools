@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: DuplicateRuleNameException.java,v 1.6 2005-05-08 17:46:20 memelet Exp $
+ * $Id: DuplicateRuleNameException.java,v 1.7 2005-05-08 23:27:50 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ public class DuplicateRuleNameException extends RuleConstructionException
                                       Rule originalRule,
                                       Rule conflictingRule)
     {
-        super();
+        super( createMessage( ruleSet, conflictingRule ) );
         this.ruleSet = ruleSet;
         this.originalRule = originalRule;
         this.conflictingRule = conflictingRule;
@@ -95,7 +95,7 @@ public class DuplicateRuleNameException extends RuleConstructionException
                                       Rule conflictingRule,
                                       Throwable cause)
     {
-        super(cause);
+        super( createMessage( ruleSet, conflictingRule ), cause );
         this.ruleSet = ruleSet;
         this.originalRule = originalRule;
         this.conflictingRule = conflictingRule;
@@ -129,5 +129,12 @@ public class DuplicateRuleNameException extends RuleConstructionException
     public Rule getConflictingRule()
     {
         return this.conflictingRule;
+    }
+
+    private static String createMessage(RuleSet ruleSet, Rule rule) {
+        return "Rule-set "
+            + ((ruleSet.getName() != null) ? ruleSet.getName() : "<no-name>")
+            + " already contains rule with name "
+            + rule.getName();
     }
 }
