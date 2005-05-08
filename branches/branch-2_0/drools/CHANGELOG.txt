@@ -1,3 +1,38 @@
+2.0-rc1
+-----------
+Bug
+DROOLS-259 - Add support for robust classLoader handling (Mark Proctor)
+DROOLS-260 - <java:functions> doesn't see <java:import>-ed classes (kdx)
+DROOLS-291 - Condition does not compile (Bob Mcwhirter)
+DROOLS-292 - No warning when bean does not implement addPropertyChangeListener (Barry Kaplan)
+DROOLS-299 - org.xml.sax.SAXParseException: <parameter> has an invalid parent (Mark Proctor)
+DROOLS-305 - Invalid Handles after calling retractObject in WorkingMemory (Mark Proctor)
+DROOLS-306 - drools-all produces error (Mark Proctor)
+DROOLS-307 - Remove drools-annotation from drools-all (Mark Proctor)
+DROOLS-313 - Import statements might cause the Rete network to be build erroneously (Edson Tirelli)
+DROOLS-323 - Serialized Rule Bases seems to lose functions (Mark Proctor)
+DROOLS-324 - iterator IllegalStateException on firing a temporal rule (Philip Smith)
+DROOLS-329 - Correction to Handler logic in RuleSetReader (Mark Proctor)
+DROOLS-336 - Detect ambiguously defined classes (kdx)
+DROOLS-342 - Fix serialization for python and groovy (Mark Proctor)
+
+Improvement
+DROOLS-325 - Improved Application Data Error Message (Geoffrey Wiseman)
+DROOLS-328 - Upgrade to janino-2.3.2 (Mark Proctor)
+DROOLS-333 - Update to groovy 1.0-jsr-01 (Mark Proctor)
+DROOLS-334 - Make Clover work from maven (Mark Proctor)
+DROOLS-337 - Update to antrl 2.7.5 (Mark Proctor)
+DROOLS-340 - Turn off warning for jaxp1.2 compliancy (Mark Proctor)
+DROOLS-341 - Centralise Import code and provide some level of caching (Mark Proctor)
+DROOLS-343 - Added unit test for the Semaphore implementation (Mark Proctor)
+DROOLS-344 - Add Conway's "Game of Life" example (Jeff Brown)
+DROOLS-345 - Deprecate <smf:import> in favour of <import> (Mark Proctor)
+DROOLS-100 - Ant Build File (Mark Proctor)
+DROOLS-261 - <java:functions> should also let inner classes work (kdx)
+
+Task
+DROOLS-227 - Document Ant Build Environment (Mark Proctor)
+
 2.0-BETA-21
 -----------
 Bug
