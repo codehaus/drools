@@ -1,31 +1,31 @@
 package org.drools.rule;
 
 /*
- * $Id: DuplicateRuleNameException.java,v 1.5 2004-12-06 01:30:37 dbarnett Exp $
- * 
+ * $Id: DuplicateRuleNameException.java,v 1.6 2005-05-08 17:46:20 memelet Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,24 +37,20 @@ package org.drools.rule;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 /**
  * Indicates an attempt to add a <code>Rule</code> to a <code>RuleSet</code>
  * that already contains a <code>Rule</code> with the same name.
- * 
+ *
  * @see Rule
  * @see RuleSet
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 public class DuplicateRuleNameException extends RuleConstructionException
 {
-    // ------------------------------------------------------------
-    // Instance members
-    // ------------------------------------------------------------
-
     /** The rule-set. */
     private RuleSet ruleSet;
 
@@ -64,13 +60,9 @@ public class DuplicateRuleNameException extends RuleConstructionException
     /** The conflicting rule. */
     private Rule conflictingRule;
 
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
     /**
-     * Construct.
-     * 
+     * @see java.lang.Exception#Exception()
+     *
      * @param ruleSet
      *            The <code>RuleSet</code>.
      * @param originalRule
@@ -82,18 +74,36 @@ public class DuplicateRuleNameException extends RuleConstructionException
                                       Rule originalRule,
                                       Rule conflictingRule)
     {
+        super();
         this.ruleSet = ruleSet;
         this.originalRule = originalRule;
         this.conflictingRule = conflictingRule;
     }
 
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
+    /**
+     * @see java.lang.Exception#Exception(Throwable cause)
+     *
+     * @param ruleSet
+     *            The <code>RuleSet</code>.
+     * @param originalRule
+     *            The <code>Rule</code> already in the <code>RuleSet</code>.
+     * @param conflictingRule
+     *            The new, conflicting <code>Rule</code>.
+     */
+    public DuplicateRuleNameException(RuleSet ruleSet,
+                                      Rule originalRule,
+                                      Rule conflictingRule,
+                                      Throwable cause)
+    {
+        super(cause);
+        this.ruleSet = ruleSet;
+        this.originalRule = originalRule;
+        this.conflictingRule = conflictingRule;
+    }
 
     /**
      * Retrieve the <code>RuleSet</code>.
-     * 
+     *
      * @return The <code>RuleSet</code>.
      */
     public RuleSet getRuleSet()
@@ -103,7 +113,7 @@ public class DuplicateRuleNameException extends RuleConstructionException
 
     /**
      * Retrieve the original <code>Rule</code> in the <code>RuleSet</code>.
-     * 
+     *
      * @return The <code>Rule</code>.
      */
     public Rule getOriginalRule()
@@ -113,7 +123,7 @@ public class DuplicateRuleNameException extends RuleConstructionException
 
     /**
      * Retrieve the new conflicting <code>Rule</code>.
-     * 
+     *
      * @return The <code>Rule</code>.
      */
     public Rule getConflictingRule()

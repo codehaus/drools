@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleConstructionException.java,v 1.6 2005-03-06 13:34:15 memelet Exp $
+ * $Id: RuleConstructionException.java,v 1.7 2005-05-08 17:46:20 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,24 +49,35 @@ import org.drools.DroolsException;
  */
 public class RuleConstructionException extends DroolsException
 {
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
-
     /**
-     * Construct.
+     * @see java.lang.Exception#Exception()
      */
     RuleConstructionException()
     {
-        // intentionally left blank
+        super();
     }
 
     /**
-     * Construct
-     * @param message
+     * @see java.lang.Exception#Exception(String message)
      */
     RuleConstructionException( String message )
     {
-        super(message);
+        super( message );
+    }
+
+    /**
+     * @see java.lang.Exception#Exception(String message, Throwable cause)
+     */
+    RuleConstructionException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    /**
+     * @see java.lang.Exception#Exception(Throwable cause)
+     */
+    RuleConstructionException( Throwable cause )
+    {
+        super( cause );
     }
 }

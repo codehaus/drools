@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: NoSuchFactHandleException.java,v 1.3 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: NoSuchFactHandleException.java,v 1.4 2005-05-08 17:45:59 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,36 +55,32 @@ package org.drools;
  */
 public class NoSuchFactHandleException extends FactException
 {
-    // ----------------------------------------------------------------------
-    // Instance members
-    // ----------------------------------------------------------------------
-
     /** Invalid fact object. */
     private final Object object;
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    public NoSuchFactHandleException( )
-    {
-        this.object = null;
-    }
-
     /**
-     * Construct.
+     * @see java.lang.Exception#Exception()
      *
      * @param object
      *            The invalid fact object.
      */
     public NoSuchFactHandleException( Object object )
     {
+        super( createMessage( object ) );
         this.object = object;
     }
 
-    // ----------------------------------------------------------------------
-    // Instance methods
-    // ----------------------------------------------------------------------
+    /**
+     * @see java.lang.Exception#Exception(Throwable cause)
+     *
+     * @param object
+     *            The invalid fact object.
+     */
+    public NoSuchFactHandleException( Object object, Throwable cause )
+    {
+        super(createMessage( object ), cause );
+        this.object = object;
+    }
 
     /**
      * Retrieve the invalid Object.
@@ -96,18 +92,9 @@ public class NoSuchFactHandleException extends FactException
         return this.object;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * @see Throwable
-     */
-    public String getMessage( )
-    {
-        if ( this.object == null )
-        {
-            return "invalid (null) fact object";
-        }
-
-        return "no such fact handle for object: " + object;
+    private static String createMessage( Object object ) {
+        return object == null
+                ? "null fact object"
+                : "no such fact handle for object:" + object;
     }
 }
