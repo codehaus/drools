@@ -6,9 +6,8 @@
     xmlns:util="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <goal name="default" >
-        <!--<attainGoal name="jar:install"/>-->
-        <attainGoal name="junit-report" />
+    <goal name="default">
+        <attainGoal name="jar:install"/>
     </goal>
 
     <goal name="drools:clover" prereqs="clover:on, jar:jar" />
