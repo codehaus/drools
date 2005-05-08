@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.57 2005-05-04 16:58:39 memelet Exp $
+ * $Id: Rule.java,v 1.58 2005-05-08 16:13:33 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,16 +43,13 @@ package org.drools.rule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
@@ -107,7 +104,7 @@ public class Rule
     private boolean noLoop;
 
     private Map applicationData;
-    
+
     private Importer importer;
 
     // ------------------------------------------------------------
@@ -410,16 +407,16 @@ public class Rule
     {
         this.loadOrder = loadOrder;
     }
-    
+
     public Importer getImporter()
     {
         return this.importer;
     }
-    
+
     public void setImporter(Importer importer)
     {
         this.importer = importer;
-    }      
+    }
 
     public void setApplicationData(Map applicationData)
     {

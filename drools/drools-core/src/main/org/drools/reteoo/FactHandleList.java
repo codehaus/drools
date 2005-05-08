@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
-* $Id: FactHandleList.java,v 1.6 2005-02-02 00:23:21 mproctor Exp $
+* $Id: FactHandleList.java,v 1.7 2005-05-08 16:13:33 memelet Exp $
 *
 * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
 *
@@ -44,7 +44,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import org.drools.FactHandle;
-import org.drools.rule.Declaration;
 
 /**
  * Specialised array of {@link FactHandle}s intended to be keyed by a {@link Declaration}s
