@@ -9,6 +9,8 @@
         <attainGoal name="jar:install" />
     </goal>
 
+    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
+
     <!-- @Hack - Maven does not allow inter-project test dependencies. If ever adding new files -->
     <!-- be sure to update the appropriate .cvsignore -->
     <preGoal name="test:compile">

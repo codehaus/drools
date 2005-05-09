@@ -9,6 +9,8 @@
         <attainGoal name="jar:install" />
     </goal>
     
+    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
+
     <postGoal name="clover">
         <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
             file="${basedir}/target/docs/clover/pkgs-summary.html" />
