@@ -47,11 +47,13 @@
              value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/> <!-- now exclude examples -->
 
 
-      <j:set var="maven.clover.database"
-             value="${basedir}/target/clover/database/clover_coverage.db"/>
-
+      <!-- initial directory set in project properties -->	
       <j:set var="goal" value="drools:clover" />
       <attainGoal name="multiproject:goal"/>
+     
+      <!-- override project properties --> 
+      <j:set var="maven.clover.database"
+             value="${basedir}/target/clover/database/clover_coverage.db"/>
 
       <attainGoal name="clover:on"/>
       <attainGoal name="clover:report"/>
