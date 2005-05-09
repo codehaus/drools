@@ -45,12 +45,11 @@
       <j:set var="maven.multiproject.excludes"
              value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/> <!-- now exclude examples -->
 
+      <j:set var="goal" value="drools:clover" />
+      <attainGoal name="multiproject:goal"/>
 
       <j:set var="maven.clover.database"
              value="${basedir}/target/clover/database/clover_coverage.db"/>
-
-      <j:set var="goal" value="drools:clover" />
-      <attainGoal name="multiproject:goal"/>
 
       <attainGoal name="clover:on"/>
       <attainGoal name="clover:report"/>
@@ -188,13 +187,13 @@
 
     <goal name="javadoc-all">
       <u:file name="${basedir}/ydoc/" var="ydoc" />
-<!--
+
       <j:if test="${ydoc.exists() == true}">
         <attainGoal name="drools:ydoc"/>
         <ant:echo level="info" message="Ydoc Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
       </j:if>
--->
-      <j:if test="${ydoc.exists() == true}">
+
+      <j:if test="${ydoc.exists() != true}">
         <attainGoal name="drools:javadoc"/>
         <ant:echo level="info" message="Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
       </j:if>
