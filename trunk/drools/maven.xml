@@ -447,7 +447,7 @@
         <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-src.zip">
             <zipfileset dir="${basedir}/target/src-stage"
                         prefix="drools-${pom.currentVersion}"
-                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**" />
+                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/lib/**" />
 
             <zipfileset dir="${basedir}/"
                         prefix="drools-${pom.currentVersion}"
@@ -469,7 +469,7 @@
         <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}-src.tar.gz" compression="gzip">
             <tarfileset dir="${basedir}/target/src-stage"
                         prefix="drools-${pom.currentVersion}"
-                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**" />
+                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/lib/**" />
 
             <tarfileset dir="${basedir}/"
                         prefix="drools-${pom.currentVersion}"
