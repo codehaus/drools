@@ -6,18 +6,32 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
+    <!-- exclude jdk1.5 projects if jdk1.5 is not present -->
+    <preGoal name="build:start">
+      <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+        <echo>jdk1.5 not present so excluding jdk1.5 projects</echo>
+        <j:set var="maven.multiproject.excludes"
+               value="${drools.jdk5.projects}"/>
+      </j:if>
+
+      <j:set var="temp" value="${maven.multiproject.excludes}" />
+    </preGoal>
+
+    <!-- After the jar is built copy it to top level target directory -->
     <postGoal name="jar:jar">
       <echo>basedir: ${basedir}</echo>
       <copy todir="${basedir}/../target/"
             file="${maven.build.dir}/${maven.final.name}.jar"/>
     </postGoal>
 
+    <!-- Use mutliproject to build all jars -->
     <goal name="jar-all">
       <mkdir dir="${basedir}/target"/>
       <j:set var="goal" value="jar:jar"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
 
+    <!-- use multiproject to locally install all jars -->
     <goal name="jar-install-all">
       <mkdir dir="${basedir}/target"/>
       <j:set var="goal" value="jar:install"/>
@@ -26,18 +40,22 @@
 
     <goal name="drools:clover">
 
-      <!-- Exclude distribution/ subproject and testdata projects when building the site -->
+      <!-- Exclude example projects -->
+      <j:set var="temp" value="${maven.multiproject.excludes}" /> <!-- first back up original excludes -->
       <j:set var="maven.multiproject.excludes"
-             value="drools-examples/**,drools-examples-jdk5/**,drools-annotation/**"/>
+             value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/> <!-- now exclude examples -->
 
-      <j:set var="goal" value="drools:clover" />
-      <attainGoal name="multiproject:goal"/>
 
       <j:set var="maven.clover.database"
              value="${basedir}/target/clover/database/clover_coverage.db"/>
 
+      <j:set var="goal" value="drools:clover" />
+      <attainGoal name="multiproject:goal"/>
+
       <attainGoal name="clover:on"/>
       <attainGoal name="clover:report"/>
+
+      <j:set var="maven.multiproject.excludes" value="${maven.multiproject.excludes}" /> <!-- reset excludes -->
     </goal>
 
     <goal name="damagecontrol">
@@ -70,69 +88,57 @@
       <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
     </goal>
 
-    <goal name="tweak-compile.src.set">
-      <ant:path id="uber.compile.src.set">
-        <ant:pathelement path="drools-base/src/main"/>
-        <ant:pathelement path="drools-core/src/main"/>
-        <ant:pathelement path="drools-io/src/main"/>
-        <ant:pathelement path="drools-smf/src/main"/>
-        <ant:pathelement path="drools-java/src/main"/>
-        <ant:pathelement path="drools-jsr94/src/main"/>
-        <ant:pathelement path="drools-groovy/src/main"/>
-        <ant:pathelement path="drools-python/src/main"/>
-        <ant:pathelement path="drools-annotation/src/main"/>
-        <ant:pathelement path="drools-smftest/src/main"/>
-      </ant:path>
-
-      <maven:addPath id="maven.compile.src.set"
-                  refid="uber.compile.src.set"/>
-
-      <ant:path id="extra.dependency.path">
-
-        <fileset dir="target/">
-          <include name="*.jar"/>
-        </fileset>
-      <!-- leaving out other deps for now, as they stop ydoc from working -->
-      <!--
-        <fileset dir="lib/">
-          <include name="*.jar"/>
-        </fileset>
-        -->
-        <!--
-        <fileset dir="target/dependencies/">
-          <include name="*.jar"/>
-        </fileset>
-        -->
-      </ant:path>
-
-      <maven:addPath id="maven.dependency.classpath"
-                     refid="extra.dependency.path"/>
-    </goal>
-
-    <goal name="ydoc-all" description="Generates Javadoc including cool UMLdiagrams">
-       <attainGoal name="tweak-compile.src.set"/>
+    <goal name="drools:ydoc" description="Generates Javadoc including cool UMLdiagrams" prereqs="drools:jar-all,drools:get-deps" >
        <javadoc
          destdir="target/docs/apidocs"
-         author="true"
+         version="false"
+         author="false"
          additionalparam="-J-Djava.awt.headless=true">
-
-         <ant:classpath>
-           <ant:path refid="maven.dependency.classpath"/>
-         </ant:classpath>
 
          <fileset dir=".">
            <include name="drools-*/src/main/**/*.java" />
+           <exclude name="drools-examples*/**" />
+
+           <!-- check before excluding jdk5 src -->
+           <j:if test="${context.getVariable('java.specification.version')  != '1.5'}"> <!-- hardcoded should ideally use pom -->
+             <exclude name="drools-annotation/**" />
+           </j:if>
          </fileset>
+
+         <classpath>
+           <fileset dir=".">
+             <include name="target/dependencies/*.jar" />
+           </fileset>
+
+           <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
+           <path location="./target/drools-all-${pom.currentVersion}.jar" />
+           <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
+
+           <!-- check before including jdk5 jars -->
+           <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
+             <path location="./target/drools-annotation-${pom.currentVersion}.jar" />
+           </j:if>
+         </classpath>
 
          <doclet
                  name="ydoc.doclets.YStandard">
-                 <ant:path>
-                   <ant:pathelement location="./ydoc/lib/ydoc.jar" />
-                   <ant:pathelement location="./ydoc/lib/class2svg.jar" />
-                   <ant:pathelement location="./ydoc/lib/styleed.jar" />
-                   <ant:pathelement location="./ydoc/resources"/>
-                   <ant:path refid="maven.dependency.classpath"/>
-                 </ant:path>
+                 <path>
+                   <pathelement location="./ydoc/lib/ydoc.jar" />
+                   <pathelement location="./ydoc/lib/class2svg.jar" />
+                   <pathelement location="./ydoc/lib/styleed.jar" />
+                   <pathelement location="./ydoc/resources"/>
+                   <fileset dir=".">
+                     <include name="target/dependencies/*.jar" />
+                   </fileset>
+                   <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
+                   <pathelement location="./target/drools-all-${pom.currentVersion}.jar" />
+                   <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
+
+                   <!-- check before including jdk5 jars -->
+                   <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
+                     <pathelement location="./target/drools-annotation-${pom.currentVersion}.jar" />
+                   </j:if>
+                 </path>
                  <param name="-generic"    value=""/>
                  <param name="-umlautogen" value=""/>
                  <param name="-filter" value="ydoc.filters.ExcludeFilter"/>
@@ -148,17 +154,48 @@
        </javadoc>
      </goal>
 
-    <goal name="javadoc-all" prereqs="jar-all">
-      <attainGoal name="tweak-compile.src.set"/>
-      <u:file name="${basedir}/ydoc/" var="ydoc" />
+     <goal name="drools:javadoc" description="Generates Javadoc" prereqs="drools:jar-all,drools:get-deps">
+       <javadoc
+         destdir="target/docs/apidocs"
+         author="false"
+         version="false">
 
+         <fileset dir=".">
+           <include name="drools-*/src/main/**/*.java" />
+           <exclude name="drools-examples*/**" />
+
+           <!-- check before excluding jdk5 jars -->
+           <j:if test="${context.getVariable('java.specification.version')  != '1.5'}"> <!-- hardcoded should ideally use pom -->
+             <exclude name="drools-annotation/**" />
+           </j:if>
+         </fileset>
+
+         <classpath>
+           <fileset dir=".">
+             <include name="target/dependencies/*.jar" />
+           </fileset>
+           <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
+           <path location="./target/drools-all-${pom.currentVersion}.jar" />
+           <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
+
+            <!-- check before including jdk5 jars -->
+           <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
+             <path location="./target/drools-annotation-${pom.currentVersion}.jar" />
+           </j:if>
+         </classpath>
+       </javadoc>
+     </goal>
+
+    <goal name="javadoc-all">
+      <u:file name="${basedir}/ydoc/" var="ydoc" />
+<!--
       <j:if test="${ydoc.exists() == true}">
-        <attainGoal name="ydoc-all"/>
+        <attainGoal name="drools:ydoc"/>
         <ant:echo level="info" message="Ydoc Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
       </j:if>
-
-      <j:if test="${ydoc.exists() != true}">
-        <attainGoal name="javadoc"/>
+-->
+      <j:if test="${ydoc.exists() == true}">
+        <attainGoal name="drools:javadoc"/>
         <ant:echo level="info" message="Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
       </j:if>
 
@@ -215,7 +252,10 @@
         </patternset>
         <fileset dir="${basedir}">
             <include name="target/drools-*.jar"/>
-            <exclude name="target/drools-smftest.jar"/>
+            <exclude name="target/drools-all-${pom.currentVersion}.jar"/>   <!-- exclude itself -->
+            <exclude name="target/drools-smftest-${pom.currentVersion}.jar"/>   <!-- compile time only dependency -->
+            <exclude name="target/drools-annotation-${pom.currentVersion}.jar" />  <!-- jdk5 dependency -->
+            <exclude name="target/drools-examples-jdk5-${pom.currentVersion}.jar" /> <!-- jdk5 dependency -->
         </fileset>
       </ant:unjar>
 
@@ -307,15 +347,15 @@
 
     </goal>
 
-		<!--
-			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
-		-->
+    <!--
+        creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
+    -->
 
     <goal name="drools:dist-prepare">
       <ant:mkdir dir="${basedir}/target/dist/"/>
     </goal>
 
-    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:jar-all,drools:get-deps,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
       <!-- intentionally left blank -->
     </goal>
 
@@ -446,90 +486,16 @@
     </goal>
 
     <goal name="drools:get-deps">
-      <mkdir dir="${basedir}/target/dependencies/"/>
+      <mkdir dir="${basedir}/target/dependencies"/>
+
       <j:set var="goal" value="get-deps"/>
       <attainGoal name="multiproject:goal"/>
+
+      <copy todir="${basedir}/target/dependencies/">
+         <fileset dir="${basedir}/lib" includes="*.jar*" />
+      </copy>
+
     </goal>
 
-
-    <!-- Hacks to support building with multiple JDKs. See also project.properties. -->
-    <!--  - TODO Optimize postGoals that do not need to fork a new maven. -->
-    <!--  - TODO Check if the 'goal' variable is available to postGoals. -->
-    <!--  - TODO How to handle 'drools:jar-all'? -->
-    <!--  - TODO How to handle 'damagecontrol'? -->
-
-    <postGoal name="jar-all">
-      <j:set var="goal" value="jar:jar"/>
-      <attainGoal name="drools-jdk5-maven"/>
-    </postGoal>
-
-    <postGoal name="jar-install-all">
-      <j:set var="goal" value="jar:install"/>
-      <attainGoal name="drools-jdk5-maven"/>
-    </postGoal>
-
-    <postGoal name="checkstyle-all">
-      <j:set var="goal" value="checkstyle:report,maven-jxr-plugin:report,xdoc"/>
-      <attainGoal name="drools-jdk5-maven"/>
-    </postGoal>
-
-    <postGoal name="deploy-snapshot-all">
-      <j:set var="goal" value="jar:deploy-snapshot"/>
-      <attainGoal name="drools-jdk5-maven"/>
-    </postGoal>
-
-    <postGoal name="eclipse-all">
-      <j:set var="goal" value="eclipse"/>
-      <attainGoal name="drools-jdk5-maven"/>
-    </postGoal>
-
-    <postGoal name="crlf-all">
-      <j:set var="goal" value="crlf"/>
-      <attainGoal name="drools-jdk5-mavenl"/>
-    </postGoal>
-
-    <postGoal name="clean-all:prepare">
-      <touch file="${maven.build.dir}/drools-annotation-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-annotation-examples-${pom.currentVersion}.jar"/>
-    </postGoal>
-
-    <preGoal name="clean-all">
-      <j:set var="goal" value="clean:clean"/>
-      <attainGoal name="drools-jdk5-maven"/>
-    </preGoal>
-
-    <!-- TODO Can ydoc handle java5? -->
-
-    <goal name="drools-jdk5-maven">
-      <j:choose>
-        <j:when test="${context.getVariable('drools.jdk5.home') == null}">
-          <ant:echo message="Skipping ${goal} for ${drools.jdk5.projects}: 'drools.jdk5.home' not defined"/>
-        </j:when>
-
-        <j:otherwise>
-          <u:tokenize var="projects" delim=",">${drools.jdk5.projects}</u:tokenize>
-          <j:forEach var="jdk5.project.file" items="${projects}">
-              <ant:java
-                classname="com.werken.forehead.Forehead"
-                jvm="${drools.jdk5.home}/bin/java"
-                fork="yes">
-                <jvmarg value="-Djava.home=${drools.jdk5.home}"/>
-                <jvmarg value="-Dmaven.home=${maven.home}"/>
-                <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=${javax.xml.parsers.SAXParserFactory}"/>
-                <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=${javax.xml.parsers.DocumentBuilderFactory}"/>
-                <jvmarg value="-Djava.endorsed.dirs=${drools.jdk5.home}/lib/endorsed${path.separator}${maven.home}/lib/endorsed"/>
-                <jvmarg value="-Dtools.jar=${drools.jdk5.home}/lib/tools.jar"/>
-                <jvmarg value="-Dforehead.conf.file=${forehead.conf.file}"/>
-                <arg value="-b"/>
-                <arg value="-p${jdk5.project.file}"/>
-                <arg value="${goal}"/>
-                <classpath>
-                  <pathelement path="${java.class.path}"/>
-                </classpath>
-              </ant:java>
-          </j:forEach>
-        </j:otherwise>
-      </j:choose>
-    </goal>
 </project>
 
