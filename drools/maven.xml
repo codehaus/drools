@@ -14,8 +14,7 @@
         <j:set var="maven.multiproject.excludes"
                value="${drools.jdk5.projects}"/>
       </j:if>
-
-      <j:set var="temp" value="${maven.multiproject.excludes}" />
+      <!--<echo>maven.multiproject.excludes: ${maven.multiproject.excludes}</echo>-->
     </preGoal>
 
     <!-- After the jar is built copy it to top level target directory -->
@@ -45,7 +44,7 @@
       <j:set var="temp" value="${maven.multiproject.excludes}" /> <!-- first back up original excludes -->
       <j:set var="maven.multiproject.excludes"
              value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/> <!-- now exclude examples -->
-
+      <!--<echo>maven.multiproject.excludes: ${maven.multiproject.excludes}</echo>-->
 
       <!-- initial directory set in project properties -->	
       <j:set var="goal" value="drools:clover" />
@@ -58,7 +57,8 @@
       <attainGoal name="clover:on"/>
       <attainGoal name="clover:report"/>
 
-      <j:set var="maven.multiproject.excludes" value="${maven.multiproject.excludes}" /> <!-- reset excludes -->
+      <j:set var="maven.multiproject.excludes" value="${temp}" /> <!-- reset excludes -->
+      <!--<echo>maven.multiproject.excludes: ${maven.multiproject.excludes}</echo>-->
     </goal>
 
     <goal name="damagecontrol">
@@ -89,6 +89,10 @@
       <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smf-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-spring-${pom.currentVersion}.jar"/>
+      <j:if test="${context.getVariable('java.specification.version') == '1.5'}"> <!-- hardcoded should ideally use pom -->
+        <touch file="${maven.build.dir}/drools-spring-jdk5-${pom.currentVersion}.jar"/>
+      </j:if>
     </goal>
 
     <goal name="drools:ydoc" description="Generates Javadoc including cool UMLdiagrams" prereqs="drools:jar-all,drools:get-deps" >
@@ -103,8 +107,8 @@
            <exclude name="drools-examples*/**" />
 
            <!-- check before excluding jdk5 src -->
-           <j:if test="${context.getVariable('java.specification.version')  != '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <exclude name="drools-annotation/**" />
+           <j:if test="${context.getVariable('java.specification.version') != '1.5'}"> <!-- hardcoded should ideally use pom -->
+             <exclude name="drools-spring-jdk5/**" />
            </j:if>
          </fileset>
 
@@ -119,7 +123,7 @@
 
            <!-- check before including jdk5 jars -->
            <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <path location="./target/drools-annotation-${pom.currentVersion}.jar" />
+             <path location="./target/drools-spring-jdk5-${pom.currentVersion}.jar" />
            </j:if>
          </classpath>
 
@@ -139,7 +143,7 @@
 
                    <!-- check before including jdk5 jars -->
                    <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
-                     <pathelement location="./target/drools-annotation-${pom.currentVersion}.jar" />
+                     <pathelement location="./target/drools-spring-jdk5-${pom.currentVersion}.jar" />
                    </j:if>
                  </path>
                  <param name="-generic"    value=""/>
@@ -169,7 +173,7 @@
 
            <!-- check before excluding jdk5 jars -->
            <j:if test="${context.getVariable('java.specification.version')  != '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <exclude name="drools-annotation/**" />
+             <exclude name="drools-spring-jdk5/**" />
            </j:if>
          </fileset>
 
@@ -183,7 +187,7 @@
 
             <!-- check before including jdk5 jars -->
            <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <path location="./target/drools-annotation-${pom.currentVersion}.jar" />
+             <path location="./target/drools-spring-jdk5-${pom.currentVersion}.jar" />
            </j:if>
          </classpath>
        </javadoc>
@@ -257,8 +261,7 @@
             <include name="target/drools-*.jar"/>
             <exclude name="target/drools-all-${pom.currentVersion}.jar"/>   <!-- exclude itself -->
             <exclude name="target/drools-smftest-${pom.currentVersion}.jar"/>   <!-- compile time only dependency -->
-            <exclude name="target/drools-annotation-${pom.currentVersion}.jar" />  <!-- jdk5 dependency -->
-            <exclude name="target/drools-examples-jdk5-${pom.currentVersion}.jar" /> <!-- jdk5 dependency -->
+            <exclude name="target/drools-spring-jdk5-${pom.currentVersion}.jar" />  <!-- jdk5 dependency -->
         </fileset>
       </ant:unjar>
 
