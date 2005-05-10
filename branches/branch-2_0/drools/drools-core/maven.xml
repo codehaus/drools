@@ -7,11 +7,12 @@
     xmlns:maven="jelly:maven">
 
     <goal name="default" >
-        <!--<attainGoal name="jar:install"/>-->
-        <attainGoal name="junit-report" />
+        <attainGoal name="jar:install"/>
     </goal>
 
-    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
+    <goal name="drools:clover" prereqs="clover:on, jar:jar">
+       <echo> core level </echo>
+    </goal>
 
     <goal name="get-deps">
       <j:forEach var="dep" items="${pom.artifacts}">
@@ -23,12 +24,6 @@
     </goal>
 
     <goal name="reports:publish">
-        <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-core"/>
-        <ant:delete dir="${drools.dcontrol.htdocs.module}/clover"/>
-        <ant:copy todir="${drools.dcontrol.htdocs.module}/clover">
-            <ant:fileset dir="${basedir}/target/docs/clover"/>
-        </ant:copy>
-
         <ant:delete dir="${drools.dcontrol.htdocs.module}/junit"/>
         <ant:copy todir="${drools.dcontrol.htdocs.module}/junit">
             <ant:fileset dir="${basedir}/target/test-reports"/>

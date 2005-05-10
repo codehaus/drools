@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: FactHandle.java,v 1.17 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: FactHandle.java,v 1.17.2.1 2005-05-10 12:11:23 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,13 @@ package org.drools;
 
 import java.io.Serializable;
 
+/**
+ * A FactHandle provides a reference to an Object asserted into the WorkingMemory.
+ * It is normally returned from an assertion into the WorkingMemory.
+ * 
+ * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:mproctor@codehaus.org"> mark proctor </a>
+ */
 public interface FactHandle
     extends
     Serializable

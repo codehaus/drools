@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.43 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.43.2.1 2005-05-10 12:11:24 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,210 +51,220 @@ import org.drools.spi.AsyncExceptionHandler;
 
 /**
  * A knowledge session for a <code>RuleBase</code>.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:mproctor@codehaus.org"> mark proctor </a>
+ * 
  */
-public interface WorkingMemory extends Serializable
+public interface WorkingMemory
+    extends
+    Serializable
 {
     /**
      * Add an event listener.
-     *
+     * 
      * @param listener
-     *            The listener to add.
+     *        The listener to add.
      */
-    void addEventListener( WorkingMemoryEventListener listener );
+    void addEventListener(WorkingMemoryEventListener listener);
 
     /**
      * Remove an event listener.
-     *
+     * 
      * @param listener
-     *            The listener to remove.
+     *        The listener to remove.
      */
-    void removeEventListener( WorkingMemoryEventListener listener );
+    void removeEventListener(WorkingMemoryEventListener listener);
 
     /**
      * Returns all event listeners.
-     *
+     * 
      * @return listeners The listeners.
      */
-    List getEventListeners( );
+    List getEventListeners();
 
     /**
      * Retrieve all of the set application data in this memory
-     *
+     * 
      * @return the application data as a Map
      */
-    Map getApplicationDataMap( );
+    Map getApplicationDataMap();
 
     /**
      * Set a specific piece of application data in this working memory
-     *
+     * 
      * @param name
-     *            the name under which to populate the data
+     *        the name under which to populate the data
      * @param value
-     *            the application data
+     *        the application data
      */
-    void setApplicationData( String name,
-                             Object value );
+    void setApplicationData(String name,
+                            Object value);
 
     /**
      * Retrieve a specific piece of application data by name
-     *
+     * 
      * @return application data or null if nothing is set under this name
      */
-    Object getApplicationData( String name );
+    Object getApplicationData(String name);
 
     /**
-     * Retrieve the <code>RuleBase</code> of this working memory.
-     *
+     * Retrieve the <code>RuleBase</code> for this working memory.
+     * 
      * @return The <code>RuleBase</code>.
      */
-    RuleBase getRuleBase( );
+    RuleBase getRuleBase();
 
     /**
-     * Fire all items on the agenda until empty.
-     *
+     * Fire all items on the <code>Agenda</code> until empty.
+     * 
      * @throws FactException
-     *             If an error occurs.
+     *         If an error occurs.
      */
-    void fireAllRules( ) throws FactException;
+    void fireAllRules() throws FactException;
 
     /**
-     * Fire all items on the agenda until empty, using the given AgendaFiler
-     *
+     * Fire all items on the <code>Agenda</code> until empty, using the given <code>AgendaFilter</code>
+     * 
+     * @see AgendaFilter
+     * 
      * @throws FactException
-     *             If an error occurs.
+     *         If an error occurs.
      */
-    void fireAllRules( AgendaFilter agendaFilter ) throws FactException;
+    void fireAllRules(AgendaFilter agendaFilter) throws FactException;
 
     /**
      * Retrieve the object associated with a <code>FactHandle</code>.
-     *
+     * 
      * @see #containsObject
-     *
+     * 
      * @param handle
-     *            The fact handle.
-     *
+     *        The fact handle.
+     * 
      * @return The associated object.
-     *
+     * 
      * @throws NoSuchFactObjectException
-     *             If no object is known to be associated with the specified
-     *             handle.
+     *         If no object is known to be associated with the specified handle.
      */
-    Object getObject( FactHandle handle ) throws NoSuchFactObjectException;
+    Object getObject(FactHandle handle) throws NoSuchFactObjectException;
 
     /**
      * Retrieve the <code>FactHandle</code> associated with an Object.
-     *
+     * 
      * @see #containsObject
-     *
+     * 
      * @param object
-     *            The object.
-     *
+     *        The object.
+     * 
      * @return The associated fact handle.
-     *
+     * 
      * @throws NoSuchFactHandleException
-     *             If no handle is known to be associated with the specified
-     *             object.
+     *         If no handle is known to be associated with the specified object.
      */
-    FactHandle getFactHandle( Object object ) throws NoSuchFactHandleException;
+    FactHandle getFactHandle(Object object) throws NoSuchFactHandleException;
 
     /**
      * Retrieve all known objects.
-     *
+     * 
      * @return The list of all known objects.
      */
-    List getObjects( );
+    List getObjects();
 
     /**
      * Retrieve all known objects of the specified class.
-     *
+     * 
      * @param objectClass
-     *            The class of object to return.
-     *
+     *        The class of object to return.
+     * 
      * @return The list of all known objects of the specified class.
      */
-    List getObjects( Class objectClass );
+    List getObjects(Class objectClass);
 
     /**
      * Retrieve all known Fact Handles.
-     *
+     * 
      * @return The list of all known fact handles.
      */
-    List getFactHandles( );
+    List getFactHandles();
 
     /**
      * Determine if an object is associated with a <code>FactHandle</code>.
-     *
+     * 
      * @param handle
-     *            The fact handle.
-     *
+     *        The fact handle.
+     * 
      * @return <code>true</code> if an object is known to be associated with
      *         the specified handle, otherwise <code>false</code>.
      */
-    boolean containsObject( FactHandle handle );
+    boolean containsObject(FactHandle handle);
 
     /**
      * Assert a fact.
-     *
-     * @param object The fact object.
-     *
+     * 
+     * @param object
+     *        The fact object.
+     * 
      * @return The new fact-handle associated with the object.
-     *
-     * @throws FactException If an error occurs.
+     * 
+     * @throws FactException
+     *         If an error occurs.
      */
-    FactHandle assertObject( Object object ) throws FactException;
+    FactHandle assertObject(Object object) throws FactException;
 
     /**
      * Assert a fact registering JavaBean <code>PropertyChangeListeners</code>
      * on the Object to automatically trigger <code>modifyObject</code> calls
      * if <code>dynamic</code> is <code>true</code>.
-     *
-     * @param object The fact object.
-     * @param dynamic true if Drools should add JavaBean
+     * 
+     * @param object
+     *        The fact object.
+     * @param dynamic
+     *        true if Drools should add JavaBean
      *        <code>PropertyChangeListeners</code> to the object.
-     *
+     * 
      * @return The new fact-handle associated with the object.
-     *
-     * @throws FactException If an error occurs.
+     * 
+     * @throws FactException
+     *         If an error occurs.
      */
-    FactHandle assertObject( Object object, boolean dynamic ) throws FactException;
+    FactHandle assertObject(Object object,
+                            boolean dynamic) throws FactException;
 
     /**
      * Retract a fact.
-     *
+     * 
      * @param handle
-     *            The fact-handle associated with the fact to retract.
-     *
+     *        The fact-handle associated with the fact to retract.
+     * 
      * @throws FactException
-     *             If an error occurs.
+     *         If an error occurs.
      */
-    void retractObject( FactHandle handle ) throws FactException;
+    void retractObject(FactHandle handle) throws FactException;
 
     /**
      * Modify a fact.
-     *
+     * 
      * @param handle
-     *            The fact-handle associated with the fact to modify.
+     *        The fact-handle associated with the fact to modify.
      * @param object
-     *            The new value of the fact.
-     *
+     *        The new value of the fact.
+     * 
      * @throws FactException
-     *             If an error occurs.
+     *         If an error occurs.
      */
-    void modifyObject( FactHandle handle,
-                       Object object ) throws FactException;
+    void modifyObject(FactHandle handle,
+                      Object object) throws FactException;
 
     /**
-     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
-     * used for duration rules.
+     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
+     * Scheduler used for duration rules.
      * @param handler
      */
     void setAsyncExceptionHandler(AsyncExceptionHandler handler);
-    
+
     /**
      * Clear the Agenda
-     *
+     * 
      */
-    void clearAgenda( );
+    void clearAgenda();
 }

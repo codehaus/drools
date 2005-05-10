@@ -38,23 +38,35 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="drools:clover">
+    <goal name="drools:clover" prereqs="clean-all:prepare">
+        <echo> top level </echo>
 
       <!-- Exclude example projects -->
       <j:set var="temp" value="${maven.multiproject.excludes}" /> <!-- first back up original excludes -->
+
+      <!-- now exclude examples -->
+
       <j:set var="maven.multiproject.excludes"
-             value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/> <!-- now exclude examples -->
+             value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/>
+
+<!--
+      <j:set var="maven.multiproject.excludes"
+             value="drools-core/**,drools-smftest/**,drools-io/**,drools-java/**,drools-python/**,drools-groovy/**,drools-jsr94/**,drools-annotation/**,drools-examples/**,drools-examples-jdk5/**" />
+
+             value="drools-core/**,drools-smf/**,drools-smftest/**,drools-base/**,drools-io/**,drools-java/**,drools-python/**,drools-groovy/**,drools-jsr94/**,drools-annotation/**,drools-examples/**,drools-examples-jdk5/**" />
+             -->
 
       <j:set var="goal" value="drools:clover" />
       <attainGoal name="multiproject:goal"/>
 
       <j:set var="maven.clover.database"
-             value="${basedir}/target/clover/database/clover_coverage.db"/>
+             value="${basedir}/target/clover/database/clover_coverage.db" />
 
       <attainGoal name="clover:on"/>
       <attainGoal name="clover:report"/>
 
-      <j:set var="maven.multiproject.excludes" value="${maven.multiproject.excludes}" /> <!-- reset excludes -->
+      <!-- reset excludes -->
+      <j:set var="maven.multiproject.excludes" value="${maven.multiproject.excludes}" />
     </goal>
 
     <goal name="damagecontrol">
@@ -75,16 +87,18 @@
 
     <goal name="clean-all:prepare">
       <mkdir dir="${maven.build.dir}"/>
-      <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-core-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-examples-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-groovy-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-io-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-java-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-jsr94-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smf-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-io-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-groovy-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-java-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-jsr94-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-annotation-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-examples-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-examples-jdk5-${pom.currentVersion}.jar"/>
     </goal>
 
     <goal name="drools:ydoc" description="Generates Javadoc including cool UMLdiagrams" prereqs="drools:jar-all,drools:get-deps" >
