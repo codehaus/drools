@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBaseBuilder.java,v 1.20 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: RuleBaseBuilder.java,v 1.20.2.1 2005-05-10 12:11:24 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,21 +49,21 @@ import org.drools.spi.RuleBaseContext;
 
 /**
  * Factory for constructing a <code>RuleBase</code>.
- *
+ * 
  * <p>
- * The <code>RuleBaseBuilder</code> integrates the added <code>RuleSet</code>
- * s into the <b>Rete </b> network. A <code>RuleBaseBuilder</code> may be
- * re-used after building a <code>RuleBase</code> but it may not be used to
+ * The <code>RuleBaseBuilder</code> integrates the added <code>RuleSet</code> s into the <b>Rete </b> network. A
+ * <code>RuleBaseBuilder</code> may be re-used after building a <code>RuleBase</code> but it may not be used to
  * build multiple <code>RuleBase</code> s simultaneously by multiple threads.
  * </p>
- *
+ * 
  * @see #build
  * @see RuleSet
  * @see RuleBase
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleBaseBuilder.java,v 1.20 2005-02-02 00:23:21 mproctor Exp $
+ * @author <a href="mailto:mproctor@codehaus.org"> mark proctor </a>
+ * 
+ * @version $Id: RuleBaseBuilder.java,v 1.20.2.1 2005-05-10 12:11:24 mproctor Exp $
  */
 public class RuleBaseBuilder
 {
@@ -72,8 +72,9 @@ public class RuleBaseBuilder
     // ----------------------------------------------------------------------
 
     /** Underlying Rete builder. */
-    private Builder builder;
-    
+    private Builder         builder;
+
+    /** The ruleBaseContext */
     private RuleBaseContext ruleBaseContext;
 
     // ----------------------------------------------------------------------
@@ -81,23 +82,25 @@ public class RuleBaseBuilder
     // ----------------------------------------------------------------------
 
     /**
-     * Construct.
+     * Construct a <code>RuleBaseBuilder</code> with no parameters.
      */
-    public RuleBaseBuilder( )
+    public RuleBaseBuilder()
     {
         this.ruleBaseContext = new RuleBaseContext( );
         this.builder = new Builder( ruleBaseContext );
-        
+
     }
-    
+
     /**
-     * Construct.
+     * Construct a <code>RuleBaseBuilder</code> specify a <code>RuleBaseContext</code>
+     * 
+     * @see org.drools.spi.RuleBaseContext
      */
-    public RuleBaseBuilder( RuleBaseContext ruleBaseContext)
+    public RuleBaseBuilder(RuleBaseContext ruleBaseContext)
     {
         this.ruleBaseContext = ruleBaseContext;
         this.builder = new Builder( ruleBaseContext );
-    }    
+    }
 
     // ----------------------------------------------------------------------
     // Instance methods
@@ -105,41 +108,58 @@ public class RuleBaseBuilder
 
     /**
      * Add a <code>RuleSet</code>.
-     *
+     * 
+     * @see org.drools.rule.RuleSet
+     * 
      * @param ruleSet
-     *            The rule-set to add.
-     *
+     *        The rule-set to add.
+     * 
      * @throws RuleIntegrationException
-     *             If an error occurs while attempting to integrate the rules
-     *             into the Rete network..
+     *         If an error occurs while attempting to integrate the rules into the Rete network..
      */
-    public void addRuleSet( RuleSet ruleSet ) throws RuleSetIntegrationException, RuleIntegrationException
+    public void addRuleSet(RuleSet ruleSet) throws RuleSetIntegrationException,
+                                           RuleIntegrationException
     {
         this.builder.addRuleSet( ruleSet );
     }
 
     /**
      * Build the <code>RuleBase</code>.
-     *
+     * 
      * <p>
-     * Builds the <code>RuleBase</code> based upon all previously added
-     * <code>RuleSet</code>s.
+     * Builds the <code>RuleBase</code> based upon all previously added <code>RuleSet</code>s.
      * </p>
-     *
+     * 
      * @see #addRuleSet
-     *
+     * 
      * @return The new rule-base.
      */
-    public RuleBase build( )
+    public RuleBase build()
     {
         return this.builder.buildRuleBase( );
     }
 
-    public void setFactHandleFactory( FactHandleFactory factHandleFactory )
+    /**
+     * Drools currently supports two <code>FactHandleFactories</code>. The default and JSR94 implementation This sets
+     * the factory used to generate <code>FactHandle</code>s
+     * 
+     * @see org.drools.FactHandle
+     * 
+     * @param factHandleFactory
+     */
+    public void setFactHandleFactory(FactHandleFactory factHandleFactory)
     {
         this.builder.setFactHandleFactory( factHandleFactory );
     }
 
+    /**
+     * By default a RuleBase will use the <Code>DefaultConflictResolver</code> This enables a custom ConflictResolver
+     * to be specified for the <code>RuleBase</code>s being built.
+     * 
+     * @see org.drools.ConflictResolver
+     * 
+     * @param conflictResolver
+     */
     public void setConflictResolver(ConflictResolver conflictResolver)
     {
         this.builder.setConflictResolver( conflictResolver );

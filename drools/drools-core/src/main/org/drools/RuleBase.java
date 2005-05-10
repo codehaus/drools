@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.37 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: RuleBase.java,v 1.37.2.1 2005-05-10 12:11:24 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,12 +56,14 @@ import org.drools.spi.RuleBaseContext;
  * sessions may be instantiated. Additionally, it may be inspected to determine
  * which <code>RuleSet</code> s it contains.
  * </p>
+ * 
  *
  * @see WorkingMemory
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * @author <a href="mailto:mproctor@codehaus.org"> mark proctor </a>
  *
- * @version $Id: RuleBase.java,v 1.37 2005-02-02 00:23:21 mproctor Exp $
+ * @version $Id: RuleBase.java,v 1.37.2.1 2005-05-10 12:11:24 mproctor Exp $
  */
 public interface RuleBase
     extends
@@ -91,13 +93,25 @@ public interface RuleBase
     ConflictResolver getConflictResolver( );
 
     /**
-     * Retrieve the <code>FactHandleFactor</code>.
+     * Retrieve the <code>FactHandleFactory</code>.
      *
      * @return The fact handle factory.
      */
     FactHandleFactory getFactHandleFactory( );
 
+    /**
+     * @return a List of <code>RuleSet</code>s
+     */
     List getRuleSets( );
     
+    
+    
+    /**
+     * Each rulebase provides a shared Context for storing information.
+     * This information is normally used in the building of a <code>RuleBase</code>
+     * so that it can use objects common to the nodes being build. 
+     * 
+     * @return The <code>RuleBaseContext</code>
+     */
     RuleBaseContext getRuleBaseContext( );
 }

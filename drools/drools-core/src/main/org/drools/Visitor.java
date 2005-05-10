@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: Visitor.java,v 1.5 2004-12-06 04:51:36 dbarnett Exp $
+ * $Id: Visitor.java,v 1.5.2.1 2005-05-10 12:11:24 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,16 @@ package org.drools;
  *
  */
 
+/**
+ * A Standard <code>Visitor</code> class used to enable visitation of the rete network.
+ * 
+ *  @author <a href="mailto:mproctor@codehaus.org"> mark proctor </a>
+ *
+ */
 public interface Visitor
 {
+    /**
+     * @param The object to visit
+     */
     void visit( Object o );
 }
