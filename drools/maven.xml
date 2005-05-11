@@ -38,16 +38,17 @@
       <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="drools:clover" prereqs="clean-all:prepare">
-        <echo> top level </echo>
+    <goal name="drools:clover">
+      <!-- need to force these -->
+      <attainGoal name="clean-all:prepare" />
 
       <!-- first back up original excludes -->
       <j:set var="temp" value="${maven.multiproject.excludes}" />
 
-         <!-- set jdk5excludes excludes -->
-         <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
-            <j:set var="jdk5excludes" value="${drools.jdk5.projects}" />
-         </j:if>
+      <!-- set jdk5excludes excludes -->
+      <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+        <j:set var="jdk5excludes" value="${drools.jdk5.projects}" />
+      </j:if>
 
       <!-- now exclude examples -->
       <j:set var="maven.multiproject.excludes"
@@ -339,7 +340,7 @@
       </exec>
 
       <exec dir="." executable="${maven.ssh.executable}">
-        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
+        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; tar zxvf drools-${pom.currentVersion}-clover.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
       </exec>
 
       <j:set var="goal" value="jar:deploy"/>
@@ -368,7 +369,6 @@
       <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
         <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin-withdeps.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
       </exec>
-
     </goal>
 
     <!--
@@ -379,7 +379,7 @@
       <ant:mkdir dir="${basedir}/target/dist/"/>
     </goal>
 
-    <goal name="drools:dist" prereqs="clean-all,drools:dist-prepare,drools:clover,clean-all,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src,clean-all,drools:dist-clover">
       <!-- intentionally left blank -->
     </goal>
 
