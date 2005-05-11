@@ -17,9 +17,7 @@
       <attainGoal name="antlr:generate"/>
     </goal>
 
-    <goal name="drools:clover" prereqs="clover:on, jar:jar">
-       <echo> java level </echo>
-    </goal>
+    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
 
     <goal name="get-deps">
       <j:forEach var="dep" items="${pom.artifacts}">

@@ -10,9 +10,7 @@
         <attainGoal name="jar:install"/>
     </goal>
 
-    <goal name="drools:clover" prereqs="clover:on, jar:jar">
-       <echo> smf level </echo>
-    </goal>
+    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
 
     <goal name="get-deps">
       <j:forEach var="dep" items="${pom.artifacts}">
