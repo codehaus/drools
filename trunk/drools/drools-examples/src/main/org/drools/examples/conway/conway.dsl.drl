@@ -8,44 +8,35 @@
                        http://drools.org/semantics/conway conway.xsd">
 
     <rule name="Kill The Overcrowded">
-        <conway:condition>
-            <conway:cell name="cell">
-                <conway:liveNeighborCountGreaterThan>3</conway:liveNeighborCountGreaterThan>
-            </conway:cell>
+        <conway:condition cellName="cell">
+            <conway:cellIsAlive/>
+            <conway:cellIsOverCrowded/>
         </conway:condition>
 
-        <conway:actions>
-            <conway:cell name="cell">
-                <conway:queueState>dead</conway:queueState>
-            </conway:cell>
+        <conway:actions cellName="cell">
+            <conway:killCell/>
         </conway:actions>
     </rule>
 
     <rule name="Kill The Lonely">
-        <conway:condition>
-            <conway:cell name="cell">
-                <conway:liveNeighborCountLessThan>2</conway:liveNeighborCountLessThan>
-            </conway:cell>
+        <conway:condition cellName="cell">
+            <conway:cellIsAlive/>
+            <conway:cellIsLonely/>
         </conway:condition>
 
-        <conway:actions>
-            <conway:cell name="cell">
-                <conway:queueState>dead</conway:queueState>
-            </conway:cell>
+        <conway:actions cellName="cell">
+            <conway:killCell/>
         </conway:actions>
     </rule>
 
     <rule name="Give Birth">
-        <conway:condition>
-            <conway:cell name="cell">
-                <conway:liveNeighborCountEquals>3</conway:liveNeighborCountEquals>
-            </conway:cell>
+        <conway:condition cellName="cell">
+            <conway:cellIsDead/>
+            <conway:cellIsRipeForBirth/>
         </conway:condition>
 
-        <conway:actions>
-            <conway:cell name="cell">
-                <conway:queueState>live</conway:queueState>
-            </conway:cell>
+        <conway:actions cellName="cell">
+            <conway:giveBirthToCell/>
         </conway:actions>
     </rule>
 </rule-set>

@@ -9,76 +9,35 @@
 
     <xs:element name="condition" substitutionGroup="rules:abstractCondition">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="conway:cell"/>
-            </xs:sequence>
+            <xs:all>
+                <xs:element ref="conway:cellIsAlive" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="conway:cellIsDead" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="conway:cellIsOverCrowded" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="conway:cellIsRipeForBirth" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="conway:cellIsLonely" minOccurs="0" maxOccurs="1"/>
+            </xs:all>
+            <xs:attribute name="cellName" type="xs:string"/>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="actions" substitutionGroup="rules:abstractConsequence">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="conway:cell"/>
+                <xs:choice>
+                    <xs:element ref="conway:killCell"/>
+                    <xs:element ref="conway:giveBirthToCell"/>
+                </xs:choice>
             </xs:sequence>
+            <xs:attribute name="cellName" type="xs:string"/>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="cell">
-        <xs:complexType>
-            <xs:choice>
-                <xs:element ref="conway:liveNeighborCountGreaterThan"/>
-                <xs:element ref="conway:liveNeighborCountEquals"/>
-                <xs:element ref="conway:liveNeighborCountLessThan"/>
-                <xs:element ref="conway:queueState"/>
-            </xs:choice>
-            <xs:attribute name="name" type="xs:string"/>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="queueState">
-        <xs:simpleType>
-            <xs:restriction base="xs:string">
-                <xs:enumeration value="live"/>
-                <xs:enumeration value="dead"/>
-            </xs:restriction>
-        </xs:simpleType>
-    </xs:element>
-
-    <xs:element name="less-than">
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:integer">
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
-
-
-    <xs:element name="liveNeighborCountGreaterThan">
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:integer">
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="liveNeighborCountLessThan">
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:integer">
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="liveNeighborCountEquals">
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:integer">
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
+    <xs:element name="killCell"/>
+    <xs:element name="giveBirthToCell"/>
+    <xs:element name="cellIsAlive"/>
+    <xs:element name="cellIsDead"/>
+    <xs:element name="cellIsOverCrowded"/>
+    <xs:element name="cellIsLonely"/>
+    <xs:element name="cellIsRipeForBirth"/>
 
 </xs:schema>
