@@ -1,7 +1,6 @@
 package org.drools.examples.conway.rules.dsl;
 
 import org.drools.examples.conway.Cell;
-import org.drools.examples.conway.CellState;
 import org.drools.rule.Declaration;
 import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
@@ -11,11 +10,10 @@ import org.drools.smf.ConsequenceFactory;
 import org.drools.smf.FactoryException;
 import org.drools.spi.Consequence;
 import org.drools.spi.RuleBaseContext;
-import org.drools.spi.Tuple;
 
 /**
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: ConwayConsequenceFactory.java,v 1.1.2.1 2005-05-16 23:04:31 brownj Exp $
+ * @version $Id: ConwayConsequenceFactory.java,v 1.1.2.2 2005-05-16 23:08:22 brownj Exp $
  */
 public class ConwayConsequenceFactory
         implements
@@ -65,7 +63,9 @@ public class ConwayConsequenceFactory
             }
             catch ( InvalidRuleException e )
             {
-                throw new FactoryException( "xxx" );
+                final FactoryException factoryException = new FactoryException( "Error occurred establishing parameter." );
+                factoryException.initCause( e );
+                throw factoryException;
             }
         }
         return declaration;
