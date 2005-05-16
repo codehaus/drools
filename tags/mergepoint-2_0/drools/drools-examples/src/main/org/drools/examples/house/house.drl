@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<rule-set name="house"
+          xmlns="http://drools.org/rules"
+          xmlns:house="http://drools.org/semantics/house"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/house house.xsd">
+
+	<rule name="test1">
+	  <house:condition>
+	    <house:room name="lounge">
+	      <house:temperature>
+	        <house:greater-than scale="C">20</house:greater-than>
+	      </house:temperature>
+	    </house:room>
+	  </house:condition>
+	
+	  <house:actions>
+	    <house:room name="lounge">
+	      <house:heating>off</house:heating>
+	    </house:room>
+	  </house:actions>
+	</rule>
+	
+	<rule name="test2">
+	  <house:condition>
+	    <house:room name="lounge">
+	      <house:temperature>
+	        <house:less-than scale="C">20</house:less-than>
+	      </house:temperature>
+	    </house:room>
+	  </house:condition>
+	
+	  <house:actions>
+	    <house:room name="lounge">
+	      <house:heating>on</house:heating>
+	    </house:room>
+	  </house:actions>
+	</rule>
+
+</rule-set>

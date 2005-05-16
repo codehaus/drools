@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    default="default"
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven">
+
+    <goal name="default">
+        <attainGoal name="jar:install"/>
+    </goal>
+
+    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
+
+    <goal name="get-deps">
+      <j:forEach var="dep" items="${pom.artifacts}">
+      	<j:if test="${dep.path.indexOf('drools') &lt;= 0}">
+	        <copy file="${dep.path}"
+	              todir="${basedir}/../target/dependencies"/>
+        </j:if>
+      </j:forEach>
+    </goal>
+
+    <goal name="reports:publish">
+        <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-base"/>
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/clover"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/clover">
+            <ant:fileset dir="${basedir}/target/docs/clover"/>
+        </ant:copy>
+
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/junit"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/junit">
+            <ant:fileset dir="${basedir}/target/test-reports"/>
+        </ant:copy>
+
+        <ant:delete dir="${drools.dcontrol.htdocs.module}/checkstyle"/>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle">
+            <ant:fileset file="${basedir}/target/docs/checkstyle-report.html"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle/xref">
+            <ant:fileset dir="${basedir}/target/docs/xref"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle/style">
+            <ant:fileset dir="${basedir}/target/docs/style"/>
+        </ant:copy>
+        <ant:copy todir="${drools.dcontrol.htdocs.module}/checkstyle/images">
+            <ant:fileset dir="${basedir}/target/docs/images"/>
+        </ant:copy>
+    </goal>
+
+</project>
