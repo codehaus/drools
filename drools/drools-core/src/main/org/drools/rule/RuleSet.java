@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.21 2005-05-08 16:13:33 memelet Exp $
+ * $Id: RuleSet.java,v 1.19.2.1 2005-04-30 12:37:34 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,17 +49,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.drools.spi.Functions;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 
 /**
  * Collection of related <code>Rule</code>s.
- *
+ * 
  * @see Rule
- *
+ * 
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
- *
- * @version $Id: RuleSet.java,v 1.21 2005-05-08 16:13:33 memelet Exp $
+ * 
+ * @version $Id: RuleSet.java,v 1.19.2.1 2005-04-30 12:37:34 mproctor Exp $
  */
 public class RuleSet
     implements
@@ -93,7 +94,7 @@ public class RuleSet
     private Map                   applicationData;
 
     private Map                   functions;
-
+    
     private RuleBaseContext		  ruleBaseContext;
 
     // ------------------------------------------------------------
@@ -102,7 +103,7 @@ public class RuleSet
 
     /**
      * Construct.
-     *
+     * 
      * @param name
      *            The name of this <code>RuleSet</code>.
      */
@@ -118,7 +119,7 @@ public class RuleSet
 
     /**
      * Construct.
-     *
+     * 
      * @param name
      *            The name of this <code>RuleSet</code>.
      * @param ruleBaseContext
@@ -140,7 +141,7 @@ public class RuleSet
 
     /**
      * Retrieve the name of this <code>RuleSet</code>.
-     *
+     * 
      * @return The name of this <code>RuleSet</code>.
      */
     public String getName()
@@ -150,7 +151,7 @@ public class RuleSet
 
     /**
      * Set the documentation.
-     *
+     * 
      * @param documentation
      *            The documentation.
      */
@@ -161,7 +162,7 @@ public class RuleSet
 
     /**
      * Retrieve the documentation.
-     *
+     * 
      * @return The documentation or <code>null</code> if none.
      */
     public String getDocumentation()
@@ -171,10 +172,10 @@ public class RuleSet
 
     /**
      * Add a <code>Rule</code> to this <code>RuleSet</code>.
-     *
+     * 
      * @param rule
      *            The rule to add.
-     *
+     * 
      * @throws DuplicateRuleNameException
      *             If the <code>Rule</code> attempting to be added has the
      *             same name as another previously added <code>Rule</code>.
@@ -203,10 +204,10 @@ public class RuleSet
 
     /**
      * Retrieve a <code>Rule</code> by name.
-     *
+     * 
      * @param name
      *            The name of the <code>Rule</code> to retrieve.
-     *
+     * 
      * @return The named <code>Rule</code>, or <code>null</code> if not
      *         such <code>Rule</code> has been added to this
      *         <code>RuleSet</code>.
@@ -242,7 +243,7 @@ public class RuleSet
 
     /**
      * Retrieve all <code>Rules</code> in this <code>RuleSet</code>.
-     *
+     * 
      * @return An array of all <code>Rules</code> in this <code>RuleSet</code>.
      */
     public Rule[] getRules()
@@ -254,11 +255,11 @@ public class RuleSet
     {
         return this.importer;
     }
-
+    
     public void setImporter(Importer importer)
     {
         this.importer = importer;
-    }
+    }    
 
     public void addApplicationData(ApplicationData applicationData)
     {
@@ -281,9 +282,9 @@ public class RuleSet
     {
         return (Functions) this.functions.get( semantic );
     }
-
+    
     public RuleBaseContext getRuleBaseContext()
     {
-        return this.ruleBaseContext;
+        return this.ruleBaseContext;        
     }
 }

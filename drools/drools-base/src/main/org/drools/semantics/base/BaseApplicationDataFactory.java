@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseApplicationDataFactory.java,v 1.2 2005-05-04 16:58:39 memelet Exp $
+ * $Id: BaseApplicationDataFactory.java,v 1.1.2.1 2005-05-04 09:30:57 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *

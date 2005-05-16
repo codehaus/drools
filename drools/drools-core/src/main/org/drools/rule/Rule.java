@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.59 2005-05-08 19:54:47 mproctor Exp $
+ * $Id: Rule.java,v 1.56.2.2 2005-05-08 00:57:36 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,13 +43,16 @@ package org.drools.rule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.Duration;
+import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
@@ -60,7 +63,7 @@ import org.drools.spi.ObjectType;
  * The <code>Condition</code>s describe the circumstances that
  * representrepresent a match for this rule. The <code>Consequence</code> gets
  * fired when the Conditions match.
- *
+ * 
  * @see Condition
  * @see Consequence
  * @author <a href="mailto:bob@eng.werken.com"> bob mcwhirter </a>
@@ -136,7 +139,7 @@ public class Rule
      * <code>Rule</code>s will nearly always
      * want to be in a RuleSet. This is more of a convenience constructor for
      * the times you dont, ie during unit testing.
-     *
+     * 
      * @param name
      *        The name of this rule.
      */
@@ -148,7 +151,7 @@ public class Rule
 
     /**
      * Set the documentation.
-     *
+     * 
      * @param documentation -
      *        The documentation.
      */
@@ -159,7 +162,7 @@ public class Rule
 
     /**
      * Retrieve the documentation.
-     *
+     * 
      * @return The documentation or <code>null</code> if none.
      */
     public String getDocumentation()
@@ -171,15 +174,15 @@ public class Rule
      * Set the truthness duration. This causes a delay before the firing of the
      * <code>Consequence</code> if the rule is still true at the end of the
      * duration.
-     *
+     * 
      * <p>
      * This is merely a convenience method for calling
      * {@link #setDuration(Duration)}with a <code>FixedDuration</code>.
      * </p>
-     *
+     * 
      * @see #setDuration(Duration)
      * @see FixedDuration
-     *
+     * 
      * @param seconds -
      *        The number of seconds the rule must hold true in order to fire.
      */
@@ -192,7 +195,7 @@ public class Rule
      * Set the truthness duration object. This causes a delay before the firing of the
      * <code>Consequence</code> if the rule is still true at the end of the
      * duration.
-     *
+     * 
      * @param duration
      *        The truth duration object.
      */
@@ -203,7 +206,7 @@ public class Rule
 
     /**
      * Retrieve the truthness duration object.
-     *
+     * 
      * @return The truthness duration object.
      */
     public Duration getDuration()
@@ -213,13 +216,13 @@ public class Rule
 
     /**
      * Determine if this rule is internally consistent and valid.
-     *
+     * 
      * No exception is thrown.
      * <p>
      * A <code>Rule</code> must include at least one parameter declaration and
      * one condition.
      * </p>
-     *
+     * 
      * @return <code>true</code> if this rule is valid, else
      *         <code>false</code>.
      */
@@ -231,21 +234,21 @@ public class Rule
     /**
      * Check the validity of this rule, and throw exceptions if it fails
      * validity tests.
-     *
+     * 
      * <p>
      * Possibly exceptions include:
      * </p>
-     *
+     * 
      * <pre>
      * NoParameterDeclarationException
      * NoConsequenceException
      * </pre>
-     *
+     * 
      * <p>
      * A <code>Rule</code> must include at least one parameter declaration and
      * one condition.
      * </p>
-     *
+     * 
      * @throws InvalidRuleException
      *         if this rule is in any way invalid.
      */
@@ -268,7 +271,7 @@ public class Rule
 
     /**
      * Retrieve the name of this rule.
-     *
+     * 
      * @return The name of this rule.
      */
     public String getName()
@@ -278,7 +281,7 @@ public class Rule
 
     /**
      * Retrieve the <code>Rule</code> salience.
-     *
+     * 
      * @return The salience.
      */
     public int getSalience()
@@ -309,7 +312,7 @@ public class Rule
     /**
      * Add a <i>root fact object </i> parameter <code>Declaration</code> for
      * this <code>Rule</code>.
-     *
+     * 
      * @param identifier
      *        The identifier.
      * @param objectType
@@ -335,10 +338,10 @@ public class Rule
 
     /**
      * Retrieve a parameter <code>Declaration</code> by identifier.
-     *
+     * 
      * @param identifier
      *        The identifier.
-     *
+     * 
      * @return The declaration or <code>null</code> if no declaration matches
      *         the <code>identifier</code>.
      */
@@ -363,7 +366,7 @@ public class Rule
     /**
      * Retrieve the set of all <i>root fact object </i> parameter
      * <code>Declarations</code>.
-     *
+     * 
      * @return The Set of <code>Declarations</code> in order which specify the
      *         <i>root fact objects</i>.
      */
@@ -374,7 +377,7 @@ public class Rule
 
     /**
      * Add a <code>Condition</code> to this rule.
-     *
+     * 
      * @param condition
      *        The <code>Condition</code> to add.
      */
@@ -386,7 +389,7 @@ public class Rule
     /**
      * Retrieve the <code>List</code> of <code>Conditions</code> for this
      * rule.
-     *
+     * 
      * @return The <code>List</code> of <code>Conditions</code>.
      */
     public List getConditions()
@@ -402,7 +405,7 @@ public class Rule
     /**
      * Set the <code>Consequence</code> that is associated with the successful
      * match of this rule.
-     *
+     * 
      * @param consequence
      *        The <code>Consequence</code> to attach to this <code>Rule</code>.
      */
@@ -414,7 +417,7 @@ public class Rule
     /**
      * Retrieve the <code>Consequence</code> associated with this
      * <code>Rule</code>.
-     *
+     * 
      * @return The <code>Consequence</code>.
      */
     public Consequence getConsequence()

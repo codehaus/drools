@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseImportEntry.java,v 1.2 2005-05-04 16:58:39 memelet Exp $
+ * $Id: BaseImportEntry.java,v 1.1.2.1 2005-05-03 23:45:24 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *

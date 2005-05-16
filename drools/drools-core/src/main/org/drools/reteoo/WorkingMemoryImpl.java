@@ -1,6 +1,8 @@
 package org.drools.reteoo;
 
 /*
+ * $Id: WorkingMemoryImpl.java,v 1.62.2.2 2005-04-26 02:43:49 mproctor Exp $
+ *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation

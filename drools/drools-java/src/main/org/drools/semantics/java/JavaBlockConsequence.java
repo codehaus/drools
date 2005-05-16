@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.7 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: JavaBlockConsequence.java,v 1.6.2.1 2005-05-08 00:57:36 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *

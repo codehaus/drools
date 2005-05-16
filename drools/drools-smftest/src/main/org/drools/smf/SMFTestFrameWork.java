@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.31 2005-05-08 17:46:20 memelet Exp $
+ * $Id: SMFTestFrameWork.java,v 1.29.2.3 2005-05-03 23:45:47 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -69,20 +69,20 @@ import org.drools.spi.Tuple;
 
 /**
  * @author mproctor
- *
+ * 
  * SMTTestFrameWork is a base class for unit testing Semantic Implementations
  * The semantic implementation unit test simply needs to extend this class along
  * with setup method that instructs SMFTEstFrameWork which semantic url to
  * instantiate for testing. public class JavaSemanticTest extends
  * SMFTestFrameWork { public JavaSemanticTest( String name ) { super( name ); }
- *
+ * 
  * public void setUp() throws Exception { super.setUp("java"); } }
- *
+ * 
  * Each class that extends SMFTestFrameWork must create 3 data files;
  * conditions.data, consequences.data. Each file is read depending the testType,
  * a List of the specified tests extracted from the file; usig the delimeter
  * <!--drools-test--!>to seperate each test block.
- *
+ * 
  * Each testType has a corresponding private helper method to instantiate a
  * Condition, Consequence for each test using the specified parameters
  */
@@ -321,7 +321,10 @@ public abstract class SMFTestFrameWork extends TestCase
         }
         catch ( ConditionException e )
         {
-            // expected
+            assertEquals( rule,
+                          e.getRule( ) );
+            assertEquals( tests.get( testNumber - 1 ),
+                          e.getInfo( ) );
         }
 
         // need to add a test for declaration order
@@ -370,7 +373,7 @@ public abstract class SMFTestFrameWork extends TestCase
                                              this.ruleBaseContext );
         Rule rule = new Rule( "Test Rule 1",
                               ruleSet );
-
+        
         rule.setImporter( new DefaultImporter( ) );
         ObjectType cheeseType = objectTypeFactory.newObjectType( rule,
                                                                  this.ruleBaseContext,
@@ -466,7 +469,8 @@ public abstract class SMFTestFrameWork extends TestCase
         }
         catch ( ConsequenceException e )
         {
-            // expected
+            assertEquals( rule,
+                          e.getRule( ) );
         }
 
         // 7

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: FactHandleImpl.java,v 1.21 2005-04-20 00:03:06 mproctor Exp $
+ * $Id: FactHandleImpl.java,v 1.19.2.1 2005-04-11 16:33:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: NoSuchFactHandleException.java,v 1.4 2005-05-08 17:45:59 memelet Exp $
+ * $Id: NoSuchFactHandleException.java,v 1.3 2004-12-06 04:51:36 dbarnett Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,32 +55,36 @@ package org.drools;
  */
 public class NoSuchFactHandleException extends FactException
 {
+    // ----------------------------------------------------------------------
+    // Instance members
+    // ----------------------------------------------------------------------
+
     /** Invalid fact object. */
     private final Object object;
 
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    public NoSuchFactHandleException( )
+    {
+        this.object = null;
+    }
+
     /**
-     * @see java.lang.Exception#Exception()
+     * Construct.
      *
      * @param object
      *            The invalid fact object.
      */
     public NoSuchFactHandleException( Object object )
     {
-        super( createMessage( object ) );
         this.object = object;
     }
 
-    /**
-     * @see java.lang.Exception#Exception(Throwable cause)
-     *
-     * @param object
-     *            The invalid fact object.
-     */
-    public NoSuchFactHandleException( Object object, Throwable cause )
-    {
-        super(createMessage( object ), cause );
-        this.object = object;
-    }
+    // ----------------------------------------------------------------------
+    // Instance methods
+    // ----------------------------------------------------------------------
 
     /**
      * Retrieve the invalid Object.
@@ -92,9 +96,18 @@ public class NoSuchFactHandleException extends FactException
         return this.object;
     }
 
-    private static String createMessage( Object object ) {
-        return object == null
-                ? "null fact object"
-                : "no such fact handle for object:" + object;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * @see Throwable
+     */
+    public String getMessage( )
+    {
+        if ( this.object == null )
+        {
+            return "invalid (null) fact object";
+        }
+
+        return "no such fact handle for object: " + object;
     }
 }

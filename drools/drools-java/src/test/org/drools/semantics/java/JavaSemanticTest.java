@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaSemanticTest.java,v 1.10 2005-05-04 16:58:40 memelet Exp $
+ * $Id: JavaSemanticTest.java,v 1.9.2.2 2005-05-03 23:45:24 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *

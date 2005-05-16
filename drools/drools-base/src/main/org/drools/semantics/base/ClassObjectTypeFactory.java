@@ -1,6 +1,8 @@
 package org.drools.semantics.base;
 
 /*
+ * $Id: ClassObjectTypeFactory.java,v 1.7.2.4 2005-04-30 13:49:43 mproctor Exp $
+ *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation

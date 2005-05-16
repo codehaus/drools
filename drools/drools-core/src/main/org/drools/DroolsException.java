@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: DroolsException.java,v 1.19 2005-05-08 17:45:59 memelet Exp $
+ * $Id: DroolsException.java,v 1.18 2005-01-09 23:49:24 memelet Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,57 +41,189 @@ package org.drools;
  *
  */
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * Base <code>drools Logic Engine</code> exception.
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  *
- * @version $Id: DroolsException.java,v 1.19 2005-05-08 17:45:59 memelet Exp $
+ * @version $Id: DroolsException.java,v 1.18 2005-01-09 23:49:24 memelet Exp $
  */
 public class DroolsException extends Exception
 {
+    // ------------------------------------------------------------
+    // Instance members
+    // ------------------------------------------------------------
+
+    /** Root cause, if any. */
+    private final Throwable rootCause;
+
+    // ------------------------------------------------------------
+    // Constructors
+    // ------------------------------------------------------------
+
     /**
-     * @see java.lang.Exception#Exception()
+     * Construct.
      */
     public DroolsException( )
     {
-        super();
+        this.rootCause = null;
     }
 
     /**
-     * @see java.lang.Exception#Exception(String message)
+     * Construct with a message.
+     *
+     * @param msg
+     *            The message.
      */
-    public DroolsException( String message )
+    public DroolsException( String msg )
     {
-        super( message );
+        super( msg );
+        this.rootCause = null;
     }
 
     /**
-     * @see java.lang.Exception#Exception(String message, Throwable cause)
+     * Construct with a root cause.
+     *
+     * @param rootCause
+     *            The root cause of this exception.
      */
-    public DroolsException( String message, Throwable cause )
+    public DroolsException( Throwable rootCause )
     {
-        super( message );
+        this.rootCause = rootCause;
     }
 
     /**
-     * @see java.lang.Exception#Exception(Throwable cause)
+     * Construct with a message and root cause.
+     *
+     * @param rootCause
+     *            The root cause of this exception.
      */
-    public DroolsException( Throwable cause )
+    public DroolsException( String msg, Throwable rootCause )
     {
-        super( cause );
+        super( msg );
+        this.rootCause = rootCause;
     }
+    // ------------------------------------------------------------
+    // Instance methods
+    // ------------------------------------------------------------
 
     /**
      * Get the root cause, if any.
      *
-     * @deprecated Use Throwable.getCause()
      * @return The root cause of this exception, as a <code>Throwable</code>,
      *         if this exception has a root cause, else <code>null</code>.
      */
     public Throwable getRootCause( )
     {
-        return super.getCause();
+        return this.rootCause;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // java.lang.Exception
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * Retrieve the error message.
+     *
+     * @return The error message.
+     */
+    public String getMessage( )
+    {
+        String selfMessage = super.getMessage( );
+
+        StringBuffer msg = new StringBuffer( );
+
+        if ( selfMessage != null )
+        {
+            msg.append( selfMessage );
+        }
+
+        Throwable rootCause = getRootCause( );
+
+        if ( rootCause != null )
+        {
+            if ( selfMessage != null )
+            {
+                msg.append( " : " );
+            }
+
+            msg.append( rootCause.getMessage( ) );
+        }
+
+        if ( msg.length( ) > 0 )
+        {
+            return msg.toString( );
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve the error message localized to the default locale.
+     *
+     * @return The error message.
+     */
+    public String getLocalizedMessage( )
+    {
+        StringBuffer msg = new StringBuffer( );
+
+        Throwable rootCause = getRootCause( );
+
+        if ( rootCause != null )
+        {
+            msg.append( rootCause.getLocalizedMessage( ) );
+        }
+        else
+        {
+            msg.append( super.getLocalizedMessage( ) );
+        }
+
+        if ( msg.length( ) > 0 )
+        {
+            return msg.toString( );
+        }
+
+        return null;
+    }
+
+    /**
+     * Print the stack trace.
+     *
+     * @param s
+     *            The output sink.
+     */
+    public void printStackTrace( PrintStream s )
+    {
+        super.printStackTrace( s );
+
+        Throwable rootCause = getRootCause( );
+
+        if ( rootCause != null )
+        {
+            System.err.println( "Nested exception was: " );
+            rootCause.printStackTrace( s );
+        }
+    }
+
+    /**
+     * Print the stack trace.
+     *
+     * @param s
+     *            The output sink.
+     */
+    public void printStackTrace( PrintWriter s )
+    {
+        super.printStackTrace( s );
+
+        Throwable rootCause = getRootCause( );
+
+        if ( rootCause != null )
+        {
+            System.err.println( "Nested exception was: " );
+            rootCause.printStackTrace( s );
+        }
     }
 }

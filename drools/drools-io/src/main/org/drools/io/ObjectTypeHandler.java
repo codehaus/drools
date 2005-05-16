@@ -1,6 +1,8 @@
 package org.drools.io;
 
 /*
+ * $Id: ObjectTypeHandler.java,v 1.4.2.3 2005-05-01 03:20:28 mproctor Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation

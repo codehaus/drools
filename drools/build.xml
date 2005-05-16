@@ -42,8 +42,9 @@
  OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <project name="drools" default="usage">
+
   <!-- ================================================================== -->
-  <!-- ============================= Usage ============================== -->
+  <!-- ===========vvvv============== Usage ===============vvvv=========== -->
   <!-- ================================================================== -->
 
   <target name="usage"
@@ -158,24 +159,6 @@
       <delete dir="drools-examples/target"/>
   </target>
 
-  <target name="clean-deps" unless="noget"
-          description="Deletes downloaded JAR files.">
-      <delete file="${lib.dir}/${antlr.jar}"/>
-      <delete file="${lib.dir}/${jython.jar}"/>
-      <delete file="${lib.dir}/${groovy.jar}"/>
-      <delete file="${lib.dir}/${janino.jar}"/>
-      <delete file="${lib.dir}/${xerces.jar}"/>
-      <delete file="${lib.dir}/${xml-apis.jar}"/>
-      <delete file="${lib.dir}/${simple-jndi.jar}"/>
-      <delete file="${lib.dir}/${forms.jar}"/>
-      <delete file="${lib.dir}/${foxtrot.jar}"/>
-      <delete file="${lib.dir}/${junit.jar}"/>
-  </target>
-
-  <target name="realclean"
-          description="Deletes entire output directory and the downloaded JAR files."
-          depends="clean,clean-deps"/>
-
   <!-- <property name="noget" value="true"/> -->
   <target name="get-deps" unless="noget"
           description="Downloads required JAR files.">
@@ -204,9 +187,6 @@
 
       <get dest="${lib.dir}/${junit.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
           src="http://www.ibiblio.org/maven/junit/jars/${junit.jar}"/>
-
-      <!-- Developer's Note: If you add more JARs to this target,
-           be sure to also add them to the "clean-deps" target. -->
 
       <!-- Local JARs not found at ibiblio -->
      <copy file="lib/${jsr94.jar}" tofile="${lib.dir}/${jsr94.jar}"/>
@@ -262,8 +242,8 @@
     <jar destfile="${module-name}/target/${module-name}-${drools-version}.jar"
          basedir="${module-name}/target/classes" />
 
-    <mkdir dir="target"/>
-    <copy file="${module-name}/target/${module-name}-${drools-version}.jar" todir="target"/>
+    <mkdir dir="target\"/>
+    <copy file="${module-name}/target/${module-name}-${drools-version}.jar" todir="target\"/>
 
   </target>
 
@@ -282,11 +262,10 @@
       </fileset>
     </path>
 
-    <copy todir="${module-name}/target/test-classes" includeEmptyDirs="no">
-      <fileset dir="${module-name}/src/test">
-        <exclude name="**/*.java"/>
-      </fileset>
-    </copy>
+    <available file="${module-name}/src/test/data" type="dir" property="test-data-exists"/>
+    <antcall target="copy-test-data">
+       <param name="module-name" value="${module-name}"/>
+    </antcall>
 
     <javac destdir="${module-name}/target/test-classes"
            srcdir="${module-name}/src/test">
@@ -312,7 +291,6 @@
       <batchtest todir="${module-name}/target/test-reports" fork="${fork-test}">
         <fileset dir="${module-name}/target/test-classes">
           <include name="**/*Test.class"/>
-          <include name="org/drools/jsr94/AllTests.class"/>
         </fileset>
       </batchtest>
     </junit>
@@ -321,6 +299,12 @@
   <target name="copy-meta-inf" if="meta-inf-exists">
      <copy todir="${module-name}/target/classes">
        <fileset dir="${module-name}/src/conf"/>
+     </copy>
+  </target>
+
+  <target name="copy-test-data" if="test-data-exists">
+     <copy todir="${module-name}/target/test-classes/data">
+       <fileset dir="${module-name}/src/test/data"/>
      </copy>
   </target>
 

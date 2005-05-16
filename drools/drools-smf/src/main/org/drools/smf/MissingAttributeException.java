@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: MissingAttributeException.java,v 1.4 2005-05-08 17:46:20 memelet Exp $
+ * $Id: MissingAttributeException.java,v 1.3 2004-11-28 20:01:13 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,44 +43,20 @@ package org.drools.smf;
 
 public class MissingAttributeException extends FactoryException
 {
-    /** Missing attribute name. */
     private String name;
 
-    /**
-     * @see java.lang.Exception#Exception()
-     *
-     * @param name
-     *            The missing attribute name.
-     */
-    public MissingAttributeException( String name )
+    public MissingAttributeException(String name)
     {
-        super( createMessage( name ) );
         this.name = name;
     }
 
-    /**
-     * @see java.lang.Exception#Exception(Throwable cause)
-     *
-     * @param object
-     *            The missing attribute name.
-     */
-    public MissingAttributeException( String name, Throwable cause )
-    {
-        super( createMessage( name ), cause );
-        this.name = name;
-    }
-
-    /**
-     * Retrieve the missing attribute name.
-     *
-     * @return The missing attribute name.
-     */
     public String getName()
     {
         return this.name;
     }
 
-    private static String createMessage( String name ) {
-        return "missing attribute: " + name;
+    public String getMessage()
+    {
+        return "missing attribute '" + getName( ) + "'";
     }
 }

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: NoSuchFactObjectException.java,v 1.9 2005-05-08 17:45:59 memelet Exp $
+ * $Id: NoSuchFactObjectException.java,v 1.8 2004-12-06 04:51:36 dbarnett Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,32 +57,36 @@ package org.drools;
  */
 public class NoSuchFactObjectException extends FactException
 {
+    // ----------------------------------------------------------------------
+    // Instance members
+    // ----------------------------------------------------------------------
+
     /** Invalid fact handle. */
     private final FactHandle handle;
 
-    /**
-     * @see java.lang.Exception#Exception()
-     *
-     * @param object
-     *            The invalid fact object.
-     */
-    public NoSuchFactObjectException( FactHandle handle )
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    public NoSuchFactObjectException( )
     {
-        super( createMessage( handle ) );
-        this.handle = handle;
+        this.handle = null;
     }
 
     /**
-     * @see java.lang.Exception#Exception()
+     * Construct.
      *
-     * @param object
-     *            The invalid fact object.
+     * @param handle
+     *            The invalid fact handle.
      */
-    public NoSuchFactObjectException( FactHandle handle, Throwable cause )
+    public NoSuchFactObjectException( FactHandle handle )
     {
-        super( createMessage( handle ) );
         this.handle = handle;
     }
+
+    // ----------------------------------------------------------------------
+    // Instance methods
+    // ----------------------------------------------------------------------
 
     /**
      * Retrieve the invalid <code>FactHandle</code>.
@@ -94,9 +98,18 @@ public class NoSuchFactObjectException extends FactException
         return this.handle;
     }
 
-    private static String createMessage( FactHandle handle ) {
-        return handle == null
-                ? "null fact object"
-                : "no such fact object for handle:" + handle.toExternalForm( );
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * @see Throwable
+     */
+    public String getMessage( )
+    {
+        if ( this.handle == null )
+        {
+            return "invalid (null) fact handle";
+        }
+
+        return "no such fact object for handle: " + getFactHandle( ).toExternalForm( );
     }
 }

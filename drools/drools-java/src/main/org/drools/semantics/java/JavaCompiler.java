@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCompiler.java,v 1.12 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: JavaCompiler.java,v 1.7.2.5 2005-05-08 00:57:36 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -73,7 +73,7 @@ class JavaCompiler
             {
                 functionsClass = functions.getFunctionsClass( );
             }
-
+            
             RuleBaseContext ruleBaseContext = rule.getRuleSet( ).getRuleBaseContext( );
             ClassLoader classLoader = (ClassLoader) ruleBaseContext.get( "java-classLoader" );
 
@@ -95,7 +95,7 @@ class JavaCompiler
                                          cl );
                 }
 
-                classLoader = new ByteArrayClassLoader( new HashMap( ),
+                classLoader = new ByteArrayClassLoader( new HashMap( ), 
                                                         cl );
 
                 ruleBaseContext.put( "java-classLoader",

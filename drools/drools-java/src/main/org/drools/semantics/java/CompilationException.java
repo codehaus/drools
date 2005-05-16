@@ -1,9 +1,9 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: CompilationException.java,v 1.5 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: CompilationException.java,v 1.3.2.1 2005-05-08 00:57:36 mproctor Exp $
  *
- * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -78,7 +78,7 @@ public class CompilationException
     public Rule getRule()
     {
         return this.rule;
-    }
+    }    
 
     public String getText()
     {
@@ -115,8 +115,8 @@ public class CompilationException
             error.append( "Rule '" );
             error.append( getRule( ).getName( ) );
             error.append( "' " );
-            error.append( ":" );
-        }
+            error.append( ":" );           
+        }      
         error.append( getLineNumber( ) );
         error.append( " : " );
         error.append( getColumNumber() );
@@ -124,7 +124,7 @@ public class CompilationException
         error.append( getText( ) );
         error.append( "\n" );
         error.append( getErrorMessage() );
-
+                        
         return error.toString();
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleKey.java,v 1.36 2005-05-08 16:13:33 memelet Exp $
+ * $Id: TupleKey.java,v 1.35 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import java.util.Set;
 
 import org.drools.FactHandle;
 import org.drools.rule.Declaration;
+import org.drools.spi.Tuple;
 
 /**
  * A composite key to match tuples.
@@ -66,7 +67,7 @@ class TupleKey
 
     /** Columns. */
     private final FactHandleList handles;
-
+    
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
