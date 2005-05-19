@@ -1,6 +1,7 @@
 package org.drools.util.concurrent;
 
 import org.drools.WorkingMemory;
+import org.drools.WorkingMemoryTemplate;
 
 /**
  * Helper class that allows multiple WorkingMemory methods to be invoked in a
@@ -23,20 +24,7 @@ import org.drools.WorkingMemory;
  *  The abstract method <code>getWorkingMemory</code> allows concrete subclass to define
  *  their own strategy for obtaining the WorkingMemory instance.
  */
-public abstract class AbstractWorkingMemorySynchronizedTemplate {
-
-    /**
-     * Callback interface for invoking WorkingMemory methods within a synchronized block.
-     */
-    public interface Callback {
-        /**
-         * Gets called by <code>WorkingMemorySynchronizedTemplate.execute</code> with a
-         * WorkingMemory instance protected by a synchronized block.
-         * @param workingMemory
-         * @return Any object or null.
-         */
-        Object doInWorkingMemory(final WorkingMemory workingMemory);
-    }
+public abstract class AbstractWorkingMemorySynchronizedTemplate implements WorkingMemoryTemplate {
 
     /**
      * Concrete subclasses must implement this method to provide the WorkingMemory instance.
