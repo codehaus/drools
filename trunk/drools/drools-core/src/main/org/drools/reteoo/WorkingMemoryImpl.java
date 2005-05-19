@@ -189,9 +189,9 @@ class WorkingMemoryImpl
         else if  ( !type.isInstance( value ) )
         {
             throw new RuntimeException( "Illegal class for application data. " +
-                                        "Expected [" + type.getName() + "], " + 
-                                        "found [" + value.getClass().getName() + "]." );            
-                                        
+                                        "Expected [" + type.getName() + "], " +
+                                        "found [" + value.getClass().getName() + "]." );
+
         }
         else
         {
@@ -235,7 +235,7 @@ class WorkingMemoryImpl
         return this.ruleBase;
     }
 
-    public synchronized void fireAllRules(AgendaFilter agendaFilter) throws FactException
+    public void fireAllRules(AgendaFilter agendaFilter) throws FactException
     {
         // If we're already firing a rule, then it'll pick up
         // the firing for any other assertObject(..) that get
@@ -346,8 +346,8 @@ class WorkingMemoryImpl
                              false );
     }
 
-    public synchronized FactHandle assertObject(Object object,
-                                                boolean dynamic) throws FactException
+    public FactHandle assertObject(Object object,
+                                   boolean dynamic) throws FactException
     {
         FactHandle handle = (FactHandle) handles.get( object );
 
@@ -488,7 +488,7 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public synchronized void retractObject(FactHandle handle) throws FactException
+    public void retractObject(FactHandle handle) throws FactException
     {
         removePropertyChangeListener( handle );
 
@@ -511,7 +511,7 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public synchronized void modifyObject(FactHandle handle,
+    public void modifyObject(FactHandle handle,
                                           Object object) throws FactException
     {
         Object originalObject = removeObject( handle );
