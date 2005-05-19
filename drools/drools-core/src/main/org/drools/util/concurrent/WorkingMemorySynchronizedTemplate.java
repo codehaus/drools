@@ -19,21 +19,10 @@ import org.drools.WorkingMemory;
  *         }
  *     }
  *     </code></pre>
+ *
+ *  @see org.drools.util.concurrent.AbstractWorkingMemorySynchronizedTemplate
  */
-public class WorkingMemorySynchronizedTemplate {
-
-    /**
-     * Callback interface for invoking WorkingMemory methods within a synchronized block.
-     */
-    public interface Callback {
-        /**
-         * Gets called by <code>WorkingMemorySynchronizedTemplate.execute</code> with a
-         * WorkingMemory instance protected by a synchronized block.
-         * @param workingMemory
-         * @return Any object or null.
-         */
-        Object doInWorkingMemory(final WorkingMemory workingMemory);
-    }
+public class WorkingMemorySynchronizedTemplate extends AbstractWorkingMemorySynchronizedTemplate {
 
     private final WorkingMemory workingMemory;
 
@@ -45,15 +34,7 @@ public class WorkingMemorySynchronizedTemplate {
         this.workingMemory = workingMemory;
     }
 
-    /**
-     * Invokes the callback within a synchronized block on the workingMemory instance
-     * passed to the constructor.
-     * @param callback
-     * @return Any object or null.
-     */
-    public Object execute(Callback callback) {
-        synchronized(workingMemory) {
-            return callback.doInWorkingMemory(workingMemory);
-        }
+    protected WorkingMemory getWorkingMemory() {
+        return workingMemory;
     }
 }
