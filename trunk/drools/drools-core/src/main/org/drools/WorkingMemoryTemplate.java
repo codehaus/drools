@@ -18,14 +18,15 @@ public interface WorkingMemoryTemplate {
          * @param workingMemory
          * @return Any object or null.
          */
-        Object doInWorkingMemory(final WorkingMemory workingMemory) throws Exception;
+        Object doInWorkingMemory(final WorkingMemory workingMemory) throws DroolsException;
     }
 
     /**
-     * Invokes <code>Callbak.doInWorkingMemory</code>.
+     * Invokes <code>Callback.doInWorkingMemory</code>. Any thrown <code>DroolsException<code> is
+     * softened to <code>DroolsRuntimeException</code>.
      * @param callback
      * @return Any object or null.
      */
-    Object execute(Callback callback) throws Exception;
+    Object execute(Callback callback);
 
 }
