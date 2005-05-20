@@ -38,7 +38,7 @@ public abstract class AbstractWorkingMemorySynchronizedTemplate implements Worki
      * @param callback
      * @return Any object or null.
      */
-    public Object execute(Callback callback) {
+    public Object execute(Callback callback) throws Exception {
         synchronized(getWorkingMemory()) {
             return callback.doInWorkingMemory(getWorkingMemory());
         }
