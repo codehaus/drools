@@ -1,5 +1,7 @@
 package org.drools.util.concurrent;
 
+import org.drools.DroolsException;
+import org.drools.DroolsRuntimeException;
 import org.drools.WorkingMemory;
 import org.drools.WorkingMemoryTemplate;
 
@@ -38,9 +40,13 @@ public abstract class AbstractWorkingMemorySynchronizedTemplate implements Worki
      * @param callback
      * @return Any object or null.
      */
-    public Object execute(Callback callback) throws Exception {
+    public Object execute(Callback callback) {
         synchronized(getWorkingMemory()) {
-            return callback.doInWorkingMemory(getWorkingMemory());
+            try {
+                return callback.doInWorkingMemory(getWorkingMemory());
+            } catch (DroolsException e) {
+                throw new DroolsRuntimeException(e);
+            }
         }
     }
 }
