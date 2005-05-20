@@ -18,7 +18,7 @@ public interface WorkingMemoryTemplate {
          * @param workingMemory
          * @return Any object or null.
          */
-        Object doInWorkingMemory(final WorkingMemory workingMemory);
+        Object doInWorkingMemory(final WorkingMemory workingMemory) throws Exception;
     }
 
     /**
@@ -26,6 +26,6 @@ public interface WorkingMemoryTemplate {
      * @param callback
      * @return Any object or null.
      */
-    Object execute(Callback callback);
+    Object execute(Callback callback) throws Exception;
 
 }
