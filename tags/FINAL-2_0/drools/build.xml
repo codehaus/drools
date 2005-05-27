@@ -1,0 +1,708 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
+
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+    statements and notices.  Redistributions must also contain a
+    copy of this document.
+
+ 2. Redistributions in binary form must reproduce the
+    above copyright notice, this list of conditions and the
+    following disclaimer in the documentation and/or other
+    materials provided with the distribution.
+
+ 3. The name "drools" must not be used to endorse or promote
+    products derived from this Software without prior written
+    permission of The Werken Company.  For written permission,
+    please contact bob@werken.com.
+
+ 4. Products derived from this Software may not be called "drools"
+    nor may "drools" appear in their names without prior written
+    permission of The Werken Company. "drools" is a trademark of
+    The Werken Company.
+
+ 5. Due credit should be given to The Werken Company.
+    (http://werken.com/)
+
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<project name="drools" default="usage">
+
+  <!-- ================================================================== -->
+  <!-- ===========vvvv============== Usage ===============vvvv=========== -->
+  <!-- ================================================================== -->
+
+  <target name="usage"
+          description="Displays usage information for this build file.">
+    <echo level="info" message="Clean all outputs"/>
+    <echo level="info" message="    ant clean"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="Compile and Jar all modules"/>
+    <echo level="info" message="    ant jar-all"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="Compile and Jar individual modules."/>
+    <echo level="info" message="(required modules must be built first)"/>
+    <echo level="info" message="Where &lt;module name&gt; can be:"/>
+    <echo level="info" message="drools-core, drools-smf, drools-io,"/>
+    <echo level="info" message="drools-smf, drools-smftest,"/>
+    <echo level="info" message="drools-java, drools-python, drools-groovy"/>
+    <echo level="info" message="drools-jsr94, drools-examples"/>
+    <echo level="info" message="    ant drools-&lt;module name&gt;"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="Run Examples:"/>
+    <echo level="info" message="# Escalation Examples"/>
+    <echo level="info" message="    ant escalation-java"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# Fibonacci Examples"/>
+    <echo level="info" message="    ant fibonacci-java"/>
+    <echo level="info" message="    ant fibonacci-python"/>
+    <echo level="info" message="    ant fibonacci-groovy"/>
+    <echo level="info" message="    ant fibonacci-java-jndi"/>
+    <echo level="info" message="    ant fibonacci-java-serialized"/>
+    <echo level="info" message="    ant fibonacci-groovy-jndi"/>
+    <echo level="info" message="    ant fibonacci-groovy-serialized"/>
+    <echo level="info" message="    ant fibonacci-python-jndi"/>
+    <echo level="info" message="    ant fibonacci-python-serialized"/>
+    <echo level="info" message="    ant fibonacci-native"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# Hello World Examples"/>
+    <echo level="info" message="    ant helloworld-native"/>
+    <echo level="info" message="    ant helloworld-java"/>
+    <echo level="info" message="    ant helloworld-groovy"/>
+    <echo level="info" message="    ant helloworld-python"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# House Examples"/>
+    <echo level="info" message="    ant house"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# Miss Manners Examples"/>
+    <echo level="info" message="    ant manners-jsr94"/>
+    <echo level="info" message="    ant manners-native"/>
+    <echo level="info" message="    ant manners-java"/>
+    <echo level="info" message="    ant manners-groovy"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# Pet Store Examples"/>
+    <echo level="info" message="    ant petstore-java"/>
+    <echo level="info" message="    ant petstore-groovy"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# Prime Factors Examples"/>
+    <echo level="info" message="    ant primefactors-java"/>
+    <echo level="info" message="    ant primefactors-java-verboses"/>
+    <echo level="info" message=" "/>
+    <echo level="info" message="# State Examples"/>
+    <echo level="info" message="    ant state-java"/>
+    <echo level="info" message="    ant state-groovy"/>
+    <echo level="info" message="    ant state-python"/>
+    <echo level="info" message="# Benchmarks"/>
+    <echo level="info" message="    ant manners-benchmark"/>
+    <echo level="info" message="    ant altz-benchmark"/>
+    <echo level="info" message="# Conway's Game Of Life"/>
+    <echo level="info" message="    ant conway-dsl"/>
+    <echo level="info" message="    ant conway-java"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- =================== Configuration Properties  ==================== -->
+  <!-- ================================================================== -->
+
+  <!-- Configure JAR versions here. -->
+  <property name="antlr.jar" value="antlr-2.7.5.jar"/>
+  <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
+  <property name="janino.jar" value="janino-2.3.2.jar"/>
+  <property name="groovy.jar" value="groovy-all-1.0-jsr-01.jar"/>
+  <property name="jsr94.jar" value="jsr94-1.1.jar"/>
+  <property name="jsr94-tck.jar" value="jsr94-tck-1.1.jar"/>
+  <property name="sigtest.jar" value="sigtest-1.1.jar"/>
+  <property name="xerces.jar" value="xercesImpl-2.6.2.jar"/>
+  <property name="xml-apis.jar" value="xml-apis-1.0.b2.jar"/>
+  <property name="junit.jar" value="junit-3.8.jar"/>
+  <property name="simple-jndi.jar" value="simple-jndi-0.10.jar"/>
+  <property name="forms.jar" value="forms-1.0.4.jar"/>
+  <property name="foxtrot.jar" value="foxtrot-2.0.jar"/>
+
+  <!-- Configure directories. -->
+  <property name="lib.dir" value="lib"/>
+
+
+  <property name="drools-version" value="2.0-rc1-dev"/>
+
+  <!-- ================================================================== -->
+  <!-- =========================== Core Tasks =========================== -->
+  <!-- ================================================================== -->
+
+  <target name="clean"
+          description="Deletes entire output directory.">
+      <delete dir="target"/>
+      <delete dir="drools-core/target"/>
+      <delete dir="drools-smf/target"/>
+      <delete dir="drools-smftest/target"/>
+      <delete dir="drools-base/target"/>
+      <delete dir="drools-io/target"/>
+      <delete dir="drools-java/target"/>
+      <delete dir="drools-jsr94/target"/>
+      <delete dir="drools-groovy/target"/>
+      <delete dir="drools-python/target"/>
+      <delete dir="drools-examples/target"/>
+  </target>
+
+  <!-- <property name="noget" value="true"/> -->
+  <target name="get-deps" unless="noget"
+          description="Downloads required JAR files.">
+      <mkdir dir="${lib.dir}"/>
+
+      <!-- ibiblio Maven JARs -->
+      <get dest="${lib.dir}/${antlr.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/antlr/jars/${antlr.jar}"/>
+      <get dest="${lib.dir}/${jython.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/jython/jars/${jython.jar}"/>
+      <get dest="${lib.dir}/${groovy.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/groovy/jars/${groovy.jar}"/>
+      <get dest="${lib.dir}/${janino.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/janino/jars/${janino.jar}"/>
+      <get dest="${lib.dir}/${xerces.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/xerces/jars/${xerces.jar}"/>
+      <get dest="${lib.dir}/${xml-apis.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/xml-apis/jars/${xml-apis.jar}"/>
+      <get dest="${lib.dir}/${simple-jndi.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/simple-jndi/jars/${simple-jndi.jar}"/>
+
+      <get dest="${lib.dir}/${forms.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/jgoodies/jars/${forms.jar}"/>
+      <get dest="${lib.dir}/${foxtrot.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/foxtrot/jars/${foxtrot.jar}"/>
+
+      <get dest="${lib.dir}/${junit.jar}" usetimestamp="true" ignoreerrors="true" verbose="true"
+          src="http://www.ibiblio.org/maven/junit/jars/${junit.jar}"/>
+
+      <!-- Local JARs not found at ibiblio -->
+     <copy file="lib/${jsr94.jar}" tofile="${lib.dir}/${jsr94.jar}"/>
+     <copy file="lib/${jsr94-tck.jar}" tofile="${lib.dir}/${jsr94-tck.jar}"/>
+     <copy file="lib/${sigtest.jar}" tofile="${lib.dir}/${sigtest.jar}"/>
+
+  </target>
+
+
+  <target name="jar-module">
+    <mkdir dir="${module-name}/target/classes" />
+
+     <path id="module-deps">
+       <fileset dir=".">
+        <include name="drools-*/target/*.jar"/>
+       </fileset>
+     </path>
+
+    <path id="lib-deps">
+      <fileset dir="lib/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+
+    <available file="${module-name}/src/conf/META-INF" type="dir" property="meta-inf-exists"/>
+    <antcall target="copy-meta-inf">
+      <param name="module-name" value="${module-name}"/>
+    </antcall>
+
+    <javac destdir="${module-name}/target/classes"
+           srcdir="${module-name}/src/main" >
+           <classpath refid="module-deps"/>
+           <classpath refid="lib-deps"/>
+    </javac>
+
+    <copy todir="${module-name}/target/classes">
+      <fileset dir="${module-name}/src/main">
+        <include name="**/*.drl"/>
+        <include name="**/*.dat"/>
+        <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+    <available file="${module-name}/src/test" type="dir" property="test-dir-exists"/>
+
+    <antcall target="compile-test-classes">
+      <param name="module-name" value="${module-name}"/>
+      <param name="fork-test" value="${fork-test}"/>
+    </antcall>
+
+
+    <jar destfile="${module-name}/target/${module-name}-${drools-version}.jar"
+         basedir="${module-name}/target/classes" />
+
+    <mkdir dir="target\"/>
+    <copy file="${module-name}/target/${module-name}-${drools-version}.jar" todir="target\"/>
+
+  </target>
+
+  <target name="compile-test-classes" if="test-dir-exists">
+    <mkdir dir="${module-name}/target/test-classes" />
+
+    <path id="module-deps">
+      <fileset dir=".">
+        <include name="drools-*/target/*.jar"/>
+      </fileset>
+    </path>
+
+    <path id="lib-deps">
+      <fileset dir="lib/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <available file="${module-name}/src/test/data" type="dir" property="test-data-exists"/>
+    <antcall target="copy-test-data">
+       <param name="module-name" value="${module-name}"/>
+    </antcall>
+
+    <javac destdir="${module-name}/target/test-classes"
+           srcdir="${module-name}/src/test">
+      <classpath location="${lib.dir}/${junit.jar}"/>
+      <classpath path="${module-name}/target/classes"/>
+      <classpath refid="module-deps"/>
+      <classpath refid="lib-deps"/>
+    </javac>
+
+    <mkdir dir="${module-name}/target/test-reports" />
+
+    <junit printsummary="yes" haltonfailure="yes" fork="${fork-test}">
+      <classpath>
+        <pathelement path="${module-name}/target/test-classes"/>
+        <pathelement path="${module-name}/target/classes"/>
+        <path refid="module-deps"/>
+        <path refid="lib-deps"/>
+      </classpath>
+
+      <formatter type="plain"/>
+      <formatter type="xml"/>
+
+      <batchtest todir="${module-name}/target/test-reports" fork="${fork-test}">
+        <fileset dir="${module-name}/target/test-classes">
+          <include name="**/*Test.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="copy-meta-inf" if="meta-inf-exists">
+     <copy todir="${module-name}/target/classes">
+       <fileset dir="${module-name}/src/conf"/>
+     </copy>
+  </target>
+
+  <target name="copy-test-data" if="test-data-exists">
+     <copy todir="${module-name}/target/test-classes/data">
+       <fileset dir="${module-name}/src/test/data"/>
+     </copy>
+  </target>
+
+  <target name="jar-all" depends="drools-core,drools-smf,drools-smftest,
+                                  drools-base,drools-io,drools-java, drools-jsr94,
+                                  drools-groovy,drools-python,drools-examples,get-deps">
+  </target>
+
+  <target name="drools-core" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-core"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-smf" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-smf"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-smftest" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-smftest"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-base" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-base"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-io" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-io"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-java" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-java"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-jsr94" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-jsr94"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-groovy" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-groovy"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+  <target name="drools-python" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-python"/>
+       <param name="fork-test"   value="yes"/>
+     </antcall>
+  </target>
+
+  <target name="drools-examples" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-examples"/>
+       <param name="fork-test"   value="no"/>
+     </antcall>
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- =========================== Examples ============================= -->
+  <!-- ================================================================== -->
+
+  <target name="run-example" depends="get-deps">
+    <path id="module-deps">
+      <fileset dir=".">
+        <include name="drools-*/target/*.jar"/>
+      </fileset>
+    </path>
+
+    <path id="lib-deps">
+      <fileset dir="lib/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <java classname="${class-name}" fork="true">
+      <classpath refid="module-deps"/>
+      <classpath refid="lib-deps"/>
+    </java>
+  </target>
+
+  <target name="run-example-1" depends="get-deps">
+    <path id="module-deps">
+      <fileset dir=".">
+        <include name="drools-*/target/*.jar"/>
+      </fileset>
+    </path>
+
+    <path id="lib-deps">
+      <fileset dir="lib/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <java classname="${class-name}" fork="true">
+      <arg value="${arg1}"/>
+      <classpath refid="module-deps"/>
+      <classpath refid="lib-deps"/>
+    </java>
+  </target>
+
+  <target name="run-example-2" depends="get-deps">
+    <path id="module-deps">
+      <fileset dir=".">
+        <include name="drools-*/target/*.jar"/>
+      </fileset>
+    </path>
+
+    <path id="lib-deps">
+      <fileset dir="lib/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <java classname="${class-name}" fork="true">
+      <arg value="${arg1}"/>
+      <arg value="${arg2}"/>
+      <classpath refid="module-deps"/>
+      <classpath refid="lib-deps"/>
+    </java>
+  </target>
+
+  <target name="run-example-4" depends="get-deps">
+    <path id="module-deps">
+      <fileset dir=".">
+        <include name="drools-*/target/*.jar"/>
+      </fileset>
+    </path>
+
+    <path id="lib-deps">
+      <fileset dir="lib/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <java classname="${class-name}" fork="true">
+      <arg value="${arg1}"/>
+      <arg value="${arg2}"/>
+      <arg value="${arg3}"/>
+      <arg value="${arg4}"/>
+      <classpath refid="module-deps"/>
+      <classpath refid="lib-deps"/>
+    </java>
+  </target>
+
+<!-- Hello World -->
+  <target name="helloword-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.helloworld.HelloWorldExample"/>
+      <param name="arg1" value="helloworld.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="helloword-groovy">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.helloworld.HelloWorldExample"/>
+      <param name="arg1" value="helloworld.groovy.drl"/>
+    </antcall>
+  </target>
+
+  <target name="helloword-python">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.helloworld.HelloWorldExample"/>
+      <param name="arg1" value="helloworld.python.drl"/>
+    </antcall>
+  </target>
+
+  <target name="helloworld-native">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.helloworld.HelloWorldNative"/>
+    </antcall>
+  </target>
+
+<!-- Fibonacci -->
+  <target name="fibonacci-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciExample"/>
+      <param name="arg1" value="fibonacci.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-python">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciExample"/>
+      <param name="arg1" value="fibonacci.python.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-groovy">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciExample"/>
+      <param name="arg1" value="fibonacci.groovy.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-java-jndi">
+    <antcall target="run-example-2">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciJNDIExample"/>
+      <param name="arg1" value="org.osjava.jndi.PropertiesFactory"/>
+      <param name="arg2" value="fibonacci.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-groovy-jndi">
+    <antcall target="run-example-2">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciJNDIExample"/>
+      <param name="arg1" value="org.osjava.jndi.PropertiesFactory"/>
+      <param name="arg2" value="fibonacci.groovy.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-python-jndi">
+    <antcall target="run-example-2">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciJNDIExample"/>
+      <param name="arg1" value="org.osjava.jndi.PropertiesFactory"/>
+      <param name="arg2" value="fibonacci.python.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-java-serialized">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciSerializedExample"/>
+      <param name="arg1" value="fibonacci.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-groovy-serialized">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciSerializedExample"/>
+      <param name="arg1" value="fibonacci.groovy.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-python-serialized">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciSerializedExample"/>
+      <param name="arg1" value="fibonacci.python.drl"/>
+    </antcall>
+  </target>
+
+  <target name="fibonacci-native">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciNative"/>
+    </antcall>
+  </target>
+
+<!-- State -->
+  <target name="state-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.state.StateExample"/>
+      <param name="arg1" value="state.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="state-groovy">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.state.StateExample"/>
+      <param name="arg1" value="state.groovy.drl"/>
+    </antcall>
+  </target>
+
+  <target name="state-python">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.state.StateExample"/>
+      <param name="arg1" value="state.python.drl"/>
+    </antcall>
+  </target>
+
+
+<!-- Escalation -->
+  <target name="escalation-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.escalation.Escalation"/>
+      <param name="arg1" value="escalation.java.drl"/>
+    </antcall>
+  </target>
+
+<!-- Pet Store -->
+  <target name="petstore-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.petstore.PetStore"/>
+      <param name="arg1" value="petstore.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="petstore-groovy">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.petstore.PetStore"/>
+      <param name="arg1" value="petstore.groovy.drl"/>
+    </antcall>
+  </target>
+
+<!-- Miss Manners -->
+  <target name="manners-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.manners.MannersExample"/>
+      <param name="arg1" value="mannes.java.drl"/>
+    </antcall>
+  </target>
+
+  <target name="manners-groovy">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.manners.MannersExample"/>
+      <param name="arg1" value="manners.groovy.drl"/>
+    </antcall>
+  </target>
+
+  <target name="manners-jsr94">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.manners.MannersExample"/>
+    </antcall>
+  </target>
+
+  <target name="manners-native">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.manners.MannersNative"/>
+    </antcall>
+  </target>
+
+
+<!-- House -->
+  <target name="house">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.house.HouseExample"/>
+    </antcall>
+  </target>
+
+
+<!-- Prime Factors -->
+  <target name="primefactors-java">
+    <antcall target="run-example-4">
+      <param name="class-name" value="org.drools.examples.primefactors.PrimeFactors"/>
+      <param name="arg1" value="10000"/> <!-- Number of Rules -->
+      <param name="arg2" value="300"/>   <!-- Number of Facts -->
+      <param name="arg3" value="0"/>     <!-- Random Seed -->
+      <param name="arg4" value="false"/> <!-- Verbose Output -->
+    </antcall>
+  </target>
+
+  <target name="primefactors-java-verbose">
+    <antcall target="run-example-4">
+      <param name="class-name" value="org.drools.examples.primefactors.PrimeFactors"/>
+      <param name="arg1" value="100"/>  <!-- Number of Rules -->
+      <param name="arg2" value="10"/>   <!-- Number of Facts -->
+      <param name="arg3" value="-1"/>   <!-- Random Seed -->
+      <param name="arg4" value="true"/> <!-- Verbose Output -->
+    </antcall>
+  </target>
+
+<!-- Miss Manners Benchmark -->
+  <target name="manners-benchmark">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.benchmarks.manners.MannersBenchmark"/>
+    </antcall>
+  </target>
+
+<!-- Waltz Benchmark -->
+  <target name="waltz-benchmark">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.benchmarks.waltz.WaltzBenchmark"/>
+    </antcall>
+  </target>
+
+<!-- Conway's Game of Life -->
+  <target name="conway-dsl">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.conway.ui.ConwayGUI"/>
+      <param name="arg1" value="conway.dsl.drl"/>
+    </antcall>
+  </target>
+
+  <target name="conway-java">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.conway.ui.ConwayGUI"/>
+      <param name="arg1" value="conway.java.drl"/>
+    </antcall>
+  </target>
+
+</project>
+

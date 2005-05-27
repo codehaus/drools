@@ -1,0 +1,150 @@
+2.0-rc2
+-----------
+Improvement
+* [DROOLS-349] - Compileproblems are "swallowed" by drools
+* [DROOLS-353] - Cleanup Maven build
+
+2.0-rc1
+-----------
+Bug
+DROOLS-259 - Add support for robust classLoader handling (Mark Proctor)
+DROOLS-260 - <java:functions> doesn't see <java:import>-ed classes (kdx)
+DROOLS-291 - Condition does not compile (Bob Mcwhirter)
+DROOLS-292 - No warning when bean does not implement addPropertyChangeListener (Barry Kaplan)
+DROOLS-299 - org.xml.sax.SAXParseException: <parameter> has an invalid parent (Mark Proctor)
+DROOLS-305 - Invalid Handles after calling retractObject in WorkingMemory (Mark Proctor)
+DROOLS-306 - drools-all produces error (Mark Proctor)
+DROOLS-307 - Remove drools-annotation from drools-all (Mark Proctor)
+DROOLS-313 - Import statements might cause the Rete network to be build erroneously (Edson Tirelli)
+DROOLS-323 - Serialized Rule Bases seems to lose functions (Mark Proctor)
+DROOLS-324 - iterator IllegalStateException on firing a temporal rule (Philip Smith)
+DROOLS-329 - Correction to Handler logic in RuleSetReader (Mark Proctor)
+DROOLS-336 - Detect ambiguously defined classes (kdx)
+DROOLS-342 - Fix serialization for python and groovy (Mark Proctor)
+
+Improvement
+DROOLS-325 - Improved Application Data Error Message (Geoffrey Wiseman)
+DROOLS-328 - Upgrade to janino-2.3.2 (Mark Proctor)
+DROOLS-333 - Update to groovy 1.0-jsr-01 (Mark Proctor)
+DROOLS-334 - Make Clover work from maven (Mark Proctor)
+DROOLS-337 - Update to antrl 2.7.5 (Mark Proctor)
+DROOLS-340 - Turn off warning for jaxp1.2 compliancy (Mark Proctor)
+DROOLS-341 - Centralise Import code and provide some level of caching (Mark Proctor)
+DROOLS-343 - Added unit test for the Semaphore implementation (Mark Proctor)
+DROOLS-344 - Add Conway's "Game of Life" example (Jeff Brown)
+DROOLS-345 - Deprecate <smf:import> in favour of <import> (Mark Proctor)
+DROOLS-100 - Ant Build File (Mark Proctor)
+DROOLS-261 - <java:functions> should also let inner classes work (kdx)
+
+Task
+DROOLS-227 - Document Ant Build Environment (Mark Proctor)
+
+2.0-BETA-21
+-----------
+Bug
+DROOLS-262 - Retract  followed by assert works much faster than modifyObject (Mark Proctor)
+DROOLS-271 - Tighten annotation module exception handling/throwing (Barry Kaplan)
+
+New Feature
+DROOLS-277 - Define rules using Java5 Annotations (Barry Kaplan)
+DROOLS-284 - Domain Specific Example (Mark Proctor)
+
+Improvement
+DROOLS-231 - provide a way to assert object containers (such as lists, maps, sets) by name in order to avoid unnecessary subclassing (Mark Proctor)
+DROOLS-257 - Remove WorkingMemory param from Consequence.tuple(...) (Mark Proctor)
+DROOLS-274 - Create interface for KnoweldgeHelper (Brian McCallister)
+DROOLS-280 - Semaphore Constructors with Value (Mark Proctor)
+DROOLS-282 - ConditionFactory should return Condition[] (Mark Proctor)
+DROOLS-283 - Make RuleSetReader Handlers use type rather than localName (Mark Proctor)
+DROOLS-286 - Allow pre JAXP1.2 parsers (Mark Proctor)
+DROOLS-288 - Update to janino 2.1.0 (Mark Proctor)
+DROOLS-289 - updated to groovy beta-9 (Mark Proctor)
+
+Task
+DROOLS-228 - Eclipse Developer Instructions (Mark Procotr/Ciprian Bacalu)
+DROOLS-229 - Idea Developer Instructions (Brian McCallister)
+DROOLS-270 - Incorporate annotation module into multi-build (Barry Kaplan)
+
+
+2.0-BETA-20
+-----------
+Bug
+DROOLS-79 - Exceptions Are Swallowed or Recast (Andy Barnett)
+DROOLS-235 - difference between Drools manners and the original (Andy Barnett)
+DROOLS-236 - NullPointerException and ArrayIndexOutOfBoundsException in PrimitiveLongMap (Mark Proctor)
+
+
+Improvement
+DROOLS-218 - Replace throw/catch of Exception with specific exception classes (Andy Barnett)
+DROOLS-278 - Better Exception handling for Scheduler (Mark Proctor)
+
+2.0-BETA-19
+-----------
+Bug
+DROOLS-223 - maxKey in PrimitiveLongMap is incorrect for the remove method (Mark Proctor)
+DROOLS-237 - Unreported compilation problem (Andy Barnett)
+DROOLS-240 - build breaks due to janino (Andy Barnett)
+DROOLS-242 - TupleSet.removeTuple() can fail because of Collections.singletonMap (Andy Barnett)
+DROOLS-243 - Generated GraphViz DOT Rete dumps should escape double-quotes (Andy Barnett)
+DROOLS-246 - PythonFunctions class not JDK 1.3 compatible (Andy Barnett)
+DROOLS-247 - Fibonacci and State Python Examples Failing with ArrayIndexOutOfBoundsException (Mark Proctor)
+DROOLS-258 - Agenda.removeFromAgenda() upsets PriorityQueue integrity (Mark Proctor)
+
+New Feature
+DROOLS-162 - Sharing of Condition and Join Nodes (Simon Harris)
+DROOLS-164 - Function definitions for Rulesets (Mark Proctor)
+DROOLS-253 - Named Semaphores (Mark Proctor)
+
+Improvement
+DROOLS-92 - Unit testing for EventModel (Mark Proctor)
+DROOLS-171 - Enhancements to Rete GraphViz-DOT Dumper (Andy Barnett)
+DROOLS-215 - add getRule() to Activation related events (Mark Proctor)
+DROOLS-217 - Fix .equals() methods to remove use of instanceof (Simon Harris)
+DROOLS-219 - Rename like named classes in different packages / semantic modules (Simon Harris)
+DROOLS-221 - Replace static rule builder methods with instance level methods (Simon Harris)
+DROOLS-222 - Use checkstyle for smell detection (Andy Barnett)
+DROOLS-233 - fix drools-all.jar for maven deployment goals (Bob McWhirter)
+DROOLS-234 - Update ActivationFilter Rule name implementations to take a boolean value for accept (Mark Proctor)
+DROOLS-238 - Allow assertion of dynamic facts from a consequence (Simon Harris)
+DROOLS-239 - application data does not honor imports (Mark Proctor)
+DROOLS-241 - Working Memory Events should provide access to the modified/retracted Object (Andy Barnett)
+DROOLS-244 - Update project.properies to generate better eclipse projects (Mark Proctor)
+DROOLS-248 - Drools Exceptions should support JDK 1.4 style Nested Exception functionality (Andy Barnett)
+DROOLS-249 - Add ANTLR-generated files to CVS (Andy Barnett)
+
+Wish
+DROOLS-225 - ydoc uml for javadocs (Mark Proctor, Bob McWhirter)
+DROOLS-245 - Implement Waltz Benchmark from OPS5 Benchmark Suite in Drools (Andy Barnett)
+
+2.0-BETA-18
+-----------
+DROOLS-138 Imports now supported in rule-set for python, java, groovy <java:import>java.util.HashMap</java:import> (Mark Proctor)
+DROOLS-173 Imports now supported for ObjectTypes in the <class> and <class-field> elements (Mark Proctor)
+DROOLS-193 Custom ObjectType that uses field as an attribute <class-field>, see the State example for details (Mark Proctor)
+DROOLS-137 Conditions and Consequences are no longer sensitive to white spaces. ApplicationData, imports and Declarations are now added synthetically to Janino, rather than using text mangling (Mark Proctor)
+DROOLS-143 WorkingMemory speed up with FactHandleFactory now being a singleton (Jason Anderson)
+DROOLS-152 We now have full Schema validation, see http://drools.org/Schema+Validation (Mark Proctor)
+DROOLS-187 Schema validation can be disabled with system property "drools.schema.validating" (Mark Proctor)
+DROOLS-157 Identity based uniqueness for facts (Simon Harris)
+DROOLS-158 Supports retrieval of Object by Class (Bob McWhirter)
+DROOLS-113 Access to asserted objects via drools.getObjects() (Bob McWhirter)
+DROOLS-180 RuleSetReader has been made made easier to add new elements by refactoring to make it handler based (Mark Proctor)
+DROOLS-183 Removed aspects and hard-coded event model (Mark Proctor)
+DROOLS-184 Added support for ActivationCancelledEvent (Mark Proctor)
+DROOLS-185 A user can now clear the agenda with drools.clearAgenda() (Mark Proctor)
+DROOLS-186 Rules now support no-loop attribute to stop recursion (Mark Proctor)
+DROOLS-188 Duration is now supported again, to schedule consequences for delayed firing (Mark Proctor)
+DROOLS-189 New Distribution goals, to package all dependencies and make uber-jars (Mark Proctor/Bob McWhirter)
+DROOLS-128 Access to rule name, drools.getRuleName(), is now available in conditions and consequences (Bob McWhirter)
+DROOLS-190 Speed gains from making maps immutable (Simon Harris)
+DROOLS-192 Conflict Resolution now supports Priority Queues for big performance improvements (Simon Harris)
+DROOLS-191 Support for schemaLocation lookup in classpath; schemas are now more flexible than using fixed schemaSources (Mark Proctor)
+DROOLS-163 Filters can now be added to an Agenda to block activations via AgendaFilter (Mark Proctor)
+DROOLS-205 Rules with zero conditions are now allowed (implicit "true") (Andy Barnett)
+DROOLS-207 Support added for JavaBean property change events (Andy Barnett)
+DROOLS-212 Removed all traces of extractors from codebase. (Simon Harris)
+DROOLS-210 Joins are now deterministic, which should create repeatable deterministic behaviour for Rete networks (Simon Harris)
+DROOLS-211 Application Data should now be predefined so that java can precompile (Mark Proctor)
+DROOLS-175 drools-java compilation exceptions now report the rule name, the text of the condition or consequence, and the compilation error message.
+DROOLS-213 Tuples have been made light-weight, HashMaps have been removed and replaced with array lookups, also they now only contain references to the TupleKey and WorkingMemory. This improves performance and memory usage.
+DROOLS-214 PrimitiveLongMap created for a fast, lightweight, centralised fact repository customised for Drool's needs. Based on Indexed Pages and Direct Address Tables.

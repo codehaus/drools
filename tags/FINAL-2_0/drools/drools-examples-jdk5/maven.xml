@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="jar:jar" xmlns:j="jelly:core">
+
+    <goal name="get-deps" />
+
+    <goal name="run-all">
+      <attainGoal name="helloworld-native"/>
+      <attainGoal name="helloworld-spring-inner-pojos"/>
+      <attainGoal name="helloworld-spring-outter-pojos"/>
+      <attainGoal name="helloworld-drl"/>
+      <attainGoal name="helloworld-drl-mixed"/>
+    </goal>
+
+    <goal name="helloworld-native" prereqs="jar:jar">
+      <java 
+        classname="org.drools.semantics.annotation.examples.HelloWorldNative"
+        fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="helloworld-spring-inner-pojos" prereqs="jar:jar">
+      <java 
+        classname="org.drools.semantics.annotation.examples.HelloWorldSpringInnerPojosExample"
+        fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="helloworld-spring-outter-pojo" prereqs="jar:jar">
+      <java 
+        classname="org.drools.semantics.annotation.examples.HelloWorldSpringOuterPojosExample"
+        fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="helloworld-drl" prereqs="jar:jar">
+      <java 
+        classname="org.drools.semantics.annotation.examples.HelloWorldDrlExample"
+        fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+    <goal name="helloworld-drl-mixed" prereqs="jar:jar">
+      <java 
+        classname="org.drools.semantics.annotation.examples.HelloWorldDrlMixedExample"
+        fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>
+
+</project>
+
