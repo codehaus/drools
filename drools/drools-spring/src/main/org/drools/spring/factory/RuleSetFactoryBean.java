@@ -3,6 +3,9 @@ package org.drools.spring.factory;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.drools.RuleBaseBuilder;
+import org.drools.RuleIntegrationException;
+import org.drools.RuleSetIntegrationException;
 import org.drools.rule.DuplicateRuleNameException;
 import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
@@ -18,6 +21,7 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
 
     private String name;
     private Set rules;
+    private RuleBaseBuilder ruleBaseBuilder;
     private BeanFactory beanFactory;
     RuleSet ruleSet;
 
@@ -27,6 +31,10 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
 
     public void setRules(Set rules) {
         this.rules = rules;
+    }
+
+    public void setRuleBaseBuilder(RuleBaseBuilder ruleBaseBuilder) {
+        this.ruleBaseBuilder = ruleBaseBuilder;
     }
 
     public void setBeanName(String name) {
@@ -45,7 +53,7 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
         }
     }
 
-    private RuleSet createObject() throws DuplicateRuleNameException, InvalidRuleException {
+    private RuleSet createObject() throws DuplicateRuleNameException, InvalidRuleException, RuleSetIntegrationException, RuleIntegrationException {
         RuleSet ruleSet = new RuleSet(name);
         for (Iterator iter = rules.iterator(); iter.hasNext();) {
             Object ruleOrName = iter.next();
@@ -58,6 +66,9 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
                 throw new IllegalArgumentException("Rules property must contain either Rule instances or Rule bean names");
             }
             ruleSet.addRule(rule);
+        }
+        if (ruleBaseBuilder != null) {
+            ruleBaseBuilder.addRuleSet(ruleSet);
         }
         return ruleSet;
     }
@@ -76,5 +87,4 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
     public boolean isSingleton() {
         return true;
     }
-
 }

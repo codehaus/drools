@@ -6,7 +6,8 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
-@Inherited @Target({ElementType.TYPE})
+@Inherited 
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Rule
 {
