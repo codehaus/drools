@@ -8,7 +8,7 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.RuleBaseContext;
 
 /*
- * $Id: BaseImportEntryFactory.java,v 1.2 2005-05-04 16:58:39 memelet Exp $
+ * $Id: BaseImportEntryFactory.java,v 1.1.2.1 2005-05-03 23:45:24 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

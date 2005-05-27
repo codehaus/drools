@@ -1,3 +1,9 @@
+2.0-rc2
+-----------
+Improvement
+* [DROOLS-349] - Compileproblems are "swallowed" by drools
+* [DROOLS-353] - Cleanup Maven build
+
 2.0-rc1
 -----------
 Bug

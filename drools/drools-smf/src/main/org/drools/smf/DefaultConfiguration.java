@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DefaultConfiguration.java,v 1.2 2005-05-04 16:58:40 memelet Exp $
+ * $Id: DefaultConfiguration.java,v 1.1.2.1 2005-05-01 03:20:28 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 

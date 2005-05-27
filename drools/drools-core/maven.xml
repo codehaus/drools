@@ -6,7 +6,7 @@
     xmlns:util="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <goal name="default">
+    <goal name="default" >
         <attainGoal name="jar:install"/>
     </goal>
 
@@ -22,12 +22,6 @@
     </goal>
 
     <goal name="reports:publish">
-        <j:set var="drools.dcontrol.htdocs.module" value="${drools.dcontrol.htdocs}/drools-core"/>
-        <ant:delete dir="${drools.dcontrol.htdocs.module}/clover"/>
-        <ant:copy todir="${drools.dcontrol.htdocs.module}/clover">
-            <ant:fileset dir="${basedir}/target/docs/clover"/>
-        </ant:copy>
-
         <ant:delete dir="${drools.dcontrol.htdocs.module}/junit"/>
         <ant:copy todir="${drools.dcontrol.htdocs.module}/junit">
             <ant:fileset dir="${basedir}/target/test-reports"/>

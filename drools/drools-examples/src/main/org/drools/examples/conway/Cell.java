@@ -9,7 +9,7 @@ import java.util.Set;
  * A cell may be either live or dead. <p/>
  *
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: Cell.java,v 1.3 2005-05-08 19:54:48 mproctor Exp $
+ * @version $Id: Cell.java,v 1.1.2.2 2005-05-03 01:36:16 brownj Exp $
  * @see CellState
  * @see CellGrid
  */

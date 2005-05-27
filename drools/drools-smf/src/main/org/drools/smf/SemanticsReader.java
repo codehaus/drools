@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SemanticsReader.java,v 1.10 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: SemanticsReader.java,v 1.9.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -67,7 +67,7 @@ import java.util.Properties;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: SemanticsReader.java,v 1.10 2005-04-07 17:42:14 mproctor Exp $
+ * @version $Id: SemanticsReader.java,v 1.9.2.1 2005-04-07 17:32:15 mproctor Exp $
  */
 public class SemanticsReader
 {

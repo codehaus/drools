@@ -8,7 +8,7 @@ import org.drools.spi.Condition;
 
 /**
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: IsCellAliveCondition.java,v 1.2 2005-05-16 23:31:19 brownj Exp $
+ * @version $Id: IsCellAliveCondition.java,v 1.1.2.1 2005-05-16 23:04:31 brownj Exp $
  */
 public class IsCellAliveCondition implements Condition
 {

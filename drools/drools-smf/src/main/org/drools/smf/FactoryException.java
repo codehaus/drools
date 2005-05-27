@@ -1,9 +1,9 @@
 package org.drools.smf;
 
 /*
- * $Id: FactoryException.java,v 1.6 2005-05-08 17:46:20 memelet Exp $
+ * $Id: FactoryException.java,v 1.4 2004-11-28 06:45:25 simon Exp $
  *
- * Copyright 2001-2005 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -52,39 +52,35 @@ import org.drools.DroolsException;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: FactoryException.java,v 1.6 2005-05-08 17:46:20 memelet Exp $
+ * @version $Id: FactoryException.java,v 1.4 2004-11-28 06:45:25 simon Exp $
  */
 public class FactoryException extends DroolsException
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
     /**
-     * @see java.lang.Exception#Exception()
+     * Construct.
+     *
+     * @param msg The error message.
      */
-    public FactoryException( )
+    public FactoryException(String msg)
     {
-        super( );
+        super( msg );
     }
 
     /**
-     * @see java.lang.Exception#Exception(String message)
+     * Construct.
+     *
+     * @param rootCause The underlying root cause.
      */
-    public FactoryException(String message)
+    public FactoryException(Throwable rootCause)
     {
-        super( message );
+        super( rootCause );
     }
 
-    /**
-     * @see java.lang.Exception#Exception(String message, Throwable cause)
-     */
-    public FactoryException( String message, Throwable cause )
+    public FactoryException()
     {
-        super( cause );
-    }
-
-    /**
-     * @see java.lang.Exception#Exception(Throwable cause)
-     */
-    public FactoryException( Throwable cause )
-    {
-        super( cause );
     }
 }

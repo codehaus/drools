@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.14 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.11.2.2 2005-05-08 00:57:36 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -58,7 +58,7 @@ import org.drools.spi.Tuple;
 
 /**
  * Java expression semantics <code>Condition</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
 public class JavaCondition
@@ -88,7 +88,7 @@ public class JavaCondition
 
     /**
      * Construct.
-     *
+     * 
      * @param expression
      *            The expression.
      * @param rule
@@ -125,13 +125,13 @@ public class JavaCondition
     /**
      * Determine if the supplied <code>Tuple</code> is allowed by this
      * condition.
-     *
+     * 
      * @param tuple
      *            The <code>Tuple</code> to test.
-     *
+     * 
      * @return <code>true</code> if the <code>Tuple</code> passes this
      *         condition, else <code>false</code>.
-     *
+     * 
      * @throws ConditionException
      *             if an error occurs during filtering.
      */
@@ -172,7 +172,7 @@ public class JavaCondition
     /**
      * Retrieve the <code>Declaration</code> s required for evaluating the
      * expression.
-     *
+     * 
      * @return The required declarations.
      */
     public Declaration[] getRequiredTupleMembers()

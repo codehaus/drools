@@ -14,9 +14,9 @@
         </dependency>
 
         <dependency>
-            <groupId>janino</groupId>
-            <artifactId>janino</artifactId>
+            <id>janino</id>
             <version>2.3.2</version>
+            <artifactId>janino</artifactId>
         </dependency>
 
         <dependency>

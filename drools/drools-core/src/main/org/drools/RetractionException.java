@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RetractionException.java,v 1.12 2005-05-08 17:45:59 memelet Exp $
+ * $Id: RetractionException.java,v 1.11 2004-12-06 04:51:36 dbarnett Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,35 +51,26 @@ package org.drools;
  */
 public class RetractionException extends FactException
 {
+    // ------------------------------------------------------------
+    // Constructors
+    // ------------------------------------------------------------
+
     /**
-     * @see java.lang.Exception#Exception()
+     * Construct.
      */
     public RetractionException( )
     {
-        super();
+        // intentionally left blank
     }
 
     /**
-     * @see java.lang.Exception#Exception(String message)
+     * Construct with a root cause.
+     *
+     * @param rootCause
+     *            The root cause of this exception.
      */
-    public RetractionException( String message )
+    public RetractionException( Throwable rootCause )
     {
-        super( message );
-    }
-
-    /**
-     * @see java.lang.Exception#Exception(String message, Throwable cause)
-     */
-    public RetractionException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    /**
-     * @see java.lang.Exception#Exception(Throwable cause)
-     */
-    public RetractionException( Throwable cause )
-    {
-        super( cause );
+        super( rootCause );
     }
 }

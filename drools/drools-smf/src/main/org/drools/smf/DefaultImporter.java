@@ -11,7 +11,7 @@ import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 
 /*
- * $Id: DefaultImporter.java,v 1.3 2005-05-07 04:39:30 dbarnett Exp $
+ * $Id: DefaultImporter.java,v 1.1.2.3 2005-05-03 23:45:47 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -90,6 +90,7 @@ public class DefaultImporter
             }       
 
             Iterator i = this.importEntrySet.iterator( );
+            ImportEntry importEntry;
             while ( i.hasNext( ) )
             {
                 importSet.add( ( (ImportEntry) i.next( ) ).getImportEntry() );               

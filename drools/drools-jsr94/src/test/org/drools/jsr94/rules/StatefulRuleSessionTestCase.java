@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: StatefulRuleSessionTestCase.java,v 1.7 2005-05-06 19:54:49 dbarnett Exp $
+ * $Id: StatefulRuleSessionTestCase.java,v 1.6 2004-11-17 03:09:50 dbarnett Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,13 +46,14 @@ import java.util.List;
 
 import javax.rules.Handle;
 import javax.rules.ObjectFilter;
+import javax.rules.StatefulRuleSession;
 
 /**
  * Test the <code>StatefulRuleSession</code> implementation.
  *
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
- * @see javax.rules.StatefulRuleSession
+ * @see StatefulRuleSession
  */
 public class StatefulRuleSessionTestCase extends RuleEngineTestBase
 {

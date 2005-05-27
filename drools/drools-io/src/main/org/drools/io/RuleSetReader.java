@@ -1,6 +1,8 @@
 package org.drools.io;
 
 /*
+ * $Id: RuleSetReader.java,v 1.46.2.8 2005-05-02 01:51:50 mproctor Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
@@ -75,8 +77,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <code>RuleSet</code> loader.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
+ * 
+ * @version $Id: RuleSetReader.java,v 1.46.2.8 2005-05-02 01:51:50 mproctor Exp $
  */
 public class RuleSetReader extends DefaultHandler
 {
@@ -137,7 +141,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * <p>
      * Uses the default JAXP SAX parser and the default classpath-based
      * <code>DefaultSemanticModule</code>.
@@ -176,11 +180,11 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * <p>
      * Uses the default classpath-based <code>DefaultSemanticModule</code>.
      * </p>
-     *
+     * 
      * @param parser
      *            The SAX parser.
      */
@@ -192,7 +196,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param repo
      *            The semantics repository.
      */
@@ -204,7 +208,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param factoryContext
      */
     public RuleSetReader(RuleBaseContext factoryContext)
@@ -215,7 +219,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param repo
      *            The semantics repository.
      * @param parser
@@ -230,7 +234,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param repo
      *            The semantics repository.
      */
@@ -244,9 +248,9 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param parser
-     *
+     * 
      * @param repo
      *            The semantics repository.
      */
@@ -260,7 +264,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param parser
      * @param context
      */
@@ -274,7 +278,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Construct.
-     *
+     * 
      * @param repo
      *            The semantics repository.
      * @param parser
@@ -295,10 +299,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>URL</code>.
-     *
+     * 
      * @param url
      *            The rule-set URL.
-     *
+     * 
      * @return The rule-set.
      */
     public RuleSet read(URL url) throws SAXException,
@@ -309,10 +313,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a <code>Reader</code>.
-     *
+     * 
      * @param reader
      *            The reader containing the rule-set.
-     *
+     * 
      * @return The rule-set.
      */
     public RuleSet read(Reader reader) throws SAXException,
@@ -323,10 +327,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputStream</code>.
-     *
+     * 
      * @param inputStream
      *            The input-stream containing the rule-set.
-     *
+     * 
      * @return The rule-set.
      */
     public RuleSet read(InputStream inputStream) throws SAXException,
@@ -337,10 +341,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from a URL.
-     *
+     * 
      * @param url
      *            The rule-set URL.
-     *
+     * 
      * @return The rule-set.
      */
     public RuleSet read(String url) throws SAXException,
@@ -351,10 +355,10 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Read a <code>RuleSet</code> from an <code>InputSource</code>.
-     *
+     * 
      * @param in
      *            The rule-set input-source.
-     *
+     * 
      * @return The rule-set.
      */
     public RuleSet read(InputSource in) throws SAXException,
@@ -474,7 +478,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Get the <code>Locator</code>.
-     *
+     * 
      * @return The locator.
      */
     public Locator getLocator()
@@ -513,7 +517,7 @@ public class RuleSetReader extends DefaultHandler
      * @param attrs
      * @throws SAXException
      * @see org.xml.sax.ContentHandler
-     *
+     * 
      * @todo: better way to manage unhandled elements
      */
     public void startElement(String uri,
@@ -725,7 +729,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * Start a configuration node.
-     *
+     * 
      * @param name
      *            Tag name.
      * @param attrs
@@ -777,7 +781,7 @@ public class RuleSetReader extends DefaultHandler
 
     /**
      * End a configuration node.
-     *
+     * 
      * @return The configuration.
      */
     protected Configuration endConfiguration()
@@ -812,7 +816,7 @@ public class RuleSetReader extends DefaultHandler
     /**
      * Returned Handler can be null. Calling method decides whether to throw an
      * exception or not.
-     *
+     * 
      * @param uri
      * @param localName
      * @return

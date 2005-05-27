@@ -93,13 +93,12 @@
             <version>2.7.5</version>
         </dependency>
         <dependency>
-            <groupId>janino</groupId>
-            <artifactId>janino</artifactId>
+            <id>janino</id>
             <version>2.3.2</version>
+            <artifactId>janino</artifactId>
         </dependency>
         <dependency>
-            <groupId>simple-jndi</groupId>
-            <artifactId>simple-jndi</artifactId>
+            <id>simple-jndi</id>
             <version>0.9.1</version>
         </dependency>
         <dependency>
@@ -120,15 +119,15 @@
         </dependency>
 
         <dependency>
-            <groupId>jgoodies</groupId>
-            <artifactId>forms</artifactId>
+            <id>jgoodies</id>
             <version>1.0.4</version>
+            <artifactId>forms</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>foxtrot</groupId>
-            <artifactId>foxtrot</artifactId>
+            <id>foxtrot</id>
             <version>2.0</version>
+            <artifactId>foxtrot</artifactId>
         </dependency>
 
     </dependencies>

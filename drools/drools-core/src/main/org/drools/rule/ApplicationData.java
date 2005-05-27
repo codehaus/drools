@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: ApplicationData.java,v 1.3 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: ApplicationData.java,v 1.3.2.1 2005-05-10 12:11:25 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,11 +43,30 @@ package org.drools.rule;
 
 import java.io.Serializable;
 
+/**
+ * <code>ApplicationData</code> allows data to be made accessible to
+ * <code>Condition</code>s and <code>Consequence<code>s without the need to assert
+ * the data. <code>ApplicationData</code> name and type must be declared to a <code>RuleBase</code>
+ * before it can set in a <code>WorkingMemory</code> otherwise a RuntimeException will occur.
+ * 
+ * @author <a href="mailto:mproctor@codehaus.org"> mark proctor </a>
+ *
+ */
 public class ApplicationData
     implements
     Serializable
 {
+    /** 
+     * The identifier. This is the name that is used to reference the 
+     * instance object inside the <code>Condition</code> or <code>Consequence</code>
+     *  
+     */
     private String  identifier;
+    
+    /** 
+     * The declare type for the identifier. An instanceof check will be applied by the <class>WorkingMemory</class>
+     * for this type against the one being set, if they differe a <code>RuntimeException</code> we be thrown.
+     * */
     private Class   type;
     private RuleSet ruleSet;
 

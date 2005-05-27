@@ -8,7 +8,7 @@ import org.drools.spi.Importer;
 import junit.framework.TestCase;
 
 /*
- * $Id: DefaultImporterTest.java,v 1.2 2005-05-04 16:58:40 memelet Exp $
+ * $Id: DefaultImporterTest.java,v 1.1.2.2 2005-05-03 23:45:47 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

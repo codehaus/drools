@@ -4,7 +4,7 @@ package org.drools.examples.conway.patterns;
  * Represents a simple glider
  * 
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: SimpleGlider.java,v 1.3 2005-05-08 19:54:48 mproctor Exp $
+ * @version $Id: SimpleGlider.java,v 1.1.2.1 2005-05-02 01:51:50 mproctor Exp $
  * @see ConwayPattern
  * @see org.drools.examples.conway.CellGrid
  */

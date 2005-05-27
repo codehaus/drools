@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project
     default="jar-all"
     xmlns:ant="jelly:ant"
@@ -40,24 +39,42 @@
     </goal>
 
     <goal name="drools:clover">
+      <!-- need to force these -->
+      <attainGoal name="clean-all:prepare" />
 
-      <!-- Exclude example projects -->
-      <j:set var="temp" value="${maven.multiproject.excludes}" /> <!-- first back up original excludes -->
+      <!-- first back up original excludes -->
+      <j:set var="temp" value="${maven.multiproject.excludes}" />
+
+      <!-- set jdk5excludes excludes -->
+      <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+        <j:set var="jdk5excludes" value="${drools.jdk5.projects}" />
+      </j:if>
+
+      <!-- now exclude examples -->
       <j:set var="maven.multiproject.excludes"
-             value="${maven.multiproject.excludes},drools-examples/**,drools-examples-jdk5/** "/> <!-- now exclude examples -->
+             value="drools-examples/**,drools-examples-jdk5/**,${jdk5excludes}"/>
 
-      <!-- initial directory set in project properties -->
+      <!-- generate clover dbs for each sub project -->
       <j:set var="goal" value="drools:clover" />
       <attainGoal name="multiproject:goal"/>
 
-      <!-- override project properties -->
-      <j:set var="maven.clover.database"
-             value="${basedir}/target/clover/database/clover_coverage.db"/>
-
       <attainGoal name="clover:on"/>
+
+      <!-- can't get shared db to work, so use merge functionality -->
+      <attainGoal name="clover:merge" />
+
       <attainGoal name="clover:report"/>
 
-      <j:set var="maven.multiproject.excludes" value="${maven.multiproject.excludes}" /> <!-- reset excludes -->
+       <!-- reset excludes -->
+       <j:set var="maven.multiproject.excludes" value="${temp}" />
+    </goal>
+
+    <goal name="clover:merge" prereqs="clover:init">
+       <clover-merge initString="${maven.clover.database}">
+          <cloverDbSet dir=".">
+            <include name="drools-*/target/clover/database/clover_coverage.db"/>
+          </cloverDbSet>
+       </clover-merge>
     </goal>
 
     <goal name="damagecontrol">
@@ -78,20 +95,18 @@
 
     <goal name="clean-all:prepare">
       <mkdir dir="${maven.build.dir}"/>
-      <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-core-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-examples-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-groovy-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-io-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-java-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-jsr94-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smf-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
-      <touch file="${maven.build.dir}/drools-spring-${pom.currentVersion}.jar"/>
-      <j:if test="${context.getVariable('java.specification.version') == '1.5'}"> <!-- hardcoded should ideally use pom -->
-        <touch file="${maven.build.dir}/drools-spring-jdk5-${pom.currentVersion}.jar"/>
-      </j:if>
+      <touch file="${maven.build.dir}/drools-io-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-base-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-groovy-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-python-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-java-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-jsr94-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-annotation-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-examples-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-examples-jdk5-${pom.currentVersion}.jar"/>
     </goal>
 
     <goal name="drools:ydoc" description="Generates Javadoc including cool UMLdiagrams" prereqs="drools:jar-all,drools:get-deps" >
@@ -101,28 +116,27 @@
          author="false"
          additionalparam="-J-Djava.awt.headless=true">
 
-         <fileset dir=".">
+         <!-- set jdk5excludes excludes -->
+         <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+            <j:set var="jdk5excludes" value="${drools.jdk5.projects}" />
+         </j:if>
+
+         <fileset dir="." excludes="${jdk5excludes}">
            <include name="drools-*/src/main/**/*.java" />
            <exclude name="drools-examples*/**" />
-
-           <!-- check before excluding jdk5 src -->
-           <j:if test="${context.getVariable('java.specification.version') != '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <exclude name="drools-spring-jdk5/**" />
-           </j:if>
          </fileset>
 
          <classpath>
            <fileset dir=".">
              <include name="target/dependencies/*.jar" />
            </fileset>
-
            <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
            <path location="./target/drools-all-${pom.currentVersion}.jar" />
            <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
 
            <!-- check before including jdk5 jars -->
-           <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <path location="./target/drools-spring-jdk5-${pom.currentVersion}.jar" />
+           <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
+             <fileset dir="." includes="drools.jdk5.project.jars" />
            </j:if>
          </classpath>
 
@@ -141,11 +155,10 @@
                    <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
 
                    <!-- check before including jdk5 jars -->
-                   <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
-                     <pathelement location="./target/drools-spring-jdk5-${pom.currentVersion}.jar" />
+                   <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
+                     <fileset dir="." includes="drools.jdk5.project.jars" />
                    </j:if>
                  </path>
-
                  <param name="-generic"    value=""/>
                  <param name="-umlautogen" value=""/>
                  <param name="-filter" value="ydoc.filters.ExcludeFilter"/>
@@ -161,20 +174,20 @@
        </javadoc>
      </goal>
 
-     <goal name="drools:javadoc" description="Generates Javadoc" prereqs="drools:jar-all,drools:get-deps">
+     <goal name="drools:javadoc" description="Generates Javadoc" prereqs="drools:jar-all,drools:get-deps" >
        <javadoc
          destdir="target/docs/apidocs"
          author="false"
          version="false">
 
-         <fileset dir=".">
+         <!-- set jdk5excludes excludes -->
+         <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+            <j:set var="jdk5excludes" value="${drools.jdk5.projects}" />
+         </j:if>
+
+         <fileset dir="." excludes="${jdk5excludes}">
            <include name="drools-*/src/main/**/*.java" />
            <exclude name="drools-examples*/**" />
-
-           <!-- check before excluding jdk5 jars -->
-           <j:if test="${context.getVariable('java.specification.version')  != '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <exclude name="drools-spring-jdk5/**" />
-           </j:if>
          </fileset>
 
          <classpath>
@@ -185,9 +198,9 @@
            <path location="./target/drools-all-${pom.currentVersion}.jar" />
            <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
 
-            <!-- check before including jdk5 jars -->
-           <j:if test="${context.getVariable('java.specification.version')  == '1.5'}"> <!-- hardcoded should ideally use pom -->
-             <path location="./target/drools-spring-jdk5-${pom.currentVersion}.jar" />
+           <!-- check before including jdk5 jars -->
+           <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
+             <fileset dir="." includes="drools.jdk5.project.jars" />
            </j:if>
          </classpath>
        </javadoc>
@@ -257,11 +270,10 @@
         <patternset>
             <exclude name="**/drools.conf"/>
         </patternset>
-        <fileset dir="${basedir}">
+        <fileset dir="${basedir}" excludes="${drools.jdk5.projects}">
             <include name="target/drools-*.jar"/>
             <exclude name="target/drools-all-${pom.currentVersion}.jar"/>   <!-- exclude itself -->
             <exclude name="target/drools-smftest-${pom.currentVersion}.jar"/>   <!-- compile time only dependency -->
-            <exclude name="target/drools-spring-jdk5-${pom.currentVersion}.jar" />  <!-- jdk5 dependency -->
         </fileset>
       </ant:unjar>
 
@@ -320,8 +332,15 @@
         <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
       </exec>
 
+    <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-clover.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-clover.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+
       <exec dir="." executable="${maven.ssh.executable}">
-        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
+        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; tar zxvf drools-${pom.currentVersion}-clover.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
       </exec>
 
       <j:set var="goal" value="jar:deploy"/>
@@ -350,7 +369,6 @@
       <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
         <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin-withdeps.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
       </exec>
-
     </goal>
 
     <!--
@@ -361,7 +379,7 @@
       <ant:mkdir dir="${basedir}/target/dist/"/>
     </goal>
 
-    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src,clean-all,drools:dist-clover">
       <!-- intentionally left blank -->
     </goal>
 
@@ -373,6 +391,17 @@
         <tar destfile="${basedir}/target/drools-${pom.currentVersion}-javadoc.tar.gz" compression="gzip">
             <tarfileset dir="${basedir}/target/docs/apidocs"
                         prefix="drools-${pom.currentVersion}/apidocs"/>
+        </tar>
+    </goal>
+
+    <goal name="drools:dist-clover" prereqs="drools:dist-prepare,drools:clover">
+        <zip destfile="${basedir}/target/drools-${pom.currentVersion}-clover.zip" compression="gzip">
+            <zipfileset dir="${basedir}/target/docs/clover"
+                        prefix="drools-${pom.currentVersion}/clover"/>
+        </zip>
+        <tar destfile="${basedir}/target/drools-${pom.currentVersion}-clover.tar.gz" compression="gzip">
+            <tarfileset dir="${basedir}/target/docs/clover"
+                        prefix="drools-${pom.currentVersion}/clover"/>
         </tar>
     </goal>
 
@@ -447,7 +476,7 @@
         <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-src.zip">
             <zipfileset dir="${basedir}/target/src-stage"
                         prefix="drools-${pom.currentVersion}"
-                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/lib/**" />
+                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**" />
 
             <zipfileset dir="${basedir}/"
                         prefix="drools-${pom.currentVersion}"
@@ -469,7 +498,7 @@
         <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}-src.tar.gz" compression="gzip">
             <tarfileset dir="${basedir}/target/src-stage"
                         prefix="drools-${pom.currentVersion}"
-                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/lib/**" />
+                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/xdocs/**, **/lib/**" />
 
             <tarfileset dir="${basedir}/"
                         prefix="drools-${pom.currentVersion}"
@@ -504,3 +533,4 @@
     </goal>
 
 </project>
+

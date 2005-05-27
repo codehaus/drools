@@ -11,7 +11,7 @@ import java.net.URL;
 
 /**
  * @author <a href="mailto:brown_j@ociweb.com">Jeff Brown</a>
- * @version $Id: RuleBaseFactory.java,v 1.3 2005-05-08 19:54:48 mproctor Exp $
+ * @version $Id: RuleBaseFactory.java,v 1.1.2.1 2005-05-02 01:51:50 mproctor Exp $
  */
 public class RuleBaseFactory
 {

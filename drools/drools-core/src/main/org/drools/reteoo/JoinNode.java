@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: JoinNode.java,v 1.45 2005-05-08 16:13:33 memelet Exp $
+ * $Id: JoinNode.java,v 1.44 2005-02-02 00:23:22 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import java.util.Set;
 
 import org.drools.AssertionException;
 import org.drools.RetractionException;
+import org.drools.rule.Declaration;
 
 /**
  * A two-input Rete-OO <i>join node </i>.

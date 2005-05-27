@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: ConditionHandler.java,v 1.6 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: ConditionHandler.java,v 1.5.2.1 2005-04-07 17:32:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *

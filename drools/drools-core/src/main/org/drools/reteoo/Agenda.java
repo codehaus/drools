@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.56 2005-04-20 00:03:06 mproctor Exp $
+ * $Id: Agenda.java,v 1.54.2.1 2005-04-15 01:14:19 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,18 +56,18 @@ import org.drools.util.PriorityQueue;
 
 /**
  * Rule-firing Agenda.
- *
+ * 
  * <p>
  * Since many rules may be matched by a single assertObject(...) all scheduled
  * actions are placed into the <code>Agenda</code>.
  * </p>
- *
+ * 
  * <p>
  * While processing a scheduled action, it may modify or retract objects in
  * other scheduled actions, which must then be removed from the agenda.
  * Non-invalidated actions are left on the agenda, and are executed in turn.
  * </p>
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -108,7 +108,7 @@ class Agenda
 
     /**
      * Construct.
-     *
+     * 
      * @param workingMemory
      *            The <code>WorkingMemory</code> of this agenda.
      * @param conflictResolver
@@ -132,7 +132,7 @@ class Agenda
      * Schedule a rule action invokation on this <code>Agenda</code>. Rules
      * specified with noNoop=true that are active should not be added to the
      * agenda
-     *
+     * 
      * @param tuple
      *            The matching <code>Tuple</code>.
      * @param rule
@@ -199,7 +199,7 @@ class Agenda
 
     /**
      * Remove a tuple from the agenda.
-     *
+     * 
      * @param key
      *            The key to the tuple to be removed.
      * @param rule
@@ -292,7 +292,7 @@ class Agenda
 
     /**
      * Clears all Activations from the Agenda
-     *
+     * 
      */
     void clearAgenda()
     {
@@ -328,7 +328,7 @@ class Agenda
 
     /**
      * Schedule an agenda item for delayed firing.
-     *
+     * 
      * @param item
      *            The item to schedule.
      */
@@ -340,7 +340,7 @@ class Agenda
 
     /**
      * Cancel a scheduled agenda item for delayed firing.
-     *
+     * 
      * @param item
      *            The item to cancel.
      */
@@ -351,7 +351,7 @@ class Agenda
 
     /**
      * Determine if this <code>Agenda</code> has any scheduled items.
-     *
+     * 
      * @return <code>true<code> if the agenda is empty, otherwise
      *          <code>false</code>.
      */
@@ -367,7 +367,7 @@ class Agenda
 
     /**
      * Fire the next scheduled <code>Agenda</code> item.
-     *
+     * 
      * @throws ConsequenceException
      *             If an error occurs while firing an agenda item.
      */
@@ -396,7 +396,7 @@ class Agenda
     /**
      * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
      * Scheduler used for duration rules.
-     *
+     * 
      * @param handler
      */
     void setAsyncExceptionHandler(AsyncExceptionHandler handler)

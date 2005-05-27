@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ConditionFactory.java,v 1.9 2005-05-04 16:58:40 memelet Exp $
+ * $Id: ConditionFactory.java,v 1.8.2.1 2005-04-30 13:49:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
