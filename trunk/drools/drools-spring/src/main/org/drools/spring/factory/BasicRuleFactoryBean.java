@@ -1,6 +1,9 @@
 package org.drools.spring.factory;
 
 import org.drools.spring.metadata.ArgumentMetadataSource;
+import org.drools.spring.metadata.ChainedArgumentMetadataSource;
+import org.drools.spring.metadata.ChainedMethodMetadataSource;
+import org.drools.spring.metadata.ChainedRuleMetadataSource;
 import org.drools.spring.metadata.MethodMetadataSource;
 import org.drools.spring.metadata.RuleMetadataSource;
 
