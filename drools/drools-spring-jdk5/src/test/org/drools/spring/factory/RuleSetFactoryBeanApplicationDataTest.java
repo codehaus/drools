@@ -16,7 +16,7 @@ public class RuleSetFactoryBeanApplicationDataTest extends TestCase {
                 contextHolder, "org/drools/spring/factory/appdata-test.appctx.xml");
     }
 
-    private RuleSetFactoryBean factory = new RuleSetFactoryBean();
+//    private RuleSetFactoryBean factory = new RuleSetFactoryBean();
 
     // TODO jira:DROOLS-322
     public void testApplicationData() throws Exception {

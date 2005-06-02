@@ -7,7 +7,7 @@ import org.drools.spring.metadata.RuleMetadataSource;
 public class AnnotationRuleMetadataSource implements RuleMetadataSource {
 
     public RuleMetadata getRuleMetadata(Class pojoClass) {
-        Rule ruleAnnotation = (Rule) ((Class<?>)pojoClass).getAnnotation(Rule.class);
+        Rule ruleAnnotation = ((Class<?>)pojoClass).getAnnotation(Rule.class);
         if (ruleAnnotation == null) {
             return null;
         }

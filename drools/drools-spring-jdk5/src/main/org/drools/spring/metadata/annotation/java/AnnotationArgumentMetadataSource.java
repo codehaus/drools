@@ -11,7 +11,6 @@ import org.drools.spring.metadata.FactArgumentMetadata;
 public class AnnotationArgumentMetadataSource implements ArgumentMetadataSource{
 
     public ArgumentMetadata getArgumentMetadata(Method method, Class parameterType, int parameterIndex) {
-        Class[] parameterClasses = method.getParameterTypes();
         Annotation[] parameterAnnotations = method.getParameterAnnotations()[parameterIndex];
         for (int i = 0; i < parameterAnnotations.length; i++) {
             if (parameterAnnotations[i] instanceof Fact) {

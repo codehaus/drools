@@ -1,7 +1,10 @@
 package org.drools.spring.factory;
 
-import org.drools.FactException;
-import org.drools.spring.metadata.annotation.java.*;
+import org.drools.spring.metadata.annotation.java.Condition;
+import org.drools.spring.metadata.annotation.java.Consequence;
+import org.drools.spring.metadata.annotation.java.Data;
+import org.drools.spring.metadata.annotation.java.Fact;
+import org.drools.spring.metadata.annotation.java.Rule;
 
 @Rule("ApplicationDataUsingRule")
 class ApplicationDataUsingRule {
@@ -12,7 +15,7 @@ class ApplicationDataUsingRule {
     }
 
     @Consequence
-    public void consequence(@Fact Person person, @Data("audit") AuditService service) throws FactException {
+    public void consequence(@Fact Person person, @Data("audit") AuditService service) {
         service.auditMessage(person, "audit message");
     }
 }
