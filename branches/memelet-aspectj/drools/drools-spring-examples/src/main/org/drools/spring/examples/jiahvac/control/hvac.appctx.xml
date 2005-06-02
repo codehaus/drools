@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="propertyResourceConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:org/drools/spring/examples/jiahvac/control/hvac.properties" />
+    </bean>
+
+    <bean name="customEditorConfigurer"
+        class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="org.drools.spring.examples.jiahvac.model.Vent$State">
+                    <bean class="org.drools.spring.examples.jiahvac.control.VentStatePropertyEditor"/>
+                </entry>
+                <entry key="java.util.concurrent.TimeUnit">
+                    <bean class="org.drools.spring.examples.jiahvac.control.TimeUnitPropertyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+	<bean id="ruleFactoryBean" abstract="true"
+		class="org.drools.spring.factory.BeanRuleMetadataRuleFactoryBean">
+		<property name="methodMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
+			</list>
+		</property>
+		<property name="argumentMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
+				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+			</list>
+		</property>
+	</bean>
+
+    <bean id="pumpRuleSet" class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="rules">
+            <set>
+			    <bean id="pump.FloorsCoolEnough" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.FloorsCoolEnough" />
+			        </property>
+			    </bean>
+			    <bean id="pump.FloorsWarmEnough" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.FloorsWarmEnough" />
+			        </property>
+			    </bean>
+			    <bean id="pump.FloorTooColdPumpOff" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.FloorTooColdPumpOff" />
+			        </property>
+			    </bean>
+			    <bean id="pump.floorsCoolEnough" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.FloorsCoolEnough" />
+			        </property>
+			    </bean>
+			    <bean id="pump.FloorTooHotPumpOff" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.FloorTooHotPumpOff" />
+			        </property>
+			    </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="ventRuleSet" class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="rules">
+            <set>
+			    <bean id="vent.HeatingVentOpenFloorWarmEnough" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.HeatingVentOpenFloorWarmEnough" />
+			        </property>
+			    </bean>
+			    <bean id="vent.CoolingVentOpenFloorCoolEnough" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.CoolingVentOpenFloorCoolEnough" />
+			        </property>
+			    </bean>
+			    <bean id="vent.HeatingVentClosedFloorTooCold" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.HeatingVentClosedFloorTooCold" />
+			        </property>
+			    </bean>
+			    <bean id="vent.CoolingVentClosedFloorTooHot" parent="ruleFactoryBean">
+			        <property name="pojo">
+			            <bean class="org.drools.spring.examples.jiahvac.control.rules.CoolingVentClosedFloorTooHot" />
+			        </property>
+			    </bean>
+            </set>
+        </property>
+    </bean>
+
+	<bean id="conflictResolver"
+		class="org.drools.spring.factory.ConflictResolverFactoryBean">
+		<property name="resolverStrategies">
+			<list>
+				<bean class="org.drools.conflict.SalienceConflictResolver" />
+				<bean class="org.drools.conflict.LoadOrderConflictResolver" />
+			</list>
+		</property>
+	</bean>
+
+    <bean id="ruleBase"
+        class="org.drools.spring.factory.RuleBaseFactoryBean">
+        <property name="conflictResolver" ref="conflictResolver" />
+        <property name="ruleSets">
+            <list>
+                <ref bean="pumpRuleSet" />
+                <ref bean="ventRuleSet" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="workingMemory"
+        class="org.drools.spring.factory.WorkingMemoryFactoryBean">
+        <property name="ruleBase" ref="ruleBase" />
+    </bean>
+
+	<!-- This will auto-register any beans that implement org.drools.event.WorkingMemoryEventListener -->
+	<!-- as a working memory event listener. -->
+	<bean id="workingMemoryListenerProcessor"
+        class="org.drools.spring.event.WorkingMemoryEventListenerProcessor">
+        <property name="workingMemory" ref="workingMemory" />
+    </bean>
+
+    <bean id="workingMemoryLogger"
+        class="org.drools.event.DebugWorkingMemoryEventListener">
+    </bean>
+
+	<bean id="simulator" class="org.drools.spring.examples.jiahvac.sim.Simulator">
+		<constructor-arg index="0" value="${floor_count}" />
+		<constructor-arg index="1" value="${initial_tempurature_reading}" />
+		<constructor-arg index="2" value="OPEN" />
+	</bean>
+
+	<bean id="simulatorGUI" class="org.drools.spring.examples.jiahvac.sim.SimulatorGUI">
+		<constructor-arg index="0" ref="simulator" />
+	</bean>
+
+	<bean id="tempuratureControl" class="org.drools.spring.examples.jiahvac.model.TempuratureControlImpl">
+		<constructor-arg index="0" value="${initial_setpoint}" />
+		<constructor-arg index="1" value="1" />
+	</bean>
+
+	<bean id="executor" lazy-init="true" class="org.drools.spring.examples.jiahvac.control.ExecutorFactoryBean">
+		<property name="workingMemory" ref="workingMemory" />
+		<property name="simulator" ref="simulator" />
+		<property name="simulatorPeriod" value="${simulator_period}" />
+		<property name="simulatorPeriodUnit" value="${simulator_period_timeunits}" />
+		<property name="simulatorGUI" ref="simulatorGUI" />
+
+	</bean>
+
+</beans>
