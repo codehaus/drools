@@ -1,6 +1,5 @@
 package org.drools.spring.factory;
 
-import org.drools.DroolsException;
 import org.drools.RuleBaseBuilder;
 import org.drools.reteoo.FactHandleFactory;
 import org.drools.spi.ConflictResolver;
@@ -24,7 +23,7 @@ public class RuleBaseBuilderFactoryBean implements FactoryBean, InitializingBean
     public void afterPropertiesSet() throws Exception {
     }
 
-    private RuleBaseBuilder createObject() throws DroolsException {
+    private RuleBaseBuilder createObject() {
         RuleBaseBuilder builder = new RuleBaseBuilder();
         if (conflictResolver != null) {
             builder.setConflictResolver(conflictResolver);

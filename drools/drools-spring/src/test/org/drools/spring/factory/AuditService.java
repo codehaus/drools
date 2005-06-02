@@ -3,7 +3,7 @@ package org.drools.spring.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-class AuditService {
+public class AuditService {
 
     private List auditLogs = new ArrayList();
 

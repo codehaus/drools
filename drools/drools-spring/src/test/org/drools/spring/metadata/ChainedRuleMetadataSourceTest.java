@@ -21,7 +21,7 @@ public class ChainedRuleMetadataSourceTest extends TestCase {
 
     public void testNewNullDelegates() throws Exception {
         try {
-            ChainedRuleMetadataSource source = new ChainedRuleMetadataSource(null);
+            new ChainedRuleMetadataSource(null);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -30,8 +30,7 @@ public class ChainedRuleMetadataSourceTest extends TestCase {
 
     public void testNewNullDelegateElement() throws Exception {
         try {
-            ChainedRuleMetadataSource source = new ChainedRuleMetadataSource(
-                    new RuleMetadataSource[] { delegateMock_1, null });
+            new ChainedRuleMetadataSource(new RuleMetadataSource[] { delegateMock_1, null });
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected

@@ -34,7 +34,7 @@ public class ChainedMethodMetadataSourceTest extends TestCase {
 
     public void testNewNullDelegates() throws Exception {
         try {
-            ChainedMethodMetadataSource source = new ChainedMethodMetadataSource(null);
+            new ChainedMethodMetadataSource(null);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -43,8 +43,7 @@ public class ChainedMethodMetadataSourceTest extends TestCase {
 
     public void testNewNullDelegateElement() throws Exception {
         try {
-            ChainedMethodMetadataSource source = new ChainedMethodMetadataSource(
-                    new MethodMetadataSource[] { delegateMock_1, null });
+            new ChainedMethodMetadataSource(new MethodMetadataSource[] { delegateMock_1, null });
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected

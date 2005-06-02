@@ -3,7 +3,7 @@ package org.drools.spring.factory;
 import org.drools.FactException;
 import org.drools.spi.KnowledgeHelper;
 
-class AgeCommentRule {
+public class AgeCommentRule {
 
     private int minAge = Integer.MIN_VALUE;
     private int maxAge = Integer.MAX_VALUE;

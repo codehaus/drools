@@ -9,11 +9,6 @@ public class NameMatchMethodMetadataSource implements MethodMetadataSource{
     static final MethodMetadata CONDITION_METADATA = new MethodMetadata(MethodMetadata.CONDITION);
     static final MethodMetadata CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.CONSEQUENCE);
 
-    private static class MetadataInfo {
-        public MethodMetadata methodAttributes;
-        public ArgumentMetadata[] argumentMetadata;
-    }
-
     private Map nameMap = new HashMap(); // Map<String methodName, MetadataInfo>
 
     public MethodMetadata getMethodMetadata(Method method) {

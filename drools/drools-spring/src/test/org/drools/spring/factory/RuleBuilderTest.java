@@ -8,13 +8,11 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.drools.DroolsException;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.KnowledgeHelper;
-import org.drools.spi.Tuple;
 import org.drools.spring.metadata.ArgumentMetadata;
 import org.drools.spring.metadata.ArgumentMetadataSource;
 import org.drools.spring.metadata.BeanObjectType;
@@ -23,7 +21,6 @@ import org.drools.spring.metadata.FactArgumentMetadata;
 import org.drools.spring.metadata.KnowledgeHelperArgumentMetadata;
 import org.drools.spring.metadata.MethodMetadata;
 import org.drools.spring.metadata.MethodMetadataSource;
-import org.drools.spring.pojorule.Argument;
 import org.drools.spring.pojorule.PojoCondition;
 import org.drools.spring.pojorule.PojoConsequence;
 import org.easymock.MockControl;
@@ -37,12 +34,13 @@ public class RuleBuilderTest extends TestCase {
         public boolean conditionOne(String stringValue) { return false; }
         public boolean conditionTwo(long longValue, int intValue) { return false; }
         public void consequenceOne(String stringValue) { }
-        public void consequenceTwo(Object object, long longValue, int intValue, KnowledgeHelper knowledgeHelper) { }
+        public void consequenceTwo(Object object, long longValue, int intValue, KnowledgeHelper knowledgeHelper) {
+            // Call this method just to get rid of unused-warnings
+            performTask();
+        }
     }
     private PojoRule pojo = new PojoRule();
 
-    private static Method getValueMethod;
-    private static Method performTaskMethod;
     private static Method conditionOneMethod;
     private static Method conditionTwoMethod;
     private static Method consequenceOneMethod;
@@ -59,12 +57,6 @@ public class RuleBuilderTest extends TestCase {
 
     private static MethodMetadata CONDITION_METADATA = new MethodMetadata(MethodMetadata.CONDITION);
     private static MethodMetadata CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.CONSEQUENCE);
-
-    private static final Argument ARGUMENT = new Argument() {
-        public Object getValue(Tuple tuple) {
-            return null;
-        }
-    };
 
     private boolean isStaticSetUp;
 
@@ -161,16 +153,6 @@ public class RuleBuilderTest extends TestCase {
         }
     }
 
-    private ArgumentMetadata[] argumentMetadataExpectAndReturnCreateArgument(int argCount) throws DroolsException {
-        ArgumentMetadata[] metadata = new ArgumentMetadata[argCount];
-        for (int i = 0; i < argCount; i++) {
-            MockControl control = mocks.createControl(ArgumentMetadata.class);
-            metadata[i] = (ArgumentMetadata) control.getMock();
-            control.expectAndReturn(metadata[i].createArgument(rule), ARGUMENT);
-        }
-        return metadata;
-    }
-
     public void testBuildRule() throws Exception {
 
         methodMetadataSourceExpectAndReturn(conditionOneMethod, CONDITION_METADATA);
@@ -187,7 +169,7 @@ public class RuleBuilderTest extends TestCase {
 
         mocks.replay();
 
-        Rule populatedRule = builder.buildRule(rule, pojo);
+        builder.buildRule(rule, pojo);
 
         mocks.verify();
 
