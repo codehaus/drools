@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.56 2005-04-20 00:03:06 mproctor Exp $
+ * $Id: Agenda.java,v 1.56.2.1 2005-06-02 23:25:29 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -79,11 +79,6 @@ class Agenda
     // Instance members
     // ------------------------------------------------------------
 
-    public static int               NONE    = 0;
-    public static int               ASSERT  = 1;
-    public static int               MODIFY  = 2;
-    public static int               RETRACT = 3;
-
     /** Working memory of this Agenda. */
     private final WorkingMemoryImpl workingMemory;
 
@@ -92,10 +87,6 @@ class Agenda
 
     /** Items time-delayed. */
     private final Map               scheduledItems;
-
-    private final Map               itemsToRetract;
-
-    private final Map               scheduledItemsToRetract;
 
     /** The current agenda item being fired; or null if none. */
     private AgendaItem              item;
@@ -120,8 +111,6 @@ class Agenda
         this.workingMemory = workingMemory;
         this.activationQueue = new PriorityQueue( conflictResolver );
         this.scheduledItems = new HashMap( );
-        this.itemsToRetract = new HashMap( );
-        this.scheduledItemsToRetract = new HashMap( );
     }
 
     // ------------------------------------------------------------
@@ -153,48 +142,54 @@ class Agenda
 
         Duration dur = rule.getDuration( );
 
-        if ( dur != null && dur.getDuration( tuple ) > 0 )
-        {
+//duration
+//        if ( dur != null && dur.getDuration( tuple ) > 0 )
+//        {
+//            // check if item has been retracted as part of a modify
+//            AgendaItem item = null;
+////event
+////            if ( !this.itemsToRetract.isEmpty( ) )
+////            {
+////                item = (AgendaItem) this.scheduledItems.get( tuple.getKey( ) );
+////            }
+//
+//            if ( item == null )
+//            {
+//                item = new AgendaItem( tuple,
+//                                       rule );
+//                this.scheduledItems.put( item.getKey( ),
+//                                         item );
+//                scheduleItem( item );
+////event
+////                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
+////                                                                             tuple );
+//            }
+//        }
+//        else
+//        {
             // check if item has been retracted as part of a modify
             AgendaItem item = null;
-            if ( !this.itemsToRetract.isEmpty( ) )
-            {
-                item = (AgendaItem) this.scheduledItems.get( tuple.getKey( ) );
-            }
-
-            if ( item == null )
-            {
-                item = new AgendaItem( tuple,
-                                       rule );
-                this.scheduledItems.put( item.getKey( ),
-                                         item );
-                scheduleItem( item );
-                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
-                                                                             tuple );
-            }
-        }
-        else
-        {
-            // check if item has been retracted as part of a modify
-            AgendaItem item = null;
-            if ( !this.itemsToRetract.isEmpty( ) )
-            {
-                item = (AgendaItem) this.itemsToRetract.remove( tuple.getKey( ) );
-            }
+//event
+//            if ( !this.itemsToRetract.isEmpty( ) )
+//            {
+//                item = (AgendaItem) this.itemsToRetract.remove( tuple.getKey( ) );
+//            }
 
             if ( item == null )
             {
                 item = new AgendaItem( tuple,
                                        rule );
                 this.activationQueue.add( item );
-                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
-                                                                             tuple );
+//event
+//                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
+//                                                                             tuple );
             }
             else
             {
                 this.activationQueue.add( item );
             }
-        }
+//duration
+//        }
     }
 
     /**
@@ -223,72 +218,76 @@ class Agenda
                 // current iterator position
                 itemIter = this.activationQueue.iterator( );
 
-                if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
-                {
-                    this.itemsToRetract.put( eachItem.getKey( ),
-                                             eachItem );
-                }
-                else
-                {
-                    this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
-                                                                                   eachItem.getTuple( ) );
-                }
+//event
+//                if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
+//                {
+//                    this.itemsToRetract.put( eachItem.getKey( ),
+//                                             eachItem );
+//                }
+//                else
+//                {
+//                    this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
+//                                                                                   eachItem.getTuple( ) );
+//                }
             }
         }
 
-        itemIter = this.scheduledItems.values( ).iterator( );
-
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) itemIter.next( );
-
-            if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
-            {
-                if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
-                {
-                    this.scheduledItemsToRetract.put( eachItem.getKey( ),
-                                                      eachItem );
-                }
-                else
-                {
-                    tuple = eachItem.getTuple( );
-
-                    cancelItem( eachItem );
-
-                    itemIter.remove( );
-
-                    this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
-                                                                                   tuple );
-                }
-            }
-        }
+//duration
+//        itemIter = this.scheduledItems.values( ).iterator( );
+//
+//        while ( itemIter.hasNext( ) )
+//        {
+//            eachItem = (AgendaItem) itemIter.next( );
+//
+//            if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
+//            {
+//
+////                if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
+////                {
+////                    this.scheduledItemsToRetract.put( eachItem.getKey( ),
+////                                                      eachItem );
+////                }
+////                else
+////                {
+//                    tuple = eachItem.getTuple( );
+//
+//                    cancelItem( eachItem );
+//
+//                    itemIter.remove( );
+//
+////                    this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
+////                                                                                   tuple );
+////                }
+//            }
+//        }
     }
 
-    void removeMarkedItemsFromAgenda()
-    {
-        AgendaItem eachItem;
-
-        Iterator itemIter = this.itemsToRetract.values( ).iterator( );
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) itemIter.next( );
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
-                                                                           eachItem.getTuple( ) );
-            itemIter.remove( );
-        }
-
-        itemIter = this.scheduledItemsToRetract.values( ).iterator( );
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) itemIter.next( );
-
-            cancelItem( eachItem );
-
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
-                                                                           eachItem.getTuple( ) );
-            itemIter.remove( );
-        }
-    }
+//event
+//    void removeMarkedItemsFromAgenda()
+//    {
+//        AgendaItem eachItem;
+//
+//        Iterator itemIter = this.itemsToRetract.values( ).iterator( );
+//        while ( itemIter.hasNext( ) )
+//        {
+//            eachItem = (AgendaItem) itemIter.next( );
+//            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+//                                                                           eachItem.getTuple( ) );
+//            itemIter.remove( );
+//        }
+//
+//        itemIter = this.scheduledItemsToRetract.values( ).iterator( );
+//        while ( itemIter.hasNext( ) )
+//        {
+//            eachItem = (AgendaItem) itemIter.next( );
+//
+//            cancelItem( eachItem );
+//
+//            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+//                                                                           eachItem.getTuple( ) );
+//            itemIter.remove( );
+//        }
+//    }
 
     /**
      * Clears all Activations from the Agenda
@@ -306,24 +305,27 @@ class Agenda
 
             iter.remove( );
 
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
-                                                                           eachItem.getTuple( ) );
+//event
+//            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+//                                                                           eachItem.getTuple( ) );
         }
 
-        iter = this.scheduledItems.values( ).iterator( );
-
-        // Cancel all items in the Schedule and fire a Cancelled event for each
-        while ( iter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) iter.next( );
-
-            cancelItem( eachItem );
-
-            iter.remove( );
-
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
-                                                                           eachItem.getTuple( ) );
-        }
+//duration
+//        iter = this.scheduledItems.values( ).iterator( );
+//
+//        // Cancel all items in the Schedule and fire a Cancelled event for each
+//        while ( iter.hasNext( ) )
+//        {
+//            eachItem = (AgendaItem) iter.next( );
+//
+//            cancelItem( eachItem );
+//
+//            iter.remove( );
+//
+////event
+////            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+////                                                                           eachItem.getTuple( ) );
+//        }
     }
 
     /**
@@ -332,22 +334,23 @@ class Agenda
      * @param item
      *            The item to schedule.
      */
-    void scheduleItem(AgendaItem item)
-    {
-        Scheduler.getInstance( ).scheduleAgendaItem( item,
-                                                     this.workingMemory );
-    }
-
-    /**
-     * Cancel a scheduled agenda item for delayed firing.
-     *
-     * @param item
-     *            The item to cancel.
-     */
-    void cancelItem(AgendaItem item)
-    {
-        Scheduler.getInstance( ).cancelAgendaItem( item );
-    }
+//duration
+//    void scheduleItem(AgendaItem item)
+//    {
+//        Scheduler.getInstance( ).scheduleAgendaItem( item,
+//                                                     this.workingMemory );
+//    }
+//
+//    /**
+//     * Cancel a scheduled agenda item for delayed firing.
+//     *
+//     * @param item
+//     *            The item to cancel.
+//     */
+//    void cancelItem(AgendaItem item)
+//    {
+//        Scheduler.getInstance( ).cancelAgendaItem( item );
+//    }
 
     /**
      * Determine if this <code>Agenda</code> has any scheduled items.
@@ -399,13 +402,15 @@ class Agenda
      *
      * @param handler
      */
-    void setAsyncExceptionHandler(AsyncExceptionHandler handler)
-    {
-        Scheduler.getInstance( ).setAsyncExceptionHandler( handler );
-    }
+//duration
+//    void setAsyncExceptionHandler(AsyncExceptionHandler handler)
+//    {
+//        Scheduler.getInstance( ).setAsyncExceptionHandler( handler );
+//    }
 
-    void setMode(int mode)
-    {
-        this.mode = mode;
-    }
+//event
+//    void setMode(int mode)
+//    {
+//        this.mode = mode;
+//    }
 }

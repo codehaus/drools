@@ -55,8 +55,6 @@ import org.drools.NoSuchFactHandleException;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.drools.event.WorkingMemoryEventListener;
-import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 import org.drools.util.IdentityMap;
@@ -100,9 +98,6 @@ class WorkingMemoryImpl
     private final Map                       handles                                       = new IdentityMap( );
     private final PrimitiveLongStack        factHandlePool                                = new PrimitiveLongStack( );
 
-    /** The eventSupport */
-    private final WorkingMemoryEventSupport eventSupport                                  = new WorkingMemoryEventSupport( this );
-
     /** The <code>RuleBase</code> with which this memory is associated. */
     private final RuleBaseImpl              ruleBase;
 
@@ -132,21 +127,6 @@ class WorkingMemoryImpl
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
-
-    public void addEventListener(WorkingMemoryEventListener listener)
-    {
-        this.eventSupport.addEventListener( listener );
-    }
-
-    public void removeEventListener(WorkingMemoryEventListener listener)
-    {
-        this.eventSupport.removeEventListener( listener );
-    }
-
-    public List getEventListeners()
-    {
-        return eventSupport.getEventListeners( );
-    }
 
     /**
      * Create a new <code>FactHandle</code>.
@@ -366,14 +346,16 @@ class WorkingMemoryImpl
             addPropertyChangeListener( object );
         }
 
-        this.agenda.setMode( Agenda.ASSERT );
+//event
+//        this.agenda.setMode( Agenda.ASSERT );
         ruleBase.assertObject( handle,
                                object,
                                this );
 
-        eventSupport.fireObjectAsserted( handle,
-                                         object );
-        this.agenda.setMode( Agenda.NONE );
+//event
+//        eventSupport.fireObjectAsserted( handle,
+//                                         object );
+//        this.agenda.setMode( Agenda.NONE );
         return handle;
     }
 
@@ -492,7 +474,8 @@ class WorkingMemoryImpl
     {
         removePropertyChangeListener( handle );
 
-        this.agenda.setMode( Agenda.RETRACT );
+//event
+//        this.agenda.setMode( Agenda.RETRACT );
 
         ruleBase.retractObject( handle,
                                 this );
@@ -501,9 +484,10 @@ class WorkingMemoryImpl
 
         factHandlePool.push( ((FactHandleImpl) handle).getId( ) );
 
-        eventSupport.fireObjectRetracted( handle,
-                                          oldObject );
-        this.agenda.setMode( Agenda.NONE );
+//event
+//        eventSupport.fireObjectRetracted( handle,
+//                                          oldObject );
+//        this.agenda.setMode( Agenda.NONE );
 
         ((FactHandleImpl) handle).invalidate( );
     }
@@ -524,7 +508,8 @@ class WorkingMemoryImpl
         putObject( handle,
                    object );
 
-        this.agenda.setMode( Agenda.MODIFY );
+//event
+//        this.agenda.setMode( Agenda.MODIFY );
 
         this.ruleBase.retractObject( handle,
                                      this );
@@ -533,16 +518,18 @@ class WorkingMemoryImpl
                                     object,
                                     this );
 
-        this.agenda.removeMarkedItemsFromAgenda( );
-
-        this.agenda.setMode( Agenda.NONE );
+//event
+//        this.agenda.removeMarkedItemsFromAgenda( );
+//
+//        this.agenda.setMode( Agenda.NONE );
 
         /*
          * this.ruleBase.modifyObject( handle, object, this );
          */
-        this.eventSupport.fireObjectModified( handle,
-                                              originalObject,
-                                              object );
+//event
+//        this.eventSupport.fireObjectModified( handle,
+//                                              originalObject,
+//                                              object );
     }
 
     /**
@@ -570,21 +557,17 @@ class WorkingMemoryImpl
         return memory;
     }
 
-    public WorkingMemoryEventSupport getEventSupport()
-    {
-        return eventSupport;
-    }
-
     /**
      * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
      * Scheduler used for duration rules.
      *
      * @param handler
      */
-    public void setAsyncExceptionHandler(AsyncExceptionHandler handler)
-    {
-        this.agenda.setAsyncExceptionHandler( handler );
-    }
+//duration
+//    public void setAsyncExceptionHandler(AsyncExceptionHandler handler)
+//    {
+//        this.agenda.setAsyncExceptionHandler( handler );
+//    }
 
     public void dumpMemory()
     {

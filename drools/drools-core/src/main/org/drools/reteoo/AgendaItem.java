@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.22 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: AgendaItem.java,v 1.22.4.1 2005-06-02 23:25:30 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,7 +50,7 @@ import org.drools.spi.Tuple;
 
 /**
  * Item entry in the <code>Agenda</code>.
- * 
+ *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 class AgendaItem
@@ -81,7 +81,7 @@ class AgendaItem
 
     /**
      * Construct.
-     * 
+     *
      * @param tuple
      *            The tuple.
      * @param rule
@@ -101,7 +101,7 @@ class AgendaItem
 
     /**
      * Retrieve the rule.
-     * 
+     *
      * @return The rule.
      */
     public Rule getRule()
@@ -112,10 +112,10 @@ class AgendaItem
     /**
      * Determine if this tuple depends on the values derrived from a particular
      * root object.
-     * 
+     *
      * @param handle
      *            The root object handle.
-     * 
+     *
      * @return <code>true<code> if this agenda item depends
      *          upon the item, otherwise <code>false</code>.
      */
@@ -126,7 +126,7 @@ class AgendaItem
 
     /**
      * Set the tuple.
-     * 
+     *
      * @param tuple
      *            The tuple.
      */
@@ -137,7 +137,7 @@ class AgendaItem
 
     /**
      * Retrieve the tuple.
-     * 
+     *
      * @return The tuple.
      */
     public Tuple getTuple()
@@ -147,7 +147,7 @@ class AgendaItem
 
     /**
      * Retrieve the <code>TupleKey</code>.
-     * 
+     *
      * @return The key to the tuple in this item.
      */
     TupleKey getKey()
@@ -157,10 +157,10 @@ class AgendaItem
 
     /**
      * Fire this item.
-     * 
+     *
      * @param workingMemory
      *            The working memory context.
-     * 
+     *
      * @throws ConsequenceException
      *             If an error occurs while attempting to fire the consequence.
      */
@@ -169,8 +169,9 @@ class AgendaItem
 
         this.rule.getConsequence( ).invoke( this.tuple );
 
-        workingMemory.getEventSupport( ).fireActivationFired( this.rule,
-                                                              this.tuple );
+//event
+//        workingMemory.getEventSupport( ).fireActivationFired( this.rule,
+//                                                              this.tuple );
     }
 
     public long getActivationNumber()

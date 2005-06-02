@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.59 2005-05-08 19:54:47 mproctor Exp $
+ * $Id: Rule.java,v 1.59.2.1 2005-06-02 23:25:30 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -183,10 +183,11 @@ public class Rule
      * @param seconds -
      *        The number of seconds the rule must hold true in order to fire.
      */
-    public void setDuration(long seconds)
-    {
-        this.duration = new FixedDuration( seconds );
-    }
+//duration
+//    public void setDuration(long seconds)
+//    {
+//        this.duration = new FixedDuration( seconds );
+//    }
 
     /**
      * Set the truthness duration object. This causes a delay before the firing of the
@@ -196,10 +197,11 @@ public class Rule
      * @param duration
      *        The truth duration object.
      */
-    public void setDuration(Duration duration)
-    {
-        this.duration = duration;
-    }
+//duration
+//    public void setDuration(Duration duration)
+//    {
+//        this.duration = duration;
+//    }
 
     /**
      * Retrieve the truthness duration object.
