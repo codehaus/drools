@@ -30,6 +30,7 @@ public class TestRules {
     @Rule(name="myC", documentation="my C docs", loop=Loop.ALLOW)
     public static class PojoRule_C {
 
+        @SuppressWarnings("all") // unused
         @Condition
         private boolean condition(@Fact String name, @Data("myTime") long start) {
             return false;

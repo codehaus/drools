@@ -12,7 +12,12 @@ public class AnnotationMethodMetadataSourceTest extends MethodMetadataSourceTest
     private static class PojoRule {
         private boolean privateBooleanMethod() { return false; }
         private void privateVoidMethod() { }
-        public int publicNonVoidAndNonBooleanMethod() { return 0; }
+        public int publicNonVoidAndNonBooleanMethod() {
+            // Call these methods to eliminate unused-warnings
+            privateBooleanMethod();
+            privateVoidMethod();
+            return 0;
+        }
         public boolean publicBooleanMethodWithNoParameters() { return false; }
 
         @Condition
