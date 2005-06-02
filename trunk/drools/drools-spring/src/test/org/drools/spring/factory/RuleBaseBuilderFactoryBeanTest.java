@@ -13,7 +13,6 @@ import org.drools.WorkingMemory;
 import org.drools.conflict.CompositeConflictResolver;
 import org.drools.reteoo.FactHandleFactory;
 import org.drools.spring.SpringTestSetup;
-import org.easymock.container.EasymockContainer;
 
 public class RuleBaseBuilderFactoryBeanTest extends TestCase {
 
@@ -24,8 +23,6 @@ public class RuleBaseBuilderFactoryBeanTest extends TestCase {
                 new TestSuite(RuleBaseBuilderFactoryBeanTest.class),
                 contextHolder, "org/drools/spring/factory/rulebasebuilder-test.appctx.xml");
     }
-
-    private EasymockContainer mocks = new EasymockContainer();
 
     private RuleBaseBuilderFactoryBean factory = new RuleBaseBuilderFactoryBean();
 

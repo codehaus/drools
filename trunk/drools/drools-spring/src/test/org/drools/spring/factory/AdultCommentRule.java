@@ -3,7 +3,7 @@ package org.drools.spring.factory;
 import org.drools.FactException;
 import org.drools.spi.KnowledgeHelper;
 
-class AdultCommentRule {
+public class AdultCommentRule {
 
     public boolean condition(Person person) {
         return 17 <= person.getAge();

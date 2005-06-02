@@ -13,7 +13,12 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
     private static class PojoRule {
         private boolean privateBooleanMethod() { return false; }
         private void privateVoidMethod() { }
-        public int publicNonVoidAndNonBooleanMethod() { return 0; }
+        public int publicNonVoidAndNonBooleanMethod() {
+            // Call these two methods just to get rid the unused-warnings.
+            privateBooleanMethod();
+            privateVoidMethod();
+            return 0;
+        }
         public boolean publicBooleanMethodWithNoParameters() { return false; } // need args to be a condition
 
         /** @Condition */

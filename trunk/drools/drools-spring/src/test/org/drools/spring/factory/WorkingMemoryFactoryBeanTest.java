@@ -6,8 +6,6 @@ import junit.framework.TestSuite;
 
 import org.drools.WorkingMemory;
 import org.drools.spring.SpringTestSetup;
-import org.drools.spring.factory.WorkingMemoryFactoryBean;
-import org.easymock.container.EasymockContainer;
 
 public class WorkingMemoryFactoryBeanTest extends TestCase {
 
@@ -18,8 +16,6 @@ public class WorkingMemoryFactoryBeanTest extends TestCase {
                 new TestSuite(WorkingMemoryFactoryBeanTest.class),
                 contextHolder, "org/drools/spring/factory/for-test.appctx.xml");
     }
-
-    private EasymockContainer mocks = new EasymockContainer();
 
     private WorkingMemoryFactoryBean factory = new WorkingMemoryFactoryBean();
 
