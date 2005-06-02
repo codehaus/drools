@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<rule-set name="conway"
+    xmlns="http://drools.org/rules"
+    xmlns:conway="http://drools.org/semantics/conway"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+    xs:schemaLocation="http://drools.org/rules rules.xsd
+                       http://drools.org/semantics/conway conway.xsd">
+
+    <rule name="Kill The Overcrowded">
+        <conway:condition cellName="cell">
+            <conway:cellIsAlive/>
+            <conway:cellIsOverCrowded/>
+        </conway:condition>
+
+        <conway:actions cellName="cell">
+            <conway:killCell/>
+        </conway:actions>
+    </rule>
+
+    <rule name="Kill The Lonely">
+        <conway:condition cellName="cell">
+            <conway:cellIsAlive/>
+            <conway:cellIsLonely/>
+        </conway:condition>
+
+        <conway:actions cellName="cell">
+            <conway:killCell/>
+        </conway:actions>
+    </rule>
+
+    <rule name="Give Birth">
+        <conway:condition cellName="cell">
+            <conway:cellIsDead/>
+            <conway:cellIsRipeForBirth/>
+        </conway:condition>
+
+        <conway:actions cellName="cell">
+            <conway:giveBirthToCell/>
+        </conway:actions>
+    </rule>
+</rule-set>
