@@ -1,0 +1,6 @@
+*.log
+*.ipr
+*.iws
+target
+cachedir
+
