@@ -1,0 +1,17 @@
+"camembert"
+<!--drools-test--!> // 1
+"I have %i bites of %s left" % (camembert.getBitesLeft(), camembert.getName())
+<!--drools-test--!> // 2
+"I have %i bites of %s left" % (stilton.getBitesLeft(), stilton.getName())
+<!--drools-test--!> // 3
+camembert.getBitesLeft()
+<!--drools-test--!> // 4
+camembert.getBitesLeft() + stilton.getBitesLeft()
+<!--drools-test--!> // 5
+q(camembert.getBitesLeft() + stilton.getBitesLeft() == 6, SMFTestFrameWork.Cheese("cheddar"), SMFTestFrameWork.Cheese("mozzerella"))
+<!--drools-test--!> // 6
+q(camembert.getBitesLeft() + stilton.getBitesLeft() == 6, SMFTestFrameWork.Cheese("cheddar"), SMFTestFrameWork.Cheese("mozzerella"))
+<!--drools-test--!> // 7
+SMFTestFrameWork.extractionExceptionTest()
+<!--drools-test--!> // 8
+BigInteger("1").toString() + Cheese("brie").getName()
