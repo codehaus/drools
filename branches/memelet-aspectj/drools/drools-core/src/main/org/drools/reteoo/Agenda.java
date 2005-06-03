@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.56.2.2 2005-06-03 00:21:34 memelet Exp $
+ * $Id: Agenda.java,v 1.56.2.3 2005-06-03 00:47:10 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -133,6 +133,7 @@ class Agenda
          * do not not re-add to the agenda
          */
 
+//noloop
         if ( this.item != null && rule.getNoLoop( ) && rule.equals( this.item.getRule( ) ) )
         {
             return;
@@ -166,26 +167,26 @@ class Agenda
 //        else
 //        {
             // check if item has been retracted as part of a modify
-            AgendaItem item = null;
-//event
+//      event
+//            AgendaItem item = null;
 //            if ( !this.itemsToRetract.isEmpty( ) )
 //            {
 //                item = (AgendaItem) this.itemsToRetract.remove( tuple.getKey( ) );
 //            }
 
-            if ( item == null )
-            {
-                item = new AgendaItem( tuple,
+//            if ( item == null )
+//            {
+                AgendaItem item = new AgendaItem( tuple,
                                        rule );
                 this.activationQueue.add( item );
 //event
 //                this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
 //                                                                             tuple );
-            }
-            else
-            {
-                this.activationQueue.add( item );
-            }
+//            }
+//            else
+//            {
+//                this.activationQueue.add( item );
+//            }
 //duration
 //        }
     }
