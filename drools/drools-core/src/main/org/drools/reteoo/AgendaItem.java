@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.22.4.1 2005-06-02 23:25:30 memelet Exp $
+ * $Id: AgendaItem.java,v 1.22.4.2 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -73,7 +73,8 @@ class AgendaItem
 
     private long        activationNumber;
 
-    private boolean     retract;
+//event (?)
+//    private boolean     retract;
 
     // ------------------------------------------------------------
     // Constructors

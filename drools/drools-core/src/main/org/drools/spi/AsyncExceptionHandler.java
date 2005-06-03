@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: AsyncExceptionHandler.java,v 1.3 2005-01-11 21:42:37 mproctor Exp $
+ * $Id: AsyncExceptionHandler.java,v 1.3.4.1 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,9 +42,10 @@ package org.drools.spi;
 
 import org.drools.WorkingMemory;
 
+//duration
 public interface AsyncExceptionHandler
 {
 
     void handleException(WorkingMemory workingMemory, ConsequenceException exception);
-    
+
 }

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: DefaultKnowledgeHelper.java,v 1.2 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: DefaultKnowledgeHelper.java,v 1.2.4.1 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -63,12 +63,13 @@ public class DefaultKnowledgeHelper implements KnowledgeHelper
         this.tuple.getWorkingMemory( ).assertObject( object );
     }
 
-    public void assertObject(Object object,
-                             boolean dynamic ) throws FactException
-    {
-        this.tuple.getWorkingMemory( ).assertObject( object,
-                                                     dynamic );
-    }
+//dynamic
+//    public void assertObject(Object object,
+//                             boolean dynamic ) throws FactException
+//    {
+//        this.tuple.getWorkingMemory( ).assertObject( object,
+//                                                     dynamic );
+//    }
 
     public void modifyObject(Object object) throws FactException
     {

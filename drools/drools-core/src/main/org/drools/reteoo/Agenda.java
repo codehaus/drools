@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.56.2.1 2005-06-02 23:25:29 memelet Exp $
+ * $Id: Agenda.java,v 1.56.2.2 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,16 +41,12 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.drools.rule.Rule;
 import org.drools.spi.AgendaFilter;
-import org.drools.spi.AsyncExceptionHandler;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.Duration;
 import org.drools.spi.Tuple;
 import org.drools.util.PriorityQueue;
 
@@ -86,12 +82,14 @@ class Agenda
     private final PriorityQueue     activationQueue;
 
     /** Items time-delayed. */
-    private final Map               scheduledItems;
+//duration
+//    private final Map               scheduledItems;
 
     /** The current agenda item being fired; or null if none. */
     private AgendaItem              item;
 
-    private int                     mode    = 0;
+//event
+//    private int                     mode    = 0;
 
     // ------------------------------------------------------------
     // Constructors
@@ -110,7 +108,8 @@ class Agenda
     {
         this.workingMemory = workingMemory;
         this.activationQueue = new PriorityQueue( conflictResolver );
-        this.scheduledItems = new HashMap( );
+//duration
+//        this.scheduledItems = new HashMap( );
     }
 
     // ------------------------------------------------------------
@@ -127,8 +126,7 @@ class Agenda
      * @param rule
      *            The rule to fire.
      */
-    void addToAgenda(ReteTuple tuple,
-                     Rule rule)
+    public void addToAgenda(ReteTuple tuple, Rule rule)
     {
         /*
          * if no-loop is true for this rule and the current rule is active then
@@ -140,9 +138,9 @@ class Agenda
             return;
         }
 
-        Duration dur = rule.getDuration( );
-
-//duration
+//      duration
+//        Duration dur = rule.getDuration( );
+//
 //        if ( dur != null && dur.getDuration( tuple ) > 0 )
 //        {
 //            // check if item has been retracted as part of a modify
@@ -200,7 +198,7 @@ class Agenda
      * @param rule
      *            The rule to remove.
      */
-    void removeFromAgenda(TupleKey key,
+    public void removeFromAgenda(TupleKey key,
                           Rule rule)
     {
         AgendaItem eachItem;
@@ -293,18 +291,14 @@ class Agenda
      * Clears all Activations from the Agenda
      *
      */
-    void clearAgenda()
+    public void clearAgenda()
     {
-        AgendaItem eachItem;
-
         // Remove all items in the Agenda and fire a Cancelled event for each
         Iterator iter = this.activationQueue.iterator( );
         while ( iter.hasNext( ) )
         {
-            eachItem = (AgendaItem) iter.next( );
-
+            AgendaItem eachItem = (AgendaItem) iter.next( );
             iter.remove( );
-
 //event
 //            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
 //                                                                           eachItem.getTuple( ) );
