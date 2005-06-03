@@ -20,11 +20,11 @@ public aspect WorkingMemoryChangeNotification {
     pointcut assertObject(WorkingMemory workingMemory, Object object)
     : execution(FactHandle WorkingMemory+.assertObject(Object))
         && this(workingMemory) && args(object);
-
+    
     pointcut retractObject(WorkingMemory workingMemory, FactHandle handle)
     : execution(Object WorkingMemory+.retractObject(FactHandle))
         && this(workingMemory) && args(handle);
-
+    
     pointcut modifyObject(WorkingMemory workingMemory, FactHandle handle, Object object)
     : execution(Object WorkingMemory+.modifyObject(FactHandle, Object))
         && this(workingMemory) && args(handle, object);

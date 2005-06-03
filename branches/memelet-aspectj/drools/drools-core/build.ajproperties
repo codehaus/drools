@@ -1,11 +1,9 @@
 src.includes = src/main/,\
                src/test/
-src.excludes = src/main/org/drools/event/,\
-               src/main/org/drools/reteoo/Scheduler.java,\
+src.excludes = src/main/org/drools/reteoo/Scheduler.java,\
                src/test/org/drools/reteoo/SchedulerTest.java,\
                src/test/org/drools/reteoo/EventTest.java,\
                src/test/org/drools/TestWorkingMemoryEventListener.java,\
-               src/test/org/drools/event/WorkingMemoryEventSupportTest.java,\
                src/main/org/drools/spi/AsyncExceptionHandler.java,\
                src/main/org/drools/rule/FixedDuration.java,\
                src/test/org/drools/rule/FixedDurationTest.java

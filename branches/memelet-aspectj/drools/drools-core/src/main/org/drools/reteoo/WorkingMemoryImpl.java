@@ -64,7 +64,7 @@ import org.drools.util.PrimitiveLongStack;
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-class WorkingMemoryImpl
+public class WorkingMemoryImpl
     implements
     WorkingMemory,
     PropertyChangeListener
@@ -472,7 +472,7 @@ class WorkingMemoryImpl
     /**
      * @see WorkingMemory
      */
-    public void retractObject(FactHandle handle) throws FactException
+    public Object retractObject(FactHandle handle) throws FactException
     {
 //dynamic
 //        removePropertyChangeListener( handle );
@@ -493,12 +493,14 @@ class WorkingMemoryImpl
 //        this.agenda.setMode( Agenda.NONE );
 
         ((FactHandleImpl) handle).invalidate( );
+
+        return oldObject;
     }
 
     /**
      * @see WorkingMemory
      */
-    public void modifyObject(FactHandle handle,
+    public Object modifyObject(FactHandle handle,
                                           Object object) throws FactException
     {
         Object originalObject = removeObject( handle );
@@ -520,6 +522,8 @@ class WorkingMemoryImpl
         this.ruleBase.assertObject( handle,
                                     object,
                                     this );
+        
+        return originalObject;
 
 //event
 //        this.agenda.removeMarkedItemsFromAgenda( );
