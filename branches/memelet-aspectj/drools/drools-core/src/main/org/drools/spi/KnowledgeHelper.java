@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: KnowledgeHelper.java,v 1.19 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: KnowledgeHelper.java,v 1.19.2.1 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ public interface KnowledgeHelper
 {
     /**
      * Asserts an object, notice that it does not return the FactHandle
-     * 
+     *
      * @param object -
      *            the object to be asserted
      * @throws FactException -
@@ -73,7 +73,7 @@ public interface KnowledgeHelper
     /**
      * Asserts an object specifying that it implement the onPropertyChange
      * listener, notice that it does not return the FactHandle.
-     * 
+     *
      * @param object -
      *            the object to be asserted
      * @param dynamic -
@@ -82,13 +82,14 @@ public interface KnowledgeHelper
      *             Exceptions can be thrown by conditions which are wrapped and
      *             returned as a FactException
      */
-    void assertObject(Object object,
-                      boolean dynamic) throws FactException;
+//dynamic
+//    void assertObject(Object object,
+//                      boolean dynamic) throws FactException;
 
     /**
      * Modifies an object. Notice that the FactHandle is not passed so the
      * implementation must lookup the FactHandle form the working memory.
-     * 
+     *
      * @param object -
      *            the object to be modified
      * @throws FactException -
@@ -101,7 +102,7 @@ public interface KnowledgeHelper
      * Modifies an object by looking up the handle of the oldObject and
      * replacing the oldObject with the newObject for the FactHandle. This is
      * used for updating immutable objects.
-     * 
+     *
      * @param oldObject -
      *            The old object to be modified
      * @param newObject -
@@ -114,7 +115,7 @@ public interface KnowledgeHelper
     /**
      * Retracts an object from the WorkingMemory. All Activations on the Agenda
      * that are cancelled should emit ActivationCancelled events.
-     * 
+     *
      * @param object -
      *            the object to be retracted.
      * @throws FactException -
@@ -132,7 +133,7 @@ public interface KnowledgeHelper
 
     /**
      * Retruns a List of Objects that match the given Class in the paremeter.
-     * 
+     *
      * @param objectClass -
      *            The Class to filter by
      * @return - All the Objects in the WorkingMemory that match the given Class

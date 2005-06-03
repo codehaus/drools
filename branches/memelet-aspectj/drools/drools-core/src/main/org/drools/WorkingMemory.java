@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.spi.AgendaFilter;
-import org.drools.spi.AsyncExceptionHandler;
 
 public interface WorkingMemory extends Serializable
 {
@@ -149,7 +148,7 @@ public interface WorkingMemory extends Serializable
      *
      * @throws FactException If an error occurs.
      */
-    FactHandle assertObject( Object object, boolean dynamic ) throws FactException;
+//    FactHandle assertObject( Object object, boolean dynamic ) throws FactException;
 
     /**
      * Retract a fact.

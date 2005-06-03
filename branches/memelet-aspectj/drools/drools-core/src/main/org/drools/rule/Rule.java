@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.59.2.1 2005-06-02 23:25:30 memelet Exp $
+ * $Id: Rule.java,v 1.59.2.2 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,6 @@ import java.util.Map;
 
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
-import org.drools.spi.Duration;
 import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
@@ -97,7 +96,8 @@ public class Rule
     private Consequence  consequence;
 
     /** Truthness duration. */
-    private Duration     duration;
+//duration
+//    private Duration     duration;
 
     /** Load order in RuleSet */
     private long         loadOrder;
@@ -208,10 +208,11 @@ public class Rule
      *
      * @return The truthness duration object.
      */
-    public Duration getDuration()
-    {
-        return this.duration;
-    }
+//duration
+//    public Duration getDuration()
+//    {
+//        return this.duration;
+//    }
 
     /**
      * Determine if this rule is internally consistent and valid.
@@ -469,7 +470,8 @@ public class Rule
         buffer.append( this.loadOrder );
         buffer.append( "\n" );
         buffer.append( indent ).append( "duration: " );
-        buffer.append( this.duration );
+//duration
+//        buffer.append( this.duration );
         buffer.append( "\n" );
 
         for ( Iterator i = this.parameterDeclarations.iterator( ); i.hasNext( ); )

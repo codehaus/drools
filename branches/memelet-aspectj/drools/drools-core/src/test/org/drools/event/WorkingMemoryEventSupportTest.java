@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupportTest.java,v 1.2 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: WorkingMemoryEventSupportTest.java,v 1.2.4.1 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,7 +46,7 @@ import junit.framework.TestCase;
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris</a>
  */
-public class WorkingMemoryEventSupportTest extends TestCase
+public class WorkingMemoryEventSupportTest //extends TestCase
 {
     public void testIsSerializable()
     {
