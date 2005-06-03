@@ -127,65 +127,34 @@ public interface WorkingMemory extends Serializable
     /**
      * Assert a fact.
      *
-     * @param object The fact object.
-     *
-     * @return The new fact-handle associated with the object.
-     *
-     * @throws FactException If an error occurs.
+     * @param object The fact object
+     * @return The new fact-handle associated with the object
+     * @throws FactException If an error occurs
      */
     FactHandle assertObject( Object object ) throws FactException;
 
     /**
-     * Assert a fact registering JavaBean <code>PropertyChangeListeners</code>
-     * on the Object to automatically trigger <code>modifyObject</code> calls
-     * if <code>dynamic</code> is <code>true</code>.
-     *
-     * @param object The fact object.
-     * @param dynamic true if Drools should add JavaBean
-     *        <code>PropertyChangeListeners</code> to the object.
-     *
-     * @return The new fact-handle associated with the object.
-     *
-     * @throws FactException If an error occurs.
-     */
-//    FactHandle assertObject( Object object, boolean dynamic ) throws FactException;
-
-    /**
      * Retract a fact.
      *
-     * @param handle
-     *            The fact-handle associated with the fact to retract.
-     *
-     * @throws FactException
-     *             If an error occurs.
+     * @param handle The fact-handle associated with the fact to retract
+     * @return object The object associated with the handle that was retracted
+     * @throws FactException If an error occurs
      */
-    void retractObject( FactHandle handle ) throws FactException;
+    Object retractObject( FactHandle handle ) throws FactException;
 
     /**
      * Modify a fact.
      *
-     * @param handle
-     *            The fact-handle associated with the fact to modify.
-     * @param object
-     *            The new value of the fact.
-     *
-     * @throws FactException
-     *             If an error occurs.
+     * @param handle The fact-handle associated with the fact to modify.
+     * @param object The new value of the fact.
+     * @return prevObject The object previously associated with the handel
+     * @throws FactException If an error occurs.
      */
-    void modifyObject( FactHandle handle,
+    Object modifyObject( FactHandle handle,
                        Object object ) throws FactException;
 
     /**
-     * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda Scheduler
-     * used for duration rules.
-     * @param handler
-     */
-//duration
-//    void setAsyncExceptionHandler(AsyncExceptionHandler handler);
-
-    /**
      * Clear the Agenda
-     *
      */
     void clearAgenda( );
 }
