@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.35.4.2 2005-06-05 21:37:51 memelet Exp $
+ * $Id: ConditionNode.java,v 1.35.4.3 2005-06-05 22:45:17 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -152,12 +152,6 @@ public class ConditionNode extends TupleSource
                              WorkingMemoryImpl workingMemory ) throws AssertionException
     {
         boolean allowed = this.condition.isAllowed( tuple );
-
-//event
-//        workingMemory.getEventSupport( ).fireConditionTested( this.rule,
-//                                                              this.condition,
-//                                                              tuple,
-//                                                              allowed );
 
         if ( allowed )
         {
