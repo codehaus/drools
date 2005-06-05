@@ -1,7 +1,7 @@
 package org.drools.examples;
 
 /*
- * $Id: MannersNativeTest.java,v 1.13 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: MannersNativeTest.java,v 1.13.4.1 2005-06-02 23:25:30 memelet Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -65,7 +65,6 @@ import junit.framework.TestCase;
 import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
-import org.drools.TestWorkingMemoryEventListener;
 import org.drools.WorkingMemory;
 import org.drools.examples.model.Context;
 import org.drools.examples.model.Guest;
@@ -658,7 +657,8 @@ public class MannersNativeTest extends TestCase
         builder.addRuleSet( ruleSet );
         RuleBase ruleBase = builder.build( );
         workingMemory = getWorkingMemory( ruleBase );
-        workingMemory.addEventListener( new TestWorkingMemoryEventListener( ) );
+//event
+//        workingMemory.addEventListener( new TestWorkingMemoryEventListener( ) );
     }
 
     protected void tearDown() throws Exception
@@ -697,21 +697,22 @@ public class MannersNativeTest extends TestCase
         assertEquals( numGuests,
                       actualGuests );
 
-        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners( ).get( 0 );
-        assertEquals( 50,
-                      listener.asserted );
-        assertEquals( 0,
-                      listener.retracted );
-        assertEquals( 17,
-                      listener.modified );
-        // can't test this as it changes on each run
-        // assertEquals(2024, listener.tested);
-        assertEquals( 96,
-                      listener.created );
-        assertEquals( 17,
-                      listener.fired );
-        assertEquals( 79,
-                      listener.cancelled );
+//event
+//        TestWorkingMemoryEventListener listener = (TestWorkingMemoryEventListener) workingMemory.getEventListeners( ).get( 0 );
+//        assertEquals( 50,
+//                      listener.asserted );
+//        assertEquals( 0,
+//                      listener.retracted );
+//        assertEquals( 17,
+//                      listener.modified );
+//        // can't test this as it changes on each run
+//        // assertEquals(2024, listener.tested);
+//        assertEquals( 96,
+//                      listener.created );
+//        assertEquals( 17,
+//                      listener.fired );
+//        assertEquals( 79,
+//                      listener.cancelled );
     }
 
     /**

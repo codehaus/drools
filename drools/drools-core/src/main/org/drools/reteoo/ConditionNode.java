@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ConditionNode.java,v 1.35 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: ConditionNode.java,v 1.35.4.2 2005-06-05 21:37:51 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.Condition;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-class ConditionNode extends TupleSource
+public class ConditionNode extends TupleSource
     implements
     TupleSink
 {
@@ -89,7 +89,7 @@ class ConditionNode extends TupleSource
      * @param tupleSource The source of incoming <code>Tuples</code>.
      * @param condition
      */
-    ConditionNode( Rule rule,
+    public ConditionNode( Rule rule,
                    TupleSource tupleSource,
                    Condition condition )
     {
@@ -153,10 +153,11 @@ class ConditionNode extends TupleSource
     {
         boolean allowed = this.condition.isAllowed( tuple );
 
-        workingMemory.getEventSupport( ).fireConditionTested( this.rule,
-                                                              this.condition,
-                                                              tuple,
-                                                              allowed );
+//event
+//        workingMemory.getEventSupport( ).fireConditionTested( this.rule,
+//                                                              this.condition,
+//                                                              tuple,
+//                                                              allowed );
 
         if ( allowed )
         {

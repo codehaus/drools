@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.59 2005-05-08 19:54:47 mproctor Exp $
+ * $Id: Rule.java,v 1.59.2.2 2005-06-03 00:21:34 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,7 +49,6 @@ import java.util.Map;
 
 import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
-import org.drools.spi.Duration;
 import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 
@@ -97,7 +96,8 @@ public class Rule
     private Consequence  consequence;
 
     /** Truthness duration. */
-    private Duration     duration;
+//duration
+//    private Duration     duration;
 
     /** Load order in RuleSet */
     private long         loadOrder;
@@ -183,10 +183,11 @@ public class Rule
      * @param seconds -
      *        The number of seconds the rule must hold true in order to fire.
      */
-    public void setDuration(long seconds)
-    {
-        this.duration = new FixedDuration( seconds );
-    }
+//duration
+//    public void setDuration(long seconds)
+//    {
+//        this.duration = new FixedDuration( seconds );
+//    }
 
     /**
      * Set the truthness duration object. This causes a delay before the firing of the
@@ -196,20 +197,22 @@ public class Rule
      * @param duration
      *        The truth duration object.
      */
-    public void setDuration(Duration duration)
-    {
-        this.duration = duration;
-    }
+//duration
+//    public void setDuration(Duration duration)
+//    {
+//        this.duration = duration;
+//    }
 
     /**
      * Retrieve the truthness duration object.
      *
      * @return The truthness duration object.
      */
-    public Duration getDuration()
-    {
-        return this.duration;
-    }
+//duration
+//    public Duration getDuration()
+//    {
+//        return this.duration;
+//    }
 
     /**
      * Determine if this rule is internally consistent and valid.
@@ -467,7 +470,8 @@ public class Rule
         buffer.append( this.loadOrder );
         buffer.append( "\n" );
         buffer.append( indent ).append( "duration: " );
-        buffer.append( this.duration );
+//duration
+//        buffer.append( this.duration );
         buffer.append( "\n" );
 
         for ( Iterator i = this.parameterDeclarations.iterator( ); i.hasNext( ); )

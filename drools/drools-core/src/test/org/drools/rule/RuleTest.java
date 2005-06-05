@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleTest.java,v 1.23 2005-05-08 04:05:13 dbarnett Exp $
+ * $Id: RuleTest.java,v 1.23.2.1 2005-06-02 23:25:31 memelet Exp $
  *
  * Copyright 2002-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,6 @@ import java.util.List;
 
 import org.drools.DroolsTestCase;
 import org.drools.spi.Consequence;
-import org.drools.spi.Duration;
 import org.drools.spi.MockObjectType;
 import org.drools.spi.Tuple;
 
@@ -171,33 +170,34 @@ public class RuleTest extends DroolsTestCase
                                                     new MockObjectType( true ) ).getIndex( ) );
     }
 
-    public void testDuration_SimpleLong() throws Exception
-    {
-        Rule rule = new Rule( "test-rule" );
-
-        rule.setDuration( 42L );
-
-        Duration dur = rule.getDuration( );
-
-        assertNotNull( dur );
-
-        assertTrue( dur instanceof FixedDuration );
-
-        assertEquals( 42L,
-                      rule.getDuration( ).getDuration( null ) );
-    }
-
-    public void testDuration_WithObject() throws Exception
-    {
-        Duration dur = new FixedDuration( 42 );
-
-        Rule rule = new Rule( "test-rule" );
-
-        rule.setDuration( dur );
-
-        assertSame( dur,
-                    rule.getDuration( ) );
-    }
+//duration
+//    public void testDuration_SimpleLong() throws Exception
+//    {
+//        Rule rule = new Rule( "test-rule" );
+//
+//        rule.setDuration( 42L );
+//
+//        Duration dur = rule.getDuration( );
+//
+//        assertNotNull( dur );
+//
+//        assertTrue( dur instanceof FixedDuration );
+//
+//        assertEquals( 42L,
+//                      rule.getDuration( ).getDuration( null ) );
+//    }
+//
+//    public void testDuration_WithObject() throws Exception
+//    {
+//        Duration dur = new FixedDuration( 42 );
+//
+//        Rule rule = new Rule( "test-rule" );
+//
+//        rule.setDuration( dur );
+//
+//        assertSame( dur,
+//                    rule.getDuration( ) );
+//    }
 
     public void testConsequence() throws Exception
     {

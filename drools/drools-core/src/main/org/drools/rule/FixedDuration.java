@@ -1,31 +1,31 @@
 package org.drools.rule;
 
 /*
- * $Id: FixedDuration.java,v 1.5 2004-12-06 01:30:37 dbarnett Exp $
- * 
+ * $Id: FixedDuration.java,v 1.5.4.1 2005-06-03 00:21:34 memelet Exp $
+ *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
- * 
+ *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "drools" must not be used to endorse or promote products derived
  * from this Software without prior written permission of The Werken Company.
  * For written permission, please contact bob@werken.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "drools" nor may
  * "drools" appear in their names without prior written permission of The Werken
  * Company. "drools" is a trademark of The Werken Company.
- * 
+ *
  * 5. Due credit should be given to The Werken Company. (http://werken.com/)
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -37,7 +37,7 @@ package org.drools.rule;
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 
 import org.drools.spi.Duration;
@@ -45,14 +45,15 @@ import org.drools.spi.Tuple;
 
 /**
  * A fixed truthness duration.
- * 
+ *
  * @see Rule#setDuration
  * @see Rule#getDuration
- * 
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * 
- * @version $Id: FixedDuration.java,v 1.5 2004-12-06 01:30:37 dbarnett Exp $
+ *
+ * @version $Id: FixedDuration.java,v 1.5.4.1 2005-06-03 00:21:34 memelet Exp $
  */
+//duration
 public class FixedDuration
     implements
     Duration
@@ -78,7 +79,7 @@ public class FixedDuration
 
     /**
      * Construct.
-     * 
+     *
      * @param seconds
      *            Number of seconds.
      */
@@ -93,7 +94,7 @@ public class FixedDuration
 
     /**
      * Add seconds.
-     * 
+     *
      * @param seconds
      *            Number of seconds.
      */
@@ -104,7 +105,7 @@ public class FixedDuration
 
     /**
      * Add minutes.
-     * 
+     *
      * @param minutes
      *            Number of minutes.
      */
@@ -115,7 +116,7 @@ public class FixedDuration
 
     /**
      * Add hours.
-     * 
+     *
      * @param hours
      *            Number of hours.
      */
@@ -126,7 +127,7 @@ public class FixedDuration
 
     /**
      * Add days.
-     * 
+     *
      * @param days
      *            Number of days.
      */
@@ -137,7 +138,7 @@ public class FixedDuration
 
     /**
      * Add weeks.
-     * 
+     *
      * @param weeks
      *            Number of weeks.
      */
