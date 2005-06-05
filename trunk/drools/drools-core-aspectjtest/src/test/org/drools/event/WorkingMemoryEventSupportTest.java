@@ -1,16 +1,16 @@
 package org.drools.event;
 
+import java.lang.reflect.Method;
+
 import junit.framework.TestCase;
 
 import org.drools.FactHandle;
-import org.drools.WorkingMemory;
 import org.drools.reteoo.ConditionNode;
 import org.drools.reteoo.ReteTuple;
 import org.drools.reteoo.TupleSource;
 import org.drools.reteoo.WorkingMemoryImpl;
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
-import org.drools.spi.Tuple;
 import org.easymock.container.CapturingArgumentsMatcher;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
@@ -23,12 +23,10 @@ public class WorkingMemoryEventSupportTest extends TestCase {
     private Mock<WorkingMemoryEventListener> mockWorkingMemoryEventListener = mocks.createMock(WorkingMemoryEventListener.class);
     private CapturingArgumentsMatcher capturingArgumentsMatcher = new CapturingArgumentsMatcher(mocks);
 
-    private Mock<Tuple> mockTuple = mocks.createMock(Tuple.class);
     private Mock<ReteTuple> mockReteTuple = mocks.createMock(ReteTuple.class);
     private Mock<TupleSource> mockTupleSource = mocks.createMock(TupleSource.class);
     private Mock<Rule> mockRule = mocks.createMock(Rule.class);
     private Mock<Condition> mockCondition = mocks.createMock(Condition.class);
-    private Mock<WorkingMemoryImpl> mockWorkingMemoryImpl = mocks.createMock(WorkingMemoryImpl.class);
 
     private Object assertedObject = new Object(){};
     private Object modifiedObject = new Object(){};
@@ -126,6 +124,10 @@ public class WorkingMemoryEventSupportTest extends TestCase {
     }
 
     public void testConditionTested() throws Exception {
+        Method unusedWorkingMemoryMethod = WorkingMemoryImpl.class.getMethod("fireAllRules", (Class[])null);
+        Mock<WorkingMemoryImpl> mockWorkingMemoryImpl = mocks.createMock(
+                WorkingMemoryImpl.class, new Method[]{unusedWorkingMemoryMethod});
+
         ConditionTestedEvent expectedEvent = new ConditionTestedEvent(
                 mockWorkingMemoryImpl.object, mockRule.object, mockCondition.object, mockReteTuple.object, false);
         mockCondition.control.expectAndReturn(
@@ -137,6 +139,7 @@ public class WorkingMemoryEventSupportTest extends TestCase {
 
         mocks.replay();
 
+        mockWorkingMemoryImpl.object.addListener(mockWorkingMemoryEventListener.object);
         conditionNode.assertTuple(mockReteTuple.object, mockWorkingMemoryImpl.object);
 
         mocks.verify();
