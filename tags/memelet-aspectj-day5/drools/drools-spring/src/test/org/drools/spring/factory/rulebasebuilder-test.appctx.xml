@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="beanMetadataRuleFactoryBean" abstract="true"
+		class="org.drools.spring.factory.BeanRuleMetadataRuleFactoryBean">
+		<property name="methodMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+			</list>
+		</property>
+		<property name="argumentMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="auditService"
+		class="org.drools.spring.factory.AuditService" />
+
+	<bean id="childRule" parent="beanMetadataRuleFactoryBean">
+		<property name="documentation">
+			<value>childRule documentation</value>
+		</property>
+		<property name="salience">
+			<value>10</value>
+		</property>
+		<property name="noLoop">
+			<value>true</value>
+		</property>
+		<property name="pojo">
+			<bean class="org.drools.spring.factory.AgeCommentRule">
+				<property name="auditService">
+					<ref local="auditService"/>
+				</property>
+				<property name="minAge">
+					<value>0</value>
+				</property>
+				<property name="maxAge">
+					<value>17</value>
+				</property>
+				<property name="comment">
+					<value>this is a child comment</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="adultRule" parent="beanMetadataRuleFactoryBean">
+		<property name="name">
+			<value>adultRule-overrideBeanName</value>
+		</property>
+		<property name="pojo">
+			<bean class="org.drools.spring.factory.AgeCommentRule">
+				<property name="auditService">
+					<ref local="auditService"/>
+				</property>
+				<property name="minAge">
+					<value>18</value>
+				</property>
+				<property name="comment">
+					<value>this is an adult comment</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+    <bean id="ruleSet.IOCRules"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+		<property name="ruleBaseBuilder" ref="ruleBaseBuilder" />
+        <property name="rules">
+            <set>
+                <ref local="childRule"/>
+                <ref local="adultRule"/>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="ruleSet.IOCRules.byName"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+		<property name="ruleBaseBuilder" ref="ruleBaseBuilder" />
+        <property name="rules">
+            <set>
+                <value>childRule</value>
+                <value>adultRule</value>
+            </set>
+        </property>
+    </bean>
+
+	<!--  -->
+
+	<bean id="basicRuleFactoryBean" abstract="true"
+		class="org.drools.spring.factory.BasicRuleFactoryBean">
+		<property name="ruleMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+			</list>
+		</property>
+		<property name="methodMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+			</list>
+		</property>
+		<property name="argumentMetadataSourceChain">
+			<list>
+				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ruleSet.HardCodedRules"
+		class="org.drools.spring.factory.RuleSetFactoryBean">
+		<property name="ruleBaseBuilder" ref="ruleBaseBuilder" />
+		<property name="rules">
+			<set>
+				<bean parent="basicRuleFactoryBean">
+					<property name="pojo">
+						<bean class="org.drools.spring.factory.ChildCommentRule" />
+					</property>
+				</bean>
+				<bean parent="basicRuleFactoryBean">
+					<property name="pojo">
+						<bean class="org.drools.spring.factory.AdultCommentRule" />
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<!--  -->
+
+	<bean id="conflictResolver" lazy-init="true"
+		class="org.drools.spring.factory.ConflictResolverFactoryBean">
+		<property name="resolverStrategies">
+			<list>
+				<bean class="org.drools.conflict.SalienceConflictResolver" />
+				<bean class="org.drools.conflict.RecencyConflictResolver" />
+				<bean class="org.drools.conflict.ComplexityConflictResolver" />
+				<bean class="org.drools.conflict.LoadOrderConflictResolver" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ruleBaseBuilder"
+		class="org.drools.spring.factory.RuleBaseBuilderFactoryBean">
+		<property name="conflictResolver">
+			<ref local="conflictResolver"/>
+		</property>
+		<property name="factHandleFactory">
+			<bean class="org.drools.spring.factory.RuleBaseBuilderFactoryBeanTest$NullFactHandleFactory" />
+		</property>
+	</bean>
+
+	<bean id="workingMemory" lazy-init="true"
+		class="org.drools.spring.factory.WorkingMemoryFactoryBean">
+		<property name="ruleBase">
+			<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+				<property name="targetObject" ref="ruleBaseBuilder" />
+				<property name="targetMethod" value="build" />
+			</bean>
+		</property>
+	</bean>
+
+</beans>
