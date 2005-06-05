@@ -3,6 +3,14 @@ package org.drools.event;
 import junit.framework.TestCase;
 
 import org.drools.FactHandle;
+import org.drools.WorkingMemory;
+import org.drools.reteoo.ConditionNode;
+import org.drools.reteoo.ReteTuple;
+import org.drools.reteoo.TupleSource;
+import org.drools.reteoo.WorkingMemoryImpl;
+import org.drools.rule.Rule;
+import org.drools.spi.Condition;
+import org.drools.spi.Tuple;
 import org.easymock.container.CapturingArgumentsMatcher;
 import org.easymock.container.EasymockContainer;
 import org.easymock.container.EasymockContainer.Mock;
@@ -14,6 +22,13 @@ public class WorkingMemoryEventSupportTest extends TestCase {
     private Mock<FactHandle> mockFactHandle = mocks.createMock(FactHandle.class);
     private Mock<WorkingMemoryEventListener> mockWorkingMemoryEventListener = mocks.createMock(WorkingMemoryEventListener.class);
     private CapturingArgumentsMatcher capturingArgumentsMatcher = new CapturingArgumentsMatcher(mocks);
+
+    private Mock<Tuple> mockTuple = mocks.createMock(Tuple.class);
+    private Mock<ReteTuple> mockReteTuple = mocks.createMock(ReteTuple.class);
+    private Mock<TupleSource> mockTupleSource = mocks.createMock(TupleSource.class);
+    private Mock<Rule> mockRule = mocks.createMock(Rule.class);
+    private Mock<Condition> mockCondition = mocks.createMock(Condition.class);
+    private Mock<WorkingMemoryImpl> mockWorkingMemoryImpl = mocks.createMock(WorkingMemoryImpl.class);
 
     private Object assertedObject = new Object(){};
     private Object modifiedObject = new Object(){};
@@ -51,6 +66,16 @@ public class WorkingMemoryEventSupportTest extends TestCase {
         assertSame(expectedEvent.getFactHandle(), actualEvent.getFactHandle());
         assertSame(expectedEvent.getOldObject(), actualEvent.getOldObject());
         assertSame(expectedEvent.getObject(), actualEvent.getObject());
+    }
+
+    private void assertConditionTestedEvent(ConditionTestedEvent expectedEvent, int callCount) {
+        assertTrue(capturingArgumentsMatcher.getActual(callCount)[0] instanceof ConditionTestedEvent);
+        ConditionTestedEvent actualEvent = (ConditionTestedEvent) capturingArgumentsMatcher.getActual(callCount)[0];
+        assertSame(expectedEvent.getSource(), actualEvent.getSource());
+        assertSame(expectedEvent.getRule(), actualEvent.getRule());
+        assertSame(expectedEvent.getCondition(), actualEvent.getCondition());
+        assertSame(expectedEvent.getTuple(), actualEvent.getTuple());
+        assertEquals(expectedEvent.getPassed(), actualEvent.getPassed());
     }
 
     public void testObjectAsserted() throws Exception {
@@ -98,5 +123,23 @@ public class WorkingMemoryEventSupportTest extends TestCase {
 
         mocks.verify();
         assertObjectModifiedEvent(expectedEvent, 0);
+    }
+
+    public void testConditionTested() throws Exception {
+        ConditionTestedEvent expectedEvent = new ConditionTestedEvent(
+                mockWorkingMemoryImpl.object, mockRule.object, mockCondition.object, mockReteTuple.object, false);
+        mockCondition.control.expectAndReturn(
+                mockCondition.object.isAllowed(mockReteTuple.object), false);
+        mockWorkingMemoryEventListener.object.conditionTested(expectedEvent);
+        mockWorkingMemoryEventListener.control.setMatcher(capturingArgumentsMatcher);
+
+        ConditionNode conditionNode = new ConditionNode(mockRule.object, mockTupleSource.object, mockCondition.object);
+
+        mocks.replay();
+
+        conditionNode.assertTuple(mockReteTuple.object, mockWorkingMemoryImpl.object);
+
+        mocks.verify();
+        assertConditionTestedEvent(expectedEvent, 0);
     }
 }
