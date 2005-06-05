@@ -522,7 +522,7 @@ public class WorkingMemoryImpl
         this.ruleBase.assertObject( handle,
                                     object,
                                     this );
-        
+
         return originalObject;
 
 //event

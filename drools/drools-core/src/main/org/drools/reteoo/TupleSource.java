@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.30 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: TupleSource.java,v 1.30.4.1 2005-06-05 21:37:51 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -60,7 +60,7 @@ import org.drools.RetractionException;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-abstract class TupleSource
+public abstract class TupleSource
     implements
     Serializable
 {

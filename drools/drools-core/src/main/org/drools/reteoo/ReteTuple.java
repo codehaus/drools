@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ReteTuple.java,v 1.66 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: ReteTuple.java,v 1.66.4.1 2005-06-05 21:37:51 memelet Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,7 +56,7 @@ import org.drools.spi.Tuple;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-class ReteTuple
+public class ReteTuple
     implements
     Tuple,
     Serializable
