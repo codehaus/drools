@@ -13,23 +13,13 @@ import org.drools.event.WorkingMemoryEventListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class WorkingMemoryEventListenerProcessorTest extends TestCase {
+public class LookupWorkingMemoryEventListenerBeanPostProcessorTest extends TestCase {
 
     public static class Listener_A extends DefaultWorkingMemoryEventListener { }
     public static class Listener_B extends DefaultWorkingMemoryEventListener { }
 
-    public void testWorkingMemoryNotSet() throws Exception {
-        WorkingMemoryEventListenerProcessor listener = new WorkingMemoryEventListenerProcessor();
-        try {
-            listener.afterPropertiesSet();
-            fail("expected IllegalArgumentException");
-        } catch (Exception e) {
-            // expected
-        }
-    }
-
     public void testRegisterListeners() throws Exception {
-        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("org/drools/spring/event/workingmemory.appctx.xml");
+        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("org/drools/spring/event/lookup-workingmemory-beanpostprocessor.appctx.xml");
         WorkingMemory workingMemory = (WorkingMemory) context.getBean("workingMemory");
 
         Set expectedListenerClasses = new HashSet();

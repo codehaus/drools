@@ -3,7 +3,7 @@ package org.drools.spring.event;
 import org.drools.WorkingMemory;
 import org.springframework.beans.factory.InitializingBean;
 
-public class WorkingMemoryEventListenerProcessor extends AbstractWorkingMemoryEventListenerProcessor
+public class WorkingMemoryEventListenerBeanPostProcessor extends AbstractWorkingMemoryEventListenerBeanPostProcessor
                                                  implements InitializingBean {
 
     private WorkingMemory workingMemory;

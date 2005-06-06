@@ -5,7 +5,7 @@ import org.drools.event.WorkingMemoryEventListener;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
-public abstract class AbstractWorkingMemoryEventListenerProcessor implements BeanPostProcessor {
+public abstract class AbstractWorkingMemoryEventListenerBeanPostProcessor implements BeanPostProcessor {
 
     protected abstract WorkingMemory getWorkingMemory();
 
