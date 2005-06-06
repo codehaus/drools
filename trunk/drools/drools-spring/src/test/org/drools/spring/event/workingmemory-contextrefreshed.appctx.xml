@@ -13,11 +13,13 @@
 	</bean>
 
 	<bean id="workingMemoryListenerRegistrar"
-		class="org.drools.spring.event.LookupWorkingMemoryEventListenerBeanPostProcessor">
-		<lookup-method name="getWorkingMemory" bean="workingMemory" />
+		class="org.drools.spring.event.WorkingMemoryEventListenerContextRefreshedRegistrar">
+		<property name="workingMemory">
+			<ref local="workingMemory"/>
+		</property>
 	</bean>
 
-	<bean id="listener_A" class="org.drools.spring.event.LookupWorkingMemoryEventListenerBeanPostProcessorTest$Listener_A" />
-	<bean id="listener_B" class="org.drools.spring.event.LookupWorkingMemoryEventListenerBeanPostProcessorTest$Listener_B" />
+	<bean id="listener_A" class="org.drools.spring.event.WorkingMemoryEventListenerContextRefreshedRegistrarTest$Listener_A" />
+	<bean id="listener_B" class="org.drools.spring.event.WorkingMemoryEventListenerContextRefreshedRegistrarTest$Listener_B" />
 
 </beans>

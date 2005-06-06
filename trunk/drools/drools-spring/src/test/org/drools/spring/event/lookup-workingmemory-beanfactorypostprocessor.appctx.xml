@@ -12,7 +12,7 @@
 		</property>
 	</bean>
 
-	<bean id="workingMemoryListenerProcessor"
+	<bean id="workingMemoryListenerRegistrar"
 		class="org.drools.spring.event.LookupWorkingMemoryEventListenerBeanPostProcessor">
 		<lookup-method name="getWorkingMemory" bean="workingMemory" />
 	</bean>
