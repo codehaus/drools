@@ -74,7 +74,16 @@
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
-        </dependency>
+        </dependency>        
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>        
+        
         <dependency>
             <groupId>jython</groupId>
             <artifactId>jython</artifactId>
@@ -130,6 +139,16 @@
             <artifactId>foxtrot</artifactId>
             <version>2.0</version>
         </dependency>
+        
+    	<!-- presently requires POI, which is not pom-ed by maven yet -->
+        <dependency>
+            <groupId>poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>1.1</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>            
+        </dependency>        
 
     </dependencies>
 
@@ -145,6 +164,7 @@
                     <include>**/*.dat</include>
                     <include>**/primes.txt.gz</include>
                     <include>**/*.gif</include>
+                    <include>**/*.xls</include>
                 </includes>
             </resource>
 
