@@ -89,6 +89,8 @@
       <touch file="${maven.build.dir}/drools-smf-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-smftest-${pom.currentVersion}.jar"/>
       <touch file="${maven.build.dir}/drools-spring-${pom.currentVersion}.jar"/>
+      <touch file="${maven.build.dir}/drools-decisiontables-${pom.currentVersion}.jar"/>
+      
       <j:if test="${context.getVariable('java.specification.version') == '1.5'}"> <!-- hardcoded should ideally use pom -->
         <touch file="${maven.build.dir}/drools-spring-jdk5-${pom.currentVersion}.jar"/>
       </j:if>

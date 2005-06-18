@@ -164,6 +164,14 @@
 	    <timezone>-5</timezone>
 	    <organization>Cantilever Technologies</organization>
         </developer>
+        <developer>
+            <name>Michael Nelae</name>
+            <id>5</id>
+            <email>michael.neale@gmail.com</email>
+            <roles>
+                <role>Decision table despot</role>
+            </roles>
+        </developer>        
     </developers>
     <contributors>
         <contributor>

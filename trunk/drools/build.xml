@@ -60,7 +60,7 @@
     <echo level="info" message="drools-core, drools-smf, drools-io,"/>
     <echo level="info" message="drools-smf, drools-smftest,"/>
     <echo level="info" message="drools-java, drools-python, drools-groovy"/>
-    <echo level="info" message="drools-jsr94, drools-examples"/>
+    <echo level="info" message="drools-jsr94, drools-decisiontables, drools-examples"/>
     <echo level="info" message="    ant drools-&lt;module name&gt;"/>
     <echo level="info" message=" "/>
     <echo level="info" message="Run Examples:"/>
@@ -112,6 +112,8 @@
     <echo level="info" message="# Conway's Game Of Life"/>
     <echo level="info" message="    ant conway-dsl"/>
     <echo level="info" message="    ant conway-java"/>
+    <echo level="info" message="# Decision tables"/>
+    <echo level="info" message="    ant decision-tables"/>    
   </target>
 
   <!-- ================================================================== -->
@@ -132,6 +134,7 @@
   <property name="simple-jndi.jar" value="simple-jndi-0.10.jar"/>
   <property name="forms.jar" value="forms-1.0.4.jar"/>
   <property name="foxtrot.jar" value="foxtrot-2.0.jar"/>
+  <property name="poi.jar" value="poi-2.5.1-final-20040804.jar" />
 
   <!-- Configure directories. -->
   <property name="lib.dir" value="lib"/>
@@ -155,6 +158,7 @@
       <delete dir="drools-jsr94/target"/>
       <delete dir="drools-groovy/target"/>
       <delete dir="drools-python/target"/>
+      <delete dir="drools-decisiontables/target"/>
       <delete dir="drools-examples/target"/>
   </target>
 
@@ -169,7 +173,7 @@
       <delete file="${lib.dir}/${simple-jndi.jar}"/>
       <delete file="${lib.dir}/${forms.jar}"/>
       <delete file="${lib.dir}/${foxtrot.jar}"/>
-      <delete file="${lib.dir}/${junit.jar}"/>
+      <delete file="${lib.dir}/${junit.jar}"/>      
   </target>
 
   <target name="realclean"
@@ -212,6 +216,7 @@
      <copy file="lib/${jsr94.jar}" tofile="${lib.dir}/${jsr94.jar}"/>
      <copy file="lib/${jsr94-tck.jar}" tofile="${lib.dir}/${jsr94-tck.jar}"/>
      <copy file="lib/${sigtest.jar}" tofile="${lib.dir}/${sigtest.jar}"/>
+     <copy file="lib/${poi.jar}" tofile="${lib.dir}/${poi.jar}"/>     
 
   </target>
 
@@ -391,6 +396,13 @@
        <param name="fork-test"   value="yes"/>
      </antcall>
   </target>
+  
+  <target name="drools-decisiontables" depends="get-deps">
+     <antcall target="jar-module">
+       <param name="module-name" value="drools-decisiontables"/>
+       <param name="fork-test"   value="yes"/>
+     </antcall>
+  </target>  
 
   <target name="drools-examples" depends="get-deps">
      <antcall target="jar-module">
@@ -719,6 +731,13 @@
       <param name="arg1" value="conway.java.drl"/>
     </antcall>
   </target>
+
+<!-- Decision tables -->  
+  <target name="decision-tables">
+    <antcall target="run-example">
+      <param name="class-name" value="org.drools.examples.decisiontables.TeamAllocationExample"/>
+    </antcall>
+  </target>  
 
 </project>
 

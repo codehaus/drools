@@ -34,6 +34,7 @@
         <attainGoal name="petstore-groovy"/>
         <attainGoal name="conway-java"/>
         <attainGoal name="conway-dsl"/>
+        <attainGoal name="decision-tables" />
     </goal>
 
     <goal name="run-all-java">
@@ -443,6 +444,16 @@
         </classpath>
       </java>
     </goal>
+    
+    <goal name="decision-tables" prereqs="jar:jar">
+      <java classname="org.drools.examples.decisiontables.TeamAllocationExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+      </java>
+    </goal>    
 
 </project>
 
