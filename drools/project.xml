@@ -1,4 +1,5 @@
 <project>
+<!-- test comment -->
     <pomVersion>3</pomVersion>
     <name>Drools</name>
     <groupId>drools</groupId>
