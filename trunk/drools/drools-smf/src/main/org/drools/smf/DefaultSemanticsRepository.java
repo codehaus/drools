@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DefaultSemanticsRepository.java,v 1.10 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: DefaultSemanticsRepository.java,v 1.11 2005-06-22 11:34:03 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,20 +52,20 @@ import java.util.Set;
 /**
  * Default <code>SemanticsRepository</code> which uses discovery to autoload
  * semantic modules.
- *
+ * 
  * <p>
  * Any <b>semantic module </b> that conforms to the SMF contract will be
  * discovered and autoloaded upon first access of the
  * <code>DefaultSemanticsRepository</code>.
  * </p>
- *
+ * 
  * <p>
  * To be discovered, the module should be in a jar with a module descriptor
  * located at <code>/META-INF/drools-semantics.properties</code>.
  * </p>
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- *
+ * 
  * @version $Id: DefaultSemanticsRepository.java,v 1.4 2004/06/22 17:17:27 bob
  *          Exp $
  */
@@ -80,7 +80,8 @@ public final class DefaultSemanticsRepository
     /** Singleton instance, lazily initialized. */
     private static SemanticsRepository INSTANCE;
 
-    private ClassLoader                classLoader;
+
+    private ClassLoaderHelper          clHelper;
 
     // ----------------------------------------------------------------------
     // Class methods
@@ -88,9 +89,9 @@ public final class DefaultSemanticsRepository
 
     /**
      * Retrieve the singleton instance.
-     *
+     * 
      * @return The singleton instance.
-     *
+     * 
      * @throws Exception
      *             If an error occurs while performing discovery and loading of
      *             the semantic modules.
@@ -121,7 +122,7 @@ public final class DefaultSemanticsRepository
 
     /**
      * Construct.
-     *
+     * 
      * @throws Exception
      *             If an error occurs while performing discovery and loading of
      *             the semantic modules.
@@ -140,7 +141,7 @@ public final class DefaultSemanticsRepository
 
     /**
      * Initialize and perform discovery.
-     *
+     * 
      * @throws Exception
      *             If an error occurs while performing discovery and loading of
      *             the semantic modules.
@@ -155,28 +156,28 @@ public final class DefaultSemanticsRepository
             loadConfig( droolsConfigProp );
         }
 
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
+        ClassLoaderHelper clh = new CurrentThreadClassLoaderHelper( );
 
-        if ( cl == null )
+        if ( clh.getClassLoader( ) == null )
         {
-            cl = getClass( ).getClassLoader( );
+            clh = new CurrentClassLoaderHelper( );
         }
 
-        Enumeration configUrls = cl.getResources( "META-INF/drools.conf" );
+        Enumeration configUrls = clh.getClassLoader( ).getResources( "META-INF/drools.conf" );
 
         if ( !configUrls.hasMoreElements( ) )
         {
-            cl = getClass( ).getClassLoader( );
-            configUrls = cl.getResources( "META-INF/drools.conf" );
+            clh = new CurrentClassLoaderHelper( );
+            configUrls = clh.getClassLoader( ).getResources( "META-INF/drools.conf" );
         }
 
         if ( !configUrls.hasMoreElements( ) )
         {
-            cl = ClassLoader.getSystemClassLoader( );
-            configUrls = cl.getResources( "META-INF/drools.conf" );
+            clh = new SystemClassLoaderHelper( );
+            configUrls = clh.getClassLoader( ).getResources( "META-INF/drools.conf" );
         }
 
-        this.classLoader = cl;
+        this.clHelper = clh;
         while ( configUrls.hasMoreElements( ) )
         {
             URL configUrl = (URL) configUrls.nextElement( );
@@ -188,7 +189,7 @@ public final class DefaultSemanticsRepository
     protected void loadConfig(String path) throws IOException,
                                           SemanticsReaderException
     {
-        URL url = this.classLoader.getResource( path );
+        URL url = this.clHelper.getClassLoader( ).getResource( path );
 
         if ( url == null )
         {
@@ -240,7 +241,7 @@ public final class DefaultSemanticsRepository
 
         String semanticsFile = "META-INF/" + semanticsName + ".conf";
 
-        URL descriptor = this.classLoader.getResource( semanticsFile );
+        URL descriptor = this.clHelper.getClassLoader( ).getResource( semanticsFile );
 
         if ( descriptor == null )
         {
@@ -251,7 +252,7 @@ public final class DefaultSemanticsRepository
         SemanticsReader semanticsReader = new SemanticsReader( );
 
         SemanticModule module = semanticsReader.read( descriptor,
-                                                      this.classLoader );
+                                                      this.clHelper.getClassLoader( ) );
 
         this.repository.registerSemanticModule( module );
     }
@@ -272,8 +273,58 @@ public final class DefaultSemanticsRepository
         return this.repository.getSemanticModules( );
     }
 
+    /**
+     * Gets the classloader that was chosen when the repository was initialised.
+     * Each time this is called, it will get a valid classloader. This does not
+     * cache the classloader, so as to support "hot deployment"
+     * environments/containers.
+     */
     public ClassLoader getSemanticModuleClassLoader()
     {
-        return this.classLoader;
+        return this.clHelper.getClassLoader( );
     }
+
+    
+    /**
+     * The ClassLoaderHelper is used to preserve the initialisation logic of choosing the class loader.
+     * The initialisation can still only happen once, but the classloaders will be fresh.
+     */
+    static interface ClassLoaderHelper
+    {
+        ClassLoader getClassLoader();
+    }
+
+    static class CurrentThreadClassLoaderHelper
+        implements
+        ClassLoaderHelper
+    {
+
+        public ClassLoader getClassLoader()
+        {
+            return Thread.currentThread( ).getContextClassLoader( );
+        }
+    }
+
+    static class CurrentClassLoaderHelper
+        implements
+        ClassLoaderHelper
+    {
+
+        public ClassLoader getClassLoader()
+        {
+            return getClass( ).getClassLoader( );
+        }
+    }
+
+    static class SystemClassLoaderHelper 
+        implements
+        ClassLoaderHelper
+    {
+
+        public ClassLoader getClassLoader()
+        {
+            return ClassLoader.getSystemClassLoader( );
+        }
+    }
+
 }
