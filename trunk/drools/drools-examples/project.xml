@@ -144,10 +144,7 @@
         <dependency>
             <groupId>poi</groupId>
             <artifactId>poi</artifactId>
-            <version>1.1</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-            </properties>            
+            <version>1.1</version>          
         </dependency>        
 
     </dependencies>
