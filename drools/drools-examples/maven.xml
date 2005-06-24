@@ -413,7 +413,7 @@
 
 <!-- house -->
     <goal name="house" prereqs="jar:jar">
-      <java classname="org.drools.examples.house.HouseExample">
+      <java classname="org.drools.examples.house.HouseExample"
             fork="true">
         <classpath refid="maven.dependency.classpath"/>
         <classpath>
