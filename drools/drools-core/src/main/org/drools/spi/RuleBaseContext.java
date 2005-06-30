@@ -1,5 +1,5 @@
 /*
- * $Id: RuleBaseContext.java,v 1.3 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: RuleBaseContext.java,v 1.4 2005-06-30 19:15:01 dbarnett Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -64,5 +64,9 @@ public class RuleBaseContext implements Serializable
     {
         this.map.put( key,
                       value );
+    }
+
+    public String toString() {
+        return String.valueOf(map);
     }
 }
