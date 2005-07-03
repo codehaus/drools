@@ -140,7 +140,7 @@ public class RuleSheetListener
 
         if ( _ruleList.isEmpty( ) )
         {
-            throw new RuntimeException( "No ruleset was found in spreadsheet. It is possible that the " + "worksheet name is not spelt correctly." );
+            throw new DecisionTableParseException( "No RuleTable's were found in spreadsheet." );
         }
         String rulesetName = getProperties( ).getProperty( RULESET_TAG );
         Ruleset ruleset = new Ruleset( rulesetName );
@@ -331,7 +331,7 @@ public class RuleSheetListener
         }
         else
         {
-            throw new RuntimeException( "Action description - row:" + row + " column:" + column + " - does not contain a leading C or A identifer" );
+            throw new DecisionTableParseException( "Should be CONDITION or ACTION row:" + row + " column:" + column + " - does not contain a leading C or A identifer." );
         }
     }
 
@@ -341,7 +341,7 @@ public class RuleSheetListener
     {
         if ( value.trim( ).equals( "" ) )
         {
-            throw new RuntimeException( "Code description - row:" + row + " column:" + column + " - does not contain any code specification" );
+            throw new DecisionTableParseException( "Code description - row:" + row + " column:" + column + " - does not contain any code specification. It should !" );
         }
 
         ActionType actionType = getActionForColumn( row,
@@ -356,7 +356,7 @@ public class RuleSheetListener
 
         if ( actionType == null )
         {
-            throw new RuntimeException( "Code description - row:" + row + " column:" + column + " - does not have an action definition" );
+            throw new DecisionTableParseException( "Code description - row:" + row + " column:" + column + " - does not have an 'ACTION' or 'CONDITION' column header." );
         }
 
         return actionType;
