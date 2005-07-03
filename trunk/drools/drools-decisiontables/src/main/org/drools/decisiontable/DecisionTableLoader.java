@@ -1,6 +1,5 @@
 package org.drools.decisiontable;
 
-
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +39,13 @@ package org.drools.decisiontable;
  *
  */
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 
 import org.drools.IntegrationException;
 import org.drools.RuleBase;
+import org.drools.decisiontable.parser.DecisionTableParseException;
 import org.drools.io.RuleBaseLoader;
 import org.xml.sax.SAXException;
 
@@ -94,6 +92,8 @@ public final class DecisionTableLoader
      * @throws SAXException
      * @throws IntegrationException
      *             go.
+     * This may also throw a DecisionTableParseException if there is
+     * some problem converting the decision table (before building the rulebase).
      */
     public static RuleBase loadFromInputStream(InputStream streamToSpreadsheet) throws IntegrationException,
                                                                                SAXException,
@@ -113,9 +113,17 @@ public final class DecisionTableLoader
     private static String loadDRLFromStream(InputStream streamToSpreadsheet)
     {
         SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter( );
-        String generatedDrl = converter.convertToDRL( streamToSpreadsheet );
-        return generatedDrl;
+        try
+        {
+            String generatedDrl = converter.convertToDRL( streamToSpreadsheet );
+            return generatedDrl;
+
+        }
+        catch ( RuntimeException e )
+        {
+            throw new DecisionTableParseException( "An error occurred processing the decision table.",
+                                                   e );
+        }
     }
 
 }
-

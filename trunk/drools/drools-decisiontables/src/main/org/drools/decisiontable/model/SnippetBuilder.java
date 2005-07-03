@@ -81,6 +81,9 @@ public class SnippetBuilder
      */
     public String build(String cellValue)
     {
+        if (_template == null) {
+            throw new RuntimeException("Script template is null - check for missing script definition.");
+        }
         if ( _template.indexOf( PARAM_PREFIX + "1" ) > 0 )
         {
             return buildMulti( cellValue );

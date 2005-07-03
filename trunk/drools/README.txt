@@ -24,3 +24,7 @@ drools-groovy
  -asm-util
  -groovy
 
+drools-decisiontables
+ -antlr
+ -janino
+ -drools-java
