@@ -61,6 +61,7 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
             if (ruleOrName instanceof Rule) {
                 rule = (Rule)ruleOrName;
             } else if (ruleOrName instanceof String) {
+                // TODO Should check the class before casting and provide a proper error message
                 rule = (Rule) beanFactory.getBean((String)ruleOrName);
             } else {
                 throw new IllegalArgumentException("Rules property must contain either Rule instances or Rule bean names");
