@@ -55,8 +55,8 @@ public class RuleBuilderTest extends TestCase {
     private static Set expectedConditionMethodNames = new HashSet();
     private static Set expectedConsequenceMethodNames = new HashSet();
 
-    private static MethodMetadata CONDITION_METADATA = new MethodMetadata(MethodMetadata.CONDITION);
-    private static MethodMetadata CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.CONSEQUENCE);
+    private static MethodMetadata METHOD_CONDITION_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
+    private static MethodMetadata METHOD_CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONSEQUENCE);
 
     private boolean isStaticSetUp;
 
@@ -155,16 +155,16 @@ public class RuleBuilderTest extends TestCase {
 
     public void testBuildRule() throws Exception {
 
-        methodMetadataSourceExpectAndReturn(conditionOneMethod, CONDITION_METADATA);
+        methodMetadataSourceExpectAndReturn(conditionOneMethod, METHOD_CONDITION_METADATA);
         argumentMetadataSourceExpectAndReturn(conditionOneMethod, conditionOneArgumentMetadata);
 
-        methodMetadataSourceExpectAndReturn(conditionTwoMethod, CONDITION_METADATA);
+        methodMetadataSourceExpectAndReturn(conditionTwoMethod, METHOD_CONDITION_METADATA);
         argumentMetadataSourceExpectAndReturn(conditionTwoMethod, conditionTwoArgumentMetadata);
 
-        methodMetadataSourceExpectAndReturn(consequenceOneMethod, CONSEQUENCE_METADATA);
+        methodMetadataSourceExpectAndReturn(consequenceOneMethod, METHOD_CONSEQUENCE_METADATA);
         argumentMetadataSourceExpectAndReturn(consequenceOneMethod, consequenceOneArgumentMetadata);
 
-        methodMetadataSourceExpectAndReturn(consequenceTwoMethod, CONSEQUENCE_METADATA);
+        methodMetadataSourceExpectAndReturn(consequenceTwoMethod, METHOD_CONSEQUENCE_METADATA);
         argumentMetadataSourceExpectAndReturn(consequenceTwoMethod, consequenceTwoArgumentMetadata);
 
         mocks.replay();

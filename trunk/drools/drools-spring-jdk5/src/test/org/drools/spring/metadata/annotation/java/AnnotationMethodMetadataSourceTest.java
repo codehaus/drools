@@ -17,9 +17,11 @@ public class AnnotationMethodMetadataSourceTest extends MethodMetadataSourceTest
             privateBooleanMethod();
             privateVoidMethod();
             return 0;
-        }
+        }        
         public boolean publicBooleanMethodWithNoParameters() { return false; }
 
+        @ObjectCondition
+        public PojoRule publicNonVoidAndNonPrimitiveMethod() { return new PojoRule(); }
         @Condition
         public boolean publicBooleanMethodWithParameters(String fact, String data) { return false; }
         @Consequence

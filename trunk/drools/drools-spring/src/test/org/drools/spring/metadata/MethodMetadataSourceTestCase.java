@@ -19,6 +19,7 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
             privateVoidMethod();
             return 0;
         }
+        public PojoRule publicNonVoidAndNonPrimitiveMethod() { return new PojoRule(); }
         public boolean publicBooleanMethodWithNoParameters() { return false; } // need args to be a condition
 
         /** @Condition */
@@ -36,6 +37,7 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
     protected static Method privateBooleanMethod;
     protected static Method privateVoidMethod;
     protected static Method publicNonVoidAndNonBooleanMethod;
+    protected static Method publicNonVoidAndNonPrimitiveMethod;
     protected static Method publicBooleanMethodWithNoParameters;
     protected static Method publicBooleanMethodWithParameters;
     protected static Method publicVoidMethodWithNoParameters;
@@ -60,6 +62,7 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
                 privateBooleanMethod = pojoRuleClass.getDeclaredMethod("privateBooleanMethod", new Class[0]);
                 privateVoidMethod = pojoRuleClass.getDeclaredMethod("privateVoidMethod", new Class[0]);
                 publicNonVoidAndNonBooleanMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonBooleanMethod", new Class[0]);
+                publicNonVoidAndNonPrimitiveMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonPrimitiveMethod", new Class[0]);
                 publicBooleanMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithNoParameters", new Class[0]);
                 publicBooleanMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithParameters", new Class[]{String.class, String.class});
                 publicVoidMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithNoParameters", new Class[0]);
@@ -80,18 +83,25 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
     public void testConditionMethods() throws Exception {
         assertEquals(
                 "expected CONDITION",
-                MethodMetadata.CONDITION,
+                MethodMetadata.METHOD_CONDITION,
                 concreteSource.getMethodMetadata(publicBooleanMethodWithParameters).getMethodType());
     }
 
+    public void testPojoConditionMethods() throws Exception {
+        assertEquals(
+                "expected POJO_CONDITION",
+                MethodMetadata.OBJECT_CONDITION,
+                concreteSource.getMethodMetadata(publicNonVoidAndNonPrimitiveMethod).getMethodType());
+    }
+    
     public void testConsequenceMethods() throws Exception {
         assertEquals(
                 "expected CONSEQUENCE",
-                MethodMetadata.CONSEQUENCE,
+                MethodMetadata.METHOD_CONSEQUENCE,
                 concreteSource.getMethodMetadata(publicVoidMethodWithNoParameters).getMethodType());
         assertEquals(
                 "expected CONSEQUENCE",
-                MethodMetadata.CONSEQUENCE,
+                MethodMetadata.METHOD_CONSEQUENCE,
                 concreteSource.getMethodMetadata(publicVoidMethodWithParameters).getMethodType());
     }
 }

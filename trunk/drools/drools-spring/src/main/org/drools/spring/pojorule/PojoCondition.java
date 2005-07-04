@@ -45,6 +45,28 @@ public class PojoCondition implements Condition {
         }
     }
 
+    /**
+     * This only compares the ruleMethod, as to facilitate node sharing in the RETE network
+     */
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof PojoCondition)) {
+            return false;
+        }
+        final PojoCondition pojoCondition = (PojoCondition)other;
+        if (!ruleMethod.equals(pojoCondition.ruleMethod)) {
+            return false;
+        }
+        return true;
+    }
+
+    public int hashCode()
+    {
+        return ruleMethod.hashCode();
+    }
+    
     public String toString() {
         return ruleMethod.toString();
     }
