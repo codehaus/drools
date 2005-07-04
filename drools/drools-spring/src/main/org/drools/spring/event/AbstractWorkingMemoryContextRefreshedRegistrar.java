@@ -14,8 +14,7 @@ public abstract class AbstractWorkingMemoryContextRefreshedRegistrar implements 
 
     public void onApplicationEvent(ApplicationEvent event) {
         if (ContextRefreshedEvent.class.isAssignableFrom(event.getClass())) {
-            ListableBeanFactory factory = (ListableBeanFactory) event.getSource();
-            registerListeners(factory);
+            registerListeners((ListableBeanFactory) event.getSource());
         }
     }
 
