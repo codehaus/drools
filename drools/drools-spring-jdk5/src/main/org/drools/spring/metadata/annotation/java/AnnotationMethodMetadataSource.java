@@ -7,14 +7,17 @@ import org.drools.spring.metadata.MethodMetadataSource;
 
 public class AnnotationMethodMetadataSource implements MethodMetadataSource {
 
-    private static final MethodMetadata CONDITION_METADATA = new MethodMetadata(MethodMetadata.CONDITION);
-    private static final MethodMetadata CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.CONSEQUENCE);
+    private static final MethodMetadata METHOD_CONDITION_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
+    private static final MethodMetadata OBJECT_CONDITION_METADATA = new MethodMetadata(MethodMetadata.OBJECT_CONDITION);
+    private static final MethodMetadata METHOD_CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONSEQUENCE);
 
     public MethodMetadata getMethodMetadata(Method method) {
         if (method.isAnnotationPresent(Condition.class)) {
-            return CONDITION_METADATA;
+            return METHOD_CONDITION_METADATA;
+        } else if (method.isAnnotationPresent(ObjectCondition.class)) {
+                return OBJECT_CONDITION_METADATA;
         } else if (method.isAnnotationPresent(Consequence.class)) {
-            return CONSEQUENCE_METADATA;
+            return METHOD_CONSEQUENCE_METADATA;
         } else {
             return null;
         }

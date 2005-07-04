@@ -65,7 +65,7 @@ public class ChainedMethodMetadataSourceTest extends TestCase {
     }
 
     public void testGetRuleMetadataFromFirstDelegate() throws Exception {
-        MethodMetadata expectedMetadata = new MethodMetadata(MethodMetadata.CONDITION);
+        MethodMetadata expectedMetadata = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
         delegateControl_1.expectAndReturn(
                 delegateMock_1.getMethodMetadata(conditionMethod), expectedMetadata);
 
@@ -78,7 +78,7 @@ public class ChainedMethodMetadataSourceTest extends TestCase {
     }
 
     public void testGetRuleMetadataFromSecondDelegate() throws Exception {
-        MethodMetadata expectedMetadata = new MethodMetadata(MethodMetadata.CONDITION);
+        MethodMetadata expectedMetadata = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
         delegateControl_1.expectAndReturn(
                 delegateMock_1.getMethodMetadata(conditionMethod), null);
         delegateControl_2.expectAndReturn(

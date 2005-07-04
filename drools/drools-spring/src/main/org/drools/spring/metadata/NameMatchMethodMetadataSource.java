@@ -6,9 +6,10 @@ import java.util.Map;
 
 public class NameMatchMethodMetadataSource implements MethodMetadataSource{
 
-    static final MethodMetadata CONDITION_METADATA = new MethodMetadata(MethodMetadata.CONDITION);
-    static final MethodMetadata CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.CONSEQUENCE);
-
+    static final MethodMetadata METHOD_CONDITION_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
+    static final MethodMetadata METHOD_CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONSEQUENCE);
+    static final MethodMetadata OBJECT_CONDITION_METADATA = new MethodMetadata(MethodMetadata.OBJECT_CONDITION);
+    
     private Map nameMap = new HashMap(); // Map<String methodName, MetadataInfo>
 
     public MethodMetadata getMethodMetadata(Method method) {

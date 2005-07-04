@@ -30,6 +30,16 @@ public class RuleBuilder {
             super(message);
         }
     }
+    
+    public static final class InvalidPojoConditionException extends DroolsException {
+        InvalidPojoConditionException(String msg, Throwable rootCause) {
+            super(msg, rootCause);
+        }
+
+        InvalidPojoConditionException(String message) {
+            super(message);
+        }
+    }
 
     // ---- ---- ----
 
@@ -54,8 +64,8 @@ public class RuleBuilder {
         Method[] pojoMethods = pojo.getClass().getMethods();
         for (int i = 0; i < pojoMethods.length; i++) {
             Method pojoMethod = pojoMethods[i];
-            MethodMetadata methodMedata = methodMetadataSource.getMethodMetadata(pojoMethod);
-            if (methodMedata == null) {
+            MethodMetadata methodMetadata = methodMetadataSource.getMethodMetadata(pojoMethod);
+            if (methodMetadata == null) {
                 if (log.isDebugEnabled()) {
                     log.debug("No metadata for method " + pojoMethod.toString());
                 }
@@ -65,16 +75,27 @@ public class RuleBuilder {
             ArgumentMetadata[] argumentsMetadata = getArgumentMetadata(pojoMethod);
             Argument[] arguments = getArguments(rule, argumentsMetadata);
 
-            if (methodMedata.getMethodType() == MethodMetadata.CONDITION) {
+            if (methodMetadata.getMethodType() == MethodMetadata.METHOD_CONDITION) {
                 assertReturnType(pojoMethod, boolean.class);
                 rule.addCondition(
                         new PojoCondition(new RuleReflectMethod(rule, pojo, pojoMethod, arguments)));
                 log.info("Condition method added to rule: " + pojoMethod.toString());
 
-            } else if (methodMedata.getMethodType() == MethodMetadata.CONSEQUENCE) {
+            } else if (methodMetadata.getMethodType() == MethodMetadata.METHOD_CONSEQUENCE) {
                 conditionRuleReflectMethods.add(
                         new RuleReflectMethod(rule, pojo, pojoMethod, arguments));
                 log.info("Consequence method added to rule: " + pojoMethod.toString());
+            } else if (methodMetadata.getMethodType() == MethodMetadata.OBJECT_CONDITION) {
+                if (arguments.length != 0) {
+                    throw new InvalidPojoConditionException("Rule pojo condition must not have arguments"
+                                                            + ": method = " + pojoMethod + ", arguments = " + arguments);
+                }
+                try {
+                    buildObjectConditions(rule, pojoMethod.invoke(pojo, new Object[0]));
+                } catch (Exception e) {
+                    throw new InvalidPojoConditionException("Unable to execute pojo condition"
+                                                            + ": method = " + pojoMethod, e);
+                }
             }
         }
 
@@ -84,6 +105,26 @@ public class RuleBuilder {
 
         rule.checkValidity();
         return rule;
+    }
+
+    private void buildObjectConditions(Rule rule, Object pojo) throws DroolsException {
+        Method[] pojoMethods = pojo.getClass().getMethods();
+        for (int i = 0; i < pojoMethods.length; i++) {
+            Method pojoMethod = pojoMethods[i];
+            MethodMetadata methodMetadata = methodMetadataSource.getMethodMetadata(pojoMethod);
+            if (methodMetadata == null) {
+                continue;
+            }
+    
+            ArgumentMetadata[] argumentsMetadata = getArgumentMetadata(pojoMethod);
+            Argument[] arguments = getArguments(rule, argumentsMetadata);
+    
+            if (methodMetadata.getMethodType() == MethodMetadata.METHOD_CONDITION) {
+                assertReturnType(pojoMethod, boolean.class);
+                rule.addCondition(new PojoCondition(new RuleReflectMethod(rule, pojo, pojoMethod, arguments)));
+    
+            }
+        }
     }
 
     private ArgumentMetadata[] getArgumentMetadata(Method pojoMethod) throws InvalidParameterException {

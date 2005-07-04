@@ -10,9 +10,10 @@ public class NameMatchMethodMetadataSourceTest extends MethodMetadataSourceTestC
 
     protected MethodMetadataSource getSourceUnderTest() {
         Map nameMap = new HashMap();
-        nameMap.put("publicBooleanMethodWithParameters", NameMatchMethodMetadataSource.CONDITION_METADATA);
-        nameMap.put("publicVoidMethodWithNoParameters", NameMatchMethodMetadataSource.CONSEQUENCE_METADATA);
-        nameMap.put("publicVoidMethodWithParameters", NameMatchMethodMetadataSource.CONSEQUENCE_METADATA);
+        nameMap.put("publicBooleanMethodWithParameters", NameMatchMethodMetadataSource.METHOD_CONDITION_METADATA);
+        nameMap.put("publicVoidMethodWithNoParameters", NameMatchMethodMetadataSource.METHOD_CONSEQUENCE_METADATA);
+        nameMap.put("publicVoidMethodWithParameters", NameMatchMethodMetadataSource.METHOD_CONSEQUENCE_METADATA);
+        nameMap.put("publicNonVoidAndNonPrimitiveMethod", NameMatchMethodMetadataSource.OBJECT_CONDITION_METADATA);
         NameMatchMethodMetadataSource source = new NameMatchMethodMetadataSource();
         source.setNameMap(nameMap);
         return source;

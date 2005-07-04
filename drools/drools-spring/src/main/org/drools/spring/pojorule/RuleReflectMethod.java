@@ -73,6 +73,30 @@ public class RuleReflectMethod implements Externalizable {
         arguments = (Argument[]) in.readObject();
     }
 
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof RuleReflectMethod)) {
+            return false;
+        }
+        final RuleReflectMethod ruleReflectMethod = (RuleReflectMethod)other;
+        if (!method.equals(ruleReflectMethod.method)) {
+            return false;
+        }
+        if (!pojo.equals(ruleReflectMethod.pojo)) {
+            return false;
+        }
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = pojo.hashCode();
+        result = 29 * result + method.hashCode();  
+        return result;
+    }
+
     public String toString() {
         return pojo.getClass().getName() + "." + method.getName() + "("
                 + toStringParamterTypes() + ")";

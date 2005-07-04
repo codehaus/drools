@@ -15,22 +15,29 @@ import java.lang.reflect.Modifier;
  */
 public class AccessAndReturnTypeMethodMetadataSource implements MethodMetadataSource {
 
-    private static final MethodMetadata CONDITION_METADATA = new MethodMetadata(MethodMetadata.CONDITION);
-    private static final MethodMetadata CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.CONSEQUENCE);
+    private static final MethodMetadata METHOD_CONDITION_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
+    private static final MethodMetadata METHOD_CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONSEQUENCE);
+    private static final MethodMetadata OBJECT_CONDITION_METADATA = new MethodMetadata(MethodMetadata.OBJECT_CONDITION);
 
     public MethodMetadata getMethodMetadata(Method method) {
         if (!Modifier.isPublic(method.getModifiers())) {
             return null;
         }
         if (isReturnTypeBoolean(method) && hasParameters(method)) {
-            return CONDITION_METADATA;
+            return METHOD_CONDITION_METADATA;
+        } else if (!isReturnTypePrimitive(method) && !hasParameters(method)) {
+            return OBJECT_CONDITION_METADATA;
         } else if (isReturnTypeVoid(method)) {
-            return CONSEQUENCE_METADATA;
+            return METHOD_CONSEQUENCE_METADATA;
         } else {
             return null;
         }
     }
 
+    private boolean isReturnTypePrimitive(Method method) {
+        return method.getReturnType().isPrimitive();
+    }
+    
     private boolean isReturnTypeBoolean(Method method) {
         return boolean.class.isAssignableFrom(method.getReturnType());
     }
