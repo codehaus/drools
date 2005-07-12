@@ -16,7 +16,7 @@ public class RuleSetFactoryBeanTest extends TestCase {
     public static Test suite() {
         return new SpringTestSetup(
                 new TestSuite(RuleSetFactoryBeanTest.class),
-                contextHolder, "org/drools/spring/factory/for-test.appctx.xml");
+                contextHolder, "org/drools/spring/factory/rulesets.appctx.xml");
     }
 
     private RuleSetFactoryBean factory = new RuleSetFactoryBean();
@@ -35,6 +35,7 @@ public class RuleSetFactoryBeanTest extends TestCase {
     public void testIOCRules() throws Exception {
         RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.IOCRules");
         assertNotNull(ruleSet);
+        assertEquals("ruleSet.IOCRules", ruleSet.getName());
         assertEquals(2, ruleSet.getRules().length);
 
         Rule childRule = ruleSet.getRule("childRule");
@@ -50,6 +51,7 @@ public class RuleSetFactoryBeanTest extends TestCase {
     public void testIOCRules_byName() throws Exception {
         RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.IOCRules.byName");
         assertNotNull(ruleSet);
+        assertEquals("ruleSet.IOCRules.byName__NAME", ruleSet.getName());
         assertEquals(2, ruleSet.getRules().length);
 
         Rule childRule = ruleSet.getRule("childRule");

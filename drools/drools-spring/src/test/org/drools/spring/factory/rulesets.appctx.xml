@@ -70,7 +70,6 @@
 
     <bean id="ruleSet.IOCRules"
         class="org.drools.spring.factory.RuleSetFactoryBean">
-		<property name="ruleBaseBuilder" ref="ruleBaseBuilder" />
         <property name="rules">
             <set>
                 <ref local="childRule"/>
@@ -81,7 +80,7 @@
 
     <bean id="ruleSet.IOCRules.byName"
         class="org.drools.spring.factory.RuleSetFactoryBean">
-		<property name="ruleBaseBuilder" ref="ruleBaseBuilder" />
+        <property name="name" value="ruleSet.IOCRules.byName__NAME"/>
         <property name="rules">
             <set>
                 <value>childRule</value>
@@ -113,7 +112,6 @@
 
 	<bean id="ruleSet.HardCodedRules"
 		class="org.drools.spring.factory.RuleSetFactoryBean">
-		<property name="ruleBaseBuilder" ref="ruleBaseBuilder" />
 		<property name="rules">
 			<set>
 				<bean parent="basicRuleFactoryBean">
@@ -127,40 +125,6 @@
 					</property>
 				</bean>
 			</set>
-		</property>
-	</bean>
-
-	<!--  -->
-
-	<bean id="conflictResolver" lazy-init="true"
-		class="org.drools.spring.factory.ConflictResolverFactoryBean">
-		<property name="resolverStrategies">
-			<list>
-				<bean class="org.drools.conflict.SalienceConflictResolver" />
-				<bean class="org.drools.conflict.RecencyConflictResolver" />
-				<bean class="org.drools.conflict.ComplexityConflictResolver" />
-				<bean class="org.drools.conflict.LoadOrderConflictResolver" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="ruleBaseBuilder"
-		class="org.drools.spring.factory.RuleBaseBuilderFactoryBean">
-		<property name="conflictResolver">
-			<ref local="conflictResolver"/>
-		</property>
-		<property name="factHandleFactory">
-			<bean class="org.drools.spring.factory.RuleBaseBuilderFactoryBeanTest$NullFactHandleFactory" />
-		</property>
-	</bean>
-
-	<bean id="workingMemory" lazy-init="true"
-		class="org.drools.spring.factory.WorkingMemoryFactoryBean">
-		<property name="ruleBase">
-			<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-				<property name="targetObject" ref="ruleBaseBuilder" />
-				<property name="targetMethod" value="build" />
-			</bean>
 		</property>
 	</bean>
 
