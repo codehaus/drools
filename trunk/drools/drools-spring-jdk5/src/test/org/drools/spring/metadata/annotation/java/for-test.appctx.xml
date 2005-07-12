@@ -25,6 +25,15 @@
 		</property>
 	</bean>
 
+    <bean id="ruleBase" lazy-init="true"
+        class="org.drools.spring.factory.RuleBaseFactoryBean">
+        <property name="ruleSets">
+            <set>
+                <ref local="ruleSet"/>
+            </set>
+        </property>
+    </bean>
+    
 	<bean id="ruleSet" lazy-init="true"
 		class="org.drools.spring.factory.RuleSetFactoryBean">
 		<property name="rules">

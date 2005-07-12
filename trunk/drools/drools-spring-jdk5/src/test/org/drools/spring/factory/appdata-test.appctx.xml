@@ -42,20 +42,12 @@
     </bean>
 
 
-	<bean id="ruleBase" lazy-init="true"
-		class="org.drools.spring.factory.RuleBaseFactoryBean">
-		<property name="ruleSets">
-			<list>
-				<ref local="ruleSet" />
-			</list>
-		</property>
-	</bean>
-
+    <bean id="ruleBase" lazy-init="true"
+        class="org.drools.spring.factory.RuleBaseFactoryBean"/>
+    
 	<bean id="workingMemory" lazy-init="true"
 		class="org.drools.spring.factory.WorkingMemoryFactoryBean">
-		<property name="ruleBase">
-			<ref local="ruleBase"/>
-		</property>
+		<property name="ruleBaseBuilder" ref="ruleBaseBuilder"/>
 		<!-- Not testable yet
 		<property name="applicationData">
 			<map>
