@@ -9,7 +9,8 @@ import java.lang.annotation.Retention;
 @Inherited 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME) 
-public @interface Data 
-{ 
+public @interface Data {
+    
     String value(); // name
+    
 }

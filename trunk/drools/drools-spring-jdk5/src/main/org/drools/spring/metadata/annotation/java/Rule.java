@@ -9,8 +9,8 @@ import java.lang.annotation.Retention;
 @Inherited 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Rule
-{
+public @interface Rule {
+    
     String value() default "";
     String name() default ""; // == value
 

@@ -109,24 +109,13 @@
     <bean id="ruleBase"
         class="org.drools.spring.factory.RuleBaseFactoryBean">
         <property name="conflictResolver" ref="conflictResolver" />
-        <property name="ruleSets">
-            <list>
-                <ref bean="pumpRuleSet" />
-                <ref bean="ventRuleSet" />
-            </list>
-        </property>
+        <property name="autoDetectRuleSets" value="true"/>
     </bean>
 
     <bean id="workingMemory"
         class="org.drools.spring.factory.WorkingMemoryFactoryBean">
         <property name="ruleBase" ref="ruleBase" />
-    </bean>
-
-	<!-- This will auto-register any beans that implement org.drools.event.WorkingMemoryEventListener -->
-	<!-- as a working memory event listener. -->
-	<bean id="workingMemoryListenerProcessor"
-        class="org.drools.spring.event.WorkingMemoryEventListenerProcessor">
-        <property name="workingMemory" ref="workingMemory" />
+        <property name="autoRegisterListeners" value="true"/>
     </bean>
 
     <bean id="workingMemoryLogger"
@@ -154,7 +143,6 @@
 		<property name="simulatorPeriod" value="${simulator_period}" />
 		<property name="simulatorPeriodUnit" value="${simulator_period_timeunits}" />
 		<property name="simulatorGUI" ref="simulatorGUI" />
-
 	</bean>
 
 </beans>
