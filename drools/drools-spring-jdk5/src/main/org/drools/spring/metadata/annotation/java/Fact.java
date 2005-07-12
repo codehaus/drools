@@ -9,8 +9,9 @@ import java.lang.annotation.Retention;
 @Inherited 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Fact
-{
+public @interface Fact {
+    
     String value() default ""; // identifier
+    
 }
 
