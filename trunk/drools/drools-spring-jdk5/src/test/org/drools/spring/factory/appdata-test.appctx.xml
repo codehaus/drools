@@ -3,47 +3,39 @@
 
 <beans>
 
-	<bean id="ruleFactoryBean" abstract="true"
-		class="org.drools.spring.factory.BasicRuleFactoryBean">
-		<property name="ruleMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationRuleMetadataSource"/>
-			</list>
-		</property>
-		<property name="methodMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
-			</list>
-		</property>
-		<property name="argumentMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
-			</list>
-		</property>
-	</bean>
-
-
 	<bean id="auditService"
 		class="org.drools.spring.factory.AuditService" />
 
-	<bean id="applicationDataRule" parent="ruleFactoryBean">
-		<property name="pojo">
-			<bean class="org.drools.spring.factory.ApplicationDataUsingRule" />
-		</property>
-	</bean>
+    <bean id="applicationDataRule" class="org.drools.spring.factory.ApplicationDataUsingRule" />
 
     <bean id="ruleSet" lazy-init="true"
         class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="ruleMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationRuleMetadataSource"/>
+            </list>
+        </property>
+        <property name="methodMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
+            </list>
+        </property>
+        <property name="argumentMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
+            </list>
+        </property>
         <property name="rules">
             <set>
                 <ref local="applicationDataRule"/>
             </set>
         </property>
-    </bean>
-
+    </bean>    
 
     <bean id="ruleBase" lazy-init="true"
-        class="org.drools.spring.factory.RuleBaseFactoryBean"/>
+        class="org.drools.spring.factory.RuleBaseFactoryBean">
+        <property name="autoDetectRuleSets" value="true"/>
+    </bean>
     
 	<bean id="workingMemory" lazy-init="true"
 		class="org.drools.spring.factory.WorkingMemoryFactoryBean">

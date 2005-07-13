@@ -3,44 +3,20 @@
 
 <beans>
 
-	<bean id="beanMetadataRuleFactoryBean" abstract="true"
-		class="org.drools.spring.factory.BeanRuleMetadataRuleFactoryBean">
-		<property name="methodMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
-			</list>
-		</property>
-		<property name="argumentMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
-			</list>
-		</property>
-	</bean>
-
 	<bean id="auditService"
 		class="org.drools.spring.factory.AuditService" />
 
-	<bean id="childRule" parent="beanMetadataRuleFactoryBean">
+	<bean id="childRule" class="org.drools.spring.factory.RuleBean">
 		<property name="documentation">
 			<value>childRule documentation</value>
 		</property>
-		<property name="salience">
-			<value>10</value>
-		</property>
-		<property name="noLoop">
-			<value>true</value>
-		</property>
+		<property name="salience" value="10"/>
+		<property name="noLoop" value="true"/>
 		<property name="pojo">
 			<bean class="org.drools.spring.factory.AgeCommentRule">
-				<property name="auditService">
-					<ref local="auditService"/>
-				</property>
-				<property name="minAge">
-					<value>0</value>
-				</property>
-				<property name="maxAge">
-					<value>17</value>
-				</property>
+				<property name="auditService" ref="auditService"/>
+				<property name="minAge" value="0"/>
+				<property name="maxAge" value="17"/>
 				<property name="comment">
 					<value>this is a child comment</value>
 				</property>
@@ -48,18 +24,14 @@
 		</property>
 	</bean>
 
-	<bean id="adultRule" parent="beanMetadataRuleFactoryBean">
+	<bean id="adultRule" class="org.drools.spring.factory.RuleBean">
 		<property name="name">
 			<value>adultRule-overrideBeanName</value>
 		</property>
 		<property name="pojo">
 			<bean class="org.drools.spring.factory.AgeCommentRule">
-				<property name="auditService">
-					<ref local="auditService"/>
-				</property>
-				<property name="minAge">
-					<value>18</value>
-				</property>
+				<property name="auditService" ref="auditService"/>
+				<property name="minAge" value="18"/>
 				<property name="comment">
 					<value>this is an adult comment</value>
 				</property>
@@ -67,10 +39,23 @@
 		</property>
 	</bean>
 
-
-    <bean id="ruleSet.IOCRules"
+    <!-- -->
+    
+    <bean id="abstractRuleSet" abstract="true"
         class="org.drools.spring.factory.RuleSetFactoryBean">
-        <property name="name" value="ruleSet.IOCRules.NAME"/>
+        <property name="ruleMetadataSourceChain">
+            <bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+        </property>
+        <property name="methodMetadataSourceChain">
+            <bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+        </property>
+        <property name="argumentMetadataSourceChain">
+            <bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+        </property>
+    </bean>    
+
+    <bean id="ruleSet.beanRules" parent="abstractRuleSet">
+        <property name="name" value="ruleSet.beanRules.NAME"/>
         <property name="rules">
             <set>
                 <ref local="childRule"/>
@@ -79,41 +64,11 @@
         </property>
     </bean>
 
-	<!--  -->
-
-	<bean id="basicRuleFactoryBean" abstract="true"
-		class="org.drools.spring.factory.BasicRuleFactoryBean">
-		<property name="ruleMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
-			</list>
-		</property>
-		<property name="methodMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
-			</list>
-		</property>
-		<property name="argumentMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="ruleSet.HardCodedRules"
-		class="org.drools.spring.factory.RuleSetFactoryBean">
+	<bean id="ruleSet.pojoRules" parent="abstractRuleSet">
 		<property name="rules">
 			<set>
-				<bean parent="basicRuleFactoryBean">
-					<property name="pojo">
-						<bean class="org.drools.spring.factory.ChildCommentRule" />
-					</property>
-				</bean>
-				<bean parent="basicRuleFactoryBean">
-					<property name="pojo">
-						<bean class="org.drools.spring.factory.AdultCommentRule" />
-					</property>
-				</bean>
+				<bean class="org.drools.spring.factory.ChildCommentRule" />
+    			<bean class="org.drools.spring.factory.AdultCommentRule" />
 			</set>
 		</property>
 	</bean>

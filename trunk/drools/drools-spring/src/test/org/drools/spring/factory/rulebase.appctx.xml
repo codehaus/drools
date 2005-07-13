@@ -25,8 +25,8 @@
         </property>
         <property name="ruleSets">
             <set>
-                <ref bean="ruleSet.IOCRules"/>
-                <ref bean="ruleSet.HardCodedRules"/>
+                <ref bean="ruleSet.beanRules"/>
+                <ref bean="ruleSet.pojoRules"/>
             </set>
         </property>
     </bean>
