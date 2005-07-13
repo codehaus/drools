@@ -8,8 +8,14 @@ import org.drools.spring.examples.jiahvac.model.Thermometer;
 import org.drools.spring.metadata.annotation.java.*;
 
 @Rule
-public class FloorTooColdPumpOff
-{
+public class FloorTooColdPumpOff {
+    
+    private TempuratureControl control;
+    
+    public void setControl(TempuratureControl control) {
+        this.control = control;
+    }
+    
     @Condition
     public boolean isPumpOff(HeatPump pump) {
         return pump.getState() == OFF;
@@ -21,7 +27,7 @@ public class FloorTooColdPumpOff
     }
 
     @Condition
-    public boolean isTooCold(Thermometer thermometer, TempuratureControl control) {
+    public boolean isTooCold(Thermometer thermometer) {
         return control.isTooCold(thermometer.getReading());
     }
 

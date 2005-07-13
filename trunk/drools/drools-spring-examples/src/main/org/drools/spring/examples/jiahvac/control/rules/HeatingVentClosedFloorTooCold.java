@@ -7,8 +7,14 @@ import org.drools.spring.examples.jiahvac.model.Vent;
 import org.drools.spring.metadata.annotation.java.*;
 
 @Rule
-public class HeatingVentClosedFloorTooCold
-{
+public class HeatingVentClosedFloorTooCold {
+    
+    private TempuratureControl control;
+    
+    public void setControl(TempuratureControl control) {
+        this.control = control;
+    }
+    
     @Condition
     public boolean isPumpHeating(HeatPump pump) {
         return pump.getState() == HeatPump.State.HEATING;
@@ -26,7 +32,7 @@ public class HeatingVentClosedFloorTooCold
     }
 
     @Condition
-    public boolean isNotWarmEnough(Thermometer thermometer, TempuratureControl control) {
+    public boolean isNotWarmEnough(Thermometer thermometer) {
         return !control.isWarmEnough(thermometer.getReading());
     }
 

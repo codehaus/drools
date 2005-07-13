@@ -5,8 +5,16 @@ import org.drools.spring.examples.jiahvac.model.Vent;
 
 public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
 {
-    private HeatingVentOpenFloorWarmEnough rule = new HeatingVentOpenFloorWarmEnough();
+    private HeatingVentOpenFloorWarmEnough rule;
 
+    @Override
+    protected void setupBuilding() {
+        super.setupBuilding();
+        
+        rule = new HeatingVentOpenFloorWarmEnough();
+        rule.setControl(mockTempuratureControl.object);
+    }
+    
     /*
      * Really, this method cannot fail. This test serves only as documentation of intent.
      */
@@ -42,7 +50,8 @@ public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
     public void testIsSameFloorAllDifferentFloors() {
         mocks.replay();
 
-        boolean result = rule.isSameFloor(mockVent_1.object, mockThermometer_2.object, mockPump_B.object);
+        boolean result = rule.isSameFloor(
+                mockVent_1.object, mockThermometer_2.object, mockPump_B.object);
 
         mocks.verify();
         assertFalse(result);
@@ -51,7 +60,8 @@ public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
     public void testIsSameFloorPumpDifferentFloor() {
         mocks.replay();
 
-        boolean result = rule.isSameFloor(mockVent_1.object, mockThermometer_1.object, mockPump_B.object);
+        boolean result = rule.isSameFloor(
+                mockVent_1.object, mockThermometer_1.object, mockPump_B.object);
 
         mocks.verify();
         assertFalse(result);
@@ -60,7 +70,8 @@ public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
     public void testIsSameFloorThermometerDifferentFloor() {
         mocks.replay();
 
-        boolean result = rule.isSameFloor(mockVent_1.object, mockThermometer_2.object, mockPump_A.object);
+        boolean result = rule.isSameFloor(
+                mockVent_1.object, mockThermometer_2.object, mockPump_A.object);
 
         mocks.verify();
         assertFalse(result);
@@ -69,7 +80,8 @@ public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
     public void testIsSameFloorAllSameFloor() {
         mocks.replay();
 
-        boolean result = rule.isSameFloor(mockVent_1.object, mockThermometer_1.object, mockPump_A.object);
+        boolean result = rule.isSameFloor(
+                mockVent_1.object, mockThermometer_1.object, mockPump_A.object);
 
         mocks.verify();
         assertTrue(result);
@@ -80,7 +92,7 @@ public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
         setupControlIsWarmEnough(mockTempuratureControl, 80.0, false);
         mocks.replay();
 
-        boolean result = rule.isWarmEnough(mockThermometer_1.object, mockTempuratureControl.object);
+        boolean result = rule.isWarmEnough(mockThermometer_1.object);
 
         mocks.verify();
         assertFalse(result);
@@ -92,7 +104,7 @@ public class HeatingVentOpenFloorWarmEnoughTest extends HVACRuleTestCase
         setupControlIsWarmEnough(mockTempuratureControl, 80.0, true);
         mocks.replay();
 
-        boolean result = rule.isWarmEnough(mockThermometer_1.object, mockTempuratureControl.object);
+        boolean result = rule.isWarmEnough(mockThermometer_1.object);
 
         mocks.verify();
         assertTrue(result);

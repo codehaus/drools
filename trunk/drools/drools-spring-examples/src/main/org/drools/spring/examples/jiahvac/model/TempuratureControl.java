@@ -1,12 +1,36 @@
 package org.drools.spring.examples.jiahvac.model;
 
-public interface TempuratureControl
-{
-    double getSetPoint();
+public class TempuratureControl {
     
-    boolean isTooCold(double temperature);
-    boolean isTooHot(double temperature);
-    
-    boolean isCoolEnough(double tempurature);
-    boolean isWarmEnough(double tempurature);    
+    private double setPoint;
+    private double guardAmount;
+
+    public TempuratureControl(double setPoint, double guardAmount) {
+        this.setPoint = setPoint;
+        this.guardAmount = guardAmount;
+    }
+
+    public double getSetPoint() {
+        return setPoint;
+    }
+
+    public double getGuardAmount() {
+        return guardAmount;
+    }
+
+    public boolean isTooCold(double temperature) {
+        return temperature < (setPoint - guardAmount);
+    }
+
+    public boolean isTooHot(double temperature) {
+        return temperature > (setPoint + guardAmount);
+    }
+
+    public boolean isCoolEnough(double tempurature) {
+        return tempurature < setPoint;
+    }
+
+    public boolean isWarmEnough(double tempurature) {
+        return tempurature > setPoint;
+    }
 }

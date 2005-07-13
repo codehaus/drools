@@ -70,21 +70,11 @@
 
     <bean id="ruleSet.IOCRules"
         class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="name" value="ruleSet.IOCRules.NAME"/>
         <property name="rules">
             <set>
                 <ref local="childRule"/>
                 <ref local="adultRule"/>
-            </set>
-        </property>
-    </bean>
-
-    <bean id="ruleSet.IOCRules.byName"
-        class="org.drools.spring.factory.RuleSetFactoryBean">
-        <property name="name" value="ruleSet.IOCRules.byName__NAME"/>
-        <property name="rules">
-            <set>
-                <value>childRule</value>
-                <value>adultRule</value>
             </set>
         </property>
     </bean>

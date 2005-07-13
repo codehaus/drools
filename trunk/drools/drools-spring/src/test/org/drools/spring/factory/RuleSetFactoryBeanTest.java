@@ -35,23 +35,7 @@ public class RuleSetFactoryBeanTest extends TestCase {
     public void testIOCRules() throws Exception {
         RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.IOCRules");
         assertNotNull(ruleSet);
-        assertEquals("ruleSet.IOCRules", ruleSet.getName());
-        assertEquals(2, ruleSet.getRules().length);
-
-        Rule childRule = ruleSet.getRule("childRule");
-        assertNotNull(childRule);
-        assertEquals(10, childRule.getSalience());
-        assertTrue(childRule.getNoLoop());
-        assertEquals("childRule documentation", childRule.getDocumentation());
-
-        Rule adultRule = ruleSet.getRule("adultRule-overrideBeanName");
-        assertNotNull(adultRule);
-    }
-
-    public void testIOCRules_byName() throws Exception {
-        RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.IOCRules.byName");
-        assertNotNull(ruleSet);
-        assertEquals("ruleSet.IOCRules.byName__NAME", ruleSet.getName());
+        assertEquals("ruleSet.IOCRules.NAME", ruleSet.getName());
         assertEquals(2, ruleSet.getRules().length);
 
         Rule childRule = ruleSet.getRule("childRule");
@@ -67,6 +51,7 @@ public class RuleSetFactoryBeanTest extends TestCase {
     public void testHardCodedRules() throws Exception {
         RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.HardCodedRules");
         assertNotNull(ruleSet);
+        assertEquals("ruleSet.HardCodedRules", ruleSet.getName());
         assertEquals(2, ruleSet.getRules().length);
 
         Rule childRule = ruleSet.getRule(ChildCommentRule.class.getName());

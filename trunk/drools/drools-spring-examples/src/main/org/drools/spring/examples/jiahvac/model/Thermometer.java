@@ -2,8 +2,8 @@ package org.drools.spring.examples.jiahvac.model;
 
 import java.beans.PropertyChangeListener;
 
-public interface Thermometer
-{
+public interface Thermometer {
+    
     Floor getFloor();
     double getReading();
     

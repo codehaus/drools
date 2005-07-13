@@ -5,8 +5,16 @@ import org.drools.spring.examples.jiahvac.model.Vent;
 
 public class CoolingVentClosedFloorTooHotTest extends HVACRuleTestCase {
 
-    private CoolingVentClosedFloorTooHot rule = new CoolingVentClosedFloorTooHot();
+    private CoolingVentClosedFloorTooHot rule;
 
+    @Override
+    protected void setupBuilding() {
+        super.setupBuilding();
+        
+        rule = new CoolingVentClosedFloorTooHot();
+        rule.setControl(mockTempuratureControl.object);
+    }
+    
     /*
      * Really, this method cannot fail. This test serves only as documentation
      * of intent.
@@ -86,8 +94,7 @@ public class CoolingVentClosedFloorTooHotTest extends HVACRuleTestCase {
         setupControlIsCoolEnough(mockTempuratureControl, 80.0, true);
         mocks.replay();
 
-        boolean result = rule.isNotCoolEnough(mockThermometer_1.object,
-                mockTempuratureControl.object);
+        boolean result = rule.isNotCoolEnough(mockThermometer_1.object);
 
         mocks.verify();
         assertFalse(result);
@@ -99,8 +106,7 @@ public class CoolingVentClosedFloorTooHotTest extends HVACRuleTestCase {
         setupControlIsCoolEnough(mockTempuratureControl, 80.0, false);
         mocks.replay();
 
-        boolean result = rule.isNotCoolEnough(mockThermometer_1.object,
-                mockTempuratureControl.object);
+        boolean result = rule.isNotCoolEnough(mockThermometer_1.object);
 
         mocks.verify();
         assertTrue(result);
