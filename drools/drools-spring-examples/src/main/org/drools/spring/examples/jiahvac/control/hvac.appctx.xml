@@ -47,14 +47,14 @@
     <bean id="pumpRuleSet" parent="abstractRuleSet">
         <property name="rules">
             <set>
-                <bean id="pump.FloorsCoolEnough" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.FloorsCoolEnough" />
-                <bean id="pump.FloorsWarmEnough" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.FloorsWarmEnough" />
-                <bean id="pump.FloorTooColdPumpOff" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.FloorTooColdPumpOff" />
-                <bean id="pump.FloorTooHotPumpOff" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.FloorTooHotPumpOff" />
+                <bean id="pump.OffWhenFloorsCoolEnough" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsCoolEnough" />
+                <bean id="pump.OffWhenFloorsWarmEnough" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsWarmEnough" />
+                <bean id="pump.HeatingWhenFloorTooCold" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpHeatingWhenFloorTooCold" />
+                <bean id="pump.CoolingWhenFloorTooHot" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpCoolingWhenFloorTooHot" />
             </set>
         </property>
     </bean>
@@ -62,14 +62,14 @@
     <bean id="ventRuleSet" parent="abstractRuleSet">
         <property name="rules">
             <set>
-			    <bean id="vent.HeatingVentOpenFloorWarmEnough" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.HeatingVentOpenFloorWarmEnough" />
-			    <bean id="vent.CoolingVentOpenFloorCoolEnough" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.CoolingVentOpenFloorCoolEnough" />
-			    <bean id="vent.HeatingVentClosedFloorTooCold" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.HeatingVentClosedFloorTooCold" />
-			    <bean id="vent.CoolingVentClosedFloorTooHot" parent="rulePojo" 
-                    class="org.drools.spring.examples.jiahvac.control.rules.CoolingVentClosedFloorTooHot" />
+                <bean id="vent.CloseWhenCoolingVentOpenFloorCoolEnough" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.CloseVentWhenCoolingVentOpenFloorCoolEnough" />                   
+			    <bean id="vent.CloseWhenHeatingVentOpenFloorWarmEnough" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.CloseVentWhenHeatingVentOpenFloorWarmEnough" />                   
+			    <bean id="vent.OpenWhenCoolingVentClosedFloorTooHot" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.OpenVentWhenCoolingVentClosedFloorTooHot" />                    
+			    <bean id="vent.OpenWhenHeatingVentClosedFloorTooCold" parent="rulePojo" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.OpenVentWhenHeatingVentClosedFloorTooCold" />
             </set>
         </property>
     </bean>
@@ -93,7 +93,7 @@
     <bean id="workingMemory"
         class="org.drools.spring.factory.WorkingMemoryFactoryBean">
         <property name="ruleBase" ref="ruleBase" />
-        <property name="autoDetectListeners" value="true"/>
+        <property name="autoDetectListeners" value="false"/>
     </bean>
 
     <bean id="workingMemoryLogger"
@@ -104,6 +104,7 @@
 		<constructor-arg index="0" value="${floor_count}" />
 		<constructor-arg index="1" value="${initial_tempurature_reading}" />
 		<constructor-arg index="2" value="OPEN" />
+        <property name="outdoorTempurature" value="${initial_outdoor_tempurature}"/>
 	</bean>
 
 	<bean id="simulatorGUI" class="org.drools.spring.examples.jiahvac.sim.SimulatorGUI">
@@ -112,7 +113,7 @@
 
 	<bean id="tempuratureControl" class="org.drools.spring.examples.jiahvac.model.TempuratureControl">
 		<constructor-arg index="0" value="${initial_setpoint}" />
-		<constructor-arg index="1" value="1" />
+		<constructor-arg index="1" value="${initial_guard_amount}" />
 	</bean>
 
 	<bean id="executor" lazy-init="true" class="org.drools.spring.examples.jiahvac.control.ExecutorFactoryBean">

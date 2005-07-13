@@ -1,17 +1,17 @@
 package org.drools.spring.examples.jiahvac.control.rules;
 
 import org.drools.spring.examples.jiahvac.model.HeatPump;
-import org.drools.spring.examples.jiahvac.control.rules.FloorTooHotPumpOff;
+import org.drools.spring.examples.jiahvac.control.rules.PumpHeatingWhenFloorTooCold;
 
-public class FloorTooHotPumpOffTest extends HVACRuleTestCase
+public class PumpHeatingWhenFloorTooColdTest extends HVACRuleTestCase
 {
-    private FloorTooHotPumpOff rule;
+    private PumpHeatingWhenFloorTooCold rule;
 
     @Override
     protected void setupBuilding() {
         super.setupBuilding();
         
-        rule = new FloorTooHotPumpOff();
+        rule = new PumpHeatingWhenFloorTooCold();
         rule.setControl(mockTempuratureControl.object);
     }
     
@@ -49,28 +49,28 @@ public class FloorTooHotPumpOffTest extends HVACRuleTestCase
         assertTrue(result);
     }
 
-    public void testIsTooHotFalse() {
+    public void testIsTooColdFalse() {
         setupThermometerReading(mockThermometer_1, 80.0);
-        setupControlIsTooHot(mockTempuratureControl, 80.0, false);
+        setupControlIsTooCold(mockTempuratureControl, 80.0, false);
         mocks.replay();
 
-        boolean result = rule.isTooHot( mockThermometer_1.object);
+        boolean result = rule.isTooCold( mockThermometer_1.object);
         mocks.verify();
         assertFalse(result);
     }
 
-    public void testIsTooHotTrue() {
+    public void testIsTooColdTrue() {
         setupThermometerReading(mockThermometer_1, 80.0);
-        setupControlIsTooHot(mockTempuratureControl, 80.0, true);
+        setupControlIsTooCold(mockTempuratureControl, 80.0, true);
         mocks.replay();
 
-        boolean result = rule.isTooHot( mockThermometer_1.object);
+        boolean result = rule.isTooCold( mockThermometer_1.object);
         mocks.verify();
         assertTrue(result);
     }
 
     public void testConsequence() {
-        mockPump_A.object.setState(HeatPump.State.COOLING);
+        mockPump_A.object.setState(HeatPump.State.HEATING);
         mocks.replay();
 
         rule.consequence(mockPump_A.object);
