@@ -13,13 +13,22 @@ import java.lang.reflect.Modifier;
  *  - method is public
  *  - method returns void
  */
-public class AccessAndReturnTypeMethodMetadataSource implements MethodMetadataSource {
+public class AccessAndReturnTypeMethodMetadataSource implements MethodMetadataSource, StoppingClassCapable {
 
     private static final MethodMetadata METHOD_CONDITION_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONDITION);
     private static final MethodMetadata METHOD_CONSEQUENCE_METADATA = new MethodMetadata(MethodMetadata.METHOD_CONSEQUENCE);
     private static final MethodMetadata OBJECT_CONDITION_METADATA = new MethodMetadata(MethodMetadata.OBJECT_CONDITION);
 
+    private Class stoppingClass = Object.class;
+    
+    public void setStoppingClass(Class stoppingClass) {
+        this.stoppingClass = stoppingClass;
+    }
+    
     public MethodMetadata getMethodMetadata(Method method) {
+        if (method.getDeclaringClass().isAssignableFrom(stoppingClass)) {
+            return null;
+        }
         if (!Modifier.isPublic(method.getModifiers())) {
             return null;
         }

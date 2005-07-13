@@ -9,10 +9,6 @@ import junit.framework.TestCase;
 import org.drools.rule.Rule;
 import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
-import org.drools.spring.metadata.ArgumentMetadata;
-import org.drools.spring.metadata.FactArgumentMetadata;
-import org.drools.spring.metadata.KnowledgeHelperArgumentMetadata;
-import org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource;
 import org.drools.spring.pojorule.Argument;
 
 public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
@@ -43,6 +39,9 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
     public void testDefaultKnoweledgeHelper() throws Exception {
         class Pojo {
             public void consequence(KnowledgeHelper knowledgeHelper) {}
+            public Pojo() {
+                consequence(null); // to eliminate non-used warning
+            }
         }
 
         ArgumentMetadata metadata = source.getArgumentMetadata(
@@ -56,6 +55,9 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
     public void testDefaultFallback() throws Exception {
         class Pojo {
             public void consequence(String fact) {}
+            public Pojo() {
+                consequence(null); // to eliminate non-used warning
+            }
         }
 
         ArgumentMetadata metadata = source.getArgumentMetadata(
@@ -69,6 +71,9 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
     public void testSetFallback() throws Exception {
         class Pojo {
             public void consequence(KnowledgeHelper knowledgeHelper, String fact) {}
+            public Pojo() {
+                consequence(null, null); // to eliminate non-used warning
+            }
         }
 
         source.setFallbackParameterTypeArgumentMetadataFactory(parameterTypeArgumentMetadataFactoryForTest);
@@ -87,6 +92,9 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
     public void testSetArgumentMetadataFactories() throws Exception {
         class Pojo {
             public void consequence(KnowledgeHelper knowledgeHelper, String fact1, Integer fact2) {}
+            public Pojo() {
+                consequence(null, null, null); // to eliminate non-used warning
+            }
         }
 
         Map factories = new HashMap();
@@ -110,6 +118,9 @@ public class ParameterTypeArgumentMetadataSourceTest extends TestCase {
     public void testAddArgumentMetadataFactory() throws Exception {
         class Pojo {
             public void consequence(KnowledgeHelper knowledgeHelper, String fact1, Integer fact2) {}
+            public Pojo() {
+                consequence(null, null, null); // to eliminate non-used warning
+            }
         }
 
         source.addArgumentMetadataFactory(Integer.class, parameterTypeArgumentMetadataFactoryForTest);
