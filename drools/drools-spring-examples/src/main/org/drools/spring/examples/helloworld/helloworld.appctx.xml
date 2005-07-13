@@ -3,41 +3,33 @@
 
 <beans>
 
-	<bean id="ruleFactoryBean" abstract="true"
-		class="org.drools.spring.factory.BeanRuleMetadataRuleFactoryBean">
-		<property name="methodMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
-			</list>
-		</property>
-		<property name="argumentMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
-				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
-			</list>
-		</property>
-	</bean>
+    <bean id="abstractRuleSet" abstract="true"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="ruleMetadataSourceChain">
+            <bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+        </property>
+        <property name="methodMetadataSourceChain">
+            <bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+        </property>
+        <property name="argumentMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
+                <bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+            </list>
+        </property>
+    </bean>    
 
 	<!-- Inner Class Rules -->
 
-    <bean id="innerPojosRuleSet" lazy-init="true" class="org.drools.spring.factory.RuleSetFactoryBean">
+    <bean id="innerPojosRuleSet" lazy-init="true" parent="abstractRuleSet">
         <property name="rules">
             <set>
-			    <bean id="inner.Hello" parent="ruleFactoryBean">
-			        <property name="pojo">
-			            <bean class="org.drools.spring.examples.helloworld.HelloWorldRules$Hello" />
-			        </property>
-			    </bean>
-			    <bean id="inner.Goodbye" parent="ruleFactoryBean">
-			        <property name="pojo">
-			            <bean class="org.drools.spring.examples.helloworld.HelloWorldRules$Goodbye" />
-			        </property>
-			    </bean>
-			    <bean id="inner.Debug" parent="ruleFactoryBean">
-			        <property name="pojo">
-			            <bean class="org.drools.spring.examples.helloworld.HelloWorldRules$Debug" />
-			        </property>
-			    </bean>
+			    <bean id="inner.Hello" 
+                    class="org.drools.spring.examples.helloworld.HelloWorldRules$Hello" />
+			    <bean id="inner.Goodbye" 
+                    class="org.drools.spring.examples.helloworld.HelloWorldRules$Goodbye" />
+			    <bean id="inner.Debug" 
+                    class="org.drools.spring.examples.helloworld.HelloWorldRules$Debug" />
             </set>
         </property>
     </bean>
@@ -53,27 +45,15 @@
         </property>
     </bean>
 
-    <bean id="outerPojosRuleSet" lazy-init="true" class="org.drools.spring.factory.RuleSetFactoryBean">
+    <bean id="outerPojosRuleSet" lazy-init="true" parent="abstractRuleSet">
         <property name="rules">
             <set>
-                <bean id="outer.Hello" parent="ruleFactoryBean">
-                    <property name="pojo">
-                        <bean parent="messagePrintingBean"
-                            class="org.drools.spring.examples.helloworld.HelloRule" />
-                    </property>
-                </bean>
-                <bean id="outer.Goodbye" parent="ruleFactoryBean">
-                    <property name="pojo">
-                        <bean parent="messagePrintingBean"
-                            class="org.drools.spring.examples.helloworld.GoodbyeRule" />
-                    </property>
-                </bean>
-                <bean id="outer.Debug" parent="ruleFactoryBean">
-                    <property name="pojo">
-                        <bean
-                            class="org.drools.spring.examples.helloworld.DebugRule" />
-                    </property>
-                </bean>
+                <bean id="outer.Hello" 
+                    parent="messagePrintingBean" class="org.drools.spring.examples.helloworld.HelloRule" />
+                <bean id="outer.Goodbye" 
+                    parent="messagePrintingBean" class="org.drools.spring.examples.helloworld.GoodbyeRule" />
+                <bean id="outer.Debug" 
+                    class="org.drools.spring.examples.helloworld.DebugRule" />
             </set>
         </property>
     </bean>

@@ -50,8 +50,8 @@ public class RuleBaseFactoryBeanTest extends TestCase {
         Set ruleSetNames = new HashSet();
         ruleSetNames.add(((RuleSet)ruleSets.get(0)).getName());
         ruleSetNames.add(((RuleSet)ruleSets.get(1)).getName());
-        assertTrue(ruleSetNames.contains("ruleSet.IOCRules.NAME"));
-        assertTrue(ruleSetNames.contains("ruleSet.HardCodedRules"));
+        assertTrue(ruleSetNames.contains("ruleSet.beanRules.NAME"));
+        assertTrue(ruleSetNames.contains("ruleSet.pojoRules"));
     }
     
     public void testAutoDetectRuleSets() throws Exception {
@@ -61,8 +61,8 @@ public class RuleBaseFactoryBeanTest extends TestCase {
         Set ruleSetNames = new HashSet();
         ruleSetNames.add(((RuleSet)ruleSets.get(0)).getName());
         ruleSetNames.add(((RuleSet)ruleSets.get(1)).getName());
-        assertTrue(ruleSetNames.contains("ruleSet.IOCRules.NAME"));
-        assertTrue(ruleSetNames.contains("ruleSet.HardCodedRules"));
+        assertTrue(ruleSetNames.contains("ruleSet.beanRules.NAME"));
+        assertTrue(ruleSetNames.contains("ruleSet.pojoRules"));
     }
     
     public void testConflictResolver() throws Exception {

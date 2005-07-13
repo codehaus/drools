@@ -3,28 +3,36 @@
 
 <beans>
 
-	<bean id="ruleFactoryBean" abstract="true"
-		class="org.drools.spring.factory.BasicRuleFactoryBean">
-		<property name="ruleMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationRuleMetadataSource"/>
-				<bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
-			</list>
-		</property>
-		<property name="methodMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
-				<bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
-			</list>
-		</property>
-		<property name="argumentMetadataSourceChain">
-			<list>
-				<bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
-				<bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
-			</list>
-		</property>
-	</bean>
-
+    <bean id="ruleSet" lazy-init="true"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="ruleMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationRuleMetadataSource"/>
+                <bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+            </list>
+        </property>
+        <property name="methodMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
+                <bean class="org.drools.spring.metadata.AccessAndReturnTypeMethodMetadataSource"/>
+            </list>
+        </property>
+        <property name="argumentMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
+                <bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+            </list>
+        </property>
+        <property name="rules">
+            <set>
+                <bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_A" />
+                <bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_B" />
+                <bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_C" />
+                <bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_D" />
+            </set>
+        </property>
+    </bean>
+    
     <bean id="ruleBase" lazy-init="true"
         class="org.drools.spring.factory.RuleBaseFactoryBean">
         <property name="ruleSets">
@@ -34,32 +42,4 @@
         </property>
     </bean>
     
-	<bean id="ruleSet" lazy-init="true"
-		class="org.drools.spring.factory.RuleSetFactoryBean">
-		<property name="rules">
-			<set>
-				<bean parent="ruleFactoryBean">
-					<property name="pojo">
-						<bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_A" />
-					</property>
-				</bean>
-				<bean parent="ruleFactoryBean">
-					<property name="pojo">
-						<bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_B" />
-					</property>
-				</bean>
-				<bean parent="ruleFactoryBean">
-					<property name="pojo">
-						<bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_C" />
-					</property>
-				</bean>
-				<bean parent="ruleFactoryBean">
-					<property name="pojo">
-						<bean class="org.drools.spring.metadata.annotation.java.TestRules$PojoRule_D" />
-					</property>
-				</bean>
-			</set>
-		</property>
-	</bean>
-
 </beans>

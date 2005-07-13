@@ -21,9 +21,7 @@
         class="org.drools.spring.factory.WorkingMemoryFactoryBean">
         <property name="ruleBase" ref="ruleBase"/>
         <property name="listeners">
-            <set>
-                <ref local="listener_A"/>
-            </set>
+            <ref local="listener_A"/>
         </property>
     </bean>
 

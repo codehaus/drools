@@ -28,14 +28,14 @@ public class RuleSetFactoryBeanTest extends TestCase {
     public void testIsSingleton() throws Exception {
         assertTrue(factory.isSingleton());
         assertSame(
-                contextHolder.context.getBean("ruleSet.HardCodedRules"),
-                contextHolder.context.getBean("ruleSet.HardCodedRules"));
+                contextHolder.context.getBean("ruleSet.beanRules"),
+                contextHolder.context.getBean("ruleSet.beanRules"));
     }
 
-    public void testIOCRules() throws Exception {
-        RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.IOCRules");
+    public void testBeanRules() throws Exception {
+        RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.beanRules");
         assertNotNull(ruleSet);
-        assertEquals("ruleSet.IOCRules.NAME", ruleSet.getName());
+        assertEquals("ruleSet.beanRules.NAME", ruleSet.getName());
         assertEquals(2, ruleSet.getRules().length);
 
         Rule childRule = ruleSet.getRule("childRule");
@@ -48,10 +48,10 @@ public class RuleSetFactoryBeanTest extends TestCase {
         assertNotNull(adultRule);
     }
 
-    public void testHardCodedRules() throws Exception {
-        RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.HardCodedRules");
+    public void testPojoRules() throws Exception {
+        RuleSet ruleSet = (RuleSet) contextHolder.context.getBean("ruleSet.pojoRules");
         assertNotNull(ruleSet);
-        assertEquals("ruleSet.HardCodedRules", ruleSet.getName());
+        assertEquals("ruleSet.pojoRules", ruleSet.getName());
         assertEquals(2, ruleSet.getRules().length);
 
         Rule childRule = ruleSet.getRule(ChildCommentRule.class.getName());
