@@ -7,7 +7,7 @@ import org.drools.spring.examples.jiahvac.model.Vent;
 import org.drools.spring.metadata.annotation.java.*;
 
 @Rule
-public class HeatingVentOpenFloorWarmEnough {
+public class OpenVentWhenHeatingVentClosedFloorTooCold {
     
     private TempuratureControl control;
     
@@ -21,8 +21,8 @@ public class HeatingVentOpenFloorWarmEnough {
      }
 
     @Condition
-    public boolean isVentOpen(Vent vent) {
-        return vent.getState() == Vent.State.OPEN;
+    public boolean isVentClosed(Vent vent) {
+        return vent.getState() == Vent.State.CLOSED;
      }
 
     @Condition
@@ -32,14 +32,14 @@ public class HeatingVentOpenFloorWarmEnough {
     }
 
     @Condition
-    public boolean isWarmEnough(Thermometer thermometer) {
-        return control.isWarmEnough(thermometer.getReading());
+    public boolean isNotWarmEnough(Thermometer thermometer) {
+        return !control.isWarmEnough(thermometer.getReading());
     }
 
     @Consequence
     public void consequence(Vent vent) {
-        vent.setState(Vent.State.CLOSED);
-        System.out.println("HeatingVentOpenFloorWarmEnough: " + vent
+        vent.setState(Vent.State.OPEN);
+        System.out.println("OpenVentWhenHeatingVentClosedFloorTooCold: " + vent
                            + ", " + vent.getFloor().getThermometer());
     }
 }

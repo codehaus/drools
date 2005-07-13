@@ -1,17 +1,17 @@
 package org.drools.spring.examples.jiahvac.control.rules;
 
 import org.drools.spring.examples.jiahvac.model.HeatPump;
-import org.drools.spring.examples.jiahvac.control.rules.FloorsWarmEnough;
+import org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsWarmEnough;
 
-public class FloorsWarmEnoughTest extends HVACRuleTestCase
-{
-    private FloorsWarmEnough rule;
+public class PumpOffWhenFloorsWarmEnoughTest extends HVACRuleTestCase {
+    
+    private PumpOffWhenFloorsWarmEnough rule;
 
     @Override
     protected void setupBuilding() {
         super.setupBuilding();
         
-        rule = new FloorsWarmEnough();
+        rule = new PumpOffWhenFloorsWarmEnough();
         rule.setControl(mockTempuratureControl.object);
     }
     

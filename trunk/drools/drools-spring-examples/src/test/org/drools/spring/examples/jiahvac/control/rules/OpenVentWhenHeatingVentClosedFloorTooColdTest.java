@@ -3,47 +3,47 @@ package org.drools.spring.examples.jiahvac.control.rules;
 import org.drools.spring.examples.jiahvac.model.HeatPump;
 import org.drools.spring.examples.jiahvac.model.Vent;
 
-public class CoolingVentOpenFloorCoolEnoughTest extends HVACRuleTestCase
+public class OpenVentWhenHeatingVentClosedFloorTooColdTest extends HVACRuleTestCase
 {
-    private CoolingVentOpenFloorCoolEnough rule;
+    private OpenVentWhenHeatingVentClosedFloorTooCold rule;
 
     @Override
     protected void setupBuilding() {
         super.setupBuilding();
         
-        rule = new CoolingVentOpenFloorCoolEnough();
+        rule = new OpenVentWhenHeatingVentClosedFloorTooCold();
         rule.setControl(mockTempuratureControl.object);
     }
     
     /*
      * Really, this method cannot fail. This test serves only as documentation of intent.
      */
-    public void testIsPumpCooling() {
+    public void testIsPumpHeating() {
         for (HeatPump.State state : HeatPump.State.values()) {
             mocks.reset();
             setupPumpState(mockPump_A, state );
             mocks.replay();
 
-            boolean result = rule.isPumpCooling(mockPump_A.object);
+            boolean result = rule.isPumpHeating(mockPump_A.object);
 
             mocks.verify();
-            assertTrue((state == HeatPump.State.COOLING) ? result : !result );
+            assertTrue((state == HeatPump.State.HEATING) ? result : !result );
         }
     }
 
     /*
      * Really, this method cannot fail. This test serves only as documentation of intent.
      */
-    public void testIsVentOpen() {
+    public void testIsVentClosed() {
         for (Vent.State state : Vent.State.values()) {
             mocks.reset();
             setupVentState(mockVent_1, state );
             mocks.replay();
 
-            boolean result = rule.isVentOpen(mockVent_1.object);
+            boolean result = rule.isVentClosed(mockVent_1.object);
 
             mocks.verify();
-            assertTrue((state == Vent.State.OPEN) ? result : !result );
+            assertTrue((state == Vent.State.CLOSED) ? result : !result );
         }
     }
 
@@ -83,24 +83,24 @@ public class CoolingVentOpenFloorCoolEnoughTest extends HVACRuleTestCase
         assertTrue(result);
     }
 
-    public void testIsCoolEnoughFalse() {
+    public void testIsNotWarmEnoughFalse() {
         setupThermometerReading(mockThermometer_1, 80.0);
-        setupControlIsCoolEnough(mockTempuratureControl, 80.0, false);
+        setupControlIsWarmEnough(mockTempuratureControl, 80.0, true);
         mocks.replay();
 
-        boolean result = rule.isCoolEnough(mockThermometer_1.object);
+        boolean result = rule.isNotWarmEnough(mockThermometer_1.object);
 
         mocks.verify();
         assertFalse(result);
 
     }
 
-    public void testIsNotCoolEnoughTrue() {
+    public void testIsNotWarmEnoughTrue() {
         setupThermometerReading(mockThermometer_1, 80.0);
-        setupControlIsCoolEnough(mockTempuratureControl, 80.0, true);
+        setupControlIsWarmEnough(mockTempuratureControl, 80.0, false);
         mocks.replay();
 
-        boolean result = rule.isCoolEnough(mockThermometer_1.object);
+        boolean result = rule.isNotWarmEnough(mockThermometer_1.object);
 
         mocks.verify();
         assertTrue(result);
@@ -108,7 +108,7 @@ public class CoolingVentOpenFloorCoolEnoughTest extends HVACRuleTestCase
     }
 
     public void testConsequence() {
-        mockVent_1.object.setState(Vent.State.CLOSED);
+        mockVent_1.object.setState(Vent.State.OPEN);
         mocks.replay();
 
         rule.consequence(mockVent_1.object);

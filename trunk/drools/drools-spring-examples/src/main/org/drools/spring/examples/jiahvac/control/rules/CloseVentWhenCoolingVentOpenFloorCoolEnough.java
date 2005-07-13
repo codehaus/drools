@@ -7,7 +7,7 @@ import org.drools.spring.examples.jiahvac.model.Vent;
 import org.drools.spring.metadata.annotation.java.*;
 
 @Rule
-public class CoolingVentOpenFloorCoolEnough {
+public class CloseVentWhenCoolingVentOpenFloorCoolEnough {
     
     private TempuratureControl control;
     
@@ -39,7 +39,7 @@ public class CoolingVentOpenFloorCoolEnough {
     @Consequence
     public void consequence(Vent vent) {
         vent.setState(Vent.State.CLOSED);
-        System.out.println("CoolingVentOpenFloorCoolEnough: " + vent
+        System.out.println("CloseVentWhenCoolingVentOpenFloorCoolEnough: " + vent
                            + ", " + vent.getFloor().getThermometer());
     }
 }

@@ -3,8 +3,8 @@ package org.drools.spring.metadata;
 import org.drools.spi.ObjectType;
 
 /**
- * This class is really the same as ClassObjectType. Its sole purpose is eliminate a 
- * dependency from drools-spring to drools-smf.
+ * This class is functionally the same as ClassObjectType. Its sole purpose is 
+ * to eliminate the only dependency from drools-spring to drools-smf.
  */
 public class BeanObjectType implements ObjectType {
 

@@ -1,17 +1,17 @@
 package org.drools.spring.examples.jiahvac.control.rules;
 
 import org.drools.spring.examples.jiahvac.model.HeatPump;
-import org.drools.spring.examples.jiahvac.control.rules.FloorTooColdPumpOff;
+import org.drools.spring.examples.jiahvac.control.rules.PumpCoolingWhenFloorTooHot;
 
-public class FloorTooColdPumpOffTest extends HVACRuleTestCase
+public class PumpCoolingWhenFloorTooHotTest extends HVACRuleTestCase
 {
-    private FloorTooColdPumpOff rule;
+    private PumpCoolingWhenFloorTooHot rule;
 
     @Override
     protected void setupBuilding() {
         super.setupBuilding();
         
-        rule = new FloorTooColdPumpOff();
+        rule = new PumpCoolingWhenFloorTooHot();
         rule.setControl(mockTempuratureControl.object);
     }
     
@@ -49,28 +49,28 @@ public class FloorTooColdPumpOffTest extends HVACRuleTestCase
         assertTrue(result);
     }
 
-    public void testIsTooColdFalse() {
+    public void testIsTooHotFalse() {
         setupThermometerReading(mockThermometer_1, 80.0);
-        setupControlIsTooCold(mockTempuratureControl, 80.0, false);
+        setupControlIsTooHot(mockTempuratureControl, 80.0, false);
         mocks.replay();
 
-        boolean result = rule.isTooCold( mockThermometer_1.object);
+        boolean result = rule.isTooHot( mockThermometer_1.object);
         mocks.verify();
         assertFalse(result);
     }
 
-    public void testIsTooColdTrue() {
+    public void testIsTooHotTrue() {
         setupThermometerReading(mockThermometer_1, 80.0);
-        setupControlIsTooCold(mockTempuratureControl, 80.0, true);
+        setupControlIsTooHot(mockTempuratureControl, 80.0, true);
         mocks.replay();
 
-        boolean result = rule.isTooCold( mockThermometer_1.object);
+        boolean result = rule.isTooHot( mockThermometer_1.object);
         mocks.verify();
         assertTrue(result);
     }
 
     public void testConsequence() {
-        mockPump_A.object.setState(HeatPump.State.HEATING);
+        mockPump_A.object.setState(HeatPump.State.COOLING);
         mocks.replay();
 
         rule.consequence(mockPump_A.object);

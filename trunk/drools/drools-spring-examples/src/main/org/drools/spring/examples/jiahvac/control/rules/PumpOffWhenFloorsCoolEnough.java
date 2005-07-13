@@ -9,7 +9,7 @@ import org.drools.spring.examples.jiahvac.model.Thermometer;
 import org.drools.spring.metadata.annotation.java.*;
 
 @Rule
-public class FloorsCoolEnough {
+public class PumpOffWhenFloorsCoolEnough {
     
     private TempuratureControl control;
     
@@ -46,6 +46,6 @@ public class FloorsCoolEnough {
     @Consequence
     public void consequence(HeatPump pump) {
         pump.setState(OFF);
-        System.out.println("FloorsCoolEnough: " + pump);
+        System.out.println("PumpOffWhenFloorsCoolEnough: " + pump);
     }
 }
