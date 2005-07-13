@@ -34,48 +34,38 @@ public abstract class MethodMetadataSourceTestCase extends TestCase {
         return PojoRule.class;
     }
 
-    protected static Method privateBooleanMethod;
-    protected static Method privateVoidMethod;
-    protected static Method publicNonVoidAndNonBooleanMethod;
-    protected static Method publicNonVoidAndNonPrimitiveMethod;
-    protected static Method publicBooleanMethodWithNoParameters;
-    protected static Method publicBooleanMethodWithParameters;
-    protected static Method publicVoidMethodWithNoParameters;
-    protected static Method publicVoidMethodWithParameters;
-
-    private static boolean isStaticSetUp;
+    private Method privateBooleanMethod;
+    private Method privateVoidMethod;
+    private Method publicNonVoidAndNonBooleanMethod;
+    private Method publicNonVoidAndNonPrimitiveMethod;
+    private Method publicBooleanMethodWithNoParameters;
+    private Method publicBooleanMethodWithParameters;
+    private Method publicVoidMethodWithNoParameters;
+    private Method publicVoidMethodWithParameters;
 
     protected abstract MethodMetadataSource getSourceUnderTest();
 
-    private MethodMetadataSource concreteSource;
+    protected MethodMetadataSource concreteSource;
 
     protected void setUp() throws Exception {
         super.setUp();
-        staticSetUp();
+        
+        Class pojoRuleClass = getPojoRuleClass();
+        privateBooleanMethod = pojoRuleClass.getDeclaredMethod("privateBooleanMethod", new Class[0]);
+        privateVoidMethod = pojoRuleClass.getDeclaredMethod("privateVoidMethod", new Class[0]);
+        publicNonVoidAndNonBooleanMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonBooleanMethod", new Class[0]);
+        publicNonVoidAndNonPrimitiveMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonPrimitiveMethod", new Class[0]);
+        publicBooleanMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithNoParameters", new Class[0]);
+        publicBooleanMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithParameters", new Class[]{String.class, String.class});
+        publicVoidMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithNoParameters", new Class[0]);
+        publicVoidMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithParameters", new Class[]{String.class, String.class, KnowledgeHelper.class});
+        
         concreteSource = getSourceUnderTest();
-    }
-
-    protected void staticSetUp() throws Exception {
-        if (!isStaticSetUp) {
-            try {
-                Class pojoRuleClass = getPojoRuleClass();
-                privateBooleanMethod = pojoRuleClass.getDeclaredMethod("privateBooleanMethod", new Class[0]);
-                privateVoidMethod = pojoRuleClass.getDeclaredMethod("privateVoidMethod", new Class[0]);
-                publicNonVoidAndNonBooleanMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonBooleanMethod", new Class[0]);
-                publicNonVoidAndNonPrimitiveMethod = pojoRuleClass.getDeclaredMethod("publicNonVoidAndNonPrimitiveMethod", new Class[0]);
-                publicBooleanMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithNoParameters", new Class[0]);
-                publicBooleanMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicBooleanMethodWithParameters", new Class[]{String.class, String.class});
-                publicVoidMethodWithNoParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithNoParameters", new Class[0]);
-                publicVoidMethodWithParameters = pojoRuleClass.getDeclaredMethod("publicVoidMethodWithParameters", new Class[]{String.class, String.class, KnowledgeHelper.class});
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            isStaticSetUp = true;
-        }
     }
 
     public void testNonRuleMethods() throws Exception {
         assertNull(concreteSource.getMethodMetadata(privateBooleanMethod));
+        assertNull(concreteSource.getMethodMetadata(privateVoidMethod));
         assertNull(concreteSource.getMethodMetadata(publicNonVoidAndNonBooleanMethod));
         assertNull(concreteSource.getMethodMetadata(publicBooleanMethodWithNoParameters));
     }
