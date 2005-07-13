@@ -1,7 +1,7 @@
 package org.drools.spring.examples.jiahvac.model;
 
-public interface Vent
-{
+public interface Vent {
+    
     Floor getFloor();
 
     enum State {

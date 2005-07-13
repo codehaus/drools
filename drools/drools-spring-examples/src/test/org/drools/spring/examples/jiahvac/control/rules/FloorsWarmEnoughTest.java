@@ -5,8 +5,16 @@ import org.drools.spring.examples.jiahvac.control.rules.FloorsWarmEnough;
 
 public class FloorsWarmEnoughTest extends HVACRuleTestCase
 {
-    private FloorsWarmEnough rule = new FloorsWarmEnough();
+    private FloorsWarmEnough rule;
 
+    @Override
+    protected void setupBuilding() {
+        super.setupBuilding();
+        
+        rule = new FloorsWarmEnough();
+        rule.setControl(mockTempuratureControl.object);
+    }
+    
     /*
      * Really, this method cannot fail. This test serves only as documentation of intent.
      */
@@ -46,9 +54,7 @@ public class FloorsWarmEnoughTest extends HVACRuleTestCase
         setupControlIsWarmEnough(mockTempuratureControl, 80.0, false);
         mocks.replay();
 
-        boolean result = rule.isAllFloorsWarmEnough(mockPump_A.object,
-                                                    mockThermometer_1.object,
-                                                    mockTempuratureControl.object);
+        boolean result = rule.isAllFloorsWarmEnough(mockPump_A.object, mockThermometer_1.object);
         mocks.verify();
         assertFalse(result);
     }
@@ -60,9 +66,7 @@ public class FloorsWarmEnoughTest extends HVACRuleTestCase
         setupControlIsWarmEnough(mockTempuratureControl, 90.0, false);
         mocks.replay();
 
-        boolean result = rule.isAllFloorsWarmEnough(mockPump_A.object,
-                                                    mockThermometer_1.object,
-                                                    mockTempuratureControl.object);
+        boolean result = rule.isAllFloorsWarmEnough(mockPump_A.object, mockThermometer_1.object);
         mocks.verify();
         assertFalse(result);
     }
@@ -74,9 +78,7 @@ public class FloorsWarmEnoughTest extends HVACRuleTestCase
         setupControlIsWarmEnough(mockTempuratureControl, 90.0, true);
         mocks.replay();
 
-        boolean result = rule.isAllFloorsWarmEnough(mockPump_A.object,
-                                                    mockThermometer_1.object,
-                                                    mockTempuratureControl.object);
+        boolean result = rule.isAllFloorsWarmEnough(mockPump_A.object, mockThermometer_1.object);
         mocks.verify();
         assertTrue(result);
     }

@@ -15,41 +15,24 @@ public abstract class HVACRuleTestCase extends TestCase {
 
     protected EasymockContainer mocks = new EasymockContainer();
 
-//    protected Mock<TempuratureControl> mockTempuratureControl;// = mocks.createMock(TempuratureControl.class);
-    protected Mock<TempuratureControl> mockTempuratureControl;
+    protected Mock<TempuratureControl> mockTempuratureControl = mocks.createMock(TempuratureControl.class);
 
-    protected Mock<Floor> mockFloor_1;// = mocks.createMock(Floor.class);
-    protected Mock<Floor> mockFloor_2;// = mocks.createMock(Floor.class);
-    protected Mock<Thermometer> mockThermometer_1;// = mocks.createMock(Thermometer.class);
-    protected Mock<Thermometer> mockThermometer_2;// = mocks.createMock(Thermometer.class);
-    protected Mock<Vent> mockVent_1;// = mocks.createMock(Vent.class);
-    protected Mock<Vent> mockVent_2;// = mocks.createMock(Vent.class);
-    protected Mock<HeatPump> mockPump_A;// = mocks.createMock(HeatPump.class);
+    protected Mock<Floor> mockFloor_1 = mocks.createMock(Floor.class);
+    protected Mock<Floor> mockFloor_2 = mocks.createMock(Floor.class);
+    protected Mock<Thermometer> mockThermometer_1 = mocks.createMock(Thermometer.class);
+    protected Mock<Thermometer> mockThermometer_2 = mocks.createMock(Thermometer.class);
+    protected Mock<Vent> mockVent_1 = mocks.createMock(Vent.class);
+    protected Mock<Vent> mockVent_2 = mocks.createMock(Vent.class);
+    protected Mock<HeatPump> mockPump_A = mocks.createMock(HeatPump.class);
 
-    protected Mock<Floor> mockFloor_3;// = mocks.createMock(Floor.class);
-    protected Mock<Thermometer> mockThermometer_3;// = mocks.createMock(Thermometer.class);
-    protected Mock<Vent> mockVent_3;// = mocks.createMock(Vent.class);
-    protected Mock<HeatPump> mockPump_B;// = mocks.createMock(HeatPump.class);
+    protected Mock<Floor> mockFloor_3 = mocks.createMock(Floor.class);
+    protected Mock<Thermometer> mockThermometer_3 = mocks.createMock(Thermometer.class);
+    protected Mock<Vent> mockVent_3 = mocks.createMock(Vent.class);
+    protected Mock<HeatPump> mockPump_B = mocks.createMock(HeatPump.class);
 
     @Override
     protected void setUp() throws Exception {
-        mockTempuratureControl = mocks.createMock(TempuratureControl.class);
-
-        mockFloor_1 = mocks.createMock(Floor.class);
-        mockFloor_2 = mocks.createMock(Floor.class);
-        mockThermometer_1 = mocks.createMock(Thermometer.class);
-        mockThermometer_2 = mocks.createMock(Thermometer.class);
-        mockVent_1 = mocks.createMock(Vent.class);
-        mockVent_2 = mocks.createMock(Vent.class);
-        mockPump_A = mocks.createMock(HeatPump.class);
-
-        mockFloor_3 = mocks.createMock(Floor.class);
-        mockThermometer_3 = mocks.createMock(Thermometer.class);
-        mockVent_3 = mocks.createMock(Vent.class);
-        mockPump_B = mocks.createMock(HeatPump.class);
-        
         setupBuilding();
-
     }
 
     protected void setupBuilding() {

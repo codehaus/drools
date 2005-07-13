@@ -7,18 +7,14 @@ import org.drools.rule.DuplicateRuleNameException;
 import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
-public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFactoryAware, InitializingBean {
+public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, InitializingBean {
 
     private String name;
     private Set rules;
-    private BeanFactory beanFactory;
     RuleSet ruleSet;
 
     public void setName(String name) {
@@ -35,10 +31,6 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
         }
     }
 
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
-    }
-
     public void afterPropertiesSet() throws Exception {
         if (rules == null || rules.isEmpty()) {
             throw new IllegalArgumentException("rules property not set or is empty");
@@ -48,13 +40,10 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, BeanFacto
     private RuleSet createObject() throws DuplicateRuleNameException, InvalidRuleException {
         RuleSet ruleSet = new RuleSet(name);
         for (Iterator iter = rules.iterator(); iter.hasNext();) {
-            Object ruleOrName = iter.next();
+            Object pojo = iter.next();
             Rule rule;
-            if (ruleOrName instanceof Rule) {
-                rule = (Rule)ruleOrName;
-            } else if (ruleOrName instanceof String) {
-                // TODO Should check the class before casting and provide a proper error message
-                rule = (Rule) beanFactory.getBean((String)ruleOrName);
+            if (pojo instanceof Rule) {
+                rule = (Rule)pojo;
             } else {
                 throw new IllegalArgumentException("Rules property must contain either Rule instances or Rule bean names");
             }

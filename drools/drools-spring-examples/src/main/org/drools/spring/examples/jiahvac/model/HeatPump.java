@@ -1,7 +1,7 @@
 package org.drools.spring.examples.jiahvac.model;
 
-public interface HeatPump
-{
+public interface HeatPump {
+    
     int getId();
 
     Floor[] getFloors();
