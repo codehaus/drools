@@ -5,7 +5,7 @@
 
     <import resource="rulebase.appctx.xml"/>
     
-    <bean id="workingMemory_1" lazy-init="true"
+    <bean id="workingMemory_1" lazy-init="false"
         class="org.drools.spring.factory.WorkingMemoryFactoryBean">
         <property name="ruleBase" ref="ruleBase"/>
         <property name="autoDetectListeners" value="true"/>
