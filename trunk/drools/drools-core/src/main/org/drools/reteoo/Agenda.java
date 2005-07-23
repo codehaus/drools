@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.56 2005-04-20 00:03:06 mproctor Exp $
+ * $Id: Agenda.java,v 1.57 2005-07-23 11:27:33 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,18 +56,18 @@ import org.drools.util.PriorityQueue;
 
 /**
  * Rule-firing Agenda.
- *
+ * 
  * <p>
  * Since many rules may be matched by a single assertObject(...) all scheduled
  * actions are placed into the <code>Agenda</code>.
  * </p>
- *
+ * 
  * <p>
  * While processing a scheduled action, it may modify or retract objects in
  * other scheduled actions, which must then be removed from the agenda.
  * Non-invalidated actions are left on the agenda, and are executed in turn.
  * </p>
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
@@ -93,9 +93,10 @@ class Agenda
     /** Items time-delayed. */
     private final Map               scheduledItems;
 
-    private final Map               itemsToRetract;
+    /** retract maps for event normalisation */
+    private final AgendaItemMap     itemsToRetract;
 
-    private final Map               scheduledItemsToRetract;
+    private final AgendaItemMap     scheduledItemsToRetract;
 
     /** The current agenda item being fired; or null if none. */
     private AgendaItem              item;
@@ -108,7 +109,7 @@ class Agenda
 
     /**
      * Construct.
-     *
+     * 
      * @param workingMemory
      *            The <code>WorkingMemory</code> of this agenda.
      * @param conflictResolver
@@ -120,8 +121,9 @@ class Agenda
         this.workingMemory = workingMemory;
         this.activationQueue = new PriorityQueue( conflictResolver );
         this.scheduledItems = new HashMap( );
-        this.itemsToRetract = new HashMap( );
-        this.scheduledItemsToRetract = new HashMap( );
+        this.itemsToRetract = new AgendaItemMap( );
+        this.scheduledItemsToRetract = new AgendaItemMap( );
+
     }
 
     // ------------------------------------------------------------
@@ -132,7 +134,7 @@ class Agenda
      * Schedule a rule action invokation on this <code>Agenda</code>. Rules
      * specified with noNoop=true that are active should not be added to the
      * agenda
-     *
+     * 
      * @param tuple
      *            The matching <code>Tuple</code>.
      * @param rule
@@ -157,9 +159,10 @@ class Agenda
         {
             // check if item has been retracted as part of a modify
             AgendaItem item = null;
-            if ( !this.itemsToRetract.isEmpty( ) )
+            if ( !this.scheduledItemsToRetract.isEmpty( ) )
             {
-                item = (AgendaItem) this.scheduledItems.get( tuple.getKey( ) );
+                item = this.scheduledItemsToRetract.removeAgendaItem( rule,
+                                                                      tuple.getKey( ) );
             }
 
             if ( item == null )
@@ -179,7 +182,8 @@ class Agenda
             AgendaItem item = null;
             if ( !this.itemsToRetract.isEmpty( ) )
             {
-                item = (AgendaItem) this.itemsToRetract.remove( tuple.getKey( ) );
+                item = this.itemsToRetract.removeAgendaItem( rule,
+                                                             tuple.getKey( ) );
             }
 
             if ( item == null )
@@ -199,7 +203,7 @@ class Agenda
 
     /**
      * Remove a tuple from the agenda.
-     *
+     * 
      * @param key
      *            The key to the tuple to be removed.
      * @param rule
@@ -225,8 +229,9 @@ class Agenda
 
                 if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
                 {
-                    this.itemsToRetract.put( eachItem.getKey( ),
-                                             eachItem );
+                    this.itemsToRetract.putAgendaItem( rule,
+                                                       eachItem.getKey( ),
+                                                       eachItem );
                 }
                 else
                 {
@@ -246,8 +251,9 @@ class Agenda
             {
                 if ( (this.mode == Agenda.MODIFY) && !this.workingMemory.getEventSupport( ).isEmpty( ) )
                 {
-                    this.scheduledItemsToRetract.put( eachItem.getKey( ),
-                                                      eachItem );
+                    this.scheduledItemsToRetract.putAgendaItem( rule,
+                                                                eachItem.getKey( ),
+                                                                eachItem );
                 }
                 else
                 {
@@ -266,33 +272,33 @@ class Agenda
 
     void removeMarkedItemsFromAgenda()
     {
-        AgendaItem eachItem;
+        AgendaItemMap.RemoveDelegate delegate = new AgendaItemMap.RemoveDelegate( ) {
+            public void processRemove(Object obj)
+            {
+                AgendaItem eachItem = (AgendaItem) obj;
+                workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+                                                                          eachItem.getTuple( ) );
+            }
+        };
+        itemsToRetract.removeAll( delegate );
 
-        Iterator itemIter = this.itemsToRetract.values( ).iterator( );
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) itemIter.next( );
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
-                                                                           eachItem.getTuple( ) );
-            itemIter.remove( );
-        }
+        AgendaItemMap.RemoveDelegate scheduledDelegate = new AgendaItemMap.RemoveDelegate( ) {
+            public void processRemove(Object obj)
+            {
+                AgendaItem eachItem = (AgendaItem) obj;
+                cancelItem( eachItem );
 
-        itemIter = this.scheduledItemsToRetract.values( ).iterator( );
-        while ( itemIter.hasNext( ) )
-        {
-            eachItem = (AgendaItem) itemIter.next( );
+                workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+                                                                          eachItem.getTuple( ) );
+            }
+        };
+        scheduledItemsToRetract.removeAll( scheduledDelegate );
 
-            cancelItem( eachItem );
-
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
-                                                                           eachItem.getTuple( ) );
-            itemIter.remove( );
-        }
     }
 
     /**
      * Clears all Activations from the Agenda
-     *
+     * 
      */
     void clearAgenda()
     {
@@ -328,7 +334,7 @@ class Agenda
 
     /**
      * Schedule an agenda item for delayed firing.
-     *
+     * 
      * @param item
      *            The item to schedule.
      */
@@ -340,7 +346,7 @@ class Agenda
 
     /**
      * Cancel a scheduled agenda item for delayed firing.
-     *
+     * 
      * @param item
      *            The item to cancel.
      */
@@ -351,7 +357,7 @@ class Agenda
 
     /**
      * Determine if this <code>Agenda</code> has any scheduled items.
-     *
+     * 
      * @return <code>true<code> if the agenda is empty, otherwise
      *          <code>false</code>.
      */
@@ -367,7 +373,7 @@ class Agenda
 
     /**
      * Fire the next scheduled <code>Agenda</code> item.
-     *
+     * 
      * @throws ConsequenceException
      *             If an error occurs while firing an agenda item.
      */
@@ -396,7 +402,7 @@ class Agenda
     /**
      * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda
      * Scheduler used for duration rules.
-     *
+     * 
      * @param handler
      */
     void setAsyncExceptionHandler(AsyncExceptionHandler handler)
