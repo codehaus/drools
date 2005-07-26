@@ -11,34 +11,34 @@ public class MockObjectSink
     implements
     ObjectSink
 {
-    private List asserted = new ArrayList( );
-    private List retracted = new ArrayList( );
-    private AssertionException assertionException;
+    private List                asserted  = new ArrayList();
+    private List                retracted = new ArrayList();
+    private AssertionException  assertionException;
     private RetractionException retractionException;
-    
+
     public void assertObject(Object object,
                              FactHandleImpl handle,
-                             PropagationContext context, 
+                             PropagationContext context,
                              WorkingMemoryImpl workingMemory) throws FactException
     {
-        if ( assertionException != null ) 
+        if ( assertionException != null )
         {
             throw this.assertionException;
         }
-        
-        this.asserted.add( new Object[] { object,  handle, context, workingMemory } );
+
+        this.asserted.add( new Object[]{object, handle, context, workingMemory} );
     }
 
     public void retractObject(FactHandleImpl handle,
-                              PropagationContext context, 
+                              PropagationContext context,
                               WorkingMemoryImpl workingMemory) throws FactException
     {
-        if ( retractionException != null ) 
+        if ( retractionException != null )
         {
             throw retractionException;
         }
-        
-        this.retracted.add( new Object[] { handle, context, workingMemory } );
+
+        this.retracted.add( new Object[]{handle, context, workingMemory} );
     }
 
     public List getAsserted()

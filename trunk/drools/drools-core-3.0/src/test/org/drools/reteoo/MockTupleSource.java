@@ -4,18 +4,18 @@ public class MockTupleSource extends TupleSource
 {
 
     private int attached;
-    
-    public MockTupleSource( int id )
+
+    public MockTupleSource(int id)
     {
         super( id );
     }
-    
+
     public void attach()
     {
-       this.attached++;
+        this.attached++;
 
     }
-    
+
     public int getAttached()
     {
         return this.attached;

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaTest.java,v 1.1 2005-07-26 01:06:32 mproctor Exp $
+ * $Id: AgendaTest.java,v 1.2 2005-07-26 21:24:59 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,13 +46,11 @@ import java.util.Map;
 
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
-import org.drools.WorkingMemory;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
-import org.drools.spi.MockObjectType;
 import org.drools.spi.Module;
 
 /**
@@ -61,54 +59,57 @@ import org.drools.spi.Module;
 
 public class AgendaTest extends DroolsTestCase
 {
-    
+
     public void testAddToAgenda() throws Exception
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
 
-        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
-        
-        final Agenda agenda = workingMemory.getAgenda( );
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
+
+        final Agenda agenda = workingMemory.getAgenda();
 
         final Rule rule1 = new Rule( "test-rule1" );
-        
+
         final Rule rule2 = new Rule( "test-rule2" );
 
-
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
-                                                                    rule1 );
-        final PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
-                                                                    rule2 );
-        
         final Map results = new HashMap();
-        
-        /*
-         * Add consequence.
-         */
-        rule1.setConsequence( new org.drools.spi.Consequence( )
-        {
-            public void invoke(org.drools.spi.Tuple tuple)
-            {
-                /* context1 one shows we are adding to the agenda where the rule
-                 * is the same as its propogation context
-                 */
-                agenda.addToAgenda( (ReteTuple) tuple,
-                                     context1,
-                                     rule1 );
-                results.put( "fired", new Boolean( true ) );
-            }
-        } );
 
         ReteTuple tuple = new ReteTuple( 0,
                                          new FactHandleImpl( 1 ),
                                          workingMemory );
-         /* make sure the focus is empty */
-        assertEquals( 0,
-                      agenda.focusSize() );        
+
+        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+                                                                    rule1,
+                                                                    new AgendaItem( tuple,
+                                                                                    rule1 ) );
+
+        final PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
+                                                                    rule2,
+                                                                    new AgendaItem( tuple,
+                                                                                    rule2 ) );
 
         /*
-         * This is not recursive so a rule should not be able to activate itself
-         * Notice here the context is the other rule, so should add this time. 
+         * Add consequence.
+         */
+        rule1.setConsequence( new org.drools.spi.Consequence() {
+            public void invoke(org.drools.spi.Tuple tuple)
+            {
+                /*
+                 * context1 one shows we are adding to the agenda where the rule is the same as its propogation context
+                 */
+                agenda.addToAgenda( (ReteTuple) tuple,
+                                    context1,
+                                    rule1 );
+                results.put( "fired",
+                             new Boolean( true ) );
+            }
+        } );
+        /* make sure the focus is empty */
+        assertEquals( 0,
+                      agenda.focusSize() );
+
+        /*
+         * This is not recursive so a rule should not be able to activate itself Notice here the context is the other rule, so should add this time.
          */
         rule1.setNoLoop( true );
         agenda.addToAgenda( tuple,
@@ -118,22 +119,22 @@ public class AgendaTest extends DroolsTestCase
         assertEquals( 1,
                       agenda.focusSize() );
         agenda.fireNextItem( null );
-        
+
         /* make sure it fired */
         assertEquals( new Boolean( true ),
                       results.get( "fired" ) );
-        
+
         /* the addToAgenda in the consequence should fail as the context is the same as the current rule */
         assertEquals( 0,
                       agenda.focusSize() );
-        
+
         /* reset agenda and results map */
         agenda.clearAgenda();
         results.clear();
 
         /*
          * This is recursive so a rule should be able to activate itself
-         */        
+         */
         rule1.setNoLoop( false );
         agenda.addToAgenda( tuple,
                             context2,
@@ -148,36 +149,38 @@ public class AgendaTest extends DroolsTestCase
         assertEquals( 1,
                       agenda.focusSize() );
     }
-    
+
     public void testClearAgenda()
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
 
-        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
-        
-        final Agenda agenda = workingMemory.getAgenda( );  
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
 
-        final Rule rule1 = new Rule( "test-rule1" );        
+        final Agenda agenda = workingMemory.getAgenda();
+
+        final Rule rule1 = new Rule( "test-rule1" );
+
+        ReteTuple tuple = new ReteTuple( 0,
+                                         new FactHandleImpl( 1 ),
+                                         workingMemory );
 
         final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
-                                                                    rule1 );        
+                                                                    rule1,
+                                                                    new AgendaItem( tuple,
+                                                                                    rule1 ) );
+
         /*
          * Add consequence. Notice here the context here for the add to agenda is itself
          */
-        rule1.setConsequence( new org.drools.spi.Consequence( )
-        {
+        rule1.setConsequence( new org.drools.spi.Consequence() {
             public void invoke(org.drools.spi.Tuple tuple)
             {
                 // do nothing
             }
         } );
 
-        ReteTuple tuple = new ReteTuple( 0,
-                                         new FactHandleImpl( 1 ),
-                                         workingMemory );
-         
         assertEquals( 0,
-                      agenda.focusSize() );        
+                      agenda.focusSize() );
 
         rule1.setNoLoop( false );
         agenda.addToAgenda( tuple,
@@ -186,38 +189,39 @@ public class AgendaTest extends DroolsTestCase
         /* make sure we have an activation in the current focus */
         assertEquals( 1,
                       agenda.focusSize() );
-        
+
         agenda.clearAgenda();
-        
+
         assertEquals( 0,
-                      agenda.focusSize() );                               
+                      agenda.focusSize() );
     }
-    
+
     public void testFilters() throws Exception
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
 
-        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
-        final Agenda agenda = workingMemory.getAgenda( );
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
+        final Agenda agenda = workingMemory.getAgenda();
 
         final Rule rule = new Rule( "test-rule" );
-        
-        final PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                                   rule );        
 
         final Map results = new HashMap();
         // add consequence
-        rule.setConsequence( new org.drools.spi.Consequence( )
-        {
+        rule.setConsequence( new org.drools.spi.Consequence() {
             public void invoke(org.drools.spi.Tuple tuple)
             {
-                results.put( "fired", new Boolean( true ) );
+                results.put( "fired",
+                             new Boolean( true ) );
             }
         } );
 
         ReteTuple tuple = new ReteTuple( 0,
                                          new FactHandleImpl( 1 ),
-                                         workingMemory );         
+                                         workingMemory );
+        final PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+                                                                   rule,
+                                                                   new AgendaItem( tuple,
+                                                                                   rule ) );
 
         /* test agenda is empty */
         assertEquals( 0,
@@ -226,8 +230,7 @@ public class AgendaTest extends DroolsTestCase
         /*
          * True filter, activations should always add
          */
-        AgendaFilter filterTrue = new AgendaFilter( )
-        {
+        AgendaFilter filterTrue = new AgendaFilter() {
             public boolean accept(Activation item)
             {
                 return true;
@@ -247,7 +250,7 @@ public class AgendaTest extends DroolsTestCase
         /* make sure it also fired */
         assertEquals( new Boolean( true ),
                       results.get( "fired" ) );
-        
+
         /* clear the agenda and the result map */
         agenda.clearAgenda();
         results.clear();
@@ -255,8 +258,7 @@ public class AgendaTest extends DroolsTestCase
         /*
          * False filter, activations should always be denied
          */
-        AgendaFilter filterFalse = new AgendaFilter( )
-        {
+        AgendaFilter filterFalse = new AgendaFilter() {
             public boolean accept(Activation item)
             {
                 return false;
@@ -273,19 +275,19 @@ public class AgendaTest extends DroolsTestCase
         /* make sure the focus is empty */
         assertEquals( 0,
                       agenda.focusSize() );
-        
+
         /* check the consequence never fired */
-        assertNull( results.get( "fired" ) );        
-    }    
-    
+        assertNull( results.get( "fired" ) );
+    }
+
     public void testFocusStack() throws ConsequenceException
     {
-        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
+        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
 
-        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
-        
-        final Agenda agenda = workingMemory.getAgenda( );  
-        
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
+
+        final Agenda agenda = workingMemory.getAgenda();
+
         /* create the moduels */
         ModuleImpl module1 = new ModuleImpl( "module1",
                                              ruleBase.getConflictResolver() );
@@ -293,185 +295,191 @@ public class AgendaTest extends DroolsTestCase
 
         ModuleImpl module2 = new ModuleImpl( "module2",
                                              ruleBase.getConflictResolver() );
-        agenda.addModule( module2 );  
+        agenda.addModule( module2 );
 
         ModuleImpl module3 = new ModuleImpl( "module3",
                                              ruleBase.getConflictResolver() );
-        agenda.addModule( module3 );   
-        
+        agenda.addModule( module3 );
+
         /* create the consequence */
-        Consequence consequence = new Consequence( )
-        {
+        Consequence consequence = new Consequence() {
             public void invoke(org.drools.spi.Tuple tuple)
             {
                 // do nothing
             }
-        };       
+        };
 
-        /* create a rule for each module */
-        Rule rule0 = new Rule( "test-rule0" );    
-        rule0.setConsequence( consequence );
-        PropagationContext context0 = new PropagationContext( PropagationContext.ASSERTION,
-                                                              rule0 );
-        
-        Rule rule1 = new Rule( "test-rule1",
-                               "module1" );        
-        rule1.setConsequence( consequence );
-        PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
-                                                              rule1);         
-        
-        Rule rule2 = new Rule( "test-rule2",
-                               "module2" );     
-        rule2.setConsequence( consequence );
-        PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
-                                                              rule2);      
-        
-        Rule rule3 = new Rule( "test-rule3",
-                               "module3" );     
-        rule3.setConsequence( consequence );
-        PropagationContext context3 = new PropagationContext( PropagationContext.ASSERTION,
-                                                              rule3);                           
-        
         ReteTuple tuple = new ReteTuple( 0,
                                          new FactHandleImpl( 1 ),
                                          workingMemory );
-         
+
+        /* create a rule for each module */
+        Rule rule0 = new Rule( "test-rule0" );
+        rule0.setConsequence( consequence );
+        PropagationContext context0 = new PropagationContext( PropagationContext.ASSERTION,
+                                                              rule0,
+                                                              new AgendaItem( tuple,
+                                                                              rule0 ) );
+
+        Rule rule1 = new Rule( "test-rule1",
+                               "module1" );
+        rule1.setConsequence( consequence );
+        PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+                                                              rule1,
+                                                              new AgendaItem( tuple,
+                                                                              rule0 ) );
+
+        Rule rule2 = new Rule( "test-rule2",
+                               "module2" );
+        rule2.setConsequence( consequence );
+        PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
+                                                              rule2,
+                                                              new AgendaItem( tuple,
+                                                                              rule0 ) );
+
+        Rule rule3 = new Rule( "test-rule3",
+                               "module3" );
+        rule3.setConsequence( consequence );
+        PropagationContext context3 = new PropagationContext( PropagationContext.ASSERTION,
+                                                              rule3,
+                                                              new AgendaItem( tuple,
+                                                                              rule0 ) );
+
         /* focus at this point is MAIN */
         assertEquals( 0,
-                      agenda.focusSize() );        
+                      agenda.focusSize() );
 
         agenda.addToAgenda( tuple,
                             context0,
-                            rule0 );        
-        
+                            rule0 );
+
         /* check focus is main */
         ModuleImpl main = (ModuleImpl) agenda.getModule( Module.MAIN );
         assertEquals( agenda.getFocus(),
-                      main );        
+                      main );
         /* check main got the tuple */
         assertEquals( 1,
-                      agenda.focusSize() );        
-                
+                      agenda.focusSize() );
+
         agenda.addToAgenda( tuple,
                             context2,
-                            rule2 ); 
-        /* main is still focus and this tuple went to module 2*/
+                            rule2 );
+        /* main is still focus and this tuple went to module 2 */
         assertEquals( 1,
                       agenda.focusSize() );
         /* check module2 still got the tuple */
         assertEquals( 1,
-                      module2.getActivationQueue().size() );  
-        
+                      module2.getActivationQueue().size() );
+
         /* make sure total agenda size reflects this */
         assertEquals( 2,
-                      agenda.totalAgendaSize() );        
-        
+                      agenda.totalAgendaSize() );
+
         /* put another one on module 2 */
         agenda.addToAgenda( tuple,
                             context2,
                             rule2 );
-        
+
         /* main is still focus so shouldn't have increased */
         assertEquals( 1,
-                      agenda.focusSize() );   
-        
+                      agenda.focusSize() );
+
         /* check module2 still got the tuple */
         assertEquals( 2,
-                      module2.getActivationQueue().size() );         
-        
+                      module2.getActivationQueue().size() );
+
         /* make sure total agenda size reflects this */
         assertEquals( 3,
-                      agenda.totalAgendaSize() );  
-        
+                      agenda.totalAgendaSize() );
+
         /* set the focus to module1, note module1 has no activations */
         agenda.setFocus( "module1" );
         /* add module2 onto the focus stack */
         agenda.setFocus( "module2" );
         /* finally add module3 to the top of the focus stack */
-        agenda.setFocus( "module3" ); 
-        
+        agenda.setFocus( "module3" );
+
         /* module3, the current focus, has no activations */
         assertEquals( 0,
-                      agenda.focusSize() );            
-        
+                      agenda.focusSize() );
+
         /* add to module 3 */
         agenda.addToAgenda( tuple,
                             context3,
-                            rule3 ); 
+                            rule3 );
         assertEquals( 1,
-                      agenda.focusSize() ); 
-        
+                      agenda.focusSize() );
+
         agenda.addToAgenda( tuple,
                             context3,
-                            rule3 );         
-        
+                            rule3 );
+
         /* module3 now has 2 activations */
         assertEquals( 2,
-                      agenda.focusSize() );    
+                      agenda.focusSize() );
         /* check totalAgendaSize still works */
         assertEquals( 5,
-                      agenda.totalAgendaSize() );    
-        
+                      agenda.totalAgendaSize() );
+
         /* ok now lets check that stacks work with fireNextItem */
         agenda.fireNextItem( null );
 
         /* module3 should still be the current module */
         assertEquals( agenda.getFocus(),
-                      module3 );        
+                      module3 );
         /* module3 has gone from 2 to one activations */
         assertEquals( 1,
-                      agenda.focusSize() );          
+                      agenda.focusSize() );
         /* check totalAgendaSize has reduced too */
         assertEquals( 4,
-                      agenda.totalAgendaSize() );    
-        
+                      agenda.totalAgendaSize() );
+
         /* now repeat the process */
         agenda.fireNextItem( null );
-                
+
         /* focus is still module3, but now its empty */
         assertEquals( agenda.getFocus(),
-                      module3 );        
+                      module3 );
         assertEquals( 0,
-                      agenda.focusSize() );            
+                      agenda.focusSize() );
         assertEquals( 3,
-                      agenda.totalAgendaSize() );   
-        
+                      agenda.totalAgendaSize() );
+
         /* repeat fire again */
         agenda.fireNextItem( null );
-        
-        /* module3 is empty so it should be popped from the stack
-         * making module2 the current module 
+
+        /*
+         * module3 is empty so it should be popped from the stack making module2 the current module
          */
         assertEquals( agenda.getFocus(),
                       module2 );
         /* module2 had 2 activations, now it only has 1 */
         assertEquals( 1,
-                      agenda.focusSize() );            
+                      agenda.focusSize() );
         assertEquals( 2,
-                      agenda.totalAgendaSize() );         
-        
+                      agenda.totalAgendaSize() );
+
         /* repeat fire again */
         agenda.fireNextItem( null );
-        
+
         assertEquals( agenda.getFocus(),
-                      module2 );        
+                      module2 );
         assertEquals( 0,
-                      agenda.focusSize() );            
+                      agenda.focusSize() );
         assertEquals( 1,
-                      agenda.totalAgendaSize() );    
-        
-        /* this last fire is more interesting as it demonstrates
-         * that module1 on the stack before module2 gets skipped as it has 
-         * no activations
+                      agenda.totalAgendaSize() );
+
+        /*
+         * this last fire is more interesting as it demonstrates that module1 on the stack before module2 gets skipped as it has no activations
          */
         agenda.fireNextItem( null );
-        
+
         assertEquals( agenda.getFocus(),
-                      main );        
+                      main );
         assertEquals( 0,
-                      agenda.focusSize() );            
+                      agenda.focusSize() );
         assertEquals( 0,
-                      agenda.totalAgendaSize() );                  
-                
+                      agenda.totalAgendaSize() );
+
     }
 }

@@ -2,11 +2,8 @@ package org.drools.reteoo;
 
 import java.util.List;
 
-import org.drools.AssertionException;
 import org.drools.DroolsTestCase;
-import org.drools.RetractionException;
 import org.drools.rule.Rule;
-import org.drools.spi.ClassObjectType;
 
 public class LeftInputAdapterNodeTest extends DroolsTestCase
 {
@@ -18,13 +15,13 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                                                                  0,
                                                                  source );
         assertEquals( 23,
-                      liaNode.getId( ) );
+                      liaNode.getId() );
 
         assertEquals( 0,
-                      source.getAttached( ) );
-        source.attach( );
+                      source.getAttached() );
+        source.attach();
         assertEquals( 1,
-                      source.getAttached( ) );
+                      source.getAttached() );
     }
 
     public void testAttach() throws Exception
@@ -36,18 +33,18 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                                                                  source );
 
         assertEquals( 1,
-                      liaNode.getId( ) );
+                      liaNode.getId() );
 
         assertLength( 0,
-                      source.getObjectSinks( ) );
+                      source.getObjectSinks() );
 
-        liaNode.attach( );
+        liaNode.attach();
 
         assertLength( 1,
-                      source.getObjectSinks( ) );
+                      source.getObjectSinks() );
 
         assertSame( liaNode,
-                    source.getObjectSinks( ).get( 0 ) );
+                    source.getObjectSinks().get( 0 ) );
     }
 
     public void testAssertObject() throws Exception
@@ -57,18 +54,18 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                                                              null,
                                                              null );
 
-        WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
+        WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
 
         MockObjectSource source = new MockObjectSource( 15 );
 
         LeftInputAdapterNode liaNode = new LeftInputAdapterNode( 1,
                                                                  0,
                                                                  source );
-        MockTupleSink sink = new MockTupleSink( );
+        MockTupleSink sink = new MockTupleSink();
         liaNode.addTupleSink( sink );
 
         Object string1 = "cheese";
-        Object object1 = new Object( );
+        Object object1 = new Object();
 
         FactHandleImpl handle1 = new FactHandleImpl( 1 );
         FactHandleImpl handle2 = new FactHandleImpl( 2 );
@@ -84,10 +81,10 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                               handle1,
                               context,
                               workingMemory );
-        
-        List asserted = sink.getAsserted( );
+
+        List asserted = sink.getAsserted();
         assertLength( 1,
-                      asserted );        
+                      asserted );
 
         /* assert object */
         liaNode.assertObject( object1,
@@ -95,17 +92,17 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                               context,
                               workingMemory );
         assertLength( 2,
-                      asserted ); 
+                      asserted );
 
         /* check tuple comes out */
-        ReteTuple tuple = (ReteTuple)((Object[]) asserted.get( 0 ))[0];        
+        ReteTuple tuple = (ReteTuple) ((Object[]) asserted.get( 0 ))[0];
         assertSame( string1,
                     tuple.get( handle1 ) );
 
         /* check tuple comes out */
-        tuple = (ReteTuple)((Object[]) asserted.get( 1 ))[0];        
+        tuple = (ReteTuple) ((Object[]) asserted.get( 1 ))[0];
         assertSame( object1,
-                    tuple.get( handle2 ) );        
+                    tuple.get( handle2 ) );
     }
 
     public void testRetractObject() throws Exception
@@ -115,19 +112,19 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                                                              null,
                                                              null );
 
-        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
 
         MockObjectSource source = new MockObjectSource( 15 );
 
         LeftInputAdapterNode liaNode = new LeftInputAdapterNode( 1,
                                                                  0,
                                                                  source );
-        MockTupleSink sink = new MockTupleSink( );
+        MockTupleSink sink = new MockTupleSink();
         liaNode.addTupleSink( sink );
 
         Object string1 = "cheese";
 
-        Object object1 = new Object( );
+        Object object1 = new Object();
 
         FactHandleImpl handle1 = new FactHandleImpl( 1 );
         FactHandleImpl handle2 = new FactHandleImpl( 2 );
@@ -143,9 +140,9 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
                                context,
                                memory );
 
-        List retracted = sink.getRetracted( );        
+        List retracted = sink.getRetracted();
         assertLength( 1,
-                      retracted );        
+                      retracted );
 
         /* retract object */
         liaNode.retractObject( handle2,
@@ -154,17 +151,17 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
 
         assertLength( 2,
                       retracted );
-        
+
         /* check TupleKey comes out */
-        TupleKey key = ( TupleKey ) ((Object[]) retracted.get( 0 ))[0];      
+        TupleKey key = (TupleKey) ((Object[]) retracted.get( 0 ))[0];
         assertSame( handle1,
                     key.get( 0 ) );
-        
-        /* check TupleKey comes out */        
-        key = ( TupleKey ) ((Object[]) retracted.get( 1 ))[0];
+
+        /* check TupleKey comes out */
+        key = (TupleKey) ((Object[]) retracted.get( 1 ))[0];
         assertSame( handle2,
                     key.get( 0 ) );
-        
+
     }
 
 }
