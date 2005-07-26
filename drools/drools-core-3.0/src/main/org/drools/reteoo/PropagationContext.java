@@ -15,10 +15,13 @@ public class PropagationContext
     
     private Activation activation;
 
-    public PropagationContext( int type, Rule origin )
+    public PropagationContext( int type, 
+                               Rule rule,
+                               Activation activation)
     {
         this.type = type;
-        this.rule = origin;
+        this.rule = rule;
+        this.activation = activation;
     }
 
     public Rule getRuleOrigin()

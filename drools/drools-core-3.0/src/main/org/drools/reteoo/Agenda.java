@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.2 2005-07-26 02:04:49 mproctor Exp $
+ * $Id: Agenda.java,v 1.3 2005-07-26 16:16:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,12 +43,16 @@ package org.drools.reteoo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.drools.FactException;
 import org.drools.rule.Rule;
+import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 import org.drools.spi.ConflictResolver;
@@ -56,7 +60,10 @@ import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
 import org.drools.spi.Module;
 import org.drools.spi.Tuple;
+import org.drools.util.PrimitiveLongMap;
 import org.drools.util.PriorityQueue;
+
+import sun.security.krb5.internal.i;
 
 import java.util.Stack;
 
@@ -98,9 +105,13 @@ class Agenda
     
     private final Map               modules;
 
-    private final LinkedList              focusStack; 
+    private final LinkedList        focusStack; 
     
     private ModuleImpl              currentModule;
+    
+    private final Map               logicalAsserts;
+    
+    private final PrimitiveLongMap reverseLogicalAsserts;
     
 
     // ------------------------------------------------------------
@@ -130,6 +141,11 @@ class Agenda
                           main );
         
         this.focusStack.add( main );
+        
+        this.logicalAsserts = new HashMap( );
+        
+        this.reverseLogicalAsserts = new PrimitiveLongMap( 8,
+                                                           32 );
     }
 
     // ------------------------------------------------------------
@@ -191,7 +207,7 @@ class Agenda
      */
     void removeFromAgenda(TupleKey key,
                           PropagationContext context,
-                          Rule rule)
+                          Rule rule) throws FactException 
     {
         AgendaItem eachItem;
         Tuple tuple;
@@ -205,6 +221,8 @@ class Agenda
             if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
                 itemIter.remove( );
+                
+                removeLogicalAssertions( eachItem );
                 // need to restart iterator as heap could place elements before
                 // current iterator position
                 itemIter = module.getActivationQueue( ).iterator( );
@@ -227,6 +245,8 @@ class Agenda
                 cancelItem( eachItem );
 
                 itemIter.remove( );
+                
+                removeLogicalAssertions( eachItem );
 
                 this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
                                                                                tuple );
@@ -280,6 +300,52 @@ class Agenda
         /* clear the focus, but add MAIN backon */
         this.focusStack.clear();
         this.focusStack.add( this.modules.get( Module.MAIN ) );
+    }
+    
+    void addLogicalAssertion( Activation activation,
+                              FactHandleImpl handle )
+    {
+        List logicalList = (List) this.logicalAsserts.get( activation );
+        if ( logicalList == null )
+        {
+            logicalList = new ArrayList();
+        }
+        logicalList.add( handle );
+        
+        Set reverseList = (Set) this.reverseLogicalAsserts.get( handle.getId() );
+        if ( reverseList == null )
+        {
+            reverseList = new HashSet();
+        }
+        reverseList.add( activation );
+    }
+    
+    /**
+     * if an exception gets thrown then we are left in a potentially
+     * untrue sitauation. When would a retraction throw a condition?
+     * 
+     * @param activation
+     * @throws FactException
+     */
+    private void removeLogicalAssertions( Activation activation ) throws FactException
+    {
+        List logicalList = (List) this.logicalAsserts.get( activation );
+        if ( logicalList != null )
+        {
+            FactHandleImpl handle = null;
+            Iterator it = logicalList.iterator();
+            while ( it.hasNext() )
+            {
+                handle = (FactHandleImpl) it.next();
+                List reverseList = (List) this.reverseLogicalAsserts.get( handle.getId() );
+                if ( reverseList.remove( activation ) &&  reverseList.isEmpty() )
+                {
+                    this.reverseLogicalAsserts.remove( handle.getId() );
+                    this.workingMemory.retractObject( handle );
+                }                
+            }
+            logicalList.remove( activation );
+        }        
     }
 
     /**

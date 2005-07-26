@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: AgendaItem.java,v 1.2 2005-07-26 16:16:38 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -181,6 +181,24 @@ class AgendaItem
     public String toString()
     {
         return "[" + this.rule.getName( ) + " " + this.tuple + "]";
+    }
+    
+    public boolean equals(Object object)
+    {
+        if ( ( object == null ) || !( object instanceof AgendaItem) )
+        {
+            return false;
+        }
+        
+        AgendaItem otherItem = (AgendaItem) object;
+        
+        return ( this.rule.equals( otherItem.getRule() ) 
+                  && this.tuple.getKey().equals( otherItem.getKey() ) );                        
+    }
+    
+    public int hashcode()
+    {
+        return this.getKey().hashCode();
     }
 
 }
