@@ -9,15 +9,15 @@ import org.drools.FactHandle;
 public class InstrumentedWorkingMemoryImpl extends WorkingMemoryImpl
 {
     public InstrumentedWorkingMemoryImpl()
-    {    
-       this( new RuleBaseImpl( new Rete( ) ) );
+    {
+        this( new RuleBaseImpl( new Rete() ) );
     }
-    
+
     public InstrumentedWorkingMemoryImpl(RuleBaseImpl ruleBase)
     {
         super( ruleBase );
     }
-    
+
     /**
      * Associate an object with its handle.
      * 
@@ -27,15 +27,16 @@ public class InstrumentedWorkingMemoryImpl extends WorkingMemoryImpl
      *            The object.
      */
     public Object putObject(FactHandle handle,
-                     Object object)
+                            Object object)
     {
-        return super.putObject(handle, object);
-    }    
-    
+        return super.putObject( handle,
+                                object );
+    }
+
     /**
      * Helper method to return FactHandles with a specific id
      */
-    public FactHandle createFactHandle( int id )
+    public FactHandle createFactHandle(int id)
     {
         return new FactHandleImpl( id );
     }

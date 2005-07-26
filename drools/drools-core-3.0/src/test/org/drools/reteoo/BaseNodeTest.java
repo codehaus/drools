@@ -10,18 +10,18 @@ public class BaseNodeTest extends TestCase
         MockBaseNode node = new MockBaseNode( 10 );
         assertEquals( 10,
                       node.getId() );
-        
+
         node = new MockBaseNode( 155 );
         assertEquals( 155,
-                      node.getId() );        
+                      node.getId() );
     }
-    
+
     class MockBaseNode extends BaseNode
     {
-        public MockBaseNode (int id)
+        public MockBaseNode(int id)
         {
             super( id );
-        }        
+        }
     }
 
 }

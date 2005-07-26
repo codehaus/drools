@@ -7,6 +7,6 @@ public class LogicalAssertionTest extends DroolsTestCase
 
     public void test1() throws Exception
     {
-        
+
     }
 }

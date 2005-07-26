@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TestNodeTest.java,v 1.2 2005-07-26 21:14:46 mproctor Exp $
+ * $Id: TestNodeTest.java,v 1.3 2005-07-26 21:24:59 mproctor Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,11 +43,8 @@ package org.drools.reteoo;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.drools.DroolsTestCase;
 import org.drools.FactException;
-import org.drools.rule.Rule;
 import org.drools.spi.MockCondition;
 import org.drools.spi.TestException;
 
@@ -65,39 +62,37 @@ public class TestNodeTest extends DroolsTestCase
     {
         this.context = new PropagationContext( PropagationContext.ASSERTION,
                                                null,
-                                               null);
-        
-        this.workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );                        
+                                               null );
+
+        this.workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
     }
-    
+
     public void testAttach() throws Exception
     {
-        MockTupleSource source= new MockTupleSource( 12 );
-        
+        MockTupleSource source = new MockTupleSource( 12 );
+
         TestNode node = new TestNode( 18,
                                       source,
                                       new MockCondition( null,
                                                          true ) );
-                
+
         assertEquals( 18,
-                      node.getId( ) );
+                      node.getId() );
 
         assertLength( 0,
-                      source.getTupleSinks( ) );
+                      source.getTupleSinks() );
 
-        node.attach( );
+        node.attach();
 
         assertLength( 1,
-                      source.getTupleSinks( ) );
-
+                      source.getTupleSinks() );
 
         assertSame( node,
-                    source.getTupleSinks( ).get( 0 ) );
-    }    
+                    source.getTupleSinks().get( 0 ) );
+    }
 
     /**
-     * If a condition allows an incoming Object, then the Object MUST be
-     * propagated.
+     * If a condition allows an incoming Object, then the Object MUST be propagated.
      * 
      * @throws FactException
      */
@@ -110,7 +105,7 @@ public class TestNodeTest extends DroolsTestCase
                                       new MockCondition( null,
                                                          true ) );
 
-        MockTupleSink sink = new MockTupleSink( );
+        MockTupleSink sink = new MockTupleSink();
         node.addTupleSink( sink );
 
         /* Create the Tuple */
@@ -125,9 +120,9 @@ public class TestNodeTest extends DroolsTestCase
                           this.workingMemory );
 
         /* Check it propagated */
-        List asserted = sink.getAsserted( );
+        List asserted = sink.getAsserted();
         assertEquals( 1,
-                      asserted.size( ) );
+                      asserted.size() );
 
         /* Check propagated item is correct */
         Object[] list = (Object[]) asserted.get( 0 );
@@ -136,12 +131,11 @@ public class TestNodeTest extends DroolsTestCase
 
         /* make sure nothing was retracted */
         assertEquals( 0,
-                      sink.getRetracted( ).size( ) );
+                      sink.getRetracted().size() );
     }
 
     /**
-     * If a Condition does not allow an incoming Object, then the object MUST
-     * NOT be propagated.
+     * If a Condition does not allow an incoming Object, then the object MUST NOT be propagated.
      * 
      * @throws FactException
      */
@@ -153,7 +147,7 @@ public class TestNodeTest extends DroolsTestCase
                                       new MockCondition( null,
                                                          false ) );
 
-        MockTupleSink sink = new MockTupleSink( );
+        MockTupleSink sink = new MockTupleSink();
         node.addTupleSink( sink );
 
         /* Create the Tuple */
@@ -169,30 +163,30 @@ public class TestNodeTest extends DroolsTestCase
 
         /* make sure no assertions were propagated */
         assertEquals( 0,
-                      sink.getAsserted( ).size( ) );
+                      sink.getAsserted().size() );
 
         /* make sure no retractions were propagated */
         assertEquals( 0,
-                      sink.getRetracted( ).size( ) );
+                      sink.getRetracted().size() );
 
     }
 
     /**
-     * If a Condition does not allow an incoming Object, then the object MUST
-     * NOT be propagated.
+     * If a Condition does not allow an incoming Object, then the object MUST NOT be propagated.
      * 
      * @throws FactException
      */
     public void testRetract() throws FactException
     {
-        /* Create a test node that always returns false 
-         * Although as we are retracting it doesn't matter what it returns */
+        /*
+         * Create a test node that always returns false Although as we are retracting it doesn't matter what it returns
+         */
         TestNode node = new TestNode( 1,
                                       new MockTupleSource( 15 ),
                                       new MockCondition( null,
                                                          false ) );
 
-        MockTupleSink sink = new MockTupleSink( );
+        MockTupleSink sink = new MockTupleSink();
         node.addTupleSink( sink );
 
         /* Create the TupleKey */
@@ -207,13 +201,13 @@ public class TestNodeTest extends DroolsTestCase
 
         /* Check nothing was asserted */
         assertEquals( 0,
-                      sink.getAsserted( ).size( ) );
+                      sink.getAsserted().size() );
 
         /* Make sure only one object as propagated */
-        List retracted = sink.getRetracted( );
+        List retracted = sink.getRetracted();
         assertEquals( 1,
-                      retracted.size( ) );
-        
+                      retracted.size() );
+
         /* Check its the same key we asserted */
         Object[] list = (Object[]) retracted.get( 0 );
         assertSame( key,
@@ -233,7 +227,7 @@ public class TestNodeTest extends DroolsTestCase
                                       new MockTupleSource( 15 ),
                                       condition );
 
-        MockTupleSink sink = new MockTupleSink( );
+        MockTupleSink sink = new MockTupleSink();
         node.addTupleSink( sink );
 
         /* Create the Tuple */

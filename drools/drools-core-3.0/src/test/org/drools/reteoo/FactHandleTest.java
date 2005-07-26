@@ -11,9 +11,9 @@ public class FactHandleTest extends TestCase
     {
         FactHandleImpl f0 = new FactHandleImpl( 134 );
         assertEquals( 134,
-                      f0.getId( ) );
+                      f0.getId() );
         assertEquals( 134,
-                      f0.getRecency( ) );
+                      f0.getRecency() );
     }
 
     /*
@@ -24,9 +24,9 @@ public class FactHandleTest extends TestCase
         FactHandleImpl f0 = new FactHandleImpl( 134,
                                                 678 );
         assertEquals( 134,
-                      f0.getId( ) );
+                      f0.getId() );
         assertEquals( 678,
-                      f0.getRecency( ) );
+                      f0.getRecency() );
     }
 
     /*
@@ -50,7 +50,7 @@ public class FactHandleTest extends TestCase
     {
         FactHandleImpl f0 = new FactHandleImpl( 234 );
         assertEquals( 234,
-                      f0.hashCode( ) );
+                      f0.hashCode() );
     }
 
     public void testToExternalForm()
@@ -58,7 +58,7 @@ public class FactHandleTest extends TestCase
         FactHandleImpl f0 = new FactHandleImpl( 134 );
 
         assertEquals( "[fid:134]",
-                      f0.toExternalForm( ) );
+                      f0.toExternalForm() );
     }
 
     /*
@@ -69,18 +69,18 @@ public class FactHandleTest extends TestCase
         FactHandleImpl f0 = new FactHandleImpl( 134 );
 
         assertEquals( "[fid:134]",
-                      f0.toString( ) );
+                      f0.toString() );
     }
 
     public void testInvalidate()
     {
         FactHandleImpl f0 = new FactHandleImpl( 134 );
         assertEquals( 134,
-                      f0.getId( ) );
+                      f0.getId() );
 
-        f0.invalidate( );
+        f0.invalidate();
         assertEquals( -1,
-                      f0.getId( ) );
+                      f0.getId() );
     }
 
 }

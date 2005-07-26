@@ -10,37 +10,36 @@ public class MockTupleSink
     implements
     TupleSink
 {
-    private List asserted = new ArrayList( );
-    private List retracted = new ArrayList( );
-    private AssertionException assertionException;
-    private RetractionException retractionException;    
+    private List                asserted  = new ArrayList();
+    private List                retracted = new ArrayList();
+    private AssertionException  assertionException;
+    private RetractionException retractionException;
 
     public void assertTuple(ReteTuple tuple,
-                            PropagationContext context, 
+                            PropagationContext context,
                             WorkingMemoryImpl workingMemory) throws AssertionException
     {
-        if ( assertionException != null ) 
+        if ( assertionException != null )
         {
             throw this.assertionException;
         }
-        
-        this.asserted.add( new Object[] { tuple, context, workingMemory } );
+
+        this.asserted.add( new Object[]{tuple, context, workingMemory} );
 
     }
 
     public void retractTuples(TupleKey key,
-                              PropagationContext context, 
+                              PropagationContext context,
                               WorkingMemoryImpl workingMemory) throws RetractionException
     {
-        if ( retractionException != null ) 
+        if ( retractionException != null )
         {
             throw retractionException;
         }
-        
-        this.retracted.add( new Object[] { key, context, workingMemory } );
+
+        this.retracted.add( new Object[]{key, context, workingMemory} );
 
     }
-
 
     public List getAsserted()
     {
@@ -61,5 +60,5 @@ public class MockTupleSink
     {
         this.retractionException = retractionException;
     }
-    
+
 }
