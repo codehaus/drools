@@ -130,6 +130,8 @@ public class RuleSetReader extends DefaultHandler
     private boolean             inHandledRuleSubElement;
     
     private MessageFormat       message              = new MessageFormat( "({0}: {1}, {2}): {3}" );
+    
+    private Map                 namespaces = new HashMap();
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -492,6 +494,7 @@ public class RuleSetReader extends DefaultHandler
         this.parents.clear( );
         this.characters = null;
         this.configurationStack.clear( );
+        this.namespaces.clear( );
         if ( this.factoryContext == null )
         {
             this.factoryContext = new RuleBaseContext( );
@@ -746,6 +749,23 @@ public class RuleSetReader extends DefaultHandler
                                  attrs.getValue( i ) );
         }
 
+        // lets add the namespaces as attributes
+        for (Iterator iter = namespaces.entrySet().iterator(); iter.hasNext(); ) 
+        {
+            Map.Entry entry = (Map.Entry) iter.next();
+            String ns = (String) entry.getKey();
+            String value = (String) entry.getValue();
+            if (ns == null || ns.length() == 0) {
+                ns = "xmlns";
+            }
+            else 
+            {
+                ns = "xmlns:" + ns;
+            }
+            config.setAttribute(ns, value);
+        }
+            
+        
         if ( this.configurationStack.isEmpty( ) )
         {
             this.configurationStack.addLast( config );
@@ -991,6 +1011,16 @@ public class RuleSetReader extends DefaultHandler
         {
         }
         return null;
+    }
+
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {
+        super.startPrefixMapping(prefix, uri);
+        namespaces.put(prefix, uri);
+    }
+
+    public void endPrefixMapping(String prefix) throws SAXException {
+        super.endPrefixMapping(prefix);  
+        namespaces.remove(prefix);
     }
 
     private void print(SAXParseException x)
