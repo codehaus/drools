@@ -57,6 +57,8 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.event.WorkingMemoryEventSupport;
+import org.drools.rule.Rule;
+import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 import org.drools.util.IdentityMap;
@@ -343,11 +345,49 @@ class WorkingMemoryImpl
     public FactHandle assertObject(Object object) throws FactException
     {
         return assertObject( object, /* Not-Dynamic */
-                             false );
+                             false,
+                             false,
+                             null,
+                             null );
     }
-
+    
+    /**
+     * @see WorkingMemory
+     */
+    public FactHandle assertLogicalObject(Object object) throws FactException
+    {
+        return assertObject( object, /* Not-Dynamic */
+                             false,
+                             true,
+                             null,
+                             null);
+    }    
+    
     public FactHandle assertObject(Object object,
                                    boolean dynamic) throws FactException
+    {
+        return assertObject( object,
+                             dynamic,
+                             false,
+                             null,
+                             null ); 
+    }    
+    
+    public FactHandle assertLogicalObject(Object object,
+                                          boolean dynamic) throws FactException
+    {
+        return assertObject( object,
+                             dynamic,
+                             true,
+                             null,
+                             null ); 
+    }
+
+    FactHandle assertObject(Object object,
+                            boolean dynamic,
+                            boolean logical,
+                            Rule rule,
+                            Activation activation) throws FactException
     {
         FactHandle handle = (FactHandle) handles.get( object );
 
@@ -369,7 +409,8 @@ class WorkingMemoryImpl
         ruleBase.assertObject( handle,
                                object,
                                new PropagationContext( PropagationContext.ASSERTION,
-                                                       null ),
+                                                       rule,
+                                                       activation ),
                                this );
 
         eventSupport.fireObjectAsserted( handle,
@@ -481,17 +522,28 @@ class WorkingMemoryImpl
 
         return object;
     }
+    
+    public void retractObject(FactHandle handle) throws FactException
+    {
+        retractObject( handle,
+                       null,
+                       null );
+    }
+                              
 
     /**
      * @see WorkingMemory
      */
-    public void retractObject(FactHandle handle) throws FactException
+    public void retractObject(FactHandle handle,
+                              Rule rule,
+                              Activation activation) throws FactException
     {
         removePropertyChangeListener( handle );
 
         ruleBase.retractObject( handle,
                                 new PropagationContext( PropagationContext.RETRACTION,
-                                                        null ),                                
+                                                        rule,
+                                                        activation ),                                                         
                                 this );
 
         Object oldObject = removeObject( handle );
@@ -504,11 +556,22 @@ class WorkingMemoryImpl
         ((FactHandleImpl) handle).invalidate( );
     }
 
+    public void modifyObject(FactHandle handle,
+                             Object object) throws FactException
+    {
+        modifyObject( handle,
+                      object,
+                      null,
+                      null );
+    }
+    
     /**
      * @see WorkingMemory
      */
     public void modifyObject(FactHandle handle,
-                             Object object) throws FactException
+                             Object object,
+                             Rule rule,
+                             Activation activation) throws FactException
     {
         Object originalObject = removeObject( handle );
 
@@ -523,13 +586,15 @@ class WorkingMemoryImpl
 
         this.ruleBase.retractObject( handle,
                                      new PropagationContext( PropagationContext.MODIFICATION,
-                                                             null ),
+                                                             rule,
+                                                             activation ),
                                      this );
 
         this.ruleBase.assertObject( handle,
                                     object,
                                     new PropagationContext( PropagationContext.MODIFICATION,
-                                                            null ),                                    
+                                                            rule,
+                                                            activation ),                                    
                                     this );
 
 
