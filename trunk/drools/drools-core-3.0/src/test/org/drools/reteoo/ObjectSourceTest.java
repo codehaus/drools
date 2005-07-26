@@ -38,7 +38,8 @@ public class ObjectSourceTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );
+                                                             null,
+                                                             null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );        
         
         MockObjectSource source = new MockObjectSource( 15 );
@@ -125,7 +126,8 @@ public class ObjectSourceTest extends DroolsTestCase
         
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.RETRACTION,
-                                                             rule );
+                                                             null,
+                                                             null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );  
         
         

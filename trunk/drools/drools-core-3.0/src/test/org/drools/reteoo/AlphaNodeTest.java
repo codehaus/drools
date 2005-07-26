@@ -45,7 +45,8 @@ public class AlphaNodeTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );        
+                                                             null,
+                                                             null);        
         
         MockObjectSource source = new MockObjectSource( 15 );
         
@@ -131,7 +132,8 @@ public class AlphaNodeTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );        
+                                                             null,
+                                                             null);        
         
         MockObjectSource source = new MockObjectSource( 15 );
         
@@ -237,7 +239,8 @@ public class AlphaNodeTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );        
+                                                             null,
+                                                             null);        
         
         MockObjectSource source = new MockObjectSource( 15 );
         
@@ -321,7 +324,8 @@ public class AlphaNodeTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );        
+                                                             null,
+                                                             null);        
         
         MockObjectSource source = new MockObjectSource( 15 );        
 
@@ -370,7 +374,8 @@ public class AlphaNodeTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
         Rule rule = new Rule( "test-rule"  );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );        
+                                                             null,
+                                                             null);        
         
         MockObjectSource source = new MockObjectSource( 15 );
         

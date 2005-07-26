@@ -31,7 +31,8 @@ public class JoinNodeTest extends DroolsTestCase
     {
         this.rule = new Rule( "test-rule" );
         this.context = new PropagationContext( PropagationContext.ASSERTION,
-                                               rule );
+                                               null,
+                                               null );
         this.workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
         this.tupleSource = new MockTupleSource( 4 );
