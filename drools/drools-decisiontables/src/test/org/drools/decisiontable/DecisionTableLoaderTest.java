@@ -62,10 +62,10 @@ public class DecisionTableLoaderTest extends TestCase
     {
         InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
 
-        /*
-         * SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter();
-         * System.out.println(converter.convertToDRL(stream));
-         */
+        
+/*          SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter();
+          System.out.println(converter.convertToDRL(stream));*/
+
         RuleBase rb = DecisionTableLoader.loadFromInputStream( stream );
         assertNotNull( rb );
 

@@ -87,13 +87,13 @@ public final class DecisionTableLoader
      * @param streamToSpreadsheet
      *            Stream to a excel 97 compatable workbook (from Excel, or Open
      *            Office).
-     * @return A compiled RuleBase, ready to
+     * @return A drools RuleBase, ready to go.
      * @throws IOException
      * @throws SAXException
      * @throws IntegrationException
-     *             go.
+     *             
      * This may also throw a DecisionTableParseException if there is
-     * some problem converting the decision table (before building the rulebase).
+     * some problem parsing the decision table (before building the rulebase).
      */
     public static RuleBase loadFromInputStream(InputStream streamToSpreadsheet) throws IntegrationException,
                                                                                SAXException,
