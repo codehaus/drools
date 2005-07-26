@@ -251,10 +251,7 @@ class WorkingMemoryImpl
             {
                 firing = true;
 
-                while ( !agenda.isEmpty( ) )
-                {
-                    agenda.fireNextItem( agendaFilter );
-                }
+                while ( agenda.fireNextItem( agendaFilter ) );
             }
             finally
             {
@@ -369,14 +366,14 @@ class WorkingMemoryImpl
             addPropertyChangeListener( object );
         }
 
-        this.agenda.setMode( Agenda.ASSERT );
         ruleBase.assertObject( handle,
                                object,
+                               new PropagationContext( PropagationContext.ASSERTION,
+                                                       null ),
                                this );
 
         eventSupport.fireObjectAsserted( handle,
                                          object );
-        this.agenda.setMode( Agenda.NONE );
         return handle;
     }
 
@@ -492,9 +489,9 @@ class WorkingMemoryImpl
     {
         removePropertyChangeListener( handle );
 
-        this.agenda.setMode( Agenda.RETRACT );
-
         ruleBase.retractObject( handle,
+                                new PropagationContext( PropagationContext.RETRACTION,
+                                                        null ),                                
                                 this );
 
         Object oldObject = removeObject( handle );
@@ -503,7 +500,6 @@ class WorkingMemoryImpl
 
         eventSupport.fireObjectRetracted( handle,
                                           oldObject );
-        this.agenda.setMode( Agenda.NONE );
 
         ((FactHandleImpl) handle).invalidate( );
     }
@@ -524,18 +520,18 @@ class WorkingMemoryImpl
         putObject( handle,
                    object );
 
-        this.agenda.setMode( Agenda.MODIFY );
 
         this.ruleBase.retractObject( handle,
+                                     new PropagationContext( PropagationContext.MODIFICATION,
+                                                             null ),
                                      this );
 
         this.ruleBase.assertObject( handle,
                                     object,
+                                    new PropagationContext( PropagationContext.MODIFICATION,
+                                                            null ),                                    
                                     this );
 
-        this.agenda.removeMarkedItemsFromAgenda( );
-
-        this.agenda.setMode( Agenda.NONE );
 
         /*
          * this.ruleBase.modifyObject( handle, object, this );

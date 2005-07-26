@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: Agenda.java,v 1.2 2005-07-26 02:04:49 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -406,14 +406,14 @@ class Agenda
      * @throws ConsequenceException
      *             If an error occurs while firing an agenda item.
      */
-    public void fireNextItem(AgendaFilter filter) throws ConsequenceException
+    public boolean fireNextItem(AgendaFilter filter) throws ConsequenceException
     {
-        ModuleImpl module = ( ModuleImpl ) getNextFocus();
+        ModuleImpl module = ( ModuleImpl ) getNextFocus();        
         
         /* return if there are no Activations to fire */
         if ( module.getActivationQueue().isEmpty() )
         {
-            return;
+            return false;
         }
 
         AgendaItem item = (AgendaItem) module.getActivationQueue( ).remove( );
@@ -423,6 +423,7 @@ class Agenda
             item.fire( this.workingMemory );
         }
 
+        return true;
     }
 
     /**
