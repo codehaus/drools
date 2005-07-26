@@ -40,7 +40,8 @@ public class TupleSourceTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.RETRACTION,
-                                                             rule );
+                                                             null,
+                                                             null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );        
         
         MockTupleSource source = new MockTupleSource( 15 );
@@ -137,7 +138,8 @@ public class TupleSourceTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.RETRACTION,
-                                                             rule );
+                                                             null,
+                                                             null);
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
         
         MockTupleSource source = new MockTupleSource( 15 );

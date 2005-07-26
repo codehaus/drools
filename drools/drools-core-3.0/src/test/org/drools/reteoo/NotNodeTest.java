@@ -32,7 +32,8 @@ public class NotNodeTest extends DroolsTestCase
     {
         this.rule = new Rule( "test-rule" );
         this.context = new PropagationContext( PropagationContext.ASSERTION,
-                                               rule );
+                                               null,
+                                               null );
         this.workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
         ObjectType stringObjectType = new ClassObjectType( String.class );

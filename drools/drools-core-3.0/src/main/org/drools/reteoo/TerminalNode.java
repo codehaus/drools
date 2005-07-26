@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: TerminalNode.java,v 1.2 2005-07-26 21:14:46 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.reteoo;
  */
 
 import org.drools.AssertionException;
+import org.drools.FactException;
 import org.drools.rule.Rule;
 
 /**
@@ -127,10 +128,11 @@ final class TerminalNode
      *            The tuple key.
      * @param workingMemory
      *            The working memory seesion.
+     * @throws FactException 
      */
     public void retractTuples(TupleKey key,
                               PropagationContext context,                              
-                              WorkingMemoryImpl workingMemory)
+                              WorkingMemoryImpl workingMemory) throws FactException
     {
         workingMemory.getAgenda( ).removeFromAgenda( key,
                                                      context,

@@ -54,7 +54,8 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );
+                                                             null,
+                                                             null );
 
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
@@ -111,7 +112,8 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
     {
         Rule rule = new Rule( "test-rule" );
         PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
-                                                             rule );
+                                                             null,
+                                                             null );
 
         WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
 
