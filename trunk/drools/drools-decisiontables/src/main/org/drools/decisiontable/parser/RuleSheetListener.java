@@ -1,6 +1,5 @@
 package org.drools.decisiontable.parser;
 
-
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,8 +39,6 @@ package org.drools.decisiontable.parser;
  *
  */
 
-
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -80,6 +77,8 @@ public class RuleSheetListener
     SheetListener
 {
 
+    public static final String      FUNCTIONS_TAG          = "Functions";
+
     public static final String      IMPORT_TAG             = "Import";
 
     public static final String      SEQUENTIAL_FLAG        = "Sequential";
@@ -105,11 +104,10 @@ public class RuleSheetListener
     private Map                     _actions;
 
     private List                    _ruleList              = new LinkedList( );             // MN
-                                                                                            // for
-                                                                                            // accumulating
-                                                                                            // rules
-                                                                                            // (as
-
+    // for
+    // accumulating
+    // rules
+    // (as
     // it is all one big happpy set)
 
     private Rule                    _currentRule;
@@ -142,6 +140,7 @@ public class RuleSheetListener
         {
             throw new DecisionTableParseException( "No RuleTable's were found in spreadsheet." );
         }
+
         String rulesetName = getProperties( ).getProperty( RULESET_TAG );
         Ruleset ruleset = new Ruleset( rulesetName );
         for ( Iterator it = _ruleList.iterator( ); it.hasNext( ); )
@@ -154,6 +153,8 @@ public class RuleSheetListener
             ruleset.addImport( (Import) it.next( ) );
         }
 
+        String functions = getProperties( ).getProperty( FUNCTIONS_TAG );
+        ruleset.addFunctions( functions );
         return ruleset;
     }
 
@@ -414,7 +415,7 @@ public class RuleSheetListener
         Integer salience = null;
         if ( _currentSequentialFlag )
         {
-            salience = new Integer(Rule.calcSalience( row ));
+            salience = new Integer( Rule.calcSalience( row ) );
         }
         Rule rule = new Rule( name,
                               salience );
@@ -492,4 +493,3 @@ public class RuleSheetListener
         }
     }
 }
-

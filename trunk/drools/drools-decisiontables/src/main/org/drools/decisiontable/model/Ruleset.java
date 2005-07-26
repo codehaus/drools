@@ -1,6 +1,5 @@
 package org.drools.decisiontable.model;
 
-
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,8 +39,6 @@ package org.drools.decisiontable.model;
  *
  */
 
-
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,17 +54,20 @@ public class Ruleset
     DRLJavaEmitter
 {
 
-    private String _name;
+    private String    _name;
 
-    private List   _imports;
+    private List      _imports;
 
-    private List   _rules;
+    private List      _rules;
+
+    private Functions _functions;
 
     public Ruleset(String name)
     {
         _name = name;
         _imports = new LinkedList( );
         _rules = new LinkedList( );
+        _functions = new Functions();
     }
 
     public void addImport(Import imp)
@@ -79,6 +79,10 @@ public class Ruleset
     {
         _rules.add( rule );
     }
+    
+    public void addFunctions(String listing) {
+        _functions.setFunctionsListing(listing);
+    }
 
     /*
      * (non-Javadoc)
@@ -89,8 +93,11 @@ public class Ruleset
     {
         String xml = "<?xml version=\"1.0\"?> " + "<rule-set name=\"" + _name + "\" " + "xmlns=\"http://drools.org/rules\" " + "xmlns:java=\"http://drools.org/semantics/java\" " + "xmlns:xs=\"http://www.w3.org/2001/XMLSchema-instance\" "
                      + "xs:schemaLocation=\"http://drools.org/rules rules.xsd http://drools.org/semantics/java java.xsd\">";
-        xml = xml + "\n\n\n";
+        xml = xml + "\n";
         xml = xml + generateXml( _imports );
+        
+        xml = xml + "\n" + _functions.toXML() + "\n\n";
+        
         xml = xml + generateXml( _rules );
         xml = xml + "\n\n\n</rule-set>";
         return xml.trim( );
@@ -126,4 +133,3 @@ public class Ruleset
     }
 
 }
-
