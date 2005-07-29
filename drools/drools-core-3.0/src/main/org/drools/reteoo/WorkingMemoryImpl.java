@@ -393,7 +393,7 @@ class WorkingMemoryImpl
                             Activation activation) throws FactException
     {
         /* check if the object already exists in the WM */
-        FactHandle handle = (FactHandle) identityMap.get( object );        
+        FactHandle handle = (FactHandle) this.identityMap.get( object );        
 
         /* only return if the handle exists and this is a logical assertion */
         if ( ( handle != null ) && ( logical ) )
@@ -402,7 +402,7 @@ class WorkingMemoryImpl
         }
         
         /* lets see if the object is already logical asserted */
-        Object logicalState = equalsMap.get( object );
+        Object logicalState = this.equalsMap.get( object );
         
         /* if we have a handle and this STATED fact was previously STATED */
         if ( ( handle != null ) && ( !logical ) && logicalState == STATED )
@@ -855,5 +855,15 @@ class WorkingMemoryImpl
             }
             
         }        
+    }
+
+    public PrimitiveLongMap getJustified()
+    {
+        return this.justified;
+    }
+
+    public Map getJustifiers()
+    {
+        return this.justifiers;
     }
 }

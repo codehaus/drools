@@ -285,6 +285,94 @@ public class LogicalAssertionTest extends DroolsTestCase
                        
     }    
     
+    public void testRetract() throws Exception
+    {
+        /*
+         * create a RuleBase with a single ObjectTypeNode we attach a MockObjectSink so we can detect assertions and retractions
+         */
+        Rete rete = new Rete();
+        ObjectTypeNode objectTypeNode = rete.getOrCreateObjectTypeNode( new ClassObjectType( String.class ) );
+        MockObjectSink sink = new MockObjectSink();
+        objectTypeNode.addObjectSink( sink );
+        RuleBase ruleBase = new RuleBaseImpl( rete );
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
+
+        Consequence consequence = new Consequence() {
+            public void invoke(org.drools.spi.Tuple tuple)
+            {
+                // do nothing
+            }
+        };
+        
+        /* create the first activation which will justify the fact "logical" */
+        final Rule rule1 = new Rule( "test-rule1" );
+        rule1.setConsequence( consequence );             
+
+        FactHandleImpl handle1 = new FactHandleImpl( 1 );
+        ReteTuple tuple1 = new ReteTuple( 0,
+                                          handle1,
+                                          workingMemory );
+
+
+        Activation activation1 = new AgendaItem( tuple1,
+                                                 rule1 );
+            
+        /* Assert the logical "logical" fact */
+        String logicalString1 = new String ( "logical" );
+        FactHandle logicalHandle1 = workingMemory.assertObject( logicalString1,
+                                                                false,
+                                                                true,
+                                                                rule1,
+                                                                activation1 );
+        
+        /* create the second activation to justify the "logical" fact */
+        final Rule rule2 = new Rule( "test-rule2" );
+        rule2.setConsequence( consequence );          
+        
+        FactHandleImpl handle2 = new FactHandleImpl( 2 );
+        ReteTuple tuple2 = new ReteTuple( 0,
+                                          handle2,
+                                          workingMemory );
+
+        Activation activation2 = new AgendaItem( tuple2,
+                                                 rule2 );
+
+        
+        /* Assert the logical "logical" fact */
+        String logicalString2 = new String ( "logical" );
+        FactHandle logicalHandle2 = workingMemory.assertObject( logicalString2,
+                                                                false,
+                                                                true,
+                                                                rule2,
+                                                                activation2 );
+        
+        /* "logical" should only appear once */
+        assertLength( 1,
+                      workingMemory.getJustified().values() );
+
+        /* but has two justifications */
+        assertLength( 2,
+                      workingMemory.getJustifiers().values() );    
+        
+        /* retract the logical object */
+        workingMemory.retractObject( logicalHandle2 );
+        
+        /* The logical object should never appear */
+        assertLength( 0,
+                      workingMemory.getJustified().values() );
+
+        /* And its justifers should also be removed */
+        assertLength( 0,
+                      workingMemory.getJustifiers().values() );          
+        
+        
+    } 
+    
+    public void testMultipleLogicalRelationships()
+    {
+        
+    }
+    
     
 
 }
