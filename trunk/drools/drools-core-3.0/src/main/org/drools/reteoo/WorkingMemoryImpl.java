@@ -472,7 +472,7 @@ class WorkingMemoryImpl
                 putObject( handle,
                            object );     
                 
-                equalsMap.put( object,
+                this.equalsMap.put( object,
                                handle );                    
             }
             Set activationList = (Set) this.justified.get( ( (FactHandleImpl) handle ).getId() );
