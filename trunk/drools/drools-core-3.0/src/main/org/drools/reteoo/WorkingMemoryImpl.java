@@ -606,7 +606,8 @@ class WorkingMemoryImpl
     public void retractObject(FactHandle handle) throws FactException
     {
         retractObject( handle,
-                       false,
+                       true,
+                       true,
                        null,
                        null );
     }
@@ -616,7 +617,8 @@ class WorkingMemoryImpl
      * @see WorkingMemory
      */
     public void retractObject(FactHandle handle,
-                              boolean removeJustifiers,
+                              boolean removeLogical,
+                              boolean updateEqualsMap,
                               Rule rule,
                               Activation activation) throws FactException
     {
@@ -630,8 +632,8 @@ class WorkingMemoryImpl
 
         Object oldObject = removeObject( handle );
         
-        /* check to see if this was a logicall asserted object */
-        if ( removeJustifiers )
+        /* check to see if this was a logical asserted object */
+        if ( removeLogical )
         {        
             FactHandleImpl handleImpl = (FactHandleImpl) handle;            
             Set activations = (Set) this.justified.remove( handleImpl.getId() );
@@ -643,7 +645,15 @@ class WorkingMemoryImpl
                     this.justifiers.remove( it.next() );
                 }
             }
+            this.equalsMap.remove( oldObject );
         }
+        
+        if ( updateEqualsMap )
+        {
+            this.equalsMap.remove( oldObject );
+        }
+        
+        
 
         factHandlePool.push( ((FactHandleImpl) handle).getId( ) );
 
@@ -825,10 +835,12 @@ class WorkingMemoryImpl
             {
                 this.justified.remove( handle.getId() );
                 retractObject( handle,
+                               false,
                                true,
                                context.getRuleOrigin(),
                                context.getActivationOrigin() );
             }
+            
         }        
     }
 }
