@@ -393,15 +393,22 @@ class WorkingMemoryImpl
                             Activation activation) throws FactException
     {
         /* check if the object already exists in the WM */
-        FactHandle handle = (FactHandle) identityMap.get( object );
+        FactHandle handle = (FactHandle) identityMap.get( object );        
 
-        if ( handle != null )
+        /* only return if the handle exists and this is a logical assertion */
+        if ( ( handle != null ) && ( logical ) )
         {
             return handle;
         }
         
         /* lets see if the object is already logical asserted */
-        Object logicalState = equalsMap.get( object );             
+        Object logicalState = equalsMap.get( object );
+        
+        /* if we have a handle and this STATED fact was previously STATED */
+        if ( ( handle != null ) && ( !logical ) && logicalState == STATED )
+        {
+            return handle;
+        }
         
         if ( !logical )
         {           
@@ -410,28 +417,30 @@ class WorkingMemoryImpl
              */           
             if (logicalState instanceof FactHandleImpl )
             {
-                FactHandleImpl logicalHandle = (FactHandleImpl) logicalState;
+                handle = (FactHandleImpl) logicalState;
                 /* remove handle from the justified Map and then iterate each of each Activations.
                  * For each Activation remove the handle. If the Set is empty then remove the activation
                  * from justiers. 
                  */
-                Set activationList = (Set) this.justified.remove( logicalHandle.getId() );
+                Set activationList = (Set) this.justified.remove( ( (FactHandleImpl) handle ).getId() );
                 Iterator it = activationList.iterator();
                 Activation eachActivation;
                 while ( it.hasNext() )
                 {
                     eachActivation = (Activation) it.next();
-                    Set objects = (Set) this.justifiers.get( eachActivation );
-                    objects.remove( object );
+                    Set handles = (Set) this.justifiers.get( eachActivation );
+                    handles.remove( handle );
                     // if an activation has no justified assertions then remove it
-                    if ( objects.isEmpty() )
+                    if ( handles.isEmpty() )
                     {
                         this.justifiers.remove( eachActivation );
                     }
                 }                
-            }       
-            
-            handle = newFactHandle( );
+            } 
+            else 
+            {
+                handle = newFactHandle( );
+            }
 
             putObject( handle,
                        object );
@@ -452,25 +461,25 @@ class WorkingMemoryImpl
                 return null;
             }
             
-            FactHandleImpl logicalHandle = (FactHandleImpl) logicalState;
+            handle = (FactHandleImpl) logicalState;
             /* we create a lookup handle for the first asserted equals object
              * all future equals objects will use that handle
              */
-            if ( logicalHandle == null )
+            if ( handle == null )
             {
-                logicalHandle = (FactHandleImpl) newFactHandle( );
+                handle = (FactHandleImpl) newFactHandle( );
 
-                putObject( logicalHandle,
+                putObject( handle,
                            object );     
                 
                 equalsMap.put( object,
-                               logicalHandle );                    
+                               handle );                    
             }
-            Set activationList = (Set) this.justified.get( logicalHandle.getId() );
+            Set activationList = (Set) this.justified.get( ( (FactHandleImpl) handle ).getId() );
             if ( activationList == null )
             {
                 activationList = new HashSet();
-                this.justified.put( logicalHandle.getId(),
+                this.justified.put( ( (FactHandleImpl) handle ).getId(),
                                     activationList );           
             } 
             activationList.add( activation );
@@ -482,8 +491,7 @@ class WorkingMemoryImpl
                 this.justifiers.put( activation,
                                      handles );
             }
-            handles.add( logicalHandle );           
-            handle = logicalHandle;
+            handles.add( handle );           
         }                        
 
         ruleBase.assertObject( handle,
@@ -825,6 +833,11 @@ class WorkingMemoryImpl
         FactHandleImpl handle = null;
         Set activations = null;
         Set handles = (Set) this.justifiers.remove( activation );
+        /* no justified facts for this activation */
+        if ( handles == null )
+        {
+            return;
+        }
         Iterator it = handles.iterator();
         while ( it.hasNext() )
         {
