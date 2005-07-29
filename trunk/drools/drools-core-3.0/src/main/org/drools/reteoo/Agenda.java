@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.3 2005-07-26 16:16:38 mproctor Exp $
+ * $Id: Agenda.java,v 1.4 2005-07-29 01:59:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -92,11 +92,6 @@ class Agenda
     // Instance members
     // ------------------------------------------------------------
 
-    public static int               NONE    = 0;
-    public static int               ASSERT  = 1;
-    public static int               MODIFY  = 2;
-    public static int               RETRACT = 3;
-
     /** Working memory of this Agenda. */
     private final WorkingMemoryImpl workingMemory;
 
@@ -107,11 +102,9 @@ class Agenda
 
     private final LinkedList        focusStack; 
     
-    private ModuleImpl              currentModule;
+    private ModuleImpl              currentModule;   
     
-    private final Map               logicalAsserts;
-    
-    private final PrimitiveLongMap reverseLogicalAsserts;
+    private final Set               justifiedActivations;
     
 
     // ------------------------------------------------------------
@@ -142,10 +135,8 @@ class Agenda
         
         this.focusStack.add( main );
         
-        this.logicalAsserts = new HashMap( );
+        justifiedActivations = new HashSet();
         
-        this.reverseLogicalAsserts = new PrimitiveLongMap( 8,
-                                                           32 );
     }
 
     // ------------------------------------------------------------
@@ -212,7 +203,7 @@ class Agenda
         AgendaItem eachItem;
         Tuple tuple;
         ModuleImpl module = (ModuleImpl) modules.get( rule.getModule( ) );
-        Iterator itemIter = module.getActivationQueue( ).iterator( );
+        Iterator itemIter = module.getActivationQueue( ).iterator( );             
 
         while ( itemIter.hasNext( ) )
         {
@@ -220,15 +211,16 @@ class Agenda
 
             if ( eachItem.getRule( ) == rule && eachItem.getKey( ).containsAll( key ) )
             {
-                itemIter.remove( );
-                
-                removeLogicalAssertions( eachItem );
+                itemIter.remove( );                
                 // need to restart iterator as heap could place elements before
                 // current iterator position
                 itemIter = module.getActivationQueue( ).iterator( );
 
                 this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
                                                                                eachItem.getTuple( ) );
+                this.workingMemory.removeLogicalAssertions( eachItem,
+                                                            context,
+                                                            rule );                
             }
         }
 
@@ -245,14 +237,20 @@ class Agenda
                 cancelItem( eachItem );
 
                 itemIter.remove( );
-                
-                removeLogicalAssertions( eachItem );
 
                 this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
                                                                                tuple );
+                this.workingMemory.removeLogicalAssertions( eachItem,
+                                                            context,
+                                                            rule );                 
             }
-        }        
+        }     
+        
+        this.workingMemory.removeLogicalAssertions( key,
+                                                    context,
+                                                    rule );
     }
+    
 
     /**
      * Clears all Activations from the Agenda
@@ -296,56 +294,6 @@ class Agenda
             this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
                                                                            eachItem.getTuple( ) );
         }
-        
-        /* clear the focus, but add MAIN backon */
-        this.focusStack.clear();
-        this.focusStack.add( this.modules.get( Module.MAIN ) );
-    }
-    
-    void addLogicalAssertion( Activation activation,
-                              FactHandleImpl handle )
-    {
-        List logicalList = (List) this.logicalAsserts.get( activation );
-        if ( logicalList == null )
-        {
-            logicalList = new ArrayList();
-        }
-        logicalList.add( handle );
-        
-        Set reverseList = (Set) this.reverseLogicalAsserts.get( handle.getId() );
-        if ( reverseList == null )
-        {
-            reverseList = new HashSet();
-        }
-        reverseList.add( activation );
-    }
-    
-    /**
-     * if an exception gets thrown then we are left in a potentially
-     * untrue sitauation. When would a retraction throw a condition?
-     * 
-     * @param activation
-     * @throws FactException
-     */
-    private void removeLogicalAssertions( Activation activation ) throws FactException
-    {
-        List logicalList = (List) this.logicalAsserts.get( activation );
-        if ( logicalList != null )
-        {
-            FactHandleImpl handle = null;
-            Iterator it = logicalList.iterator();
-            while ( it.hasNext() )
-            {
-                handle = (FactHandleImpl) it.next();
-                List reverseList = (List) this.reverseLogicalAsserts.get( handle.getId() );
-                if ( reverseList.remove( activation ) &&  reverseList.isEmpty() )
-                {
-                    this.reverseLogicalAsserts.remove( handle.getId() );
-                    this.workingMemory.retractObject( handle );
-                }                
-            }
-            logicalList.remove( activation );
-        }        
     }
 
     /**
@@ -487,7 +435,7 @@ class Agenda
         if ( filter == null || filter.accept( item ) )
         {
             item.fire( this.workingMemory );
-        }
+        }        
 
         return true;
     }
