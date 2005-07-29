@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: Rete.java,v 1.2 2005-07-29 01:59:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -202,7 +202,7 @@ class Rete extends ObjectSource
      * 
      * @return The matching <code>ObjectTypeNode</codeb>.
      */
-    private ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)
+    ObjectTypeNode getOrCreateObjectTypeNode(ObjectType objectType)
     {
         ObjectTypeNode node = getObjectTypeNode( objectType );
 
