@@ -1,6 +1,7 @@
 package org.drools.reteoo;
 
 import org.drools.DroolsTestCase;
+import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.rule.Rule;
@@ -368,9 +369,123 @@ public class LogicalAssertionTest extends DroolsTestCase
         
     } 
     
-    public void testMultipleLogicalRelationships()
+    public void testMultipleLogicalRelationships() throws FactException
     {
+        /*
+         * create a RuleBase with a single ObjectTypeNode we attach a MockObjectSink so we can detect assertions and retractions
+         */
+        Rete rete = new Rete();
+        ObjectTypeNode objectTypeNode = rete.getOrCreateObjectTypeNode( new ClassObjectType( String.class ) );
+        MockObjectSink sink = new MockObjectSink();
+        objectTypeNode.addObjectSink( sink );
+        RuleBase ruleBase = new RuleBaseImpl( rete );
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
+
+        final Agenda agenda = workingMemory.getAgenda();
+
+        Consequence consequence = new Consequence() {
+            public void invoke(org.drools.spi.Tuple tuple)
+            {
+                // do nothing
+            }
+        };
         
+        /* Create first justifier */
+        final Rule rule1 = new Rule( "test-rule1" );
+        rule1.setConsequence( consequence );
+
+        FactHandleImpl handle1 = new FactHandleImpl( 1 );
+        ReteTuple tuple1 = new ReteTuple( 0,
+                                          handle1,
+                                          workingMemory );
+
+        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+                                                                    null,
+                                                                    null );
+
+        /* get the activation onto the agenda*/
+        agenda.addToAgenda( tuple1,
+                            context1,
+                            rule1 );
+
+        /* Create the second justifer */
+        final Rule rule2 = new Rule( "test-rule2" );
+        rule2.setConsequence( consequence );
+        
+        FactHandleImpl handle2 = new FactHandleImpl( 2 );
+        ReteTuple tuple2 = new ReteTuple( 0,
+                                          handle2,
+                                          workingMemory );
+
+        final PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
+                                                                    null,
+                                                                    null );
+
+        /* get the activations onto the agenda */
+        agenda.addToAgenda( tuple2,
+                            context2,
+                            rule2 );
+        
+        /* We have two activations on the Agenda, so use toArray to get them out */
+        ModuleImpl main = (ModuleImpl) agenda.getFocus();
+        Activation[] activations = ( Activation[] ) main.getActivationQueue().toArray( new Activation[] {} );               
+        
+        /* Create the first justifieable relationship */
+        String logicalString1 = new String ( "logical" );
+        Activation activation1 = activations[0];
+        FactHandle logicalHandle1 = workingMemory.assertObject( logicalString1,
+                                                               false,
+                                                               true,
+                                                               activation1.getRule(),
+                                                               activation1 );
+        
+        /* Create the second justifieable relationship */
+        String logicalString2 = new String ( "logical" );
+        Activation activation2 = activations[1];        
+        FactHandle logicalHandle2 = workingMemory.assertObject( logicalString2,
+                                                               false,
+                                                               true,
+                                                               activation2.getRule(),
+                                                               activation2 );
+        
+        /* "logical" should only appear once */
+        assertLength( 1,
+                      workingMemory.getJustified().values() );
+        /* but has two justifications */
+        assertLength( 2,
+                      workingMemory.getJustifiers().values() );  
+        
+        /* Now lets cancel the first activation */
+        agenda.removeFromAgenda( ( (ReteTuple) activation2.getTuple() ).getKey(),
+                                 context2,
+                                 activation2.getRule() );
+        
+        /* because this logical fact has two relationships it shouldn't retract yet */
+        assertLength( 0,
+                      sink.getRetracted() );        
+        
+        /* check "logical" is still in the system */
+        assertLength( 1,
+                      workingMemory.getJustified().values() );
+        /* but now it only has one justifier */
+        assertLength( 1,
+                      workingMemory.getJustifiers().values() );    
+        
+        /* now remove that final justification */
+        agenda.removeFromAgenda( ( (ReteTuple) activation1.getTuple() ).getKey(),
+                                 context1,
+                                 activation1.getRule() );
+        
+        /* Should cause the logical fact to be retracted */
+        assertLength( 1,
+                      sink.getRetracted() );         
+        
+        /* "logical" fact should no longer be in the system */
+        assertLength( 0,
+                      workingMemory.getJustified().values() );
+        /* all justifiers should be removed */
+        assertLength( 0,
+                      workingMemory.getJustifiers().values() );          
     }
     
     
