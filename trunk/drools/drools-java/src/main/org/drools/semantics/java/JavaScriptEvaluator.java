@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaScriptEvaluator.java,v 1.10 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: JavaScriptEvaluator.java,v 1.11 2005-07-30 15:49:54 brownj Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ import org.codehaus.janino.Mod;
 import org.codehaus.janino.Parser;
 import org.codehaus.janino.Scanner;
 import org.codehaus.janino.Location;
-import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.CompileException;
 import org.codehaus.janino.Parser.ParseException;
 import org.codehaus.janino.Scanner.ScanException;
 import org.codehaus.janino.util.PrimitiveWrapper;
@@ -89,7 +89,7 @@ public class JavaScriptEvaluator extends EvaluatorBase
                                Class baseClass,
                                ClassLoader classLoader) throws Scanner.ScanException,
                                                      Parser.ParseException,
-                                                     Java.CompileException,
+                                                     CompileException,
                                                      IOException,
                                                      ClassNotFoundException
     {
