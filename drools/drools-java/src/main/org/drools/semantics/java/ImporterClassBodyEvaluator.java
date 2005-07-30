@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: ImporterClassBodyEvaluator.java,v 1.5 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: ImporterClassBodyEvaluator.java,v 1.6 2005-07-30 15:49:54 brownj Exp $
  *
  * Copyright 2005-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,7 +54,7 @@ import org.codehaus.janino.Java;
 import org.codehaus.janino.Location;
 import org.codehaus.janino.Parser;
 import org.codehaus.janino.Scanner;
-import org.codehaus.janino.Java.CompileException;
+import org.codehaus.janino.CompileException;
 import org.codehaus.janino.Parser.ParseException;
 import org.codehaus.janino.Scanner.ScanException;
 import org.drools.spi.Importer;
