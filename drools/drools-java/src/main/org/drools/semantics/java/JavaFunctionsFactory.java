@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctionsFactory.java,v 1.9 2005-07-30 15:49:54 brownj Exp $
+ * $Id: JavaFunctionsFactory.java,v 1.10 2005-07-30 16:37:43 brownj Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,6 @@ package org.drools.semantics.java;
  *
  */
 
-import java.io.IOException;
-
-import org.codehaus.janino.CompileException;
-import org.codehaus.janino.Parser.ParseException;
-import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;

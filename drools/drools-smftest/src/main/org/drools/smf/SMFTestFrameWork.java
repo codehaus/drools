@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: SMFTestFrameWork.java,v 1.31 2005-05-08 17:46:20 memelet Exp $
+ * $Id: SMFTestFrameWork.java,v 1.32 2005-07-30 16:37:34 brownj Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,11 +45,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import junit.framework.TestCase;
 
 import org.drools.MockWorkingMemory;

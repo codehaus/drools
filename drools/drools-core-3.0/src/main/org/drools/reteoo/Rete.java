@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.2 2005-07-29 01:59:15 mproctor Exp $
+ * $Id: Rete.java,v 1.3 2005-07-30 16:37:48 brownj Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,9 +46,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.drools.AssertionException;
 import org.drools.FactException;
-import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
 
 /**

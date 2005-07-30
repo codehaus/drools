@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Collections;
 
-import org.drools.spi.Constraint;
 import org.drools.spi.ObjectType;
 
 public class Column

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.4 2005-07-29 01:59:15 mproctor Exp $
+ * $Id: Agenda.java,v 1.5 2005-07-30 16:37:48 brownj Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,18 +41,15 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.drools.FactException;
 import org.drools.rule.Rule;
-import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 import org.drools.spi.ConflictResolver;
@@ -60,12 +57,6 @@ import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
 import org.drools.spi.Module;
 import org.drools.spi.Tuple;
-import org.drools.util.PrimitiveLongMap;
-import org.drools.util.PriorityQueue;
-
-import sun.security.krb5.internal.i;
-
-import java.util.Stack;
 
 /**
  * Rule-firing Agenda.

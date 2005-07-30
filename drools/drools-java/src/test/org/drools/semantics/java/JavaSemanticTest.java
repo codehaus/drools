@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaSemanticTest.java,v 1.10 2005-05-04 16:58:40 memelet Exp $
+ * $Id: JavaSemanticTest.java,v 1.11 2005-07-30 16:37:43 brownj Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -39,9 +39,6 @@ package org.drools.semantics.java;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.drools.semantics.base.BaseImportEntry;
 import org.drools.smf.DefaultImporter;

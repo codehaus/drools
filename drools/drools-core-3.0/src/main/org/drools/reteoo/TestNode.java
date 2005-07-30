@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TestNode.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: TestNode.java,v 1.2 2005-07-30 16:37:48 brownj Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,12 +40,9 @@ package org.drools.reteoo;
  *
  */
 
-import java.util.Set;
-
 import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.RetractionException;
-import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 
 /**
