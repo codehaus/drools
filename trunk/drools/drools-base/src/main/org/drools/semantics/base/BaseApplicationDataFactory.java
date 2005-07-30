@@ -1,7 +1,7 @@
 package org.drools.semantics.base;
 
 /*
- * $Id: BaseApplicationDataFactory.java,v 1.2 2005-05-04 16:58:39 memelet Exp $
+ * $Id: BaseApplicationDataFactory.java,v 1.3 2005-07-30 16:37:40 brownj Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,16 +41,11 @@ package org.drools.semantics.base;
  *
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.drools.rule.ApplicationData;
 import org.drools.rule.RuleSet;
 import org.drools.smf.ApplicationDataFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 

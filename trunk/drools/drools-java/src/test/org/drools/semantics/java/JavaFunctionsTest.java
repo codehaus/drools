@@ -2,7 +2,6 @@ package org.drools.semantics.java;
 
 import junit.framework.TestCase;
 
-import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.smf.DefaultImporter;
 import org.drools.spi.RuleBaseContext;

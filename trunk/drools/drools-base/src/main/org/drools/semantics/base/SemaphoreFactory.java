@@ -39,8 +39,6 @@ package org.drools.semantics.base;
  *
  */
 
-import java.util.Set;
-
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;

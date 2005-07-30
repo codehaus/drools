@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctions.java,v 1.10 2005-07-30 15:49:54 brownj Exp $
+ * $Id: JavaFunctions.java,v 1.11 2005-07-30 16:37:43 brownj Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,7 +43,6 @@ package org.drools.semantics.java;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.codehaus.janino.ByteArrayClassLoader;
@@ -53,7 +52,6 @@ import org.codehaus.janino.Parser.ParseException;
 import org.codehaus.janino.Scanner.ScanException;
 import org.drools.rule.RuleSet;
 import org.drools.spi.Functions;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 import org.drools.spi.RuleBaseContext;
 

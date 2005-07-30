@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: ConditionTestedEvent.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: ConditionTestedEvent.java,v 1.2 2005-07-30 16:37:48 brownj Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,7 +42,6 @@ package org.drools.event;
  */
 
 import org.drools.WorkingMemory;
-import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.Tuple;
 

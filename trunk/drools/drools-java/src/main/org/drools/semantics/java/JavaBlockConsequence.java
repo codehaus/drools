@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.7 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: JavaBlockConsequence.java,v 1.8 2005-07-30 16:37:43 brownj Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,7 +48,6 @@ import java.util.Map;
 import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.ConditionException;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.DefaultKnowledgeHelper;

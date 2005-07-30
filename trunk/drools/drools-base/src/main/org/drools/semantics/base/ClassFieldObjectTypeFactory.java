@@ -39,15 +39,10 @@ package org.drools.semantics.base;
  *
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.drools.rule.Rule;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.ObjectTypeFactory;
-import org.drools.spi.ImportEntry;
 import org.drools.spi.Importer;
 import org.drools.spi.ObjectType;
 import org.drools.spi.RuleBaseContext;
