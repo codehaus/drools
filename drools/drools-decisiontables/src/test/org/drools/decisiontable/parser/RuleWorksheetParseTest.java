@@ -70,7 +70,7 @@ public class RuleWorksheetParseTest extends TestCase
     public void testBasicWorkbookProperties() throws Exception
     {
 
-        InputStream stream = RuleWorksheetParseTest.class.getResourceAsStream( "/data/BasicWorkBook.xls" );
+        InputStream stream = RuleWorksheetParseTest.class.getResourceAsStream( "/data/BasicWorkbook.xls" );
 
         RuleSheetListener listener = getRuleSheetListener( stream );
 
@@ -102,7 +102,7 @@ public class RuleWorksheetParseTest extends TestCase
 
     public void testWorkbookParse() throws Exception
     {
-        InputStream stream = RuleWorksheetParseTest.class.getResourceAsStream( "/data/BasicWorkBook.xls" );
+        InputStream stream = RuleWorksheetParseTest.class.getResourceAsStream( "/data/BasicWorkbook.xls" );
         RuleSheetListener listener = getRuleSheetListener( stream );
 
         Ruleset ruleset = listener.getRuleSet( );
