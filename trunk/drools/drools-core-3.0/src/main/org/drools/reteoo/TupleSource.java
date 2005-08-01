@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: TupleSource.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -70,6 +70,8 @@ abstract class TupleSource extends BaseNode
 
     /** The destination for <code>Tuples</code>. */
     private List tupleSinks = new ArrayList( 1 );
+    
+    private boolean isAttachingNewRule = false;
 
     // ------------------------------------------------------------
     // Constructors
@@ -101,7 +103,8 @@ abstract class TupleSource extends BaseNode
         {
             this.tupleSinks.add( tupleSink );
         }
-    }
+        this.isAttachingNewRule = true;
+    }      
 
     /**
      * Propagate the assertion of a <code>Tuple</code> to this node's
@@ -119,11 +122,20 @@ abstract class TupleSource extends BaseNode
                                         PropagationContext context, 
                                         WorkingMemoryImpl workingMemory) throws FactException
     {
-        for ( int i = 0, size = this.tupleSinks.size( ); i < size; i++ )
+        if ( ! this.isAttachingNewRule )
         {
-            ((TupleSink) this.tupleSinks.get( i )).assertTuple( tuple,
-                                                                context,
-                                                                workingMemory );
+            for ( int i = 0, size = this.tupleSinks.size( ); i < size; i++ )
+            {
+                ((TupleSink) this.tupleSinks.get( i ) ).assertTuple( tuple,
+                                                                    context,
+                                                                    workingMemory );
+            }
+        }
+        else
+        {
+            ((TupleSink) this.tupleSinks.get( this.tupleSinks.size( ) -1  ) ).assertTuple( tuple,
+                                                                                       context,
+                                                                                       workingMemory );            
         }
     }
 
@@ -167,7 +179,20 @@ abstract class TupleSource extends BaseNode
     {
         return this.tupleSinks;
     }
+    
+    public void ruleAttached()
+    {
+        this.isAttachingNewRule = false;
+        
+        ((TupleSink) this.tupleSinks.get( this.tupleSinks.size( ) - 1 )).ruleAttached();     
+    }    
 
+
+    public boolean isAttachingNewRule()
+    {
+        return this.isAttachingNewRule;
+    }
+    
     /**
      * Retrieve the available tuple <code>Declaration</code>s.
      * 

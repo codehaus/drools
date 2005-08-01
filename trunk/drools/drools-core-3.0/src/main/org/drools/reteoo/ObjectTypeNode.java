@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectTypeNode.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: ObjectTypeNode.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,12 +42,16 @@ package org.drools.reteoo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.drools.FactException;
+import org.drools.FactHandle;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RetractionException;
 import org.drools.spi.ObjectType;
+import org.drools.util.PrimitiveLongMap;
 
 /**
  * Filters <code>Objects</code> coming from the <code>Rete</code> using a
@@ -80,7 +84,7 @@ class ObjectTypeNode extends ObjectSource
     /** The <code>ObjectType</code> semantic module. */
     private final ObjectType   objectType;
 
-    private final ObjectSource objectSource;
+    private final ObjectSource objectSource;    
 
     // ------------------------------------------------------------
     // Constructors
@@ -140,8 +144,9 @@ class ObjectTypeNode extends ObjectSource
     {
         if ( this.objectType.matches( object ) )
         {
-            List memory = (List) workingMemory.getNodeMemory( this );
-            memory.add( handle );
+            PrimitiveLongMap memory = (PrimitiveLongMap) workingMemory.getNodeMemory( this );
+            memory.put( handle.getId(),
+                        handle );
             
             propagateAssertObject( object,
                                    handle,
@@ -170,8 +175,8 @@ class ObjectTypeNode extends ObjectSource
         {
             if ( this.objectType.matches( workingMemory.getObject( handle ) ) )
             {
-                List memory = (List) workingMemory.getNodeMemory( this );
-                memory.remove( handle );
+                PrimitiveLongMap memory = (PrimitiveLongMap) workingMemory.getNodeMemory( this );
+                memory.remove( handle.getId() );
 
                 propagateRetractObject( handle,
                                         context,
@@ -183,14 +188,49 @@ class ObjectTypeNode extends ObjectSource
             throw new RetractionException( e );
         }
     }
+    
+    public void updateNewRule( WorkingMemoryImpl workingMemory,
+                               PropagationContext context ) throws FactException
+    {
+        /* if this ObjectTypeNode has not been marked that a rule is being attached
+         * then there is no updating to do, so return.
+         */
+        if ( !isAttachingNewRule() )
+        {
+            return;
+        }
+        PrimitiveLongMap memory = (PrimitiveLongMap) workingMemory.getNodeMemory( this );
+        Iterator it = memory.values().iterator();
+                
+        FactHandleImpl handle = null;
+        Object object = null;
+        while ( it.hasNext() )
+        {            
+            handle = (FactHandleImpl) it.next();
+            try
+            {
+                object = workingMemory.getObject( handle );
+                assertObject( object,
+                              handle,
+                              context,
+                              workingMemory );
+            }
+            catch ( NoSuchFactObjectException e )
+            {
+                // do nothing, shouldn't happen
+            }
+        }
+    }    
 
     public void attach()
     {
         this.objectSource.addObjectSink( this );
-    }
+    }            
 
     public Object createMemory()
     {
-        return new ArrayList( );
+        return new PrimitiveLongMap( 32,
+                                     8 );
     }
+    
 }

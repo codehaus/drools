@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectSource.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: ObjectSource.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -69,7 +69,9 @@ abstract class ObjectSource extends BaseNode
     // ------------------------------------------------------------
 
     /** The destination for <code>Tuples</code>. */
-    private List objectSinks = new ArrayList( 1 );
+    private List objectSinks = new ArrayList( 1 );    
+    
+    private boolean isAttachingNewRule = false;
 
     // ------------------------------------------------------------
     // Constructors
@@ -101,7 +103,8 @@ abstract class ObjectSource extends BaseNode
         {
             this.objectSinks.add( objectSink );
         }
-    }
+        this.isAttachingNewRule = true;
+    }    
 
     /**
      * Propagate the assertion of a <code>Tuple</code> to this node's
@@ -120,12 +123,22 @@ abstract class ObjectSource extends BaseNode
                                          PropagationContext context, 
                                          WorkingMemoryImpl workingMemory) throws FactException
     {
-        for ( int i = 0, size = this.objectSinks.size( ); i < size; i++ )
+        if ( ! this.isAttachingNewRule )
         {
-            ((ObjectSink) this.objectSinks.get( i )).assertObject( object,
-                                                                   handle,
-                                                                   context,
-                                                                   workingMemory );
+            for ( int i = 0, size = this.objectSinks.size( ); i < size; i++ )
+            {
+                ((ObjectSink) this.objectSinks.get( i )).assertObject( object,
+                                                                       handle,
+                                                                       context,
+                                                                       workingMemory );
+            }
+        }
+        else
+        {
+            ((ObjectSink) this.objectSinks.get( this.objectSinks.size( ) - 1 )).assertObject( object,
+                                                                                              handle,
+                                                                                              context,
+                                                                                              workingMemory );            
         }
     }
 
@@ -168,6 +181,18 @@ abstract class ObjectSource extends BaseNode
     public List getObjectSinks()
     {
         return this.objectSinks;
+    }      
+    
+    public boolean isAttachingNewRule()
+    {
+        return this.isAttachingNewRule;
+    }
+    
+    public void ruleAttached()
+    {
+        this.isAttachingNewRule = false;
+        
+        ((ObjectSink) this.objectSinks.get( this.objectSinks.size( ) - 1 )).ruleAttached();     
     }
 
     /**
@@ -180,4 +205,5 @@ abstract class ObjectSource extends BaseNode
      * Attaches this node into the network.
      */
     public abstract void attach();
+    
 }

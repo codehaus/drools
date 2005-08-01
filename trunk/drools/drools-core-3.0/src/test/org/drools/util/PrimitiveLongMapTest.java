@@ -1,7 +1,7 @@
 package org.drools.util;
 
 /*
- * $Id: PrimitiveLongMapTest.java,v 1.1 2005-07-26 01:06:34 mproctor Exp $
+ * $Id: PrimitiveLongMapTest.java,v 1.2 2005-08-01 00:01:11 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -181,5 +181,40 @@ public class PrimitiveLongMapTest extends TestCase
                  new Object( ) );
         map.put( 8191,
                  new Object( ) );
+    }
+    
+    public void testSize()
+    {
+        PrimitiveLongMap map = new PrimitiveLongMap( 32,
+                                                     8 );
+        
+        Object object = new Object( );        
+        map.put( 231,
+                 object );        
+        Object string = new Object( );        
+        map.put( 211,
+                 string );        
+        map.put( 99822,
+                 null );        
+        assertEquals( 3,
+                      map.size() );
+        
+        map.put( 211,
+                 null );         
+        map.put( 99822,
+                 string );            
+        assertEquals( 3,
+                      map.size() );
+        
+        map.remove( 211 );        
+        assertEquals( 2,
+                      map.size() );           
+        map.remove( 99822 );        
+        assertEquals( 1,
+                      map.size() );
+        
+        map.remove( 231 );
+        assertEquals( 0,
+                      map.size() );             
     }
 }

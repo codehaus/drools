@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /*
- * $Id: PrimitiveLongMap.java,v 1.1 2005-07-26 01:06:32 mproctor Exp $
+ * $Id: PrimitiveLongMap.java,v 1.2 2005-08-01 00:01:11 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,9 +52,7 @@ public class PrimitiveLongMap
     implements
     Serializable
 {
-    private final static Object NULL = new Serializable( )
-                                     {
-                                     };
+    private final static Object NULL = new Serializable( ) { };
 
     private final int           indexIntervals;
     private final int           intervalShifts;
@@ -67,6 +65,8 @@ public class PrimitiveLongMap
     private int                 lastPageId;
     private long                maxKey;
     private Page[]              pageIndex;
+    private int                 totalSize;
+   
 
     public PrimitiveLongMap()
     {
@@ -144,6 +144,11 @@ public class PrimitiveLongMap
 
         Object oldValue = page.put( key,
                                     value );
+        
+        if ( oldValue == null )
+        {
+            this.totalSize++;
+        }
 
         return oldValue;
     }
@@ -164,6 +169,11 @@ public class PrimitiveLongMap
         {
             shrinkPages( this.lastPageId );
         }
+        
+        if ( oldValue != null )
+        {
+            this.totalSize--;
+        }
 
         return oldValue;
     }
@@ -183,6 +193,11 @@ public class PrimitiveLongMap
             value = null;
         }
         return value;
+    }
+    
+    public int size()
+    {
+        return this.totalSize;
     }
 
     public Collection values()

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TerminalNode.java,v 1.2 2005-07-26 21:14:46 mproctor Exp $
+ * $Id: TerminalNode.java,v 1.3 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -142,5 +142,11 @@ final class TerminalNode
     public String toString()
     {
         return "[TerminalNode: rule=" + rule.getName( ) + "]";
+    }
+
+    public void ruleAttached()
+    {
+        // TODO Auto-generated method stub
+        
     }
 }
