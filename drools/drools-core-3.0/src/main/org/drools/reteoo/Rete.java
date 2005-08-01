@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.3 2005-07-30 16:37:48 brownj Exp $
+ * $Id: Rete.java,v 1.4 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,12 +41,15 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.drools.FactException;
+import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;
 
 /**
@@ -69,7 +72,9 @@ class Rete extends ObjectSource
     // ------------------------------------------------------------
 
     /** The set of <code>ObjectTypeNodes</code>. */
-    private final Map objectTypeNodes = new HashMap( );
+    private final Map objectTypeNodes = new HashMap( );    
+    
+    private final List rulesToUpdate = new ArrayList( );
 
     // ------------------------------------------------------------
     // Constructors
@@ -213,6 +218,8 @@ class Rete extends ObjectSource
             node.attach( );
         }
 
+        this.rulesToUpdate.add( objectType );
+
         return node;
     }
 
@@ -233,4 +240,36 @@ class Rete extends ObjectSource
     {
         // do nothing this is the root node
     }
+    
+    void addRule(Rule rule)
+    {
+        
+    }
+    
+    void updateWorkingMemory(WorkingMemoryImpl workingMemory) throws FactException
+    {
+        Iterator it = this.rulesToUpdate.iterator();
+        ObjectTypeNode node = null;
+        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION, 
+                                                             null, 
+                                                             null );
+        while( it.hasNext() )
+        {
+            node = (ObjectTypeNode) this.objectTypeNodes.get( it.next() );
+            node.updateNewRule( workingMemory,
+                                context );
+        }          
+    }
+    
+    void ruleAdded()
+    {
+        Iterator it = this.rulesToUpdate.iterator();
+        ObjectTypeNode node = null;
+
+        while( it.hasNext() )
+        {
+            node.ruleAttached();
+        }         
+    }
+    
 }

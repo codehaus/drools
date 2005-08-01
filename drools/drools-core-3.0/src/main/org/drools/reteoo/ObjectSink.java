@@ -12,4 +12,6 @@ public interface ObjectSink
     void retractObject(FactHandleImpl handle,
                        PropagationContext context,
                        WorkingMemoryImpl workingMemory) throws FactException;
+    
+    void ruleAttached();
 }

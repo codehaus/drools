@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSink.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: TupleSink.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -87,5 +87,7 @@ interface TupleSink
     void retractTuples(TupleKey key,
                        PropagationContext context, 
                        WorkingMemoryImpl workingMemory) throws FactException;
+    
+    public void ruleAttached();
 
 }

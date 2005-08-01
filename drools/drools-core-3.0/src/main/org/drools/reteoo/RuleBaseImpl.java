@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,14 +41,17 @@ package org.drools.reteoo;
  */
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.RuleBaseContext;
 
@@ -57,7 +60,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  */
 class RuleBaseImpl
     implements
@@ -81,7 +84,12 @@ class RuleBaseImpl
     private Map                     applicationData;
 
     private RuleBaseContext         ruleBaseContext;
+    
+    /* @todo: replace this with a weak HashSet */
+    private final transient Map     workingMemories;
 
+    /** Special value when adding to the underlying map. */
+    private static final Object PRESENT = new Object();    
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
@@ -127,6 +135,7 @@ class RuleBaseImpl
         this.ruleSets = ruleSets;
         this.applicationData = applicationData;
         this.ruleBaseContext = ruleBaseContext;
+        this.workingMemories = new WeakHashMap();
     }
 
     // ------------------------------------------------------------
@@ -138,7 +147,15 @@ class RuleBaseImpl
      */
     public WorkingMemory newWorkingMemory()
     {
-        return new WorkingMemoryImpl( this );
+        WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( this );
+        this.workingMemories.put( workingMemory,
+                                  PRESENT );
+        return workingMemory;
+    }
+    
+    void disposeWorkingMemory(WorkingMemory workingMemory)
+    {
+        this.workingMemories.remove( workingMemory );
     }
 
     /**
@@ -224,5 +241,18 @@ class RuleBaseImpl
     public RuleBaseContext getRuleBaseContext()
     {
         return this.ruleBaseContext;
+    }
+    
+    public void addRule(Rule rule) throws FactException
+    {
+        this.rete.addRule( rule );
+
+        Iterator it = this.workingMemories.keySet().iterator();
+        while ( it.hasNext() )
+        {
+            this.rete.updateWorkingMemory( ( WorkingMemoryImpl ) it.next() );
+        }
+        
+        //this.rete.
     }
 }

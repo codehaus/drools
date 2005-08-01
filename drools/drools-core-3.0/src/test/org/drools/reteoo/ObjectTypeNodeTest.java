@@ -3,8 +3,10 @@ package org.drools.reteoo;
 import java.util.List;
 
 import org.drools.DroolsTestCase;
+import org.drools.FactException;
 import org.drools.rule.Rule;
 import org.drools.spi.ClassObjectType;
+import org.drools.util.PrimitiveLongMap;
 
 public class ObjectTypeNodeTest extends DroolsTestCase
 {
@@ -82,11 +84,11 @@ public class ObjectTypeNodeTest extends DroolsTestCase
                     ((Object[]) asserted.get( 0 ))[0] );
 
         /* check asserted object was added to memory */
-        List memory = (List) workingMemory.getNodeMemory( objectTypeNode );
+        PrimitiveLongMap memory = (PrimitiveLongMap) workingMemory.getNodeMemory( objectTypeNode );
         assertEquals( 1,
                       memory.size() );
         assertSame( handle1,
-                    memory.get( 0 ) );
+                    memory.get( handle1.getId() ) );
 
     }
 
@@ -126,7 +128,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
                                      context,
                                      workingMemory );
         /* check asserted object was added to memory */
-        List memory = (List) workingMemory.getNodeMemory( objectTypeNode );
+        PrimitiveLongMap memory = (PrimitiveLongMap) workingMemory.getNodeMemory( objectTypeNode );
         assertEquals( 1,
                       memory.size() );
 
@@ -152,6 +154,78 @@ public class ObjectTypeNodeTest extends DroolsTestCase
                       retracted );
         assertSame( handle1,
                     ((Object[]) retracted.get( 0 ))[0] );
+    }
+    
+    public void testPropogateOnAttachRule() throws FactException
+    {
+        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+                                                             null,
+                                                             null );
+
+        WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
+
+        MockObjectSource source = new MockObjectSource( 15 );
+
+        ObjectTypeNode objectTypeNode = new ObjectTypeNode( 1,
+                                                            new ClassObjectType( String.class ),
+                                                            source );
+        
+        Object string1 = "cheese";
+
+        Object string2 = "bread";
+
+        FactHandleImpl handle1 = new FactHandleImpl( 1 );
+        FactHandleImpl handle2 = new FactHandleImpl( 2 );
+
+        workingMemory.putObject( handle1,
+                                 string1 );
+
+        workingMemory.putObject( handle2,
+                                 string2 );
+
+        /* should assert as ObjectType matches */
+        objectTypeNode.assertObject( string1,
+                                     handle1,
+                                     context,
+                                     workingMemory );
+
+        /* shouldn't assert as ObjectType does not match */
+        objectTypeNode.assertObject( string2,
+                                     handle2,
+                                     context,
+                                     workingMemory );        
+        
+        MockObjectSink sink1 = new MockObjectSink();
+        objectTypeNode.addObjectSink( sink1 );
+        objectTypeNode.updateNewRule( workingMemory,
+                                      context );
+        objectTypeNode.ruleAttached();
+        
+        assertLength( 2,
+                      sink1.getAsserted() );
+
+        Object string3 = "water";
+        FactHandleImpl handle3 = new FactHandleImpl( 3 );        
+        workingMemory.putObject( handle3,
+                                 string3 );       
+        objectTypeNode.assertObject( string3,
+                                     handle3,
+                                     context,
+                                     workingMemory );        
+        
+        MockObjectSink sink2 = new MockObjectSink();
+        objectTypeNode.addObjectSink( sink2 ); 
+        objectTypeNode.updateNewRule( workingMemory,
+                                      context );
+        objectTypeNode.ruleAttached();  
+        
+        assertLength( 3,
+                      sink1.getAsserted() );
+        
+        assertLength( 3,
+                      sink2.getAsserted() );        
+        
+        
     }
 
 }

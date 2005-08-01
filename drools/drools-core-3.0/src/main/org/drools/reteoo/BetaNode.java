@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: BetaNode.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: BetaNode.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -184,18 +184,12 @@ abstract class BetaNode extends TupleSource
         this.leftInput.addTupleSink( this );
         this.rightInput.addObjectSink( this );
     }
+    
 
     BetaNodeBinder getJoinNodeBinder()
     {
         return this.joinNodeBinder;
     }
-
-    /*
-    BetaNodeDecorator getDecorator()
-    {
-        return this.decorator;
-    }
-    */
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

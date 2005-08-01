@@ -865,4 +865,5 @@ class WorkingMemoryImpl
     {
         return this.justifiers;
     }
+
 }
