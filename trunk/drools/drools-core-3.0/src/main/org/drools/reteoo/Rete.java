@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.4 2005-08-01 00:00:55 mproctor Exp $
+ * $Id: Rete.java,v 1.5 2005-08-02 00:13:02 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -148,17 +148,6 @@ class Rete extends ObjectSource
         }
     }
 
-    /**
-     * Add an <code>ObjectTypeNode</code> child to this <code>Rete</code>.
-     * 
-     * @param node
-     *            The node to add.
-     */
-    void addObjectTypeNode(ObjectTypeNode node)
-    {
-        this.objectTypeNodes.put( node.getObjectType( ),
-                                  node );
-    }
 
     /**
      * Retrieve all <code>ObjectTypeNode</code> children of this node.
@@ -218,11 +207,23 @@ class Rete extends ObjectSource
             node.attach( );
         }
 
-        this.rulesToUpdate.add( objectType );
+        this.rulesToUpdate.add( node );
 
         return node;
     }
 
+    /**
+     * Add an <code>ObjectTypeNode</code> child to this <code>Rete</code>.
+     * 
+     * @param node
+     *            The node to add.
+     */
+    private void addObjectTypeNode(ObjectTypeNode node)
+    {
+        this.objectTypeNodes.put( node.getObjectType( ),
+                                  node );
+    }
+    
     /**
      * Adds the <code>TupleSink</code> so that it may receive
      * <code>Tuples</code> propagated from this <code>TupleSource</code>.
@@ -254,8 +255,8 @@ class Rete extends ObjectSource
                                                              null, 
                                                              null );
         while( it.hasNext() )
-        {
-            node = (ObjectTypeNode) this.objectTypeNodes.get( it.next() );
+        {            
+            node =  ( ObjectTypeNode ) it.next();
             node.updateNewRule( workingMemory,
                                 context );
         }          
@@ -268,7 +269,9 @@ class Rete extends ObjectSource
 
         while( it.hasNext() )
         {
+            node = ( ObjectTypeNode ) it.next();
             node.ruleAttached();
+            it.remove();
         }         
     }
     
