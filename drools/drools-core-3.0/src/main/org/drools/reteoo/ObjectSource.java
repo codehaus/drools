@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: ObjectSource.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
+ * $Id: ObjectSource.java,v 1.3 2005-08-02 00:13:02 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -192,7 +192,10 @@ abstract class ObjectSource extends BaseNode
     {
         this.isAttachingNewRule = false;
         
-        ((ObjectSink) this.objectSinks.get( this.objectSinks.size( ) - 1 )).ruleAttached();     
+        if ( !this.objectSinks.isEmpty() )
+        {
+            ((ObjectSink) this.objectSinks.get( this.objectSinks.size( ) - 1 )).ruleAttached();
+        }
     }
 
     /**

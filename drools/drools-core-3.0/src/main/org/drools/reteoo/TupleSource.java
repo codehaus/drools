@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TupleSource.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
+ * $Id: TupleSource.java,v 1.3 2005-08-02 00:13:02 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -184,7 +184,10 @@ abstract class TupleSource extends BaseNode
     {
         this.isAttachingNewRule = false;
         
-        ((TupleSink) this.tupleSinks.get( this.tupleSinks.size( ) - 1 )).ruleAttached();     
+        if ( !this.tupleSinks.isEmpty() )
+        {        
+            ((TupleSink) this.tupleSinks.get( this.tupleSinks.size( ) - 1 )).ruleAttached();
+        }
     }    
 
 
