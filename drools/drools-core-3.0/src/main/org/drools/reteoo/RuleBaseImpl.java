@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.3 2005-08-03 00:51:16 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.drools.FactException;
@@ -60,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.2 2005-08-01 00:00:55 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.3 2005-08-03 00:51:16 mproctor Exp $
  */
 class RuleBaseImpl
     implements
@@ -253,6 +254,11 @@ class RuleBaseImpl
             this.rete.updateWorkingMemory( ( WorkingMemoryImpl ) it.next() );
         }
         
-        //this.rete.
+        this.rete.ruleAdded();
+    }
+    
+    public Set getWorkingMemories()
+    {
+        return this.workingMemories.keySet();
     }
 }
