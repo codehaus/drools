@@ -44,7 +44,7 @@ public class RuleBaseImplTest extends DroolsTestCase
          * dispose doesn't need GC */
         wm3.dispose();                
                 
-        /* Check onl wm1 is left */
+        /* Check only wm1 is left */
         assertLength( 1,
                       ruleBase.getWorkingMemories() );        
         assertTrue( ruleBase.getWorkingMemories().contains( wm1 ) );        
