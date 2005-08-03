@@ -24,7 +24,7 @@
     
     <!-- -->
 
-    <bean id="abstractRuleSet" abstract="true"
+    <bean id="ruleSetTemplate" abstract="true"
         class="org.drools.spring.factory.RuleSetFactoryBean">
         <property name="ruleMetadataSourceChain">
             <list>
@@ -43,35 +43,35 @@
         </property>
     </bean>    
 
-    <bean id="rulePojo" abstract="true">
+    <bean id="ruleTemplate" abstract="true">
         <property name="control" ref="tempuratureControl"/>
     </bean>
     
-    <bean id="pumpRuleSet" parent="abstractRuleSet">
+    <bean id="pumpRuleSet" parent="ruleSetTemplate">
         <property name="rules">
             <set>
-                <bean id="pump.OffWhenFloorsCoolEnough" parent="rulePojo" 
+                <bean id="pump.OffWhenFloorsCoolEnough" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsCoolEnough" />
-                <bean id="pump.OffWhenFloorsWarmEnough" parent="rulePojo" 
+                <bean id="pump.OffWhenFloorsWarmEnough" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsWarmEnough" />
-                <bean id="pump.HeatingWhenFloorTooCold" parent="rulePojo" 
+                <bean id="pump.HeatingWhenFloorTooCold" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.PumpHeatingWhenFloorTooCold" />
-                <bean id="pump.CoolingWhenFloorTooHot" parent="rulePojo" 
+                <bean id="pump.CoolingWhenFloorTooHot" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.PumpCoolingWhenFloorTooHot" />
             </set>
         </property>
     </bean>
 
-    <bean id="ventRuleSet" parent="abstractRuleSet">
+    <bean id="ventRuleSet" parent="ruleSetTemplate">
         <property name="rules">
             <set>
-                <bean id="vent.CloseWhenCoolingVentOpenFloorCoolEnough" parent="rulePojo" 
+                <bean id="vent.CloseWhenCoolingVentOpenFloorCoolEnough" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.CloseVentWhenCoolingVentOpenFloorCoolEnough" />                   
-			    <bean id="vent.CloseWhenHeatingVentOpenFloorWarmEnough" parent="rulePojo" 
+			    <bean id="vent.CloseWhenHeatingVentOpenFloorWarmEnough" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.CloseVentWhenHeatingVentOpenFloorWarmEnough" />                   
-			    <bean id="vent.OpenWhenCoolingVentClosedFloorTooHot" parent="rulePojo" 
+			    <bean id="vent.OpenWhenCoolingVentClosedFloorTooHot" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.OpenVentWhenCoolingVentClosedFloorTooHot" />                    
-			    <bean id="vent.OpenWhenHeatingVentClosedFloorTooCold" parent="rulePojo" 
+			    <bean id="vent.OpenWhenHeatingVentClosedFloorTooCold" parent="ruleTemplate" 
                     class="org.drools.spring.examples.jiahvac.control.rules.OpenVentWhenHeatingVentClosedFloorTooCold" />
             </set>
         </property>
