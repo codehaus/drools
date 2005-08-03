@@ -27,7 +27,10 @@
     <bean id="abstractRuleSet" abstract="true"
         class="org.drools.spring.factory.RuleSetFactoryBean">
         <property name="ruleMetadataSourceChain">
-            <bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationRuleMetadataSource"/>
+                <bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+            </list>
         </property>
         <property name="methodMetadataSourceChain">
             <bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
