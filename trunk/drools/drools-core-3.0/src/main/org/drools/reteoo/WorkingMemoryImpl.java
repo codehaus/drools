@@ -866,4 +866,9 @@ class WorkingMemoryImpl
         return this.justifiers;
     }
 
+    public void dispose()
+    {
+        this.ruleBase.disposeWorkingMemory( this );        
+    }
+
 }

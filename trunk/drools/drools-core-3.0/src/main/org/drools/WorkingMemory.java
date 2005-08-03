@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.2 2005-08-03 00:51:16 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -257,4 +257,10 @@ public interface WorkingMemory extends Serializable
      *
      */
     void clearAgenda( );
+    
+    /**
+     * Forces the workingMemory to be derefenced from
+     *
+     */
+    void dispose( );
 }
