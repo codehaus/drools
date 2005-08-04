@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.3 2005-08-03 00:51:16 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.4 2005-08-04 23:33:30 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.3 2005-08-03 00:51:16 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.4 2005-08-04 23:33:30 mproctor Exp $
  */
 class RuleBaseImpl
     implements
@@ -142,15 +142,26 @@ class RuleBaseImpl
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
-
+        
     /**
      * @see RuleBase
      */
     public WorkingMemory newWorkingMemory()
     {
+        return newWorkingMemory( true );
+    }
+    
+    /**
+     * @see RuleBase
+     */
+    public WorkingMemory newWorkingMemory(boolean keepReference)
+    {
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( this );
-        this.workingMemories.put( workingMemory,
-                                  PRESENT );
+        if ( keepReference )
+        {
+            this.workingMemories.put( workingMemory,
+                                      PRESENT );
+        }
         return workingMemory;
     }
     

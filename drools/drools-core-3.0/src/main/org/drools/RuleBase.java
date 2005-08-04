@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: RuleBase.java,v 1.2 2005-08-04 23:33:30 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleBase.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * @version $Id: RuleBase.java,v 1.2 2005-08-04 23:33:30 mproctor Exp $
  */
 public interface RuleBase
     extends
@@ -82,6 +82,8 @@ public interface RuleBase
      * @return A newly initialized <code>WorkingMemory</code>.
      */
     WorkingMemory newWorkingMemory( );
+    
+    WorkingMemory newWorkingMemory( boolean keepReference );    
 
     /**
      * Retrieve the <code>ConflictResolver</code>.
