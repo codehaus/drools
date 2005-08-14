@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Scheduler.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: Scheduler.java,v 1.2 2005-08-14 22:34:41 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -116,7 +116,7 @@ final class Scheduler
     {
         Date now = new Date( );
 
-        Date then = new Date( now.getTime( ) + (item.getRule( ).getDuration( ).getDuration( item.getTuple( ) ) * 1000) );
+        Date then = new Date( now.getTime( ) + item.getRule( ).getDuration( ).getDuration( item.getTuple( ) ) );
 
         TimerTask task = new AgendaItemFireListener( item,
                                                      workingMemory );

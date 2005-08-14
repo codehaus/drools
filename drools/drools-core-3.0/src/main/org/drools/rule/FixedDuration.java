@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: FixedDuration.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: FixedDuration.java,v 1.2 2005-08-14 22:34:41 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -51,7 +51,7 @@ import org.drools.spi.Tuple;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: FixedDuration.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * @version $Id: FixedDuration.java,v 1.2 2005-08-14 22:34:41 mproctor Exp $
  */
 public class FixedDuration
     implements
@@ -84,7 +84,7 @@ public class FixedDuration
      */
     public FixedDuration(long seconds)
     {
-        this.duration = seconds;
+        this.duration = seconds * 1000;
     }
 
     // ------------------------------------------------------------
@@ -99,7 +99,7 @@ public class FixedDuration
      */
     public void addSeconds(long seconds)
     {
-        this.duration += seconds;
+        this.duration += (seconds * 1000);
     }
 
     /**
@@ -110,7 +110,7 @@ public class FixedDuration
      */
     public void addMinutes(long minutes)
     {
-        this.duration += (minutes * 60);
+        this.duration += ((minutes * 60) * 1000);
     }
 
     /**
@@ -121,7 +121,7 @@ public class FixedDuration
      */
     public void addHours(long hours)
     {
-        this.duration += (hours * 60 * 60);
+        this.duration += ((hours * 60 * 60) * 1000);
     }
 
     /**
@@ -132,7 +132,7 @@ public class FixedDuration
      */
     public void addDays(long days)
     {
-        this.duration += (days * 60 * 60 * 24);
+        this.duration += ((days * 60 * 60 * 24) * 1000);
     }
 
     /**
@@ -143,7 +143,7 @@ public class FixedDuration
      */
     public void addWeeks(long weeks)
     {
-        this.duration += (weeks * 60 * 60 * 24 * 7);
+        this.duration += ((weeks * 60 * 60 * 24 * 7) * 1000);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
