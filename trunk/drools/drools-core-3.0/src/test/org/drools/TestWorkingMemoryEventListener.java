@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: TestWorkingMemoryEventListener.java,v 1.1 2005-07-26 01:06:32 mproctor Exp $
+ * $Id: TestWorkingMemoryEventListener.java,v 1.2 2005-08-14 22:44:13 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,6 @@ import java.io.Serializable;
 import org.drools.event.ActivationCancelledEvent;
 import org.drools.event.ActivationCreatedEvent;
 import org.drools.event.ActivationFiredEvent;
-import org.drools.event.ConditionTestedEvent;
 import org.drools.event.ObjectAssertedEvent;
 import org.drools.event.ObjectModifiedEvent;
 import org.drools.event.ObjectRetractedEvent;
@@ -82,12 +81,12 @@ public class TestWorkingMemoryEventListener
     {
         retracted++;
     }
-
+/*
     public void conditionTested(ConditionTestedEvent event)
     {
         tested++;
     }
-
+*/
     public void activationCreated(ActivationCreatedEvent event)
     {
         created++;

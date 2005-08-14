@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Consequence.java,v 1.1 2005-07-26 01:06:32 mproctor Exp $
+ * $Id: Consequence.java,v 1.2 2005-08-14 22:44:13 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -54,9 +54,7 @@ public interface Consequence
 {
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
-     * 
-     * @param tuple
-     *            The matching tuple.
+     * @param activation TODO
      * @param workingMemory
      *            The working memory session.
      * 
@@ -64,5 +62,5 @@ public interface Consequence
      *             If an error occurs while attempting to invoke the
      *             consequence.
      */
-    void invoke(Tuple tuple) throws ConsequenceException;
+    void invoke(Activation activation) throws ConsequenceException;
 }

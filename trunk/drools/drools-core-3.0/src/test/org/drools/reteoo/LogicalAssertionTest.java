@@ -8,6 +8,7 @@ import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ClassObjectType;
 import org.drools.spi.Consequence;
+import org.drools.spi.PropagationContext;
 
 public class LogicalAssertionTest extends DroolsTestCase
 {
@@ -27,7 +28,7 @@ public class LogicalAssertionTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda();
 
         Consequence consequence = new Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -40,7 +41,7 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           handle1,
                                           workingMemory );
 
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     null,
                                                                     null );
 
@@ -113,7 +114,7 @@ public class LogicalAssertionTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda();
 
         Consequence consequence = new Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -126,7 +127,7 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           handle1,
                                           workingMemory );
 
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     null,
                                                                     null );
 
@@ -180,7 +181,7 @@ public class LogicalAssertionTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda();
 
         Consequence consequence = new Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -193,7 +194,7 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           handle1,
                                           workingMemory );
 
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     null,
                                                                     null );
 
@@ -299,7 +300,7 @@ public class LogicalAssertionTest extends DroolsTestCase
         WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
 
         Consequence consequence = new Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -314,8 +315,12 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           handle1,
                                           workingMemory );
 
-
+        PropagationContext context =  new PropagationContextImpl( PropagationContext.ASSERTION,
+                                                              null,
+                                                              null );
+        
         Activation activation1 = new AgendaItem( tuple1,
+                                                 context,
                                                  rule1 );
             
         /* Assert the logical "logical" fact */
@@ -336,6 +341,7 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           workingMemory );
 
         Activation activation2 = new AgendaItem( tuple2,
+                                                 context,
                                                  rule2 );
 
         
@@ -384,7 +390,7 @@ public class LogicalAssertionTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda();
 
         Consequence consequence = new Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -399,7 +405,7 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           handle1,
                                           workingMemory );
 
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     null,
                                                                     null );
 
@@ -417,7 +423,7 @@ public class LogicalAssertionTest extends DroolsTestCase
                                           handle2,
                                           workingMemory );
 
-        final PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context2 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     null,
                                                                     null );
 

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaItem.java,v 1.2 2005-07-26 16:16:38 mproctor Exp $
+ * $Id: AgendaItem.java,v 1.3 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.FactHandle;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.PropagationContext;
 import org.drools.spi.Tuple;
 
 /**
@@ -67,6 +68,8 @@ class AgendaItem
 
     /** The rule. */
     private Rule        rule;
+    
+    private PropagationContext context;
 
     // ** The Counter */
     private static long counter;
@@ -88,9 +91,11 @@ class AgendaItem
      *            The rule.
      */
     AgendaItem(ReteTuple tuple,
+               PropagationContext context,
                Rule rule)
     {
         this.tuple = tuple;
+        this.context = context;
         this.rule = rule;
         this.activationNumber = counter++;
     }
@@ -98,7 +103,12 @@ class AgendaItem
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
-
+    public PropagationContext getPropagationContext()
+    {
+        return this.context;
+    }
+    
+    
     /**
      * Retrieve the rule.
      * 
@@ -107,7 +117,7 @@ class AgendaItem
     public Rule getRule()
     {
         return this.rule;
-    }
+    }    
 
     /**
      * Determine if this tuple depends on the values derrived from a particular
@@ -167,9 +177,9 @@ class AgendaItem
     void fire(WorkingMemoryImpl workingMemory) throws ConsequenceException
     {
 
-        this.rule.getConsequence( ).invoke( this.tuple );
+        this.rule.getConsequence( ).invoke( null );
 
-        workingMemory.getEventSupport( ).fireActivationFired( this.rule,
+        workingMemory.getAgendaEventSupport( ).fireActivationFired( this.rule,
                                                               this.tuple );
     }
 

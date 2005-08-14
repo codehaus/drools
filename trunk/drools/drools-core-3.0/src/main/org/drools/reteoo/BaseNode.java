@@ -1,6 +1,10 @@
 package org.drools.reteoo;
 
-public abstract class BaseNode
+import org.drools.spi.ReteooNode;
+
+abstract class BaseNode
+    implements
+    ReteooNode
 {
     protected final int id;
         

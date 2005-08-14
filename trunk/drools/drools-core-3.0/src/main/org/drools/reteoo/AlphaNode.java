@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.drools.FactException;
 import org.drools.spi.Constraint;
+import org.drools.spi.PropagationContext;
 
 public class AlphaNode extends ObjectSource
     implements

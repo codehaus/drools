@@ -12,6 +12,7 @@ import org.drools.spi.BooleanExpressionConstraint;
 import org.drools.spi.ClassObjectType;
 import org.drools.spi.Extractor;
 import org.drools.spi.ObjectType;
+import org.drools.spi.PropagationContext;
 import org.drools.spi.Tuple;
 
 public class NotNodeTest extends DroolsTestCase
@@ -31,7 +32,7 @@ public class NotNodeTest extends DroolsTestCase
     public void setUp()
     {
         this.rule = new Rule( "test-rule" );
-        this.context = new PropagationContext( PropagationContext.ASSERTION,
+        this.context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                null,
                                                null );
         this.workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );

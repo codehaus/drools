@@ -5,6 +5,7 @@ import org.drools.DroolsTestCase;
 import org.drools.FactException;
 import org.drools.RetractionException;
 import org.drools.rule.Rule;
+import org.drools.spi.PropagationContext;
 
 public class ObjectSourceTest extends DroolsTestCase
 {
@@ -40,7 +41,7 @@ public class ObjectSourceTest extends DroolsTestCase
     public void testPropagateAssertObject() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
@@ -134,7 +135,7 @@ public class ObjectSourceTest extends DroolsTestCase
     {
 
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.RETRACTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.RETRACTION,
                                                              null,
                                                              null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
@@ -218,7 +219,7 @@ public class ObjectSourceTest extends DroolsTestCase
     
     public void testPropogateOnAttachRule() throws FactException
     {
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );

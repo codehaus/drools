@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.drools.DroolsTestCase;
 import org.drools.rule.Rule;
+import org.drools.spi.PropagationContext;
 
 public class LeftInputAdapterNodeTest extends DroolsTestCase
 {
@@ -50,7 +51,7 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
     public void testAssertObject() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -108,7 +109,7 @@ public class LeftInputAdapterNodeTest extends DroolsTestCase
     public void testRetractObject() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 

@@ -1,7 +1,7 @@
-package org.drools.reteoo;
+    package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.5 2005-07-30 16:37:48 brownj Exp $
+ * $Id: Agenda.java,v 1.6 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,6 +56,7 @@ import org.drools.spi.ConflictResolver;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Duration;
 import org.drools.spi.Module;
+import org.drools.spi.PropagationContext;
 import org.drools.spi.Tuple;
 
 /**
@@ -160,6 +161,7 @@ class Agenda
         Duration dur = rule.getDuration( );
 
         AgendaItem item = new AgendaItem( tuple,
+                                          context,
                                           rule );
 
         if ( dur != null && dur.getDuration( tuple ) > 0 )
@@ -167,14 +169,14 @@ class Agenda
             this.scheduledItems.put( item.getKey( ),
                                      item );
             scheduleItem( item );
-            this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
+            this.workingMemory.getAgendaEventSupport( ).fireActivationCreated( rule,
                                                                          tuple );
         }
         else
         {
             ModuleImpl module = (ModuleImpl) modules.get( rule.getModule( ) );
             module.getActivationQueue( ).add( item );
-            this.workingMemory.getEventSupport( ).fireActivationCreated( rule,
+            this.workingMemory.getAgendaEventSupport( ).fireActivationCreated( rule,
                                                                          tuple );
         }
     }
@@ -207,7 +209,7 @@ class Agenda
                 // current iterator position
                 itemIter = module.getActivationQueue( ).iterator( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
+                this.workingMemory.getAgendaEventSupport( ).fireActivationCancelled( rule,
                                                                                eachItem.getTuple( ) );
                 this.workingMemory.removeLogicalAssertions( eachItem,
                                                             context,
@@ -229,7 +231,7 @@ class Agenda
 
                 itemIter.remove( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( rule,
+                this.workingMemory.getAgendaEventSupport( ).fireActivationCancelled( rule,
                                                                                tuple );
                 this.workingMemory.removeLogicalAssertions( eachItem,
                                                             context,
@@ -266,7 +268,7 @@ class Agenda
 
                 queueIterator.remove( );
 
-                this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+                this.workingMemory.getAgendaEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
                                                                                eachItem.getTuple( ) );
             }
         }
@@ -282,7 +284,7 @@ class Agenda
 
             iter.remove( );
 
-            this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
+            this.workingMemory.getAgendaEventSupport( ).fireActivationCancelled( eachItem.getRule( ),
                                                                            eachItem.getTuple( ) );
         }
     }
@@ -374,6 +376,11 @@ class Agenda
     public int focusSize()
     {
         return ( (ModuleImpl) getFocus() ).getActivationQueue().size();
+    }
+    
+    public Map getScheduledItems()
+    {
+        return this.scheduledItems;
     }
     
     public int totalStackSize()

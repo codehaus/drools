@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TestNode.java,v 1.2 2005-07-30 16:37:48 brownj Exp $
+ * $Id: TestNode.java,v 1.3 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.RetractionException;
 import org.drools.spi.Condition;
+import org.drools.spi.PropagationContext;
 
 /**
  * Node which filters <code>ReteTuple</code>s.
@@ -138,9 +139,9 @@ class TestNode extends TupleSource
     {
         boolean allowed = this.condition.isAllowed( tuple );
 
-        workingMemory.getEventSupport( ).fireConditionTested( this.condition,
-                                                              tuple,
-                                                              allowed );
+        workingMemory.getReteooNodeEventSupport( ).propagateReteooNode( this,
+                                                                        tuple,
+                                                                        allowed );
 
         if ( allowed )
         {
