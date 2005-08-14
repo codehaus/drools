@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: FixedDurationTest.java,v 1.1 2005-07-26 01:06:32 mproctor Exp $
+ * $Id: FixedDurationTest.java,v 1.2 2005-08-14 22:53:04 mproctor Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -53,7 +53,7 @@ public class FixedDurationTest extends TestCase
 
         dur = new FixedDuration( 42 );
 
-        assertEquals( 42, dur.getDuration( null ) );
+        assertEquals( 42000, dur.getDuration( null ) );
     }
 
     public void testAdd() throws Exception
@@ -64,22 +64,22 @@ public class FixedDurationTest extends TestCase
 
         dur.addSeconds( 42 );
 
-        assertEquals( 42, dur.getDuration( null ) );
+        assertEquals( 42000, dur.getDuration( null ) );
 
         dur.addMinutes( 2 );
 
-        assertEquals( 162, dur.getDuration( null ) );
+        assertEquals( 162000, dur.getDuration( null ) );
 
         dur.addHours( 2 );
 
-        assertEquals( 7362, dur.getDuration( null ) );
+        assertEquals( 7362000, dur.getDuration( null ) );
 
         dur.addDays( 2 );
 
-        assertEquals( 180162, dur.getDuration( null ) );
+        assertEquals( 180162000, dur.getDuration( null ) );
 
         dur.addWeeks( 2 );
 
-        assertEquals( 1389762, dur.getDuration( null ) );
+        assertEquals( 1389762000, dur.getDuration( null ) );
     }
 }
