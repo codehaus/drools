@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.4 2005-08-04 23:33:30 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.5 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,6 +54,7 @@ import org.drools.WorkingMemory;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.Rule;
 import org.drools.spi.ConflictResolver;
+import org.drools.spi.PropagationContext;
 import org.drools.spi.RuleBaseContext;
 
 /**
@@ -61,7 +62,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.4 2005-08-04 23:33:30 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.5 2005-08-14 22:44:12 mproctor Exp $
  */
 class RuleBaseImpl
     implements

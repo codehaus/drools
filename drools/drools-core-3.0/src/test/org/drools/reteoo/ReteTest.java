@@ -50,6 +50,7 @@ import org.drools.FactException;
 import org.drools.FactHandle;
 import org.drools.spi.ClassObjectType;
 import org.drools.spi.MockObjectType;
+import org.drools.spi.PropagationContext;
 
 public class ReteTest extends DroolsTestCase
 {
@@ -114,7 +115,7 @@ public class ReteTest extends DroolsTestCase
      */
     public void testAssertObject() throws Exception
     {
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -175,7 +176,7 @@ public class ReteTest extends DroolsTestCase
      */
     public void testRetractObject() throws Exception
     {
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -237,7 +238,7 @@ public class ReteTest extends DroolsTestCase
 
     public void testPropogateOnAttachRule() throws FactException
     {
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 

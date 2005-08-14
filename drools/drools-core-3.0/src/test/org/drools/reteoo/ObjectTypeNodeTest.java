@@ -6,6 +6,7 @@ import org.drools.DroolsTestCase;
 import org.drools.FactException;
 import org.drools.rule.Rule;
 import org.drools.spi.ClassObjectType;
+import org.drools.spi.PropagationContext;
 import org.drools.util.PrimitiveLongMap;
 
 public class ObjectTypeNodeTest extends DroolsTestCase
@@ -37,7 +38,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
     public void testAssertObject() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -95,7 +96,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
     public void testRetractObject() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -158,7 +159,7 @@ public class ObjectTypeNodeTest extends DroolsTestCase
     
     public void testPropogateOnAttachRule() throws FactException
     {
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 

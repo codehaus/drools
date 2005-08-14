@@ -57,12 +57,17 @@ import org.drools.NoSuchFactHandleException;
 import org.drools.NoSuchFactObjectException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.event.AgendaEventListener;
+import org.drools.event.AgendaEventSupport;
+import org.drools.event.ReteooNodeEventListener;
+import org.drools.event.ReteooNodeEventSupport;
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.event.WorkingMemoryEventSupport;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
+import org.drools.spi.PropagationContext;
 import org.drools.util.IdentityMap;
 import org.drools.util.PrimitiveLongMap;
 import org.drools.util.PrimitiveLongStack;
@@ -112,7 +117,9 @@ class WorkingMemoryImpl
    private static final String              STATED                                        = "STATED";    
 
     /** The eventSupport */
-    private final WorkingMemoryEventSupport eventSupport                                  = new WorkingMemoryEventSupport( this );
+    private final WorkingMemoryEventSupport workingMemoryEventSupport                     = new WorkingMemoryEventSupport( this );
+    private final AgendaEventSupport        agendaEventSupport                                   = new AgendaEventSupport( this );
+    private final ReteooNodeEventSupport    reteooNodeEventSupport                           = new ReteooNodeEventSupport( this );
 
     /** The <code>RuleBase</code> with which this memory is associated. */
     private final RuleBaseImpl              ruleBase;
@@ -146,18 +153,49 @@ class WorkingMemoryImpl
 
     public void addEventListener(WorkingMemoryEventListener listener)
     {
-        this.eventSupport.addEventListener( listener );
+        this.workingMemoryEventSupport.addEventListener( listener );
     }
 
     public void removeEventListener(WorkingMemoryEventListener listener)
     {
-        this.eventSupport.removeEventListener( listener );
+        this.workingMemoryEventSupport.removeEventListener( listener );
     }
 
-    public List getEventListeners()
+    public List getWorkingMemoryEventListeners()
     {
-        return eventSupport.getEventListeners( );
+        return this.workingMemoryEventSupport.getEventListeners( );
     }
+
+    public void addEventListener(AgendaEventListener listener)
+    {
+        this.agendaEventSupport.addEventListener( listener );
+    }
+
+    public void removeEventListener(AgendaEventListener listener)
+    {
+        this.agendaEventSupport.removeEventListener( listener );
+    }
+
+    public List getAgendaEventListeners()
+    {
+        return this.agendaEventSupport.getEventListeners( );
+    }
+    
+    public void addEventListener(ReteooNodeEventListener listener)
+    {
+        this.reteooNodeEventSupport.addEventListener( listener );
+    }
+
+    public void removeEventListener(ReteooNodeEventListener listener)
+    {
+        this.reteooNodeEventSupport.removeEventListener( listener );
+    }
+
+    public List getReteooNodeEventListeners()
+    {
+        return this.reteooNodeEventSupport.getEventListeners( );
+    }    
+    
 
     /**
      * Create a new <code>FactHandle</code>.
@@ -495,13 +533,13 @@ class WorkingMemoryImpl
 
         ruleBase.assertObject( handle,
                                object,
-                               new PropagationContext( PropagationContext.ASSERTION,
+                               new PropagationContextImpl( PropagationContext.ASSERTION,
                                                        rule,
                                                        activation ),
                                this );
 
-        eventSupport.fireObjectAsserted( handle,
-                                         object );
+        this.workingMemoryEventSupport.fireObjectAsserted( handle,
+                                                           object );
         return handle;
     }
 
@@ -632,7 +670,7 @@ class WorkingMemoryImpl
         removePropertyChangeListener( handle );
 
         ruleBase.retractObject( handle,
-                                new PropagationContext( PropagationContext.RETRACTION,
+                                new PropagationContextImpl( PropagationContext.RETRACTION,
                                                         rule,
                                                         activation ),                                                         
                                 this );
@@ -664,8 +702,8 @@ class WorkingMemoryImpl
 
         factHandlePool.push( ((FactHandleImpl) handle).getId( ) );
 
-        eventSupport.fireObjectRetracted( handle,
-                                          oldObject );
+        this.workingMemoryEventSupport.fireObjectRetracted( handle,
+                                                            oldObject );
 
         ((FactHandleImpl) handle).invalidate( );
     }
@@ -708,14 +746,14 @@ class WorkingMemoryImpl
 
 
         this.ruleBase.retractObject( handle,
-                                     new PropagationContext( PropagationContext.MODIFICATION,
+                                     new PropagationContextImpl( PropagationContext.MODIFICATION,
                                                              rule,
                                                              activation ),
                                      this );
 
         this.ruleBase.assertObject( handle,
                                     object,
-                                    new PropagationContext( PropagationContext.MODIFICATION,
+                                    new PropagationContextImpl( PropagationContext.MODIFICATION,
                                                             rule,
                                                             activation ),                                    
                                     this );
@@ -724,9 +762,9 @@ class WorkingMemoryImpl
         /*
          * this.ruleBase.modifyObject( handle, object, this );
          */
-        this.eventSupport.fireObjectModified( handle,
-                                              originalObject,
-                                              object );
+        this.workingMemoryEventSupport.fireObjectModified( handle,
+                                                           originalObject,
+                                                           object );
     }
 
     /**
@@ -753,10 +791,20 @@ class WorkingMemoryImpl
         return memory;
     }
 
-    public WorkingMemoryEventSupport getEventSupport()
+    public WorkingMemoryEventSupport getWorkingMemoryEventSupport()
     {
-        return eventSupport;
+        return workingMemoryEventSupport;
     }
+    
+    public AgendaEventSupport getAgendaEventSupport()
+    {
+        return agendaEventSupport;
+    } 
+    
+    public ReteooNodeEventSupport getReteooNodeEventSupport()
+    {
+        return reteooNodeEventSupport;
+    }    
 
     /**
      * Sets the AsyncExceptionHandler to handle exceptions thrown by the Agenda

@@ -1,7 +1,7 @@
-package org.drools.reteoo;
+     package org.drools.reteoo;
 
 /*
- * $Id: AgendaTest.java,v 1.2 2005-07-26 21:24:59 mproctor Exp $
+ * $Id: AgendaTest.java,v 1.3 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,14 +52,18 @@ import org.drools.spi.AgendaFilter;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Module;
+import org.drools.spi.PropagationContext;
 
 /**
  * @author mproctor
  */
 
 public class AgendaTest extends DroolsTestCase
-{
-
+{    
+    PropagationContext initContext =  new PropagationContextImpl( PropagationContext.ASSERTION,
+                                                              null,
+                                                              null );
+    
     public void testAddToAgenda() throws Exception
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete() );
@@ -74,25 +78,27 @@ public class AgendaTest extends DroolsTestCase
 
         final Map results = new HashMap();
 
-        ReteTuple tuple = new ReteTuple( 0,
-                                         new FactHandleImpl( 1 ),
-                                         workingMemory );
+        final ReteTuple tuple = new ReteTuple( 0,
+                                               new FactHandleImpl( 1 ),
+                                               workingMemory );
 
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     rule1,
                                                                     new AgendaItem( tuple,
+                                                                                    initContext,
                                                                                     rule1 ) );
 
-        final PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context2 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     rule2,
                                                                     new AgendaItem( tuple,
+                                                                                    initContext,
                                                                                     rule2 ) );
 
         /*
          * Add consequence.
          */
         rule1.setConsequence( new org.drools.spi.Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 /*
                  * context1 one shows we are adding to the agenda where the rule is the same as its propogation context
@@ -164,16 +170,17 @@ public class AgendaTest extends DroolsTestCase
                                          new FactHandleImpl( 1 ),
                                          workingMemory );
 
-        final PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                     rule1,
                                                                     new AgendaItem( tuple,
+                                                                                    initContext,
                                                                                     rule1 ) );
 
         /*
          * Add consequence. Notice here the context here for the add to agenda is itself
          */
         rule1.setConsequence( new org.drools.spi.Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -208,7 +215,7 @@ public class AgendaTest extends DroolsTestCase
         final Map results = new HashMap();
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 results.put( "fired",
                              new Boolean( true ) );
@@ -218,9 +225,10 @@ public class AgendaTest extends DroolsTestCase
         ReteTuple tuple = new ReteTuple( 0,
                                          new FactHandleImpl( 1 ),
                                          workingMemory );
-        final PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        final PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                                    rule,
                                                                    new AgendaItem( tuple,
+                                                                                   initContext,
                                                                                    rule ) );
 
         /* test agenda is empty */
@@ -303,7 +311,7 @@ public class AgendaTest extends DroolsTestCase
 
         /* create the consequence */
         Consequence consequence = new Consequence() {
-            public void invoke(org.drools.spi.Tuple tuple)
+            public void invoke(Activation activation)
             {
                 // do nothing
             }
@@ -316,33 +324,37 @@ public class AgendaTest extends DroolsTestCase
         /* create a rule for each module */
         Rule rule0 = new Rule( "test-rule0" );
         rule0.setConsequence( consequence );
-        PropagationContext context0 = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context0 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                               rule0,
                                                               new AgendaItem( tuple,
+                                                                              initContext,
                                                                               rule0 ) );
 
         Rule rule1 = new Rule( "test-rule1",
                                "module1" );
         rule1.setConsequence( consequence );
-        PropagationContext context1 = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context1 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                               rule1,
                                                               new AgendaItem( tuple,
+                                                                              initContext,
                                                                               rule0 ) );
 
         Rule rule2 = new Rule( "test-rule2",
                                "module2" );
         rule2.setConsequence( consequence );
-        PropagationContext context2 = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context2 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                               rule2,
                                                               new AgendaItem( tuple,
+                                                                              initContext,
                                                                               rule0 ) );
 
         Rule rule3 = new Rule( "test-rule3",
                                "module3" );
         rule3.setConsequence( consequence );
-        PropagationContext context3 = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context3 = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                               rule3,
                                                               new AgendaItem( tuple,
+                                                                              initContext,
                                                                               rule0 ) );
 
         /* focus at this point is MAIN */

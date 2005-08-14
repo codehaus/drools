@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Rete.java,v 1.5 2005-08-02 00:13:02 mproctor Exp $
+ * $Id: Rete.java,v 1.6 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,6 +51,7 @@ import java.util.Map;
 import org.drools.FactException;
 import org.drools.rule.Rule;
 import org.drools.spi.ObjectType;
+import org.drools.spi.PropagationContext;
 
 /**
  * The Rete-OO network.
@@ -251,7 +252,7 @@ class Rete extends ObjectSource
     {
         Iterator it = this.rulesToUpdate.iterator();
         ObjectTypeNode node = null;
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION, 
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION, 
                                                              null, 
                                                              null );
         while( it.hasNext() )

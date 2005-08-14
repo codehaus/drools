@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: TestNodeTest.java,v 1.3 2005-07-26 21:24:59 mproctor Exp $
+ * $Id: TestNodeTest.java,v 1.4 2005-08-14 22:44:12 mproctor Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import java.util.List;
 import org.drools.DroolsTestCase;
 import org.drools.FactException;
 import org.drools.spi.MockCondition;
+import org.drools.spi.PropagationContext;
 import org.drools.spi.TestException;
 
 public class TestNodeTest extends DroolsTestCase
@@ -60,7 +61,7 @@ public class TestNodeTest extends DroolsTestCase
 
     public void setUp()
     {
-        this.context = new PropagationContext( PropagationContext.ASSERTION,
+        this.context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                null,
                                                null );
 

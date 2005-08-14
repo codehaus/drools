@@ -12,6 +12,7 @@ import org.drools.rule.StringConstraintComparator;
 import org.drools.rule.ConstraintTest.Cheese;
 import org.drools.spi.ConstraintComparator;
 import org.drools.spi.LiteralExpressionConstraint;
+import org.drools.spi.PropagationContext;
 import org.drools.spi.ReturnValueExpressionConstraint;
 import org.drools.spi.Tuple;
 
@@ -41,7 +42,7 @@ public class AlphaNodeTest extends DroolsTestCase
     {
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -127,7 +128,7 @@ public class AlphaNodeTest extends DroolsTestCase
     {
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -231,7 +232,7 @@ public class AlphaNodeTest extends DroolsTestCase
     {
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -316,7 +317,7 @@ public class AlphaNodeTest extends DroolsTestCase
     {
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 
@@ -366,7 +367,7 @@ public class AlphaNodeTest extends DroolsTestCase
     {
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
 

@@ -7,6 +7,7 @@ import java.util.List;
 import org.drools.AssertionException;
 import org.drools.FactException;
 import org.drools.RetractionException;
+import org.drools.spi.PropagationContext;
 
 public class JoinNode extends BetaNode
 {

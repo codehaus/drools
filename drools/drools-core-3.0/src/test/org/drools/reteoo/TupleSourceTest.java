@@ -5,6 +5,7 @@ import org.drools.DroolsTestCase;
 import org.drools.FactException;
 import org.drools.RetractionException;
 import org.drools.rule.Rule;
+import org.drools.spi.PropagationContext;
 
 public class TupleSourceTest extends DroolsTestCase
 {
@@ -40,7 +41,7 @@ public class TupleSourceTest extends DroolsTestCase
     public void testPropagateAssertTuple() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.RETRACTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.RETRACTION,
                                                              null,
                                                              null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
@@ -137,7 +138,7 @@ public class TupleSourceTest extends DroolsTestCase
     public void testPropagateRetractTuple() throws Exception
     {
         Rule rule = new Rule( "test-rule" );
-        PropagationContext context = new PropagationContext( PropagationContext.RETRACTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.RETRACTION,
                                                              null,
                                                              null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
@@ -227,7 +228,7 @@ public class TupleSourceTest extends DroolsTestCase
     
     public void testPropogateOnAttachRule() throws FactException
     {        
-        PropagationContext context = new PropagationContext( PropagationContext.ASSERTION,
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
                                                              null,
                                                              null );
         WorkingMemoryImpl workingMemory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete() ) );
