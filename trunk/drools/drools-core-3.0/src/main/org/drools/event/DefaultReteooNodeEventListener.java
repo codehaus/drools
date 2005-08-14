@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: DebugWorkingMemoryEventListener.java,v 1.2 2005-08-14 22:35:23 mproctor Exp $
+ * $Id$
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,28 +41,18 @@ package org.drools.event;
  *
  */
 
-public class DebugWorkingMemoryEventListener
+public class DefaultReteooNodeEventListener
     implements
-    WorkingMemoryEventListener
+    ReteooNodeEventListener
 {
-    public DebugWorkingMemoryEventListener()
+    public DefaultReteooNodeEventListener()
     {
         // intentionally left blank
     }
 
-    public void objectAsserted(ObjectAssertedEvent event)
+    public void nodeEvaluated(ReteooNodeEvent event)
     {
-        System.err.println( event );
+        // intentionally left blank
     }
 
-    public void objectModified(ObjectModifiedEvent event)
-    {
-        System.err.println( event );
-    }
-
-    public void objectRetracted(ObjectRetractedEvent event)
-    {
-        System.err.println( event );
-    }
-    
 }

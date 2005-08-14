@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventSupport.java,v 1.2 2005-08-14 22:35:23 mproctor Exp $
+ * $Id$
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -54,19 +54,19 @@ import org.drools.spi.Tuple;
 /**
  * @author <a href="mailto:simon@redhillconsulting.com.au">Simon Harris </a>
  */
-public class WorkingMemoryEventSupport
+public class AgendaEventSupport
     implements
     Serializable
-{
+{  
     private final List          listeners = new ArrayList( );
     private final WorkingMemory workingMemory;
 
-    public WorkingMemoryEventSupport(WorkingMemory workingMemory)
+    public AgendaEventSupport(WorkingMemory workingMemory)
     {
         this.workingMemory = workingMemory;
     }
 
-    public void addEventListener(WorkingMemoryEventListener listener)
+    public void addEventListener(AgendaEventListener listener)
     {
         if ( !this.listeners.contains( listener ) )
         {
@@ -74,7 +74,7 @@ public class WorkingMemoryEventSupport
         }
     }
 
-    public void removeEventListener(WorkingMemoryEventListener listener)
+    public void removeEventListener(AgendaEventListener listener)
     {
         this.listeners.remove( listener );
     }
@@ -94,60 +94,57 @@ public class WorkingMemoryEventSupport
         return this.listeners.isEmpty( );
     }
 
-    public void fireObjectAsserted(FactHandle handle,
-                                   Object object)
+    public void fireActivationCreated(Rule rule,
+                                      Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ObjectAssertedEvent event = new ObjectAssertedEvent( this.workingMemory,
-                                                             handle,
-                                                             object );
+        ActivationCreatedEvent event = new ActivationCreatedEvent( this.workingMemory,
+                                                                   rule,
+                                                                   tuple );
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ((WorkingMemoryEventListener) this.listeners.get( i )).objectAsserted( event );
+            ((AgendaEventListener) this.listeners.get( i )).activationCreated( event );
         }
     }
 
-    public void fireObjectModified(FactHandle handle,
-                                   Object oldObject,
-                                   Object object)
+    public void fireActivationCancelled(Rule rule,
+                                        Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ObjectModifiedEvent event = new ObjectModifiedEvent( this.workingMemory,
-                                                             handle,
-                                                             oldObject,
-                                                             object );
+        ActivationCancelledEvent event = new ActivationCancelledEvent( this.workingMemory,
+                                                                       rule,
+                                                                       tuple );
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ((WorkingMemoryEventListener) this.listeners.get( i )).objectModified( event );
+            ((AgendaEventListener) this.listeners.get( i )).activationCancelled( event );
         }
     }
 
-    public void fireObjectRetracted(FactHandle handle,
-                                    Object oldObject)
+    public void fireActivationFired(Rule rule,
+                                    Tuple tuple)
     {
         if ( this.listeners.isEmpty( ) )
         {
             return;
         }
 
-        ObjectRetractedEvent event = new ObjectRetractedEvent( this.workingMemory,
-                                                               handle,
-                                                               oldObject );
+        ActivationFiredEvent event = new ActivationFiredEvent( this.workingMemory,
+                                                               rule,
+                                                               tuple );
 
         for ( int i = 0, size = this.listeners.size( ); i < size; i++ )
         {
-            ((WorkingMemoryEventListener) this.listeners.get( i )).objectRetracted( event );
+            ((AgendaEventListener) this.listeners.get( i )).activationFired( event );
         }
     }
-
 }

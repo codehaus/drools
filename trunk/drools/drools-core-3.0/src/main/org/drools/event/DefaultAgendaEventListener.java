@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: ConditionTestedEvent.java,v 1.2 2005-07-30 16:37:48 brownj Exp $
+ * $Id$
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,47 +41,27 @@ package org.drools.event;
  *
  */
 
-import org.drools.WorkingMemory;
-import org.drools.spi.Condition;
-import org.drools.spi.Tuple;
-
-public class ConditionTestedEvent extends WorkingMemoryEvent
+public class DefaultAgendaEventListener
+    implements
+    AgendaEventListener
 {
-    private final Condition condition;
-
-    private final Tuple tuple;
-
-    private final boolean passed;
-
-    public ConditionTestedEvent(WorkingMemory workingMemory,
-                                Condition condition,
-                                Tuple tuple,
-                                boolean passed)
+    public DefaultAgendaEventListener()
     {
-        super( workingMemory );
-
-        this.condition = condition;
-        this.tuple = tuple;
-        this.passed = passed;
+        // intentionally left blank
     }
 
-    public Condition getCondition()
+    public void activationCreated(ActivationCreatedEvent event)
     {
-        return this.condition;
+        // intentionally left blank
     }
 
-    public Tuple getTuple()
+    public void activationCancelled(ActivationCancelledEvent event)
     {
-        return this.tuple;
+        // intentionally left blank
     }
 
-    public boolean getPassed()
+    public void activationFired(ActivationFiredEvent event)
     {
-        return this.passed;
-    }
-
-    public String toString()
-    {
-        return "[ConditionTested: condition=" + this.condition + "; passed=" + this.passed + "; tuple=" + this.tuple + "]";
+        // intentionally left blank
     }
 }

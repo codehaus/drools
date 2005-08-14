@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: DebugWorkingMemoryEventListener.java,v 1.2 2005-08-14 22:35:23 mproctor Exp $
+ * $Id$
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,28 +41,28 @@ package org.drools.event;
  *
  */
 
-public class DebugWorkingMemoryEventListener
+public class DebugAgendaEventListener
     implements
-    WorkingMemoryEventListener
+    AgendaEventListener
 {
-    public DebugWorkingMemoryEventListener()
+    public DebugAgendaEventListener()
     {
         // intentionally left blank
     }
 
-    public void objectAsserted(ObjectAssertedEvent event)
+    public void activationCreated(ActivationCreatedEvent event)
     {
         System.err.println( event );
     }
 
-    public void objectModified(ObjectModifiedEvent event)
+    public void activationCancelled(ActivationCancelledEvent event)
     {
         System.err.println( event );
     }
 
-    public void objectRetracted(ObjectRetractedEvent event)
+    public void activationFired(ActivationFiredEvent event)
     {
-        System.err.println( event );
+       System.err.println( event );
     }
     
 }
