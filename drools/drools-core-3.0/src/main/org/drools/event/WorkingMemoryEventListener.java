@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: WorkingMemoryEventListener.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: WorkingMemoryEventListener.java,v 1.2 2005-08-14 22:35:23 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,12 +51,5 @@ public interface WorkingMemoryEventListener
     void objectModified(ObjectModifiedEvent event);
 
     void objectRetracted(ObjectRetractedEvent event);
-
-    void conditionTested(ConditionTestedEvent event);
-
-    void activationCreated(ActivationCreatedEvent event);
-
-    void activationCancelled(ActivationCancelledEvent event);
-
-    void activationFired(ActivationFiredEvent event);
+    
 }

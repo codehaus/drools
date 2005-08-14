@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.2 2005-08-03 00:51:16 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.3 2005-08-14 22:37:04 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.drools.event.AgendaEventListener;
+import org.drools.event.ReteooNodeEventListener;
 import org.drools.event.WorkingMemoryEventListener;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
@@ -61,23 +63,70 @@ public interface WorkingMemory extends Serializable
      *
      * @param listener
      *            The listener to add.
-     */
-    void addEventListener( WorkingMemoryEventListener listener );
+     */    
+    public void addEventListener(WorkingMemoryEventListener listener);
 
     /**
      * Remove an event listener.
      *
      * @param listener
      *            The listener to remove.
-     */
-    void removeEventListener( WorkingMemoryEventListener listener );
+     */    
+    public void removeEventListener(WorkingMemoryEventListener listener);
 
     /**
      * Returns all event listeners.
      *
      * @return listeners The listeners.
-     */
-    List getEventListeners( );
+     */    
+    public List getWorkingMemoryEventListeners();
+
+    /**
+     * Add an event listener.
+     *
+     * @param listener
+     *            The listener to add.
+     */    
+    public void addEventListener(AgendaEventListener listener);
+
+    /**
+     * Remove an event listener.
+     *
+     * @param listener
+     *            The listener to remove.
+     */    
+    public void removeEventListener(AgendaEventListener listener);
+
+    /**
+     * Returns all event listeners.
+     *
+     * @return listeners The listeners.
+     */    
+    public List getAgendaEventListeners();
+    
+    /**
+     * Add an event listener.
+     *
+     * @param listener
+     *            The listener to add.
+     */    
+    public void addEventListener(ReteooNodeEventListener listener);
+
+    /**
+     * Remove an event listener.
+     *
+     * @param listener
+     *            The listener to remove.
+     */    
+    public void removeEventListener(ReteooNodeEventListener listener);
+
+    /**
+     * Returns all event listeners.
+     *
+     * @return listeners The listeners.
+     */    
+    public List getReteooNodeEventListeners();
+    
 
     /**
      * Retrieve all of the set application data in this memory

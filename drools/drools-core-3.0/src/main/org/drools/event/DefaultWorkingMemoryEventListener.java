@@ -1,7 +1,7 @@
 package org.drools.event;
 
 /*
- * $Id: DefaultWorkingMemoryEventListener.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: DefaultWorkingMemoryEventListener.java,v 1.2 2005-08-14 22:35:23 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,26 +61,6 @@ public class DefaultWorkingMemoryEventListener
     }
 
     public void objectRetracted(ObjectRetractedEvent event)
-    {
-        // intentionally left blank
-    }
-
-    public void conditionTested(ConditionTestedEvent event)
-    {
-        // intentionally left blank
-    }
-
-    public void activationCreated(ActivationCreatedEvent event)
-    {
-        // intentionally left blank
-    }
-
-    public void activationCancelled(ActivationCancelledEvent event)
-    {
-        // intentionally left blank
-    }
-
-    public void activationFired(ActivationFiredEvent event)
     {
         // intentionally left blank
     }
