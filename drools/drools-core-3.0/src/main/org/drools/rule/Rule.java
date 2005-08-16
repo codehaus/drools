@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: Rule.java,v 1.2 2005-08-16 22:55:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -110,6 +110,9 @@ public class Rule
 
     /** Is recursion of this rule allowed */
     private boolean      noLoop;
+    
+    /** makes the rule's much the current focus */
+    private boolean      autoFocus;
 
     /** A map valid Application names and types */
     private Map          applicationData;
@@ -332,6 +335,16 @@ public class Rule
     {
         this.noLoop = noLoop;
     }
+    
+    public boolean getAutoFocus()
+    {
+        return this.autoFocus;
+    }
+
+    public void setAutoFocus(boolean autoFocus)
+    {
+        this.autoFocus = autoFocus;
+    }    
 
     /**
      * Add a <i>root fact object </i> parameter <code>Declaration</code> for

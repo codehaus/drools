@@ -1,7 +1,7 @@
-    package org.drools.reteoo;
+ package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.6 2005-08-14 22:44:12 mproctor Exp $
+ * $Id: Agenda.java,v 1.7 2005-08-16 22:55:37 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -163,6 +163,12 @@ class Agenda
         AgendaItem item = new AgendaItem( tuple,
                                           context,
                                           rule );
+        
+        /* set the focus if rule autoFocus is true */
+        if ( rule.getAutoFocus() )
+        {
+            setFocus( rule.getModule() );
+        }
 
         if ( dur != null && dur.getDuration( tuple ) > 0 )
         {
@@ -170,14 +176,14 @@ class Agenda
                                      item );
             scheduleItem( item );
             this.workingMemory.getAgendaEventSupport( ).fireActivationCreated( rule,
-                                                                         tuple );
+                                                                               tuple );
         }
         else
         {
             ModuleImpl module = (ModuleImpl) modules.get( rule.getModule( ) );
             module.getActivationQueue( ).add( item );
             this.workingMemory.getAgendaEventSupport( ).fireActivationCreated( rule,
-                                                                         tuple );
+                                                                               tuple );
         }
     }
 
