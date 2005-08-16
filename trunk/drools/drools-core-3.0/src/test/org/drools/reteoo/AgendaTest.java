@@ -1,7 +1,7 @@
      package org.drools.reteoo;
 
 /*
- * $Id: AgendaTest.java,v 1.3 2005-08-14 22:44:12 mproctor Exp $
+ * $Id: AgendaTest.java,v 1.4 2005-08-16 22:55:37 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -493,5 +493,83 @@ public class AgendaTest extends DroolsTestCase
         assertEquals( 0,
                       agenda.totalAgendaSize() );
 
+    }
+    
+    public void testAutoFocus() throws ConsequenceException
+    {
+        RuleBase ruleBase = new RuleBaseImpl( new Rete() );
+
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory();
+
+        final Agenda agenda = workingMemory.getAgenda();
+
+        /* create the module */
+        ModuleImpl module = new ModuleImpl( "module",
+                                             ruleBase.getConflictResolver() );
+        agenda.addModule( module );  
+
+        /* create the consequence */
+        Consequence consequence = new Consequence() {
+            public void invoke(Activation activation)
+            {
+                // do nothing
+            }
+        };
+
+        ReteTuple tuple = new ReteTuple( 0,
+                                         new FactHandleImpl( 1 ),
+                                         workingMemory );
+
+        /* create a rule for the module */
+        Rule rule = new Rule( "test-rule",
+                              "module" );
+        rule.setConsequence( consequence );
+        PropagationContext context = new PropagationContextImpl( PropagationContext.ASSERTION,
+                                                                  rule,
+                                                                  new AgendaItem( tuple,
+                                                                                  initContext,
+                                                                                  rule   ) );
+          
+        /* 
+         * first test that autoFocus=false works.
+         * Here the rule should not fire as its module does not have focus.
+         */
+        rule.setAutoFocus( false );
+        
+        agenda.addToAgenda( tuple,
+                            context,
+                            rule );                   
+        
+        /* check activation as added to the module */
+        assertEquals( 1,
+                      module.getActivationQueue().size() );  
+        /* fire next item, module should not fire as its not on the focus stack and thus
+         * should retain its sinle activation
+         */
+        agenda.fireNextItem( null );
+        assertEquals( 1,
+                      module.getActivationQueue().size() );  
+        
+        /* Clear the agenda we we can test again */
+        agenda.clearAgenda();        
+        assertEquals( 0,
+                      module.getActivationQueue().size() );          
+        
+        /* 
+         * Now test that autoFocus=true works.
+         * Here the rule should fire as its module gets the focus when the activation 
+         * is created.
+         */
+        rule.setAutoFocus( true );        
+        
+        agenda.addToAgenda( tuple,
+                            context,
+                            rule ); 
+
+        assertEquals( 1,
+                      module.getActivationQueue().size() );             
+        agenda.fireNextItem( null );               
+        assertEquals( 0,
+                      module.getActivationQueue().size() );        
     }
 }
