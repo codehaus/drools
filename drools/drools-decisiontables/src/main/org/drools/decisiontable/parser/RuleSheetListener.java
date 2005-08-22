@@ -47,8 +47,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.drools.decisiontable.model.Condition;
+import org.drools.decisiontable.model.Duration;
 import org.drools.decisiontable.model.Consequence;
 import org.drools.decisiontable.model.Import;
+import org.drools.decisiontable.model.Variable;
 import org.drools.decisiontable.model.Rule;
 import org.drools.decisiontable.model.Ruleset;
 import org.drools.decisiontable.model.SnippetBuilder;
@@ -62,7 +64,7 @@ import org.drools.decisiontable.parser.xls.PropertiesSheetListener;
  * 
  * A table is identifed by a cell beginning with the text "RuleTable". The first
  * row after the table identifier defines the column type: either a condition
- * ("C") or consequence ("A" for action).
+ * ("C") or consequence ("A" for action), and so on.
  * 
  * The second row identifies the java code block associated with the condition
  * or consequence. This code block will include a parameter marker for the
@@ -82,6 +84,8 @@ public class RuleSheetListener
     public static final String      IMPORT_TAG             = "Import";
 
     public static final String      SEQUENTIAL_FLAG        = "Sequential";
+
+    public static final String      VARIABLES_TAG         = "Variables";
 
     public static final String      RULE_TABLE_TAG         = "RuleTable";
 
@@ -103,13 +107,8 @@ public class RuleSheetListener
 
     private Map                     _actions;
 
-    private List                    _ruleList              = new LinkedList( );             // MN
-    // for
-    // accumulating
-    // rules
-    // (as
-    // it is all one big happpy set)
-
+    private List                    _ruleList              = new LinkedList( ); 
+    
     private Rule                    _currentRule;
 
     private List                    _currentParameters;
@@ -122,8 +121,6 @@ public class RuleSheetListener
 
     /**
      * Return the rule sheet properties
-     * 
-     * @return key value global attributes for the rule sheet
      */
     public Properties getProperties()
     {
@@ -135,12 +132,16 @@ public class RuleSheetListener
      */
     public Ruleset getRuleSet()
     {
-
         if ( _ruleList.isEmpty( ) )
         {
             throw new DecisionTableParseException( "No RuleTable's were found in spreadsheet." );
         }
+        Ruleset ruleset = buildRuleSet( );
+        return ruleset;
+    }
 
+    private Ruleset buildRuleSet()
+    {
         String rulesetName = getProperties( ).getProperty( RULESET_TAG );
         Ruleset ruleset = new Ruleset( rulesetName );
         for ( Iterator it = _ruleList.iterator( ); it.hasNext( ); )
@@ -151,6 +152,11 @@ public class RuleSheetListener
         for ( Iterator it = importList.iterator( ); it.hasNext( ); )
         {
             ruleset.addImport( (Import) it.next( ) );
+        }
+        List variableList = RuleSheetParserUtil.getVariableList( getProperties( ).getProperty( VARIABLES_TAG ) ); // Set the list of variables to be added to the application-data tags
+        for ( Iterator it = variableList.iterator( ); it.hasNext( ); )
+        {
+            ruleset.addVariable( (Variable) it.next( ) );
         }
 
         String functions = getProperties( ).getProperty( FUNCTIONS_TAG );
@@ -221,6 +227,7 @@ public class RuleSheetListener
                                int column,
                                String value)
     {
+        
         _isInRuleTable = true;
         _actions = new HashMap( );
         _ruleStartColumn = column;
@@ -235,6 +242,7 @@ public class RuleSheetListener
 
         _currentRule = createNewRuleForRow( _ruleRow,
                                             _currentParameters );
+
         _ruleList.add( _currentRule );
 
     }
@@ -291,13 +299,10 @@ public class RuleSheetListener
         {
             return;
         }
-
         switch ( row - _ruleStartRow )
         {
         case ACTION_ROW :
-            actionRow( row,
-                       column,
-                       value );
+            ActionType.addNewActionType(_actions, value, column, row);            
             break;
         case CODE_ROW :
             codeRow( row,
@@ -314,40 +319,19 @@ public class RuleSheetListener
         }
     }
 
-    private void actionRow(int row,
-                           int column,
-                           String value)
-    {
-        if ( value.startsWith( "C" ) )
-        {
-            _actions.put( new Integer( column ),
-                          new ActionType( ActionType.CONDITION,
-                                          null ) );
-        }
-        else if ( value.startsWith( "A" ) )
-        {
-            _actions.put( new Integer( column ),
-                          new ActionType( ActionType.ACTION,
-                                          null ) );
-        }
-        else
-        {
-            throw new DecisionTableParseException( "Should be CONDITION or ACTION row:" + row + " column:" + column + " - does not contain a leading C or A identifer." );
-        }
-    }
-
     private void codeRow(int row,
                          int column,
                          String value)
     {
-        if ( value.trim( ).equals( "" ) )
+        ActionType actionType = getActionForColumn( row,
+                column );
+
+        if ( value.trim( ).equals( "" ) && (actionType.type == ActionType.ACTION || actionType.type == ActionType.CONDITION))
         {
             throw new DecisionTableParseException( "Code description - row:" + row + " column:" + column + " - does not contain any code specification. It should !" );
         }
 
-        ActionType actionType = getActionForColumn( row,
-                                                    column );
-        actionType._value = value;
+        actionType.value = value;
     }
 
     private ActionType getActionForColumn(int row,
@@ -390,14 +374,29 @@ public class RuleSheetListener
             _ruleList.add( _currentRule );
             _ruleRow++;
         }
-
-        if ( actionType._type == ActionType.CONDITION )
+        
+        
+        if ( actionType.type == ActionType.PRIORITY && !_currentSequentialFlag) // if the rule set is not sequential and the actionType type is PRIORITY then set the current Rule's salience paramenter with the value got from the cell
+        {
+        	_currentRule.setSalience( new Integer(value) );
+        }
+        else if ( actionType.type == ActionType.NAME) // if the actionType type is PRIORITY then set the current Rule's name paramenter with the value got from the cell
+        {
+        	_currentRule.setName( value );
+        }
+        else if ( actionType.type == ActionType.DURATION) // if the actionType type is DURATION then creates a new duration tag with the value got from the cell
+        {
+        	createDuration( column, 
+        					value, 
+        					actionType );
+        }
+        else if ( actionType.type == ActionType.CONDITION )
         {
             createCondition( column,
                              value,
                              actionType );
         }
-        else if ( actionType._type == ActionType.ACTION )
+        else if ( actionType.type == ActionType.ACTION )
         {
             createConsequence( column,
                                value,
@@ -440,6 +439,27 @@ public class RuleSheetListener
         _currentRule.addCondition( cond );
     }
 
+    
+    // 08 - 16 - 2005 RIK: This function creates a new DURATION TAG if apply.
+    // The value in the cell must be made with the first character of the parameter and the value next to it, separated by ":" character
+    // Examples: w1:d3:h4 mean weeks="1" days="3" hours="4", m=1:s=45 means minutes="1" seconds="45"
+    
+    private void createDuration(int column,
+            String value,
+            ActionType actionType)
+	{
+		if ( isCellValueEmpty( value ) )
+		{
+			// DO NOT CREATE DURATION... needs to be something in the cell to
+			// apply.
+			return;
+		}
+		Duration dur = new Duration( );
+		dur.setSnippet( value );
+		dur.setComment( cellComment( column ) );
+		_currentRule.setDuration( dur );
+	}
+
     private void createConsequence(int column,
                                    String value,
                                    ActionType actionType)
@@ -466,30 +486,4 @@ public class RuleSheetListener
         return "From column: " + Rule.convertColNumToColName( column );
     }
 
-    /**
-     * Simple holder class identifying a condition or action
-     */
-    private static class ActionType
-    {
-        public static final int CONDITION = 0;
-
-        public static final int ACTION    = 1;
-
-        int                     _type;
-
-        String                  _value;
-
-        ActionType(int type,
-                   String value)
-        {
-            _type = type;
-            _value = value;
-        }
-
-        String getSnippet(String cellValue)
-        {
-            SnippetBuilder builder = new SnippetBuilder( _value );
-            return builder.build( cellValue );
-        }
-    }
 }

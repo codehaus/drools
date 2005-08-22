@@ -42,10 +42,12 @@ package org.drools.decisiontable.parser;
 
 
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.drools.decisiontable.model.Import;
 import org.drools.decisiontable.model.Parameter;
+import org.drools.decisiontable.model.Variable;
 import org.drools.decisiontable.parser.RuleSheetParserUtil;
 
 import junit.framework.TestCase;
@@ -97,7 +99,7 @@ public class RuleSheetParserUtilTest extends TestCase
 
     }
 
-    public void testIsSequential()
+    public void testIsStringMeaningTrue()
     {
         assertTrue( RuleSheetParserUtil.isStringMeaningTrue( "true" ) );
         assertTrue( RuleSheetParserUtil.isStringMeaningTrue( "TRUE" ) );
@@ -130,6 +132,18 @@ public class RuleSheetParserUtilTest extends TestCase
                       ((Import) list.get( 1 )).getClassName( ) );
         assertEquals( "com.something.yeah.*",
                       ((Import) list.get( 2 )).getClassName( ) );
+    }
+    
+    public void testListVariables() 
+    {
+        List varList = RuleSheetParserUtil.getVariableList("Var1 var1, Var2 var2,Var3 var3");
+        assertNotNull(varList);
+        assertEquals(3, varList.size());
+        Variable var = (Variable) varList.get(0);
+        assertEquals("Var1", var.getClassName());
+        var = (Variable) varList.get(2);
+        assertEquals("Var3", var.getClassName());
+        assertEquals("var3", var.getIdentifier());
     }
 }
 

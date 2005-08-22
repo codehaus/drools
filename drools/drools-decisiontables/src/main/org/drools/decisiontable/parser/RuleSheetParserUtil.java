@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.drools.decisiontable.model.Import;
+import org.drools.decisiontable.model.Variable;
 import org.drools.decisiontable.model.Parameter;
 
 /**
@@ -135,6 +136,33 @@ public class RuleSheetParserUtil
             importList.add( imp );
         }
         return importList;
+    }
+
+    /**
+     * 08 - 18 - 2005
+     * Ricardo Rojas
+     * @param importCell
+     *            The cell text for all the application data variables to set.
+     * @return A list of Variable classes, which can be added to the ruleset.
+     */
+    public static List getVariableList(String importCell)
+    {
+        List variableList = new LinkedList( );
+        if ( importCell == null )
+        {
+            return variableList;
+        }
+        StringTokenizer tokens = new StringTokenizer( importCell, "," );
+		while ( tokens.hasMoreTokens( ) )
+		{
+			String token = tokens.nextToken( );
+			Variable vars = new Variable( );
+			StringTokenizer paramTokens = new StringTokenizer( token, " " );
+			vars.setClassName( paramTokens.nextToken( ) );
+			vars.setIdentifier( paramTokens.nextToken( ) );
+			variableList.add( vars );
+		}
+        return variableList;
     }
 
     /**

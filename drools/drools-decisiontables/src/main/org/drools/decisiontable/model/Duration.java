@@ -1,4 +1,4 @@
-package org.drools.decisiontable;
+package org.drools.decisiontable.model;
 
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
@@ -39,51 +39,77 @@ package org.drools.decisiontable;
  *
  */
 
-import java.io.InputStream;
+import java.util.StringTokenizer;
 
-import org.drools.RuleBase;
-import org.drools.WorkingMemory;
-import org.drools.decisiontable.model.TestModel;
-
-import junit.framework.TestCase;
-
-public class DecisionTableLoaderTest extends TestCase
+/**
+ * @author <a href="mailto:ricardo.rojas@bluesoft.cl"> Ricardo Rojas </a>
+ * 
+ */
+public class Duration extends DRLElement
+    implements
+    DRLJavaEmitter
 {
 
+    public String _snippet;
+
     /**
-     * This is an end to end test, actually lighting up drools.
-     * It is really an integration test, if you have to give it a name.
+     * @param snippet
+     *            The snippet to set.
+     */
+    public void setSnippet(String snippet)
+    {
+    	// The snippet parameters are separated by ":"
+        StringTokenizer tokens = new StringTokenizer( snippet, "," );
+        String params = "";
+		while ( tokens.hasMoreTokens( ) )
+		{
+			String token = tokens.nextToken( );
+			if (token.trim().toUpperCase().startsWith("W"))
+			{
+				params += " weeks=";
+			}
+    		else if ( token.trim().toUpperCase().startsWith("D") )
+    		{
+    			params += " days=";
+    		}
+    		else if ( token.trim().toUpperCase().startsWith("H") )
+    		{
+    			params += " hours=";
+    		}
+    		else if ( token.trim().toUpperCase().startsWith("M") )
+    		{
+    			params += " minutes=";
+    		}
+    		else if ( token.trim().toUpperCase().startsWith("S") )
+    		{
+    			params += " seconds=";
+    		}
+    		params +=  "\"" + token.substring(1) + "\"";
+		}
+			
+        _snippet = params;
+    }
+
+    /*
+     * (non-Javadoc)
      * 
-     * IMPORTANT NOTE: If you see errors with this, look for other unit test errors fist, 
-     * and correct them, rather then try and debug this outright. 
+     * @see mdneale.drools.xls.model.DRLJavaEmitter#toXML()
      * 
-     * Refer to the examples for more, well, examples !
+     * TIP: if we want to make combinations unique, can use something like:
+     * 
+     * <duration weeks="" days="" hours="" minutes="" seconds=""/>
      * 
      */
-    public void testLoadBasicWorkbook() throws Exception
+    public String toXML()
     {
-        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
-
-        RuleBase rb = DecisionTableLoader.loadFromInputStream( stream );
-        assertNotNull( rb );
-
-        WorkingMemory engine = rb.newWorkingMemory( );
-
-        TestModel model = new TestModel( );
-        model.setFireRule( true );
-        assertFalse( model.isRuleFired( ) );
-        engine.assertObject( model );
-        engine.fireAllRules( );
-        assertTrue( model.isRuleFired( ) );
+        String xml = "\t<!--" + getComment( ) + "--> \n\t<duration" + _snippet + "/>\n\n";
+        return xml;
 
     }
-    
-    public void xxtestLoadAndPrint() {
-        //for debugging purposes only if needed
-        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
-        SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter();
-        System.out.println(converter.convertToDRL(stream));        
-    }
 
+    public String getSnippet()
+    {
+        return _snippet;
+    }
 }
 
