@@ -59,44 +59,46 @@ public class Rule extends DRLElement
 
     private static final int MAX_ROWS = 65535;
 
-    private Integer              _salience;
+    private Integer          _salience;
 
     private String           _name;
 
-    private List             parameters;
+    private Duration		 _duration; // RIK: New variable to the Rule class (Defines a Duration tag for the rule)
+    
+    private List             _parameters;
 
-    private List             conditions;
+    private List             _conditions;
 
-    private List             consequences;
+    private List             _consequences;
 
     public Rule(String name,
                 Integer salience)
     {
         _name = name;
         _salience = salience;
-        parameters = new LinkedList( );
-        conditions = new LinkedList( );
-        consequences = new LinkedList( );
+        _parameters = new LinkedList( );
+        _conditions = new LinkedList( );
+        _consequences = new LinkedList( );
     }
 
     public void addParameter(Parameter param)
     {
-        parameters.add( param );
+        _parameters.add( param );
     }
 
     public void setParameters(List parameterList)
     {
-        parameters = parameterList;
+        _parameters = parameterList;
     }
 
     public void addCondition(Condition con)
     {
-        conditions.add( con );
+        _conditions.add( con );
     }
 
     public void addConsequence(Consequence con)
     {
-        consequences.add( con );
+        _consequences.add( con );
     }
 
     /*
@@ -112,10 +114,14 @@ public class Rule extends DRLElement
             xml = xml + " salience=\"" + _salience.toString() + "\"";
         }
         xml = xml + ">\n";
-        xml = xml + generateXml( parameters );
-        xml = xml + generateXml( conditions );
+        xml = xml + generateXml( _parameters );
+        xml = xml + generateXml( _conditions );
+        if (_duration != null) // Add the XML of the duration variable to the Rule's XML  
+        {
+        	xml = xml + _duration.toXML();
+        }
         xml = xml + "\t<java:consequence><![CDATA[ \n";
-        xml = xml + generateXml( consequences );
+        xml = xml + generateXml( _consequences );
         xml = xml + "\t ]]></java:consequence>";
         xml = xml + "\n" + "</rule>\n\n";
         return xml;
@@ -194,17 +200,22 @@ public class Rule extends DRLElement
 
     public List getConditions()
     {
-        return conditions;
+        return _conditions;
     }
 
     public List getConsequences()
     {
-        return consequences;
+        return _consequences;
     }
 
     public List getParameters()
     {
-        return parameters;
+        return _parameters;
+    }
+
+    public void setSalience(Integer value) // Set the salience of the rule
+    {
+        _salience = value;
     }
 
     public Integer getSalience()
@@ -212,5 +223,19 @@ public class Rule extends DRLElement
         return _salience;
     }
 
+    public void setName(String value) // Set the name of the rule
+    {
+        _name = value;
+    }
+
+    public String getName()
+    {
+        return _name;
+    }
+    
+    public void setDuration(Duration value) // Set the duration of the rule
+    {
+    	_duration=value;
+    }
 }
 

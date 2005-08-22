@@ -1,4 +1,4 @@
-package org.drools.decisiontable;
+package org.drools.decisiontable.model;
 
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
@@ -39,51 +39,64 @@ package org.drools.decisiontable;
  *
  */
 
-import java.io.InputStream;
-
-import org.drools.RuleBase;
-import org.drools.WorkingMemory;
-import org.drools.decisiontable.model.TestModel;
-
-import junit.framework.TestCase;
-
-public class DecisionTableLoaderTest extends TestCase
+/**
+ * @author <a href="mailto:ricardo.rojas@bluesoft.cl"> Ricardo Rojas </a>
+ * 
+ * Represents an application-data tag (nominally at the rule-set level). The idea of this can
+ * be extended to other ruleset level settings.
+ */
+public class Variable extends DRLElement
+    implements
+    DRLJavaEmitter
 {
 
+	private String identifier;
+    private String className;
+
     /**
-     * This is an end to end test, actually lighting up drools.
-     * It is really an integration test, if you have to give it a name.
-     * 
-     * IMPORTANT NOTE: If you see errors with this, look for other unit test errors fist, 
-     * and correct them, rather then try and debug this outright. 
-     * 
-     * Refer to the examples for more, well, examples !
-     * 
+     * @return Returns the className.
      */
-    public void testLoadBasicWorkbook() throws Exception
+    public String getClassName()
     {
-        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
+        return className;
+    }
 
-        RuleBase rb = DecisionTableLoader.loadFromInputStream( stream );
-        assertNotNull( rb );
-
-        WorkingMemory engine = rb.newWorkingMemory( );
-
-        TestModel model = new TestModel( );
-        model.setFireRule( true );
-        assertFalse( model.isRuleFired( ) );
-        engine.assertObject( model );
-        engine.fireAllRules( );
-        assertTrue( model.isRuleFired( ) );
-
+    /**
+     * @return Returns the varName.
+     */
+    public String getIdentifier()
+    {
+        return identifier;
     }
     
-    public void xxtestLoadAndPrint() {
-        //for debugging purposes only if needed
-        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
-        SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter();
-        System.out.println(converter.convertToDRL(stream));        
+    /**
+     * @param className
+     *            The className to set.
+     */
+    public void setClassName(String clazz)
+    {
+        className = clazz;
     }
 
+    /**
+     * @param varName
+     *            The varName to set.
+     */
+    public void setIdentifier(String namez)
+    {
+        identifier = namez;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mdneale.drools.xls.model.DRLJavaEmitter#toXML()
+     */
+    public String toXML()
+    {
+        String xml = "<!-- " + getComment( ) + "-->\n \t<application-data identifier=\"" + identifier + "\">" + className + "</application-data>\n";
+        return xml;
+
+    }
 }
 

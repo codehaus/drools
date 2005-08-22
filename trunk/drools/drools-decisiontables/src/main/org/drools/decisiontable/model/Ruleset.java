@@ -58,6 +58,8 @@ public class Ruleset
 
     private List      _imports;
 
+    private List      _variables; // List of the application data Variable Objects
+
     private List      _rules;
 
     private Functions _functions;
@@ -66,6 +68,7 @@ public class Ruleset
     {
         _name = name;
         _imports = new LinkedList( );
+        _variables = new LinkedList( );
         _rules = new LinkedList( );
         _functions = new Functions();
     }
@@ -73,6 +76,11 @@ public class Ruleset
     public void addImport(Import imp)
     {
         _imports.add( imp );
+    }
+
+    public void addVariable(Variable varz)
+    {
+        _variables.add( varz );
     }
 
     public void addRule(Rule rule)
@@ -94,8 +102,10 @@ public class Ruleset
         String xml = "<?xml version=\"1.0\"?> " + "<rule-set name=\"" + _name + "\" " + "xmlns=\"http://drools.org/rules\" " + "xmlns:java=\"http://drools.org/semantics/java\" " + "xmlns:xs=\"http://www.w3.org/2001/XMLSchema-instance\" "
                      + "xs:schemaLocation=\"http://drools.org/rules rules.xsd http://drools.org/semantics/java java.xsd\">";
         xml = xml + "\n";
-        xml = xml + generateXml( _imports );
+        xml = xml + generateXml( _imports ) + "\n";
         
+        xml = xml + generateXml( _variables ); // add the application data tags
+
         xml = xml + "\n" + _functions.toXML() + "\n\n";
         
         xml = xml + generateXml( _rules );
@@ -125,6 +135,11 @@ public class Ruleset
     public List getImports()
     {
         return _imports;
+    }
+
+    public List getVariables()
+    {
+        return _variables;
     }
 
     public List getRules()
