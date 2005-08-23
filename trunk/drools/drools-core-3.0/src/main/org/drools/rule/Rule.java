@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.2 2005-08-16 22:55:37 mproctor Exp $
+ * $Id: Rule.java,v 1.3 2005-08-23 14:53:57 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -91,12 +92,12 @@ public class Rule
     private int          salience;
 
     /** Columns */
-    private final List   columns      = new ArrayList( );
-    
-    private final Map    declarations = new HashMap( );
-    
-    private final List   conditions     = new ArrayList( );
-    
+    private final List   columns      = new ArrayList();
+
+    private final Map    declarations = new HashMap();
+
+    private final And    headPattern  = new And();
+
     private final String module;
 
     /** Consequence. */
@@ -110,7 +111,7 @@ public class Rule
 
     /** Is recursion of this rule allowed */
     private boolean      noLoop;
-    
+
     /** makes the rule's much the current focus */
     private boolean      autoFocus;
 
@@ -140,7 +141,7 @@ public class Rule
         this.module = module;
         this.applicationData = Collections.EMPTY_MAP;
     }
-    
+
     /**
      * Construct a
      * <code>Rule<code> with the given name for the specified ruleSet parent
@@ -155,15 +156,15 @@ public class Rule
         this.ruleSet = null;
         this.module = module;
         this.applicationData = Collections.EMPTY_MAP;
-    }    
-    
+    }
+
     public Rule(String name)
     {
         this.name = name;
         this.ruleSet = null;
         this.module = Module.MAIN;
         this.applicationData = Collections.EMPTY_MAP;
-    }      
+    }
 
     /**
      * Set the documentation.
@@ -243,17 +244,17 @@ public class Rule
      *         <code>false</code>.
      */
     public boolean isValid()
-    {      
+    {
         if ( this.columns.size() == 0 )
         {
             return false;
         }
-        
+
         if ( this.consequence == null )
         {
             return false;
-        }        
-        
+        }
+
         return true;
     }
 
@@ -284,7 +285,7 @@ public class Rule
         {
             throw new NoColumnsException( this );
         }
-        
+
         if ( this.consequence == null )
         {
             throw new NoConsequenceException( this );
@@ -335,7 +336,7 @@ public class Rule
     {
         this.noLoop = noLoop;
     }
-    
+
     public boolean getAutoFocus()
     {
         return this.autoFocus;
@@ -344,7 +345,7 @@ public class Rule
     public void setAutoFocus(boolean autoFocus)
     {
         this.autoFocus = autoFocus;
-    }    
+    }
 
     /**
      * Add a <i>root fact object </i> parameter <code>Declaration</code> for
@@ -358,7 +359,7 @@ public class Rule
      */
     public Declaration addDeclaration(String identifier,
                                       ObjectType objectType,
-                                      int column,                        
+                                      int column,
                                       Extractor extractor) throws InvalidRuleException
     {
         if ( getDeclaration( identifier ) != null )
@@ -366,13 +367,14 @@ public class Rule
             throw new InvalidRuleException( this );
         }
 
-        Declaration declaration = new Declaration( this.declarations.size( ),
+        Declaration declaration = new Declaration( this.declarations.size(),
                                                    identifier,
                                                    objectType,
                                                    extractor,
                                                    column );
 
-        this.declarations.put( identifier, declaration );
+        this.declarations.put( identifier,
+                               declaration );
 
         return declaration;
     }
@@ -398,7 +400,7 @@ public class Rule
      * @return The Set of <code>Declarations</code> in order which specify the
      *         <i>root fact objects</i>.
      */
-    public Collection getParameterDeclarations()
+    public Collection getDeclarations()
     {
         return Collections.unmodifiableCollection( this.declarations.values() );
     }
@@ -409,9 +411,9 @@ public class Rule
      * @param condition
      *        The <code>Test</code> to add.
      */
-    public void addCondition(ConditionalElement condition)
+    public void addPattern(ConditionalElement ce)
     {
-        this.conditions.add( condition );
+        this.headPattern.addChild( ce );
     }
 
     /**
@@ -420,14 +422,32 @@ public class Rule
      *
      * @return The <code>List</code> of <code>Conditions</code>.
      */
-    public Collection getConditions()
+    public Collection getPatterns()
     {
-        return Collections.unmodifiableCollection( this.conditions );
+        return Collections.unmodifiableCollection( this.headPattern.getChildren() );
     }
 
-    public int getConditionSize()
+    public int getPatternSize()
     {
-        return this.conditions.size( );
+        //return this.conditions.size();
+        return determinePatternSize( this.headPattern );
+    }
+    
+    private int determinePatternSize(ConditionalElement ce)
+    {
+        Object object = null;
+        Iterator it = ce.getChildren().iterator();
+        int size = 0;
+        while ( it.hasNext() )
+        {
+            object = it.next();
+            if ( object instanceof ConditionalElement )
+            {
+                size++;
+                size += determinePatternSize( ( ConditionalElement ) object );                
+            }
+        }
+        return size;
     }
 
     /**
@@ -487,5 +507,5 @@ public class Rule
     {
         return this.module;
     }
-    
+
 }

@@ -1,7 +1,7 @@
 package org.drools.conflict;
 
 /*
- * $Id: ComplexityConflictResolver.java,v 1.1 2005-07-26 01:06:31 mproctor Exp $
+ * $Id: ComplexityConflictResolver.java,v 1.2 2005-08-23 14:53:57 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -100,6 +100,6 @@ public class ComplexityConflictResolver extends AbstractConflictResolver
     public int compare( Activation lhs,
                         Activation rhs )
     {
-        return rhs.getRule( ).getConditionSize( ) - lhs.getRule( ).getConditionSize( );
+        return rhs.getRule( ).getPatternSize( ) - lhs.getRule( ).getPatternSize( );
     }
 }
