@@ -113,7 +113,7 @@
     <echo level="info" message="    ant conway-dsl"/>
     <echo level="info" message="    ant conway-java"/>
     <echo level="info" message="# Decision tables"/>
-    <echo level="info" message="    ant decision-tables"/>    
+    <echo level="info" message="    ant decision-tables"/>
   </target>
 
   <!-- ================================================================== -->
@@ -123,7 +123,7 @@
   <!-- Configure JAR versions here. -->
   <property name="antlr.jar" value="antlr-2.7.5.jar"/>
   <property name="jython.jar" value="jython-20020827-no-oro.jar"/>
-  <property name="janino.jar" value="janino-2.3.2.jar"/>
+  <property name="janino.jar" value="janino-2.3.8.jar"/>
   <property name="groovy.jar" value="groovy-all-1.0-jsr-01.jar"/>
   <property name="jsr94.jar" value="jsr94-1.1.jar"/>
   <property name="jsr94-tck.jar" value="jsr94-tck-1.1.jar"/>
@@ -173,7 +173,7 @@
       <delete file="${lib.dir}/${simple-jndi.jar}"/>
       <delete file="${lib.dir}/${forms.jar}"/>
       <delete file="${lib.dir}/${foxtrot.jar}"/>
-      <delete file="${lib.dir}/${junit.jar}"/>      
+      <delete file="${lib.dir}/${junit.jar}"/>
   </target>
 
   <target name="realclean"
@@ -216,7 +216,7 @@
      <copy file="lib/${jsr94.jar}" tofile="${lib.dir}/${jsr94.jar}"/>
      <copy file="lib/${jsr94-tck.jar}" tofile="${lib.dir}/${jsr94-tck.jar}"/>
      <copy file="lib/${sigtest.jar}" tofile="${lib.dir}/${sigtest.jar}"/>
-     <copy file="lib/${poi.jar}" tofile="${lib.dir}/${poi.jar}"/>     
+     <copy file="lib/${poi.jar}" tofile="${lib.dir}/${poi.jar}"/>
 
   </target>
 
@@ -396,13 +396,13 @@
        <param name="fork-test"   value="yes"/>
      </antcall>
   </target>
-  
+
   <target name="drools-decisiontables" depends="get-deps">
      <antcall target="jar-module">
        <param name="module-name" value="drools-decisiontables"/>
        <param name="fork-test"   value="yes"/>
      </antcall>
-  </target>  
+  </target>
 
   <target name="drools-examples" depends="get-deps">
      <antcall target="jar-module">
@@ -732,12 +732,12 @@
     </antcall>
   </target>
 
-<!-- Decision tables -->  
+<!-- Decision tables -->
   <target name="decision-tables">
     <antcall target="run-example">
       <param name="class-name" value="org.drools.examples.decisiontables.TeamAllocationExample"/>
     </antcall>
-  </target>  
+  </target>
 
 </project>
 
