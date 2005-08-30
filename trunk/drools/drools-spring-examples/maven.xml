@@ -1,7 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project default="jar:jar" xmlns:j="jelly:core">
+<project
+    default="default"
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven">
 
-    <goal name="get-deps" />
+    <goal name="default">
+        <attainGoal name="jar:jar"/>
+    </goal>
+
+    <goal name="drools:multiproject-get-deps" />
 
     <goal name="run-all">
       <attainGoal name="helloworld-spring-inner-pojos"/>
@@ -9,7 +17,7 @@
     </goal>
 
     <goal name="helloworld-inner-pojos" prereqs="jar:jar">
-      <java 
+      <java
         classname="org.drools.spring.examples.helloworld.HelloWorldSpringInnerPojosExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>
@@ -20,7 +28,7 @@
     </goal>
 
     <goal name="helloworld-outter-pojos" prereqs="jar:jar">
-      <java 
+      <java
         classname="org.drools.spring.examples.helloworld.HelloWorldSpringOuterPojosExample"
         fork="true">
         <classpath refid="maven.dependency.classpath"/>

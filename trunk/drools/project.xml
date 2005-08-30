@@ -3,7 +3,7 @@
     <name>Drools</name>
     <groupId>drools</groupId>
     <artifactId>drools</artifactId>
-    <currentVersion>2.1-M1</currentVersion>
+    <currentVersion>2.1</currentVersion>
     <organization>
         <name>The Codehaus</name>
         <url>http://www.codehaus.org</url>
@@ -61,6 +61,15 @@
             <organization>The Werken Company</organization>
             <roles>
                 <role>Founder</role>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Mark Proctor</name>
+            <id>mark</id>
+            <email>mproctor@codehaus.org</email>
+            <organization>Codehaus</organization>
+            <roles>
                 <role>Lead Developer</role>
             </roles>
         </developer>
@@ -171,15 +180,9 @@
             <roles>
                 <role>Decision table despot</role>
             </roles>
-        </developer>        
+        </developer>
     </developers>
     <contributors>
-        <contributor>
-            <name>Roger F. Gay</name>
-            <roles>
-                <role>XML Schema Lead</role>
-            </roles>
-        </contributor>
         <contributor>
             <name>Brian Topping</name>
             <id>topping</id>

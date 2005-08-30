@@ -1,9 +1,18 @@
-<project default="jar:jar" xmlns:j="jelly:core">
+<project
+    default="default"
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven">
+
+    <goal name="default">
+        <attainGoal name="jar:jar"/>
+    </goal>
 
 
-    <goal name="get-deps" />
+    <goal name="drools:multiproject-get-deps" />
 
-<!-- Convenience goals to help regression test all examples quickly -->
+    <!-- Convenience goals to help regression test all examples quickly -->
     <goal name="run-all">
         <attainGoal name="fibonacci-java"/>
         <attainGoal name="fibonacci-python"/>
@@ -444,7 +453,7 @@
         </classpath>
       </java>
     </goal>
-    
+
     <goal name="decision-tables" prereqs="jar:jar">
       <java classname="org.drools.examples.decisiontables.TeamAllocationExample"
             fork="true">
@@ -453,7 +462,7 @@
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
       </java>
-    </goal>    
+    </goal>
 
 </project>
 

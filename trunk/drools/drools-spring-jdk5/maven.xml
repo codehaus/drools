@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="default" 
-    xmlns:ant="jelly:ant" 
+<project default="default"
+    xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
-    xmlns:u="jelly:util" 
+    xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
     <goal name="default">
-        <attainGoal name="jar:install" />
+        <attainGoal name="jar:jar"/>
     </goal>
-
-    <goal name="drools:clover" prereqs="clover:on, jar:jar" />
 
     <!-- @Hack - Maven does not allow inter-project test dependencies. If ever adding new files -->
     <!-- be sure to update the appropriate .cvsignore -->
@@ -21,20 +19,6 @@
             <fileset dir="${basedir}/../drools-spring/src/test/org/drools/spring" includes="SpringTestSetup.java" />
         </copy>
     </preGoal>
-    
-    <postGoal name="clover">
-        <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
-            file="${basedir}/target/docs/clover/pkgs-summary.html" />
-    </postGoal>
-
-    <goal name="get-deps">
-        <j:forEach var="dep" items="${pom.artifacts}">
-            <j:if test="${dep.path.indexOf('drools') &lt;= 0}">
-                <copy file="${dep.path}"
-                    todir="${basedir}/../target/dependencies" />
-            </j:if>
-        </j:forEach>
-    </goal>
 
     <goal name="reports:publish">
         <j:set var="drools.dcontrol.htdocs.module"
