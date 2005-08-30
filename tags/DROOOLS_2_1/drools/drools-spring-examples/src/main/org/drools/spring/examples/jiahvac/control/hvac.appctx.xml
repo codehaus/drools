@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="propertyResourceConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:org/drools/spring/examples/jiahvac/control/hvac.properties" />
+    </bean>
+
+    <bean name="customEditorConfigurer"
+        class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="org.drools.spring.examples.jiahvac.model.Vent$State">
+                    <bean class="org.drools.spring.examples.jiahvac.control.VentStatePropertyEditor"/>
+                </entry>
+                <entry key="java.util.concurrent.TimeUnit">
+                    <bean class="org.drools.spring.examples.jiahvac.control.TimeUnitPropertyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <!-- -->
+
+    <bean id="ruleSetTemplate" abstract="true"
+        class="org.drools.spring.factory.RuleSetFactoryBean">
+        <property name="ruleMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationRuleMetadataSource"/>
+                <bean class="org.drools.spring.metadata.ClassInferedRuleMetadataSource"/>
+            </list>
+        </property>
+        <property name="methodMetadataSourceChain">
+            <bean class="org.drools.spring.metadata.annotation.java.AnnotationMethodMetadataSource"/>
+        </property>
+        <property name="argumentMetadataSourceChain">
+            <list>
+                <bean class="org.drools.spring.metadata.annotation.java.AnnotationArgumentMetadataSource"/>
+                <bean class="org.drools.spring.metadata.ParameterInferedTypeArgumentMetadataSource"/>
+            </list>
+        </property>
+    </bean>    
+
+    <bean id="ruleTemplate" abstract="true">
+        <property name="control" ref="tempuratureControl"/>
+    </bean>
+    
+    <bean id="pumpRuleSet" parent="ruleSetTemplate">
+        <property name="rules">
+            <set>
+                <bean id="pump.OffWhenFloorsCoolEnough" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsCoolEnough" />
+                <bean id="pump.OffWhenFloorsWarmEnough" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpOffWhenFloorsWarmEnough" />
+                <bean id="pump.HeatingWhenFloorTooCold" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpHeatingWhenFloorTooCold" />
+                <bean id="pump.CoolingWhenFloorTooHot" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.PumpCoolingWhenFloorTooHot" />
+            </set>
+        </property>
+    </bean>
+
+    <bean id="ventRuleSet" parent="ruleSetTemplate">
+        <property name="rules">
+            <set>
+                <bean id="vent.CloseWhenCoolingVentOpenFloorCoolEnough" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.CloseVentWhenCoolingVentOpenFloorCoolEnough" />                   
+			    <bean id="vent.CloseWhenHeatingVentOpenFloorWarmEnough" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.CloseVentWhenHeatingVentOpenFloorWarmEnough" />                   
+			    <bean id="vent.OpenWhenCoolingVentClosedFloorTooHot" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.OpenVentWhenCoolingVentClosedFloorTooHot" />                    
+			    <bean id="vent.OpenWhenHeatingVentClosedFloorTooCold" parent="ruleTemplate" 
+                    class="org.drools.spring.examples.jiahvac.control.rules.OpenVentWhenHeatingVentClosedFloorTooCold" />
+            </set>
+        </property>
+    </bean>
+
+	<bean id="conflictResolver"
+		class="org.drools.spring.factory.ConflictResolverFactoryBean">
+		<property name="resolverStrategies">
+			<list>
+				<bean class="org.drools.conflict.SalienceConflictResolver" />
+				<bean class="org.drools.conflict.LoadOrderConflictResolver" />
+			</list>
+		</property>
+	</bean>
+
+    <bean id="ruleBase"
+        class="org.drools.spring.factory.RuleBaseFactoryBean">
+        <property name="conflictResolver" ref="conflictResolver" />
+        <property name="autoDetectRuleSets" value="true"/>
+    </bean>
+
+    <bean id="workingMemory"
+        class="org.drools.spring.factory.WorkingMemoryFactoryBean">
+        <property name="ruleBase" ref="ruleBase" />
+        <property name="autoDetectListeners" value="false"/>
+    </bean>
+
+    <bean id="workingMemoryLogger"
+        class="org.drools.event.DebugWorkingMemoryEventListener">
+    </bean>
+
+	<bean id="simulator" class="org.drools.spring.examples.jiahvac.sim.Simulator">
+		<constructor-arg index="0" value="${floor_count}" />
+		<constructor-arg index="1" value="${initial_tempurature_reading}" />
+		<constructor-arg index="2" value="OPEN" />
+        <property name="outdoorTempurature" value="${initial_outdoor_tempurature}"/>
+	</bean>
+
+	<bean id="simulatorGUI" class="org.drools.spring.examples.jiahvac.sim.SimulatorGUI">
+		<constructor-arg index="0" ref="simulator" />
+	</bean>
+
+	<bean id="tempuratureControl" class="org.drools.spring.examples.jiahvac.model.TempuratureControl">
+		<constructor-arg index="0" value="${initial_setpoint}" />
+		<constructor-arg index="1" value="${initial_guard_amount}" />
+	</bean>
+
+	<bean id="executor" lazy-init="true" class="org.drools.spring.examples.jiahvac.control.ExecutorFactoryBean">
+		<property name="workingMemory" ref="workingMemory" />
+		<property name="simulator" ref="simulator" />
+		<property name="simulatorPeriod" value="${simulator_period}" />
+		<property name="simulatorPeriodUnit" value="${simulator_period_timeunits}" />
+		<property name="simulatorGUI" ref="simulatorGUI" />
+	</bean>
+
+</beans>

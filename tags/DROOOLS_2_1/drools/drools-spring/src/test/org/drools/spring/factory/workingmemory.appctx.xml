@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <import resource="rulebase.appctx.xml"/>
+    
+    <bean id="workingMemory_1" lazy-init="false"
+        class="org.drools.spring.factory.WorkingMemoryFactoryBean">
+        <property name="ruleBase" ref="ruleBase"/>
+        <property name="autoDetectListeners" value="true"/>
+    </bean>
+
+    <bean id="workingMemory_2" lazy-init="true"
+        class="org.drools.spring.factory.WorkingMemoryFactoryBean">
+        <property name="ruleBase" ref="ruleBase"/>
+        <property name="autoDetectListeners" value="false"/>
+    </bean>
+
+    <bean id="workingMemory_3" lazy-init="true"
+        class="org.drools.spring.factory.WorkingMemoryFactoryBean">
+        <property name="ruleBase" ref="ruleBase"/>
+        <property name="listeners">
+            <ref local="listener_A"/>
+        </property>
+    </bean>
+
+    <bean id="listener_A" class="org.drools.spring.factory.WorkingMemoryFactoryBeanTest$Listener_A" />
+    <bean id="listener_B" class="org.drools.spring.factory.WorkingMemoryFactoryBeanTest$Listener_B" />
+    
+</beans>

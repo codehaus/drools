@@ -1,0 +1,15 @@
+--- DISCLAIMER --- DISCLAIMER --- DISCLAIMER --- DISCLAIMER --- DISCLAIMER --- 
+
+Be aware that the rule set used by Drools' Manners example is not identical
+to the "official" Miss Manners benchmark. Certain optimizations were made
+and other changes were required because of the absence of "not" Rete nodes
+in Drools.
+
+For further information on the "official" benchmark see:
+    http://www.cs.utexas.edu/ftp/pub/ops5-benchmark-suite/
+    ftp://ftp.cs.utexas.edu/pub/ops5-benchmark-suite/
+
+For further details about these issues with Drools' Manners example see:
+    http://jira.codehaus.org/browse/DROOLS-235
+
+--- DISCLAIMER --- DISCLAIMER --- DISCLAIMER --- DISCLAIMER --- DISCLAIMER --- 

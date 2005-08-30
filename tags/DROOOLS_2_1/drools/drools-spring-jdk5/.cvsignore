@@ -1,0 +1,10 @@
+*.log
+*.ipr
+*.iws
+target
+cachedir
+.classpath
+.project
+.clover
+build.xml
+ivy.xml
