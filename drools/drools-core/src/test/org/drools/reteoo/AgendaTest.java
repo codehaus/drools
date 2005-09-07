@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaTest.java,v 1.14 2005-05-08 04:05:13 dbarnett Exp $
+ * $Id: AgendaTest.java,v 1.15 2005-09-07 11:11:22 michaelneale Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,8 +42,11 @@ package org.drools.reteoo;
  */
 
 import org.drools.DroolsTestCase;
+import org.drools.FactHandle;
+import org.drools.MockFactHandle;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
@@ -71,7 +74,7 @@ public class AgendaTest extends DroolsTestCase
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
             public void invoke(org.drools.spi.Tuple tuple)
-            {
+            {             
                 agenda.addToAgenda( (ReteTuple) tuple,
                                     rule );
             }
@@ -112,6 +115,52 @@ public class AgendaTest extends DroolsTestCase
         assertEquals( 1,
                       agenda.size( ) );
         agenda.clearAgenda( );
+    }
+    
+    /**
+     * Test for the case of a Rule trying to add itself to the agenda.
+     * In this case it *should* work as it is a differen tuple.
+     * No-loop is only meant to work for the same Rule/TupleKey combination.
+     */
+    public void testNoLoopDifferentTuple() throws Exception {
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
+
+        final WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
+        final Agenda agenda = workingMemory.getAgenda( );
+
+        final Rule rule = new Rule( "test-rule" );
+
+        rule.addParameterDeclaration( "paramVar",
+                                      new MockObjectType( true ) );
+
+        // add consequence
+        rule.setConsequence( new org.drools.spi.Consequence( )
+        {
+            public void invoke(org.drools.spi.Tuple tuple)
+            {        
+                //throw in a different tuple, to check the agenda doesn't stop the rule/tuple combo
+                Declaration dec = new Declaration("paramVar", new MockObjectType(true), 1);
+                FactHandle fact = new FactHandleImpl(42);
+                ReteTuple different = new ReteTuple(workingMemory, dec, fact);
+                agenda.addToAgenda( different,
+                                    rule );
+            }
+        } );
+
+        ReteTuple tuple = new ReteTuple( workingMemory );
+        
+        /*
+         * This is not recursive but different fact so should activate another rule
+         */
+        rule.setNoLoop( true );
+        agenda.addToAgenda( tuple,
+                            rule );
+        assertEquals( 1,
+                      agenda.size( ) );
+        agenda.fireNextItem( null );
+        assertEquals( 1,
+                      agenda.size( ) );        
+        
     }
 
     public void testFilters() throws Exception

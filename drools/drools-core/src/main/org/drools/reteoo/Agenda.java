@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.57 2005-07-23 11:27:33 michaelneale Exp $
+ * $Id: Agenda.java,v 1.58 2005-09-07 11:11:22 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -143,15 +143,23 @@ class Agenda
     void addToAgenda(ReteTuple tuple,
                      Rule rule)
     {
+        
+        
         /*
          * if no-loop is true for this rule and the current rule is active then
          * do not not re-add to the agenda
+         * NOTE: this only applies for the same Rule/TupleKey combination.
+         * For a different TupleKey (ie different facts to the rule currently firing) 
+         * no-loop does not apply.
          */
-
-        if ( this.item != null && rule.getNoLoop( ) && rule.equals( this.item.getRule( ) ) )
-        {
+        if ( this.item != null && rule.getNoLoop( ) && rule.equals( this.item.getRule( ) ) 
+                && this.item.getKey().equals(tuple.getKey()) )
+        {            
             return;
-        }
+        }  
+        
+        
+        
 
         Duration dur = rule.getDuration( );
 
@@ -212,6 +220,7 @@ class Agenda
     void removeFromAgenda(TupleKey key,
                           Rule rule)
     {
+        
         AgendaItem eachItem;
         Tuple tuple;
         Iterator itemIter = this.activationQueue.iterator( );
