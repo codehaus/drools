@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.59 2005-05-08 19:54:47 mproctor Exp $
+ * $Id: Rule.java,v 1.60 2005-09-25 17:57:26 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -104,6 +104,12 @@ public class Rule
 
     /** is the consequence of the rule currently being executed? */
     private boolean      noLoop;
+    
+    /** 
+     * xorGroup only allows one activation within an xorGroup to fire, 
+     * others are removed from the Agenda.
+     */ 
+    private String       xorGroup;
 
     /** A map valid Application names and types */
     private Map          applicationData;
@@ -296,7 +302,7 @@ public class Rule
         this.salience = salience;
     }
 
-    public boolean getNoLoop()
+    public boolean isNoLoop()
     {
         return this.noLoop;
     }
@@ -431,6 +437,16 @@ public class Rule
     {
         this.loadOrder = loadOrder;
     }
+       
+    public String getXorGroup()
+    {
+        return xorGroup;
+    }
+    
+    public void setXorGroup(String xorGroup)
+    {
+        this.xorGroup = xorGroup;
+    }    
 
     public Importer getImporter()
     {

@@ -1,5 +1,5 @@
 /*
- * $Id: RuleHandler.java,v 1.4 2005-05-04 16:58:40 memelet Exp $
+ * $Id: RuleHandler.java,v 1.5 2005-09-25 17:57:32 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -124,6 +124,7 @@ class RuleHandler extends BaseAbstractHandler
     {
         String salienceStr = attrs.getValue( "salience" );
         String noLoopStr = attrs.getValue( "no-loop" );
+        String xorGroup = attrs.getValue( "xor-group" );
         String ruleDesc = attrs.getValue( "description" );
 
         if ( !(salienceStr == null || salienceStr.trim( ).equals( "" )) )
@@ -154,6 +155,11 @@ class RuleHandler extends BaseAbstractHandler
                                              this.ruleSetReader.getLocator( ) );
             }
         }
+        
+        if ( !(ruleDesc == null || ruleDesc.trim( ).equals( "" )) )
+        {
+            rule.setXorGroup( xorGroup );
+        }        
 
         if ( !(ruleDesc == null || ruleDesc.trim( ).equals( "" )) )
         {

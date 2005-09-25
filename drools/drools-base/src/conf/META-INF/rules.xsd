@@ -50,6 +50,7 @@
       <xs:attribute name="name" type="xs:string" use="required"/>
       <xs:attribute name="salience" type="xs:integer"/>
       <xs:attribute name="no-loop" type="xs:boolean"/>
+      <xs:attribute name="xor-group" type="xs:string"/>     
       <xs:attribute name="description" type="xs:string"/>
     </xs:complexType>
 

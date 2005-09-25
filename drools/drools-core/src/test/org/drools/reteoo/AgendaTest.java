@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: AgendaTest.java,v 1.15 2005-09-07 11:11:22 michaelneale Exp $
+ * $Id: AgendaTest.java,v 1.16 2005-09-25 17:57:26 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,12 @@ package org.drools.reteoo;
  *
  */
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.drools.DroolsTestCase;
 import org.drools.FactHandle;
 import org.drools.MockFactHandle;
@@ -50,6 +56,7 @@ import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.spi.Activation;
 import org.drools.spi.AgendaFilter;
+import org.drools.spi.Consequence;
 import org.drools.spi.MockObjectType;
 
 /**
@@ -67,9 +74,6 @@ public class AgendaTest extends DroolsTestCase
 
         final Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar",
-                                      new MockObjectType( true ) );
-
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
@@ -79,12 +83,6 @@ public class AgendaTest extends DroolsTestCase
                                     rule );
             }
         } );
-
-        // add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-
-        // add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
 
@@ -130,9 +128,6 @@ public class AgendaTest extends DroolsTestCase
 
         final Rule rule = new Rule( "test-rule" );
 
-        rule.addParameterDeclaration( "paramVar",
-                                      new MockObjectType( true ) );
-
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
         {
@@ -162,7 +157,81 @@ public class AgendaTest extends DroolsTestCase
                       agenda.size( ) );        
         
     }
+    
+    public void testXorGroup() throws Exception
+    {
+        RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
 
+        WorkingMemoryImpl workingMemory = (WorkingMemoryImpl) ruleBase.newWorkingMemory( );
+        Agenda agenda = workingMemory.getAgenda( );        
+        
+        Consequence consequence = new org.drools.spi.Consequence( )
+        {
+            public void invoke(org.drools.spi.Tuple tuple)
+            {
+            }
+        };
+        
+                
+        Rule rule1 = new Rule( "rule1" );
+        rule1.setSalience( 50 );
+        rule1.setXorGroup( "group1" );
+
+        /* this rule should fire first and be the only rule to fire */
+        Rule rule2 = new Rule( "rule2" );
+        rule2.setConsequence( consequence );
+        rule2.setXorGroup( "group1" );
+        rule2.setSalience( 100 );
+        
+        Rule rule3 = new Rule( "rule3" );
+        rule3.setDuration( 1000 );
+        rule3.setSalience( 40 );        
+        rule3.setXorGroup( "group1" );
+        
+        Rule rule4 = new Rule( "rule4" );
+        rule4.setSalience( 30 );        
+        rule4.setXorGroup( "group2" );      
+        
+        Rule rule5 = new Rule( "rule5" );
+        rule4.setSalience( 20 );
+        rule5.setXorGroup( null );                               
+
+        ReteTuple tuple = new ReteTuple( workingMemory );
+
+
+        agenda.addToAgenda( tuple,
+                            rule1 );        
+        agenda.addToAgenda( tuple,
+                            rule2 );        
+        agenda.addToAgenda( tuple,
+                            rule3 );        
+        agenda.addToAgenda( tuple,
+                            rule4 );        
+        agenda.addToAgenda( tuple,
+                            rule5 );        
+        
+        List activations = agenda.getActivations();
+        assertEquals( 5,
+                      activations.size( ) );   
+             
+        agenda.fireNextItem( null );
+
+        List rules = new ArrayList();
+        Iterator it = activations.iterator();
+        Activation activation;
+        while ( it.hasNext() )
+        {
+            activation = ( Activation ) it.next();
+            rules.add( activation.getRule() );
+        }
+        
+        assertContains( rule4,
+                        rules );
+        
+        assertContains( rule5,
+                        rules );                       
+    }
+    
     public void testFilters() throws Exception
     {
         RuleBase ruleBase = new RuleBaseImpl( new Rete( ) );
@@ -171,8 +240,6 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         final Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( "paramVar",
-                                      new MockObjectType( true ) );
 
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
@@ -183,11 +250,6 @@ public class AgendaTest extends DroolsTestCase
                                     rule );
             }
         } );
-        // add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-
-        // add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
 
@@ -255,8 +317,6 @@ public class AgendaTest extends DroolsTestCase
         final Agenda agenda = workingMemory.getAgenda( );
 
         final Rule rule = new Rule( "test-rule" );
-        rule.addParameterDeclaration( "paramVar",
-                                      new MockObjectType( true ) );
 
         // add consequence
         rule.setConsequence( new org.drools.spi.Consequence( )
@@ -270,11 +330,6 @@ public class AgendaTest extends DroolsTestCase
                 workingMemory.clearAgenda( );
             }
         } );
-        // add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
-
-        // add condition
-        rule.addCondition( new org.drools.spi.InstrumentedCondition( ) );
 
         ReteTuple tuple = new ReteTuple( workingMemory );
 
