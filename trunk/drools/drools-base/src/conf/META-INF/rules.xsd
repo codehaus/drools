@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="http://drools.org/rules"
-           elementFormDefault="qualified"
-           xmlns:rules="http://drools.org/rules">
+<xs:schema xmlns:rules="http://drools.org/rules" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://drools.org/rules">
 
   <xs:element name="rule-set">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="rules:abstractImport" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:abstractImport"/>
         
-        <xs:element ref="rules:application-data" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:application-data"/>
 
-        <xs:element ref="rules:abstractFunctions" minOccurs="0" maxOccurs="unbounded"/>        
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:abstractFunctions"/>        
 
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="rules:rule" />
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule"/>
       </xs:sequence>
 
-      <xs:attribute name="name" use="required" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required"/>
       <xs:attribute name="description" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -25,23 +22,23 @@
     <xs:complexType>
       <xs:sequence>
 
-        <xs:element name="parameter" minOccurs="0" maxOccurs="unbounded" >
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="parameter">
           <xs:complexType>
             <xs:choice>
-              <xs:element ref="rules:abstractClass" />
-              <xs:element ref="rules:class-field" />
-              <xs:element ref="rules:semaphore" />              
+              <xs:element ref="rules:abstractClass"/>
+              <xs:element ref="rules:class-field"/>
+              <xs:element ref="rules:semaphore"/>              
             </xs:choice>
-            <xs:attribute name="identifier" use="required" type="xs:string"/>
+            <xs:attribute name="identifier" type="xs:string" use="required"/>
           </xs:complexType>
         </xs:element>
 
-        <xs:element ref="rules:abstractCondition" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:abstractCondition"/>
 
-        <xs:element name="duration" minOccurs="0" >
+        <xs:element minOccurs="0" name="duration">
           <xs:complexType>
-            <xs:attribute name="days"    type="xs:nonNegativeInteger"/>
-            <xs:attribute name="hours"   type="xs:nonNegativeInteger"/>
+            <xs:attribute name="days" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="hours" type="xs:nonNegativeInteger"/>
             <xs:attribute name="minutes" type="xs:nonNegativeInteger"/>
             <xs:attribute name="seconds" type="xs:nonNegativeInteger"/>
           </xs:complexType>
@@ -50,22 +47,22 @@
       <xs:element ref="rules:abstractConsequence"/>
 
       </xs:sequence>
-      <xs:attribute name="name" use="required" type="xs:string"/>
-      <xs:attribute name="salience"            type="xs:integer"/>
-      <xs:attribute name="no-loop"             type="xs:boolean"/>
-      <xs:attribute name="description"         type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="salience" type="xs:integer"/>
+      <xs:attribute name="no-loop" type="xs:boolean"/>
+      <xs:attribute name="description" type="xs:string"/>
     </xs:complexType>
 
     <!-- All rules must have unique names -->
     <xs:key name="ruleName">
-      <xs:selector xpath="rules:rule" />
-      <xs:field xpath="@name" />
+      <xs:selector xpath="rules:rule"/>
+      <xs:field xpath="@name"/>
     </xs:key>
   </xs:element>
 
-  <xs:element name="class"       type="xs:string" substitutionGroup="rules:abstractClass"/>
+  <xs:element name="class" substitutionGroup="rules:abstractClass" type="xs:string"/>
 
-  <xs:element name="class-field" >
+  <xs:element name="class-field">
     <xs:complexType>
       <xs:simpleContent>
         <xs:extension base="xs:string">
@@ -76,10 +73,10 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="import"      type="xs:string" substitutionGroup="rules:abstractImport" />  
+  <xs:element name="import" substitutionGroup="rules:abstractImport" type="xs:string"/>  
 
 
-  <xs:element name="semaphore" >
+  <xs:element name="semaphore">
     <xs:complexType>
           <xs:attribute name="type" use="required">
 			<xs:simpleType>
@@ -91,14 +88,17 @@
 			    <xs:enumeration value="Char"/>
 			    <xs:enumeration value="Short"/>			    
 			    <xs:enumeration value="Float"/>			    
-			    <xs:enumeration value="Double"/>			    
+			    <xs:enumeration value="Double"/>	
+                <xs:enumeration value="List"/>
+                <xs:enumeration value="Map"/>
+                <xs:enumeration value="Set"/> 			    		    
 			  </xs:restriction>
 			</xs:simpleType>          
           </xs:attribute>
     </xs:complexType>
   </xs:element>  
 
-  <xs:element name="application-data" >
+  <xs:element name="application-data">
     <xs:complexType>
       <xs:simpleContent>
         <xs:extension base="xs:string">
@@ -110,16 +110,16 @@
 
   <!-- Abstract Definitions for sementic to create concrete implementations -->
 
-  <xs:element name="abstractImport"      type="xs:anyType"           abstract="true"/>
+  <xs:element abstract="true" name="abstractImport" type="xs:anyType"/>
 
-  <xs:element name="abstractFunctions"   type="xs:anyType"           abstract="true"/>  
+  <xs:element abstract="true" name="abstractFunctions" type="xs:anyType"/>  
 
-  <xs:element name="abstractClass"       type="xs:anyType"           abstract="true"/>
+  <xs:element abstract="true" name="abstractClass" type="xs:anyType"/>
 
-  <xs:element name="abstractClassField"  type="xs:anyType"           abstract="true"/>
+  <xs:element abstract="true" name="abstractClassField" type="xs:anyType"/>
 
-  <xs:element name="abstractCondition"   type="xs:anyType"           abstract="true"/>
+  <xs:element abstract="true" name="abstractCondition" type="xs:anyType"/>
 
-  <xs:element name="abstractConsequence" type="xs:anyType"           abstract="true"/>
+  <xs:element abstract="true" name="abstractConsequence" type="xs:anyType"/>
 
 </xs:schema>
