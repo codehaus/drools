@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: DefaultSemanticsRepository.java,v 1.11 2005-06-22 11:34:03 michaelneale Exp $
+ * $Id: DefaultSemanticsRepository.java,v 1.12 2005-09-25 11:45:38 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -149,12 +149,7 @@ public final class DefaultSemanticsRepository
     protected void init() throws IOException,
                          SemanticsReaderException
     {
-        String droolsConfigProp = System.getProperty( "drools.conf" );
 
-        if ( droolsConfigProp != null )
-        {
-            loadConfig( droolsConfigProp );
-        }
 
         ClassLoaderHelper clh = new CurrentThreadClassLoaderHelper( );
 
@@ -183,6 +178,13 @@ public final class DefaultSemanticsRepository
             URL configUrl = (URL) configUrls.nextElement( );
             loadConfig( configUrl );
         }
+        
+        String droolsConfigProp = System.getProperty( "drools.conf" );
+
+        if ( droolsConfigProp != null )
+        {
+            loadConfig( droolsConfigProp );
+        }        
 
     }
 
@@ -326,5 +328,7 @@ public final class DefaultSemanticsRepository
             return ClassLoader.getSystemClassLoader( );
         }
     }
+
+
 
 }
