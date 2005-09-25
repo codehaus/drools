@@ -1,7 +1,7 @@
 package org.drools.examples.escalation;
 
 /*
- * $Id: Escalation.java,v 1.6 2005-05-08 04:22:34 dbarnett Exp $
+ * $Id: Escalation.java,v 1.7 2005-09-25 20:21:18 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -94,6 +94,8 @@ public class Escalation
 
                 System.err.println( bobTicket );
                 System.err.println( daveTicket );
+                
+                workingMemory.fireAllRules();
 
                 System.err.println( "----------------------------------------" );
 
