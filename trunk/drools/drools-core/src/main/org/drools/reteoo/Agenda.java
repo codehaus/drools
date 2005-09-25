@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Agenda.java,v 1.58 2005-09-07 11:11:22 michaelneale Exp $
+ * $Id: Agenda.java,v 1.59 2005-09-25 17:57:26 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,8 +41,10 @@ package org.drools.reteoo;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.drools.rule.Rule;
@@ -125,6 +127,14 @@ class Agenda
         this.scheduledItemsToRetract = new AgendaItemMap( );
 
     }
+    
+    public List getActivations()
+    {
+        List activations = new ArrayList();
+        activations.addAll( this.activationQueue );
+        activations.addAll( this.scheduledItems.values() );
+        return activations;
+    }
 
     // ------------------------------------------------------------
     // Instance methods
@@ -152,7 +162,7 @@ class Agenda
          * For a different TupleKey (ie different facts to the rule currently firing) 
          * no-loop does not apply.
          */
-        if ( this.item != null && rule.getNoLoop( ) && rule.equals( this.item.getRule( ) ) 
+        if ( this.item != null && rule.isNoLoop( ) && rule.equals( this.item.getRule( ) ) 
                 && this.item.getKey().equals(tuple.getKey()) )
         {            
             return;
@@ -278,6 +288,62 @@ class Agenda
             }
         }
     }
+    
+    /**
+     * Remove a tuple from the agenda which has the specified xor group
+     * 
+     * @param key
+     *            The key to the tuple to be removed.
+     * @param xorGroup
+     *            The xorGroup to remove.
+     */
+    void removeXorGroupFromAgenda(TupleKey key,
+                                  String xorGroup)
+    {
+        if ( xorGroup == null )
+        {
+            return;
+        }
+        
+        AgendaItem eachItem;
+        Tuple tuple;
+        Iterator itemIter = this.activationQueue.iterator();
+
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = (AgendaItem) itemIter.next();
+
+            if ( xorGroup.equals( eachItem.getRule().getXorGroup() ) )
+            {
+                itemIter.remove( );
+                // need to restart iterator as priority queue could place elements before
+                // current iterator position
+                itemIter = this.activationQueue.iterator( );
+
+                this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule(),
+                                                                               eachItem.getTuple( ) );
+            }
+        }
+
+        itemIter = this.scheduledItems.values( ).iterator( );
+
+        while ( itemIter.hasNext( ) )
+        {
+            eachItem = (AgendaItem) itemIter.next( );
+
+            if ( xorGroup.equals( eachItem.getRule().getXorGroup() ) )
+            {
+                    tuple = eachItem.getTuple( );
+
+                    cancelItem( eachItem );
+
+                    itemIter.remove( );
+
+                    this.workingMemory.getEventSupport( ).fireActivationCancelled( eachItem.getRule(),
+                                                                                   tuple );
+            }
+        }
+    }    
 
     void removeMarkedItemsFromAgenda()
     {
@@ -394,6 +460,14 @@ class Agenda
         }
 
         item = (AgendaItem) this.activationQueue.remove( );
+        
+        //if its in an xorGroup remove all other conflicts
+        String xorGroup = item.getRule().getXorGroup();
+        if ( xorGroup != null)
+        {
+            removeXorGroupFromAgenda( item.getKey(),
+                                      xorGroup );
+        }
 
         try
         {
