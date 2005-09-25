@@ -18,9 +18,13 @@
           import java.util.Date;
           import java.text.DateFormat;
 
+          System.err.println( "----------------------------------------" );
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) );
+          System.err.println( "** ticket == " + ticket );          
+          ticket.setStatus( TroubleTicket.NOTIFIED );          
           System.err.println( "** Escalating trouble ticket for bob, because he's special" );
-          ticket.setStatus( TroubleTicket.NOTIFIED );
+          System.err.println( "** ticket == " + ticket );
+          System.err.println( "----------------------------------------" );          
           drools.modifyObject( ticket );
 
         </java:consequence>
@@ -33,21 +37,16 @@
 
       <java:condition>ticket.getStatus() == TroubleTicket.NEW</java:condition>
 
-			<duration seconds="2" />
-<!--
-      <duration>
-        <fixed-duration seconds="2"/>
-      </duration>
--->
-      <java:consequence>
+      <duration seconds="2" />
 
+      <java:consequence>
           import java.util.Date;
           import java.text.DateFormat;
 
           System.err.println( "----------------------------------------" );
           System.err.println( DateFormat.getTimeInstance( DateFormat.LONG ).format( new Date() ) );
           System.err.println( "** ticket == " + ticket );
-         ticket.setStatus( TroubleTicket.NOTIFIED );
+          ticket.setStatus( TroubleTicket.NOTIFIED );
           System.err.println( "** Escalating trouble ticket from NEW to NOTIFIED after 2 seconds" );
           System.err.println( "** ticket == " + ticket );
           System.err.println( "----------------------------------------" );
@@ -62,17 +61,11 @@
         <class>org.drools.examples.escalation.TroubleTicket </class>
       </parameter>
 
-     <java:condition>ticket.getStatus() == TroubleTicket.NOTIFIED</java:condition>
+      <java:condition>ticket.getStatus() == TroubleTicket.NOTIFIED</java:condition>
 
-		<duration seconds="5" />
-<!--
-      <duration>
-        <fixed-duration seconds="5"/>
-      </duration>
--->
+  	  <duration seconds="5" />
 
       <java:consequence>
-
           import java.util.Date;
           import java.text.DateFormat;
 
