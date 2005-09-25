@@ -86,7 +86,7 @@ public class AnnotationSpringTest extends TestCase {
         Rule rule_C = ruleSet.getRule("myC");
         assertNotNull(rule_C);
         assertEquals("my C docs", rule_C.getDocumentation());
-        assertTrue(rule_C.getNoLoop());
+        assertTrue(rule_C.isNoLoop());
     }
 
     private void assertRuleD(RuleSet ruleSet) {

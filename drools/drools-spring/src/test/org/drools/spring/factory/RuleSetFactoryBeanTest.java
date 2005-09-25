@@ -82,7 +82,7 @@ public class RuleSetFactoryBeanTest extends TestCase {
         Rule childRule = ruleSet.getRule("childRule");
         assertNotNull(childRule);
         assertEquals(10, childRule.getSalience());
-        assertTrue(childRule.getNoLoop());
+        assertTrue(childRule.isNoLoop());
         assertEquals("childRule documentation", childRule.getDocumentation());
 
         Rule adultRule = ruleSet.getRule("adultRule-overrideBeanName");
