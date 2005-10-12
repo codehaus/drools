@@ -1,6 +1,5 @@
 package org.drools.decisiontable;
 
-
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,24 +39,26 @@ package org.drools.decisiontable;
  *
  */
 
-
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.drools.decisiontable.model.Ruleset;
 import org.drools.decisiontable.parser.RuleSheetListener;
+import org.drools.decisiontable.parser.DecisionTableParser;
+
 import org.drools.decisiontable.parser.xls.ExcelParser;
 
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale </a>
  * 
- * This class handles the input XLS and extracts the rule DRL, ready for pumping
- * into drools.
+ * This class handles the input XLS and CSV and extracts the rule DRL, ready for
+ * pumping into drools.
  */
 public class SpreadsheetDRLConverter
 {
+    
+
 
     /**
      * Generates DRL from the input stream containing the spreadsheet.
@@ -67,9 +68,11 @@ public class SpreadsheetDRLConverter
      *            for the decision tables, ignores others.
      * @return DRL xml, ready for use in drools.
      */
-    public String convertToDRL(InputStream xlsStream)
+    public String convertToDRL(InputStream xlsStream,
+                               InputType type)
     {
-        RuleSheetListener listener = getRuleSheetListener( xlsStream );
+        RuleSheetListener listener = getRuleSheetListener( xlsStream,
+                                                           type );
         Ruleset ruleset = listener.getRuleSet( );
         return ruleset.toXML( );
     }
@@ -84,12 +87,14 @@ public class SpreadsheetDRLConverter
      *            Uses the first worksheet for the decision tables.
      * @return DRL.
      */
-    public String convertToDRL(String classPathResource)
+    public String convertToDRL(String classPathResource,
+                               InputType inputType)
     {
         InputStream stream = this.getClass( ).getResourceAsStream( classPathResource );
         try
         {
-            String drl = convertToDRL( stream );
+            String drl = convertToDRL( stream,
+                                       inputType );
             return drl;
         }
         finally
@@ -99,10 +104,11 @@ public class SpreadsheetDRLConverter
     }
 
     /**
-     * Looks for a named worksheet to find the decision tables on.
+     * Looks for a named worksheet to find the decision tables on. Only works
+     * with XLS format spreadsheets (as they have multiple worksheets).
      * 
      * @param stream
-     *            The stream of the decision tables (spreadsheet).
+     *            The stream of the decision tables (spreadsheet) IN XLS format !!
      * @param worksheetName
      *            The name of the worksheet that the decision tables live on.
      * @return DRL, ready to go.
@@ -116,10 +122,12 @@ public class SpreadsheetDRLConverter
         return ruleset.toXML( );
     }
 
-    private RuleSheetListener getRuleSheetListener(InputStream stream)
+    private RuleSheetListener getRuleSheetListener(InputStream stream,
+                                                   InputType type)
     {
         RuleSheetListener listener = new RuleSheetListener( );
-        ExcelParser parser = new ExcelParser( listener );
+
+        DecisionTableParser parser = type.createParser( listener );
         parser.parseFile( stream );
         return listener;
     }
@@ -144,9 +152,12 @@ public class SpreadsheetDRLConverter
         }
         catch ( Exception e )
         {
-            // ignore
+            System.err.print( "WARNING: Wasn't able to " + 
+                              "correctly close stream for decision table. " + 
+                              e.getMessage( ) );
         }
     }
 
-}
 
+
+}

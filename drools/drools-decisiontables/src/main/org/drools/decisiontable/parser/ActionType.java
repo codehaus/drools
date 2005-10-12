@@ -140,7 +140,9 @@ public class ActionType
         }
         else
         {
-            throw new DecisionTableParseException( "Should be CONDITION or ACTION row:" + row + " column:" + column + " - does not contain a leading C or A identifer." );
+            throw new DecisionTableParseException( "Invalid column header (ACTION type), " +
+                    "should be CONDITION or ACTION (etc..) row number:" + (row + 1) + " cell number:" + 
+                    (column + 1) + " - does not contain a leading C or A identifer." );
         }
     }
 

@@ -57,7 +57,7 @@ public class SpreadsheetDRLConverterUnitTest extends TestCase
     public void testLoadFromClassPath()
     {
         SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter( );
-        String drl = converter.convertToDRL( "/data/MultiSheetDST.xls" );
+        String drl = converter.convertToDRL( "/data/MultiSheetDST.xls", InputType.XLS );
         assertNotNull( drl );
     }
 
@@ -68,6 +68,25 @@ public class SpreadsheetDRLConverterUnitTest extends TestCase
         String drl = converter.convertToDRL( stream,
                                              "Another Sheet" );
         assertNotNull( drl );
+    }
+    
+    public void testLoadCsv() {
+        SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter( );
+        InputStream stream = this.getClass( ).getResourceAsStream( "/data/ComplexWorkbook.csv" );
+        String drl = converter.convertToDRL( stream,
+                                             InputType.CSV );
+        assertNotNull( drl );
+        assertTrue(drl.indexOf("myObject.setIsValid(1, 2)") > 0);
+        assertTrue(drl.indexOf("myObject.size () > 50") > 0);
+        //System.out.println(drl);
+    }
+    
+    public void testLoadBasic() {
+        SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter( );
+        InputStream stream = this.getClass( ).getResourceAsStream( "/data/BasicWorkbook.xls" );
+        String drl = converter.convertToDRL( stream,
+                                             InputType.XLS );
+        assertNotNull( drl );        
     }
 
 }

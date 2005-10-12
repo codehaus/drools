@@ -91,31 +91,79 @@ public final class DecisionTableLoader
      * @throws IOException
      * @throws SAXException
      * @throws IntegrationException
-     *             
-     * This may also throw a DecisionTableParseException if there is
-     * some problem parsing the decision table (before building the rulebase).
+     * 
+     * This may also throw a DecisionTableParseException if there is some
+     * problem parsing the decision table (before building the rulebase).
      */
     public static RuleBase loadFromInputStream(InputStream streamToSpreadsheet) throws IntegrationException,
                                                                                SAXException,
                                                                                IOException
     {
-        StringReader reader = getReader( streamToSpreadsheet );
+        return loadFromInputStream( streamToSpreadsheet,
+                                    InputType.XLS );
+    }
+
+    /**
+     * Load a rulebase from a decision table spreadsheet in CSV format.
+     * 
+     * @param streamToCSV
+     *          Stream to CSV input.
+     * @return A drools RuleBase, ready to go.
+     * @throws IOException
+     * @throws SAXException
+     * @throws IntegrationException
+     * 
+     * This may also throw a DecisionTableParseException if there is some
+     * problem parsing the decision table (before building the rulebase).
+     */
+    public static RuleBase loadFromCSVInputStream(InputStream streamToCSV) throws IntegrationException,
+                                                                               SAXException,
+                                                                               IOException
+    {
+        return loadFromInputStream( streamToCSV,
+                                    InputType.CSV );
+    }
+
+    /**
+     * Load a rulebase from a decision table spreadsheet.
+     * 
+     * @param streamToSpreadsheet
+     *            Format is as indicated (CSV or XLS 97 format).
+     * @return A drools RuleBase, ready to go.
+     * @throws IOException
+     * @throws SAXException
+     * @throws IntegrationException
+     * 
+     * This may also throw a DecisionTableParseException if there is some
+     * problem parsing the decision table (before building the rulebase).
+     */
+    public static RuleBase loadFromInputStream(InputStream streamToSpreadsheet,
+                                               InputType inputType) throws IntegrationException,
+                                                                   SAXException,
+                                                                   IOException
+    {
+        StringReader reader = getReader( streamToSpreadsheet,
+                                         inputType );
         return RuleBaseLoader.loadFromReader( reader );
     }
 
-    private static StringReader getReader(InputStream streamToSpreadsheet)
+    private static StringReader getReader(InputStream streamToSpreadsheet,
+                                          InputType inputType)
     {
-        String generatedDrl = loadDRLFromStream( streamToSpreadsheet );
+        String generatedDrl = loadDRLFromStream( streamToSpreadsheet,
+                                                 inputType );
         StringReader reader = new StringReader( generatedDrl );
         return reader;
     }
 
-    private static String loadDRLFromStream(InputStream streamToSpreadsheet)
+    private static String loadDRLFromStream(InputStream streamToSpreadsheet,
+                                            InputType inputType)
     {
         SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter( );
         try
         {
-            String generatedDrl = converter.convertToDRL( streamToSpreadsheet );
+            String generatedDrl = converter.convertToDRL( streamToSpreadsheet,
+                                                          inputType );
             return generatedDrl;
 
         }
