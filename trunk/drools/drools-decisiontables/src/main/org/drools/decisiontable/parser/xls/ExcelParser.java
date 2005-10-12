@@ -62,6 +62,8 @@ import org.apache.poi.hssf.record.SSTRecord;
 import org.apache.poi.hssf.record.BoolErrRecord;
 
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.drools.decisiontable.parser.DecisionTableParseException;
+import org.drools.decisiontable.parser.DecisionTableParser;
 import org.drools.decisiontable.parser.SheetListener;
 
 /**
@@ -74,7 +76,7 @@ import org.drools.decisiontable.parser.SheetListener;
  */
 public class ExcelParser
     implements
-    HSSFListener
+    HSSFListener, DecisionTableParser
 {
 
     public static final String  DEFAULT_RULESHEET_NAME = "Decision Tables";
@@ -265,7 +267,8 @@ public class ExcelParser
         }
         catch ( IOException ex )
         {
-            throw new RuntimeException( "Failed to open Excel stream",
+            throw new DecisionTableParseException( "Failed to open Excel stream, " +
+                    "please check that the content is xls97 format.",
                                         ex );
         }
     }

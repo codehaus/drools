@@ -1,6 +1,5 @@
 package org.drools.decisiontable.parser;
 
-
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,8 +39,6 @@ package org.drools.decisiontable.parser;
  *
  */
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -53,7 +50,6 @@ import org.drools.decisiontable.parser.xls.ExcelParser;
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale</a>
  * 
- * TODO Document it !
  */
 public class RulesheetUtil
 {

@@ -64,18 +64,23 @@ public interface SheetListener
     public void finishSheet();
 
     /**
-     * Enter a new row
+     * Enter a new row.
+     * 
      * 
      * @param rowNumber
-     *            TODO
+     *            
      * @param columns
-     *            TODO
+     *            
      */
     public void newRow(int rowNumber,
                        int columns);
 
     /**
-     * Enter a new cell
+     * Enter a new cell.
+     * Do NOT call this event for trailling cells at the end of the line. 
+     * It will just confuse the parser. If all the trailing cells are empty, just 
+     * stop raising events.
+     * 
      * 
      * @param row
      *            the row number

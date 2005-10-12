@@ -47,13 +47,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.drools.decisiontable.model.Condition;
-import org.drools.decisiontable.model.Duration;
 import org.drools.decisiontable.model.Consequence;
+import org.drools.decisiontable.model.Duration;
 import org.drools.decisiontable.model.Import;
-import org.drools.decisiontable.model.Variable;
 import org.drools.decisiontable.model.Rule;
 import org.drools.decisiontable.model.Ruleset;
-import org.drools.decisiontable.model.SnippetBuilder;
+import org.drools.decisiontable.model.Variable;
 import org.drools.decisiontable.parser.xls.PropertiesSheetListener;
 
 /**
@@ -61,6 +60,8 @@ import org.drools.decisiontable.parser.xls.PropertiesSheetListener;
  *         href="mailto:michael.neale@gmail.com"> Michael Neale </a>
  * 
  * Define a ruleset spreadsheet which contains one or more decision tables.
+ * 
+ * Stay calm, deep breaths... this is a little bit scary, its where it all happens.
  * 
  * A table is identifed by a cell beginning with the text "RuleTable". The first
  * row after the table identifier defines the column type: either a condition
@@ -299,6 +300,13 @@ public class RuleSheetListener
         {
             return;
         }
+        
+        // Ignore any further cells from the rule def row
+        if ( row == _ruleStartRow) 
+        {
+            return;
+        }
+        
         switch ( row - _ruleStartRow )
         {
         case ACTION_ROW :
@@ -328,7 +336,8 @@ public class RuleSheetListener
 
         if ( value.trim( ).equals( "" ) && (actionType.type == ActionType.ACTION || actionType.type == ActionType.CONDITION))
         {
-            throw new DecisionTableParseException( "Code description - row:" + row + " column:" + column + " - does not contain any code specification. It should !" );
+            throw new DecisionTableParseException( "Code description - row:" + (row + 1) + 
+                                                   " cell number:" + (column + 1) + " - does not contain any code specification. It should !" );
         }
 
         actionType.value = value;
@@ -341,7 +350,9 @@ public class RuleSheetListener
 
         if ( actionType == null )
         {
-            throw new DecisionTableParseException( "Code description - row:" + row + " column:" + column + " - does not have an 'ACTION' or 'CONDITION' column header." );
+            throw new DecisionTableParseException( "Code description - row number:" + (row + 1) 
+                                                   + " cell number:" + (column + 1) + 
+                                                   " - does not have an 'ACTION' or 'CONDITION' column header." );
         }
 
         return actionType;
@@ -351,6 +362,9 @@ public class RuleSheetListener
                           int column,
                           String value)
     {
+        if (isCellValueEmpty(value)) {
+            return;
+        }        
         ActionType actionType = getActionForColumn( row,
                                                     column );
 
@@ -375,21 +389,22 @@ public class RuleSheetListener
             _ruleRow++;
         }
         
+
         
-        if ( actionType.type == ActionType.PRIORITY && !_currentSequentialFlag) // if the rule set is not sequential and the actionType type is PRIORITY then set the current Rule's salience paramenter with the value got from the cell
+        if (actionType.type == ActionType.PRIORITY && !_currentSequentialFlag) // if the rule set is not sequential and the actionType type is PRIORITY then set the current Rule's salience paramenter with the value got from the cell
         {
         	_currentRule.setSalience( new Integer(value) );
         }
-        else if ( actionType.type == ActionType.NAME) // if the actionType type is PRIORITY then set the current Rule's name paramenter with the value got from the cell
+        else if (actionType.type == ActionType.NAME) // if the actionType type is PRIORITY then set the current Rule's name paramenter with the value got from the cell
         {
         	_currentRule.setName( value );
         }
-        else if ( actionType.type == ActionType.DURATION) // if the actionType type is DURATION then creates a new duration tag with the value got from the cell
+        else if (actionType.type == ActionType.DURATION) // if the actionType type is DURATION then creates a new duration tag with the value got from the cell
         {
         	createDuration( column, 
         					value, 
         					actionType );
-        }
+        }        
         else if ( actionType.type == ActionType.CONDITION )
         {
             createCondition( column,
@@ -403,8 +418,7 @@ public class RuleSheetListener
                                actionType );
         }
 
-        // _currentRule.append("[" + actionType._type + "," +
-        // actionType._value + "," + value + "]");
+
     }
 
     private Rule createNewRuleForRow(int row,

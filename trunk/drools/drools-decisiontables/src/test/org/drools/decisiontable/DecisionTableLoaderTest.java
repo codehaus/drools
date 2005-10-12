@@ -60,10 +60,11 @@ public class DecisionTableLoaderTest extends TestCase
      * Refer to the examples for more, well, examples !
      * 
      */
-    public void testLoadBasicWorkbook() throws Exception
+    public void testIntegrationLoadBasicWorkbook() throws Exception
     {
         InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
 
+        
         RuleBase rb = DecisionTableLoader.loadFromInputStream( stream );
         assertNotNull( rb );
 
@@ -78,11 +79,32 @@ public class DecisionTableLoaderTest extends TestCase
 
     }
     
-    public void xxtestLoadAndPrint() {
-        //for debugging purposes only if needed
-        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.xls" );
+    public void testIntegrationLoadBasicWorkbookCSV() throws Exception
+    {
+        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.csv" );
+
+        RuleBase rb = DecisionTableLoader.loadFromInputStream( stream, InputType.CSV );
+        assertNotNull( rb );
+
+        WorkingMemory engine = rb.newWorkingMemory( );
+
+        TestModel model = new TestModel( );
+        model.setFireRule( true );
+        assertFalse( model.isRuleFired( ) );
+        engine.assertObject( model );
+        engine.fireAllRules( );
+        assertTrue( model.isRuleFired( ) );
+
+    }    
+    
+    /**
+     * for debugging purposes only if needed
+     *
+     */
+    public void xxxtestLoadAndPrint() {        
+        InputStream stream = this.getClass( ).getResourceAsStream( "/data/TestRuleFire.csv" );
         SpreadsheetDRLConverter converter = new SpreadsheetDRLConverter();
-        System.out.println(converter.convertToDRL(stream));        
+        System.out.println(converter.convertToDRL(stream, InputType.CSV));        
     }
 
 }

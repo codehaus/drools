@@ -14,6 +14,8 @@ import org.drools.IntegrationException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.decisiontable.DecisionTableLoader;
+import org.drools.decisiontable.InputType;
+import org.drools.decisiontable.SpreadsheetDRLConverter;
 import org.drools.examples.decisiontables.model.Claim;
 import org.drools.examples.decisiontables.model.Team;
 import org.xml.sax.SAXException;
@@ -21,9 +23,10 @@ import org.xml.sax.SAXException;
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale</a>
  *
- * Show off a more complex example.
+ * Shows off a reasonably complex example.
  * Runs a few different scenarios through the same rule base, but only building the rule base once.
  * 
+ * Shows CSV as well as XLS input.
  */
 public class TeamAllocationExample {
 	
@@ -36,6 +39,12 @@ public class TeamAllocationExample {
 		//MN this is all you have to do to get decision tables working...
 		_ruleBase = DecisionTableLoader.loadFromInputStream(stream);
 	}
+    
+    private void loadCSVRuleBase() throws SAXException, IOException, IntegrationException {
+        InputStream stream = this.getClass().getResourceAsStream("TeamAllocationExample.csv");
+        //MN this is all you have to do to get decision tables working (CSV)...
+        _ruleBase = DecisionTableLoader.loadFromCSVInputStream(stream);
+    }
 
 
 	public static void main(String[] args) throws Exception {
@@ -45,6 +54,12 @@ public class TeamAllocationExample {
 		example.teamAllocationBasic();
 		example.teamAllocationLongtail1();
 		example.teamAllocationLongtail2();
+        
+        example.loadCSVRuleBase();
+        example.teamAllocationBasic();
+        example.teamAllocationLongtail1();
+        example.teamAllocationLongtail2();
+        
 	}	
 	
 	

@@ -97,6 +97,12 @@
                         <include>**/*.xls</include>
                     </includes>
                 </resource>
+                <resource>
+                    <directory>src/test</directory>
+                    <includes>
+                        <include>**/*.csv</include>
+                    </includes>
+                </resource>                
             </resources>
         </unitTest>
 

@@ -135,6 +135,9 @@ public class PropertiesSheetListener
                         int column,
                         String value)
     {
+        if (emptyCellValue( value )) {
+            return;
+        }
         Integer rowInt = new Integer( row );
         if ( _rowProperties.containsKey( rowInt ) )
         {
@@ -151,6 +154,11 @@ public class PropertiesSheetListener
             _rowProperties.put( rowInt,
                                 keyValue );
         }
+    }
+
+    private boolean emptyCellValue(String value)
+    {
+        return value == null || value.trim().equals("");
     }
 
 }

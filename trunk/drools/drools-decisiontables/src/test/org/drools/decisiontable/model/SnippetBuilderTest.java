@@ -57,11 +57,11 @@ public class SnippetBuilderTest extends TestCase
     {
         String snippet = "something.param.getAnother().equals($param);";
         SnippetBuilder snip = new SnippetBuilder( snippet );
-        String cellValue = "42";
+        String cellValue = "$42";
         String result = snip.build( cellValue );
         assertNotNull( result );
-
-        assertEquals( "something.param.getAnother().equals(42);",
+        
+        assertEquals( "something.param.getAnother().equals($42);",
                       result );
     }
 

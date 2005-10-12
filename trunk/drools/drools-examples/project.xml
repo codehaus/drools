@@ -160,6 +160,7 @@
                     <include>**/primes.txt.gz</include>
                     <include>**/*.gif</include>
                     <include>**/*.xls</include>
+                    <include>**/*.csv</include>
                 </includes>
             </resource>
 

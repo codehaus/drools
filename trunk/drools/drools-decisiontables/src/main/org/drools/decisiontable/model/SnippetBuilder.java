@@ -1,6 +1,5 @@
 package org.drools.decisiontable.model;
 
-
 /*
  * Copyright 2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,8 +39,6 @@ package org.drools.decisiontable.model;
  *
  */
 
-
-
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale </a>
  * 
@@ -51,15 +48,17 @@ package org.drools.decisiontable.model;
  * 
  * Snippet template example: "something.getBlah($param)" $param is the "place
  * holder". This will get replaced with the "cellValue" that is passed in.
+ * 
+ * 12-Oct-2005 change: moved from regex to using simple character based interpolation.
+ * Regex was overkill and couldn't not quite get it right.
  */
 public class SnippetBuilder
 {
 
     private static final String PARAM_PREFIX       = "$";
 
-    private static final String PARAM              = "\\" + PARAM_PREFIX + "param";
+    private static final String PARAM              = PARAM_PREFIX + "param";    
 
-    private static final String PARAM_PREFIX_REGEX = "\\" + PARAM_PREFIX;
 
     private String              _template;
 
@@ -81,9 +80,11 @@ public class SnippetBuilder
      */
     public String build(String cellValue)
     {
-        if (_template == null) {
-            throw new RuntimeException("Script template is null - check for missing script definition.");
+        if ( _template == null )
+        {
+            throw new RuntimeException( "Script template is null - check for missing script definition." );
         }
+        
         if ( _template.indexOf( PARAM_PREFIX + "1" ) > 0 )
         {
             return buildMulti( cellValue );
@@ -94,6 +95,8 @@ public class SnippetBuilder
         }
     }
 
+
+
     private String buildMulti(String cellValue)
     {
         String[] cellVals = cellValue.split( "," );
@@ -101,9 +104,9 @@ public class SnippetBuilder
 
         for ( int paramNumber = 0; paramNumber < cellVals.length; paramNumber++ )
         {
-            String regex = PARAM_PREFIX_REGEX + (paramNumber + 1);
-            result = result.replaceAll( regex,
-                                        cellVals[paramNumber].trim( ) );
+            String replace = PARAM_PREFIX + (paramNumber + 1);
+            result = replace(result, replace, cellVals[paramNumber].trim( ), 256 );
+
 
         }
         return result;
@@ -115,9 +118,41 @@ public class SnippetBuilder
      */
     private String buildSingle(String cellValue)
     {
-        return _template.replaceAll( PARAM,
-                                     cellValue );
+
+        return replace(_template, PARAM, cellValue, 256);
+
+    }
+
+    /**
+     * Simple replacer. 
+     * jakarta commons provided the inspiration for this.
+     */
+    private String replace(String text,
+                                  String repl,
+                                  String with,
+                                  int max)
+    {
+        if ( text == null || repl == null || repl.equals( "" ) || with == null || max == 0 )
+        {
+            return text;
+        }
+
+        StringBuffer buf = new StringBuffer( text.length( ) );
+        int start = 0, end = 0;
+        while ( (end = text.indexOf( repl,
+                                     start )) != -1 )
+        {
+            buf.append( text.substring( start,
+                                        end ) ).append( with );
+            start = end + repl.length( );
+
+            if ( --max == 0 )
+            {
+                break;
+            }
+        }
+        buf.append( text.substring( start ) );
+        return buf.toString( );
     }
 
 }
-
