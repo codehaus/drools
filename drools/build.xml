@@ -331,7 +331,7 @@
 
   <target name="jar-all" depends="drools-core,drools-smf,drools-smftest,
                                   drools-base,drools-io,drools-java, drools-jsr94,
-                                  drools-groovy,drools-python,drools-examples,get-deps">
+                                  drools-groovy,drools-python,drools-decisiontables,drools-examples,get-deps">
   </target>
 
   <target name="drools-core" depends="get-deps">
