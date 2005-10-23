@@ -86,7 +86,7 @@ public class CsvParser implements DecisionTableParser
 			                        
 		    List cells = _lineParser.parse(line);
             //remove the trailing empty "cells" which some tools smatter around
-            trimCells(cells);
+            //trimCells(cells);
 		    _listener.newRow(row, cells.size());
 		    
 		    for (int col = 0; col < cells.size(); col++) {
