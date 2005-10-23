@@ -207,6 +207,9 @@ public class RuleSheetListener
                         int column,
                         String value)
     {
+        if (isCellValueEmpty(value)) {
+            return;
+        }
         if ( _isInRuleTable )
         {
             processRuleCell( row,
@@ -361,10 +364,7 @@ public class RuleSheetListener
     private void nextRule(int row,
                           int column,
                           String value)
-    {
-        if (isCellValueEmpty(value)) {
-            return;
-        }        
+    {     
         ActionType actionType = getActionForColumn( row,
                                                     column );
 
@@ -441,12 +441,7 @@ public class RuleSheetListener
                                  String value,
                                  ActionType actionType)
     {
-        if ( isCellValueEmpty( value ) )
-        {
-            // DO NOT CREATE CONDITION... needs to be something in the cell to
-            // apply.
-            return;
-        }
+
         Condition cond = new Condition( );
         cond.setSnippet( actionType.getSnippet( value ) );
         cond.setComment( cellComment( column ) );
@@ -462,12 +457,7 @@ public class RuleSheetListener
             String value,
             ActionType actionType)
 	{
-		if ( isCellValueEmpty( value ) )
-		{
-			// DO NOT CREATE DURATION... needs to be something in the cell to
-			// apply.
-			return;
-		}
+
 		Duration dur = new Duration( );
 		dur.setSnippet( value );
 		dur.setComment( cellComment( column ) );
@@ -478,12 +468,7 @@ public class RuleSheetListener
                                    String value,
                                    ActionType actionType)
     {
-        if ( isCellValueEmpty( value ) )
-        {
-            // DO NOT CREATE CONSEQUENCE.... needs to be something in the cell
-            // to apply.
-            return;
-        }
+
         Consequence cons = new Consequence( );
         cons.setSnippet( actionType.getSnippet( value ) );
         cons.setComment( cellComment( column ) );
