@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.28 2005-02-02 00:23:22 mproctor Exp $
+ * $Id: RuleBaseImpl.java,v 1.29 2005-11-05 04:23:57 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,7 +57,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.28 2005-02-02 00:23:22 mproctor Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.29 2005-11-05 04:23:57 michaelneale Exp $
  */
 class RuleBaseImpl
     implements
@@ -81,6 +81,8 @@ class RuleBaseImpl
     private Map applicationData;
     
     private RuleBaseContext ruleBaseContext;
+    
+    private static ThreadLocal currentWoringMemory = new ThreadLocal();    
 
     // ------------------------------------------------------------
     // Constructors
@@ -221,5 +223,14 @@ class RuleBaseImpl
     public RuleBaseContext getRuleBaseContext()
     {
         return this.ruleBaseContext;
+    }
+    
+    public WorkingMemory getCurrentThreadWorkingMemory() {
+        Object wm = currentWoringMemory.get();
+        if (wm == null) {
+            wm = this.newWorkingMemory();
+            currentWoringMemory.set(wm);
+        }
+        return (WorkingMemory) wm;
     }
 }

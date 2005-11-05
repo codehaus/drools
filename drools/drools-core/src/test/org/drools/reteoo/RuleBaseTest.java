@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseTest.java,v 1.14 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: RuleBaseTest.java,v 1.15 2005-11-05 04:23:57 michaelneale Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,8 +50,12 @@ import java.util.List;
 
 import org.drools.DroolsTestCase;
 import org.drools.RuleBase;
+import org.drools.RuleIntegrationException;
+import org.drools.RuleSetIntegrationException;
 import org.drools.WorkingMemory;
 import org.drools.conflict.DefaultConflictResolver;
+import org.drools.rule.DuplicateRuleNameException;
+import org.drools.rule.InvalidRuleException;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 import org.drools.spi.MockObjectType;
@@ -59,6 +63,77 @@ import org.drools.spi.MockObjectType;
 public class RuleBaseTest extends DroolsTestCase
 {
     public void testSerialize() throws Exception
+    {
+        RuleBase ruleBase = getRuleBase( );
+
+        // Serialize to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
+        ObjectOutput out = new ObjectOutputStream( bos );
+        out.writeObject( ruleBase );
+        out.close( );
+
+        // Get the bytes of the serialized object
+        byte[] bytes = bos.toByteArray( );
+
+        // Deserialize from a byte array
+        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
+        in.readObject( );
+        in.close( );
+
+        // JSR-94 Tests
+        // Reset the session. [ruleSession.reset();]
+        WorkingMemory newWorkingMemory = ruleBase.newWorkingMemory( );
+        assertNotNull("WMNotNullTest ", newWorkingMemory);
+
+        // Retrieve all the objects, nothing should be here. The
+        // reset should have taken care of the removal.
+        // [ruleSession.getObjects();]
+        List objects = newWorkingMemory.getObjects( );
+        assertNotNull("ValuesNotNullTest ", objects);
+        assertEquals("ValuesZeroSizeTest ", 0, objects.size());
+    }
+    
+    public void testGetCurrentThreadWorkingMemory() throws Exception {
+        RuleBase ruleBase = getRuleBase();
+        WorkingMemory wm = ruleBase.getCurrentThreadWorkingMemory();
+        assertNotNull(wm);
+        
+        WorkingMemory wm2 = ruleBase.getCurrentThreadWorkingMemory();
+        assertEquals(System.identityHashCode(wm), System.identityHashCode(wm2));
+        
+        TestThread t1 = new TestThread();
+        t1.rb = ruleBase;
+
+        TestThread t2 = new TestThread();
+        t2.rb = ruleBase;
+        
+        t1.start();
+        t2.start();
+        
+        t1.join();
+        t2.join();
+        
+        assertAreDifferent(t1.wm, t2.wm);
+        assertAreDifferent(t1.wm, wm);
+        assertAreDifferent(t2.wm, wm);
+        
+        WorkingMemory wm3 = ruleBase.getCurrentThreadWorkingMemory();
+        assertEquals(System.identityHashCode(wm), System.identityHashCode(wm3));
+        
+       
+    }
+
+    private void assertAreDifferent(WorkingMemory i,
+                                    WorkingMemory j)
+    {
+        assertFalse( System.identityHashCode(i) == System.identityHashCode(j) );
+        
+    }
+
+    private RuleBase getRuleBase() throws InvalidRuleException,
+                                  DuplicateRuleNameException,
+                                  RuleIntegrationException,
+                                  RuleSetIntegrationException
     {
         Rule rule1 = new Rule( "test-rule 1" );
         rule1.addParameterDeclaration( "paramVar", new MockObjectType( true ) );
@@ -92,31 +167,18 @@ public class RuleBaseTest extends DroolsTestCase
         builder.addRuleSet( ruleSet );
         builder.setConflictResolver( DefaultConflictResolver.getInstance( ) );
         RuleBase ruleBase = builder.buildRuleBase( );
+        return ruleBase;
+    }
+    
+    static class TestThread extends Thread {
 
-        // Serialize to a byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream( );
-        ObjectOutput out = new ObjectOutputStream( bos );
-        out.writeObject( ruleBase );
-        out.close( );
+        RuleBase rb;
+        WorkingMemory wm = null;
+        public void run()
+        {
+            wm = rb.getCurrentThreadWorkingMemory();
+        }
 
-        // Get the bytes of the serialized object
-        byte[] bytes = bos.toByteArray( );
-
-        // Deserialize from a byte array
-        ObjectInput in = new ObjectInputStream( new ByteArrayInputStream( bytes ) );
-        in.readObject( );
-        in.close( );
-
-        // JSR-94 Tests
-        // Reset the session. [ruleSession.reset();]
-        WorkingMemory newWorkingMemory = ruleBase.newWorkingMemory( );
-        assertNotNull("WMNotNullTest ", newWorkingMemory);
-
-        // Retrieve all the objects, nothing should be here. The
-        // reset should have taken care of the removal.
-        // [ruleSession.getObjects();]
-        List objects = newWorkingMemory.getObjects( );
-        assertNotNull("ValuesNotNullTest ", objects);
-        assertEquals("ValuesZeroSizeTest ", 0, objects.size());
+        
     }
 }
