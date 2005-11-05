@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.37 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: RuleBase.java,v 1.38 2005-11-05 04:23:57 michaelneale Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleBase.java,v 1.37 2005-02-02 00:23:21 mproctor Exp $
+ * @version $Id: RuleBase.java,v 1.38 2005-11-05 04:23:57 michaelneale Exp $
  */
 public interface RuleBase
     extends
@@ -100,4 +100,26 @@ public interface RuleBase
     List getRuleSets( );
     
     RuleBaseContext getRuleBaseContext( );
+    
+    /**
+     * Get or create a <code>WorkingMemory</code> session for this
+     * <code>RuleBase</code> and the current thread.
+     * 
+     * <p>
+     * This is useful for web application users, and allows a long running working memory 
+     * that will be garbage collected when the thread ends. Uses a <code>ThreadLocal</code> instance.
+     * </p>
+     *
+     * <p>
+     * The created <code>WorkingMemory</code> uses the default conflict
+     * resolution strategy.
+     * </p>
+     *
+     * @see WorkingMemory
+     * @see org.drools.conflict.DefaultConflictResolver
+     *
+     * @return the current threads <code>WorkingMemory</code> or a new one if the current thread did
+     * not have a working memory assigned.
+     */    
+    WorkingMemory getCurrentThreadWorkingMemory();
 }
