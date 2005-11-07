@@ -1,5 +1,5 @@
 /*
- * $Id: RuleHandler.java,v 1.5 2005-09-25 17:57:32 mproctor Exp $
+ * $Id: RuleHandler.java,v 1.6 2005-11-07 21:34:08 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -156,7 +156,7 @@ class RuleHandler extends BaseAbstractHandler
             }
         }
         
-        if ( !(ruleDesc == null || ruleDesc.trim( ).equals( "" )) )
+        if ( !(xorGroup == null || xorGroup.trim( ).equals( "" )) )
         {
             rule.setXorGroup( xorGroup );
         }        
