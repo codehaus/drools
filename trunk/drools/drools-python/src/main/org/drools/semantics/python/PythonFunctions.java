@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonFunctions.java,v 1.2 2004-12-15 16:00:06 dbarnett Exp $
+ * $Id: PythonFunctions.java,v 1.3 2005-11-10 04:54:43 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.semantics.python;
  *
  */
 
+import org.drools.smf.SemanticComponent;
 import org.drools.spi.Functions;
 
 /**
@@ -48,12 +49,16 @@ import org.drools.spi.Functions;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: PythonFunctions.java,v 1.2 2004-12-15 16:00:06 dbarnett Exp $
+ * @version $Id: PythonFunctions.java,v 1.3 2005-11-10 04:54:43 mproctor Exp $
  */
-public class PythonFunctions implements Functions
+public class PythonFunctions implements Functions, SemanticComponent
 {
     private String text;
 
+    protected final String        semanticType    = "python";
+
+    protected final String        name;    
+    
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -66,7 +71,18 @@ public class PythonFunctions implements Functions
     public PythonFunctions(String name, String text)
     {
         this.text = PythonInterp.stripOuterIndention( text );
+        this.name = "functions";        
     }
+    
+    public String getSemanticType()
+    {
+        return semanticType;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }       
 
     public String getText()
     {
