@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: MissingDeclarationException.java,v 1.3 2004-09-17 00:27:34 mproctor Exp $
+ * $Id: MissingDeclarationException.java,v 1.4 2005-11-10 05:11:18 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -44,18 +44,16 @@ package org.drools.semantics.java;
 import org.drools.DroolsException;
 
 /**
- * Indicates an attempt to use an expression which references non-existant
- * <code>Declaration</code>s.
+ * Indicates an attempt to use an expression which references non-existant <code>Declaration</code>s.
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: MissingDeclarationException.java,v 1.2 2002/08/19 00:31:42 bob
- *          Exp $
+ * @version $Id: MissingDeclarationException.java,v 1.4 2005-11-10 05:11:18 mproctor Exp $
  */
 public class MissingDeclarationException extends DroolsException
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The expression. */
@@ -65,23 +63,26 @@ public class MissingDeclarationException extends DroolsException
     private String id;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      * 
-     * @param expr The expression.
-     * @param id The missing declaration.
+     * @param expr
+     *            The expression.
+     * @param id
+     *            The missing declaration.
      */
-    public MissingDeclarationException(String expr, String id)
+    public MissingDeclarationException(String expr,
+                                       String id)
     {
         this.expr = expr;
         this.id = id;
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
@@ -105,7 +106,7 @@ public class MissingDeclarationException extends DroolsException
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     java.lang.Throwable
+    // java.lang.Throwable
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
@@ -115,7 +116,6 @@ public class MissingDeclarationException extends DroolsException
      */
     public String getMessage()
     {
-        return "No declaration for \"" + getIdentifier( ) + "\" in: "
-               + getExpression( );
+        return "No declaration for \"" + getIdentifier() + "\" in: " + getExpression();
     }
 }

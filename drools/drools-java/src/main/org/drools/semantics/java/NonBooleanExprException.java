@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: NonBooleanExprException.java,v 1.3 2004-09-17 00:27:34 mproctor Exp $
+ * $Id: NonBooleanExprException.java,v 1.4 2005-11-10 05:11:18 mproctor Exp $
  * 
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  * 
@@ -48,25 +48,26 @@ import org.drools.spi.ConditionException;
  * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * 
- * @version $Id: NonBooleanExprException.java,v 1.3 2004-09-17 00:27:34 mproctor Exp $
+ * @version $Id: NonBooleanExprException.java,v 1.4 2005-11-10 05:11:18 mproctor Exp $
  */
 public class NonBooleanExprException extends ConditionException
 {
     // ------------------------------------------------------------
-    //     Instance members
+    // Instance members
     // ------------------------------------------------------------
 
     /** The expression. */
     private String expr;
 
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
      * 
-     * @param expr The invalid expression.
+     * @param expr
+     *            The invalid expression.
      */
     public NonBooleanExprException(String expr)
     {
@@ -74,7 +75,7 @@ public class NonBooleanExprException extends ConditionException
     }
 
     // ------------------------------------------------------------
-    //     Instance Methods
+    // Instance Methods
     // ------------------------------------------------------------
 
     /**
@@ -88,7 +89,7 @@ public class NonBooleanExprException extends ConditionException
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     java.lang.Throwable
+    // java.lang.Throwable
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
@@ -98,6 +99,6 @@ public class NonBooleanExprException extends ConditionException
      */
     public String getMessage()
     {
-        return "Not a boolean expression: " + getExpression( );
+        return "Not a boolean expression: " + getExpression();
     }
 }
