@@ -1,9 +1,9 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequenceFactory.java,v 1.4 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: GroovyBlockConsequenceFactory.java,v 1.5 2005-11-10 05:33:37 mproctor Exp $
  *
- * Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
@@ -56,7 +56,25 @@ public class GroovyBlockConsequenceFactory
                                        RuleBaseContext context,
                                        Configuration config) throws FactoryException
     {
-        return new GroovyBlockConsequence( config.getText( ),
-                                     rule );
+        try
+        {
+            Integer id = (Integer) context.get( "consequence-id" );
+            if (id == null)
+            {
+                id = new Integer( 0 );
+            }
+            context.put("consequence-id", new Integer(id.intValue() + 1));
+            
+            String name = "consequence_" + id;
+            
+            return new GroovyBlockConsequence( name,
+                                               config.getText( ),
+                                               rule );
+  
+        }
+        catch ( Exception e )
+        {
+            throw new FactoryException( e );
+        }
     }
 }
