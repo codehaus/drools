@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonCondition.java,v 1.3 2004-12-29 15:55:09 mproctor Exp $
+ * $Id: PythonCondition.java,v 1.4 2005-11-10 04:54:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import java.util.NoSuchElementException;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.smf.SemanticComponent;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
 import org.drools.spi.Tuple;
@@ -57,12 +58,15 @@ import org.python.core.__builtin__;
  *
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
-public class PythonCondition extends PythonInterp implements Condition
+public class PythonCondition extends PythonInterp implements Condition, SemanticComponent
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
+    protected final String        semanticType    = "python";
 
+    protected final String        name;
+    
     /** Required declarations. */
     private Declaration[] requiredDeclarations;
 
@@ -79,12 +83,24 @@ public class PythonCondition extends PythonInterp implements Condition
         super( text,
                rule,
                "eval" );
+        
+        this.name = "condition";
 
         PythonExprAnalyzer analyzer = new PythonExprAnalyzer();
 
         this.requiredDeclarations = analyzer.analyze( getNode( ),
                                                       rule.getParameterDeclarations( ) );
     }
+    
+    public String getSemanticType()
+    {
+        return semanticType;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }    
 
     // ------------------------------------------------------------
     //     Instance methods

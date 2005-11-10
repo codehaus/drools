@@ -1,7 +1,7 @@
 package org.drools.semantics.python;
 
 /*
- * $Id: PythonBlockConsequence.java,v 1.3 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: PythonBlockConsequence.java,v 1.4 2005-11-10 04:54:43 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,6 +42,7 @@ package org.drools.semantics.python;
  */
 
 import org.drools.rule.Rule;
+import org.drools.smf.SemanticComponent;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.Tuple;
@@ -54,8 +55,13 @@ import org.python.core.Py;
  */
 public class PythonBlockConsequence extends PythonInterp
     implements
-    Consequence
+    Consequence,
+    SemanticComponent
 {
+    
+    protected final String        semanticType    = "python";
+
+    protected final String        name;    
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
@@ -69,12 +75,23 @@ public class PythonBlockConsequence extends PythonInterp
         super( text,
                rule,
                "exec" );
+        this.name = "consequence";
     }
 
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
 
+    public String getSemanticType()
+    {
+        return semanticType;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }      
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // org.drools.spi.Consequence
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
