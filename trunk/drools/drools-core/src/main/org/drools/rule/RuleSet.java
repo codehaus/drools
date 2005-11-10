@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: RuleSet.java,v 1.21 2005-05-08 16:13:33 memelet Exp $
+ * $Id: RuleSet.java,v 1.22 2005-11-10 04:41:44 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,6 +42,7 @@ package org.drools.rule;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -59,7 +60,7 @@ import org.drools.spi.RuleBaseContext;
  *
  * @author <a href="mail:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleSet.java,v 1.21 2005-05-08 16:13:33 memelet Exp $
+ * @version $Id: RuleSet.java,v 1.22 2005-11-10 04:41:44 mproctor Exp $
  */
 public class RuleSet
     implements
@@ -271,16 +272,21 @@ public class RuleSet
         return this.applicationData;
     }
 
-    public void addFunctions(Functions functions)
+    public void addFunctions(String key, Functions functions)
     {
-        this.functions.put( functions.getSemantic( ),
+        this.functions.put( key ,
                             functions );
     }
 
-    public Functions getFunctions(String semantic)
+    public Functions getFunctions(String key)
     {
-        return (Functions) this.functions.get( semantic );
+        return (Functions) this.functions.get( key );
     }
+    
+    public Map getFunctions()
+    {        
+        return  Collections.unmodifiableMap( this.functions );
+    }    
 
     public RuleBaseContext getRuleBaseContext()
     {
