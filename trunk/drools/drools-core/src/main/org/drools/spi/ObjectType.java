@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: ObjectType.java,v 1.10 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id: ObjectType.java,v 1.11 2005-11-10 04:43:59 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -49,7 +49,7 @@ package org.drools.spi;
  */
 public interface ObjectType
     extends
-    SemanticComponent
+    RuleComponent
 {
     /**
      * Determine if the passed <code>Object</code> belongs to the object type

@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Consequence.java,v 1.9 2005-02-04 02:13:36 mproctor Exp $
+ * $Id: Consequence.java,v 1.10 2005-11-10 04:43:59 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -50,7 +50,7 @@ package org.drools.spi;
  */
 public interface Consequence
     extends
-    SemanticComponent
+    RuleComponent
 {
     /**
      * Execute the consequence for the supplied matching <code>Tuple</code>.
@@ -65,4 +65,5 @@ public interface Consequence
      *             consequence.
      */
     void invoke(Tuple tuple) throws ConsequenceException;
+        
 }

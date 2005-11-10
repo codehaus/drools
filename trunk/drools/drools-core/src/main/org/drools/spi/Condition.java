@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: Condition.java,v 1.12 2004-11-19 02:14:48 mproctor Exp $
+ * $Id: Condition.java,v 1.13 2005-11-10 04:43:59 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -51,7 +51,7 @@ import org.drools.rule.Declaration;
  */
 public interface Condition
     extends
-    SemanticComponent
+    RuleComponent
 {
     /**
      * Retrieve the array of <code>Declaration</code> s required by this
@@ -76,4 +76,5 @@ public interface Condition
      *             if an error occurs during filtering.
      */
     boolean isAllowed(Tuple tuple) throws ConditionException;
+      
 }

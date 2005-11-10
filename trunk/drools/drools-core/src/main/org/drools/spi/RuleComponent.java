@@ -1,7 +1,7 @@
 package org.drools.spi;
 
 /*
- * $Id: SemanticComponent.java,v 1.6 2004-12-06 01:30:37 dbarnett Exp $
+ * $Id$
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -42,15 +42,18 @@ package org.drools.spi;
 
 import java.io.Serializable;
 
+import org.drools.rule.Rule;
+
 /**
  * Semantic component marker.
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: SemanticComponent.java,v 1.6 2004-12-06 01:30:37 dbarnett Exp $
+ * @version $Id$
  */
-public interface SemanticComponent
+public interface RuleComponent
     extends
     Serializable
-{
+{   
+        
 }
