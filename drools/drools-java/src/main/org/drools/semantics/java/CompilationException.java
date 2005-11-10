@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: CompilationException.java,v 1.5 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: CompilationException.java,v 1.6 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,15 +45,14 @@ import org.drools.DroolsException;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
 
-public class CompilationException
-    extends DroolsException
+public class CompilationException extends DroolsException
 {
-    private final Rule rule;
+    private final Rule    rule;
     private final RuleSet ruleSet;
-    private final String text;
-    private final int lineNumber;
-    private final int columnNumber;
-    private final String errorMessage;
+    private final String  text;
+    private final int     lineNumber;
+    private final int     columnNumber;
+    private final String  errorMessage;
 
     public CompilationException(RuleSet ruleSet,
                                 Rule rule,
@@ -106,22 +105,22 @@ public class CompilationException
         if ( this.ruleSet != null )
         {
             error.append( "RuleSet '" );
-            error.append( getRuleSet( ).getName( ) );
+            error.append( getRuleSet().getName() );
             error.append( "' " );
             error.append( ":" );
         }
         if ( this.rule != null )
         {
             error.append( "Rule '" );
-            error.append( getRule( ).getName( ) );
+            error.append( getRule().getName() );
             error.append( "' " );
             error.append( ":" );
         }
-        error.append( getLineNumber( ) );
+        error.append( getLineNumber() );
         error.append( " : " );
         error.append( getColumNumber() );
         error.append( ":\n    " );
-        error.append( getText( ) );
+        error.append( getText() );
         error.append( "\n" );
         error.append( getErrorMessage() );
 

@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaConditionFactory.java,v 1.4 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: JavaConditionFactory.java,v 1.5 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,9 @@ package org.drools.semantics.java;
  *
  */
 
+import java.util.List;
+
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
@@ -58,17 +61,28 @@ public class JavaConditionFactory
     {
         try
         {
-            Integer id = (Integer) context.get( "java-condition-id" );
+            Integer id = (Integer) context.get( "condition-id" );
             if ( id == null )
             {
                 id = new Integer( 0 );
             }
-            context.put( "java-condition-id",
-                         new Integer( id.intValue( ) + 1 ) );
+            context.put( "condition-id",
+                         new Integer( id.intValue() + 1 ) );
 
-            return new Condition[]{new JavaCondition( rule,
-                                                      id.intValue( ),
-                                                      config.getText( ) )};
+            String expression = config.getText();
+
+            JavaExprAnalyzer analyzer = new JavaExprAnalyzer();
+            List requiredDecls = analyzer.analyze( expression,
+                                                   rule.getParameterDeclarations() );
+
+            Declaration[] requiredDeclarations = (Declaration[]) requiredDecls.toArray( new Declaration[requiredDecls.size()] );
+
+            String name = "condition_" + id;
+
+            return new Condition[]{new JavaCondition( name,
+                                                      expression,
+                                                      requiredDeclarations,
+                                                      rule )};
         }
         catch ( Exception e )
         {

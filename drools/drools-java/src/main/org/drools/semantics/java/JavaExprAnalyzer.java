@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: JavaExprAnalyzer.java,v 1.3 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -56,15 +56,16 @@ import org.drools.semantics.java.parser.JavaTreeParser;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
+
 /**
  * Expression analyzer.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  */
 public class JavaExprAnalyzer
 {
     // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
@@ -76,76 +77,84 @@ public class JavaExprAnalyzer
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    // Instance methods
     // ------------------------------------------------------------
 
     /**
      * Analyze an expression.
-     *
-     * @param expr The expression to analyze.
-     * @param availDecls Total set of declarations available.
-     *
+     * 
+     * @param expr
+     *            The expression to analyze.
+     * @param availDecls
+     *            Total set of declarations available.
+     * 
      * @return The <code>Set</code> of declarations used by the expression.
-     *
-     * @throws TokenStreamException If an error occurs in the lexer.
-     * @throws RecognitionException If an error occurs in the parser.
-     * @throws MissingDeclarationException If the expression requires a
-     *         declaration not present in the available declarations.
+     * 
+     * @throws TokenStreamException
+     *             If an error occurs in the lexer.
+     * @throws RecognitionException
+     *             If an error occurs in the parser.
+     * @throws MissingDeclarationException
+     *             If the expression requires a declaration not present in the available declarations.
      */
-    public List analyze( String expr,
-                         List availDecls )
-            throws TokenStreamException, RecognitionException, MissingDeclarationException
+    public List analyze(String expr,
+                        List availDecls) throws TokenStreamException,
+                                        RecognitionException,
+                                        MissingDeclarationException
     {
         JavaLexer lexer = new JavaLexer( new StringReader( expr ) );
         JavaRecognizer parser = new JavaRecognizer( lexer );
 
-        parser.ruleCondition( );
+        parser.ruleCondition();
 
-        AST ast = parser.getAST( );
+        AST ast = parser.getAST();
 
-        return analyze( availDecls, ast );
+        return analyze( availDecls,
+                        ast );
     }
 
     /**
      * Analyze an expression.
-     *
-     * @param availDecls Total set of declarations available.
-     * @param ast The AST for the expression.
-     *
+     * 
+     * @param availDecls
+     *            Total set of declarations available.
+     * @param ast
+     *            The AST for the expression.
+     * 
      * @return The <code>Set</code> of declarations used by the expression.
-     *
-     * @throws RecognitionException If an error occurs in the parser.
+     * 
+     * @throws RecognitionException
+     *             If an error occurs in the parser.
      */
-    private List analyze( List availDecls,
-                          AST ast ) throws RecognitionException
+    private List analyze(List availDecls,
+                         AST ast) throws RecognitionException
     {
-        JavaTreeParser treeParser = new JavaTreeParser( );
+        JavaTreeParser treeParser = new JavaTreeParser();
 
-        treeParser.init( );
+        treeParser.init();
 
         treeParser.exprCondition( ast );
 
-        Set refs = new HashSet( treeParser.getVariableReferences( ) );
+        Set refs = new HashSet( treeParser.getVariableReferences() );
 
-        List decls = new ArrayList( );
+        List decls = new ArrayList();
 
-        Iterator declIter = availDecls.iterator( );
+        Iterator declIter = availDecls.iterator();
         Declaration eachDecl;
 
-        while ( declIter.hasNext( ) )
+        while ( declIter.hasNext() )
         {
-            eachDecl = ( Declaration ) declIter.next( );
+            eachDecl = (Declaration) declIter.next();
 
-            if ( refs.contains( eachDecl.getIdentifier( ) ) )
+            if ( refs.contains( eachDecl.getIdentifier() ) )
             {
                 decls.add( eachDecl );
-                refs.remove( eachDecl.getIdentifier( ) );
+                refs.remove( eachDecl.getIdentifier() );
             }
         }
 
         /*
-         * if ( ! refs.isEmpty() ) { throw new MissingDeclarationException(
-         * expr, (String) refs.iterator().next() ); }
+         * if ( ! refs.isEmpty() ) { throw new MissingDeclarationException( expr, (String) refs.iterator().next() ); }
          */
         return decls;
     }

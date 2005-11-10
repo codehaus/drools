@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequenceFactory.java,v 1.4 2005-05-07 04:47:56 dbarnett Exp $
+ * $Id: JavaBlockConsequenceFactory.java,v 1.5 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -52,22 +52,25 @@ public class JavaBlockConsequenceFactory
     implements
     ConsequenceFactory
 {
-    public Consequence newConsequence( Rule rule,
-                                       RuleBaseContext context,
-                                       Configuration config) throws FactoryException
+    public Consequence newConsequence(Rule rule,
+                                      RuleBaseContext context,
+                                      Configuration config) throws FactoryException
     {
         try
         {
-            Integer id = (Integer) context.get( "java-consequence-id" );
-            if (id == null)
+            Integer id = (Integer) context.get( "consequence-id" );
+            if ( id == null )
             {
                 id = new Integer( 0 );
             }
-            context.put("java-consequence-id", new Integer(id.intValue() + 1));
-            
-            return new JavaBlockConsequence( rule,
-                                             id.intValue(),
-                                             config.getText( ) );
+            context.put( "consequence-id",
+                         new Integer( id.intValue() + 1 ) );
+
+            String name = "consequence_" + id;
+
+            return new JavaBlockConsequence( name,
+                                             config.getText(),
+                                             rule );
 
         }
         catch ( Exception e )
