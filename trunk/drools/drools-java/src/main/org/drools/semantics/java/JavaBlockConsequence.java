@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaBlockConsequence.java,v 1.8 2005-07-30 16:37:43 brownj Exp $
+ * $Id: JavaBlockConsequence.java,v 1.9 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -43,15 +43,16 @@ package org.drools.semantics.java;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.smf.ConsequenceInvoker;
+import org.drools.smf.Invoker;
+import org.drools.smf.SemanticConsequence;
+import org.drools.smf.SemanticRuleCompiler;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
 import org.drools.spi.DefaultKnowledgeHelper;
-import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
 /**
@@ -61,18 +62,23 @@ import org.drools.spi.Tuple;
  */
 public class JavaBlockConsequence
     implements
+    Serializable,
     Consequence,
-    Serializable
+    SemanticConsequence
 {
+    private final static String semanticType    = "java";
+
+    private final String        name;
+
     private final String        block;
 
     private final Rule          rule;
 
     private final Declaration[] declarations;
 
-    private final String        className;
+    private ConsequenceInvoker  consequenceInvoker;
 
-    private transient Script    script;
+    protected final String      thrownException = "java.lang.Exception";
 
     // ------------------------------------------------------------
     // Constructors
@@ -82,27 +88,67 @@ public class JavaBlockConsequence
      * Construct.
      * 
      * @param block
-     *        The statement block.
+     *            The statement block.
      * @param rule
-     *        The rule.
+     *            The rule.
      */
-    public JavaBlockConsequence(Rule rule,
-                                int id,
-                                String block) throws Exception
+    public JavaBlockConsequence(String name,
+                                String block,
+                                Rule rule) throws Exception
     {
+        this.name = name;
+
         this.block = block;
 
         this.rule = rule;
 
-        List declarations = rule.getParameterDeclarations( );
-        this.declarations = (Declaration[]) declarations.toArray( new Declaration[declarations.size( )] );
-        this.className = "Consequence_" + id;
-        this.script = compile( );
+        List declarations = rule.getParameterDeclarations();
+        this.declarations = (Declaration[]) declarations.toArray( new Declaration[declarations.size()] );
     }
 
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
+
+    public String getSemanticType()
+    {
+        return semanticType;
+    }
+
+    public boolean isExceptionThrown()
+    {
+        return true;
+    }
+
+    public String getThrownException()
+    {
+        return this.thrownException;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public String getText()
+    {
+        return this.block;
+    }
+
+    public SemanticRuleCompiler getSemanticRuleCompiler()
+    {
+        return JavaSemanticRuleCompiler.getInstance();
+    }
+
+    public Declaration[] getTupleMembers()
+    {
+        return this.declarations;
+    }
+
+    public void setInvoker(Invoker invoker)
+    {
+        this.consequenceInvoker = (ConsequenceInvoker) invoker;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // org.drools.spi.Consequence
@@ -112,38 +158,22 @@ public class JavaBlockConsequence
      * Execute the consequence for the supplied matching <code>Tuple</code>.
      * 
      * @param tuple
-     *        The matching tuple.
+     *            The matching tuple.
      * @param workingMemory
-     *        The working memory session.
+     *            The working memory session.
      * 
      * @throws ConsequenceException
-     *         If an error occurs while attempting to invoke the consequence.
+     *             If an error occurs while attempting to invoke the consequence.
      */
     public void invoke(Tuple tuple) throws ConsequenceException
     {
         try
         {
-            if ( this.script == null )
-            {
-                this.script = compile( );
-            }
-            this.script.invoke( tuple,
-                                this.declarations,
-                                new DefaultKnowledgeHelper( this.rule,
-                                                            tuple ),
-                                tuple.getWorkingMemory( ).getApplicationDataMap( ) );
-        }
-        catch ( Scanner.LocatedException e )
-        {
-            throw new ConsequenceException( e,
-                                            this.rule,
-                                            this.block );
-        }
-        catch ( CompilationException e )
-        {
-            throw new ConsequenceException( e.getMessage( ),
-                                            e.getRule( ),
-                                            e.getText( ) );
+            this.consequenceInvoker.invoke( tuple,
+                                            this.declarations,
+                                            new DefaultKnowledgeHelper( this.rule,
+                                                                        tuple ),
+                                            tuple.getWorkingMemory().getApplicationDataMap() );
         }
         catch ( Exception e )
         {
@@ -153,26 +183,8 @@ public class JavaBlockConsequence
         }
     }
 
-    private Script compile() throws Exception
-    {
-        return (Script) JavaCompiler.compile( this.rule,
-                                              this.className,
-                                              Script.class,
-                                              this.block,
-                                              this.block,
-                                              this.declarations );
-    }
-
     public String toString()
     {
         return "[Consequence: " + this.block + "]";
-    }
-
-    public static interface Script
-    {
-        public void invoke(Tuple tuple,
-                           Declaration[] decls,
-                           KnowledgeHelper drools,
-                           Map applicationData) throws Exception;
     }
 }

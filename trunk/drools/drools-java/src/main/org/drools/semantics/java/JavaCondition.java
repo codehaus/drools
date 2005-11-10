@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaCondition.java,v 1.14 2005-05-08 19:54:48 mproctor Exp $
+ * $Id: JavaCondition.java,v 1.15 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,45 +42,46 @@ package org.drools.semantics.java;
  */
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 import javax.naming.ConfigurationException;
 
-import org.codehaus.janino.Scanner;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.smf.ConditionInvoker;
+import org.drools.smf.Invoker;
+import org.drools.smf.SemanticCondition;
+import org.drools.smf.SemanticRuleCompiler;
 import org.drools.spi.Condition;
 import org.drools.spi.ConditionException;
-import org.drools.spi.DefaultKnowledgeHelper;
-import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
 /**
  * Java expression semantics <code>Condition</code>.
- *
+ * 
  * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
 public class JavaCondition
     implements
     Serializable,
-    Condition
+    Condition,
+    SemanticCondition
 {
     // ------------------------------------------------------------
     // Instance members
     // ------------------------------------------------------------
+    protected final String        semanticType    = "java";
 
-    private final String        originalExpression;
+    protected final String        name;
 
-    private final Rule          rule;
+    protected final String        expression;
 
-    private final String        expression;
+    protected final Rule          rule;
 
-    private final Declaration[] requiredDeclarations;
+    protected final Declaration[] requiredDeclarations;
 
-    private final String        className;
+    protected ConditionInvoker    conditionInvoker;
 
-    private transient Script    script;
+    protected final String        thrownException = "java.lang.Exception";
 
     // ------------------------------------------------------------
     // Constructors
@@ -88,7 +89,7 @@ public class JavaCondition
 
     /**
      * Construct.
-     *
+     * 
      * @param expression
      *            The expression.
      * @param rule
@@ -96,83 +97,45 @@ public class JavaCondition
      * @throws ConfigurationException
      *             If an error occurs while attempting to perform configuration.
      */
-    protected JavaCondition(Rule rule,
-                            int id,
-                            String expression) throws Exception
+    protected JavaCondition(String name,
+                            String expression,
+                            Declaration[] requiredDeclarations,
+                            Rule rule) throws Exception
     {
-        this.originalExpression = expression;
-        this.expression = "return (" + expression + ");";
+        this.name = name;
+        this.expression = expression;
+        this.requiredDeclarations = requiredDeclarations;
         this.rule = rule;
-
-        JavaExprAnalyzer analyzer = new JavaExprAnalyzer( );
-        List requiredDecls = analyzer.analyze( expression,
-                                               rule.getParameterDeclarations( ) );
-
-        this.requiredDeclarations = (Declaration[]) requiredDecls.toArray( new Declaration[requiredDecls.size( )] );
-
-        this.className = "Condition_" + id;
-        this.script = compile( );
     }
 
-    // ------------------------------------------------------------
-    // Instance methods
-    // ------------------------------------------------------------
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // org.drools.spi.Condition
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Determine if the supplied <code>Tuple</code> is allowed by this
-     * condition.
-     *
-     * @param tuple
-     *            The <code>Tuple</code> to test.
-     *
-     * @return <code>true</code> if the <code>Tuple</code> passes this
-     *         condition, else <code>false</code>.
-     *
-     * @throws ConditionException
-     *             if an error occurs during filtering.
-     */
-    public boolean isAllowed(Tuple tuple) throws ConditionException
+    public String getSemanticType()
     {
-        try
-        {
-            if ( this.script == null )
-            {
-                this.script = compile( );
-            }
-            return this.script.invoke( tuple,
-                                       requiredDeclarations,
-                                       new DefaultKnowledgeHelper( rule,
-                                                                   tuple ),
-                                       tuple.getWorkingMemory( ).getApplicationDataMap( ) );
-        }
-        catch ( Scanner.LocatedException e )
-        {
-            throw new ConditionException( e,
-                                          this.rule,
-                                          this.originalExpression );
-        }
-        catch ( CompilationException e )
-        {
-            throw new ConditionException( e.getMessage( ),
-                                          e.getRule( ),
-                                          e.getText( ) );
-        }
-        catch ( Exception e )
-        {
-            throw new ConditionException( e,
-                                          this.rule,
-                                          this.originalExpression );
-        }
+        return semanticType;
+    }
+
+    public boolean isExceptionThrown()
+    {
+        return true;
+    }
+
+    public String getThrownException()
+    {
+        return this.thrownException;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public String getText()
+    {
+        return this.expression;
     }
 
     /**
-     * Retrieve the <code>Declaration</code> s required for evaluating the
-     * expression.
-     *
+     * Retrieve the <code>Declaration</code> s required for evaluating the expression.
+     * 
      * @return The required declarations.
      */
     public Declaration[] getRequiredTupleMembers()
@@ -180,21 +143,49 @@ public class JavaCondition
         return this.requiredDeclarations;
     }
 
-    private Script compile() throws Exception
+    public SemanticRuleCompiler getSemanticRuleCompiler()
     {
-        return (Script) JavaCompiler.compile( this.rule,
-                                              this.className,
-                                              Script.class,
-                                              this.expression,
-                                              this.originalExpression,
-                                              this.requiredDeclarations );
+        return JavaSemanticRuleCompiler.getInstance();
+    }
+
+    public void setInvoker(Invoker invoker)
+    {
+        this.conditionInvoker = (ConditionInvoker) invoker;
+    }
+
+    /**
+     * Determine if the supplied <code>Tuple</code> is allowed by this condition.
+     * 
+     * @param tuple
+     *            The <code>Tuple</code> to test.
+     * 
+     * @return <code>true</code> if the <code>Tuple</code> passes this condition, else <code>false</code>.
+     * 
+     * @throws ConditionException
+     *             if an error occurs during filtering.
+     */
+    public boolean isAllowed(Tuple tuple) throws ConditionException
+    {
+
+        try
+        {
+            return conditionInvoker.invoke( tuple,
+                                            this.requiredDeclarations,
+                                            tuple.getWorkingMemory().getApplicationDataMap() );
+        }
+        catch ( Exception e )
+        {
+            throw new ConditionException( e,
+                                          this.rule,
+                                          this.expression );
+        }
     }
 
     // ------------------------------------------------------------
 
     public int hashCode()
     {
-        return this.originalExpression.hashCode( );
+        return this.expression.hashCode();
     }
 
     public boolean equals(Object object)
@@ -204,24 +195,17 @@ public class JavaCondition
             return true;
         }
 
-        if ( object == null || getClass( ) != object.getClass( ) )
+        if ( object == null || getClass() != object.getClass() )
         {
             return false;
         }
 
-        return this.originalExpression.equals( ((JavaCondition) object).originalExpression );
+        return this.expression.equals( ((JavaCondition) object).expression );
     }
 
     public String toString()
     {
-        return "[Condition: " + this.originalExpression + "]";
+        return "[Condition: " + this.expression + "]";
     }
 
-    public static interface Script
-    {
-        public boolean invoke(Tuple tuple,
-                              Declaration[] decls,
-                              KnowledgeHelper drools,
-                              Map applicationData) throws Exception;
-    }
 }

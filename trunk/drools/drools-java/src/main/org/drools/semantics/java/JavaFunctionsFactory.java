@@ -1,7 +1,7 @@
 package org.drools.semantics.java;
 
 /*
- * $Id: JavaFunctionsFactory.java,v 1.10 2005-07-30 16:37:43 brownj Exp $
+ * $Id: JavaFunctionsFactory.java,v 1.11 2005-11-10 05:10:08 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,17 +59,19 @@ public class JavaFunctionsFactory
     {
         try
         {
-            Integer id = (Integer) context.get( "java-functions-id" );
+            Integer id = (Integer) context.get( "functions-id" );
             if ( id == null )
             {
                 id = new Integer( 0 );
             }
-            context.put( "java-functions-id",
-                         new Integer( id.intValue( ) + 1 ) );  
-            
-            return new JavaFunctions( ruleSet,
-                                      id.intValue( ),
-                                      config.getText( ) );
+            context.put( "functions-id",
+                         new Integer( id.intValue() + 1 ) );
+
+            String name = "function_" + id;
+
+            return new JavaFunctions( name,
+                                      config.getText(),
+                                      ruleSet );
         }
         catch ( Exception e )
         {
