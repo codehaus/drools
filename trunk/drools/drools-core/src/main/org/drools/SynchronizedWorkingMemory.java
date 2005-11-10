@@ -52,6 +52,10 @@ import org.drools.spi.AsyncExceptionHandler;
  * Each implemented method of the WorkingMemory interface is synchronised.
  * This class simply delegates each method call to the underlying unsynchronized
  * WorkingMemoryImpl.
+ * 
+ * <preformat>
+ * WorkingMemory workingMemory = new SynchronizedWorkingMemory( ruleBase.newWorkingMemory( ) );
+ * </preformat>
  *   
  * @author mproctor
  *
