@@ -1,7 +1,9 @@
 package org.drools.spi;
 
+import java.io.Serializable;
+
 /*
- * $Id: Functions.java,v 1.1 2004-12-14 21:00:27 mproctor Exp $
+ * $Id: Functions.java,v 1.2 2005-11-10 04:41:44 mproctor Exp $
  * 
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  * 
@@ -47,10 +49,8 @@ package org.drools.spi;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
-public interface Functions extends SemanticComponent
+public interface Functions extends Serializable
 {  
-    String getText();
-    
-    String getSemantic();
+    String getText();    
 }
 
