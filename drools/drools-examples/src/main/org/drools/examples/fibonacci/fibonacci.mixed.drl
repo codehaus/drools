@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+
+<rule-set name="fibonacci"
+          xmlns="http://drools.org/rules"
+          xmlns:groovy="http://drools.org/semantics/groovy"          
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:python="http://drools.org/semantics/python"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+  <import>org.drools.examples.fibonacci.Fibonacci</import>
+  
+  <java:functions>
+  	public static void helloWorld(String hello)
+  	{
+  		System.err.println(hello + " World");
+  	}
+  </java:functions>  
+  
+  <groovy:functions>
+  	public static void goodbyeWorld(String goodbye)
+  	{
+  		println goodbye + " Cruel World";
+  	}
+  </groovy:functions>   
+  
+  <python:functions>
+    def helloWorld(hello):
+        print "%s World" % hello
+  </python:functions>   
+
+  <rule name="Bootstrap 1" salience="20">
+    <parameter identifier="f">
+      <class>Fibonacci</class>
+    </parameter>
+
+    <java:condition>f.getSequence() == 1</java:condition>
+    <python:condition>f.getValue() == -1</python:condition>
+    
+    <groovy:consequence>
+      goodbyeWorld( "good bye" );
+      f.setValue( 1 );
+      println f.getSequence() + " == " + f.getValue() ;
+      drools.modifyObject( f );
+    </groovy:consequence>
+  </rule>
+
+  <rule name="Bootstrap 2">
+    <parameter identifier="f">
+      <class>Fibonacci</class>
+    </parameter>
+    <java:condition>f.getSequence() == 2</java:condition>
+    <java:condition>f.getValue() == -1</java:condition>
+    <java:consequence>
+      f.setValue( 1 );
+      System.err.println( f.getSequence() + " == " + f.getValue() );
+      drools.modifyObject( f );
+    </java:consequence>
+  </rule>
+
+  <rule name="Recurse" salience="10">
+    <parameter identifier="f">
+      <class>Fibonacci</class>
+    </parameter>
+    <groovy:condition>f.getValue() == -1</groovy:condition>
+    <java:consequence>
+      helloWorld( "hello" );
+      System.err.println( "recurse for " + f.getSequence() );
+      drools.assertObject( new Fibonacci( f.getSequence() - 1 ) );
+    </java:consequence>
+  </rule>
+
+  <rule name="Calculate">
+    <parameter identifier="f1">
+      <class>Fibonacci</class>
+    </parameter>
+    <parameter identifier="f2">
+      <class>Fibonacci</class>
+    </parameter>
+    <parameter identifier="f3">
+      <class>Fibonacci</class>
+    </parameter>
+    <java:condition>f2.getSequence() == (f1.getSequence() + 1)</java:condition>
+    <java:condition>f3.getSequence() == (f2.getSequence() + 1)</java:condition>
+    <java:condition>f1.getValue() != -1</java:condition>
+    <python:condition>f2.getValue() != -1</python:condition>
+    <python:condition>f3.getValue() == -1</python:condition>
+    <python:consequence>
+      helloWorld( "hello" )
+      f3.setValue( f1.getValue() + f2.getValue() )
+      print "%d == %d" % ( f3.getSequence(), f3.getValue() )
+      drools.modifyObject( f3 )
+      drools.retractObject( f1 )
+    </python:consequence>
+  </rule>
+
+</rule-set>
