@@ -8,7 +8,7 @@
 ,Y,Y,Y,1,rule1,
 ,,Y,Y,,,S2
 ,,,,,,
-,Functions,"public void test() { System.out.println(""yeah""); }",,,,
+,Functions,"public static void test() { System.out.println(""yeah""); }",,,,
 ,,,,,,
 ,,,,,,
 ,,,,,,
