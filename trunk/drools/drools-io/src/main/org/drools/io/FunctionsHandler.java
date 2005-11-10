@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: FunctionsHandler.java,v 1.1 2004-12-14 21:00:28 mproctor Exp $
+ * $Id: FunctionsHandler.java,v 1.2 2005-11-10 05:27:15 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import org.drools.rule.RuleSet;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
 import org.drools.smf.FunctionsFactory;
+import org.drools.smf.SemanticComponent;
 import org.drools.smf.SemanticModule;
 import org.drools.spi.Functions;
 import org.drools.spi.ImportEntry;
@@ -76,6 +77,7 @@ class FunctionsHandler extends BaseAbstractHandler
             this.validPeers.add( null );
             this.validPeers.add( ApplicationData.class );
             this.validPeers.add( ImportEntry.class );
+            this.validPeers.add( Functions.class );
 
             this.allowNesting = false;
         }
@@ -105,7 +107,8 @@ class FunctionsHandler extends BaseAbstractHandler
             functions = factory.newFunctions( this.ruleSetReader.getRuleSet( ),
                                               this.ruleSetReader.getFactoryContext( ),
                                               config );
-            this.ruleSetReader.getRuleSet( ).addFunctions( functions );
+            this.ruleSetReader.getRuleSet( ).addFunctions( ( ( SemanticComponent ) functions ).getSemanticType(),
+                                                           functions );
         }
         catch ( FactoryException e )
         {
