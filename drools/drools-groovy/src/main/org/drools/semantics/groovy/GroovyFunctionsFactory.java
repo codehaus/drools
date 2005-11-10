@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyFunctionsFactory.java,v 1.4 2005-05-07 03:43:19 dbarnett Exp $
+ * $Id: GroovyFunctionsFactory.java,v 1.5 2005-11-10 05:33:37 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,12 +48,35 @@ import org.drools.smf.FunctionsFactory;
 import org.drools.spi.Functions;
 import org.drools.spi.RuleBaseContext;
 
-public class GroovyFunctionsFactory implements FunctionsFactory
+public class GroovyFunctionsFactory
+    implements
+    FunctionsFactory
 {
+
     public Functions newFunctions(RuleSet ruleSet,
                                   RuleBaseContext context,
                                   Configuration config) throws FactoryException
     {
-        return new GroovyFunctions( config.getAttribute("name"), config.getText( ) );
+        try
+        {
+            Integer id = (Integer) context.get( "functions-id" );
+            if ( id == null )
+            {
+                id = new Integer( 0 );
+            }
+            context.put( "functions-id",
+                         new Integer( id.intValue( ) + 1 ) );
+            
+            String name = "function_" + id;
+            
+            return new GroovyFunctions( name,
+                                        config.getText( ),
+                                        ruleSet );
+        }
+        catch ( Exception e )
+        {
+            throw new FactoryException( e );
+        }
+
     }
 }

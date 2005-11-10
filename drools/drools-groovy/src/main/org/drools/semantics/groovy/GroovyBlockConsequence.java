@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyBlockConsequence.java,v 1.3 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: GroovyBlockConsequence.java,v 1.4 2005-11-10 05:33:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,27 +41,43 @@ package org.drools.semantics.groovy;
  *
  */
 
-import groovy.lang.Binding;
-
-import java.util.Iterator;
+import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
+
+import org.drools.semantics.java.JavaBlockConsequence;
+
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.smf.ConsequenceInvoker;
+import org.drools.smf.Invoker;
+import org.drools.smf.SemanticConsequence;
+import org.drools.smf.SemanticInvokeable;
+import org.drools.smf.SemanticRuleCompiler;
+import org.drools.smf.SemanticComponent;
+import org.drools.smf.SemanticRule;
 import org.drools.spi.Consequence;
 import org.drools.spi.ConsequenceException;
+import org.drools.spi.DefaultKnowledgeHelper;
+import org.drools.spi.KnowledgeHelper;
 import org.drools.spi.Tuple;
 
 /**
- * Groovy block semantics <code>Consequence</code>.
+ * Java block semantics <code>Consequence</code>.
  * 
- * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
- * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
- * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
+ * @author <a href="mailto:bob@werken.com">bob@werken.com </a>
  */
-public class GroovyBlockConsequence extends GroovyInterp
+public class GroovyBlockConsequence extends JavaBlockConsequence
     implements
-    Consequence
+    Serializable,
+    Consequence,
+    SemanticConsequence
 {
+    private final static String semanticType    = "groovy";
+
+    protected final String      thrownException = null;
+
     // ------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------
@@ -69,62 +85,39 @@ public class GroovyBlockConsequence extends GroovyInterp
     /**
      * Construct.
      * 
-     * @param text
-     *            The block text.
+     * @param block
+     *            The statement block.
      * @param rule
      *            The rule.
      */
-    public GroovyBlockConsequence(String text,
-                                  Rule rule)
+    public GroovyBlockConsequence(String name,
+                                String block,
+                                Rule rule) throws Exception
     {
-        super( text,
-               rule );
+        super( name, block, rule );
     }
 
     // ------------------------------------------------------------
     // Instance methods
     // ------------------------------------------------------------
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // org.drools.spi.Consequence
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Execute the consequence for the supplied matching <code>Tuple</code>.
-     * 
-     * @param tuple
-     *            The matching tuple.
-     * @param workingMemory
-     *            The working memory session.
-     * 
-     * @throws ConsequenceException
-     *             If an error occurs while attempting to invoke the
-     *             consequence.
-     */
-    public void invoke(Tuple tuple) throws ConsequenceException
+    public String getSemanticType()
     {
-        Binding dict = setUpDictionary( tuple,
-                                        getRule( ).getParameterDeclarations( ).iterator( ) );
+        return semanticType;
+    }
 
-        Map appData = tuple.getWorkingMemory( ).getApplicationDataMap( );
-        Map.Entry entry;
-        for ( Iterator iterator = appData.entrySet( ).iterator( ); iterator.hasNext( ); )
-        {
-            entry = (Map.Entry) iterator.next( );
-            dict.setVariable( (String) entry.getKey( ),
-                              entry.getValue( ) );
-        }
+    public boolean isExceptionThrown()
+    {
+        return false;
+    }
 
-        try
-        {
-            // ScriptContext globals = new ScriptContext();
-            getCode( ).setBinding( dict );
-            getCode( ).run( );
-        }
-        catch ( Exception e )
-        {
-            throw new ConsequenceException( e,
-                                            getRule( ) );
-        }
+    public String getThrownException()
+    {
+        return this.thrownException;
+    }
+  
+    public SemanticRuleCompiler getSemanticRuleCompiler()
+    {
+        return GroovySemanticRuleCompiler.getInstance();
     }
 }

@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyCondition.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: GroovyCondition.java,v 1.6 2005-11-10 05:33:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,180 +41,67 @@ package org.drools.semantics.groovy;
  *
  */
 
-import groovy.lang.Binding;
-
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import javax.naming.ConfigurationException;
 
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.Condition;
-import org.drools.spi.ConditionException;
-import org.drools.spi.Tuple;
+import org.drools.semantics.java.JavaCondition;
+import org.drools.smf.SemanticRuleCompiler;
 
 /**
  * Groovy expression semantics <code>Condition</code>.
- *
+ * 
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:james@coredevelopers.net">James Strachan </a>
  */
-public class GroovyCondition extends GroovyInterp implements Condition
+public class GroovyCondition extends JavaCondition
 {
+    protected final String        semanticType = "groovy";
+    
+    protected final String        thrownException = null;    
+    
     // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** Required declarations. */
-    private Declaration[] requiredDeclarations;
-
-    // ------------------------------------------------------------
-    //     Constructors
+    // Constructors
     // ------------------------------------------------------------
 
     /**
      * Construct.
+     * 
+     * @param expression
+     *            The expression.
+     * @param rule
+     *            The rule.
+     * @throws ConfigurationException
+     *             If an error occurs while attempting to perform configuration.
      */
-    public GroovyCondition( String text,
-                            Rule rule ) throws Exception
+    protected GroovyCondition(String name,
+                              String expression,
+                              Declaration[] requiredDeclarations,
+                              Rule rule) throws Exception
     {
-        super( text,
+        super( name,
+               expression,
+               requiredDeclarations,
                rule );
-
-        GroovyExprAnalyzer analyzer = new GroovyExprAnalyzer( );
-
-        this.requiredDeclarations = analyzer.analyze( getText( ),
-                                                      rule.getParameterDeclarations( ) );
     }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /**
-     * Evaluate.
-     *
-     * @param tuple Tuple containing variable bindings.
-     * @return The result of evaluation.
-     */
-    public Object evaluate( Tuple tuple )
+    
+    public String getSemanticType()
     {
-        Binding dict = setUpDictionary( tuple, declarationIterator( ) );
-
-        return evaluate( dict );
+        return this.semanticType;
     }
-
-    /**
-     * Evaluate.
-     *
-     * @param locals The evaluation dictionary.
-     * @return The result of evaluation.
-     */
-    protected Object evaluate( Binding locals )
+    
+    public boolean isExceptionThrown()
     {
-        //ScriptContext globals = new ScriptContext();
-        getCode( ).setBinding( locals );
-        return getCode( ).run( );
+        return false;
     }
-
-    /**
-     * Retrieve the array of <code>Declaration</code> s required by this condition to perform its duties.
-     *
-     * @return The array of <code>Declarations</code> expected on incoming <code>Tuples</code>.
-     */
-    public Declaration[] getRequiredTupleMembers()
+    
+    public String getThrownException()
     {
-        return this.requiredDeclarations;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.drools.spi.Condition
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /**
-     * Determine if the supplied <code>Tuple</code> is allowed by this
-     * condition.
-     *
-     * @param tuple The <code>Tuple</code> to test.
-     *
-     * @return <code>true</code> if the <code>Tuple</code> passes this
-     *         condition, else <code>false</code>.
-     *
-     * @throws ConditionException if an error occurs during filtering.
-     */
-    public boolean isAllowed( Tuple tuple ) throws ConditionException
+        return this.thrownException;
+    }      
+    
+    public SemanticRuleCompiler getSemanticRuleCompiler()
     {
-        try
-        {
-            Object answer = evaluate( tuple );
-
-            if ( !( answer instanceof Boolean ) )
-            {
-                throw new NonBooleanExprException( getText( ) );
-            }
-
-            return ( ( Boolean ) answer ).booleanValue( );
-        }
-        catch ( RuntimeException e )
-        {
-            throw new ConditionException( e,
-                                          getRule( ),
-                                          getText( ) );
-        }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    public int hashCode()
-    {
-        return this.getText( ).hashCode( );
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null || getClass( ) != object.getClass( ) )
-        {
-            return false;
-        }
-
-        return this.getText().equals( ( ( GroovyInterp ) object ).getText( ) );
-    }
-
-    /**
-     * GroovyInterp needs a declaration iterator.
-     * BlockConsequence uses the Iterator from Set.
-     * So we emulate Iterator here so GroovyInterp can be used for both.
-     * @return
-     */
-    public Iterator declarationIterator( ) 
-    {
-        return new Iterator()
-        {
-            private int index=0;
-            
-            public void remove()
-            {
-                //null;
-            }
-            
-            public boolean hasNext()
-            {
-                return (index < requiredDeclarations.length);
-            }            
-            
-            public Object next()
-            {
-                if ( !hasNext( ) )
-                {
-                    throw new NoSuchElementException( );
-                }
-                return requiredDeclarations[this.index++];
-            }
-            
-        };
+        return GroovySemanticRuleCompiler.getInstance();
     }    
 }

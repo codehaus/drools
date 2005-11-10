@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyConditionFactory.java,v 1.5 2005-04-07 17:42:14 mproctor Exp $
+ * $Id: GroovyConditionFactory.java,v 1.6 2005-11-10 05:33:37 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,7 +41,9 @@ package org.drools.semantics.groovy;
  *
  */
 
+import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
+import org.drools.semantics.java.JavaCondition;
 import org.drools.smf.ConditionFactory;
 import org.drools.smf.Configuration;
 import org.drools.smf.FactoryException;
@@ -58,8 +60,27 @@ public class GroovyConditionFactory
     {
         try
         {
-            return new Condition[] { new GroovyCondition( config.getText( ),
-                                                           rule ) };
+            Integer id = (Integer) context.get( "condition-id" );
+            if ( id == null )
+            {
+                id = new Integer( 0 );
+            }
+            context.put( "condition-id",
+                         new Integer( id.intValue( ) + 1 ) );
+            
+            String expression = config.getText(); 
+            
+            GroovyExprAnalyzer analyzer = new GroovyExprAnalyzer( );
+
+            Declaration[] requiredDeclarations = analyzer.analyze( expression,
+                                                                   rule.getParameterDeclarations( ) );
+            
+            String name = "condition_" + id;
+
+            return new Condition[]{new GroovyCondition( name,
+                                                        expression,
+                                                        requiredDeclarations,
+                                                        rule )};
         }
         catch ( Exception e )
         {
