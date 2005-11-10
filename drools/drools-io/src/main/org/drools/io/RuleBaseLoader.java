@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.5 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: RuleBaseLoader.java,v 1.6 2005-11-10 05:29:04 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -42,14 +42,20 @@ package org.drools.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Properties;
 
 import org.drools.IntegrationException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
+import org.drools.smf.RuleSetPackage;
 import org.drools.spi.ConflictResolver;
 import org.drools.spi.RuleBaseContext;
 import org.xml.sax.SAXException;
@@ -81,6 +87,79 @@ public final class RuleBaseLoader
     {
         throw new UnsupportedOperationException( );
     }
+    
+    /**
+     * Loads a RuleBase from a RuleSetPackage using the default ConflictResolver
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromUrl(URL url, ConflictResolver resolver) passing the
+     * DefaultConflictResolver
+     *
+     * @param ruleSetPackage
+     * @return RuleBase
+     */
+    public static RuleBase loadFromRuleSetPackage( RuleSetPackage ruleSetPackage )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromRuleSetPackage( ruleSetPackage, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from a RuleSetPackage using the given ConflictResolver
+     *
+     * @param ruleSetPackage
+     * @param resolver
+     * @return RuleBase
+     */
+    public static RuleBase loadFromRuleSetPackage( RuleSetPackage ruleSetPackage, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromUrl( new URL[]{ ruleSetPackage.getBinJar() }, resolver );
+    }        
+    
+    /**
+     * Loads a RuleBase using several URLs, using the DefaultConflictResolver.
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromUrl(URL[] url, ConflictResolver resolver) passing the
+     * DefaultConflictResolver
+     *
+     * @param urls
+     * @return RuleBase
+     */
+    public static RuleBase loadFromRuleSetPackage( RuleSetPackage[] ruleSetPackages )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromRuleSetPackage( ruleSetPackages, DefaultConflictResolver.getInstance( ) );
+    }      
+    
+    /**
+     * Loads a RuleBase from a RuleSetPackage using the given ConflictResolver
+     *
+     * @param ruleSetPackage
+     * @param resolver
+     * @return RuleBase
+     */
+    public static RuleBase loadFromRuleSetPackage( RuleSetPackage[] ruleSetPackage, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        URL[] urls = new URL[ ruleSetPackage.length ];
+        for ( int i = 0; i < ruleSetPackage.length; i++ )
+        {
+            urls[i] = ruleSetPackage[i].getBinJar();
+        }
+        return loadFromUrl( urls, resolver );
+    }    
+
+     
 
     /**
      * Loads a RuleBase from a URL using the default ConflictResolver
@@ -113,7 +192,7 @@ public final class RuleBaseLoader
                IntegrationException
     {
         return loadFromUrl( new URL[]{url}, resolver );
-    }
+    }   
 
     /**
      * Loads a RuleBase using several URLs, using the DefaultConflictResolver.
@@ -131,7 +210,7 @@ public final class RuleBaseLoader
                IntegrationException
     {
         return loadFromUrl( urls, DefaultConflictResolver.getInstance( ) );
-    }
+    }          
 
     /**
      * Loads a RuleBase from several URLS, merging them and using the specified
@@ -151,169 +230,81 @@ public final class RuleBaseLoader
 
         for ( int i = 0; i < urls.length; ++i )
         {
-            RuleSetReader reader = new RuleSetReader( );
-            RuleSet ruleSet = reader.read( urls[i] );
+            RuleSet ruleSet = getRuleSet( urls[i] );
             builder.addRuleSet( ruleSet );
         }
 
         return builder.build( );
     }
 
-    /**
-     * Loads a RuleBase from an InputStream using the default ConflictResolver
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromInputStream(InputStream in, ConflictResolver resolver) passing
-     * the DefaultConflictResolver
-     *
-     * @param in
-     * @return ruleBase
-     */
-    public static RuleBase loadFromInputStream( InputStream in )
-        throws SAXException,
-               IOException,
-               IntegrationException
+    private static RuleSet getRuleSet( URL url ) throws IntegrationException, IOException
     {
-        return loadFromInputStream( in, DefaultConflictResolver.getInstance( ) );
-    }
+        URLClassLoader classLoader = new URLClassLoader( new URL[]{ url },
+                                                         RuleBaseLoader.class.getClassLoader() );
 
-    /**
-     * Loads a RuleBase from an InputStream using the default ConflictResolver
-     *
-     * @param in
-     * @param resolver
-     * @return ruleBase
-     */
-    public static RuleBase loadFromInputStream( InputStream in,
-                                                ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromInputStream( new InputStream[]{in}, resolver );
-    }
-
-    /**
-     * Loads a RuleBase from an InputStream using the default ConflictResolver
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromInputStream(InputStream[] ins, ConflictResolver resolver)
-     * passing the DefaultConflictResolver
-     *
-     * @param ins
-     * @return ruleBase
-     */
-    public static RuleBase loadFromInputStream( InputStream[] ins )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromInputStream( ins, DefaultConflictResolver.getInstance( ) );
-    }
-
-    /**
-     * Loads a RuleBase from an InputStream using the default ConflictResolver
-     *
-     * @param ins
-     * @param resolver
-     * @return ruleBase
-     */
-    public static RuleBase loadFromInputStream( InputStream[] ins,
-                                                ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        RuleBaseBuilder builder = new RuleBaseBuilder( );
-        builder.setConflictResolver( resolver );
-        RuleBaseContext factoryContext = new RuleBaseContext( );
-
-        for ( int i = 0; i < ins.length; ++i )
-        {
-            RuleSetReader reader = new RuleSetReader( factoryContext );
-            RuleSet ruleSet = reader.read( ins[i] );
-            builder.addRuleSet( ruleSet );
-        }
-
-        return builder.build( );
-    }
-
-    /**
-     * Loads a RuleBase from a Reader using the default ConflictResolver
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromReader(Reader in, ConflictResolver resolver) passing the
-     * DefaultConflictResolver
-     *
-     * @param in
-     * @return ruleBase
-     */
-    public static RuleBase loadFromReader( Reader in )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromReader( in, DefaultConflictResolver.getInstance( ) );
-    }
-
-    /**
-     * Loads a RuleBase from a Reader using the given ConflictResolver
-     *
-     * @param in
-     * @param resolver
-     * @return ruleBase
-     */
-    public static RuleBase loadFromReader( Reader in, ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromReader( new Reader[]{in}, resolver );
-    }
-
-    /**
-     * Loads a RuleBase from a Reader using the default ConflictResolver
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromReader(Reader[] ins, ConflictResolver resolver) passing the
-     * DefaultConflictResolver
-     *
-     * @param ins
-     * @return ruleBase
-     */
-    public static RuleBase loadFromReader( Reader[] ins )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromReader( ins, DefaultConflictResolver.getInstance( ) );
-    }
-
-    /**
-     * Loads a RuleBase from a Reader using the given ConflictResolver
-     *
-     * @param ins
-     * @param resolver
-     * @return ruleBase
-     */
-    public static RuleBase loadFromReader( Reader[] ins,
-                                             ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        RuleBaseContext factoryContext = new RuleBaseContext( );
+        Properties props = new Properties();
+        props.load( classLoader.getResourceAsStream( "rule-set.conf" ) );
         
-        RuleBaseBuilder builder = new RuleBaseBuilder( factoryContext );
-        builder.setConflictResolver( resolver );        
-
-        for ( int i = 0; i < ins.length; ++i )
+        if (props.get( "name" ) == null)
         {
-            RuleSetReader reader = new RuleSetReader( factoryContext );
-            RuleSet ruleSet = reader.read( ins[i] );
-            builder.addRuleSet( ruleSet );
+            throw new IntegrationException( "Rule Set jar does not contain a rule-set.conf file." );
+        }
+        
+        InputStream is = null; 
+        ObjectInput in = null;
+        RuleSet ruleSet = null;
+        try
+        {
+            is = classLoader.getResourceAsStream( (String) props.get( "name" ) );
+        
+            in = new ObjectInputStreamWithLoader( is,
+                                                  classLoader );
+            ruleSet = (RuleSet) in.readObject();
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new IntegrationException( "Rule Set jar is not correctly formed." );
+        }
+        finally
+        {
+            if ( is != null )
+            {
+                is.close();
+            }
+            if ( in != null )
+            {
+                in.close();
+            }
+        }
+        return ruleSet;
+           
+    }
+    
+    private static class ObjectInputStreamWithLoader extends ObjectInputStream
+    {
+        private final ClassLoader classLoader;
+
+        public ObjectInputStreamWithLoader(InputStream in,
+                                           ClassLoader classLoader) throws IOException
+        {
+            super( in );
+            this.classLoader = classLoader;
+            enableResolveObject( true );
         }
 
-        return builder.build( );
-    }
+        protected Class resolveClass(ObjectStreamClass desc) throws IOException,
+                                                            ClassNotFoundException
+        {
+            if ( this.classLoader == null )
+            {
+                return super.resolveClass( desc );
+            }
+            else
+            {
+                String name = desc.getName();
+                return this.classLoader.loadClass( name );
+            }
+        }
+    }    
+    
 }
