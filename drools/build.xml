@@ -71,12 +71,10 @@
     <echo level="info" message="    ant fibonacci-java"/>
     <echo level="info" message="    ant fibonacci-python"/>
     <echo level="info" message="    ant fibonacci-groovy"/>
+    <echo level="info" message="    ant fibonacci-mixed"/>
     <echo level="info" message="    ant fibonacci-java-jndi"/>
-    <echo level="info" message="    ant fibonacci-java-serialized"/>
     <echo level="info" message="    ant fibonacci-groovy-jndi"/>
-    <echo level="info" message="    ant fibonacci-groovy-serialized"/>
     <echo level="info" message="    ant fibonacci-python-jndi"/>
-    <echo level="info" message="    ant fibonacci-python-serialized"/>
     <echo level="info" message="    ant fibonacci-native"/>
     <echo level="info" message=" "/>
     <echo level="info" message="# Hello World Examples"/>
@@ -549,6 +547,13 @@
     </antcall>
   </target>
 
+  <target name="fibonacci-mixed">
+    <antcall target="run-example-1">
+      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciExample"/>
+      <param name="arg1" value="fibonacci.mixed.drl"/>
+    </antcall>
+  </target>
+
   <target name="fibonacci-java-jndi">
     <antcall target="run-example-2">
       <param name="class-name" value="org.drools.examples.fibonacci.FibonacciJNDIExample"/>
@@ -570,27 +575,6 @@
       <param name="class-name" value="org.drools.examples.fibonacci.FibonacciJNDIExample"/>
       <param name="arg1" value="org.osjava.jndi.PropertiesFactory"/>
       <param name="arg2" value="fibonacci.python.drl"/>
-    </antcall>
-  </target>
-
-  <target name="fibonacci-java-serialized">
-    <antcall target="run-example-1">
-      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciSerializedExample"/>
-      <param name="arg1" value="fibonacci.java.drl"/>
-    </antcall>
-  </target>
-
-  <target name="fibonacci-groovy-serialized">
-    <antcall target="run-example-1">
-      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciSerializedExample"/>
-      <param name="arg1" value="fibonacci.groovy.drl"/>
-    </antcall>
-  </target>
-
-  <target name="fibonacci-python-serialized">
-    <antcall target="run-example-1">
-      <param name="class-name" value="org.drools.examples.fibonacci.FibonacciSerializedExample"/>
-      <param name="arg1" value="fibonacci.python.drl"/>
     </antcall>
   </target>
 
