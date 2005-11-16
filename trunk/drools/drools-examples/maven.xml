@@ -17,12 +17,10 @@
         <attainGoal name="fibonacci-java"/>
         <attainGoal name="fibonacci-python"/>
         <attainGoal name="fibonacci-groovy"/>
+        <attainGoal name="fibonacci-mixed"/>
         <attainGoal name="fibonacci-java-jndi"/>
-        <attainGoal name="fibonacci-java-serialized"/>
         <attainGoal name="fibonacci-groovy-jndi"/>
-        <attainGoal name="fibonacci-groovy-serialized"/>
         <attainGoal name="fibonacci-python-jndi"/>
-        <attainGoal name="fibonacci-python-serialized"/>
         <attainGoal name="fibonacci-native"/>
         <attainGoal name="escalation-java"/>
         <attainGoal name="state-java"/>
@@ -49,7 +47,6 @@
     <goal name="run-all-java">
         <attainGoal name="fibonacci-java"/>
         <attainGoal name="fibonacci-java-jndi"/>
-        <attainGoal name="fibonacci-java-serialized"/>
         <attainGoal name="escalation-java"/>
         <attainGoal name="state-java"/>
         <attainGoal name="helloworld-java"/>
@@ -63,7 +60,6 @@
     <goal name="run-all-groovy">
         <attainGoal name="fibonacci-groovy"/>
         <attainGoal name="fibonacci-groovy-jndi"/>
-        <attainGoal name="fibonacci-groovy-serialized"/>
         <attainGoal name="state-groovy"/>
         <attainGoal name="helloworld-groovy"/>
         <attainGoal name="manners-groovy"/>
@@ -73,7 +69,6 @@
     <goal name="run-all-python">
         <attainGoal name="fibonacci-python"/>
         <attainGoal name="fibonacci-python-jndi"/>
-        <attainGoal name="fibonacci-python-serialized"/>
         <attainGoal name="helloworld-python"/>
         <attainGoal name="state-python"/>
     </goal>
@@ -88,12 +83,6 @@
         <attainGoal name="fibonacci-java-jndi"/>
         <attainGoal name="fibonacci-groovy-jndi"/>
         <attainGoal name="fibonacci-python-jndi"/>
-    </goal>
-
-    <goal name="run-all-serialized">
-        <attainGoal name="fibonacci-java-serialized"/>
-        <attainGoal name="fibonacci-groovy-serialized"/>
-        <attainGoal name="fibonacci-python-serialized"/>
     </goal>
 
     <goal name="run-all-dsl">
@@ -134,6 +123,17 @@
         <arg value="fibonacci.groovy.drl"/>
       </java>
     </goal>
+    
+    <goal name="fibonacci-mixed" prereqs="jar:jar">
+      <java classname="org.drools.examples.fibonacci.FibonacciExample"
+            fork="true">
+        <classpath refid="maven.dependency.classpath"/>
+        <classpath>
+          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
+        </classpath>
+        <arg value="fibonacci.mixed.drl"/>
+      </java>
+    </goal>    
 
     <goal name="fibonacci-java-jndi" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
@@ -147,17 +147,6 @@
       </java>
     </goal>
 
-    <goal name="fibonacci-java-serialized" prereqs="jar:jar">
-      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
-            fork="true">
-        <classpath refid="maven.dependency.classpath"/>
-        <classpath>
-          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
-        </classpath>
-          <arg value="fibonacci.java.drl"/>
-      </java>
-    </goal>
-
     <goal name="fibonacci-groovy-jndi" prereqs="jar:jar">
       <java classname="org.drools.examples.fibonacci.FibonacciJNDIExample"
             fork="true">
@@ -167,28 +156,6 @@
         <classpath>
           <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
         </classpath>
-      </java>
-    </goal>
-
-    <goal name="fibonacci-groovy-serialized" prereqs="jar:jar">
-      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
-            fork="true">
-        <classpath refid="maven.dependency.classpath"/>
-        <classpath>
-          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
-        </classpath>
-        <arg value="fibonacci.groovy.drl"/>
-      </java>
-    </goal>
-
-    <goal name="fibonacci-python-serialized" prereqs="jar:jar">
-      <java classname="org.drools.examples.fibonacci.FibonacciSerializedExample"
-            fork="true">
-        <classpath refid="maven.dependency.classpath"/>
-        <classpath>
-          <pathelement location="${maven.build.dir}/${maven.final.name}.jar"/>
-        </classpath>
-        <arg value="fibonacci.python.drl"/>
       </java>
     </goal>
 
