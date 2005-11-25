@@ -41,11 +41,11 @@ package org.drools.decisiontable;
 
 import java.io.InputStream;
 
+import junit.framework.TestCase;
+
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.decisiontable.model.TestModel;
-
-import junit.framework.TestCase;
 
 public class DecisionTableLoaderTest extends TestCase
 {

@@ -42,11 +42,6 @@ package org.drools.decisiontable.parser;
 
 
 
-import java.io.InputStream;
-
-import org.drools.decisiontable.model.Ruleset;
-import org.drools.decisiontable.parser.RuleSheetListener;
-
 import junit.framework.TestCase;
 
 /**

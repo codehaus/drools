@@ -47,6 +47,7 @@ import org.drools.IntegrationException;
 import org.drools.RuleBase;
 import org.drools.decisiontable.parser.DecisionTableParseException;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 import org.xml.sax.SAXException;
 
 /**
@@ -144,7 +145,14 @@ public final class DecisionTableLoader
     {
         StringReader reader = getReader( streamToSpreadsheet,
                                          inputType );
-        return RuleBaseLoader.loadFromReader( reader );
+        
+        
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+        ruleSetLoader.addFromReader( reader);            
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        return ruleBaseLoader.buildRuleBase();                           
     }
 
     private static StringReader getReader(InputStream streamToSpreadsheet,

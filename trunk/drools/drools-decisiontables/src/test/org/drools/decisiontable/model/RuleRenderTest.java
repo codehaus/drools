@@ -42,11 +42,6 @@ package org.drools.decisiontable.model;
 
 
 
-import org.drools.decisiontable.model.Condition;
-import org.drools.decisiontable.model.Consequence;
-import org.drools.decisiontable.model.Parameter;
-import org.drools.decisiontable.model.Rule;
-
 import junit.framework.TestCase;
 
 /**
