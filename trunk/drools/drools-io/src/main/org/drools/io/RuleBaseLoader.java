@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.6 2005-11-10 05:29:04 mproctor Exp $
+ * $Id: RuleBaseLoader.java,v 1.7 2005-11-25 02:09:03 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +40,17 @@ package org.drools.io;
  *
  */
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
-import java.io.Reader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import org.drools.IntegrationException;
@@ -55,9 +58,8 @@ import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.conflict.DefaultConflictResolver;
 import org.drools.rule.RuleSet;
-import org.drools.smf.RuleSetPackage;
+import org.drools.smf.RuleSetCompiler;
 import org.drools.spi.ConflictResolver;
-import org.drools.spi.RuleBaseContext;
 import org.xml.sax.SAXException;
 
 /**
@@ -80,47 +82,25 @@ import org.xml.sax.SAXException;
  */
 public final class RuleBaseLoader
 {
+
+    private RuleBaseBuilder builder = new RuleBaseBuilder();
+
     /**
-     * Default constructor - marked private to prevent instantiation.
+     * Default constructor
      */
-    private RuleBaseLoader( )
+    public RuleBaseLoader()
     {
-        throw new UnsupportedOperationException( );
-    }
-    
-    /**
-     * Loads a RuleBase from a RuleSetPackage using the default ConflictResolver
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromUrl(URL url, ConflictResolver resolver) passing the
-     * DefaultConflictResolver
-     *
-     * @param ruleSetPackage
-     * @return RuleBase
-     */
-    public static RuleBase loadFromRuleSetPackage( RuleSetPackage ruleSetPackage )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromRuleSetPackage( ruleSetPackage, DefaultConflictResolver.getInstance( ) );
+        this( DefaultConflictResolver.getInstance() );
     }
 
     /**
-     * Loads a RuleBase from a RuleSetPackage using the given ConflictResolver
-     *
-     * @param ruleSetPackage
-     * @param resolver
-     * @return RuleBase
+     * Default constructor
      */
-    public static RuleBase loadFromRuleSetPackage( RuleSetPackage ruleSetPackage, ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
+    public RuleBaseLoader(ConflictResolver resolver)
     {
-        return loadFromUrl( new URL[]{ ruleSetPackage.getBinJar() }, resolver );
-    }        
-    
+        this.builder.setConflictResolver( resolver );
+    }
+
     /**
      * Loads a RuleBase using several URLs, using the DefaultConflictResolver.
      *
@@ -131,86 +111,38 @@ public final class RuleBaseLoader
      * @param urls
      * @return RuleBase
      */
-    public static RuleBase loadFromRuleSetPackage( RuleSetPackage[] ruleSetPackages )
-        throws SAXException,
-               IOException,
-               IntegrationException
+    public void addFromRuleSetLoader(RuleSetLoader[] ruleSetLoaders) throws SAXException,
+                                                                    IOException,
+                                                                    IntegrationException
     {
-        return loadFromRuleSetPackage( ruleSetPackages, DefaultConflictResolver.getInstance( ) );
-    }      
-    
-    /**
-     * Loads a RuleBase from a RuleSetPackage using the given ConflictResolver
-     *
-     * @param ruleSetPackage
-     * @param resolver
-     * @return RuleBase
-     */
-    public static RuleBase loadFromRuleSetPackage( RuleSetPackage[] ruleSetPackage, ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        URL[] urls = new URL[ ruleSetPackage.length ];
-        for ( int i = 0; i < ruleSetPackage.length; i++ )
+        for ( int i = 0; i < ruleSetLoaders.length; i++ )
         {
-            urls[i] = ruleSetPackage[i].getBinJar();
+            addFromRuleSetLoader( ruleSetLoaders[i] );
         }
-        return loadFromUrl( urls, resolver );
-    }    
-
-     
-
-    /**
-     * Loads a RuleBase from a URL using the default ConflictResolver
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromUrl(URL url, ConflictResolver resolver) passing the
-     * DefaultConflictResolver
-     *
-     * @param url
-     * @return RuleBase
-     */
-    public static RuleBase loadFromUrl( URL url )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromUrl( url, DefaultConflictResolver.getInstance( ) );
     }
 
     /**
-     * Loads a RuleBase from a URL using the given ConflictResolver
+     * Loads a RuleBase from a RuleSetPackage using the given ConflictResolver
      *
-     * @param url
+     * @param ruleSetPackage
      * @param resolver
      * @return RuleBase
      */
-    public static RuleBase loadFromUrl( URL url, ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
+    public void addFromRuleSetLoader(RuleSetLoader ruleSetLoader) throws SAXException,
+                                                                 IOException,
+                                                                 IntegrationException
     {
-        return loadFromUrl( new URL[]{url}, resolver );
-    }   
-
-    /**
-     * Loads a RuleBase using several URLs, using the DefaultConflictResolver.
-     *
-     * This is a convenience method and calls public static RuleBase
-     * loadFromUrl(URL[] url, ConflictResolver resolver) passing the
-     * DefaultConflictResolver
-     *
-     * @param urls
-     * @return RuleBase
-     */
-    public static RuleBase loadFromUrl( URL[] urls )
-        throws SAXException,
-               IOException,
-               IntegrationException
-    {
-        return loadFromUrl( urls, DefaultConflictResolver.getInstance( ) );
-    }          
+        Map map = ruleSetLoader.getRuleSets();
+        Iterator it = map.values().iterator();
+        RuleSet[] ruleSets = new RuleSet[map.size()];
+        int i = 0;
+        while ( it.hasNext() )
+        {
+            ruleSets[i] = ((RuleSetCompiler) it.next()).getRuleSet();
+            i++;
+        }
+        addFromRuleSet( ruleSets );
+    }
 
     /**
      * Loads a RuleBase from several URLS, merging them and using the specified
@@ -220,23 +152,87 @@ public final class RuleBaseLoader
      * @param resolver
      * @return RuleBase
      */
-    public static RuleBase loadFromUrl( URL[] urls, ConflictResolver resolver )
-        throws SAXException,
-               IOException,
-               IntegrationException
+    public void addFromUrl(URL[] urls) throws SAXException,
+                                      IOException,
+                                      IntegrationException
     {
-        RuleBaseBuilder builder = new RuleBaseBuilder( );
-        builder.setConflictResolver( resolver );
-
-        for ( int i = 0; i < urls.length; ++i )
+        for ( int i = 0; i < urls.length; i++ )
         {
-            RuleSet ruleSet = getRuleSet( urls[i] );
-            builder.addRuleSet( ruleSet );
+            addFromUrl( urls[i] );
         }
-
-        return builder.build( );
     }
 
+    /**
+     * Loads a RuleBase from a URL using the given ConflictResolver
+     *
+     * @param url
+     * @param resolver
+     * @return RuleBase
+     */
+    public void addFromUrl(URL url) throws SAXException,
+                                   IOException,
+                                   IntegrationException
+    {
+        if ( url.toExternalForm().toLowerCase().endsWith( ".ddj" ) )
+        {
+            //its url to drools deployment jar
+            addFromRuleSet( getRuleSet(url) );
+        }
+        else
+        {
+            // the url should reference a RuleBase coniguration text file 
+            // which contains a list of URLs to .ddj files or to more RuleBase
+            // configurations
+            InputStream config = url.openStream();
+            BufferedReader in = new BufferedReader( new InputStreamReader( config ) );
+            try
+            {
+                String line;
+
+                while ( (line = in.readLine( )) != null )
+                {
+                    line = line.trim( );
+
+                    if ( line.equals( "" ) || line.startsWith( "#" ) )
+                    {
+                        continue;
+                    }
+
+                    addFromUrl( new URL(line) );
+                }
+            }
+            finally
+            {
+                in.close( );
+            } 
+        }
+    }
+    
+    public void addFromByteArray(Object object)throws IOException,
+    IntegrationException
+    {
+        if ( !(object instanceof byte[]) ) {
+            //return IOException( "Object is not a byte[]" );
+        }
+    }
+
+    public void addFromRuleSet(RuleSet ruleSet) throws SAXException,
+                                               IOException,
+                                               IntegrationException
+    {
+        this.builder.addRuleSet( ruleSet );
+    }
+
+    public void addFromRuleSet(RuleSet[] ruleSets) throws SAXException,
+                                                  IOException,
+                                                  IntegrationException
+    {
+        for ( int i = 0; i < ruleSets.length; i++ )
+        {
+            addFromRuleSet( ruleSets[i] );
+        }
+    }
+    
     private static RuleSet getRuleSet( URL url ) throws IntegrationException, IOException
     {
         URLClassLoader classLoader = new URLClassLoader( new URL[]{ url },
@@ -278,8 +274,12 @@ public final class RuleBaseLoader
         }
         return ruleSet;
            
-    }
+    }    
     
+    public RuleBase buildRuleBase() {
+       return  this.builder.build();
+    }
+
     private static class ObjectInputStreamWithLoader extends ObjectInputStream
     {
         private final ClassLoader classLoader;
@@ -305,6 +305,6 @@ public final class RuleBaseLoader
                 return this.classLoader.loadClass( name );
             }
         }
-    }    
-    
+    }
+
 }

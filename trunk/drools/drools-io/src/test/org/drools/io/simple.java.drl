@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<rule-set name="simple"
+          xmlns="http://drools.org/rules"
+          xmlns:java="http://drools.org/semantics/java"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/java java.xsd">
+
+  <application-data identifier="list">java.util.List</application-data>
+
+  <rule name="rule1">
+    <parameter identifier="string">
+      <class>java.lang.String</class>
+    </parameter>
+
+    <java:consequence>
+      list.add(string);
+    </java:consequence>
+  </rule>
+
+</rule-set>
