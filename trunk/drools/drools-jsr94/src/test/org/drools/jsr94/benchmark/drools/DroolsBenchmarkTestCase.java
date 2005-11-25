@@ -1,7 +1,7 @@
 package org.drools.jsr94.benchmark.drools;
 
 /*
- * $Id: DroolsBenchmarkTestCase.java,v 1.7 2004-11-17 03:09:46 dbarnett Exp $
+ * $Id: DroolsBenchmarkTestCase.java,v 1.8 2005-11-25 02:11:34 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -70,79 +70,84 @@ public class DroolsBenchmarkTestCase extends BenchmarkTestBase
     public static final String RULE_SERVICE_PROVIDER = "http://drools.org/";
 
     /** manners URI */
-    public static final String RULE_URI = "manners.drl";
+    public static final String RULE_URI              = "manners.drl";
 
     /**
      * Setup the test case.
      */
     protected void setUp() throws Exception
     {
-        super.setUp( );
+        super.setUp();
 
         // obtain the RuleServiceProvider
-        RuleServiceProviderManager.registerRuleServiceProvider(
-            RULE_SERVICE_PROVIDER,
-            org.drools.jsr94.rules.RuleServiceProviderImpl.class );
-        ruleServiceProvider =
-            RuleServiceProviderManager.getRuleServiceProvider(
-                RULE_SERVICE_PROVIDER );
-        ruleAdministrator = ruleServiceProvider.getRuleAdministrator( );
+        RuleServiceProviderManager.registerRuleServiceProvider( RULE_SERVICE_PROVIDER,
+                                                                org.drools.jsr94.rules.RuleServiceProviderImpl.class );
+        ruleServiceProvider = RuleServiceProviderManager.getRuleServiceProvider( RULE_SERVICE_PROVIDER );
+        ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
 
         // load the rules and register them
-        LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator
-            .getLocalRuleExecutionSetProvider( null );
-        InputStream rules = DroolsBenchmarkTestCase.class
-            .getResourceAsStream( RULE_URI );
-        RuleExecutionSet ruleExecutionSet =
-            ruleSetProvider.createRuleExecutionSet( rules, null );
-        ruleAdministrator.registerRuleExecutionSet(
-            RULE_URI, ruleExecutionSet, null );
+        LocalRuleExecutionSetProvider ruleSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider( null );
+        InputStream rules = DroolsBenchmarkTestCase.class.getResourceAsStream( RULE_URI );
+        RuleExecutionSet ruleExecutionSet = ruleSetProvider.createRuleExecutionSet( rules,
+                                                                                    null );
+        ruleAdministrator.registerRuleExecutionSet( RULE_URI,
+                                                    ruleExecutionSet,
+                                                    null );
 
-        RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime( );
-        statelessRuleSession = ( StatelessRuleSession )
-            ruleRuntime.createRuleSession(
-               RULE_URI, null, RuleRuntime.STATELESS_SESSION_TYPE );
+        RuleRuntime ruleRuntime = ruleServiceProvider.getRuleRuntime();
+        statelessRuleSession = (StatelessRuleSession) ruleRuntime.createRuleSession( RULE_URI,
+                                                                                     null,
+                                                                                     RuleRuntime.STATELESS_SESSION_TYPE );
     }
 
     /**
      * Tear down the test case
      */
-    protected void tearDown( ) throws Exception
+    protected void tearDown() throws Exception
     {
-        statelessRuleSession.release( );
-        ruleAdministrator.deregisterRuleExecutionSet( RULE_URI, null );
-        super.tearDown( );
+        statelessRuleSession.release();
+        ruleAdministrator.deregisterRuleExecutionSet( RULE_URI,
+                                                      null );
+        super.tearDown();
     }
 
     public void testMissManners16() throws Exception
     {
-        List inList = getInputObjects(
-            BenchmarkTestBase.class.getResourceAsStream( "manners16.dat" ) );
+        List inList = getInputObjects( BenchmarkTestBase.class.getResourceAsStream( "manners16.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
-        assertEquals( "seated guests", 16, validateResults( inList, outList ) );
+        assertEquals( "seated guests",
+                      16,
+                      validateResults( inList,
+                                       outList ) );
     }
 
     public void testMissManners32() throws Exception
     {
-        List inList = getInputObjects(
-            BenchmarkTestBase.class.getResourceAsStream( "manners32.dat" ) );
+        List inList = getInputObjects( BenchmarkTestBase.class.getResourceAsStream( "manners32.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
-        assertEquals( "seated guests", 32, validateResults( inList, outList ) );
+        assertEquals( "seated guests",
+                      32,
+                      validateResults( inList,
+                                       outList ) );
     }
 
     public void testMissManners64() throws Exception
     {
-        List inList = getInputObjects(
-            BenchmarkTestBase.class.getResourceAsStream( "manners64.dat" ) );
+        List inList = getInputObjects( BenchmarkTestBase.class.getResourceAsStream( "manners64.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
-        assertEquals( "seated guests", 64, validateResults( inList, outList ) );
+        assertEquals( "seated guests",
+                      64,
+                      validateResults( inList,
+                                       outList ) );
     }
 
     public void testMissManners128() throws Exception
     {
-        List inList = getInputObjects(
-            BenchmarkTestBase.class.getResourceAsStream( "manners128.dat" ) );
+        List inList = getInputObjects( BenchmarkTestBase.class.getResourceAsStream( "manners128.dat" ) );
         List outList = statelessRuleSession.executeRules( inList );
-        assertEquals( "seated guests", 128, validateResults( inList, outList ) );
+        assertEquals( "seated guests",
+                      128,
+                      validateResults( inList,
+                                       outList ) );
     }
 }

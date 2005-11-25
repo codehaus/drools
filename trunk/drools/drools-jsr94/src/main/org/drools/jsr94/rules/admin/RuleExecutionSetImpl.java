@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetImpl.java,v 1.22 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: RuleExecutionSetImpl.java,v 1.23 2005-11-25 02:11:34 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ import java.util.Map;
 import javax.rules.ObjectFilter;
 import javax.rules.admin.RuleExecutionSet;
 
+import org.drools.IntegrationException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.RuleIntegrationException;
@@ -57,6 +59,7 @@ import org.drools.WorkingMemory;
 import org.drools.jsr94.rules.Jsr94FactHandleFactory;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
+import org.drools.smf.RuleSetCompiler;
 
 /**
  * The Drools implementation of the <code>RuleExecutionSet</code> interface
@@ -123,7 +126,7 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
      *         into the <code>RuleBase</code>
      */
     RuleExecutionSetImpl( RuleSet ruleSet, Map properties )
-        throws RuleIntegrationException, RuleSetIntegrationException
+        throws IntegrationException
     {
         if ( null == properties )
         {
@@ -136,6 +139,18 @@ public class RuleExecutionSetImpl implements RuleExecutionSet
         this.ruleSet = ruleSet;
         this.description = ruleSet.getDocumentation( );
 
+        RuleSetCompiler compiler = null;
+        try
+        {
+            compiler = new RuleSetCompiler( ruleSet,
+                                            "org.drools",
+                                            "drools" );
+        }
+        catch ( IOException e )
+        {
+            throw new IntegrationException( e );
+        }
+        
         RuleBaseBuilder builder = new RuleBaseBuilder( );
         builder.setFactHandleFactory( Jsr94FactHandleFactory.getInstance( ) );
 
