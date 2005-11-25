@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project
-    default="drools:jar"
     xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
     xmlns:u="jelly:util"
@@ -12,15 +11,30 @@
       <attainGoal name="drools:set-excludes" />
     </preGoal>
 
+    <goal name="drools:multiproject-prepare">
+      <mkdir dir="${basedir}/target"/>
+      <maven:reactor basedir="${basedir}" banner="Preparing" includes="*/project.xml" collectOnly="true"/>
+
+      <j:forEach var="reactorProject" items="${reactorProjects}">
+        <ant:touch file="${basedir}/target/${reactorProject.artifactId}-${pom.currentVersion}.jar"/>
+      </j:forEach>
+    </goal>
+
     <goal name="drools:set-excludes">
       <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
         <echo>jdk5 not present so excluding jdk5 projects</echo>
-        <j:set var="maven.multiproject.excludes"
-               value="${drools.jdk5.projects}"/>
+        <j:if test="${maven.multiproject.excludes.bak.length()}  > 0}">
+          <j:set var="maven.multiproject.excludes"
+                 value="${maven.multiproject.excludes.bak},${drools.jdk5.projects}"/>
+        </j:if>
+        <j:if test="${maven.multiproject.excludes.bak.length()}  == 0}">
+          <j:set var="maven.multiproject.excludes"
+                 value="${drools.jdk5.projects}"/>
+        </j:if>
       </j:if>
       <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
         <j:set var="maven.multiproject.excludes"
-               value=""/>
+               value="${maven.multiproject.excludes.bak}"/>
       </j:if>
     </goal>
 
@@ -40,6 +54,17 @@
       <j:if test="${jar.exists() == false}">
         <attainGoal name="jar:jar" />
       </j:if>
+    </goal>
+
+
+    <goal name="drools:default">
+        <echo>${pom.artifactId} </echo>
+        <j:if test="${pom.artifactId == 'drools'}">
+            <attainGoal name="drools:jar"/>
+        </j:if>
+        <j:if test="${pom.artifactId != 'drools'}">
+            <attainGoal name="jar:jar"/>
+        </j:if>
     </goal>
 
     <!-- Use mutliproject to build all jars -->
@@ -66,26 +91,24 @@
     </goal>
 
     <goal name="drools:clover">
+      <!-- if we are 1.4 also exclude jdk5 projects -->
+      <attainGoal name="drools:set-excludes" />
+
       <attainGoal name="drools:clean" />
-      <j:if test="${jdkversion == null}">
-        <attainGoal name="drools:set-jdkversion"/>
-      </j:if>
 
       <!-- now exclude examples -->
-      <j:set var="maven.multiproject.excludes"
-               value="drools*examples/**"/>
-
-      <!-- if we are 1.4 also exclude jdk5 projects -->
-      <j:if test="${jdkversion == '1.4'}">
+      <j:if test="${maven.multiproject.excludes.length()}  > 0}">
         <j:set var="maven.multiproject.excludes"
-               value="${maven.multiproject.excludes},${drools.jdk5.projects}"/>
+               value="${maven.multiproject.excludes},drools*examples/**"/>
+      </j:if>
+      <j:if test="${maven.multiproject.excludes.length()}  == 0}">
+        <j:set var="maven.multiproject.excludes"
+               value="drools*examples/**"/>
       </j:if>
 
       <!-- generate clover dbs for each sub project -->
       <j:set var="goal" value="drools:subproject-clover" />
       <attainGoal name="multiproject:goal"/>
-
-      <attainGoal name="drools:set-excludes" />
 
       <!-- set maven.clover.database-->
       <mkdir dir="${basedir}/target/clover/database" />
@@ -226,7 +249,7 @@
       <attainGoal name="idea:multiproject"/>
     </goal>
 
-    <goal name="drools:eclipse">
+    <goal name="drools:eclipse" prereqs="drools:multiproject-prepare">
       <j:set var="goal" value="eclipse"/>
       <attainGoal name="multiproject:goal"/>
     </goal>
@@ -302,6 +325,8 @@
     </goal>
 
     <goal name="drools:jar-all">
+      <attainGoal name="drools:set-excludes" />
+
       <j:if test="${jdkversion == null}">
         <attainGoal name="drools:set-jdkversion"/>
       </j:if>
@@ -313,22 +338,20 @@
         <echo>target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar exists. Remove to run this goal</echo>
       </j:if>
       <j:if test="${index.exists() == false}">
-        <!-- now exclude smftest as its a compile time dependency -->
-        <j:set var="maven.multiproject.excludes"
-               value="drools-smftest/**"/>
-
-        <!-- if we are 1.4 also exclude jdk5 projects -->
-        <j:if test="${jdkversion == '1.4'}">
+        <!-- now exclude smftest -->
+        <j:if test="${maven.multiproject.excludes.length()}  > 0}">
           <j:set var="maven.multiproject.excludes"
-                 value="${maven.multiproject.excludes},${drools.jdk5.projects}"/>
+               value="${maven.multiproject.excludes},drools-smftest/**"/>
+        </j:if>
+        <j:if test="${maven.multiproject.excludes.length()}  == 0}">
+          <j:set var="maven.multiproject.excludes"
+                 value="drools-smftest/**"/>
         </j:if>
 
         <!-- now unjar each sub project -->
         <mkdir dir="${basedir}/target/jar-all-stage/"/>
         <j:set var="goal" value="drools:subproject-unjar"/>
         <attainGoal name="multiproject:goal"/>
-
-        <attainGoal name="drools:set-excludes" />
 
         <ant:unjar dest="${basedir}/target/jar-all-stage/drools-conf/base">
           <patternset>

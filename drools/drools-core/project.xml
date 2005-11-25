@@ -4,22 +4,6 @@
     <name>Drools :: Rete-OO Core</name>
     <artifactId>drools-core</artifactId>
     <groupId>drools</groupId>
-    
-    <build>
-        <unitTest>
-            <includes>
-                <include>**/*Test.java</include>
-            </includes>
-            <resources>
-                <resource>
-                    <directory>src/test</directory>
-                    <includes>
-                        <include>**/*.drl</include>
-                    </includes>
-                    <filtering>false</filtering>
-                </resource>
-            </resources>
-        </unitTest>
-    </build>
-    
+
+
 </project>
