@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldExample.java,v 1.9 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: HelloWorldExample.java,v 1.10 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,8 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.event.DebugWorkingMemoryEventListener;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
+import org.drools.smf.RuleSetPackage;
 import org.xml.sax.SAXException;
 
 public class HelloWorldExample
@@ -63,9 +65,13 @@ public class HelloWorldExample
         }
         System.out.println( "Using drl: " + args[0] );
 
-        RuleBase ruleBase = RuleBaseLoader.loadFromUrl(
-            HelloWorldExample.class.getResource( args[0] ) );
-
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+        ruleSetLoader.addFromUrl( HelloWorldExample.class.getResource( args[ 0 ] ) );            
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        RuleBase ruleBase = ruleBaseLoader.buildRuleBase();        
+        
         /*
         System.out.println( "DUMP RETE" );
         System.out.println( "---------" );

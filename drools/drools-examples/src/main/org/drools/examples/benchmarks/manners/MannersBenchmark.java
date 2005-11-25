@@ -1,7 +1,7 @@
 package org.drools.examples.benchmarks.manners;
 
 /*
- * $Id: MannersBenchmark.java,v 1.2 2004-12-16 18:48:14 dbarnett Exp $
+ * $Id: MannersBenchmark.java,v 1.3 2005-11-25 02:35:36 mproctor Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,7 +62,9 @@ import org.drools.examples.benchmarks.manners.model.Context;
 import org.drools.examples.benchmarks.manners.model.Count;
 import org.drools.examples.benchmarks.manners.model.Guest;
 import org.drools.examples.benchmarks.manners.model.LastSeat;
+import org.drools.examples.helloworld.HelloWorldExample;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 import org.drools.reteoo.Dumper;
 import org.xml.sax.SAXException;
 
@@ -136,9 +138,12 @@ public class MannersBenchmark
                SAXException
     {
         System.out.println( "Loading DRL: " + DRL_FILE + "..." );
-        RuleBase ruleBase = RuleBaseLoader.loadFromUrl(
-            MannersBenchmark.class.getResource( DRL_FILE ),
-            ComplexityConflictResolver.getInstance( ) );
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+        ruleSetLoader.addFromUrl( MannersBenchmark.class.getResource( DRL_FILE ) );            
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(ComplexityConflictResolver.getInstance( ));
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        RuleBase ruleBase = ruleBaseLoader.buildRuleBase();         
         
         File dotFile = new File( DOT_FILE );
         System.out.println( "Creating DOT: " + dotFile.getCanonicalPath() + "..." );

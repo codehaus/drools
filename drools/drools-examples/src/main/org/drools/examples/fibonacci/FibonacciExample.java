@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciExample.java,v 1.16 2004-12-04 14:59:45 simon Exp $
+ * $Id: FibonacciExample.java,v 1.17 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,9 +40,12 @@ package org.drools.examples.fibonacci;
  *
  */
 
+import java.io.InputStreamReader;
+
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 
 public class FibonacciExample
 {
@@ -58,7 +61,13 @@ public class FibonacciExample
 
         try
         {
-            RuleBase ruleBase = RuleBaseLoader.loadFromUrl( FibonacciExample.class.getResource( args[ 0 ] ) );
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+            ruleSetLoader.addFromUrl( FibonacciExample.class.getResource( args[ 0 ] ) );            
+            
+            RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+            ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();
+               
 
             WorkingMemory workingMemory;
             Fibonacci fibonacci;

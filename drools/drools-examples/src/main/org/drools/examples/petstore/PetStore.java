@@ -1,7 +1,7 @@
 package org.drools.examples.petstore;
 
 /*
- * $Id: PetStore.java,v 1.5 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: PetStore.java,v 1.6 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,7 +44,9 @@ import java.net.URL;
 import java.util.Vector;
 
 import org.drools.RuleBase;
+import org.drools.examples.helloworld.HelloWorldExample;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 
 public class PetStore
 {
@@ -60,8 +62,13 @@ public class PetStore
 
         try
         {
-            URL url = PetStore.class.getResource( args[0] );
-            RuleBase ruleBase = RuleBaseLoader.loadFromUrl( url );
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+            ruleSetLoader.addFromUrl( PetStore.class.getResource( args[0] ) );            
+            
+            RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+            ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();                  
+            
 
             Vector stock = new Vector( );
             stock.add( new CartItem( "Gold Fish", 5 ) );

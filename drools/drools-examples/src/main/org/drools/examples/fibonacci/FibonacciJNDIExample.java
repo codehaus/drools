@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciJNDIExample.java,v 1.7 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: FibonacciJNDIExample.java,v 1.8 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,6 +50,8 @@ import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
+import org.drools.smf.RuleSetPackage;
 import org.xml.sax.SAXException;
 
 public class FibonacciJNDIExample
@@ -60,14 +62,15 @@ public class FibonacciJNDIExample
                IOException,
                NamingException
     {
-        System.setProperty( "java.naming.factory.initial", namingFactory );
-
-        System.setProperty( "org.osjava.jndi.shared", "true" );
-
-        RuleBase ruleBase = RuleBaseLoader.loadFromUrl( FibonacciJNDIExample.class.getResource( drl ) );
-
-        Context context = new InitialContext();
-        context.bind( "fibonacci", ruleBase );
+//        System.setProperty( "java.naming.factory.initial", namingFactory );
+//
+//        System.setProperty( "org.osjava.jndi.shared", "true" );
+//
+//        RuleSetPackage ruleSetPackage = RuleSetLoader.loadFromUrl( FibonacciJNDIExample.class.getResource( drl ) );        
+//        RuleBase ruleBase = RuleBaseLoader.loadFromRuleSetPackage( ruleSetPackage );           
+//
+//        Context context = new InitialContext();
+//        context.bind( "fibonacci", ruleBase );
     }
 
     public static void main(String[] args) throws DroolsException,
@@ -75,36 +78,37 @@ public class FibonacciJNDIExample
                                                   SAXException,
                                                   IOException
     {
-        if ( args.length != 2 )
-        {
-            System.out.println( "Usage: "
-                                + FibonacciJNDIExample.class.getName( )
-                                + " [jndi initial context] [drl file]" );
-            return;
-        }
-        System.out.println( "Using drl: " + args[1] );
-
-        initJNDI( args[0], args[1] );
-
-        Context context = new InitialContext( );
-
-        RuleBase ruleBase = ( RuleBase ) context.lookup( "fibonacci" );
-
-        WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
-
-        org.drools.examples.fibonacci.Fibonacci fibonacci = new Fibonacci( 50 );
-
-        long start = System.currentTimeMillis( );
-
-        workingMemory.assertObject( fibonacci );
-
-        workingMemory.fireAllRules( );
-
-        long stop = System.currentTimeMillis( );
-
-        System.out.println( "fibanacci(" + fibonacci.getSequence( ) + ") == "
-                            + fibonacci.getValue( ) + " took "
-                            + ( stop - start ) + "ms" );
+//        if ( args.length != 2 )
+//        {
+//            System.out.println( "Usage: "
+//                                + FibonacciJNDIExample.class.getName( )
+//                                + " [jndi initial context] [drl file]" );
+//            return;
+//        }
+//        System.out.println( "Using drl: " + args[1] );
+//
+//        initJNDI( args[0], args[1] );
+//
+//        Context context = new InitialContext( );
+//        context.
+//        
+//        RuleBase ruleBase = ( RuleBase ) context.lookup( "fibonacci" );
+//
+//        WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
+//
+//        org.drools.examples.fibonacci.Fibonacci fibonacci = new Fibonacci( 50 );
+//
+//        long start = System.currentTimeMillis( );
+//
+//        workingMemory.assertObject( fibonacci );
+//
+//        workingMemory.fireAllRules( );
+//
+//        long stop = System.currentTimeMillis( );
+//
+//        System.out.println( "fibanacci(" + fibonacci.getSequence( ) + ") == "
+//                            + fibonacci.getValue( ) + " took "
+//                            + ( stop - start ) + "ms" );
     }
 
 }
