@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.jci.CompilerFactory;
 import org.apache.commons.jci.compilers.JavaCompiler;
+import org.apache.commons.jci.readers.ResourceReader;
 import org.drools.smf.SemanticFunctionsCompiler;
 import org.drools.spi.Functions;
 
@@ -42,8 +43,7 @@ public class JavaSemanticFunctionsCompiler extends AbstractSemanticCompiler
                          String packageName,
                          String className,
                          String parentClass,
-                         File srcDir,
-                         File dstDir,
+                         ResourceReader src,
                          Map files) throws IOException
     {
         List methods = new ArrayList();
@@ -61,8 +61,7 @@ public class JavaSemanticFunctionsCompiler extends AbstractSemanticCompiler
         write( ruleClass,
                packageName + "." + className,
                fileName,
-               srcDir,
-               dstDir );
+               src);
 
         List list = (List) files.get( this.semanticType );
         if ( list == null )

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.jci.readers.ResourceReader;
+import org.apache.commons.jci.stores.ResourceStore;
 import org.drools.rule.Declaration;
 import org.drools.spi.RuleComponent;
 
@@ -20,15 +22,16 @@ public interface SemanticRuleCompiler
                          String className,
                          String lastClassName,
                          String knowledgeHelper,
-                         File src,
-                         File dst,
+                         ResourceReader resourceReader,
                          Map files)  throws IOException;
 
     public void compile(String fileName,
-                        File srcDir,
-                        File dstDir);
+                        ResourceReader resourceReader,
+                        ResourceStore resourceStore,
+                        ClassLoader classLoader);
     
     public void compile(String[] filesNames,
-                        File srcDir,
-                        File dstDir);
+                        ResourceReader resourceReader,
+                        ResourceStore resourceStore,
+                        ClassLoader classLoader);
 }
