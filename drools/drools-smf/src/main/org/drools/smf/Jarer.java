@@ -1,6 +1,7 @@
 package org.drools.smf;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,6 +46,22 @@ public class Jarer
     {
         this.jos = new JarOutputStream( new FileOutputStream( jar,
                                                               append ) );
+    }
+
+    /**
+     * A Utility class for adding classes in a directory and sub directory to a given jar
+     * 
+     * @param jar
+     *            The jar file to which entries will be added
+     * @param append
+     *            Whether to append or overwrite the existing jar
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public Jarer(ByteArrayOutputStream outputStream) throws FileNotFoundException,
+                                                    IOException
+    {
+        this.jos = new JarOutputStream( outputStream );
     }
 
     public void close() throws IOException
@@ -111,20 +128,34 @@ public class Jarer
     {
         JarEntry entry = new JarEntry( name );
         addFile( file,
-                  entry );
+                 entry );
+    }
+
+    public void addByteArray(byte[] bytes,
+                             String name) throws IOException
+    {
+        jos.putNextEntry( new JarEntry( name ) );
+        jos.write( bytes );
     }
     
+    public void addCharArray(char[] chars,
+                             String name) throws IOException
+    {
+        addByteArray( new String(chars).getBytes(),
+                      name ); 
+    }    
+
     private void addFile(File file,
                          int baseFolderPos) throws IOException
     {
         JarEntry entry = new JarEntry( file.toURL().toExternalForm().substring( baseFolderPos ) );
         addFile( file,
-                 entry );        
+                 entry );
     }
-    
+
     private void addFile(File file,
                          JarEntry entry) throws IOException
-    {    
+    {
         FileInputStream fis = null;
         BufferedInputStream bis = null;
         try
@@ -148,42 +179,6 @@ public class Jarer
             bis.close();
             fis.close();
         }
-    }        
-    
-
-    /**
-     * Adds the given file to the jar. baseFolderPos is index position of the subscript to exclude in the jar file name entry
-     * 
-     * @param file
-     * @param baseFolderPos
-     * @throws IOException
-     */
-    private void addFile2(File file,
-                         int baseFolderPos) throws IOException
-    {
-        FileInputStream fis = null;
-        BufferedInputStream bis = null;
-        try
-        {
-            fis = new FileInputStream( file );
-            bis = new BufferedInputStream( fis );
-            JarEntry fileEntry = new JarEntry( file.toURL().toExternalForm().substring( baseFolderPos ) );
-            jos.putNextEntry( fileEntry );
-            byte[] data = new byte[1024];
-            int byteCount;
-            while ( (byteCount = bis.read( data,
-                                           0,
-                                           1024 )) > -1 )
-            {
-                jos.write( data,
-                           0,
-                           byteCount );
-            }
-        }
-        finally
-        {
-            bis.close();
-            fis.close();
-        }
     }
+
 }

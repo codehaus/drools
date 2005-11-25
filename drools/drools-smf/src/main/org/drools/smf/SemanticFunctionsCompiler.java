@@ -1,10 +1,11 @@
 package org.drools.smf;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.jci.readers.ResourceReader;
+import org.apache.commons.jci.stores.ResourceStore;
 import org.drools.spi.Functions;
 
 public interface SemanticFunctionsCompiler
@@ -17,16 +18,17 @@ public interface SemanticFunctionsCompiler
                          String packageName,
                          String className,
                          String parentClass,
-                         File src,
-                         File dst,
+                         ResourceReader resourceReader,
                          Map files) throws IOException;
 
     public void compile(String fileName,
-                        File srcDir,
-                        File dstDir);
+                        ResourceReader resourceReader,
+                        ResourceStore resourceStore,
+                        ClassLoader classLoader);
 
     public void compile(String[] filesNames,
-                        File srcDir,
-                        File dstDir);
+                        ResourceReader resourceReader,
+                        ResourceStore resourceStore,
+                        ClassLoader classLoader);
 
 }

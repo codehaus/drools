@@ -10,6 +10,8 @@ import java.util.Set;
 
 import org.apache.commons.jci.CompilerFactory;
 import org.apache.commons.jci.compilers.JavaCompiler;
+import org.apache.commons.jci.readers.ResourceReader;
+import org.apache.commons.jci.stores.ResourceStore;
 import org.drools.rule.Declaration;
 import org.drools.smf.SemanticCondition;
 import org.drools.smf.SemanticConsequence;
@@ -62,8 +64,7 @@ public class JavaSemanticRuleCompiler extends AbstractSemanticCompiler
                          String className,
                          String parentClass,
                          String knowledgeHelper,
-                         File srcDir,
-                         File dstDir,
+                         ResourceReader src,
                          Map files) throws IOException
     {
         JavaMethodGenerator methodGenerator = JavaMethodGenerator.getInstance();
@@ -149,8 +150,7 @@ public class JavaSemanticRuleCompiler extends AbstractSemanticCompiler
         write( ruleClass,
                packageName + "." + className,
                fileName,
-               srcDir,
-               dstDir );
+               src );
 
         List list = (List) files.get( this );
         if ( list == null )
@@ -171,8 +171,7 @@ public class JavaSemanticRuleCompiler extends AbstractSemanticCompiler
         write( ruleClass,
                packageName + "." + className + "Invoker",
                fileName,
-               srcDir,
-               dstDir );
+               src );
 
         files = (Map) files.get( "invokers" );
         list = (List) files.get( JavaSemanticRuleCompiler.getInstance() );

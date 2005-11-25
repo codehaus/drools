@@ -280,7 +280,7 @@ public class JavaMethodGenerator
             }
             // its already imported so dont use fully qualified
             type = parameters[i].getType();
-            buffer.append( "final " );
+            buffer.append( " " );
             /* @todo: allow this to handle nested types and Classes with no packages */
             buffer.append( type.substring( type.lastIndexOf( '.' ) + 1,
                                            type.length() ) );

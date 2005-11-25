@@ -1,6 +1,5 @@
 package org.drools.smf;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.jci.readers.ResourceReader;
+import org.apache.commons.jci.stores.ResourceStore;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
-import org.drools.spi.Condition;
 import org.drools.spi.Consequence;
 import org.drools.spi.RuleComponent;
 
@@ -36,8 +36,9 @@ public class RuleCompiler
                         Map parents,
                         Map ruleNameMap,
                         String knowledgeHelper,
-                        File src,
-                        File dst) throws IOException
+                        ResourceReader src,
+                        ResourceStore dst,
+                        ClassLoader classLoader) throws IOException
     {
         Map map = new HashMap();
         Map files = new HashMap();
@@ -135,12 +136,11 @@ public class RuleCompiler
                                (String) parents.get( compiler.getSemanticType() ),
                                knowledgeHelper,
                                src,
-                               dst,
                                files );
         }
 
-        compile( files, src, dst );
-        compile( invokers, src, dst);
+        compile( files, src, dst, classLoader );
+        compile( invokers, src, dst, classLoader );
         
         
 //        it = files.keySet().iterator();
@@ -179,8 +179,9 @@ public class RuleCompiler
     }
     
     private void compile( Map files,
-                          File src,
-                          File dst )
+                          ResourceReader src,
+                          ResourceStore dst,
+                          ClassLoader classLoader)
     {
         Iterator it = files.keySet().iterator();
         Object object = null;
@@ -194,7 +195,8 @@ public class RuleCompiler
                 list = ( List ) files.get( compiler ); 
                 compiler.compile( ( String[] ) list.toArray( new String[ list.size() ] ),
                                   src,
-                                  dst );
+                                  dst,
+                                  classLoader);
             }
         }        
     }
@@ -208,7 +210,7 @@ public class RuleCompiler
      * @return
      */
     private String generateUniqueLegalName(String packageName,
-                                           File directory,
+                                           ResourceReader src,
                                            String name,
                                            String ext)
     {
@@ -225,9 +227,8 @@ public class RuleCompiler
             counter++;
             String fileName = packageName.replaceAll( "\\.",
                                                       "/" ) + newName + "_" + counter + ext;
-            File file = new File( directory,
-                                  fileName );
-            exists = file.exists();
+            
+            exists = src.isAvailable(fileName);
         }
         // we have duplicate file names so append counter
         if ( counter >= 0 )

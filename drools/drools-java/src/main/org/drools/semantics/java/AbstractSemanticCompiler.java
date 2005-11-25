@@ -9,7 +9,10 @@ import java.net.URLClassLoader;
 import org.apache.commons.jci.compilers.CompilationResult;
 import org.apache.commons.jci.compilers.JavaCompiler;
 import org.apache.commons.jci.readers.FileResourceReader;
+import org.apache.commons.jci.readers.MemoryResourceReader;
+import org.apache.commons.jci.readers.ResourceReader;
 import org.apache.commons.jci.stores.FileResourceStore;
+import org.apache.commons.jci.stores.ResourceStore;
 
 public abstract class AbstractSemanticCompiler
 {
@@ -18,11 +21,8 @@ public abstract class AbstractSemanticCompiler
     protected void write(StringBuffer buffer,
                              String className,
                              String fileName,
-                             File srcDir,
-                             File dstDir) throws IOException
+                             ResourceReader src) throws IOException
     {
-        FileResourceReader src = new FileResourceReader( srcDir );
-        FileResourceStore dst = new FileResourceStore( dstDir );
 
         char[] source = new char[buffer.length()];
         buffer.getChars( 0,
@@ -30,72 +30,41 @@ public abstract class AbstractSemanticCompiler
                          source,
                          0 );
 
-        writeFile( srcDir,
+        writeFile( src,
                    fileName,
                    source );
 
     }
 
-    protected File writeFile(File directory,
-                             final String pName,
-                             final char[] pText) throws IOException
+    protected void writeFile(ResourceReader src,
+                             final String name,
+                             final char[] text) throws IOException
     {
-        final File file = new File( directory,
-                                    pName );
-        final File parent = file.getParentFile();
-        
-        // Make sure the parent folder exists
-        if ( !parent.exists() && !parent.mkdirs() )
-        {
-            throw new IOException( "could not create directory '" + parent );
+        if (src instanceof MemoryResourceReader) {
+            MemoryResourceReader memorySrc = (MemoryResourceReader) src;
+            memorySrc.addFile(name, text);
         }
-        
-        try
-        {
-            final FileWriter writer = new FileWriter( file );
-            writer.write( pText );
-            writer.close();
-        }
-        catch ( IOException e )
-        {
-            throw new IOException( "Unable to write code to file: " + e.getMessage() ); 
-        }
-
-        return file;
     }
     
    
     public void compile(String fileName,
-                        File srcDir,
-                        File dstDir) 
+                        ResourceReader src,
+                        ResourceStore dst,
+                        ClassLoader classLoader) 
     {
         compile( new String[] { fileName },
-                 srcDir,
-                 dstDir );
+                 src,
+                 dst,
+                 classLoader);
     }
     
-    public void compile(String[] filesNames,
-                        File srcDir,
-                        File dstDir) 
-    {
-        FileResourceReader src = new FileResourceReader( srcDir );
-        FileResourceStore dst = new FileResourceStore( dstDir );      
+    public void compile(String[] fileNames,
+                        ResourceReader src,
+                        ResourceStore dst,
+                        ClassLoader classLoader) 
+    {     
         
-        ClassLoader classLoader = null;
-        
-        try 
-        {                    
-            classLoader = new URLClassLoader( new URL[] { srcDir.toURL(), 
-                                              dstDir.toURL() } );
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            //@todo make this add some intelligent error
-            //swallow
-        }
-        
-        CompilationResult result = compiler.compile( filesNames ,
+        CompilationResult result = compiler.compile( fileNames ,
                                                      src,
                                                      dst,
                                                      classLoader );
