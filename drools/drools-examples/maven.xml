@@ -1,5 +1,4 @@
 <project
-    default="default"
     xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
     xmlns:u="jelly:util"

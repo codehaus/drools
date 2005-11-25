@@ -162,34 +162,5 @@
 
     </dependencies>
 
-    <build>
-        <!-- J A R  R E S O U R C E S -->
-        <!-- Resources that are packaged up inside the JAR file -->
-
-        <resources>
-            <resource>
-                <directory>src/main</directory>
-                <includes>
-                    <include>**/*.drl</include>
-                    <include>**/*.dat</include>
-                    <include>**/primes.txt.gz</include>
-                    <include>**/*.gif</include>
-                    <include>**/*.xls</include>
-                    <include>**/*.csv</include>
-                </includes>
-            </resource>
-
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>**/*.conf</include>
-                    <include>**/*.xsd</include>
-                    <include>**/*.properties</include>
-                </includes>
-            </resource>
-        </resources>
-
-    </build>
-
 </project>
 
