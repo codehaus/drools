@@ -23,6 +23,11 @@
             <version>3.1.0</version>
         </dependency>
         <dependency>
+            <groupId>janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>2.3.15</version>
+        </dependency>        
+        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.0.4</version>
