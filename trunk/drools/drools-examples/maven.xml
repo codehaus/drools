@@ -4,11 +4,6 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <goal name="default">
-        <attainGoal name="jar:jar"/>
-    </goal>
-
-
     <goal name="drools:multiproject-get-deps" />
 
     <!-- Convenience goals to help regression test all examples quickly -->
