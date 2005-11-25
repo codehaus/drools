@@ -1,7 +1,7 @@
 package org.drools.examples.state;
 
 /*
- * $Id: StateExample.java,v 1.6 2004-12-16 19:17:31 dbarnett Exp $
+ * $Id: StateExample.java,v 1.7 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,7 +46,11 @@ import java.net.URL;
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.examples.fibonacci.FibonacciExample;
+import org.drools.examples.helloworld.HelloWorldExample;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
+import org.drools.smf.RuleSetPackage;
 import org.xml.sax.SAXException;
 
 public class StateExample
@@ -62,9 +66,13 @@ public class StateExample
             return;
         }
         System.out.println( "Using drl: " + args[0] );
-
-        URL url = StateExample.class.getResource( args[0] );
-        RuleBase ruleBase = RuleBaseLoader.loadFromUrl( url );
+        
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+        ruleSetLoader.addFromUrl( StateExample.class.getResource( args[ 0 ] ) );            
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        RuleBase ruleBase = ruleBaseLoader.buildRuleBase();              
 
         WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 

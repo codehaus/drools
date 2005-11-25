@@ -1,7 +1,7 @@
 package org.drools.examples.house;
 
 /*
- * $Id: HouseExample.java,v 1.3 2005-05-08 04:22:34 dbarnett Exp $
+ * $Id: HouseExample.java,v 1.4 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2005-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -44,7 +44,9 @@ package org.drools.examples.house;
 import org.drools.FactHandle;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.examples.helloworld.HelloWorldExample;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 
 public class HouseExample
 {
@@ -59,7 +61,13 @@ public class HouseExample
             
             Heating heating = new Heating();            
             
-            RuleBase ruleBase = RuleBaseLoader.loadFromUrl( HouseExample.class.getResource( "house.drl" ) );
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+            ruleSetLoader.addFromUrl( HouseExample.class.getResource( "house.drl" ) );            
+            
+            RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+            ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();            
+            
             // Dumper dumper = new Dumper(ruleBase);
             // dumper.dumpRete(System.err);
 

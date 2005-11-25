@@ -1,7 +1,7 @@
 package org.drools.examples.escalation;
 
 /*
- * $Id: Escalation.java,v 1.7 2005-09-25 20:21:18 mproctor Exp $
+ * $Id: Escalation.java,v 1.8 2005-11-25 02:35:33 mproctor Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -48,7 +48,9 @@ import org.drools.AssertionException;
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
+import org.drools.examples.helloworld.HelloWorldExample;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 
 public class Escalation
 {
@@ -63,9 +65,13 @@ public class Escalation
         System.out.println( "Using drl: " + args[0] );
         try
         {
-            URL url = Escalation.class.getResource( args[0] );
-            RuleBase ruleBase = RuleBaseLoader.loadFromUrl( url );
-
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+            ruleSetLoader.addFromUrl( Escalation.class.getResource( args[0] ) );            
+            
+            RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+            ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();              
+            
             WorkingMemory workingMemory = ruleBase.newWorkingMemory( );
 
             try
