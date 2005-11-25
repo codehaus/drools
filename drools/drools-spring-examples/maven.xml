@@ -1,13 +1,9 @@
 <project
-    default="default"
     xmlns:ant="jelly:ant"
     xmlns:j="jelly:core"
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
-    <goal name="default">
-        <attainGoal name="jar:jar"/>
-    </goal>
 
     <goal name="drools:multiproject-get-deps" />
 
