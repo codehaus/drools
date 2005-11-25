@@ -42,15 +42,13 @@ package org.drools.decisiontable.parser;
 
 
 
-import java.util.Iterator;
 import java.util.List;
+
+import junit.framework.TestCase;
 
 import org.drools.decisiontable.model.Import;
 import org.drools.decisiontable.model.Parameter;
 import org.drools.decisiontable.model.Variable;
-import org.drools.decisiontable.parser.RuleSheetParserUtil;
-
-import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale</a>

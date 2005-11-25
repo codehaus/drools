@@ -54,7 +54,6 @@ import org.drools.decisiontable.model.Import;
 import org.drools.decisiontable.model.Parameter;
 import org.drools.decisiontable.model.Rule;
 import org.drools.decisiontable.model.Ruleset;
-import org.drools.decisiontable.parser.RuleSheetListener;
 
 /**
  * @author Shaun Addison, Michael Neale

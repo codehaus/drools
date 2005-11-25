@@ -42,8 +42,6 @@ package org.drools.decisiontable.parser.xls;
 
 
 
-import org.drools.decisiontable.parser.xls.ExcelParser;
-
 import junit.framework.TestCase;
 
 /**

@@ -48,8 +48,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.drools.decisiontable.model.Import;
-import org.drools.decisiontable.model.Variable;
 import org.drools.decisiontable.model.Parameter;
+import org.drools.decisiontable.model.Variable;
 
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale </a>

@@ -53,14 +53,13 @@ import org.apache.poi.hssf.eventusermodel.HSSFEventFactory;
 import org.apache.poi.hssf.eventusermodel.HSSFListener;
 import org.apache.poi.hssf.eventusermodel.HSSFRequest;
 import org.apache.poi.hssf.record.BOFRecord;
+import org.apache.poi.hssf.record.BoolErrRecord;
 import org.apache.poi.hssf.record.BoundSheetRecord;
 import org.apache.poi.hssf.record.LabelSSTRecord;
 import org.apache.poi.hssf.record.NumberRecord;
 import org.apache.poi.hssf.record.Record;
 import org.apache.poi.hssf.record.RowRecord;
 import org.apache.poi.hssf.record.SSTRecord;
-import org.apache.poi.hssf.record.BoolErrRecord;
-
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.drools.decisiontable.parser.DecisionTableParseException;
 import org.drools.decisiontable.parser.DecisionTableParser;

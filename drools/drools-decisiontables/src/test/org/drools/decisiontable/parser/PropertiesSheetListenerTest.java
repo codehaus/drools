@@ -2,9 +2,9 @@ package org.drools.decisiontable.parser;
 
 import java.util.Properties;
 
-import org.drools.decisiontable.parser.xls.PropertiesSheetListener;
-
 import junit.framework.TestCase;
+
+import org.drools.decisiontable.parser.xls.PropertiesSheetListener;
 
 public class PropertiesSheetListenerTest extends TestCase
 {

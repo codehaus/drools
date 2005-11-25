@@ -44,7 +44,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.drools.decisiontable.parser.RuleSheetListener;
 import org.drools.decisiontable.parser.xls.ExcelParser;
 
 /**

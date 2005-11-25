@@ -44,12 +44,13 @@ package org.drools.decisiontable;
 
 import java.io.StringReader;
 
+import junit.framework.TestCase;
+
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.decisiontable.model.Ruleset;
 import org.drools.io.RuleBaseLoader;
-
-import junit.framework.TestCase;
+import org.drools.io.RuleSetLoader;
 
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale</a>
@@ -69,9 +70,15 @@ public class RulesetExecTest extends TestCase
     public void testRulesetExec() throws Exception
     {
         Ruleset ruleSet = RulesetToDRLTest.getTestRuleSet( );
-        RuleBase rb = RuleBaseLoader.loadFromReader( new StringReader( ruleSet.toXML( ) ) );
+               
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+        ruleSetLoader.addFromReader(new StringReader( ruleSet.toXML( ) ) );            
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        RuleBase ruleBase = ruleBaseLoader.buildRuleBase();           
 
-        WorkingMemory engine = rb.newWorkingMemory( );
+        WorkingMemory engine = ruleBase.newWorkingMemory( );
         engine.assertObject( "yes" );
         engine.fireAllRules( );
     }

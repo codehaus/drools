@@ -43,9 +43,9 @@ package org.drools.decisiontable.parser.csv;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.drools.decisiontable.parser.SheetListener;
-
 import junit.framework.TestCase;
+
+import org.drools.decisiontable.parser.SheetListener;
 
 public class CsvParserTest extends TestCase
 {

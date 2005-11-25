@@ -44,6 +44,8 @@ package org.drools.decisiontable;
 
 import java.io.StringReader;
 
+import junit.framework.TestCase;
+
 import org.drools.RuleBase;
 import org.drools.decisiontable.model.Condition;
 import org.drools.decisiontable.model.Consequence;
@@ -51,9 +53,8 @@ import org.drools.decisiontable.model.Parameter;
 import org.drools.decisiontable.model.Rule;
 import org.drools.decisiontable.model.Ruleset;
 import org.drools.io.RuleBaseLoader;
+import org.drools.io.RuleSetLoader;
 import org.xml.sax.SAXParseException;
-
-import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale</a>
@@ -65,8 +66,14 @@ public class RulesetToDRLTest extends TestCase
 
     public void testBuildRuleBaseBasicParsing() throws Exception
     {
-        String ruleText = getTestRuleSet( ).toXML( );
-        RuleBase ruleBase = RuleBaseLoader.loadFromReader( new StringReader( ruleText ) );
+        String ruleText = getTestRuleSet( ).toXML( );                
+                
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+        ruleSetLoader.addFromReader( new StringReader( ruleText ) );            
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        RuleBase ruleBase = ruleBaseLoader.buildRuleBase();
         assertNotNull( ruleBase );
     }
 
@@ -108,8 +115,14 @@ public class RulesetToDRLTest extends TestCase
         Ruleset ruleset = new Ruleset( "xyz" );
         ruleset.addRule( rule );
         try
-        {
-            RuleBaseLoader.loadFromReader( new StringReader( ruleset.toXML( ) ) );
+        {           
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+            ruleSetLoader.addFromReader(new StringReader( ruleset.toXML( ) ) );            
+            
+            RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+            ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();            
+            
             fail( );
         }
         catch ( SAXParseException e )
@@ -133,7 +146,12 @@ public class RulesetToDRLTest extends TestCase
 
         try
         {
-            RuleBaseLoader.loadFromReader( new StringReader( ruleset.toXML( ) ) );
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();           
+            ruleSetLoader.addFromReader(new StringReader( ruleset.toXML( ) ) );            
+            
+            RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
+            ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();      
             fail( );
         }
         catch ( Exception e )

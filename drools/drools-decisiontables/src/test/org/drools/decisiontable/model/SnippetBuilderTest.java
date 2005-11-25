@@ -42,8 +42,6 @@ package org.drools.decisiontable.model;
 
 
 
-import org.drools.decisiontable.model.SnippetBuilder;
-
 import junit.framework.TestCase;
 
 /**
