@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.20 2004-12-16 18:48:14 dbarnett Exp $
+ * $Id: LocalRuleExecutionSetProviderImpl.java,v 1.21 2005-11-25 02:11:34 mproctor Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -50,8 +50,7 @@ import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 
-import org.drools.RuleIntegrationException;
-import org.drools.RuleSetIntegrationException;
+import org.drools.IntegrationException;
 import org.drools.io.RuleSetReader;
 import org.drools.rule.RuleSet;
 import org.xml.sax.SAXException;
@@ -206,12 +205,7 @@ public class LocalRuleExecutionSetProviderImpl
         {
             return new RuleExecutionSetImpl( ruleSet, properties );
         }
-        catch ( RuleIntegrationException e )
-        {
-            throw new RuleExecutionSetCreateException(
-                "Failed to create RuleExecutionSet", e );
-        }
-        catch ( RuleSetIntegrationException e )
+        catch ( IntegrationException e )
         {
             throw new RuleExecutionSetCreateException(
                 "Failed to create RuleExecutionSet", e );
