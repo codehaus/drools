@@ -15,6 +15,7 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
+
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-smf</artifactId>
@@ -25,26 +26,5 @@
         </dependency>
     </dependencies>
 
-    <build>
-
-        <!-- J A R  R E S O U R C E S -->
-        <!-- Resources that are packaged up inside the JAR file -->
-
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>**/*.conf</include>
-                    <include>**/*.xsd</include>
-                </includes>
-            </resource>
-        </resources>
-
-    </build>
-
-    <reports>
-      <report>maven-javadoc-plugin</report>
-      <report>maven-junit-report-plugin</report>
-    </reports>
 </project>
 

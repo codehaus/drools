@@ -8,6 +8,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>commons</groupId>
+            <artifactId>jci</artifactId>
+            <version>SNAPSHOT20051110</version>
+        </dependency>
+
+        <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
             <version>${pom.currentVersion}</version>
@@ -17,9 +23,5 @@
         </dependency>
     </dependencies>
 
-    <reports>
-      <report>maven-javadoc-plugin</report>
-      <report>maven-junit-report-plugin</report>
-    </reports>
 </project>
 

@@ -185,7 +185,6 @@
     <contributors>
         <contributor>
             <name>Brian Topping</name>
-            <id>topping</id>
             <email>topping@bill2.com</email>
             <roles>
                 <role>JSR-94 Contributor</role>
@@ -200,7 +199,9 @@
 	    <timezone>-5</timezone>
         </contributor>
     </contributors>
+
     <build>
+        <defaultGoal>drools:default</defaultGoal>
         <nagEmailAddress>scm@drools.codehaus.org</nagEmailAddress>
         <sourceDirectory>src/main</sourceDirectory>
         <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
@@ -215,7 +216,12 @@
                 <resource>
                     <directory>src/test</directory>
                     <includes>
+                        <include>**/*.properties</include>
                         <include>**/*.drl</include>
+                        <include>**/*.data</include>
+                        <include>**/*.xml</include>
+                        <include>**/*.xls</include>
+                        <include>**/*.csv</include>
                     </includes>
                     <filtering>false</filtering>
                 </resource>
@@ -230,9 +236,19 @@
                 <directory>src/main</directory>
                 <includes>
                     <include>**/*.properties</include>
+                    <include>**/*.drl</include>
+                    <include>**/*.data</include>
                     <include>**/*.xml</include>
+                    <include>**/*.gz</include>
                 </includes>
                 <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/conf</directory>
+                <includes>
+                    <include>**/*.conf</include>
+                    <include>**/*.xsd</include>
+                </includes>
             </resource>
         </resources>
     </build>

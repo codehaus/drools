@@ -41,7 +41,7 @@
                 <requiredBy>drools:drools-spring - compile, run, test</requiredBy>
             </properties>
         </dependency>
-        
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -75,7 +75,7 @@
                 <requiredBy>drools:drools-spring - compile, test</requiredBy>
             </properties>
 		</dependency>
-        
+
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
@@ -95,37 +95,6 @@
 		</dependency>
     </dependencies>
 
-    <build>
-        <unitTest>
-            <includes>
-                <include>**/*Test.java</include>
-            </includes>
-            <resources>
-                <resource>
-                    <directory>src/test/data</directory>
-                    <includes>
-                        <include>**/*.data</include>
-                    </includes>
-                </resource>
-                <resource>
-                    <directory>src/test</directory>
-                    <includes>
-                        <include>**/*.xml</include>
-                        <include>**/*.drl</include>
-                    </includes>
-                </resource>
-            </resources>
-        </unitTest>
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>**/*.conf</include>
-                    <include>**/*.xsd</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
 
 </project>
 

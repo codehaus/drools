@@ -8,11 +8,24 @@
 
     <dependencies>
         <dependency>
-            <!-- Note: Groovy depends on JDK1.4 so this
-                 module is really not JDK1.3-compatible. -->
             <groupId>groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>1.0-jsr-03</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-jci</groupId>
+            <artifactId>jci</artifactId>
+            <version>SNAPSHOT20051110</version>
+        </dependency>
+        <dependency>
+            <groupId>eclipse</groupId>
+            <artifactId>org.eclipse.jdt.core</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>drools</groupId>
@@ -46,38 +59,15 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
+       <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-java</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
     </dependencies>
-
-    <build>
-
-        <!-- J A R  R E S O U R C E S -->
-        <!-- Resources that are packaged up inside the JAR file -->
-
-        <unitTest>
-            <includes>
-                <include>**/*Test.java</include>
-            </includes>
-            <resources>
-                <resource>
-                    <directory>src/test</directory>
-                    <includes>
-                        <include>**/*.data</include>
-                    </includes>
-                </resource>
-            </resources>
-        </unitTest>
-
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>**/*.conf</include>
-                    <include>**/*.xsd</include>
-                </includes>
-            </resource>
-        </resources>
-
-    </build>
 
 </project>
 

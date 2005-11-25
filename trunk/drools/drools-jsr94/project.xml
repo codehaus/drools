@@ -19,7 +19,6 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
-
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-core</artifactId>
@@ -28,7 +27,6 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
-
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-smf</artifactId>
@@ -37,7 +35,6 @@
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
         </dependency>
-
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-io</artifactId>
@@ -55,21 +52,25 @@
             </properties>
         </dependency>
         <dependency>
-            <groupId>drools</groupId>
-            <artifactId>drools-base</artifactId>
-            <version>${pom.currentVersion}</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-            </properties>
+            <groupId>commons-jci</groupId>
+            <artifactId>jci</artifactId>
+            <version>SNAPSHOT20051110</version>
         </dependency>
-
+        <dependency>
+            <groupId>eclipse</groupId>
+            <artifactId>org.eclipse.jdt.core</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+        </dependency>
         <dependency>
             <groupId>janino</groupId>
             <artifactId>janino</artifactId>
             <version>2.3.8</version>
         </dependency>
-
-
         <dependency>
             <groupId>antlr</groupId>
             <artifactId>antlr</artifactId>
@@ -107,9 +108,7 @@
     </dependencies>
 
     <build>
-
         <!-- Unit test classes -->
-
         <unitTest>
             <includes>
                 <include>**/org/drools/jsr94/AllTests.java</include>
@@ -120,13 +119,11 @@
                     <directory>src/test</directory>
                     <includes>
                         <include>**/*.drl</include>
-                        <include>**/*.jelly</include>
                         <include>**/*.dat</include>
                     </includes>
                 </resource>
             </resources>
         </unitTest>
-
     </build>
 
 </project>
