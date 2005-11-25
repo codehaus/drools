@@ -111,10 +111,19 @@ public class PythonInterp implements Serializable
         PySystemState.initialize( );
 
         PySystemState systemState = Py.getSystemState( );
+        
         if ( systemState == null )
         {
             systemState = new PySystemState( );
         }
+        
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader ==null) 
+        {
+            classLoader = PythonInterp.class.getClassLoader();
+        }
+        systemState.setClassLoader(classLoader);
+        
         Py.setSystemState( systemState );
     }
 
@@ -146,7 +155,6 @@ public class PythonInterp implements Serializable
         while ( it.hasNext( ) )
         {
             globalText.append( convertToPythonImport( ( String ) it.next( ) ) );
-            globalText.append( ";" );
             globalText.append( LINE_SEPARATOR );
         }
 
@@ -160,8 +168,8 @@ public class PythonInterp implements Serializable
         if ( functions != null )
         {
             globalText.append( stripOuterIndention( functions.getText( ) ) );
-        }
-
+        }       
+        
         if ( this.globals == null )
         {
             this.globals = getGlobals( globalText.toString( ) );
@@ -203,7 +211,7 @@ public class PythonInterp implements Serializable
         PyModule module = new PyModule( "main",
                                         new PyDictionary( ) );
 
-        PyObject locals = module.__dict__;
+        PyObject locals = module.__dict__;       
 
         Py.exec( Py.compile_flags( text,
                                    "<string>",
@@ -449,6 +457,7 @@ public class PythonInterp implements Serializable
             ruleBaseContext.put( "smf-classLoader",
                                  cl );
         }
+        
 
         while ( declIter.hasNext( ) )
         {
