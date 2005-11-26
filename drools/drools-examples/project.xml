@@ -74,7 +74,7 @@
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-decisiontables</artifactId>
@@ -82,33 +82,33 @@
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
-        </dependency>        
-        
+        </dependency>
+
         <dependency>
             <groupId>jython</groupId>
             <artifactId>jython</artifactId>
             <version>20020827-no-oro</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.0-jsr-04</version>
+            <version>1.0-jsr-03</version>
         </dependency>
         <dependency>
             <groupId>commons-jci</groupId>
             <artifactId>jci</artifactId>
             <version>SNAPSHOT20051110</version>
-        </dependency>         
+        </dependency>
         <dependency>
             <groupId>eclipse</groupId>
             <artifactId>jdtcore</artifactId>
             <version>3.1.0</version>
-        </dependency>                     
+        </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.0.4</version>
-        </dependency>             
+        </dependency>
         <dependency>
             <groupId>antlr</groupId>
             <artifactId>antlr</artifactId>
@@ -152,13 +152,13 @@
             <artifactId>foxtrot</artifactId>
             <version>2.0</version>
         </dependency>
-        
+
     	<!-- presently requires POI, which is not pom-ed by maven yet -->
         <dependency>
             <groupId>poi</groupId>
             <artifactId>poi</artifactId>
-            <version>1.1</version>          
-        </dependency>        
+            <version>1.1</version>
+        </dependency>
 
     </dependencies>
 

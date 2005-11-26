@@ -19,7 +19,7 @@
         <dependency>
             <groupId>drools</groupId>
             <artifactId>drools-smf</artifactId>
-            <version>${pom.currentVersion}</version>
+            <version> ${project.version}</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
             </properties>
