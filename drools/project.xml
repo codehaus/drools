@@ -3,7 +3,7 @@
     <name>Drools</name>
     <groupId>drools</groupId>
     <artifactId>drools</artifactId>
-    <currentVersion>2.1</currentVersion>
+    <currentVersion>2.5-beta-1</currentVersion>
     <organization>
         <name>The Codehaus</name>
         <url>http://www.codehaus.org</url>
