@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.7 2005-11-25 02:09:03 mproctor Exp $
+ * $Id: RuleBaseLoader.java,v 1.8 2005-11-27 00:18:01 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
@@ -208,6 +209,7 @@ public final class RuleBaseLoader
         }
     }
     
+    // @todo
     public void addFromByteArray(Object object)throws IOException,
     IntegrationException
     {
@@ -307,4 +309,228 @@ public final class RuleBaseLoader
         }
     }
 
+    
+    //-------------------------------------------------------
+    // Added old static api methods back in for compatability
+    //-------------------------------------------------------
+    
+    /**
+     * Loads a RuleBase from a URL using the default ConflictResolver
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromUrl(URL url, ConflictResolver resolver) passing the
+     * DefaultConflictResolver
+     *
+     * @param url
+     * @return RuleBase
+     */
+    public static RuleBase loadFromUrl( URL url )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromUrl( url, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from a URL using the given ConflictResolver
+     *
+     * @param url
+     * @param resolver
+     * @return RuleBase
+     */
+    public static RuleBase loadFromUrl( URL url, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromUrl( new URL[]{url}, resolver );
+    }
+
+    /**
+     * Loads a RuleBase using several URLs, using the DefaultConflictResolver.
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromUrl(URL[] url, ConflictResolver resolver) passing the
+     * DefaultConflictResolver
+     *
+     * @param urls
+     * @return RuleBase
+     */
+    public static RuleBase loadFromUrl( URL[] urls )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromUrl( urls, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from several URLS, merging them and using the specified
+     * ConflictResolver
+     *
+     * @param urls
+     * @param resolver
+     * @return RuleBase
+     */
+    public static RuleBase loadFromUrl( URL[] urls, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {              
+      RuleSetLoader ruleSetLoader = new RuleSetLoader();
+      ruleSetLoader.addFromUrl(urls);
+      
+      RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(resolver);
+      ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+      
+      return ruleBaseLoader.buildRuleBase();      
+    }
+
+    /**
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromInputStream(InputStream in, ConflictResolver resolver) passing
+     * the DefaultConflictResolver
+     *
+     * @param in
+     * @return ruleBase
+     */
+    public static RuleBase loadFromInputStream( InputStream in )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromInputStream( in, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
+     *
+     * @param in
+     * @param resolver
+     * @return ruleBase
+     */
+    public static RuleBase loadFromInputStream( InputStream in,
+                                                ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromInputStream( new InputStream[]{in}, resolver );
+    }
+
+    /**
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromInputStream(InputStream[] ins, ConflictResolver resolver)
+     * passing the DefaultConflictResolver
+     *
+     * @param ins
+     * @return ruleBase
+     */
+    public static RuleBase loadFromInputStream( InputStream[] ins )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromInputStream( ins, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from an InputStream using the default ConflictResolver
+     *
+     * @param ins
+     * @param resolver
+     * @return ruleBase
+     */
+    public static RuleBase loadFromInputStream( InputStream[] ins,
+                                                ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();
+        ruleSetLoader.addFromInputStream(ins);
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(resolver);
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        
+        return ruleBaseLoader.buildRuleBase();                  
+    }
+
+    /**
+     * Loads a RuleBase from a Reader using the default ConflictResolver
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromReader(Reader in, ConflictResolver resolver) passing the
+     * DefaultConflictResolver
+     *
+     * @param in
+     * @return ruleBase
+     */
+    public static RuleBase loadFromReader( Reader in )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromReader( in, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from a Reader using the given ConflictResolver
+     *
+     * @param in
+     * @param resolver
+     * @return ruleBase
+     */
+    public static RuleBase loadFromReader( Reader in, ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromReader( new Reader[]{in}, resolver );
+    }
+
+    /**
+     * Loads a RuleBase from a Reader using the default ConflictResolver
+     *
+     * This is a convenience method and calls public static RuleBase
+     * loadFromReader(Reader[] ins, ConflictResolver resolver) passing the
+     * DefaultConflictResolver
+     *
+     * @param ins
+     * @return ruleBase
+     */
+    public static RuleBase loadFromReader( Reader[] ins )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        return loadFromReader( ins, DefaultConflictResolver.getInstance( ) );
+    }
+
+    /**
+     * Loads a RuleBase from a Reader using the given ConflictResolver
+     *
+     * @param ins
+     * @param resolver
+     * @return ruleBase
+     */
+    public static RuleBase loadFromReader( Reader[] ins,
+                                             ConflictResolver resolver )
+        throws SAXException,
+               IOException,
+               IntegrationException
+    {
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();
+        ruleSetLoader.addFromReader(ins);
+        
+        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(resolver);
+        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
+        
+        return ruleBaseLoader.buildRuleBase();  
+    }    
 }
