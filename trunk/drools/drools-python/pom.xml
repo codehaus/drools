@@ -1,0 +1,37 @@
+<project>
+  <parent>
+    <artifactId>drools</artifactId>
+    <groupId>org.drools</groupId>
+    <version>2.5-beta-1</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Drools :: Python Semantics Module</name>
+  <artifactId>drools-python</artifactId>
+  <version>2.5-beta-1</version>
+
+  <dependencies>
+    <!-- Compile scoped dependencies -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-base</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
+      <version>2.1</version>
+    </dependency>
+
+    <!-- Test scoped dependencies -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-smftest</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
