@@ -140,7 +140,9 @@ public class RuleSetLoader
     }
     
     /**
-     * Loads a RuleBase from a Reader using the given ConflictResolver
+     * Loads a RuleBase from a Reader using the given ConflictResolver.
+     * All SAXExceptions with embedded exceptions are rethrown as nested
+     * Exceptions in IntegrationException
      * 
      * @param ins
      * @param resolver
@@ -156,7 +158,14 @@ public class RuleSetLoader
         for ( int i = 0; i < sources.length; ++i )
         {
             RuleSetReader reader = new RuleSetReader( factoryContext );
-            ruleSet = reader.read( sources[i] );
+            try {
+                ruleSet = reader.read( sources[i] );
+            } catch ( SAXException e ) {
+                if ( e.getException() != null ) 
+                {
+                    throw new IntegrationException( e.getException() );
+                }
+            }
             RuleSetCompiler compiler = new RuleSetCompiler(ruleSet,
                                                            packageName,
                                                            "drools" ); 
