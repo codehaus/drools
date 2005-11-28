@@ -68,7 +68,7 @@
         <dependency>
             <groupId>groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.0-jsr-03</version>
+            <version>1.0-jsr-04</version>
         </dependency>
         <dependency>
             <groupId>commons-jci</groupId>
