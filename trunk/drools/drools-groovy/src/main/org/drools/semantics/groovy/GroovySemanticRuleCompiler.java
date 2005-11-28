@@ -1,13 +1,11 @@
 package org.drools.semantics.groovy;
 
-import org.apache.commons.jci.CompilerFactory;
 import org.apache.commons.jci.compilers.JavaCompiler;
+import org.apache.commons.jci.compilers.JavaCompilerFactory;
 import org.drools.semantics.java.JavaSemanticRuleCompiler;
 import org.drools.smf.SemanticRuleCompiler;
 
 public class GroovySemanticRuleCompiler extends JavaSemanticRuleCompiler
-    implements
-    SemanticRuleCompiler
 {
     private static SemanticRuleCompiler INSTANCE;
 
@@ -16,7 +14,7 @@ public class GroovySemanticRuleCompiler extends JavaSemanticRuleCompiler
         if ( GroovySemanticRuleCompiler.INSTANCE == null )
         {
             GroovySemanticRuleCompiler.INSTANCE = new GroovySemanticRuleCompiler( "groovy",
-                                                                                  CompilerFactory.getInstance().newCompiler( CompilerFactory.GROOVY ) );
+                                                                                  JavaCompilerFactory.getInstance().createCompiler( JavaCompilerFactory.GROOVY ) );
         }
         return GroovySemanticRuleCompiler.INSTANCE;
     }

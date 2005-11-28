@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: GroovyExprAnalyzer.java,v 1.3 2005-11-28 14:35:22 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -59,7 +59,7 @@ import org.drools.rule.Declaration;
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter </a>
  * @author <a href="mailto:ckl@dacelo.nl">Christiaan ten Klooster </a>
  *
- * @version $Id: GroovyExprAnalyzer.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
+ * @version $Id: GroovyExprAnalyzer.java,v 1.3 2005-11-28 14:35:22 mproctor Exp $
  */
 public class GroovyExprAnalyzer
 {
@@ -86,8 +86,9 @@ public class GroovyExprAnalyzer
     public Declaration[] analyze( String text,
                                   List availDecls ) throws Exception
     {
-        SourceUnit unit = SourceUnit.create( "groovy.script", text );
+        SourceUnit unit = SourceUnit.create( "groovy.script", text );        
         unit.parse( );
+        unit.nextPhase();
         unit.convert( );
         ModuleNode module = unit.getAST( );
 

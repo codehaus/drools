@@ -1,7 +1,7 @@
 package org.drools.semantics.groovy;
 
 /*
- * $Id: GroovyExprVisitor.java,v 1.2 2005-02-04 02:13:38 mproctor Exp $
+ * $Id: GroovyExprVisitor.java,v 1.3 2005-11-28 14:35:22 mproctor Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -70,6 +70,6 @@ public class GroovyExprVisitor extends CodeVisitorSupport
 
     public void visitVariableExpression( VariableExpression expression )
     {
-        variables.add( expression.getVariable( ) );
+        variables.add( expression.getText() );
     }
 }
