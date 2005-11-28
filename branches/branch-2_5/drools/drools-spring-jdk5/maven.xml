@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+    <!-- @Hack - Maven does not allow inter-project test dependencies. If ever adding new files -->
+    <!-- be sure to update the appropriate .cvsignore -->
+    <preGoal name="test:compile">
+        <copy todir="${basedir}/src/test/org/drools/spring/metadata">
+            <fileset dir="${basedir}/../drools-spring/src/test/org/drools/spring/metadata" includes="MethodMetadataSourceTestCase.java" />
+        </copy>
+        <copy todir="${basedir}/src/test/org/drools/spring">
+            <fileset dir="${basedir}/../drools-spring/src/test/org/drools/spring" includes="SpringTestSetup.java" />
+        </copy>
+    </preGoal>
+
+</project>

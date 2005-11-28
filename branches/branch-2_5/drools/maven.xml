@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project
+    xmlns:ant="jelly:ant"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven">
+
+    <!-- exclude jdk1.5 projects if jdk1.5 is not present -->
+    <preGoal name="build:start">
+      <attainGoal name="drools:set-excludes" />
+    </preGoal>
+
+    <goal name="drools:multiproject-prepare">
+      <mkdir dir="${basedir}/target"/>
+      <maven:reactor basedir="${basedir}" banner="Preparing" includes="*/project.xml" collectOnly="true"/>
+
+      <j:forEach var="reactorProject" items="${reactorProjects}">
+        <ant:touch file="${basedir}/target/${reactorProject.artifactId}-${pom.currentVersion}.jar"/>
+      </j:forEach>
+    </goal>
+
+    <goal name="drools:set-excludes">
+      <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+        <echo>jdk5 not present so excluding jdk5 projects</echo>
+        <j:if test="${maven.multiproject.excludes.bak.length()}  > 0}">
+          <j:set var="maven.multiproject.excludes"
+                 value="${maven.multiproject.excludes.bak},${drools.jdk5.projects}"/>
+        </j:if>
+        <j:if test="${maven.multiproject.excludes.bak.length()}  == 0}">
+          <j:set var="maven.multiproject.excludes"
+                 value="${drools.jdk5.projects}"/>
+        </j:if>
+      </j:if>
+      <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
+        <j:set var="maven.multiproject.excludes"
+               value="${maven.multiproject.excludes.bak}"/>
+      </j:if>
+    </goal>
+
+    <!-- After the jar is built copy it to top level target directory -->
+    <postGoal name="jar:jar">
+      <echo>basedir: ${basedir}</echo>
+      <copy todir="${basedir}/../target/"
+            file="${maven.build.dir}/${maven.final.name}.jar"/>
+    </postGoal>
+
+    <goal name="drools:subproject-jar">
+      <u:file name="${basedir}/target/${pom.artifactId}-${pom.currentVersion}.jar" var="jar" />
+
+      <j:if test="${jar.exists() == true}">
+        <echo>Jar exist. Skipping build module ${pom.artifactId}.</echo>
+      </j:if>
+      <j:if test="${jar.exists() == false}">
+        <attainGoal name="jar:jar" />
+      </j:if>
+    </goal>
+
+
+    <goal name="drools:default">
+        <echo>${pom.artifactId} </echo>
+        <j:if test="${pom.artifactId == 'drools'}">
+            <attainGoal name="drools:jar"/>
+        </j:if>
+        <j:if test="${pom.artifactId != 'drools'}">
+            <attainGoal name="jar:jar"/>
+        </j:if>
+    </goal>
+
+    <!-- Use mutliproject to build all jars -->
+    <goal name="drools:jar">
+      <mkdir dir="${basedir}/target"/>
+      <j:set scope="parent" var="goal" value="drools:subproject-jar"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="drools:clean">
+      <ant:delete dir="${maven.build.dir}" includeEmptyDirs="true" />
+
+      <maven:reactor basedir="${basedir}" banner="Cleaning" includes="*/project.xml" collectOnly="true"/>
+
+      <j:forEach var="reactorProject" items="${reactorProjects}">
+        <ant:delete dir="${reactorProject.artifactId}/target" includeEmptyDirs="true" />
+      </j:forEach>
+    </goal>
+
+    <goal name="drools:subproject-clover">
+      <j:set var="maven.clover.database" value="${basedir}/target/clover/database/clover_coverage.db" />
+      <attainGoal name="clover:on" />
+      <attainGoal name="jar:jar" />
+    </goal>
+
+    <goal name="drools:clover">
+      <!-- if we are 1.4 also exclude jdk5 projects -->
+      <attainGoal name="drools:set-excludes" />
+
+      <attainGoal name="drools:clean" />
+
+      <!-- now exclude examples -->
+      <j:if test="${maven.multiproject.excludes.length()}  > 0}">
+        <j:set var="maven.multiproject.excludes"
+               value="${maven.multiproject.excludes},drools*examples/**"/>
+      </j:if>
+      <j:if test="${maven.multiproject.excludes.length()}  == 0}">
+        <j:set var="maven.multiproject.excludes"
+               value="drools*examples/**"/>
+      </j:if>
+
+      <!-- generate clover dbs for each sub project -->
+      <j:set var="goal" value="drools:subproject-clover" />
+      <attainGoal name="multiproject:goal"/>
+
+      <!-- set maven.clover.database-->
+      <mkdir dir="${basedir}/target/clover/database" />
+      <j:set var="maven.clover.database" value="${basedir}/target/clover/database/clover_coverage.db" />
+
+      <attainGoal name="clover:on"/>
+
+      <!-- merge the dbs -->
+      <clover-merge initString="${maven.clover.database}">
+         <cloverDbSet dir=".">
+           <include name="drools-*/target/clover/database/clover_coverage.db"/>
+         </cloverDbSet>
+      </clover-merge>
+
+      <attainGoal name="clover:report"/>
+    </goal>
+
+    <goal name="drools:javadoc-ydoc" description="Generates Javadoc including cool UMLdiagrams" prereqs="drools:jar-all,drools:get-deps" >
+      <j:if test="${jdkversion == null}">
+        <attainGoal name="drools:set-jdkversion"/>
+      </j:if>
+
+      <javadoc
+        destdir="target/docs/apidocs"
+        version="false"
+        author="false"
+        additionalparam="-J-Djava.awt.headless=true">
+
+        <fileset dir=".">
+          <include name="drools-*/src/main/**/*.java" />
+          <exclude name="drools*examples*/**" />
+
+          <!-- check before excluding jdk5 src -->
+          <j:if test="${jdkversion  != '5'}"> <!-- hardcoded should ideally use pom -->
+            <exclude name="drools-spring-jdk5/**" />
+          </j:if>
+        </fileset>
+
+        <classpath>
+          <fileset dir=".">
+            <include name="target/dependencies/*.jar" />
+          </fileset>
+
+          <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
+          <path location="./target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar" />
+          <path location="./target/drools-smftest-${pom.currentVersion}.jar" />
+        </classpath>
+
+        <doclet
+          name="ydoc.doclets.YStandard">
+          <path>
+            <pathelement location="./ydoc/lib/ydoc.jar" />
+            <pathelement location="./ydoc/lib/class2svg.jar" />
+            <pathelement location="./ydoc/lib/styleed.jar" />
+            <pathelement location="./ydoc/resources"/>
+            <fileset dir=".">
+              <include name="target/dependencies/*.jar" />
+            </fileset>
+            <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
+            <pathelement location="./target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar" />
+            <pathelement location="./target/drools-smftest-${pom.currentVersion}.jar" />
+          </path>
+
+          <param name="-generic"    value=""/>
+          <param name="-umlautogen" value=""/>
+          <param name="-filter" value="ydoc.filters.ExcludeFilter"/>
+          <param name="-tag" value="y.precondition"/>
+          <param name="-tag" value="y.postcondition"/>
+          <param name="-tag" value="y.complexity"/>
+          <param name="-tag" value="param"/>
+          <param name="-tag" value="return"/>
+          <param name="-tag" value="see"/>
+          <param name="-tag" value="y.uml"/>
+          <param name="-breakiterator"/>
+        </doclet>
+      </javadoc>
+     </goal>
+
+     <goal name="drools:javadoc-standard" description="Generates Javadoc" prereqs="drools:jar-all,drools:get-deps">
+       <j:if test="${jdkversion == null}">
+         <attainGoal name="drools:set-jdkversion"/>
+       </j:if>
+
+       <javadoc
+         destdir="target/docs/apidocs"
+         author="false"
+         version="false">
+
+         <fileset dir=".">
+           <include name="drools-*/src/main/**/*.java" />
+           <exclude name="drools*examples*/**" />
+
+           <!-- check before excluding jdk5 jars -->
+           <j:if test="${jdkversion  != '5'}"> <!-- hardcoded should ideally use pom -->
+             <exclude name="drools-spring-jdk5/**" />
+           </j:if>
+         </fileset>
+
+         <classpath>
+           <fileset dir=".">
+             <include name="target/dependencies/*.jar" />
+           </fileset>
+           <!-- use drools-all otherwise classpath is too long at get IOException: createProcess -->
+           <pathelement location="./target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar" />
+           <pathelement location="./target/drools-smftest-${pom.currentVersion}.jar" />
+         </classpath>
+       </javadoc>
+     </goal>
+
+    <goal name="drools:javadoc">
+      <u:file name="${basedir}/ydoc/" var="ydoc" />
+      <u:file name="${basedir}/target/docs/apidocs/index.html" var="index" />
+
+      <j:if test="${index.exists() == true}">
+        <echo>Apidocs exist. Remove to run this goal.</echo>
+      </j:if>
+
+      <j:if test="${index.exists() == false}">
+        <j:if test="${ydoc.exists() == true}">
+          <attainGoal name="drools:javadoc-ydoc"/>
+          <ant:echo level="info" message="Ydoc Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
+        </j:if>
+
+        <j:if test="${ydoc.exists() != true}">
+          <attainGoal name="drools:javadoc-standard"/>
+          <ant:echo level="info" message="Javadoc generated: file://${basedir}/target/docs/apidocs/index.html"/>
+        </j:if>
+      </j:if>
+
+    </goal>
+
+    <goal name="drools:checkstyle">
+      <j:set var="goal" value="checkstyle:report,maven-jxr-plugin:report,xdoc"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="drools:idea">
+      <attainGoal name="idea:multiproject"/>
+    </goal>
+
+    <goal name="drools:eclipse" prereqs="drools:multiproject-prepare">
+      <j:set var="goal" value="eclipse"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="drools:subproject-crlf">
+      <ant:fixcrlf
+        srcdir="${basedir}"
+        eol="lf"
+        tab="remove"
+        tablength="4"
+        includes="**/*.*"
+        eof="remove"/>
+    </goal>
+
+    <goal name="drools:crlf">
+      <j:set var="goal" value="subproject-crlf"/>
+      <attainGoal name="multiproject:goal"/>
+    </goal>
+
+    <goal name="drools:subproject-src-jar">
+      <mkdir dir="${basedir}/target"/>
+      <jar destfile="${basedir}/target/${pom.artifactId}-src-${pom.currentVersion}.jar"
+           basedir="${basedir}/src/main"
+           includes="**/*.java" />
+    </goal>
+
+    <goal name="drools:src-jar-all">
+      <mkdir dir="${basedir}/target"/>
+      <j:set var="goal" value="drools:subproject-src-jar"/>
+      <attainGoal name="multiproject:goal"/>
+
+      <mkdir dir="${basedir}/target/src-all-stage"/>
+      <ant:unjar dest="${basedir}/target/src-all-stage">
+        <fileset dir="${basedir}">
+            <include name="drools-*/target/drools-*-src-${pom.currentVersion}.jar"/>
+        </fileset>
+      </ant:unjar>
+
+      <ant:jar compress="false" destfile="${basedir}/target/drools-all-src-${pom.currentVersion}.jar" basedir="${basedir}/target/src-all-stage"/>
+
+      <ant:delete includeEmptyDirs="true">
+        <fileset dir="${basedir}/target/src-all-stage"/>
+      </ant:delete>
+    </goal>
+
+    <goal name="drools:subproject-unjar">
+      <u:file name="${basedir}/target/${pom.artifactId}-${pom.currentVersion}.jar" var="jar" />
+
+      <!-- if the jar doesn't exist create befor unjarring -->
+      <j:if test="${jar.exists() == false}">
+        <echo>target/${pom.artifactId}-${pom.currentVersion}.jar does nt exist so generating</echo>
+        <!-- backup the maven.test.skip value and then set it to true, we dont want to run tests for this -->
+        <j:set var="temp.maven.test.skip" value="${maven.test.skip}"/>
+        <j:set var="maven.test.skip" value="true"/>
+        <attainGoal name="jar:jar" />
+        <j:set var="maven.test.skip" value="${temp.maven.test.skip}"/>
+      </j:if>
+
+      <ant:unjar src="${basedir}/target/${pom.artifactId}-${pom.currentVersion}.jar" dest="${basedir}/../target/jar-all-stage/drools-all">
+        <patternset>
+          <exclude name="**/drools.conf"/>
+        </patternset>
+      </ant:unjar>
+    </goal>
+
+    <goal name="drools:set-jdkversion">
+      <j:if test="${context.getVariable('java.specification.version')  != '1.5'}">
+        <j:set var="jdkversion" value="1.4"/>
+      </j:if>
+      <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
+        <j:set var="jdkversion" value="5"/>
+      </j:if>
+    </goal>
+
+    <goal name="drools:jar-all">
+      <attainGoal name="drools:set-excludes" />
+
+      <j:if test="${jdkversion == null}">
+        <attainGoal name="drools:set-jdkversion"/>
+      </j:if>
+
+      <u:file name="${basedir}/target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar" var="index" />
+
+      <!-- only run if drools-all doesn't not exist -->
+      <j:if test="${index.exists() == true}">
+        <echo>target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar exists. Remove to run this goal</echo>
+      </j:if>
+      <j:if test="${index.exists() == false}">
+        <!-- now exclude smftest -->
+        <j:if test="${maven.multiproject.excludes.length()}  > 0}">
+          <j:set var="maven.multiproject.excludes"
+               value="${maven.multiproject.excludes},drools-smftest/**"/>
+        </j:if>
+        <j:if test="${maven.multiproject.excludes.length()}  == 0}">
+          <j:set var="maven.multiproject.excludes"
+                 value="drools-smftest/**"/>
+        </j:if>
+
+        <!-- now unjar each sub project -->
+        <mkdir dir="${basedir}/target/jar-all-stage/"/>
+        <j:set var="goal" value="drools:subproject-unjar"/>
+        <attainGoal name="multiproject:goal"/>
+
+        <ant:unjar dest="${basedir}/target/jar-all-stage/drools-conf/base">
+          <patternset>
+              <include name="**/drools.conf"/>
+          </patternset>
+          <fileset dir="${basedir}">
+              <include name="target/drools-base-${pom.currentVersion}.jar"/>
+          </fileset>
+        </ant:unjar>
+
+        <ant:unjar dest="${basedir}/target/jar-all-stage/drools-conf/groovy">
+          <patternset>
+              <include name="**/drools.conf"/>
+          </patternset>
+          <fileset dir="${basedir}">
+              <include name="target/drools-groovy-${pom.currentVersion}.jar"/>
+          </fileset>
+        </ant:unjar>
+
+        <ant:unjar dest="${basedir}/target/jar-all-stage/drools-conf/java">
+          <patternset>
+              <include name="**/drools.conf"/>
+          </patternset>
+          <fileset dir="${basedir}">
+              <include name="target/drools-java-${pom.currentVersion}.jar"/>
+          </fileset>
+        </ant:unjar>
+
+        <ant:unjar dest="${basedir}/target/jar-all-stage/drools-conf/python">
+          <patternset>
+              <include name="**/drools.conf"/>
+          </patternset>
+          <fileset dir="${basedir}">
+              <include name="target/drools-python-${pom.currentVersion}.jar"/>
+          </fileset>
+        </ant:unjar>
+
+        <ant:concat destfile="${basedir}/target/jar-all-stage/drools-all/META-INF/drools.conf" force="yes">
+          <fileset dir="target/jar-all-stage/drools-conf" includes="**/drools.conf" />
+        </ant:concat>
+
+        <ant:jar compress="false" destfile="${basedir}/target/drools-all-jdk${jdkversion}-${pom.currentVersion}.jar" basedir="${basedir}/target/jar-all-stage/drools-all"/>
+
+        <ant:delete includeEmptyDirs="true">
+          <fileset dir="${basedir}/target/jar-all-stage"/>
+        </ant:delete>
+      </j:if>
+    </goal>
+
+    <goal name="drools:deploy" prereqs="drools:dist">
+      <!-- upload javadocs -->
+      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-javadoc.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+
+      <!-- untar javadocs and relink version -->
+      <exec dir="." executable="${maven.ssh.executable}">
+        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
+      </exec>
+
+      <!-- deploy project jars -->
+      <j:set scope="parent" var="maven.test.skip" value="true"/>
+      <j:set var="goal" value="jar:deploy"/>
+      <attainGoal name="multiproject:goal"/>
+      <j:set var="maven.test.skip" value="false"/>
+
+      <!-- create and deploy a src jar -->
+      <attainGoal name="drools:src-jar-all" />
+      <exec dir="${basedir}/target" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-all-src-${pom.currentVersion}.jar ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/jars/"/>
+      </exec>
+
+
+      <!-- create and deploy a jar-all for jdk1.4 -->
+      <j:set var="jdkversion" value="1.4"/>
+      <attainGoal name="drools:jar-all" />
+      <exec dir="${basedir}/target" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-all-jdk1.4-${pom.currentVersion}.jar ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/jars/"/>
+      </exec>
+
+      <!-- If we are running on jdk5, create and deploy a jar-all for jdk5 -->
+      <j:if test="${context.getVariable('java.specification.version')  == '1.5'}">
+        <j:set var="jdkversion" value="5"/>
+        <attainGoal name="drools:jar-all" />
+        <exec dir="${basedir}/target" executable="${maven.scp.executable}">
+          <arg line="${maven.scp.args} drools-all-jdk5-${pom.currentVersion}.jar ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/jars/"/>
+        </exec>
+      </j:if>
+
+      <!-- upload various distribution builds -->
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-src.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin-withdeps.zip ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-src.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+      <exec dir="${maven.build.dir}/dist" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-bin-withdeps.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}/../dist/distributions/"/>
+      </exec>
+
+      <!--create and deploy clover, NB this does a clean removing all previous work -->
+      <attainGoal name="drools:clover" />
+      <tar destfile="${basedir}/target/drools-${pom.currentVersion}-clover.tar.gz" compression="gzip">
+        <tarfileset dir="${basedir}/target/docs/clover"
+                    prefix="drools-${pom.currentVersion}/clover"/>
+      </tar>
+
+      <exec dir="${maven.build.dir}" executable="${maven.scp.executable}">
+        <arg line="${maven.scp.args} drools-${pom.currentVersion}-clover.tar.gz ${maven.username}@${pom.siteAddress}:${pom.siteDirectory}"/>
+      </exec>
+
+      <exec dir="." executable="${maven.ssh.executable}">
+        <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-clover.tar.gz'"/>
+      </exec>
+
+    </goal>
+
+
+    <goal name="drools:dist-prepare" prereqs="drools:jar">
+      <ant:mkdir dir="${basedir}/target/dist/"/>
+    </goal>
+
+    <goal name="drools:dist" prereqs="drools:dist-prepare,drools:dist-javadoc,drools:dist-bin,drools:dist-bin-withdeps,drools:dist-src">
+      <!-- intentionally left blank -->
+    </goal>
+
+
+    <!--
+        creates .zip and .tar.gz of javadocs
+    -->
+    <goal name="drools:dist-javadoc" prereqs="drools:dist-prepare,drools:javadoc">
+        <zip destfile="${basedir}/target/drools-${pom.currentVersion}-javadoc.zip" compression="gzip">
+            <zipfileset dir="${basedir}/target/docs/apidocs"
+                        prefix="drools-${pom.currentVersion}/apidocs"/>
+        </zip>
+        <tar destfile="${basedir}/target/drools-${pom.currentVersion}-javadoc.tar.gz" compression="gzip">
+            <tarfileset dir="${basedir}/target/docs/apidocs"
+                        prefix="drools-${pom.currentVersion}/apidocs"/>
+        </tar>
+    </goal>
+
+    <!--
+        creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
+    -->
+    <goal name="drools:dist-bin" prereqs="drools:dist-prepare,drools:javadoc">
+
+      <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin.zip">
+    		 <zipfileset dir="${basedir}/target/docs"
+                             prefix="drools-${pom.currentVersion}/docs" />
+    		 <zipfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
+                             includes="drools-*.jar"/>
+    		 <zipfileset dir="${basedir}"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
+      </zip>
+
+      <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin.tar.gz" compression="gzip">
+    		 <tarfileset dir="${basedir}/target/docs"
+                             prefix="drools-${pom.currentVersion}/docs" />
+    		 <tarfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
+                             includes="drools-*.jar"/>
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
+      </tar>
+    </goal>
+
+
+		<!--
+			creates .zip and .tar.gz of drools source, also includes compiled drools-*.jar and javadocs
+			and all dependencies
+		-->
+    <goal name="drools:dist-bin-withdeps" prereqs="drools:dist-prepare,drools:javadoc">
+        <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin-withdeps.zip">
+            <zipfileset dir="${basedir}/target/docs"
+                             prefix="drools-${pom.currentVersion}/docs" />
+   		    <zipfileset dir="${basedir}/target/dependencies"
+                             prefix="drools-${pom.currentVersion}/lib" />
+    		<zipfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
+                             includes="drools-*.jar"/>
+    		<zipfileset dir="${basedir}"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
+        </zip>
+
+      <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}-bin-withdeps.tar.gz" compression="gzip">
+    		 <tarfileset dir="${basedir}/target/docs"
+                             prefix="drools-${pom.currentVersion}/docs" />
+   		   <tarfileset dir="${basedir}/target/dependencies"
+                             prefix="drools-${pom.currentVersion}/lib" />
+    		 <tarfileset dir="${basedir}/target/"
+                             prefix="drools-${pom.currentVersion}/lib"
+                             includes="drools-*.jar"/>
+    		 <tarfileset dir="${basedir}/"
+                             prefix="drools-${pom.currentVersion}"
+                             includes="*.txt"/>
+      </tar>
+    </goal>
+
+
+		<!--
+			creates .zip and .tar.gz of drools source
+		-->
+    <goal name="drools:dist-src" prereqs="drools:dist-prepare,drools:javadoc">
+
+        <copy todir="${basedir}/target/src-stage">
+            <fileset dir="${basedir}" includes="drools-*/**" />
+        </copy>
+
+        <zip destfile="${basedir}/target/dist/drools-${pom.currentVersion}-src.zip">
+            <zipfileset dir="${basedir}/target/src-stage"
+                        prefix="drools-${pom.currentVersion}"
+                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/lib/**" />
+
+            <zipfileset dir="${basedir}/"
+                        prefix="drools-${pom.currentVersion}"
+                        includes="*.txt"/>
+
+            <zipfileset dir="${basedir}/"
+                        prefix="drools-${pom.currentVersion}"
+                        includes="*.xml"/>
+
+            <zipfileset dir="${basedir}/"
+                        prefix="drools-${pom.currentVersion}"
+                        includes="*.properties"/>
+
+            <zipfileset dir="${basedir}/lib"
+                        prefix="drools-${pom.currentVersion}/lib"
+                        includes="*.jar"/>
+        </zip>
+
+        <tar destfile="${basedir}/target/dist/drools-${pom.currentVersion}-src.tar.gz" compression="gzip">
+            <tarfileset dir="${basedir}/target/src-stage"
+                        prefix="drools-${pom.currentVersion}"
+                        excludes=".metadata/**, clover/**, **/target/**, **/cachedir/**, **/lib/**" />
+
+            <tarfileset dir="${basedir}/"
+                        prefix="drools-${pom.currentVersion}"
+                        includes="*.txt"/>
+
+            <tarfileset dir="${basedir}/"
+                        prefix="drools-${pom.currentVersion}"
+                        includes="*.xml"/>
+
+            <tarfileset dir="${basedir}/"
+                        prefix="drools-${pom.currentVersion}"
+                        includes="*.properties"/>
+
+            <tarfileset dir="${basedir}/lib"
+                        prefix="drools-${pom.currentVersion}/lib"
+                        includes="*.jar"/>
+
+        </tar>
+
+    </goal>
+
+    <!-- goal to get the dependencies for each project -->
+    <goal name="drools:subproject-get-deps">
+      <j:forEach var="dep" items="${pom.artifacts}">
+        <j:if test="${dep.path.indexOf('drools') &lt;= 0}">
+          <copy file="${dep.path}"
+                todir="${basedir}/../target/dependencies"/>
+        </j:if>
+      </j:forEach>
+      <ant:touch file="${basedir}/../target/${reactorProject.artifactId}-${pom.currentVersion}.jar"/>
+    </goal>
+
+    <goal name="drools:get-deps">
+      <mkdir dir="${basedir}/target/dependencies"/>
+
+      <j:set var="goal" value="drools:subproject-get-deps"/>
+      <attainGoal name="multiproject:goal"/>
+
+      <copy todir="${basedir}/target/dependencies/">
+         <fileset dir="${basedir}/lib" includes="*.jar*" />
+      </copy>
+
+    </goal>
+
+</project>

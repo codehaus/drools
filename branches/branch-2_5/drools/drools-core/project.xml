@@ -1,0 +1,9 @@
+<project>
+    <extend>../project.xml</extend>
+    <pomVersion>3</pomVersion>
+    <name>Drools :: Rete-OO Core</name>
+    <artifactId>drools-core</artifactId>
+    <groupId>drools</groupId>
+
+
+</project>

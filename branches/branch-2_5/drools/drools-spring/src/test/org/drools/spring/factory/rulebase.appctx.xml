@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <import resource="rulesets.appctx.xml"/>
+    
+    <bean id="conflictResolver"
+        class="org.drools.spring.factory.ConflictResolverFactoryBean">
+        <property name="resolverStrategies">
+            <list>
+                <bean class="org.drools.conflict.SalienceConflictResolver" />
+                <bean class="org.drools.conflict.RecencyConflictResolver" />
+                <bean class="org.drools.conflict.ComplexityConflictResolver" />
+                <bean class="org.drools.conflict.LoadOrderConflictResolver" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ruleBase"
+        class="org.drools.spring.factory.RuleBaseFactoryBean">
+        <property name="conflictResolver" ref="conflictResolver" />
+        <property name="factHandleFactory">
+            <bean class="org.drools.spring.factory.NullFactHandleFactory" />
+        </property>
+        <property name="ruleSets">
+            <set>
+                <ref bean="ruleSet.beanRules"/>
+                <ref bean="ruleSet.pojoRules"/>
+            </set>
+        </property>
+    </bean>
+    
+    <bean id="ruleBase.autoDetect"
+        class="org.drools.spring.factory.RuleBaseFactoryBean">
+        <property name="autoDetectRuleSets" value="true"/>
+    </bean>
+    
+</beans>

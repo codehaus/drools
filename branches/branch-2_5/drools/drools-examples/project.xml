@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<project>
+    <extend>../project.xml</extend>
+    <pomVersion>3</pomVersion>
+    <name>Drools :: Example Library</name>
+    <artifactId>drools-examples</artifactId>
+    <groupId>drools</groupId>
+
+    <!-- Need to mark these as compile-time/run-time -->
+
+    <dependencies>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-smf</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-io</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-base</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-java</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <!-- Note: Groovy depends on JDK1.4 so this
+                 module is really not JDK1.3-compatible. -->
+            <groupId>drools</groupId>
+            <artifactId>drools-groovy</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-python</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-jsr94</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>jython</groupId>
+            <artifactId>jython</artifactId>
+            <version>20020827-no-oro</version>
+        </dependency>
+        <dependency>
+            <groupId>groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>1.0-jsr-04</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-jci</groupId>
+            <artifactId>jci</artifactId>
+            <version>SNAPSHOT20051110</version>
+        </dependency>
+        <dependency>
+            <groupId>eclipse</groupId>
+            <artifactId>jdtcore</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>2.3.15</version>
+        </dependency>
+        <dependency>
+            <groupId>simple-jndi</groupId>
+            <artifactId>simple-jndi</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jsr94</groupId>
+            <artifactId>jsr94</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jgoodies</groupId>
+            <artifactId>forms</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>foxtrot</groupId>
+            <artifactId>foxtrot</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+    	<!-- presently requires POI, which is not pom-ed by maven yet -->
+        <dependency>
+            <groupId>poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
+

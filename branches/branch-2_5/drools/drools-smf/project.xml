@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<project>
+    <extend>../project.xml</extend>
+    <pomVersion>3</pomVersion>
+    <name>Drools :: Semantics Module Framework</name>
+    <artifactId>drools-smf</artifactId>
+    <groupId>drools</groupId>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons</groupId>
+            <artifactId>jci</artifactId>
+            <version>SNAPSHOT20051110</version>
+        </dependency>
+
+        <dependency>
+            <groupId>drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <eclipse.dependency>true</eclipse.dependency>
+            </properties>
+        </dependency>
+    </dependencies>
+
+</project>
+
