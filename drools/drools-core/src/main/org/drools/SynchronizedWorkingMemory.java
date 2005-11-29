@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.event.WorkingMemoryEventListener;
+import org.drools.reteoo.FactHandleFactory;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 
@@ -181,6 +182,11 @@ public class SynchronizedWorkingMemory
     {
         this.workingMemory.setAsyncExceptionHandler( handler );
     }
+
+//    public synchronized FactHandleFactory getFactHandleFactory()
+//    {
+//        return this.workingMemory.getFactHandleFactory();
+//    }
     
     
 }

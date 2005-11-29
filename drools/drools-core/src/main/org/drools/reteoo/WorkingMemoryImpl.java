@@ -111,6 +111,8 @@ class WorkingMemoryImpl
 
     /** Flag to determine if a rule is currently being fired. */
     private boolean                         firing;
+    
+    private FactHandleFactory               factHandleFactory;
 
     // ------------------------------------------------------------
     // Constructors
@@ -127,6 +129,7 @@ class WorkingMemoryImpl
         this.ruleBase = ruleBase;
         this.agenda = new Agenda( this,
                                   ruleBase.getConflictResolver( ) );
+        this.factHandleFactory = ruleBase.newFactHandleFactory();
     }
 
     // ------------------------------------------------------------
@@ -157,11 +160,11 @@ class WorkingMemoryImpl
     {
         if ( !this.factHandlePool.isEmpty( ) )
         {
-            return this.ruleBase.getFactHandleFactory( ).newFactHandle( this.factHandlePool.pop( ) );
+            return factHandleFactory.newFactHandle( this.factHandlePool.pop( ) );
         }
         else
         {
-            return this.ruleBase.getFactHandleFactory( ).newFactHandle( );
+            return factHandleFactory.newFactHandle( );
         }
     }
 
@@ -614,4 +617,11 @@ class WorkingMemoryImpl
             throw new RuntimeException( e.getMessage( ) );
         }
     }
+
+    public FactHandleFactory getFactHandleFactory()
+    {
+        
+        return factHandleFactory;
+    }
+    
 }

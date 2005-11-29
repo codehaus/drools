@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: FactHandleFactory.java,v 1.9 2005-05-08 02:57:11 dbarnett Exp $
+ * $Id: FactHandleFactory.java,v 1.10 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,4 +61,10 @@ public interface FactHandleFactory
      * @return The handle.
      */
     FactHandle newFactHandle(long id);
+
+    /**
+     * 
+     * @return a fresh instance of the fact handle factory, with any IDs reset etc.
+     */
+    FactHandleFactory newInstance();
 }

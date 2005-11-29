@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: WorkingMemory.java,v 1.43 2005-02-02 00:23:21 mproctor Exp $
+ * $Id: WorkingMemory.java,v 1.44 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.event.WorkingMemoryEventListener;
+import org.drools.reteoo.FactHandleFactory;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 
@@ -257,4 +258,9 @@ public interface WorkingMemory extends Serializable
      *
      */
     void clearAgenda( );
+
+//    /**
+//     * @return The current working memories <code>FactHandleFactory</code>.
+//     */
+//    FactHandleFactory getFactHandleFactory();
 }

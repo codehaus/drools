@@ -52,6 +52,10 @@ public class NullFactHandleFactory implements FactHandleFactory {
     public FactHandle newFactHandle(long id) {
         return null;
     }
+    public FactHandleFactory newInstance()
+    {        
+        return new NullFactHandleFactory();
+    }
 }
 
 

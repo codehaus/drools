@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: Jsr94FactHandleFactory.java,v 1.16 2004-12-04 04:58:26 dbarnett Exp $
+ * $Id: Jsr94FactHandleFactory.java,v 1.17 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2003-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -49,8 +49,7 @@ import org.drools.reteoo.FactHandleFactory;
  */
 public final class Jsr94FactHandleFactory implements FactHandleFactory
 {
-    /** The Singleton instance of the <code>Jsr94FactHandleFactory</code>. */
-    private static Jsr94FactHandleFactory INSTANCE = new Jsr94FactHandleFactory();
+
 
     /** The fact id. */
     private long id;
@@ -58,21 +57,7 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
     /** The number of facts created - used for recency. */
     private long counter;
 
-    /** Private constructor; use <code>getInstance</code> instead. */
-    private Jsr94FactHandleFactory( )
-    {
-        // Hide the constructor.
-    }
 
-    /**
-     * Gets the Singleton instance of a <code>Jsr94FactHandleFactory</code>.
-     *
-     * @return The Singleton instance of the repository.
-     */
-    public static Jsr94FactHandleFactory getInstance( )
-    {
-        return INSTANCE;
-    }
 
     /**
      * Returns a new <code>Handle</code>.
@@ -95,5 +80,10 @@ public final class Jsr94FactHandleFactory implements FactHandleFactory
     {
         return new Jsr94FactHandle( id,
                                     ++counter );
+    }
+
+    public FactHandleFactory newInstance()
+    { 
+        return new Jsr94FactHandleFactory();
     }
 }

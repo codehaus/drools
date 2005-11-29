@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: DefaultFactHandleFactory.java,v 1.8 2005-05-08 02:57:11 dbarnett Exp $
+ * $Id: DefaultFactHandleFactory.java,v 1.9 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,5 +62,10 @@ public class DefaultFactHandleFactory
     {
         return new FactHandleImpl( id,
                                    ++counter );
+    }
+
+    public FactHandleFactory newInstance()
+    {        
+        return new DefaultFactHandleFactory();
     }
 }
