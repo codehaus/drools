@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: MockWorkingMemory.java,v 1.12 2005-05-07 03:54:54 dbarnett Exp $
+ * $Id: MockWorkingMemory.java,v 1.13 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2004-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -47,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.event.WorkingMemoryEventListener;
+import org.drools.reteoo.DefaultFactHandleFactory;
+import org.drools.reteoo.FactHandleFactory;
 import org.drools.spi.AgendaFilter;
 import org.drools.spi.AsyncExceptionHandler;
 
@@ -192,4 +194,9 @@ public class MockWorkingMemory implements WorkingMemory
     {
         //
     }
+
+//    public FactHandleFactory getFactHandleFactory()
+//    { 
+//        return new DefaultFactHandleFactory();
+//    }
 }

@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: WorkingMemoryImplTest.java,v 1.6 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: WorkingMemoryImplTest.java,v 1.7 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -98,6 +98,21 @@ public class WorkingMemoryImplTest extends TestCase
         assertNotNull( objects );
         assertEquals( 1, objects.size( ) );
     }
+    
+    public void testFactHandleFactoryPerWorkingMemory() throws Exception {
+        WorkingMemoryImpl memory = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
+        FactHandleFactory fact = memory.getFactHandleFactory();
+        
+        assertNotNull(fact);
+
+        WorkingMemoryImpl memory2 = new WorkingMemoryImpl( new RuleBaseImpl( new Rete( ) ) );
+        FactHandleFactory fact2 = memory2.getFactHandleFactory();
+        
+        assertTrue(System.identityHashCode(fact) != System.identityHashCode(fact2));  
+
+        assertTrue(memory2.getFactHandleFactory() == memory2.getFactHandleFactory());
+    }
+    
 
     private static WorkingMemory getWorkingMemory(RuleBase ruleBase) throws Exception
     {

@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: RuleBase.java,v 1.38 2005-11-05 04:23:57 michaelneale Exp $
+ * $Id: RuleBase.java,v 1.39 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2001-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -61,7 +61,7 @@ import org.drools.spi.RuleBaseContext;
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  *
- * @version $Id: RuleBase.java,v 1.38 2005-11-05 04:23:57 michaelneale Exp $
+ * @version $Id: RuleBase.java,v 1.39 2005-11-29 01:21:53 michaelneale Exp $
  */
 public interface RuleBase
     extends
@@ -90,12 +90,12 @@ public interface RuleBase
      */
     ConflictResolver getConflictResolver( );
 
-    /**
-     * Retrieve the <code>FactHandleFactor</code>.
-     *
-     * @return The fact handle factory.
-     */
-    FactHandleFactory getFactHandleFactory( );
+//    /**
+//     * Create a new <code>FactHandleFactory</code>.
+//     * 
+//     * @return The fact handle factory.
+//     */
+//    FactHandleFactory newFactHandleFactory( );
 
     List getRuleSets( );
     

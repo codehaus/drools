@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: RuleBaseImpl.java,v 1.29 2005-11-05 04:23:57 michaelneale Exp $
+ * $Id: RuleBaseImpl.java,v 1.30 2005-11-29 01:21:53 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -57,7 +57,7 @@ import org.drools.spi.RuleBaseContext;
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: RuleBaseImpl.java,v 1.29 2005-11-05 04:23:57 michaelneale Exp $
+ * @version $Id: RuleBaseImpl.java,v 1.30 2005-11-29 01:21:53 michaelneale Exp $
  */
 class RuleBaseImpl
     implements
@@ -144,11 +144,15 @@ class RuleBaseImpl
     }
 
     /**
+     * This will create a new instance, as they should not be shared between working memories.
+     * This RuleBase takes in a factory simply to allow implementations to be swapped in and out.
+     * And it is really too embarrasing to have a "factory factory".
+     * TODO: refactor this differently so that factories are configured more implicitly.
      * @see RuleBase
      */
-    public FactHandleFactory getFactHandleFactory()
+    public FactHandleFactory newFactHandleFactory()
     {
-        return this.factHandleFactory;
+        return this.factHandleFactory.newInstance();
     }
 
     /**
