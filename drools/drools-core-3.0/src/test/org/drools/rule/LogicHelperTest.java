@@ -137,13 +137,7 @@ public class LogicHelperTest extends DroolsTestCase
         String d = "d";
         String e = "e";
         String f = "f";
-        String g = "g";
-        /*
-        Or or = new Or();
-        or.addChild( d );
-        or.addChild( e );
-        */
-        
+        String g = "g";  
     }
     
     
@@ -197,7 +191,69 @@ public class LogicHelperTest extends DroolsTestCase
         assertLength( 1,
                       not2.getChildren() );
         assertSame( b,
-                    not2.getChild() );        
+                    not2.getChild() );                
+    }    
+    
+    /**
+     * Construct (a||b)&&c 
+     * <pre> 
+     *           or
+     *          / \
+     *        and  f
+     *        / \
+     *       or  e 
+     *      /  \
+     *    and   d
+     *    / \   
+     *   or  c
+     *  / \
+     * a   b
+     *  </pre>
+     * Should become (a&&c)||(b&&c)  
+     * <pre>        
+     * a&&c||b&&c, 
+     *           or
+     *          / \
+     *        and  f
+     *        / \
+     *       or  e 
+     *      /  \
+     *    and   and
+     *    / \   
+     *   a  c
+     *  / \
+     * a   b
+    * </pre>      
+    */     
+    public void processAndTest()
+    {
+        String a = "a";
+        String b = "b";
+        String c = "c";
+        
+        And and = new And();
+        and.addChild( c );
+        Or or = new Or();
+        or.addChild( a );
+        or.addChild( b );
+        and.addChild( or );
+        
+        LogicHelper helper = LogicHelper.getInstance();
+        Or newOr = helper.rewriteAnd( and );
+        
+        String d = "d";
+        String e = "e";
+        String f = "f";
+        String g = "g";        
+    }
+    
+    public void processNotTest()
+    {
+        
+    }
+    
+    public void processExistTest()
+    {
         
     }    
 }
