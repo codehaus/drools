@@ -97,6 +97,15 @@ public class LogicHelper
         ce.getChildren().addAll( newChildren );
     }
 
+    /**
+     * Where ever we have
+     *    AND
+     *    /
+     *   OR 
+     *  /  \
+     * a    b
+     * @param ce
+     */
     public void  processAnd(ConditionalElement ce)
     {
         Object object =  null;
@@ -128,6 +137,15 @@ public class LogicHelper
         }
         
         ce.getChildren().addAll( newChildren );
+        
+        /* we know this an OR node and any newChildren will be AND nodes
+         * rewritten to be ORs, so now we need to collapse the redundancy
+         */
+        if ( ce instanceof Or)
+        {
+            collapseRedundant( ce );
+        }
+
     }        
     
     public void  processNot(ConditionalElement ce)
@@ -158,6 +176,26 @@ public class LogicHelper
         ce.getChildren().addAll( newChildren );
     }      
     
+    /**
+     * Construct (a||b)&&c 
+     * <pre>
+             and
+             / \
+            or  c 
+           /  \
+          a    b
+       </pre>
+     * Should become (a&&c)||(b&&c)  
+     * <pre>        
+               or
+              /  \  
+             /    \ 
+            /      \ 
+           and    and     
+           / \    / \
+          a   b  b   c
+    * </pre>      
+    */     
     public Or rewriteAnd(And and)
     {
         ConditionalElement child = null;
