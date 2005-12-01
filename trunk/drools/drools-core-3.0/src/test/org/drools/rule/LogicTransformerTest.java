@@ -209,6 +209,40 @@ public class LogicTransformerTest extends DroolsTestCase
 
     }
 
+    /**                 
+     *                   _/|\_
+     *                __/  |  \__
+     *               /     |     \ 
+     *            __/      |      \__
+     *           /         |         \
+     *          And       and         Not
+     *         / | \      / \          |
+     *       a  And d    e  Or        Or
+     *          / \        /  \      / \
+     *         b  Not     f  Exist  i  And  
+     *             |           |       / \
+     *            Not         Or      j   k 
+     *             |         /  \
+     *             c        g    h 
+     *
+     *                     _/|\__
+     *                  __/  |   \___
+     *                 /     |       \__
+     *              __/      |          \__
+     *             /         |             \__
+     *            /          |                \__
+     *           |           |                   \
+     *          And          Or                  And
+     *        / | | \       /  \                /  \  
+     *      a   b d Not   And   And           Not  Not
+     *               |    / \  / |  \          |    | 
+     *              Not  e  f e Exist Exist    i   And  
+     *               |           |      |          / \
+     *               c           g      h         j   k 
+     *                     
+     *                                         
+     *              
+     */
     public void testTransform()
     {
         String a = "a";
