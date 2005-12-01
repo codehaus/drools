@@ -1,7 +1,7 @@
 package org.drools;
 
 /*
- * $Id: DroolsTestCase.java,v 1.1 2005-07-26 01:06:32 mproctor Exp $
+ * $Id: DroolsTestCase.java,v 1.2 2005-12-01 05:50:47 mproctor Exp $
  *
  * Copyright 2003-2005 (C) The Werken Company. All Rights Reserved.
  *
@@ -46,7 +46,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-public class DroolsTestCase extends TestCase
+public abstract class DroolsTestCase extends TestCase
 {
     public DroolsTestCase()
     {
@@ -89,8 +89,4 @@ public class DroolsTestCase extends TestCase
                     collection.contains( obj ) );
     }
 
-    public void testDummy() throws Exception
-    {
-        // do nothing
-    }
 }
