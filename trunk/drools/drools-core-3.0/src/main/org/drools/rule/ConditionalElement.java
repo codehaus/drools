@@ -15,5 +15,10 @@ public abstract class ConditionalElement
     public List getChildren()
     {
         return this.children;
-    }        
+    }            
+    
+    public int hashCode()
+    {
+        return children.hashCode();
+    }
 }
