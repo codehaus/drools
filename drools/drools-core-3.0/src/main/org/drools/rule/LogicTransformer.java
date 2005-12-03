@@ -100,9 +100,33 @@ class LogicTransformer
                       method );
     }
 
+    // And[] transform(And and)
+    // {
+    // processTree( and );
+    //     
+    // List newChildren = new ArrayList( );
+    //        
+    // // Scan for any Child Ors, if found we need to move the Or
+    // // upwards
+    // for ( Iterator orIter = and.getChildren( ).iterator( ); orIter.hasNext(
+    // ); )
+    // {
+    // Object object2 = orIter.next( );
+    // if ( object2 instanceof Or )
+    // {
+    // newChildren.add( applyOrTransformation( and,
+    // (ConditionalElement) object2 ) );
+    // break;
+    // }
+    // }
+    //        
+    // //if we have children then we had Ors
+    // }
+
     void transform(And and)
     {
         processTree( and );
+
     }
 
     /**
@@ -231,24 +255,24 @@ class LogicTransformer
      * (a||b)&&c
      * 
      * <pre>
-     *        and
-     *        / \
-     *       or  c 
-     *      /  \
-     *     a    b
+     *         and
+     *         / \
+     *        or  c 
+     *       /  \
+     *      a    b
      * </pre>
      * 
      * Should become (a&&c)||(b&&c)
      * 
      * <pre>
-     *          
-     *        or
-     *       /  \  
-     *      /    \ 
-     *     /      \ 
-     *   and      and     
-     *   / \      / \
-     *  a   c    b   c
+     *           
+     *         or
+     *        /  \  
+     *       /    \ 
+     *      /      \ 
+     *    and      and     
+     *    / \      / \
+     *   a   c    b   c
      * </pre>
      */
     class AndOrTransformation
@@ -258,70 +282,108 @@ class LogicTransformer
 
         public ConditionalElement transform(ConditionalElement and)
         {
-            List combinations = new ArrayList( );
-            List combination = new ArrayList( );
-
-            /* first gather up all direct none conditional element children */
-            ;
-            for ( Iterator it = and.getChildren( ).iterator( ); it.hasNext( ); )
-            {
-                Object object = it.next( );
-                if ( !(object instanceof ConditionalElement) )
-                {
-                    combination.add( object );
-                }
-            }
-            combinations.add( combination );
-
-            for ( Iterator childIter = and.getChildren( ).iterator( ); childIter.hasNext( ); )
-            {
-                Object object = childIter.next( );
-                if ( object instanceof ConditionalElement )
-                {
-                    ConditionalElement child = (ConditionalElement) object;
-                    List newCombinations = new ArrayList( );
-                    for ( Iterator combiIter = combinations.iterator( ); combiIter.hasNext( ); )
-                    {
-                        combination = (List) combiIter.next( );
-                        for ( Iterator it = child.getChildren( ).iterator( ); it.hasNext( ); )
-                        {
-                            List newCombination = new ArrayList( combination );
-                            newCombination.add( it.next( ) );
-                            newCombinations.add( newCombination );
-                        }
-                        combiIter.remove( );
-                    }
-                    combinations = newCombinations;
-                }
-            }
-
-            // each combination is an AND so now construct the logic
             Or or = new Or( );
-            for ( Iterator it = combinations.iterator( ); it.hasNext( ); )
+            determinePermutations( 0,
+                                  (And) and,
+                                  null,
+                                  or );
+            return or;
+        }
+
+        /**
+         * Recursive method that determins all unique combinations of children
+         * for the given parent and.
+         * 
+         * @param currentLevel
+         * @param and
+         * @param combination
+         * @param or
+         */
+        private void determinePermutations(int currentLevel,
+                                          And and,
+                                          And combination,
+                                          Or or)
+        {
+            Object entry = and.getChildren( ).get( currentLevel );
+            if ( entry instanceof Or )
             {
-                combination = (List) it.next( );
-                and = new And( );
-                for ( Iterator it2 = combination.iterator( ); it2.hasNext( ); )
+                // Only OR nodes need to be iterated over
+                Or childOr = (Or) entry;
+                for ( Iterator it = childOr.getChildren( ).iterator( ); it.hasNext( ); )
                 {
-                    Object object = it2.next( );
+                    //Make a temp copy of combinations+new entry which will be sent forward
+                    And temp = new And( );
+                    if ( currentLevel == 0 )
+                    {
+                        //Always start with a clean combination
+                        combination = new And( );
+                    }
+                    else
+                    {
+                        temp.getChildren( ).addAll( combination.getChildren( ) );
+                    }
+
+                    //now check for and remove duplicates
+                    Object object = it.next( );
                     if ( object instanceof And )
                     {
-                        And childAnd = (And) object;
                         // Can't have duplicate Ands so move up the children
-                        for ( Iterator it3 = childAnd.getChildren( ).iterator( ); it3.hasNext( ); )
+                        And childAnd = (And) object;
+                        for ( Iterator childIter = childAnd.getChildren( ).iterator( ); childIter.hasNext( ); )
                         {
-                            and.addChild( it3.next( ) );
+                            temp.addChild( childIter.next( ) );
                         }
                     }
                     else
                     {
-                        and.addChild( object );
+                        //no duplicates so just add
+                        temp.addChild( object );
+                    }
+                    
+                    if ( currentLevel < and.getChildren( ).size( ) - 1 )
+                    {
+                        //keep recursing to build up the combination until we are at the end where it will be added to or
+                        determinePermutations( currentLevel + 1,
+                                              and,
+                                              temp,
+                                              or );
+                    }
+                    else
+                    {
+                        //we are at the end so just attach the combination to the or node
+                        or.addChild( temp );
                     }
                 }
-                or.addChild( and );
             }
+            else
+            {
+                //Make a temp copy of combinations+new entry which will be sent forward                
+                And temp = new And( );
+                if ( currentLevel == 0 )
+                {
+                    //Always start with a clean combination                    
+                    combination = new And( );
+                }
+                else
+                {
+                    temp.getChildren( ).addAll( combination.getChildren( ) );
+                }
+                temp.addChild( entry );
 
-            return or;
+                if ( currentLevel < and.getChildren( ).size( ) - 1 )
+                {
+                    //keep recursing to build up the combination until we are at the end where it will be added to or                    
+                    determinePermutations( currentLevel + 1,
+                                          and,
+                                          temp,
+                                          or );
+                }
+                else
+                {
+                    //we are at the end so just attach the combination to the or node
+                    or.addChild( temp );
+                }
+            }
         }
     }
 
@@ -329,21 +391,21 @@ class LogicTransformer
      * (Exist (OR (A B)
      * 
      * <pre>
-     *        Exist
-     *         | 
-     *        or   
-     *       /  \
-     *      a    b
+     *         Exist
+     *          | 
+     *         or   
+     *        /  \
+     *       a    b
      * </pre>
      * 
      * (Exist ( Not (a) Not (b)) )
      * 
      * <pre>
-     *       Exist   
-     *       /   \
-     *      Not  Not
-     *      |     |
-     *      a     b
+     *        Exist   
+     *        /   \
+     *       Not  Not
+     *       |     |
+     *       a     b
      * </pre>
      */
     class ExistOrTransformation
@@ -378,21 +440,21 @@ class LogicTransformer
      * (Not (OR (A B)
      * 
      * <pre>
-     *        Not
-     *         | 
-     *        or   
-     *       /  \
-     *      a    b
+     *         Not
+     *          | 
+     *         or   
+     *        /  \
+     *       a    b
      * </pre>
      * 
      * (And ( Not (a) Exist (b)) )
      * 
      * <pre>
-     *        And   
-     *       /   \
-     *      Not  Not
-     *      |     |
-     *      a     b
+     *         And   
+     *        /   \
+     *       Not  Not
+     *       |     |
+     *       a     b
      * </pre>
      */
     class NotOrTransformation

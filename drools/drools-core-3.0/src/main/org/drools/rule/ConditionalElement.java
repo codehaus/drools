@@ -1,6 +1,7 @@
 package org.drools.rule;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class ConditionalElement
@@ -17,8 +18,4 @@ public abstract class ConditionalElement
         return this.children;
     }            
     
-    public int hashCode()
-    {
-        return children.hashCode();
-    }
 }
