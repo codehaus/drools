@@ -30,7 +30,7 @@ public class LogicTransformerTest extends DroolsTestCase
      *  a   c    b   c
      * </pre>
      */
-    public void testAndOrTransformation()
+    public void testSingleOrAndOrTransformation2()
     {
         String a = "a";
         String b = "b";
@@ -42,6 +42,7 @@ public class LogicTransformerTest extends DroolsTestCase
         or.addChild( a );
         or.addChild( b );
         and.addChild( or );
+       
 
         Or newOr = (Or) LogicTransformer.getInstance( ).applyOrTransformation( and,
                                                                                or );
@@ -54,17 +55,138 @@ public class LogicTransformerTest extends DroolsTestCase
                       newOr.getChildren( ).get( 1 ).getClass( ) );
 
         And and1 = (And) newOr.getChildren( ).get( 0 );
+        assertContains( c,
+                        and1.getChildren( ) );        
+        assertContains( a,
+                        and1.getChildren( ) );
+
+
+        And and2 = (And) newOr.getChildren( ).get( 1 );
+        assertContains( c,
+                        and2.getChildren( ) );        
+        assertContains( b,
+                        and2.getChildren( ) );
+
+    }    
+    
+    /**
+     * (a||b)&&c
+     * 
+     * <pre>
+     *            And
+     *           /|\ \__
+     *         _/ | \_  \_
+     *        /   |   \   \  
+     *       or   |   or   not
+     *      /   \ |  / \    |
+     *     a    b c d   e   f
+     * </pre>
+     * 
+     * Should become (a&&c)||(b&&c)
+     * 
+     * <pre>
+     *                    /\
+     *                  _/  \_
+     *                 /      \
+     *               _/|       |\_
+     *            __/  |       |  \__
+     *         __/     |       |     \__
+     *        /        |       |        \
+     *       and      and     and      and
+     *      /||\     /||\     /||\     /||\
+     *     a cd Not a ce Not b cd Not b ce Not
+     *           |        |        |        |
+     *           f        f        f        f
+     * </pre>
+     */    
+    public void testMultipleOrAndOrTransformation2()
+    {
+        String a = "a";
+        String b = "b";
+        String c = "c";
+        String d = "d";
+        String e = "e";
+        String f = "f";
+
+        And and = new And( );
+        Or or = new Or( );
+        or.addChild( a );
+        or.addChild( b );
+        and.addChild( or );
+        and.addChild( c );
+        
+        Or or2 = new Or( );
+        
+        or2.addChild( d );
+        or2.addChild( e );
+        and.addChild( or2 );
+        
+        Not not = new Not();
+        not.addChild(f);
+        and.addChild(not);
+
+        Or newOr = (Or) LogicTransformer.getInstance( ).applyOrTransformation( and,
+                                                                               or );
+
+        assertLength( 4,
+                      newOr.getChildren( ) );
+        assertEquals( And.class,
+                      newOr.getChildren( ).get( 0 ).getClass( ) );
+        assertEquals( And.class,
+                      newOr.getChildren( ).get( 1 ).getClass( ) );
+        assertEquals( And.class,
+                      newOr.getChildren( ).get( 2 ).getClass( ) );
+        assertEquals( And.class,
+                      newOr.getChildren( ).get( 3 ).getClass( ) );        
+
+        And and1 = (And) newOr.getChildren( ).get( 0 );
+        assertLength( 4,
+                      and1.getChildren( ) );        
         assertContains( a,
                         and1.getChildren( ) );
         assertContains( c,
                         and1.getChildren( ) );
-
-        And and2 = (And) newOr.getChildren( ).get( 1 );
-        assertContains( b,
-                        and2.getChildren( ) );
+        assertContains( d,
+                        and1.getChildren( ) );        
+        assertContains( not,
+                        and1.getChildren( ) );
+       
+        and1 = (And) newOr.getChildren( ).get( 1 );
+        assertLength( 4,
+                      and1.getChildren( ) );        
+        assertContains( a,
+                        and1.getChildren( ) );
         assertContains( c,
-                        and2.getChildren( ) );
-    }
+                        and1.getChildren( ) );
+        assertContains( e,
+                        and1.getChildren( ) );                
+        assertContains( not,
+                        and1.getChildren( ) ); 
+        
+        and1 = (And) newOr.getChildren( ).get( 2 );
+        assertLength( 4,
+                      and1.getChildren( ) );           
+        assertContains( b,
+                        and1.getChildren( ) );
+        assertContains( c,
+                        and1.getChildren( ) );
+        assertContains( d,
+                        and1.getChildren( ) );                
+        assertContains( not,
+                        and1.getChildren( ) );         
+        
+        and1 = (And) newOr.getChildren( ).get( 3);
+        assertLength( 4,
+                      and1.getChildren( ) );           
+        assertContains( b,
+                        and1.getChildren( ) );
+        assertContains( c,
+                        and1.getChildren( ) );
+        assertContains( e,
+                        and1.getChildren( ) );                
+        assertContains( not,
+                        and1.getChildren( ) );           
+    }       
 
     /**
      * (Not (OR (A B)
