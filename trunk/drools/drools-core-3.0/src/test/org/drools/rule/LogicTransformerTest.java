@@ -30,7 +30,7 @@ public class LogicTransformerTest extends DroolsTestCase
      *  a   c    b   c
      * </pre>
      */
-    public void testSingleOrAndOrTransformation2()
+    public void testSingleOrAndOrTransformation()
     {
         String a = "a";
         String b = "b";
@@ -99,7 +99,7 @@ public class LogicTransformerTest extends DroolsTestCase
      *           f        f        f        f
      * </pre>
      */    
-    public void testMultipleOrAndOrTransformation2()
+    public void testMultipleOrAndOrTransformation()
     {
         String a = "a";
         String b = "b";
@@ -514,6 +514,44 @@ public class LogicTransformerTest extends DroolsTestCase
         root.addChild( or1 );
         root.addChild( and4 );
         return root;
+    }
+    
+    public void testCloneable()
+    {
+        String a = "a";
+        String b = "b";
+        String c = "c";
+        String d = "d";
+        String e = "e";
+        String f = "f";
+        String g = "g";
+        String h = "h";        
+        
+        // Test against a known false tree
+        And and = new And( );
+        and.addChild( a );
+        and.addChild( b );
+        
+        Or or = new Or( );
+        or.addChild( c );
+        or.addChild( d );        
+        and.addChild( or );
+        And and2 = new And();
+        and2.addChild( e );
+        and2.addChild( f );  
+        or.addChild( and2 );
+        
+        Not not = new Not();
+        and.addChild( not );        
+        Or or2 = new Or();
+        not.addChild( or2 );
+        or2.addChild( g );
+        or2.addChild( h );
+
+        ConditionalElement cloned = (ConditionalElement) and.clone();
+        
+        assertTrue( treesEqual( and,
+                                 cloned ) );
     }
 
     /**
