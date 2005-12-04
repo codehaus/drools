@@ -1,7 +1,7 @@
 package org.drools.rule;
 
 /*
- * $Id: Rule.java,v 1.3 2005-08-23 14:53:57 mproctor Exp $
+ * $Id: Rule.java,v 1.4 2005-12-04 05:07:52 mproctor Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -96,7 +96,7 @@ public class Rule
 
     private final Map    declarations = new HashMap();
 
-    private final And    headPattern  = new And();
+    private final And    headPattern  = new And();    
 
     private final String module;
 
@@ -422,9 +422,9 @@ public class Rule
      *
      * @return The <code>List</code> of <code>Conditions</code>.
      */
-    public Collection getPatterns()
+    public And getPatterns()
     {
-        return Collections.unmodifiableCollection( this.headPattern.getChildren() );
+        return this.headPattern;
     }
 
     public int getPatternSize()
