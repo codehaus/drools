@@ -100,34 +100,46 @@ class LogicTransformer
                       method );
     }
 
-    // And[] transform(And and)
-    // {
-    // processTree( and );
-    //     
-    // List newChildren = new ArrayList( );
-    //        
-    // // Scan for any Child Ors, if found we need to move the Or
-    // // upwards
-    // for ( Iterator orIter = and.getChildren( ).iterator( ); orIter.hasNext(
-    // ); )
-    // {
-    // Object object2 = orIter.next( );
-    // if ( object2 instanceof Or )
-    // {
-    // newChildren.add( applyOrTransformation( and,
-    // (ConditionalElement) object2 ) );
-    // break;
-    // }
-    // }
-    //        
-    // //if we have children then we had Ors
-    // }
-
-    void transform(And and)
-    {
-        processTree( and );
-
-    }
+     And[] transform(And and)
+     {
+         And cloned = (And) and.clone();
+         
+         processTree( cloned );                            
+                
+         // Scan for any Child Ors, if found we need apply the AndOrTransformation
+         // And assign the result to the null declared or
+         Or or = null;
+         for ( Iterator it = cloned.getChildren( ).iterator( ); it.hasNext(); )
+         {
+             Object object = it.next( );
+             if ( object instanceof Or )
+             {
+                or =  (Or) applyOrTransformation( cloned,
+                                                  (ConditionalElement) object );
+                 break;
+             }
+         }
+         
+         And[] ands = null;
+         // Or will be null if there are no Ors in our tree
+         if ( or == null )
+         {
+             // No or so just assign
+             ands =  new And[] { cloned };
+         }
+         else
+         {
+             ands = new And[ or.getChildren().size() ];
+             int i = 0;
+             for (Iterator it = or.getChildren().iterator(); it.hasNext(); )
+             {
+                 ands[i] = (And) it.next();
+                 i++;
+             }
+             
+         }   
+         return ands;
+     }
 
     /**
      * Traverses a Tree, during the process it transforms Or nodes moving the
@@ -485,4 +497,6 @@ class LogicTransformer
         }
     }
 
+
+    
 }
