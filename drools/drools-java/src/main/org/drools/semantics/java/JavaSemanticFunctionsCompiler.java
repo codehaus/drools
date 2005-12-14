@@ -1,14 +1,13 @@
 package org.drools.semantics.java;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.jci.CompilerFactory;
 import org.apache.commons.jci.compilers.JavaCompiler;
+import org.apache.commons.jci.compilers.JavaCompilerFactory;
 import org.apache.commons.jci.readers.ResourceReader;
 import org.drools.smf.SemanticFunctionsCompiler;
 import org.drools.spi.Functions;
@@ -26,7 +25,7 @@ public class JavaSemanticFunctionsCompiler extends AbstractSemanticCompiler
         if ( JavaSemanticFunctionsCompiler.INSTANCE == null )
         {
             JavaSemanticFunctionsCompiler.INSTANCE = new JavaSemanticFunctionsCompiler( "java",
-                                                                                        CompilerFactory.getInstance().newCompiler( CompilerFactory.ECLIPSE ) );
+                                                                                        JavaCompilerFactory.getInstance().createCompiler( JavaCompilerFactory.ECLIPSE ) );
         }
         return JavaSemanticFunctionsCompiler.INSTANCE;
     }

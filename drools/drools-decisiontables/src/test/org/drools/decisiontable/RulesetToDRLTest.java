@@ -46,6 +46,7 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 
+import org.drools.IntegrationException;
 import org.drools.RuleBase;
 import org.drools.decisiontable.model.Condition;
 import org.drools.decisiontable.model.Consequence;
@@ -54,7 +55,7 @@ import org.drools.decisiontable.model.Rule;
 import org.drools.decisiontable.model.Ruleset;
 import org.drools.io.RuleBaseLoader;
 import org.drools.io.RuleSetLoader;
-import org.xml.sax.SAXParseException;
+
 
 /**
  * @author <a href="mailto:michael.neale@gmail.com"> Michael Neale</a>
@@ -121,11 +122,11 @@ public class RulesetToDRLTest extends TestCase
             
             RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
             ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
-            RuleBase ruleBase = ruleBaseLoader.buildRuleBase();            
+            ruleBaseLoader.buildRuleBase();            
             
             fail( );
         }
-        catch ( SAXParseException e )
+        catch ( IntegrationException e )
         {
             System.out.println( e.getMessage( ) );
         }

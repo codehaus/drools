@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.jci.CompilerFactory;
+//import org.apache.commons.jci.CompilerFactory;
 import org.apache.commons.jci.compilers.JavaCompiler;
+import org.apache.commons.jci.compilers.JavaCompilerFactory;
 import org.apache.commons.jci.readers.ResourceReader;
 import org.apache.commons.jci.stores.ResourceStore;
 import org.drools.rule.Declaration;
@@ -34,7 +35,7 @@ public class JavaSemanticRuleCompiler extends AbstractSemanticCompiler
         if ( JavaSemanticRuleCompiler.INSTANCE == null )
         {
             JavaSemanticRuleCompiler.INSTANCE = new JavaSemanticRuleCompiler( "java",
-                                                                              CompilerFactory.getInstance().newCompiler( CompilerFactory.ECLIPSE ) );
+                                                                              JavaCompilerFactory.getInstance().createCompiler( JavaCompilerFactory.ECLIPSE ) );
         }
         return JavaSemanticRuleCompiler.INSTANCE;
     }
