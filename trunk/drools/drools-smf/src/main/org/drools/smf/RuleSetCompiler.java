@@ -39,8 +39,8 @@ public class RuleSetCompiler
 
     private final String         knowledgeHelper;
 
-    private final ResourceReader src;
-    private final ResourceStore  dst;
+    private final MemoryResourceReader src;
+    private final MemoryResourceStore  dst;
 
     //    private File          srcJar;
     //    private File          binJar;

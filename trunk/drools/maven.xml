@@ -6,6 +6,13 @@
     xmlns:u="jelly:util"
     xmlns:maven="jelly:maven">
 
+
+    <goal name="drools:clean-build">
+      <attainGoal name="drools:clean" />
+      <attainGoal name="drools:default" />
+    </goal>
+
+
     <!-- exclude jdk1.5 projects if jdk1.5 is not present -->
     <preGoal name="build:start">
       <attainGoal name="drools:set-excludes" />
