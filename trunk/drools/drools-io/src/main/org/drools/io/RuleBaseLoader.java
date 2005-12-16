@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.8 2005-11-27 00:18:01 mproctor Exp $
+ * $Id: RuleBaseLoader.java,v 1.9 2005-12-16 00:58:20 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,10 @@ package org.drools.io;
  */
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,11 +52,14 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 import java.io.Reader;
+import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 import org.drools.IntegrationException;
 import org.drools.RuleBase;
@@ -209,15 +216,91 @@ public final class RuleBaseLoader
         }
     }
     
-    // @todo
-    public void addFromByteArray(Object object)throws IOException,
-    IntegrationException
+    public void addFromByteArray(byte[][] bytes) throws IntegrationException, IOException, SAXException
     {
-        if ( !(object instanceof byte[]) ) {
-            //return IOException( "Object is not a byte[]" );
+        for(int i = 0; i < bytes.length; i++)
+        {
+            addFromByteArray(bytes[i]);
         }
     }
+    
+    /**
+     * Creates a JarInputStream and defines each .class in custom classLoader
+     * The RuleSet is serialised out using the custom classLoader
+     * 
+     * @param bytes
+     * @throws IOException
+     * @throws IntegrationException
+     * @throws SAXException
+     */
+    public void addFromByteArray(byte[] bytes)throws IOException,
+                                                        IntegrationException, SAXException
+    {
+        ByteArrayInputStream jarInputStream = new ByteArrayInputStream( bytes );
+        JarInputStream jos = new JarInputStream( jarInputStream );
+        
+        ByteArrayClassLoader classLoader = new ByteArrayClassLoader();
+        byte[] ruleSetBytes = null;
+        for ( JarEntry entry = jos.getNextJarEntry( ); entry != null; entry = jos.getNextJarEntry( ) )
+        {
+            String name = entry.getName();            
+            if ( !name.endsWith(".conf") )
+            {
+                //We should only read in .class files and the serialised RuleSet
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] data = new byte[1024];
+                int byteCount;
+                while ( (byteCount = jos.read( data,
+                                     0,
+                                     1024 )) > -1 )
+                {                    
+                    bos.write(data, 0, byteCount);
+                }
+                
+                if ( name.endsWith( ".class") )
+                {
+                    name = entry.getName().replace('/', '.').substring(0, name.length() - 6);
+                    classLoader.addByteArray( name, bos.toByteArray() );
+                }
+                else
+                {
+                    ruleSetBytes = bos.toByteArray();
+                }
+            }            
+        }
+        
+        ByteArrayInputStream bis = new ByteArrayInputStream( ruleSetBytes );
+        ObjectInput in = new ObjectInputStreamWithLoader( bis,
+                                                          classLoader );
+        try
+        {
+            RuleSet ruleSet = (RuleSet) in.readObject();
+            addFromRuleSet( ruleSet );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new IntegrationException( "Rule Set jar is not correctly formed." );
+        }
+        catch ( IOException e )
+        {
+            throw new IntegrationException( "Rule Set jar is not correctly formed." );
+        }  
+        finally
+        {
+            if ( bis != null )
+            {
+                bis.close();
+            }
+            if ( in != null )
+            {
+                in.close();
+            }
+        }
+                        
+    }   
 
+ 
+    
     public void addFromRuleSet(RuleSet ruleSet) throws SAXException,
                                                IOException,
                                                IntegrationException
@@ -281,6 +364,14 @@ public final class RuleBaseLoader
     public RuleBase buildRuleBase() {
        return  this.builder.build();
     }
+    
+    class ByteArrayClassLoader extends ClassLoader
+    {
+        public void addByteArray(String name, byte[] bytes)
+        {
+            defineClass(name, bytes, 0, bytes.length);
+        }
+    }   
 
     private static class ObjectInputStreamWithLoader extends ObjectInputStream
     {
@@ -403,6 +494,7 @@ public final class RuleBaseLoader
                IntegrationException
     {
         return loadFromInputStream( in, DefaultConflictResolver.getInstance( ) );
+
     }
 
     /**
