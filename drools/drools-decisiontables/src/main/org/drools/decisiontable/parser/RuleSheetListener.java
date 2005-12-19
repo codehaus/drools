@@ -47,8 +47,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.drools.decisiontable.model.Condition;
-import org.drools.decisiontable.model.Consequence;
 import org.drools.decisiontable.model.Duration;
+import org.drools.decisiontable.model.Consequence;
 import org.drools.decisiontable.model.Import;
 import org.drools.decisiontable.model.Rule;
 import org.drools.decisiontable.model.Ruleset;
@@ -107,6 +107,8 @@ public class RuleSheetListener
     private int                     _ruleStartRow;
 
     private Map                     _actions;
+
+    private HashMap			_cellComments          = new HashMap();
 
     private List                    _ruleList              = new LinkedList( ); 
     
@@ -321,6 +323,9 @@ public class RuleSheetListener
                      value );
             break;
         case LABEL_ROW :
+        	labelRow( row,
+                    column,
+                    value );
             break;
         default :
             nextRule( row,
@@ -344,6 +349,21 @@ public class RuleSheetListener
         }
 
         actionType.value = value;
+    }
+
+    private void labelRow(int row,
+            int column,
+            String value)
+    {
+        ActionType actionType = getActionForColumn( row, column );
+
+        if ( !value.trim( ).equals( "" ) && (actionType.type == ActionType.ACTION || actionType.type == ActionType.CONDITION))
+        {
+        	_cellComments.put(new Integer(column),value);
+        }
+        else {
+        	_cellComments.put(new Integer(column),"From column: " + Rule.convertColNumToColName(column));
+        }
     }
 
     private ActionType getActionForColumn(int row,
@@ -399,7 +419,19 @@ public class RuleSheetListener
         {
         	_currentRule.setName( value );
         }
-        else if (actionType.type == ActionType.DURATION) // if the actionType type is DURATION then creates a new duration tag with the value got from the cell
+        else if ( actionType.type == ActionType.DESCRIPTION) // if the actionType type is DESCRIPTION then set the current Rule's description paramenter with the value got from the cell
+        {
+        	_currentRule.setDescription( value );
+        }
+        else if ( actionType.type == ActionType.XORGROUP) // if the actionType type is NOLOOP then set the current Rule's no-loop paramenter with the value got from the cell
+        {
+        	_currentRule.setXorGroup( value );
+        }
+        else if ( actionType.type == ActionType.NOLOOP) // if the actionType type is NOLOOP then set the current Rule's no-loop paramenter with the value got from the cell
+        {
+        	_currentRule.setNoLoop( value );
+        }
+        else if ( actionType.type == ActionType.DURATION) // if the actionType type is DURATION then creates a new duration tag with the value got from the cell
         {
         	createDuration( column, 
         					value, 
