@@ -65,6 +65,12 @@ public class Rule extends DRLElement
 
     private Duration		 _duration; // RIK: New variable to the Rule class (Defines a Duration tag for the rule)
     
+    private String           _description; // RIK: New variable to the Rule class (Set the description parameter of the rule tag)
+
+    private String           _noLoop; // RIK: New variable to the Rule class (Set the no-loop parameter of the rule tag)
+
+    private String           _xorGroup; // RIK: New variable to the Rule class (Set the xor-group parameter of the rule tag)
+
     private List             _parameters;
 
     private List             _conditions;
@@ -76,6 +82,7 @@ public class Rule extends DRLElement
     {
         _name = name;
         _salience = salience;
+        _description = "";
         _parameters = new LinkedList( );
         _conditions = new LinkedList( );
         _consequences = new LinkedList( );
@@ -110,9 +117,18 @@ public class Rule extends DRLElement
     {
         String xml = "<!--" + getComment( ) + "-->\n";
         xml = xml + "<rule name=\"" + _name + "\"";
+        if (_description != null) {
+            xml = xml + " description=\"" + _description + "\"";
+        }
         if (_salience != null) {
             xml = xml + " salience=\"" + _salience.toString() + "\"";
         }
+        if (_xorGroup != null) {
+            xml = xml + " xor-group=\"" + _xorGroup + "\"";
+        }
+        if (_noLoop != null) {
+            xml = xml + " no-loop=\"" + _noLoop + "\"";
+        }        
         xml = xml + ">\n";
         xml = xml + generateXml( _parameters );
         xml = xml + generateXml( _conditions );
@@ -233,9 +249,53 @@ public class Rule extends DRLElement
         return _name;
     }
     
+    public void setDescription(String value) // Set the description of the rule
+    {
+        _description = value;
+    }
+
+    public void appendDescription(String value) // Set the description of the rule
+    {
+        _description += value;
+    }
+
+    public String getDescription()
+    {
+        return _description;
+    }
+
     public void setDuration(Duration value) // Set the duration of the rule
     {
     	_duration=value;
+    }
+
+    public String getDuration()
+    {
+    	return _duration.getSnippet();
+    }
+    
+    public void setXorGroup(String value) // Set the duration of the rule
+    {
+    	_xorGroup=value;
+    }
+
+    public String getXorGroup()
+    {
+    	return _xorGroup;
+    }
+
+    public void setNoLoop(String value) // Set the no-loop attribute of the rule
+    {
+    	_noLoop=value;
+    }
+    
+    public boolean getNoLoop()
+    {
+    	String value="false";
+    	if (_noLoop.compareTo("true")!=0)
+    		value=_noLoop;
+    	Boolean b=new Boolean(value);
+    	return b.booleanValue();
     }
 }
 

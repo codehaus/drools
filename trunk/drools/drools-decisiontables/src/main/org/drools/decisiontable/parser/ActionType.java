@@ -67,6 +67,16 @@ public class ActionType
     // NAME is used to set the name parameter of a rule tag
     public static final int NAME      = 4;
 
+    // 10 - 05 - 2005 RIK: Add 2 new AtcionType types
+    // DESCRIPTION is used to set the description parameter of a rule tag
+    public static final int DESCRIPTION      = 5;
+
+    //  NOLOOP is used to set the no-loop parameter of a rule tag
+    public static final int NOLOOP      = 6;
+
+    //  XOR-GROUP is used to set the xor-group parameter of a rule tag
+    public static final int XORGROUP      = 7;
+
     int                     type;
 
     String                  value;
@@ -138,6 +148,39 @@ public class ActionType
                                new ActionType( ActionType.NAME,
                                                null ) );
         }
+        else if ( value.toUpperCase( ).startsWith( "I" ) ) // if the title cell
+												            // value starts with
+												            // "I" then put a
+												            // ActionType.DESCRIPTION
+												            // to the _actions	
+												            // list
+		{
+			actionTypeMap.put( new Integer( column ),
+  							   new ActionType( ActionType.DESCRIPTION,
+  									   		   null ) );
+		}
+        else if ( value.toUpperCase( ).startsWith( "U" ) ) // if the title cell
+												            // value starts with
+												            // "U" then put a
+												            // ActionType.NOLOOP
+												            // to the _actions	
+												            // list
+        {
+			actionTypeMap.put( new Integer( column ),
+							   new ActionType( ActionType.NOLOOP,
+				                               null ) );
+		}
+        else if ( value.toUpperCase( ).startsWith( "X" ) ) // if the title cell
+												            // value starts with
+												            // "X" then put a
+												            // ActionType.XORGROUP
+												            // to the _actions	
+												            // list
+		{
+			actionTypeMap.put( new Integer( column ),
+			                   new ActionType( ActionType.XORGROUP,
+					                           null ) );
+		}
         else
         {
             throw new DecisionTableParseException( "Invalid column header (ACTION type), " +
