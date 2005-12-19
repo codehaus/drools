@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.9 2005-12-16 00:58:20 michaelneale Exp $
+ * $Id: RuleBaseLoader.java,v 1.10 2005-12-19 02:11:25 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -55,7 +55,10 @@ import java.io.Reader;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.jar.JarEntry;
@@ -70,8 +73,16 @@ import org.drools.smf.RuleSetCompiler;
 import org.drools.spi.ConflictResolver;
 import org.xml.sax.SAXException;
 
+ 
+
 /**
- * Convenience methods for loading a <code>RuleBase</code>.
+ * Convenience methods for loading a <code>RuleBase</code>, as well as lower level calls
+ * for building up a rule base from RuleSets.
+ * 
+ * Note that the loadXXX static helper methods work directly off DRL, building/compiling behind the scenes.
+ * The addXXX methods generally work with pre compiled rules binaries (DDJ's as they are known).
+ *
+ * 
  *
  * <p>
  * The <code>RuleBaseLoader</code> provides convenience methods for loading
@@ -84,15 +95,19 @@ import org.xml.sax.SAXException;
  * @see RuleBase
  * @see RuleSetReader
  * @see RuleBaseBuilder
+ * @see SerializableRuleBaseProxy
  *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
- * TODO: Would rather this wasn't a bunch of static methods.
+ * TODO: Move static helper methods into a different class.
  */
 public final class RuleBaseLoader
 {
 
     private RuleBaseBuilder builder = new RuleBaseBuilder();
 
+    private List ruleSetBinaries = new ArrayList();
+    
+    
     /**
      * Default constructor
      */
@@ -139,14 +154,16 @@ public final class RuleBaseLoader
     public void addFromRuleSetLoader(RuleSetLoader ruleSetLoader) throws SAXException,
                                                                  IOException,
                                                                  IntegrationException
-    {
+    {        
         Map map = ruleSetLoader.getRuleSets();
         Iterator it = map.values().iterator();
         RuleSet[] ruleSets = new RuleSet[map.size()];
         int i = 0;
         while ( it.hasNext() )
         {
-            ruleSets[i] = ((RuleSetCompiler) it.next()).getRuleSet();
+            RuleSetCompiler compiler = (RuleSetCompiler) it.next();
+            ruleSets[i] = (compiler).getRuleSet();
+            addRuleSetBinary(compiler.getBinaryDeploymentJar());
             i++;
         }
         addFromRuleSet( ruleSets );
@@ -154,7 +171,8 @@ public final class RuleBaseLoader
 
     /**
      * Loads a RuleBase from several URLS, merging them and using the specified
-     * ConflictResolver
+     * ConflictResolver. URLS should be either to compiled DDJ rules, or a configuration file
+     * which indicates where to find the DDJs.
      *
      * @param urls
      * @param resolver
@@ -183,8 +201,9 @@ public final class RuleBaseLoader
     {
         if ( url.toExternalForm().toLowerCase().endsWith( ".ddj" ) )
         {
+            addFromDDJInputStream(url.openStream());
             //its url to drools deployment jar
-            addFromRuleSet( getRuleSet(url) );
+            //addFromRuleSet( getRuleSet(url) );
         }
         else
         {
@@ -216,6 +235,13 @@ public final class RuleBaseLoader
         }
     }
     
+    /** This will add multiple rulesets. Bytes should be for DDJ compiled rules
+     * 
+     * @param bytes
+     * @throws IntegrationException
+     * @throws IOException
+     * @throws SAXException
+     */
     public void addFromByteArray(byte[][] bytes) throws IntegrationException, IOException, SAXException
     {
         for(int i = 0; i < bytes.length; i++)
@@ -224,22 +250,40 @@ public final class RuleBaseLoader
         }
     }
     
+    
+
+    
     /**
      * Creates a JarInputStream and defines each .class in custom classLoader
      * The RuleSet is serialised out using the custom classLoader
-     * 
+     * Loads a ruleset from the DDJ bytes.
      * @param bytes
      * @throws IOException
      * @throws IntegrationException
      * @throws SAXException
-     */
+     */    
     public void addFromByteArray(byte[] bytes)throws IOException,
-                                                        IntegrationException, SAXException
+    IntegrationException, SAXException {
+        
+        ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+        addFromDDJInputStream(stream);
+    }
+    
+    /**
+     * The input stream here should be to a DDJ compiled rules "jar" only.
+     * NOT source.
+     */
+    private void addFromDDJInputStream(InputStream jarInputStream) throws IOException,
+        IntegrationException, SAXException 
     {
-        ByteArrayInputStream jarInputStream = new ByteArrayInputStream( bytes );
         JarInputStream jos = new JarInputStream( jarInputStream );
         
-        ByteArrayClassLoader classLoader = new ByteArrayClassLoader();
+        Map functions = new HashMap();
+        Map others = new HashMap();
+        Map invokers = new HashMap();
+        
+        ByteArrayClassLoader classLoader = new ByteArrayClassLoader(Thread.currentThread().getContextClassLoader());
+        
         byte[] ruleSetBytes = null;
         for ( JarEntry entry = jos.getNextJarEntry( ); entry != null; entry = jos.getNextJarEntry( ) )
         {
@@ -259,19 +303,34 @@ public final class RuleBaseLoader
                 
                 if ( name.endsWith( ".class") )
                 {
+                    //We need to add to the classloader in a certain order...
                     name = entry.getName().replace('/', '.').substring(0, name.length() - 6);
-                    classLoader.addByteArray( name, bos.toByteArray() );
+                    if (name.indexOf("Invoker") > 0) {
+                        invokers.put(name, bos.toByteArray());
+                    } else if (name.indexOf("Function_") > 0) {
+                        functions.put(name, bos.toByteArray());
+                    } else {
+                        others.put(name, bos.toByteArray());
+                    }
+                   
                 }
                 else
                 {
                     ruleSetBytes = bos.toByteArray();
                 }
-            }            
+            }     
+        
         }
+        
+        addToClassLoader(functions, classLoader);
+        addToClassLoader(others, classLoader);
+        addToClassLoader(invokers, classLoader);
         
         ByteArrayInputStream bis = new ByteArrayInputStream( ruleSetBytes );
         ObjectInput in = new ObjectInputStreamWithLoader( bis,
+           
                                                           classLoader );
+        addRuleSetBinary( ruleSetBytes );
         try
         {
             RuleSet ruleSet = (RuleSet) in.readObject();
@@ -297,10 +356,34 @@ public final class RuleBaseLoader
             }
         }
                         
+    }
+
+    private void addRuleSetBinary(byte[] ruleSetBytes)
+    {
+        this.ruleSetBinaries.add(ruleSetBytes);
     }   
 
  
     
+
+
+    /**
+     * this adds to the classloader.
+     * @param classes
+     * @param classLoader
+     */
+    private void addToClassLoader(Map classes,
+                                  ByteArrayClassLoader classLoader)
+    {
+        for ( Iterator iter = classes.keySet().iterator( ); iter.hasNext( ); )
+        {
+            String name = (String) iter.next( );
+            byte[] data = (byte[]) classes.get(name);
+            classLoader.addByteArray( name, data );
+            
+        }
+    }
+
     public void addFromRuleSet(RuleSet ruleSet) throws SAXException,
                                                IOException,
                                                IntegrationException
@@ -318,55 +401,28 @@ public final class RuleBaseLoader
         }
     }
     
-    private static RuleSet getRuleSet( URL url ) throws IntegrationException, IOException
-    {
-        URLClassLoader classLoader = new URLClassLoader( new URL[]{ url },
-                                                         RuleBaseLoader.class.getClassLoader() );
-
-        Properties props = new Properties();
-        props.load( classLoader.getResourceAsStream( "rule-set.conf" ) );
-        
-        if (props.get( "name" ) == null)
-        {
-            throw new IntegrationException( "Rule Set jar does not contain a rule-set.conf file." );
-        }
-        
-        InputStream is = null; 
-        ObjectInput in = null;
-        RuleSet ruleSet = null;
-        try
-        {
-            is = classLoader.getResourceAsStream( (String) props.get( "name" ) );
-        
-            in = new ObjectInputStreamWithLoader( is,
-                                                  classLoader );
-            ruleSet = (RuleSet) in.readObject();
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new IntegrationException( "Rule Set jar is not correctly formed." );
-        }
-        finally
-        {
-            if ( is != null )
-            {
-                is.close();
-            }
-            if ( in != null )
-            {
-                in.close();
-            }
-        }
-        return ruleSet;
-           
-    }    
+  
     
+    /**
+     * This will return a rulebase based on the added rulesets.
+     * The rulebase should be serializable by default.
+     * @return
+     */
     public RuleBase buildRuleBase() {
-       return  this.builder.build();
+       RuleBase ruleBase = this.builder.build();
+       if (this.ruleSetBinaries.size() > 0) {
+           SerializableRuleBaseProxy proxy = new SerializableRuleBaseProxy(ruleBase, this.ruleSetBinaries);
+           return proxy;
+       } else {
+           return ruleBase;
+       }
     }
     
-    class ByteArrayClassLoader extends ClassLoader
+    class ByteArrayClassLoader extends  ClassLoader
     {
+        ByteArrayClassLoader(ClassLoader parent) {
+          super(parent);
+        }
         public void addByteArray(String name, byte[] bytes)
         {
             defineClass(name, bytes, 0, bytes.length);
@@ -412,7 +468,8 @@ public final class RuleBaseLoader
      * loadFromUrl(URL url, ConflictResolver resolver) passing the
      * DefaultConflictResolver
      *
-     * @param url
+     *
+     * @param url A URL to the DRL to compile and load.
      * @return RuleBase
      */
     public static RuleBase loadFromUrl( URL url )
@@ -472,10 +529,8 @@ public final class RuleBaseLoader
       RuleSetLoader ruleSetLoader = new RuleSetLoader();
       ruleSetLoader.addFromUrl(urls);
       
-      RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(resolver);
-      ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
-      
-      return ruleBaseLoader.buildRuleBase();      
+      return buildFromLoader( resolver,
+                              ruleSetLoader );      
     }
 
     /**
@@ -547,11 +602,11 @@ public final class RuleBaseLoader
         RuleSetLoader ruleSetLoader = new RuleSetLoader();
         ruleSetLoader.addFromInputStream(ins);
         
-        RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(resolver);
-        ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
-        
-        return ruleBaseLoader.buildRuleBase();                  
+        return buildFromLoader( resolver,
+                                  ruleSetLoader );                  
     }
+
+
 
     /**
      * Loads a RuleBase from a Reader using the default ConflictResolver
@@ -620,9 +675,19 @@ public final class RuleBaseLoader
         RuleSetLoader ruleSetLoader = new RuleSetLoader();
         ruleSetLoader.addFromReader(ins);
         
+        return buildFromLoader( resolver,
+                                  ruleSetLoader );  
+    }
+
+    private static RuleBase buildFromLoader(ConflictResolver resolver,
+                                              RuleSetLoader ruleSetLoader) throws SAXException,
+                                                                          IOException,
+                                                                          IntegrationException
+    {
         RuleBaseLoader ruleBaseLoader = new RuleBaseLoader(resolver);
         ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
-        
-        return ruleBaseLoader.buildRuleBase();  
+
+        return ruleBaseLoader.buildRuleBase();
     }    
+
 }
