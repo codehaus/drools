@@ -66,6 +66,7 @@ import org.drools.smf.SemanticModule;
 import org.drools.smf.SemanticsRepository;
 import org.drools.spi.RuleBaseContext;
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -76,6 +77,10 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * <code>RuleSet</code> loader.
  *
+ * Note you can override the default entity resolver by setting the System property of:
+ *  <code>org.drools.io.EntityResolve</code> to your own custom entity resolver.
+ *  This can be done using -Dorg.drools.io.EntityResolver=YourClassHere on the command line, for instance.
+ *
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  */
 public class RuleSetReader extends DefaultHandler
@@ -83,6 +88,7 @@ public class RuleSetReader extends DefaultHandler
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
+    public static final String ENTITY_RESOLVER_PROPERTY_NAME = "org.drools.io.EntityResolver";
 
     /** Namespace URI for the general tags. */
     public static final String  RULES_NAMESPACE_URI  = "http://drools.org/rules";
@@ -133,6 +139,7 @@ public class RuleSetReader extends DefaultHandler
     
     private Map                 namespaces = new HashMap();
 
+    EntityResolver      entityResolver;
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -173,7 +180,9 @@ public class RuleSetReader extends DefaultHandler
                            new DurationHandler( this ) );
         this.handlers.put( "Consequence",
                            new ConsequenceHandler( this ) );
-
+        
+        initEntityResolver();
+        
     }
 
     /**
@@ -366,7 +375,6 @@ public class RuleSetReader extends DefaultHandler
         if ( this.parser == null )
         {
             SAXParserFactory factory = SAXParserFactory.newInstance( );
-
             factory.setNamespaceAware( true );
 
             String isValidatingString = System.getProperty( "drools.schema.validating" );
@@ -439,7 +447,6 @@ public class RuleSetReader extends DefaultHandler
                 throw new SAXException( "Unable to reference a Semantics Repository:\n" + e.getMessage() );
             }
         }
-
         localParser.parse( in,
                            this );
 
@@ -896,119 +903,16 @@ public class RuleSetReader extends DefaultHandler
     }
 
     public InputSource resolveEntity(String publicId,
-                                     String systemId)
-    {
-        // Schema files must end with xsd
-        if ( !systemId.toLowerCase( ).endsWith( "xsd" ) )
-        {
-            return null;
-        }
-
-        // try the actual location given by systemId
-        try
-        {
-            URL url = new URL( systemId );
-            return new InputSource( url.openStream( ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try and get the index for the filename, else return null
-        String xsd;
-        int index = systemId.lastIndexOf( "/" );
-        if ( index == -1 )
-        {
-            index = systemId.lastIndexOf( "\\" );
-        }
-        if ( index != -1 )
-        {
-            xsd = systemId.substring( index + 1 );
-        }
-        else
-        {
-            xsd = systemId;
-        }
-
-        ClassLoader cl = Thread.currentThread( ).getContextClassLoader( );
-
-        if ( cl == null )
-        {
-            cl = RuleSetReader.class.getClassLoader( );
-        }
-
-        // Try looking in META-INF
-        try
-        {
-            return new InputSource( cl.getResourceAsStream( "META-INF/" + xsd ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try looking in /META-INF
-        try
-        {
-            return new InputSource( cl.getResourceAsStream( "/META-INF/" + xsd ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try looking at root of classpath
-        try
-        {
-            return new InputSource( cl.getResourceAsStream( "/" + xsd ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try current working directory
-        try
-        {
-            return new InputSource( new BufferedInputStream( new FileInputStream( xsd ) ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        cl = ClassLoader.getSystemClassLoader( );
-
-        // Try looking in META-INF
-        try
-        {
-            return new InputSource( cl.getResourceAsStream( "META-INF/" + xsd ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try looking in /META-INF
-        try
-        {
-            return new InputSource( cl.getResourceAsStream( "/META-INF/" + xsd ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try looking at root of classpath
-        try
-        {
-            return new InputSource( cl.getResourceAsStream( "/" + xsd ) );
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Try current working directory
-        try
-        {
-            return new InputSource( new BufferedInputStream( new FileInputStream( xsd ) ) );
-        }
-        catch ( Exception e )
-        {
+                                     String systemId) throws SAXException {
+        try {
+            InputSource inputSource = resolveSchema(publicId, systemId);
+            if ( inputSource != null ) {
+                return inputSource;
+            }
+            if ( entityResolver != null ) {
+                return entityResolver.resolveEntity(publicId, systemId);
+            }
+        } catch (IOException ioe) {
         }
         return null;
     }
@@ -1044,5 +948,105 @@ public class RuleSetReader extends DefaultHandler
         print( x );
         throw x;
     }
-
+    
+    private InputSource resolveSchema(String publicId, String systemId)
+    throws SAXException, IOException {
+        // Schema files must end with xsd
+        if (!systemId.toLowerCase().endsWith("xsd")) {
+            return null;
+        }
+        
+        // try the actual location given by systemId
+        try {
+            URL url = new URL(systemId);
+            return new InputSource(url.openStream());
+        } catch (Exception e) {
+        }
+        
+        // Try and get the index for the filename, else return null
+        String xsd;
+        int index = systemId.lastIndexOf("/");
+        if (index == -1) {
+            index = systemId.lastIndexOf("\\");
+        }
+        if (index != -1) {
+            xsd = systemId.substring(index + 1);
+        } else {
+            xsd = systemId;
+        }
+        
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        
+        if (cl == null) {
+            cl = RuleSetReader.class.getClassLoader();
+        }
+        
+        // Try looking in META-INF
+        try {
+            return new InputSource(cl.getResourceAsStream("META-INF/" + xsd));
+        } catch (Exception e) {
+        }
+        
+        // Try looking in /META-INF
+        try {
+            return new InputSource(cl.getResourceAsStream("/META-INF/" + xsd));
+        } catch (Exception e) {
+        }
+        
+        // Try looking at root of classpath
+        try {
+            return new InputSource(cl.getResourceAsStream("/" + xsd));
+        } catch (Exception e) {
+        }
+        
+        // Try current working directory
+        try {
+            return new InputSource(new BufferedInputStream(new FileInputStream(
+                    xsd)));
+        } catch (Exception e) {
+        }
+        
+        cl = ClassLoader.getSystemClassLoader();
+        
+        // Try looking in META-INF
+        try {
+            return new InputSource(cl.getResourceAsStream("META-INF/" + xsd));
+        } catch (Exception e) {
+        }
+        
+        // Try looking in /META-INF
+        try {
+            return new InputSource(cl.getResourceAsStream("/META-INF/" + xsd));
+        } catch (Exception e) {
+        }
+        
+        // Try looking at root of classpath
+        try {
+            return new InputSource(cl.getResourceAsStream("/" + xsd));
+        } catch (Exception e) {
+        }
+        
+        // Try current working directory
+        try {
+            return new InputSource(new BufferedInputStream(new FileInputStream(
+                    xsd)));
+        } catch (Exception e) {
+        }
+        return null;
+    }    
+    
+    /**
+     * Intializes EntityResolver that is configured via system property ENTITY_RESOLVER_PROPERTY_NAME.
+     */
+    private void initEntityResolver() {
+        String entityResolveClazzName = System.getProperty(ENTITY_RESOLVER_PROPERTY_NAME);
+        if ( entityResolveClazzName != null && entityResolveClazzName.length() > 0 ) {
+            try {
+                Class entityResolverClazz = Thread.currentThread().getContextClassLoader().loadClass(entityResolveClazzName);
+                entityResolver = (EntityResolver)entityResolverClazz.newInstance();
+            } catch (Exception ignoreIt) {
+            }
+        }
+    }    
+    
 }
