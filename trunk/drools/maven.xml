@@ -144,15 +144,42 @@
         author="false"
         additionalparam="-J-Djava.awt.headless=true">
 
-        <fileset dir=".">
-          <include name="drools-*/src/main/**/*.java" />
-          <exclude name="drools*examples*/**" />
+         <packageset dir="./drools-base/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-core/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-decisiontables/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-groovy/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-io/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-java/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-jsr94/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-python/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-smf/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-spring/src/main">
+           <include name="**" />
+         </packageset>
 
-          <!-- check before excluding jdk5 src -->
-          <j:if test="${jdkversion  != '5'}"> <!-- hardcoded should ideally use pom -->
-            <exclude name="drools-spring-jdk5/**" />
-          </j:if>
-        </fileset>
+           <j:if test="${jdkversion  == '5'}"> 
+			 <packageset dir="./drools-spring-jdk5/src/main">
+			   <include name="**" />
+			 </packageset>
+           </j:if>
 
         <classpath>
           <fileset dir=".">
@@ -204,15 +231,43 @@
          author="false"
          version="false">
 
-         <fileset dir=".">
-           <include name="drools-*/src/main/**/*.java" />
-           <exclude name="drools*examples*/**" />
 
-           <!-- check before excluding jdk5 jars -->
-           <j:if test="${jdkversion  != '5'}"> <!-- hardcoded should ideally use pom -->
-             <exclude name="drools-spring-jdk5/**" />
+         <packageset dir="./drools-base/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-core/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-decisiontables/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-groovy/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-io/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-java/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-jsr94/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-python/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-smf/src/main">
+           <include name="**" />
+         </packageset>
+         <packageset dir="./drools-spring/src/main">
+           <include name="**" />
+         </packageset>
+
+           <j:if test="${jdkversion  == '5'}"> 
+			 <packageset dir="./drools-spring-jdk5/src/main">
+			   <include name="**" />
+			 </packageset>
            </j:if>
-         </fileset>
 
          <classpath>
            <fileset dir=".">
