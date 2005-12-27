@@ -132,11 +132,11 @@ public class RuleSetLoader
      * @param resolver
      * @return ruleBase
      */
-    public void addFromInputSurce(InputSource source) throws SAXException,
+    public void addFromInputSource(InputSource source) throws SAXException,
                                                         IOException,
                                                         IntegrationException
     {
-        addFromInputSurce( source );
+        addFromInputSource( new InputSource[] {source} );
     }
     
     /**
