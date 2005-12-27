@@ -14,7 +14,7 @@ drools-<semantic> and also its dependencies:
 
 drools-java
  -antlr
- -janino
+ -eclipse jdt
 
 drools-python
  -jython
@@ -26,5 +26,6 @@ drools-groovy
 
 drools-decisiontables
  -antlr
- -janino
+ -eclipse jdt
+ -apache POI
  -drools-java
