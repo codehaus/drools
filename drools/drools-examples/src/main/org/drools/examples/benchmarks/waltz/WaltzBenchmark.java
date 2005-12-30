@@ -1,7 +1,7 @@
 package org.drools.examples.benchmarks.waltz;
 
 /*
- * $Id: WaltzBenchmark.java,v 1.3 2005-11-25 02:35:36 mproctor Exp $
+ * $Id: WaltzBenchmark.java,v 1.4 2005-12-30 05:38:32 michaelneale Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -62,10 +62,9 @@ import org.drools.conflict.CompositeConflictResolver;
 import org.drools.conflict.LoadOrderConflictResolver;
 import org.drools.examples.benchmarks.waltz.model.Line;
 import org.drools.examples.benchmarks.waltz.model.Stage;
-import org.drools.examples.helloworld.HelloWorldExample;
+import org.drools.io.ReteDumper;
 import org.drools.io.RuleBaseLoader;
 import org.drools.io.RuleSetLoader;
-import org.drools.reteoo.Dumper;
 import org.drools.spi.ConflictResolver;
 import org.xml.sax.SAXException;
 
@@ -146,7 +145,7 @@ public class WaltzBenchmark
 
         File dotFile = new File( DOT_FILE );
         System.out.println( "Creating DOT: " + dotFile.getCanonicalPath() + "..." );
-        new Dumper( ruleBase ).dumpReteToDot( new PrintStream( new FileOutputStream( dotFile ) ) );
+        new ReteDumper( ruleBase ).dumpReteToDot( new PrintStream( new FileOutputStream( dotFile ) ) );
 
         this.workingMemory = ruleBase.newWorkingMemory();
 

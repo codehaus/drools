@@ -1,7 +1,7 @@
 package org.drools.examples.fibonacci;
 
 /*
- * $Id: FibonacciNative.java,v 1.8 2005-02-04 02:13:37 mproctor Exp $
+ * $Id: FibonacciNative.java,v 1.9 2005-12-30 05:38:32 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -45,7 +45,7 @@ import org.drools.FactException;
 import org.drools.RuleBase;
 import org.drools.RuleBaseBuilder;
 import org.drools.WorkingMemory;
-import org.drools.reteoo.Dumper;
+import org.drools.io.ReteDumper;
 import org.drools.rule.Declaration;
 import org.drools.rule.Rule;
 import org.drools.rule.RuleSet;
@@ -466,7 +466,7 @@ public class FibonacciNative
 
         System.out.println( "DUMP RETE" );
         System.out.println( "---------" );
-        Dumper dumper = new Dumper( ruleBase );
+        ReteDumper dumper = new ReteDumper( ruleBase );
         dumper.dumpRete( System.err );
 
         System.out.println( "DUMP RETE DOT" );
