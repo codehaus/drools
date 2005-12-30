@@ -139,6 +139,9 @@ public class SerializableRuleBaseProxy
         
     }
 
+    public RuleBase getWrappedRuleBase() {
+        return this.ruleBase;
+    }
 
     List getBinaries() {
         return this.ruleSetBinaries;
