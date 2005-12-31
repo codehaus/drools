@@ -1,7 +1,7 @@
 package org.drools.reteoo;
 
 /*
- * $Id: Dumper.java,v 1.9 2004-12-06 01:23:02 dbarnett Exp $
+ * $Id: Dumper.java,v 1.10 2005-12-31 10:05:50 michaelneale Exp $
  * 
  * Copyright 2004-2004 (C) The Werken Company. All Rights Reserved.
  * 
@@ -45,16 +45,23 @@ import java.io.PrintStream;
 import org.drools.RuleBase;
 
 /**
- * Implementation of <code>RuleBase</code>.
+ * A rete network dumper. This is an internal implementation.
+ * Users should use ReteDumper in the IO module.
  * 
  * @author <a href="mailto:bob@werken.com">bob mcwhirter </a>
  * 
- * @version $Id: Dumper.java,v 1.9 2004-12-06 01:23:02 dbarnett Exp $
+ * @version $Id: Dumper.java,v 1.10 2005-12-31 10:05:50 michaelneale Exp $
  */
 public class Dumper
 {
     private RuleBaseImpl ruleBase;
 
+    /**
+     * You must pass in a real rule base.
+     * If you are using RuleBaseLoader, it will provide a serializable proxy.
+     * Use the .getWrappedRuleBase method to get the real rulebase.
+     * @param ruleBase
+     */
     public Dumper(RuleBase ruleBase)
     {
         this.ruleBase = (RuleBaseImpl) ruleBase;
