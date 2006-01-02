@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<rule-set name="fibonacci"
+	xmlns="http://drools.org/rules" 
+	xmlns:dotnet="http://drools.org/semantics/dotnet" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+	xs:schemaLocation="http://drools.org/rules rules.xsd http://drools.org/semantics/dotnet dotnet.xsd">
+
+  <rule name="Bootstrap 1" salience="20">
+    <parameter identifier="f">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.fibonacci.Fibonacci, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <dotnet:condition>f.Sequence == 1</dotnet:condition>
+    <dotnet:condition>f.Value == -1</dotnet:condition>
+    <dotnet:consequence>
+      f.Value = 1;
+      System.Console.WriteLine(f.Sequence + " == " + f.Value);
+      drools.modifyObject(f);
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="Bootstrap 2">
+    <parameter identifier="f">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.fibonacci.Fibonacci, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <dotnet:condition>f.Sequence == 2</dotnet:condition>
+    <dotnet:condition>f.Value == -1</dotnet:condition>
+    <dotnet:consequence>
+      f.Value = 1;
+      System.Console.WriteLine(f.Sequence + " == " + f.Value);
+      drools.modifyObject(f);
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="Recurse" salience="10">
+    <parameter identifier="f">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.fibonacci.Fibonacci, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <dotnet:condition>f.Value == -1</dotnet:condition>
+    <dotnet:consequence>
+      System.Console.WriteLine("recurse for " + f.Sequence);
+      drools.assertObject(new Fibonacci(f.Sequence - 1));
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="Calculate">
+    <parameter identifier="f1">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.fibonacci.Fibonacci, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <parameter identifier="f2">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.fibonacci.Fibonacci, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <parameter identifier="f3">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.fibonacci.Fibonacci, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <dotnet:condition>f2.Sequence == (f1.Sequence + 1)</dotnet:condition>
+    <dotnet:condition>f3.Sequence == (f2.Sequence + 1)</dotnet:condition>
+    <dotnet:condition>f1.Value != -1</dotnet:condition>
+    <dotnet:condition>f2.Value != -1</dotnet:condition>
+    <dotnet:condition>f3.Value == -1</dotnet:condition>
+    <dotnet:consequence>
+      f3.Value =  f1.Value + f2.Value ;
+      drools.modifyObject(f3);
+      drools.retractObject(f1);
+    </dotnet:consequence>
+  </rule>
+</rule-set>
