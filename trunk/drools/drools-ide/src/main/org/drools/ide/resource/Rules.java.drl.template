@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  This is a new Java Drools file
+-->
+
+<rule-set name="MyRuleSet"
+      xmlns="http://drools.org/rules"
+      xmlns:java="http://drools.org/semantics/java"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+      xs:schemaLocation="http://drools.org/rules rules.xsd
+                         http://drools.org/semantics/java java.xsd">
+
+   <!-- Add imports here, e.g.
+      <import>java.lang.Object</import>
+    -->
+
+   <!-- Add rules here, e.g.
+      <rule name="MyRule" salience="10">
+         <parameter identifier="object">
+            <class>Object</class>
+         </parameter>
+         <java:condition>
+            object.getClass().getName().equals("java.lang.Object")
+         </java:condition>
+         <java:consequence>
+            System.out.println("Object found: " + object);
+         </java:consequence>
+      </rule>
+    -->
+
+</rule-set>

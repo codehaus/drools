@@ -1,0 +1,32 @@
+package com.sample;
+
+import org.drools.RuleBase;
+import org.drools.WorkingMemory;
+import org.drools.io.RuleBaseLoader;
+
+public class DroolsTest {
+
+    public static final void main(String[] args) {
+        try {
+        	// loading rule file rules.java.drl
+            RuleBase ruleBase = RuleBaseLoader.loadFromInputStream(
+                DroolsTest.class.getResourceAsStream("/Rules.java.drl"));
+            
+            // creating working memory
+            WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+            
+            // insert elements in the working memory here
+            // e.g. workingMemory.assertObject(new Integer(10));
+            
+            // Set application data here
+			// e.g. workingMemory.setApplicationData("myApplicationDataName", 12);
+			
+            // firing all rules
+            workingMemory.fireAllRules();
+            
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+    
+}
