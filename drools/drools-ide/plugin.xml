@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.drools.ide"
+   name="Drools IDE Plug-in"
+   version="1.0"
+   provider-name="krisv"
+   class="org.drools.ide.DroolsIDEPlugin">
+   
+   <runtime>
+      <library name="ide.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/antlr-2.7.5.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/commons-jci-SNAPSHOT20051110.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/commons-logging.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/drools_base.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/drools_core.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/drools_io.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/drools_java.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/drools_smf.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/janino-2.3.8.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/org.eclipse.jdt.core_3.1.1.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+ 
+   <requires>
+      <import plugin="org.eclipse.core.runtime" />
+      <import plugin="org.eclipse.ui" />
+      <import plugin="org.eclipse.core.runtime" />
+      <import plugin="org.eclipse.jface.text" />
+      <import plugin="org.eclipse.ui.editors" />
+      <import plugin="org.eclipse.ui.workbench.texteditor" />
+      <import plugin="org.eclipse.ui.ide" />
+      <import plugin="org.eclipse.core.resources" />
+      <import plugin="org.eclipse.debug.core" />
+      <import plugin="org.eclipse.debug.ui" />
+      <import plugin="org.eclipse.jdt.debug.ui" />
+      <import plugin="org.eclipse.jdt.debug" />
+      <import plugin="org.eclipse.jdt.core" />
+      <import plugin="org.eclipse.jdt.ui" />
+   </requires>
+
+   <extension
+         point = "org.eclipse.ui.newWizards">
+      <category
+            id = "org.drools.ide.new"
+            name="Drools">
+      </category>
+      <wizard
+            id = "org.drools.ide.wizards.new.project"
+            name = "New Drools Project"
+            class= "org.drools.ide.wizard.NewDroolsProjectWizard"
+            category= "org.drools.ide.new"
+            project= "true"
+            icon= "icons/drools.gif">
+         <description>This wizard creates a new Drools project.</description>
+      </wizard>
+   </extension>
+
+   <extension
+      id="droolsbuilder" name="Drools Builder" point="org.eclipse.core.resources.builders">
+      <builder>
+         <run class="org.drools.ide.builder.DroolsBuilder"/>
+      </builder>
+   </extension>
+
+   <extension
+         id="problem"
+         point="org.eclipse.core.resources.markers"
+         name="Drools error">
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <persistent value="true" />
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="Drools Editor"
+            extensions="drl"
+            icon="icons/drools.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.drools.ide.editors.DroolsEditor"
+            id="org.drools.ide.editors.DroolsEditor">
+      </editor>
+   </extension>
+
+   <extension
+         point = "org.eclipse.ui.editorActions">
+      <editorContribution 
+            id="org.drools.ide.editors.DroolsEditorContribution" 
+            targetID="org.drools.ide.editors.DroolsEditor">        
+	     <action id="org.drools.ide.editors.ParseActionDelegate" 
+            label="" 
+	        toolbarPath="DroolsEditor" 
+            icon="icons/check.gif" 
+            tooltip="Parse Drools file" 
+            class="org.drools.ide.editors.ParseActionDelegate"/> 
+      </editorContribution>
+   </extension>
+   
+   <extension
+         point = "org.eclipse.ui.newWizards">
+      <category
+         id = "org.drools.ide.new"
+         name="Drools">
+      </category>
+      <wizard
+            id = "org.drools.ide.new.file.java"
+            name = "New Java Drools File"
+            class="org.drools.ide.wizard.NewJavaDroolsFileWizard"
+            category="org.drools.ide.new"
+            icon="icons/drools.gif">
+         <description>This creates a new Java Drools file</description>
+	     <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.help.toc">
+      <toc file="toc.xml" primary="true" />
+   </extension>
+   
+   <extension point="org.eclipse.help.toc">
+       <toc file="help/debug/debug.toc" />
+   </extension>
+   
+   <extension point="org.eclipse.ui.views">
+      <category
+         name="Drools"
+         id="org.drools.ide.views">
+      </category>
+      <view
+         name="Working Memory View"
+         icon="icons/drools.gif"
+         category="org.drools.ide.views"
+         class="org.drools.ide.debug.WorkingMemoryView"
+         id="org.drools.ide.debug.WorkingMemoryView">
+      </view>
+      <view
+         name="Agenda View"
+         icon="icons/drools.gif"
+         category="org.drools.ide.views"
+         class="org.drools.ide.debug.AgendaView"
+         id="org.drools.ide.debug.AgendaView">
+      </view>
+      <view
+         name="Application Data View"
+         icon="icons/drools.gif"
+         category="org.drools.ide.views"
+         class="org.drools.ide.debug.ApplicationDataView"
+         id="org.drools.ide.debug.ApplicationDataView">
+      </view>
+   </extension>
+   
+   <extension point="org.eclipse.ui.perspectiveExtensions"> 
+        <perspectiveExtension 
+            targetID="org.eclipse.debug.ui.DebugPerspective"> 
+            <view id="org.drools.ide.debug.WorkingMemoryView" 
+                relative="org.eclipse.ui.console.ConsoleView" 
+                relationship="stack"/> 
+            <view id="org.drools.ide.debug.AgendaView" 
+                relative="org.eclipse.ui.console.ConsoleView" 
+                relationship="stack"/> 
+            <view id="org.drools.ide.debug.ApplicationDataView" 
+                relative="org.eclipse.ui.console.ConsoleView" 
+                relationship="stack"/> 
+        </perspectiveExtension> 
+    </extension> 
+   
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            targetID="org.drools.ide.debug.WorkingMemoryView"
+            id="org.drools.ide.debug.WorkingMemoryViewActions">
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ShowStaticVariablesAction"
+               icon="icons/static_co.gif"
+               label="Show Static Variables"
+               menubarPath="javaActions"
+               tooltip="Show Static Variables">
+         </action>
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowConstants"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ShowConstantsAction"
+               icon="icons/constant_co.gif"
+               label="Show Constants"
+               menubarPath="javaActions"
+               tooltip="Show Constants">
+         </action>
+      </viewContribution>
+      <viewContribution
+            targetID="org.drools.ide.debug.AgendaView"
+            id="org.drools.ide.debug.AgendaViewActions">
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ShowStaticVariablesAction"
+               icon="icons/static_co.gif"
+               label="Show Static Variables"
+               menubarPath="javaActions"
+               tooltip="Show Static Variables">
+         </action>
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowConstants"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ShowConstantsAction"
+               icon="icons/constant_co.gif"
+               label="Show Constants"
+               menubarPath="javaActions"
+               tooltip="Show Constants">
+         </action>
+      </viewContribution>
+      <viewContribution
+            targetID="org.drools.ide.debug.ApplicationDataView"
+            id="org.drools.ide.debug.ApplicationDataViewActions">
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ShowStaticVariablesAction"
+               icon="icons/static_co.gif"
+               label="Show Static Variables"
+               menubarPath="javaActions"
+               tooltip="Show Static Variables">
+         </action>
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowConstants"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ShowConstantsAction"
+               icon="icons/constant_co.gif"
+               label="Show Constants"
+               menubarPath="javaActions"
+               tooltip="Show Constants">
+         </action>
+      </viewContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.core.logicalStructureProviders">
+      <logicalStructureProvider
+            class="org.drools.ide.debug.AgendaLogicalStructures"
+            modelIdentifier="org.eclipse.jdt.debug"/>
+   </extension>
+   
+   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+       <classpathContainerInitializer class="org.drools.ide.util.DroolsClasspathContainerInitializer" id="DROOLS" /> 
+   </extension>
+</plugin>

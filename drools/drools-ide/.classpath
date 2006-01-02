@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-jci-SNAPSHOT20051110.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/drools_base.jar"/>
+	<classpathentry kind="lib" path="lib/drools_core.jar"/>
+	<classpathentry kind="lib" path="lib/drools_io.jar"/>
+	<classpathentry kind="lib" path="lib/drools_java.jar"/>
+	<classpathentry kind="lib" path="lib/drools_smf.jar"/>
+	<classpathentry kind="lib" path="lib/janino-2.3.8.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.1.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
