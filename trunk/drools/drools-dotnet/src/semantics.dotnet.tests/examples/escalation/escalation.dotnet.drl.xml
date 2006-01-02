@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<rule-set name="Escalation Rules" 
+	xmlns="http://drools.org/rules" 
+	xmlns:dotnet="http://drools.org/semantics/dotnet" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+	xs:schemaLocation="http://drools.org/rules rules.xsd http://drools.org/semantics/dotnet dotnet.xsd">
+
+  <rule name="Escalate Immediately If Bob">
+    <parameter identifier="ticket">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.escalation.TroubleTicket, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <dotnet:condition>ticket.Submitter.Equals( "bob" )</dotnet:condition>
+    <dotnet:condition>ticket.Status == Status.New</dotnet:condition>
+    <dotnet:consequence>
+      System.Console.WriteLine( "----------------------------------------" );
+      System.Console.WriteLine( "** ticket == " + ticket );
+      ticket.Status = Status.Notified ;
+      System.Console.WriteLine( "** Escalating trouble ticket for bob, because he's special" );
+      System.Console.WriteLine( "** ticket == " + ticket );
+      System.Console.WriteLine( "----------------------------------------" );
+      drools.modifyObject( ticket );
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="Escalate New Tickets">
+    <parameter identifier="ticket">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.escalation.TroubleTicket, org.drools.semantics.dotnet.tests</dotnet:class>
+    </parameter>
+    <dotnet:condition>ticket.Status == Status.New</dotnet:condition>
+    <duration seconds="2" />
+    <dotnet:consequence>
+      System.Console.WriteLine( "----------------------------------------" );
+      System.Console.WriteLine( "** ticket == " + ticket );
+      ticket.Status = Status.Notified ;
+      System.Console.WriteLine( "** Escalating trouble ticket from NEW to NOTIFIED after 2 seconds" );
+      System.Console.WriteLine( "** ticket == " + ticket );
+      System.Console.WriteLine( "----------------------------------------" );
+      drools.modifyObject( ticket );
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="Escalate Notified Tickets">
+    <parameter identifier="ticket">
+      <dotnet:class>org.drools.semantics.dotnet.tests.examples.escalation.TroubleTicket, org.drools.semantics.dotnet.tests </dotnet:class>
+    </parameter>
+    <dotnet:condition>ticket.Status == Status.Notified</dotnet:condition>
+    <duration seconds="5" />
+    <dotnet:consequence>
+      System.Console.WriteLine( "----------------------------------------" );
+      System.Console.WriteLine( "** ticket == " + ticket );
+      ticket.Status=Status.Completed ;
+      System.Console.WriteLine( "** Escalating trouble ticket from NOTIFIED to COMPLETED after 5 seconds" );
+      System.Console.WriteLine( "** ticket == " + ticket );
+      System.Console.WriteLine( "----------------------------------------" );
+      drools.modifyObject( ticket );
+    </dotnet:consequence>
+  </rule>
+
+</rule-set>
+
