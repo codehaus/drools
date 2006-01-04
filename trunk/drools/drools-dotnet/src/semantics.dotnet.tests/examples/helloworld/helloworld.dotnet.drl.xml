@@ -19,35 +19,35 @@
 
   <rule name="Hello World">
     <parameter identifier="hello">
-      <dotnet:class>String</dotnet:class>
+      <dotnet:class>System.String</dotnet:class>
     </parameter>
 
     <dotnet:condition>hello.Equals("Hello")</dotnet:condition>
 
     <dotnet:consequence>
-      helloWorld( hello );
+      helloWorld(hello);
     </dotnet:consequence>
   </rule>
 
   <rule name="Goodbye Cruel World">
     <parameter identifier="goodbye">
-      <dotnet:class>String</dotnet:class>
+      <dotnet:class>System.String</dotnet:class>
     </parameter>
 
     <dotnet:condition>goodbye.Equals("Goodbye")</dotnet:condition>
 
     <dotnet:consequence>
-      goodbyeWorld( goodbye );
+      goodbyeWorld(goodbye);
     </dotnet:consequence>
   </rule>
 
   <rule name="Debug">
-    <parameter identifier="object">
-      <dotnet:class>Object</dotnet:class>
+    <parameter identifier="assertedObject">
+      <dotnet:class>System.Object</dotnet:class>
     </parameter>
 
     <dotnet:consequence>
-      System.Console.WriteLine("Asserted object: " + object);
+      System.Console.WriteLine("Asserted object: " + assertedObject);
     </dotnet:consequence>
   </rule>
 
