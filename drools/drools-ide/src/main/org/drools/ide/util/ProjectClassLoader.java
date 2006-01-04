@@ -14,6 +14,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 public class ProjectClassLoader {
@@ -58,7 +59,16 @@ public class ProjectClassLoader {
             IPath outputPath = location.append(project.getOutputLocation()
                     .removeFirstSegments(1));
             pathElements.add(outputPath.toFile().toURL());
-            // TODO: is it possible to add classpath of required projects too?
+            
+            // also add classpath of required projects
+            for (String projectName: project.getRequiredProjectNames()) {
+                IProject reqProject = project.getProject().getWorkspace()
+                    .getRoot().getProject(projectName);
+                if (reqProject != null) {
+                    IJavaProject reqJavaProject = JavaCore.create(reqProject);
+                    pathElements.addAll(getProjectClassPathURLs(reqJavaProject));
+                }
+            }
         } catch (JavaModelException e) {
             DroolsIDEPlugin.log(e);
         } catch (MalformedURLException e) {
