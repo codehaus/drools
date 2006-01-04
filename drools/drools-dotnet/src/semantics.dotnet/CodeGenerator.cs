@@ -83,7 +83,11 @@ namespace org.drools.semantics.dotnet
 
 		private static CodeCompileUnit AddFunctions(CodeCompileUnit code, DotNetFunctions functions)
 		{
-			//TODO: Implement functions
+			if (functions != null)
+			{
+				CodeSnippetTypeMember functionMember = new CodeSnippetTypeMember(functions.getText());
+				code.Namespaces[0].Types[0].Members.Add(functionMember);
+			}
 			return code;
 		}
 

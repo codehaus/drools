@@ -11,15 +11,14 @@ namespace org.drools.semantics.dotnet
 	{
 		private string _text;
 
-		public DotNetFunctions(RuleSet ruleSet, int id, String text)
+		public DotNetFunctions(RuleSet ruleSet, String text)
 		{
 			_text = text;
-			throw new NotImplementedException("Functions are not implemented.");
 		}
 
 		public string getSemantic()
 		{
-			return "DotNet";
+			return "dotnet";
 		}
 
 		public string getText()

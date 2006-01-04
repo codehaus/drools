@@ -12,7 +12,14 @@ namespace org.drools.semantics.dotnet
 	{
 		public Functions newFunctions(RuleSet rs, RuleBaseContext rbc, Configuration c)
 		{
-			throw new NotImplementedException("The method or operation is not implemented.");
+			try
+			{
+				return new DotNetFunctions(rs, c.getText());
+			}
+			catch (Exception e)
+			{
+				throw new FactoryException(e);
+			}
 		}
 	}
 }

@@ -85,7 +85,7 @@
     <Content Include="examples\fibonacci\fibonacci.dotnet.drl.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="examples\helloworld\helloworld.drl.xml">
+    <Content Include="examples\helloworld\helloworld.dotnet.drl.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="examples\manners\manners.dotnet.drl.xml">
