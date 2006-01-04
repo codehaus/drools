@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.Map;
 
 import org.drools.ide.DroolsIDEPlugin;
+import org.drools.ide.util.ProjectClassLoader;
 import org.drools.rule.NoConsequenceException;
 import org.drools.semantics.java.CompilationException;
 import org.drools.smf.FactoryException;
@@ -19,6 +20,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.adaptor.EclipseClassLoader;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -91,7 +94,10 @@ public class DroolsBuilder extends IncrementalProjectBuilder {
             removeProblemsFor(res);
             try {
                 IJavaProject project = JavaCore.create(res.getProject());
-                if (project.getOutputLocation().isPrefixOf(res.getFullPath())) {
+                // exclude files that are located in the output directory,
+                // unless the ouput directory is the same as the project location
+                if (!project.getOutputLocation().equals(project.getPath())
+                        && project.getOutputLocation().isPrefixOf(res.getFullPath())) {
                     return false;
                 }
             } catch (JavaModelException e) {
@@ -104,6 +110,10 @@ public class DroolsBuilder extends IncrementalProjectBuilder {
                 ClassLoader oldLoader = Thread.currentThread()
                         .getContextClassLoader();
                 ClassLoader newLoader = DroolsBuilder.class.getClassLoader();
+                if (res.getProject().getNature("org.eclipse.jdt.core.javanature") != null) {
+                    IJavaProject project = JavaCore.create(res.getProject());
+                    newLoader = ProjectClassLoader.getProjectClassLoader(project);
+                }
                 try {
                     Thread.currentThread().setContextClassLoader(newLoader);
                     reader.read(new StringReader(new String(Util.getResourceContentsAsCharArray((IFile) res))));
