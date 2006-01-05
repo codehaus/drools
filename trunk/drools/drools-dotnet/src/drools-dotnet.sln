@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "semantics.dotnet.tests", "semantics.dotnet.tests\semantics.dotnet.tests.csproj", "{B9420EAA-D74A-48AA-9600-FB8D6505D642}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.dotnet", "drools.dotnet\drools.dotnet.csproj", "{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "semantics.dotnet", "semantics.dotnet\semantics.dotnet.csproj", "{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.dotnet.examples", "drools.dotnet.examples\drools.dotnet.examples.csproj", "{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.dotnet.tests", "drools.dotnet.tests\drools.dotnet.tests.csproj", "{B9420EAA-D74A-48AA-9600-FB8D6505D642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.semantics.dotnet", "drools.semantics.dotnet\drools.semantics.dotnet.csproj", "{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +15,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Release|Any CPU.ActiveCfg = Release|Any CPU
