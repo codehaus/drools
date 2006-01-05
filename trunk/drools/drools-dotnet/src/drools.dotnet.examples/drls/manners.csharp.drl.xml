@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+The definition of a RuleExecutionSet is not within the scope of the JSR 94.
+The implementation given in this file is written for the reference
+implementation. A rule engine vendor verifying their rule engine should
+modify this file to their specific needs.
+
+Miss Manners is a program which handles the problem of finding an acceptable
+seating arrangement for guests at a dinner party.  It will attempt to match
+people with the same hobbies, and to seat everyone next to a member of the
+opposite sex.  Manners is a small program, which has only few rules, and
+employs a depth-first search approach to the problem.
+-->
+
+<rule-set name="Miss Manners"
+	xmlns="http://drools.org/rules" 
+	xmlns:dotnet="http://drools.org/semantics/dotnet" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+	xs:schemaLocation="http://drools.org/rules rules.xsd http://drools.org/semantics/dotnet dotnet.xsd">
+
+
+  <!--
+       Initialize the root seating element.
+       -->
+  <rule name="find first seat" salience="40">
+    <parameter identifier="context">
+      <dotnet:class>org.drools.dotnet.examples.manners.Context,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="guest">
+      <dotnet:class>org.drools.dotnet.examples.manners.Guest,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+
+    <dotnet:condition>
+      context.State.Equals("start")
+    </dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine("FIRE: find first seat: " + guest);
+
+      drools.assertObject(new Seating(1, guest, null));
+
+      context.State = "find_seating";
+      drools.modifyObject(context);
+    </dotnet:consequence>
+  </rule>
+
+  <!--
+       Find guest for empty seat.
+       -->
+  <rule name="find seating" salience="30">
+    <parameter identifier="context">
+      <dotnet:class>org.drools.dotnet.examples.manners.Context,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="guest">
+      <dotnet:class>org.drools.dotnet.examples.manners.Guest,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="seating">
+      <dotnet:class>org.drools.dotnet.examples.manners.Seating,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+
+    <dotnet:condition>
+      context.State.Equals("find_seating")
+    </dotnet:condition>
+
+    <dotnet:condition>
+      seating.Guest2 == null
+    </dotnet:condition>
+
+    <dotnet:condition>
+      !seating.TabooList.Contains(guest)
+    </dotnet:condition>
+
+    <dotnet:condition>
+      seating.Guest1.HasOppositeSex(guest)
+    </dotnet:condition>
+
+    <dotnet:condition>
+      seating.Guest1.HasSameHobby(guest)
+    </dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine("FIRE: find seating: " + seating + " " + guest);
+
+      Seating nextSeat = new Seating(seating.Seat2, guest, seating);
+      drools.assertObject(nextSeat);
+
+      seating.Guest2 = guest;
+      seating.TabooList.Add(guest);
+      drools.modifyObject(seating);
+
+    </dotnet:consequence>
+  </rule>
+
+  <!--
+       Reached dead end, try another path.
+       -->
+  <rule name="try another path" salience="20">
+    <parameter identifier="context">
+      <dotnet:class>org.drools.dotnet.examples.manners.Context,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="lastSeat">
+      <dotnet:class>org.drools.dotnet.examples.manners.LastSeat,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="seating">
+      <dotnet:class>org.drools.dotnet.examples.manners.Seating,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+
+    <dotnet:condition>
+      context.State.Equals("find_seating")
+    </dotnet:condition>
+
+    <dotnet:condition>
+      lastSeat.Seat > seating.Seat1
+    </dotnet:condition>
+
+    <dotnet:condition>
+      seating.Guest2 == null
+    </dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine("FIRE: try another path: " + seating);
+
+      Seating prevSeat = seating.PrevSeat;
+      prevSeat.Guest2 = null;
+      drools.modifyObject(prevSeat);
+
+      drools.retractObject(seating);
+    </dotnet:consequence>
+  </rule>
+
+  <!--
+       All seats are taken.
+       -->
+  <rule name="we are done" salience="10">
+    <parameter identifier="context">
+      <dotnet:class>org.drools.dotnet.examples.manners.Context,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="lastSeat">
+      <dotnet:class>org.drools.dotnet.examples.manners.LastSeat,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+    <parameter identifier="seating">
+      <dotnet:class>org.drools.dotnet.examples.manners.Seating,org.drools.dotnet.examples</dotnet:class>
+    </parameter>
+
+    <dotnet:condition>
+      context.State.Equals("find_seating")
+    </dotnet:condition>
+
+    <dotnet:condition>
+      lastSeat.Seat == seating.Seat1
+    </dotnet:condition>
+
+    <dotnet:consequence>
+      <![CDATA[
+           System.Console.WriteLine("FIRE: we are done");
+           System.Collections.Generic.IList<Seat> list = new System.Collections.Generic.List<Seat>();
+
+           while(seating != null) {
+            Seat seat = new Seat(seating.Seat1, seating.Guest1.Name);
+            seating = seating.PrevSeat;
+            list.Add(seat);
+           }
+
+           foreach(Seat seat in list)
+           {
+            System.Console.WriteLine(seat);
+            drools.assertObject(seat);
+           }
+
+           context.State = "all_done";
+           drools.modifyObject(context);
+           ]]>
+    </dotnet:consequence>
+  </rule>
+
+</rule-set>
+

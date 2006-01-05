@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<rule-set name="State Example"
+          xmlns="http://drools.org/rules"
+          xmlns:dotnet="http://drools.org/semantics/dotnet"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+          xs:schemaLocation="http://drools.org/rules rules.xsd
+                             http://drools.org/semantics/dotnet dotnet.xsd">
+
+  <rule name="Bootstrap">
+    <parameter identifier="a">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="A">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+
+    <dotnet:condition>a.Status.Equals(Status.NotRun)</dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine(a.Name + " finished" );
+      a.Status = Status.Finished;
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="AtoB" salience="30">
+    <parameter identifier="a">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="A">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+    <parameter identifier="b">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="B">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+
+    <dotnet:condition>a.Status.Equals(Status.Finished)</dotnet:condition>
+    <dotnet:condition>b.Status.Equals(Status.NotRun)</dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine(b.Name + " finished" );
+      b.Status = Status.Finished;
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="BtoC" salience="20">
+    <parameter identifier="b">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="B">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+    <parameter identifier="c">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="C">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+
+    <dotnet:condition>b.Status.Equals(Status.Finished)</dotnet:condition>
+    <dotnet:condition>c.Status.Equals(Status.NotRun)</dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine(c.Name + " finished" );
+      c.Status = Status.Finished;
+    </dotnet:consequence>
+  </rule>
+
+  <rule name="BtoD" salience="10">
+    <parameter identifier="b">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="B">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+    <parameter identifier="d">
+      <dotnet:class>org.drools.dotnet.examples.state.State,org.drools.dotnet.examples</dotnet:class>
+      <dotnet:class-field field="name" value="D">org.drools.dotnet.examples.state.State</dotnet:class-field>
+    </parameter>
+
+    <dotnet:condition>b.Status.Equals(Status.Finished)</dotnet:condition>
+    <dotnet:condition>d.Status.Equals(Status.NotRun)</dotnet:condition>
+
+    <dotnet:consequence>
+      System.Console.WriteLine(d.Name + " finished" );
+      d.Status = Status.Finished;
+    </dotnet:consequence>
+  </rule>
+
+</rule-set>
+
