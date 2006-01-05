@@ -7,7 +7,7 @@ using org.drools.@event;
 namespace org.drools.dotnet.examples.escalation
 {
 	[TestFixture]
-	public class EscalationTests : ExampleBase
+	public class EscalationTests
 	{
 		[Test]
 		public void TestEscalationExample()

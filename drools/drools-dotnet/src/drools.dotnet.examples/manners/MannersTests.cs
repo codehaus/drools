@@ -8,7 +8,7 @@ using java.util;
 namespace org.drools.dotnet.examples.manners
 {
 	[TestFixture]
-	public class MannersTests : ExampleBase
+	public class MannersTests
 	{
 		private int numGuests = 16;
 		private int numSeats = 16;

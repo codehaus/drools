@@ -6,7 +6,7 @@ using org.drools.@event;
 namespace org.drools.dotnet.examples.state
 {
 	[TestFixture]
-	public class StateTests : ExampleBase
+	public class StateTests
 	{
 		[Test]
 		public void TestStateExample()
