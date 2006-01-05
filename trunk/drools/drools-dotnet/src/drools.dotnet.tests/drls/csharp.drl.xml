@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<rule-set name="CSharpRuleSet"
+	xmlns="http://drools.org/rules" 
+	xmlns:dotnet="http://drools.org/semantics/dotnet" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+	xs:schemaLocation="http://drools.org/rules rules.xsd http://drools.org/semantics/dotnet dotnet.xsd">
+
+  <import>System</import>
+  <import>System.Threading</import>
+  <dotnet:functions>
+    public void Sleep(int milliseconds)
+    {
+    Thread.Sleep(milliseconds);
+    }
+  </dotnet:functions>
+
+  <rule name="SimpleRule">
+    <parameter identifier="text">
+      <dotnet:class>System.String</dotnet:class>
+    </parameter>
+    <dotnet:condition>text.Equals("Ready")</dotnet:condition>
+    <dotnet:consequence>Sleep(2000)</dotnet:consequence>
+  </rule>
+</rule-set>
