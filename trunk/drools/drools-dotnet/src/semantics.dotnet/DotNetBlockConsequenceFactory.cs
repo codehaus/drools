@@ -19,11 +19,12 @@ namespace org.drools.semantics.dotnet
 				{
 					id = (int)rbc.get("dotnet-consequence-id");
 				}
-				rbc.put("dotnet-consequence-id", id++);
+				id++;
+				rbc.put("dotnet-consequence-id", id);
 
 				return new DotNetBlockConsequence(r, id, c.getText());
 			}
-			catch (java.lang.Exception e)
+			catch (Exception e)
 			{
 				throw new FactoryException(e);
 			}

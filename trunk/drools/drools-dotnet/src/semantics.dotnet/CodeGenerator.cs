@@ -16,34 +16,50 @@ namespace org.drools.semantics.dotnet
 			string methodName, Declaration[] parameters, string expression, 
 			DotNetImporter importer, DotNetFunctions functions)
 		{
-			CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
-				typeof(bool));
-			CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
-			CodeStatement returnStatement = new CodeMethodReturnStatement(
-				new CodeSnippetExpression(expression));
-			method.Statements.Add(returnStatement);
+			try
+			{
+				CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
+					typeof(bool));
+				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
+				CodeStatement returnStatement = new CodeMethodReturnStatement(
+					new CodeSnippetExpression(expression));
+				method.Statements.Add(returnStatement);
 
-			code = AddFunctions(code, functions);
-			code = AddReferencedAssemblies(code);
-			code = AddImports(code, importer);
+				code = AddFunctions(code, functions);
+				code = AddReferencedAssemblies(code);
+				code = AddImports(code, importer);
 
-			return code;
+				return code;
+			}
+			catch (Exception e)
+			{
+				throw new CodeGenerationException("Unable to create condition for expression [" + 
+					expression + "]", e);
+			}
 		}
 
 		public static CodeCompileUnit CreateConsequence(string namespaceName, string className,
 			string methodName, Declaration[] parameters, string expression,
 			DotNetImporter importer, DotNetFunctions functions)
 		{
-			CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
-				typeof(void));
-			CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
-			method.Statements.Add(new CodeSnippetExpression(expression));
+			try
+			{
+				CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
+					typeof(void));
+				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
+				method.Statements.Add(new CodeSnippetExpression(expression));
 
-			code = AddFunctions(code, functions);
-			code = AddReferencedAssemblies(code);
-			code = AddImports(code, importer);
+				code = AddFunctions(code, functions);
+				code = AddReferencedAssemblies(code);
+				code = AddImports(code, importer);
 
-			return code;
+				return code;
+			}
+			catch (Exception e)
+			{
+				throw new CodeGenerationException("Unable to create consequence for expression [" +
+					expression + "]", e);
+			}
 		}
 
 		private static CodeCompileUnit GenerateClassCode(string namespaceName, string className,

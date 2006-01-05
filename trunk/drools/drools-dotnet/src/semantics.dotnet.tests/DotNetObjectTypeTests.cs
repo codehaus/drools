@@ -9,11 +9,11 @@ using java.lang;
 namespace org.drools.semantics.dotnet.tests
 {
     [TestFixture]
-    public class DotNetObjectTypeFactoryTest
+    public class DotNetObjectTypeTests
     {
         [Test]
         [ExpectedException(typeof(FactoryException), "No type name specified.")]
-        public void testWithMissingType()
+        public void TestWithMissingType()
         {
             RuleBaseContext ruleBaseContext = new RuleBaseContext();
             DefaultConfiguration configuration = new DefaultConfiguration("test1");
@@ -28,7 +28,7 @@ namespace org.drools.semantics.dotnet.tests
         }
 
         [Test]
-        public void testWithoutImports()
+        public void TestWithoutImports()
         {
             RuleBaseContext ruleBaseContext = new RuleBaseContext();
             DefaultConfiguration configuration = new DefaultConfiguration("test1");
@@ -48,7 +48,7 @@ namespace org.drools.semantics.dotnet.tests
         }
 
 		[Test]
-		public void testWithImports()
+		public void TestWithImports()
 		{
 			RuleBaseContext ruleBaseContext = new RuleBaseContext();
 			DefaultConfiguration configuration = new DefaultConfiguration("test1");

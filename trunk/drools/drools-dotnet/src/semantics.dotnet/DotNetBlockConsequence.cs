@@ -29,6 +29,11 @@ namespace org.drools.semantics.dotnet
 			_assembly = Compile();
 		}
 
+		public Assembly Assembly
+		{
+			get { return _assembly; }
+		}
+
 		public void invoke(Tuple t)
 		{
 			try
@@ -45,7 +50,7 @@ namespace org.drools.semantics.dotnet
 			}
 			catch (Exception e)
 			{
-				throw new ConsequenceException(e, _rule, "Error executing " + this.ToString());
+				throw new ConsequenceException(e.GetBaseException(), _rule, "Error executing " + this.ToString());
 			}
 		}
 

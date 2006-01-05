@@ -14,7 +14,7 @@ namespace org.drools.semantics.dotnet
 		{
 			try
 			{
-				return new DotNetFunctions(rs, c.getText());
+				return new DotNetFunctions(c.getText());
 			}
 			catch (Exception e)
 			{
