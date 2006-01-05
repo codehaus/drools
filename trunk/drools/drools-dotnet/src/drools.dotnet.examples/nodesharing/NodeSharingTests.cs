@@ -5,7 +5,7 @@ using System.IO;
 namespace org.drools.dotnet.examples.nodesharing
 {
 	[TestFixture]
-	public class NodeSharingTests : ExampleBase
+	public class NodeSharingTests
 	{
 		[Test]
 		public void TestNodeSharingExample()

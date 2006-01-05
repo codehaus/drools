@@ -48,7 +48,6 @@
     <Compile Include="escalation\EscalationTests.cs" />
     <Compile Include="escalation\Status.cs" />
     <Compile Include="escalation\TroubleTicket.cs" />
-    <Compile Include="ExampleBase.cs" />
     <Compile Include="fibonacci\Fibonacci.cs" />
     <Compile Include="fibonacci\FibonacciTests.cs" />
     <Compile Include="helloworld\HelloWorldTests.cs" />

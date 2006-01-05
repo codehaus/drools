@@ -7,7 +7,7 @@ using System.IO;
 namespace org.drools.dotnet.examples.fibonacci
 {
 	[TestFixture]
-	public class FibonacciTests : ExampleBase
+	public class FibonacciTests
 	{
 		[Test]
 		public void TestFibonacciExample()

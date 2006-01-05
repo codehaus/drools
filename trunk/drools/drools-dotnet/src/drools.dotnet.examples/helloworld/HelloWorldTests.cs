@@ -2,18 +2,19 @@ using System;
 using NUnit.Framework;
 using System.IO;
 using org.drools.@event;
+using java.io;
 
 namespace org.drools.dotnet.examples.helloworld
 {
 	[TestFixture]
-	public class HelloWorldTests : ExampleBase
+	public class HelloWorldTests
 	{
 		[Test]
 		public void TestHelloWorldExample()
 		{
+			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(
+				new Uri("./drls/helloworld.csharp.drl.xml", UriKind.Relative));
 
-			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
-				"./drls/helloworld.csharp.drl.xml", UriKind.Relative));
 			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
 			workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
