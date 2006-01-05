@@ -6,6 +6,7 @@ using org.drools.io;
 using org.drools.spi;
 using java.io;
 using java.net;
+using org.drools.conflict;
 
 namespace org.drools.dotnet
 {
@@ -16,7 +17,7 @@ namespace org.drools.dotnet
 	{
 		public static RuleBase LoadFromStream(Stream stream)
 		{
-			return RuleBaseLoader.LoadFromStream(stream, null);
+			return RuleBaseLoader.LoadFromStream(stream, DefaultConflictResolver.getInstance());
 		}
 
 		public static RuleBase LoadFromStream(Stream stream, ConflictResolver resolver)
@@ -27,7 +28,7 @@ namespace org.drools.dotnet
 
 		public static RuleBase LoadFromStream(Stream[] streams)
 		{
-			return RuleBaseLoader.LoadFromStream(streams, null);
+			return RuleBaseLoader.LoadFromStream(streams, DefaultConflictResolver.getInstance());
 		}
 
 		public static RuleBase LoadFromStream(Stream[] streams, ConflictResolver resolver)
@@ -46,7 +47,7 @@ namespace org.drools.dotnet
 
 		public static RuleBase LoadFromUri(Uri uri)
 		{
-			return RuleBaseLoader.LoadFromUri(uri, null);
+			return RuleBaseLoader.LoadFromUri(uri, DefaultConflictResolver.getInstance());
 		}
 
 		public static RuleBase LoadFromUri(Uri uri, ConflictResolver resolver)
@@ -57,7 +58,7 @@ namespace org.drools.dotnet
 
 		public static RuleBase LoadFromUri(Uri[] uris)
 		{
-			return RuleBaseLoader.LoadFromUri(uris, null);
+			return RuleBaseLoader.LoadFromUri(uris, DefaultConflictResolver.getInstance());
 		}
 
 		public static RuleBase LoadFromUri(Uri[] uris, ConflictResolver resolver)
@@ -84,7 +85,7 @@ namespace org.drools.dotnet
 
 		public static RuleBase LoadFromAssembly(Assembly assembly)
 		{
-			return LoadFromAssembly(assembly, null);
+			return LoadFromAssembly(assembly, DefaultConflictResolver.getInstance());
 		}
 
 		public static RuleBase LoadFromAssembly(Assembly assembly, ConflictResolver resolver)
