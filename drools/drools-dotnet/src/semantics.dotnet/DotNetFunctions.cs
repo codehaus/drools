@@ -11,7 +11,7 @@ namespace org.drools.semantics.dotnet
 	{
 		private string _text;
 
-		public DotNetFunctions(RuleSet ruleSet, String text)
+		public DotNetFunctions(String text)
 		{
 			_text = text;
 		}
@@ -24,6 +24,11 @@ namespace org.drools.semantics.dotnet
 		public string getText()
 		{
 			return _text;
+		}
+
+		public override string ToString()
+		{
+			return "[Function: " + _text + "]";
 		}
 	}
 }

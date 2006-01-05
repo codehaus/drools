@@ -19,7 +19,8 @@ namespace org.drools.semantics.dotnet
 				{
 					id = (int)rbc.get("dotnet-condition-id");
 				}
-				rbc.put("dotnet-condition-id", id++);
+				id++;
+				rbc.put("dotnet-condition-id", id);
 				
 				return new Condition[] { new DotNetCondition(r, id, c.getText()) };
 			}

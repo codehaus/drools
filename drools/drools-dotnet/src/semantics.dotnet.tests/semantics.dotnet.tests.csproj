@@ -36,6 +36,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ikvm\IKVM.GNU.Classpath.dll</HintPath>
     </Reference>
+    <Reference Include="nmock, Version=1.0.1536.20687, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\nmock\nmock.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.2.2.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
@@ -45,11 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DotNetConditionFactoryTests.cs" />
-    <Compile Include="DotNetImporterTest.cs" />
-    <Compile Include="DotNetObjectTypeFactoryTest.cs">
+    <Compile Include="DotNetBlockConsequenceTests.cs" />
+    <Compile Include="DotNetConditionTests.cs" />
+    <Compile Include="DotNetImporterTests.cs" />
+    <Compile Include="DotNetObjectTypeTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DotNetFunctionsTests.cs" />
     <Compile Include="examples\escalation\EscalationTests.cs" />
     <Compile Include="examples\escalation\Status.cs" />
     <Compile Include="examples\escalation\TroubleTicket.cs" />

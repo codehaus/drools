@@ -7,7 +7,7 @@ using org.drools.semantics.@base;
 namespace org.drools.semantics.dotnet.tests
 {
 	[TestFixture]
-	public class DotNetImporterTest
+	public class DotNetImporterTests
 	{
 		[Test]
 		public void TestInternalQualifiedClass()
@@ -81,7 +81,7 @@ namespace org.drools.semantics.dotnet.tests
 	}
 
 	/// <summary>
-	/// Ambiguously gay test class
+	/// Test Hashtable class
 	/// </summary>
 	public class Hashtable
 	{

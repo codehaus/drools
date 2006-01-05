@@ -25,6 +25,7 @@ namespace org.drools.semantics.dotnet
 		private Assembly _assembly;
 		private string _className;
 		private string _methodName = "Invoke";
+		private string _namespace;
 
 		public DotNetCondition(Rule rule, int id, string expression)
 		{
@@ -32,10 +33,11 @@ namespace org.drools.semantics.dotnet
 			_rule = rule;
 			_expression = expression;
 			_className = "Condition_" + id;
+			_namespace = this.GetType().Namespace;
 
 			//TODO: Determine required parameters instead of defaulting to all parameters
-			_requiredParameters = (Declaration[]) rule.getParameterDeclarations().toArray(
-				new Declaration[]{ });
+			_requiredParameters = (Declaration[])rule.getParameterDeclarations().toArray(
+				new Declaration[] { });
 			_assembly = Compile();
 		}
 
@@ -54,7 +56,7 @@ namespace org.drools.semantics.dotnet
 					parameters.Add(t.get(d));
 				}
 				parameters.Add(new DefaultKnowledgeHelper(_rule, t));
-				object o = _assembly.CreateInstance(this.GetType().Namespace + "." + _className);
+				object o = _assembly.CreateInstance(_namespace + "." + _className);
 				if (o == null) throw new ConditionException("Unable to find class: " + _className + " in " + this.ToString(), _rule, String.Empty);
 				return (bool)o.GetType().GetMethod(_methodName).Invoke(o, parameters.ToArray());
 			}
@@ -67,7 +69,7 @@ namespace org.drools.semantics.dotnet
 		private Assembly Compile()
 		{
 			//Generate Code
-			CodeCompileUnit code = CodeGenerator.CreateCondition(this.GetType().Namespace, 
+			CodeCompileUnit code = CodeGenerator.CreateCondition(_namespace,
 				_className, _methodName, _requiredParameters, _expression, _rule.getImporter() as DotNetImporter,
 				_rule.getRuleSet().getFunctions("dotnet") as DotNetFunctions);
 
