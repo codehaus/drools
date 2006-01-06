@@ -1,6 +1,11 @@
 <HTML>
   <H1>Drools Debugging</H1>
-  When debugging an application using a Drools engine, three new views can be used to check the state of the Drools engine itself: the Working Memory View, the Agenda View and the Application Data View. To be able to use these views, create breakpoints in the Drools engine code (or any other code that is called inside the Drools engine code). For example, the fireAllRules(AgendaFilter agendaFilter) method in the og.drools.reteoo.WorkingMemoryImpl class is a good candidate for a breakpoint, because you can pause the engine before firing a rule instance on the agenda.  Whenever a debug point is encountered and a Drools engine is active in that thread, these views show the current state of the engine.
+  When debugging an application using a Drools engine, three new views can be used to check the state of the Drools engine itself: the Working Memory View, the Agenda View and the Application Data View. To be able to use these views, either:
+  <UL>
+    <LI> Create a breakpoint in your code that is calling the WorkingMemory and select the WorkingMemory variable in the Variables debug view
+    <LI> Create a breakpoint in the Drools org.drools.reteoo.WorkingMemoryImpl code itself (or any other code that is called from inside WorkingMemoryImpl). For example, the fireAllRules(AgendaFilter agendaFilter) method in the WorkingMemoryImpl class is a good candidate for a breakpoint, because you can pause the engine before firing a rule instance on the agenda.
+  </UL>
+  Whenever such a breakpoint is encountered, these views show the current state of the engine.
   <UL>
     <LI>The <A href="workingMemory.html">Working Memory</A> shows all elements in the working memory of the Drools engine.</LI>
     <LI>The <A href="agenda.html">Agenda View</A> shows all elements on the agenda. For each rule on the agenda, the rule name and bound variables are shown.</LI>

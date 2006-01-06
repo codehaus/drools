@@ -33,6 +33,8 @@ import org.eclipse.debug.ui.AbstractDebugView;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.jdt.debug.core.IJavaObject;
+import org.eclipse.jdt.debug.core.IJavaStackFrame;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -145,24 +147,52 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
     }
 
     protected void setViewerInput(IStructuredSelection ssel) {
-        IStackFrame frame = null;
+        IJavaStackFrame frame = null;
+        IVariable variable = null;
         if (ssel.size() == 1) {
             Object input = ssel.getFirstElement();
-            if (input instanceof IStackFrame) {
-                frame = (IStackFrame) input;
+            if (input instanceof IJavaStackFrame) {
+                frame = (IJavaStackFrame) input;
+            } else if (input instanceof IVariable) {
+                variable = (IVariable) input;
             }
         }
 
-        getDetailViewer().setEditable(frame != null);
+        getDetailViewer().setEditable(frame != null || variable != null);
 
         Object current = getViewer().getInput();
+        
+        // if the debug view stack still contains the same WorkingMemoryImpl, do nothing
+        if (current != null) {
+            ISelection stackSelection = getSite().getPage().getSelection(IDebugUIConstants.ID_DEBUG_VIEW);
+            if (stackSelection instanceof IStructuredSelection) {
+                Object stack = ((IStructuredSelection) stackSelection).getFirstElement();
+                if (stack instanceof IJavaStackFrame) {
+                    try {
+                        IJavaObject stackObj = ((IJavaStackFrame) stack).getThis();
+                        if (current.equals(stackObj)) {
+                            return;
+                        }
+                    } catch (Throwable t) {
+                        // do nothing
+                    }
+                }
+            }
+        }
 
-        if (current == null && frame == null) {
+        if (current == null && frame == null && variable == null) {
             return;
         }
 
-        if (current != null && current.equals(frame)) {
-            return;
+        if (current != null) {
+            try {
+                if ((frame != null && current.equals(frame.getThis()))
+                        || (variable != null && current.equals(variable.getValue()))) {
+                    return;
+                }
+            } catch (Throwable t) {
+                // do nothing
+            }
         }
 
         if (current != null) {
@@ -172,9 +202,38 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
 
         if (frame != null) {
             setDebugModel(frame.getModelIdentifier());
+        } else if (variable != null) {
+            setDebugModel(variable.getModelIdentifier());
         }
+
         showViewer();
-        getViewer().setInput(frame);
+        
+        Object input = null;
+        if (frame != null) {
+            try {
+                IJavaObject stackObj = frame.getThis();
+                if ((stackObj != null)
+                        && (stackObj.getJavaType() != null)
+                        && ("org.drools.reteoo.WorkingMemoryImpl".equals(
+                            stackObj.getJavaType().getName()))) {
+                    input = stackObj;
+                }
+            } catch (Throwable t) {
+                DroolsIDEPlugin.log(t);
+            }
+        } else if (variable != null) {
+            try {
+                IValue value = variable.getValue();
+                if (value != null && value instanceof IJavaObject
+                        && "org.drools.reteoo.WorkingMemoryImpl".equals(
+                            variable.getValue().getReferenceTypeName())) {
+                    input = (IJavaObject) value;
+                }
+            } catch (Throwable t) {
+                DroolsIDEPlugin.log(t);
+            }
+        }
+        getViewer().setInput(input == null ? new StructuredSelection() : input);
 
         if (frame != null) {
             AbstractViewerState state = (AbstractViewerState) fSelectionStates
@@ -351,6 +410,8 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
 
         getSite().getPage().addSelectionListener(
                 IDebugUIConstants.ID_DEBUG_VIEW, this);
+        getSite().getPage().addSelectionListener(
+                IDebugUIConstants.ID_VARIABLE_VIEW, this);
         setEventHandler(createEventHandler(variablesViewer));
 
         return variablesViewer;
@@ -414,7 +475,7 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
 
     protected void setInitialContent() {
         ISelection selection = getSite().getPage().getSelection(
-                IDebugUIConstants.ID_DEBUG_VIEW);
+                IDebugUIConstants.ID_VARIABLE_VIEW);
         if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
             setViewerInput((IStructuredSelection) selection);
         }
@@ -525,14 +586,11 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
         Runnable runnable = new Runnable() {
             public void run() {
                 if (isAvailable()) {
-                    // bug 24862
-                    // don't display the result if an other detail has been
-                    // requested
                     if (value == fLastValueDetail) {
                         String insert = result;
                         int length = getDetailDocument().get().length();
                         if (length > 0) {
-                            insert = "\n" + result; //$NON-NLS-1$
+                            insert = "\n" + result;
                         }
                         try {
                             getDetailDocument().replace(length, 0, insert);
@@ -727,21 +785,23 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
         return fSelectionProvider;
     }
 
-    /**
-     * The <code>VariablesView</code> listens for selection changes in the
-     * <code>LaunchView</code>
-     * 
-     * @see ISelectionListener#selectionChanged(IWorkbenchPart, ISelection)
-     */
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+        // selectionChanged event from either the debug view or any of the
+        // variables views (including the agendam application data and
+        // working memory view)
+        
         if (!isAvailable()) {
             return;
         }
-
         if (selection == null) {
             setViewerInput(new StructuredSelection());
         } else if (selection instanceof IStructuredSelection) {
-            setViewerInput((IStructuredSelection) selection);
+            // ignore events from own views
+            if (!WorkingMemoryView.class.equals(part.getClass())
+                    && !ApplicationDataView.class.equals(part.getClass())
+                    && !AgendaView.class.equals(part.getClass())) {
+                setViewerInput((IStructuredSelection) selection);
+            }
         } else {
             getDetailViewer().setEditable(false);
         }

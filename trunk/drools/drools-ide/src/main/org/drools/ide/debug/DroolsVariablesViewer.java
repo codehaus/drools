@@ -74,7 +74,6 @@ public class DroolsVariablesViewer extends RemoteTreeViewer {
         }
     }
     
-
     protected synchronized void restoreExpansionState() {
         cancelJobs();
         for (IRemoteTreeViewerUpdateListener listener: listeners) {
