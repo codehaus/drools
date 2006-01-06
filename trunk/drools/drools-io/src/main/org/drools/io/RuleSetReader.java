@@ -476,7 +476,7 @@ public class RuleSetReader extends DefaultHandler
     /**
      * @see org.xml.sax.ContentHandler
      */
-    public void setLocator(Locator locator)
+    public void setDocumentLocator(Locator locator)
     {
         this.locator = locator;
     }
