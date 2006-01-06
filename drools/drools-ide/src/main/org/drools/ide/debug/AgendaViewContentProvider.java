@@ -33,23 +33,16 @@ public class AgendaViewContentProvider extends DroolsDebugViewContentProvider {
     public Object[] getChildren(Object obj) {
         try {
             Object[] variables = null;
-            if (obj instanceof IJavaStackFrame) {
-                variables = getAgendaElements((IJavaStackFrame) obj);
-                if (variables == null) {
-                    for (IStackFrame frame: ((IJavaStackFrame) obj).getThread().getStackFrames()) {
-                        variables = getAgendaElements((IJavaStackFrame) frame);
-                        if (variables != null) {
-                            break;
-                        }
-                    }
+            if (obj != null && obj instanceof IJavaObject
+                    && "org.drools.reteoo.WorkingMemoryImpl".equals(
+                        ((IJavaObject) obj).getReferenceTypeName())) {
+                variables = getAgendaElements((IJavaObject) obj);
+            } else if (view.isShowLogicalStructure()) {
+                Object[] result = logicalStructureAdapter.getChildren(obj);
+                if (result != null) {
+                    return result;
                 }
             } else if (obj instanceof IVariable) {
-                if (view.isShowLogicalStructure()) {
-                    Object[] result = logicalStructureAdapter.getChildren(obj);
-                    if (result != null) {
-                        return result;
-                    }
-                }
                 variables = ((IVariable) obj).getValue().getVariables();
             }
             if (variables == null) {
@@ -68,21 +61,16 @@ public class AgendaViewContentProvider extends DroolsDebugViewContentProvider {
         }
     }
     
-    private Object[] getAgendaElements(IJavaStackFrame stackFrame) throws DebugException {
-        IJavaObject stackObj = stackFrame.getThis();
-        if ((stackObj != null)
-                && (stackObj.getJavaType() != null)
-                && ("org.drools.reteoo.WorkingMemoryImpl".equals(stackObj.getJavaType().getName()))) {
-            IValue objects = DebugUtil.getValueByExpression("return getAgenda().getActivations().toArray();", stackObj);
-            if (objects instanceof IJavaArray) {
-                IJavaArray array = (IJavaArray) objects;
-                List<IVariable> result = new ArrayList<IVariable>();
-                int i = 1;
-                for (IJavaValue agendaItem: array.getValues()) {
-                    result.add(new VariableWrapper("[" + i++ + "]", agendaItem));
-                }
-                return result.toArray(new IVariable[0]);
+    private Object[] getAgendaElements(IJavaObject workingMemoryImpl) throws DebugException {
+        IValue objects = DebugUtil.getValueByExpression("return getAgenda().getActivations().toArray();", workingMemoryImpl);
+        if (objects instanceof IJavaArray) {
+            IJavaArray array = (IJavaArray) objects;
+            List<IVariable> result = new ArrayList<IVariable>();
+            int i = 1;
+            for (IJavaValue agendaItem: array.getValues()) {
+                result.add(new VariableWrapper("[" + i++ + "]", agendaItem));
             }
+            return result.toArray(new IVariable[result.size()]);
         }
         return null;
     }
