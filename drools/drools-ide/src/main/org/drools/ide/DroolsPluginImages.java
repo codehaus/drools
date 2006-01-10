@@ -21,7 +21,7 @@ public class DroolsPluginImages {
     public static final String IMG_DETAIL = "ImageDetail";
     public static final String IMG_DETAIL_DISABLED = "ImageDetailDisabled";
     private static ImageRegistry imageRegistry;
-    private static Map<String, ImageDescriptor> imageDescriptors;
+    private static Map imageDescriptors;
     private static URL ICON_BASE_URL= null;
     static {
         String pathSuffix = "icons/";
@@ -64,7 +64,7 @@ public class DroolsPluginImages {
 
     public static ImageRegistry initializeImageRegistry() {
         imageRegistry= new ImageRegistry();
-        imageDescriptors = new HashMap<String, ImageDescriptor>(30);
+        imageDescriptors = new HashMap(30);
         declareImages();
         return imageRegistry;
     }

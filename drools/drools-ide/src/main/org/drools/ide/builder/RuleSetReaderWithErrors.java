@@ -19,8 +19,8 @@ import org.xml.sax.SAXParseException;
  */
 public class RuleSetReaderWithErrors extends RuleSetReader {
 
-    private List<SAXParseException> errors = new ArrayList<SAXParseException>();
-    private List<SAXParseException> warnings = new ArrayList<SAXParseException>();
+    private List errors = new ArrayList();
+    private List warnings = new ArrayList();
     
     public RuleSetReaderWithErrors(RuleBaseContext factoryContext) {
         super(factoryContext);
@@ -44,11 +44,11 @@ public class RuleSetReaderWithErrors extends RuleSetReader {
         return super.read(in);
     }
 
-    public List<SAXParseException> getErrors() {
+    public List getErrors() {
         return errors;
     }
 
-    public List<SAXParseException> getWarnings() {
+    public List getWarnings() {
         return warnings;
     }
 }

@@ -36,11 +36,13 @@ public class AgendaLogicalStructures implements ILogicalStructureProvider {
             }
             IJavaClassType classType = (IJavaClassType) type;
             IJavaInterfaceType[] interfaceTypes = classType.getAllInterfaces();
-            for (IJavaInterfaceType interfaceType: interfaceTypes) {
-                if ("org.drools.spi.Activation".equals(interfaceType.getName())) {
+            
+            for ( int i = 0; i < interfaceTypes.length; i++ ) {
+                if ("org.drools.spi.Activation".equals(interfaceTypes[i].getName())) {
                     return agendaLogicalStructures;
-                }
+                }                
             }
+            
             return new ILogicalStructureType[0];
         } catch (DebugException e) {
             DroolsIDEPlugin.log(e);

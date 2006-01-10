@@ -177,8 +177,9 @@ public class DebugUtil {
             if (compiledExpression.hasErrors()) {
                 String[] errorMessages = compiledExpression.getErrorMessages();
                 String message = "";
-                for (String error: errorMessages) {
-                    message += error + "\n";
+
+                for ( int i = 0; i < errorMessages.length; i++ ) {
+                    message += errorMessages[i] + "\n";
                 }
                 throw new DebugException(new Status(IStatus.ERROR, 
                     DroolsIDEPlugin.PLUGIN_ID, DroolsIDEPlugin.INTERNAL_ERROR,

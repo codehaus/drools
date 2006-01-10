@@ -62,11 +62,16 @@ public class ApplicationDataViewContentProvider extends DroolsDebugViewContentPr
         IValue objects = DebugUtil.getValueByExpression("return getApplicationDataMap().entrySet().toArray();", stackObj);
         if (objects instanceof IJavaArray) {
             IJavaArray array = (IJavaArray) objects;
-            List<IVariable> result = new ArrayList<IVariable>();
-            for (IJavaValue mapEntry: array.getValues()) {
+            List result = new ArrayList();
+            IJavaValue[] javaVals = array.getValues();
+            for ( int i = 0; i < javaVals.length; i++ ) {
+                IJavaValue mapEntry = javaVals[i];
                 String key = null;
                 IJavaValue value = null;
-                for (IVariable var: mapEntry.getVariables()) {
+                
+                IVariable[] vars = mapEntry.getVariables();
+                for ( int j = 0; j < vars.length; j++ ) {
+                    IVariable var = vars[i];
                     if ("key".equals(var.getName())) {
                         key = var.getValue().getValueString();
                     } else if ("value".equals(var.getName())) {
@@ -75,7 +80,7 @@ public class ApplicationDataViewContentProvider extends DroolsDebugViewContentPr
                 }
                 result.add(new VariableWrapper(key, value));
             }
-            return result.toArray(new IVariable[0]);
+            return (IVariable[]) result.toArray(new IVariable[0]);
         }
         return null;
     }    

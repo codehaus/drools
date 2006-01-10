@@ -42,10 +42,10 @@ public class AgendaItemLogicalStructure implements ILogicalStructureType {
             }
             IJavaClassType classType = (IJavaClassType) type;
             IJavaInterfaceType[] interfaceTypes = classType.getAllInterfaces();
-            for (IJavaInterfaceType interfaceType: interfaceTypes) {
-                if ("org.drools.spi.Activation".equals(interfaceType.getName())) {
+            for ( int i = 0; i < interfaceTypes.length; i++ ) {
+                if ("org.drools.spi.Activation".equals(interfaceTypes[i].getName())) {
                     return true;
-                }
+                }                
             }
             return false;
         } catch (DebugException e) {
@@ -66,15 +66,32 @@ public class AgendaItemLogicalStructure implements ILogicalStructureType {
         IJavaVariable[] variables = new IJavaVariable[ruleParameters.getSize() + 1];
         variables[0] = new VariableWrapper("ruleName", (IJavaValue) DebugUtil.getValueByExpression("return getRule().getName();", value));
         int i = 1;
-        for (IJavaValue declaration: ruleParameters.getValues()) {
-            for (IVariable declarationVar: declaration.getVariables()) {
+        
+        IJavaValue[] javaValues = ruleParameters.getValues();
+        for ( int j = 0; j < javaValues.length; j++ ) {
+            IJavaValue declaration = javaValues[j];
+            IVariable[] vars = declaration.getVariables();
+            for ( int k = 0; k < vars.length; k++ ) {
+                IVariable declarationVar = vars[k];
                 if ("identifier".equals(declarationVar.getName())) {
                     String paramName = declarationVar.getValue().getValueString();
                     variables[i++] = new VariableWrapper(paramName, (IJavaValue) DebugUtil.getValueByExpression("return getTuple().get(getRule().getParameterDeclaration(\"" + paramName + "\"));", value));
                     break;
-                }
-            }
+                }                
+            }            
         }
+        
+        
+//        
+//        for (IJavaValue declaration: ruleParameters.getValues()) {
+//            for (IVariable declarationVar: declaration.getVariables()) {
+//                if ("identifier".equals(declarationVar.getName())) {
+//                    String paramName = declarationVar.getValue().getValueString();
+//                    variables[i++] = new VariableWrapper(paramName, (IJavaValue) DebugUtil.getValueByExpression("return getTuple().get(getRule().getParameterDeclaration(\"" + paramName + "\"));", value));
+//                    break;
+//                }
+//            }
+//        }
         return new ObjectWrapper(javaValue, variables);
     }
 
