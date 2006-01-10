@@ -22,11 +22,11 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class DroolsDebugViewContentProvider implements ITreeContentProvider {
     
-    private Map<Object, Object> parentCache;
+    private Map parentCache;
     private IDebugExceptionHandler exceptionHandler;
     
     public DroolsDebugViewContentProvider() {
-        parentCache = new HashMap<Object, Object>(10);
+        parentCache = new HashMap(10);
     }
     
     public Object[] getChildren(Object parent) {
@@ -89,9 +89,9 @@ public class DroolsDebugViewContentProvider implements ITreeContentProvider {
         clearCache();
     }
     
-    public List<Object> getCachedDecendants(Object parent) {
+    public List getCachedDecendants(Object parent) {
         Iterator children = parentCache.keySet().iterator();
-        List<Object> cachedChildren = new ArrayList<Object>(10);
+        List cachedChildren = new ArrayList(10);
         while (children.hasNext()) {
             Object child = children.next();
             if (isCachedDecendant(child, parent)) {

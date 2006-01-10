@@ -1,6 +1,7 @@
 package org.drools.ide.builder;
 
 import java.io.StringReader;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.drools.ide.DroolsIDEPlugin;
@@ -117,10 +118,12 @@ public class DroolsBuilder extends IncrementalProjectBuilder {
                 try {
                     Thread.currentThread().setContextClassLoader(newLoader);
                     reader.read(new StringReader(new String(Util.getResourceContentsAsCharArray((IFile) res))));
-                    for (SAXParseException e: reader.getErrors()) {
+                    for ( Iterator iter = reader.getErrors().iterator(); iter.hasNext(); ) {
+                        SAXParseException e = (SAXParseException) iter.next();                                            
                         createMarker(res, e.getMessage(), e.getLineNumber(), e.getColumnNumber());
                     }
-                    for (SAXParseException e: reader.getWarnings()) {
+                    for (Iterator iter = reader.getWarnings().iterator(); iter.hasNext(); ) {
+                        SAXParseException e = (SAXParseException) iter.next();
                         createWarning(res, e.getMessage(), e.getLineNumber(), e.getColumnNumber());
                     }
                 } catch (Exception t) {

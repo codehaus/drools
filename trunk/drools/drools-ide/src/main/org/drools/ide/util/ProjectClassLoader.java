@@ -20,8 +20,8 @@ import org.eclipse.jdt.core.JavaModelException;
 public class ProjectClassLoader {
 
     public static URLClassLoader getProjectClassLoader(IJavaProject project) {
-        List<URL> pathElements = getProjectClassPathURLs(project);
-        URL urlPaths[] = pathElements.toArray(new URL[pathElements.size()]);
+        List pathElements = getProjectClassPathURLs(project);
+        URL urlPaths[] = (URL[]) pathElements.toArray(new URL[pathElements.size()]);
         return new URLClassLoader(urlPaths, Thread.currentThread().getContextClassLoader());
     }
 
@@ -43,12 +43,14 @@ public class ProjectClassLoader {
         return file;
     }
 
-    public static List<URL> getProjectClassPathURLs(IJavaProject project) {
-        List<URL> pathElements = new ArrayList<URL>();
+    public static List getProjectClassPathURLs(IJavaProject project) {
+        List pathElements = new ArrayList();
         try {
             IClasspathEntry[] paths = project.getResolvedClasspath(true);
             if (paths != null) {
-                for (IClasspathEntry path: paths) {
+                
+                for ( int i = 0; i < paths.length; i++ ) {
+                    IClasspathEntry path = paths[i];
                     if (path.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
                         URL url = getRawLocationURL(path.getPath());
                         pathElements.add(url);
@@ -61,7 +63,9 @@ public class ProjectClassLoader {
             pathElements.add(outputPath.toFile().toURL());
             
             // also add classpath of required projects
-            for (String projectName: project.getRequiredProjectNames()) {
+            String[] names = project.getRequiredProjectNames();
+            for ( int i = 0; i < names.length; i++ ) {
+                String projectName = names[i];
                 IProject reqProject = project.getProject().getWorkspace()
                     .getRoot().getProject(projectName);
                 if (reqProject != null) {

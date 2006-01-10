@@ -144,7 +144,7 @@ public class NewDroolsProjectWizard extends BasicNewResourceWizard {
     }
     
     private void addNatures(IProjectDescription projectDescription) {
-        List<String> list = new ArrayList<String>();
+        List list = new ArrayList();
         list.addAll(Arrays.asList(projectDescription.getNatureIds()));
         list.add("org.eclipse.jdt.core.javanature");
         projectDescription.setNatureIds((String[]) list
@@ -203,7 +203,7 @@ public class NewDroolsProjectWizard extends BasicNewResourceWizard {
     }
 
     private void addSourceFolders(IJavaProject project) throws JavaModelException, CoreException {
-        List<IClasspathEntry> list = new ArrayList<IClasspathEntry>();
+        List list = new ArrayList();
         list.addAll(Arrays.asList(project.getRawClasspath()));
         addSourceFolder(project, list, "src/java");
         addSourceFolder(project, list, "src/rules");
@@ -211,7 +211,7 @@ public class NewDroolsProjectWizard extends BasicNewResourceWizard {
     }
     
     private void addJRELibraries(IJavaProject project) throws JavaModelException {
-        List<IClasspathEntry> list = new ArrayList<IClasspathEntry>();
+        List list = new ArrayList();
         list.addAll(Arrays.asList(project.getRawClasspath()));
         list.addAll(Arrays.asList(PreferenceConstants.getDefaultJRELibrary()));
         project.setRawClasspath((IClasspathEntry[]) list
@@ -237,7 +237,7 @@ public class NewDroolsProjectWizard extends BasicNewResourceWizard {
     private void addDroolsLibraries(IJavaProject project)
             throws JavaModelException {
         createDroolsLibraryContainer(project);
-        List<IClasspathEntry> list = new ArrayList<IClasspathEntry>();
+        List list = new ArrayList();
         list.addAll(Arrays.asList(project.getRawClasspath()));
         list.add(JavaCore.newContainerEntry(getClassPathContainerPath()));
         project.setRawClasspath((IClasspathEntry[]) list
@@ -296,7 +296,7 @@ public class NewDroolsProjectWizard extends BasicNewResourceWizard {
 		return bytes;
 	}
     
-    private void addSourceFolder(IJavaProject project, List<IClasspathEntry> list, String s) throws CoreException {
+    private void addSourceFolder(IJavaProject project, List list, String s) throws CoreException {
         IFolder folder = project.getProject().getFolder(s);
         createFolder(folder);
         IPackageFragmentRoot ipackagefragmentroot = project.getPackageFragmentRoot(folder);

@@ -1,6 +1,7 @@
 package org.drools.ide.debug;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.drools.ide.DroolsIDEPlugin;
@@ -27,7 +28,7 @@ import org.eclipse.ui.progress.UIJob;
  */
 public class DroolsVariablesViewer extends RemoteTreeViewer {
     
-    private List<IRemoteTreeViewerUpdateListener> listeners = new ArrayList<IRemoteTreeViewerUpdateListener>();
+    private List listeners = new ArrayList();
     private StateRestorationJob stateRestorationJob = new StateRestorationJob(DebugUIViewsMessages.RemoteTreeViewer_0); //$NON-NLS-1$
     private DroolsDebugEventHandlerView view = null;
     
@@ -76,7 +77,8 @@ public class DroolsVariablesViewer extends RemoteTreeViewer {
     
     protected synchronized void restoreExpansionState() {
         cancelJobs();
-        for (IRemoteTreeViewerUpdateListener listener: listeners) {
+        for ( Iterator iter = listeners.iterator(); iter.hasNext(); ) {
+            IRemoteTreeViewerUpdateListener listener = (IRemoteTreeViewerUpdateListener) iter.next();
             listener.treeUpdated();
         }
     }

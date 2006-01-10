@@ -64,12 +64,16 @@ public class WorkingMemoryViewContentProvider extends DroolsDebugViewContentProv
         IValue objects = DebugUtil.getValueByExpression("return getObjects().toArray();", stackObj);
         if (objects instanceof IJavaArray) {
             IJavaArray array = (IJavaArray) objects;
-            List<IVariable> result = new ArrayList<IVariable>();
-            int i = 1;
-            for (IJavaValue object: array.getValues()) {
-                result.add(new JDIPlaceholderVariable("[" + i++ + "]", object));
+            List result = new ArrayList();
+            
+            IJavaValue[] vals = array.getValues();
+            
+            for ( int i = 0; i < vals.length; i++ ) {
+                result.add(new JDIPlaceholderVariable("[" + i + "]", vals[i]));
             }
-            return result.toArray(new IVariable[0]);
+            
+            
+            return (IVariable[]) result.toArray(new IVariable[0]);
         }
         return null;
     }

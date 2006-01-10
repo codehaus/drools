@@ -46,25 +46,25 @@ public class DroolsClasspathContainer implements IClasspathContainer {
     }
 
     private IClasspathEntry[] createDroolsLibraryEntries(IJavaProject project) {
-        List<String> jarNames = getJarNames();
-        List<IClasspathEntry> list = new ArrayList<IClasspathEntry>();
+        List jarNames = getJarNames();
+        List list = new ArrayList();
         for (int i = 0; i < jarNames.size(); i++) {
-            Path path = new Path(jarNames.get(i));
+            Path path = new Path((String) jarNames.get(i));
             list.add(JavaCore.newLibraryEntry(
                 path, path, null));
         }
         return (IClasspathEntry[]) list.toArray(new IClasspathEntry[list.size()]);
     }
 
-    private List<String> getJarNames() {
+    private List getJarNames() {
         String s = getDroolsLocation();
-        List<String> list = new ArrayList<String>();
+        List list = new ArrayList();
         File file = (new Path(s)).toFile();
         addJarNames(file, list);
         return list;
     }
 
-    private void addJarNames(File file, List<String> list) {
+    private void addJarNames(File file, List list) {
         if (file.isDirectory()) {
             File afile[] = file.listFiles();
             for (int i = 0; i < afile.length; i++)

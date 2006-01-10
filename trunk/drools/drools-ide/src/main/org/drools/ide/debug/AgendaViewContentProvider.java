@@ -1,6 +1,7 @@
 package org.drools.ide.debug;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.drools.ide.DroolsIDEPlugin;
@@ -65,11 +66,13 @@ public class AgendaViewContentProvider extends DroolsDebugViewContentProvider {
         IValue objects = DebugUtil.getValueByExpression("return getAgenda().getActivations().toArray();", workingMemoryImpl);
         if (objects instanceof IJavaArray) {
             IJavaArray array = (IJavaArray) objects;
-            List<IVariable> result = new ArrayList<IVariable>();
-            int i = 1;
-            for (IJavaValue agendaItem: array.getValues()) {
-                result.add(new VariableWrapper("[" + i++ + "]", agendaItem));
+            List result = new ArrayList();
+
+            IJavaValue[] vals = array.getValues();
+            for ( int j = 0; j < vals.length; j++ ) {
+                result.add(new VariableWrapper("[" + j + "]", vals[j]));
             }
+            
             return result.toArray(new IVariable[result.size()]);
         }
         return null;

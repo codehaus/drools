@@ -115,7 +115,7 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
     private IDocumentListener fDetailDocumentListener;
     private VariablesViewSelectionProvider fSelectionProvider = new VariablesViewSelectionProvider();
     private List fSelectionActions = new ArrayList(3);
-    private Map<Object, AbstractViewerState> fSelectionStates = new HashMap<Object, AbstractViewerState>(10);
+    private Map fSelectionStates = new HashMap(10);
     private AbstractViewerState fLastState = null;
     private HashMap fExpandedVariables = new HashMap(10);
     private Viewer fFocusViewer = null;
@@ -271,14 +271,14 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
         }
     }
 
-    protected List<IStackFrame> getCachedFrames(IThread thread) {
-        List<IStackFrame> list = null;
+    protected List getCachedFrames(IThread thread) {
+        List list = null;
         Iterator frames = fExpandedVariables.keySet().iterator();
         while (frames.hasNext()) {
             IStackFrame frame = (IStackFrame) frames.next();
             if (frame.getThread().equals(thread)) {
                 if (list == null) {
-                    list = new ArrayList<IStackFrame>();
+                    list = new ArrayList();
                 }
                 list.add(frame);
             }
@@ -286,14 +286,14 @@ public class DroolsDebugEventHandlerView extends AbstractDebugEventHandlerView
         return list;
     }
 
-    protected List<IStackFrame> getCachedFrames(IDebugTarget target) {
-        List<IStackFrame> list = null;
+    protected List getCachedFrames(IDebugTarget target) {
+        List list = null;
         Iterator frames = fExpandedVariables.keySet().iterator();
         while (frames.hasNext()) {
             IStackFrame frame = (IStackFrame) frames.next();
             if (frame.getDebugTarget().equals(target)) {
                 if (list == null) {
-                    list = new ArrayList<IStackFrame>();
+                    list = new ArrayList();
                 }
                 list.add(frame);
             }
