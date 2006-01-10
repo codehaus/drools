@@ -9,6 +9,13 @@ namespace org.drools.dotnet.tests.semantics
 	{
 		private string settingName = "drools.dotnet.codedomprovider";
 
+		[TestFixtureTearDown]
+		public void CleanupFixture()
+		{
+			//Set the provider back to null so the rest of the tests run correctly.
+			SetProvider(null);
+		}
+
 		[Test]
 		public void TestDefault()
 		{
