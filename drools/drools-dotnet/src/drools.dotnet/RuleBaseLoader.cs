@@ -63,8 +63,7 @@ namespace org.drools.dotnet
 
 		public static RuleBase LoadFromUri(Uri[] uris, ConflictResolver resolver)
 		{
-			Uri baseUri = new Uri(Path.GetDirectoryName(
-				Assembly.GetExecutingAssembly().Location) + "/", UriKind.Absolute);
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\", UriKind.Absolute);
 			URL[] urls = new URL[uris.Length];
 			int count = 0;
 			foreach (Uri uri in uris)
@@ -81,7 +80,6 @@ namespace org.drools.dotnet
 			}
 			return org.drools.io.RuleBaseLoader.loadFromUrl(urls, resolver);
 		}
-
 
 		public static RuleBase LoadFromAssembly(Assembly assembly)
 		{

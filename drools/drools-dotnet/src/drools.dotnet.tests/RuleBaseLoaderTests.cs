@@ -29,7 +29,7 @@ namespace org.drools.dotnet.tests
 		public void TestUrlLoaderWithAbsolutePath()
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
-				Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+				Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
 				"./drls/csharp.drl.xml")));
 			Assert.AreEqual(1, ruleBase.getRuleSets().size());
 		}
