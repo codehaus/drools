@@ -11,7 +11,15 @@ using org.drools.conflict;
 namespace org.drools.dotnet
 {
 	/// <summary>
-	///	.NET wrapper for RuleBaseLoader
+	///	This is the main entry point for the Drools engine.
+    /// 
+    /// Load a rulebase from the rule "DRL" source.
+    /// From a RuleBase you obtain a Working Memory (RuleBase.newWorkingMemory())/ 
+    /// This working memory is the "engine" that you interact with, by asserting objects etc.
+    /// 
+    /// The RuleBase can and should be cached (you only need one instance of it). If you wish to 
+    /// change rules on the fly, then you will need a way to expire this cache so a new RuleBase can be swapped in
+    /// with the latest rules.
 	/// </summary>
 	public class RuleBaseLoader
 	{
