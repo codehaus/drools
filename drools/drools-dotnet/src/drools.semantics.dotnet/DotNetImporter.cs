@@ -111,7 +111,7 @@ namespace org.drools.semantics.dotnet
 
 			try
 			{
-				clazz = cl.loadClass(PrepareTypeForIKVMClassLoader(type.AssemblyQualifiedName));
+				clazz = cl.loadClass(type.AssemblyQualifiedName);
 			}
 			catch (ClassNotFoundException e)
 			{
@@ -121,7 +121,7 @@ namespace org.drools.semantics.dotnet
 		}
 
 		/// <summary>
-		/// Prepare a type of be loaded thru the IKVM class loader as assembly names are 
+		/// Prepare a type of be loaded thru the IKVM class loader as partial assembly names are 
 		/// not allowed to be specified as part of the type name 
 		/// (i.e. "mynamespace.myentity, myassembly") so the assembly must be explicitly 
 		/// loaded into the application domain and the type name must be stripped of the 
