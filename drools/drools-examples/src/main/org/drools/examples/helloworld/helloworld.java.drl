@@ -11,12 +11,12 @@
   <import>java.lang.String</import>
   
   <java:functions>
-  	public void helloWorld(String hello)
+  	public static void helloWorld(String hello)
   	{
   		System.err.println(hello + " World");
   	}
 
-  	public void goodbyeWorld(String goodbye)
+  	public static void goodbyeWorld(String goodbye)
   	{
   		System.out.println(goodbye + " Cruel World");
   	}

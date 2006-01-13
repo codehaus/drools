@@ -56,7 +56,7 @@ public class RuleSetCompiler
 
         this.ruleSet = ruleSet;
         this.ruleSetValidFileName = this.ruleSet.getName().replaceAll( "(^[0-9]|[^\\w$])",
-                                                                       "_" );
+                                                                       "_" ).toLowerCase();
 
         this.packageName = packageName;
         this.knowledgeHelper = knowledgeHelper;

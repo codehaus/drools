@@ -1,7 +1,7 @@
 package org.drools.examples.helloworld;
 
 /*
- * $Id: HelloWorldExample.java,v 1.10 2005-11-25 02:35:33 mproctor Exp $
+ * $Id: HelloWorldExample.java,v 1.11 2006-01-13 07:26:55 michaelneale Exp $
  *
  * Copyright 2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -40,14 +40,20 @@ package org.drools.examples.helloworld;
  *
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.event.DebugWorkingMemoryEventListener;
+import org.drools.io.ReteDumper;
 import org.drools.io.RuleBaseLoader;
 import org.drools.io.RuleSetLoader;
+import org.drools.smf.RuleSetCompiler;
 import org.drools.smf.RuleSetPackage;
 import org.xml.sax.SAXException;
 
@@ -57,27 +63,26 @@ public class HelloWorldExample
                                                     SAXException,
                                                     IOException
     {
+        
         if ( args.length != 1 )
         {
-            System.out.println( "Usage: " + HelloWorldExample.class.getName( )
-                                + " [drl file]" );
-            return;
+            args = new String[] { "helloworld.java.drl" };
+            System.out.println("You didn't tell me what DRL to run, so I am running " +
+                    args[0] + 
+                    " \nI can also run the groovy and python equivalents if you tell me to !");
         }
         System.out.println( "Using drl: " + args[0] );
 
         RuleSetLoader ruleSetLoader = new RuleSetLoader();           
         ruleSetLoader.addFromUrl( HelloWorldExample.class.getResource( args[ 0 ] ) );            
         
+        //dumpGeneratedSourceToDisk( ruleSetLoader );
+        
         RuleBaseLoader ruleBaseLoader = new RuleBaseLoader();
         ruleBaseLoader.addFromRuleSetLoader(ruleSetLoader);
         RuleBase ruleBase = ruleBaseLoader.buildRuleBase();        
         
-        /*
-        System.out.println( "DUMP RETE" );
-        System.out.println( "---------" );
-        Dumper dumper = new Dumper( ruleBase );
-        dumper.dumpRete( System.out );
-        */
+        //dumpReteNetwork( ruleBase );
         
         System.out.println( "FIRE RULES(Hello)" );
         System.out.println( "----------" );
@@ -96,5 +101,29 @@ public class HelloWorldExample
             new DebugWorkingMemoryEventListener( ) );
         workingMemory.assertObject( "Goodbye" );
         workingMemory.fireAllRules( );
+    }
+
+    /** Just in case you want to dump out the contents to disk */
+    private static void dumpGeneratedSourceToDisk(RuleSetLoader ruleSetLoader) throws IOException,
+                                                                              FileNotFoundException {
+        Map map = ruleSetLoader.getRuleSets();
+        RuleSetCompiler compiler = (RuleSetCompiler) map.values().iterator().next();
+        
+        byte[] jar = compiler.getSourceDeploymentJar();
+        //will put all the sources in the folling jar
+        File file = new File("/helloworld.jar");
+        if (file.exists()) file.delete();
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(jar);
+        out.flush();
+        out.close();
+    }
+
+    /** Use ReteDumper to dump out the network if you need to */
+    private static void dumpReteNetwork(RuleBase ruleBase) {
+        System.out.println( "DUMP RETE" );
+        System.out.println( "---------" );
+        ReteDumper dumper = new ReteDumper( ruleBase );
+        dumper.dumpRete( System.out );
     }
 }

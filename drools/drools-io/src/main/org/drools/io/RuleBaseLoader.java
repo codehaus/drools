@@ -1,7 +1,7 @@
 package org.drools.io;
 
 /*
- * $Id: RuleBaseLoader.java,v 1.10 2005-12-19 02:11:25 michaelneale Exp $
+ * $Id: RuleBaseLoader.java,v 1.11 2006-01-13 07:26:55 michaelneale Exp $
  *
  * Copyright 2001-2003 (C) The Werken Company. All Rights Reserved.
  *
@@ -145,11 +145,8 @@ public final class RuleBaseLoader
     }
 
     /**
-     * Loads a RuleBase from a RuleSetPackage using the given ConflictResolver
-     *
-     * @param ruleSetPackage
-     * @param resolver
-     * @return RuleBase
+     * Adds to the rulebase from a RuleSetLoader instance.
+     * The binaries from the ruleset loader will be kept for serialization purposes.
      */
     public void addFromRuleSetLoader(RuleSetLoader ruleSetLoader) throws SAXException,
                                                                  IOException,
@@ -190,7 +187,9 @@ public final class RuleBaseLoader
 
     /**
      * Loads a RuleBase from a URL using the given ConflictResolver
-     *
+     * The URL must be to a DDJ compiled resource, or a conf file pointing to
+     * the DDJ compiled rules. 
+     * If you do not use pre compiled rulesets, use one of the static helper methods instead.
      * @param url
      * @param resolver
      * @return RuleBase
