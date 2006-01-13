@@ -41,8 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RuleBaseLoader.cs" />
+    <Compile Include="EventListener.cs" />
+    <Compile Include="events\ObjectAssertedEventArgs.cs" />
+    <Compile Include="events\ObjectModifiedEventArgs.cs" />
+    <Compile Include="events\ObjectRetractedEventArgs.cs" />
+    <Compile Include="util\ReadOnlyList.cs" />
+    <Compile Include="util\ReadyOnlyDictionary.cs" />
+    <Compile Include="RuleBase.cs" />
+    <Compile Include="io\RuleBaseLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkingMemory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
