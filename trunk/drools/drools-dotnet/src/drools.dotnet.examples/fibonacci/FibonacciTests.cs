@@ -1,8 +1,7 @@
 using System;
 using NUnit.Framework;
-using org.drools.@event;
-using org.drools.semantics.dotnet;
 using System.IO;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.examples.fibonacci
 {
@@ -14,8 +13,8 @@ namespace org.drools.dotnet.examples.fibonacci
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/fibonacci.csharp.drl.xml", UriKind.Relative));
-			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-			workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
+			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
+			//workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
 			Fibonacci fibonacci;
 			long start;
@@ -23,8 +22,8 @@ namespace org.drools.dotnet.examples.fibonacci
 
 			fibonacci = new Fibonacci(50);
 			start = DateTime.Now.Ticks;
-			workingMemory.assertObject(fibonacci);
-			workingMemory.fireAllRules();
+			workingMemory.AssertObject(fibonacci);
+			workingMemory.FireAllRules();
 			stop = DateTime.Now.Ticks;
 
 			Console.WriteLine("First Run: fibonacci(" + fibonacci.Sequence + ") == " +
@@ -32,11 +31,11 @@ namespace org.drools.dotnet.examples.fibonacci
 			Assert.AreEqual(50, fibonacci.Sequence);
 			Assert.AreEqual(12586269025, fibonacci.Value);
 
-			workingMemory = ruleBase.newWorkingMemory();
+			workingMemory = ruleBase.GetNewWorkingMemory();
 			fibonacci = new Fibonacci(50);
 			start = DateTime.Now.Ticks;
-			workingMemory.assertObject(fibonacci);
-			workingMemory.fireAllRules();
+			workingMemory.AssertObject(fibonacci);
+			workingMemory.FireAllRules();
 			stop = DateTime.Now.Ticks;
 			Console.WriteLine("Second Run: fibonacci(" + fibonacci.Sequence + ") == " +
 				fibonacci.Value + " took " + (stop - start) / 10000 + "ms");

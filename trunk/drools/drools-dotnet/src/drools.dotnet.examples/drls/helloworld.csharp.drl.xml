@@ -22,7 +22,7 @@
       <dotnet:class>System.String</dotnet:class>
     </parameter>
 
-    <dotnet:condition>hello.Equals("Hello")</dotnet:condition>
+    <dotnet:condition>hello.Equals("Hello");</dotnet:condition>
 
     <dotnet:consequence>
       helloWorld(hello);

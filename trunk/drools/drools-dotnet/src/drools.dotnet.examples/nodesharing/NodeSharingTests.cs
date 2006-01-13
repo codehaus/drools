@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using System.IO;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.examples.nodesharing
 {
@@ -12,13 +13,13 @@ namespace org.drools.dotnet.examples.nodesharing
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/nodesharing.csharp.drl.xml", UriKind.Relative));
-			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
 
 			for (int i = 0; i < 10; i++)
 			{
-				workingMemory.assertObject(i);
+				workingMemory.AssertObject(i);
 			}
-			workingMemory.fireAllRules();
+			workingMemory.FireAllRules();
 
 			//TODO: Add asserts to verify output
 		}

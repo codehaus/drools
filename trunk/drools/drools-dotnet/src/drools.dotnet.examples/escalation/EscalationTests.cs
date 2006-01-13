@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using System.IO;
 using System.Threading;
-using org.drools.@event;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.examples.escalation
 {
@@ -14,8 +14,8 @@ namespace org.drools.dotnet.examples.escalation
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/escalation.csharp.drl.xml", UriKind.Relative));
-			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-			workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
+			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
+			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
 			TroubleTicket bobTicket = new TroubleTicket("bob");
 			TroubleTicket daveTicket = new TroubleTicket("dave");
@@ -27,8 +27,8 @@ namespace org.drools.dotnet.examples.escalation
 			Console.WriteLine(daveTicket.ToString());
 			Console.WriteLine("----------------------------------------");
 
-			workingMemory.assertObject(daveTicket);
-			workingMemory.assertObject(bobTicket);
+			workingMemory.AssertObject(daveTicket);
+			workingMemory.AssertObject(bobTicket);
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine("    POST ASSERT");
 			Console.WriteLine("----------------------------------------");
@@ -36,7 +36,7 @@ namespace org.drools.dotnet.examples.escalation
 			Console.WriteLine(daveTicket.ToString());
 			Console.WriteLine("----------------------------------------");
 
-			workingMemory.fireAllRules();
+			workingMemory.FireAllRules();
 			Thread.Sleep(1000);
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine("    POST FIRE ALL RULES");

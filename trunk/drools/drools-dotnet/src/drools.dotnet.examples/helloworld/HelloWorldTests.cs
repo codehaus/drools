@@ -1,8 +1,7 @@
 using System;
 using NUnit.Framework;
 using System.IO;
-using org.drools.@event;
-using java.io;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.examples.helloworld
 {
@@ -14,14 +13,12 @@ namespace org.drools.dotnet.examples.helloworld
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(
 				new Uri("./drls/helloworld.csharp.drl.xml", UriKind.Relative));
-
-			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-			workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
-
-			workingMemory.assertObject("Hello");
-			workingMemory.fireAllRules();
-			workingMemory.assertObject("Goodbye");
-			workingMemory.fireAllRules();
+			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
+			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
+			workingMemory.AssertObject("Hello");
+			workingMemory.FireAllRules();
+			workingMemory.AssertObject("Goodbye");
+			workingMemory.FireAllRules();
 		}
 	}
 }
