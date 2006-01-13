@@ -45,25 +45,59 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="escalation\EscalationTests.cs" />
-    <Compile Include="escalation\Status.cs" />
-    <Compile Include="escalation\TroubleTicket.cs" />
-    <Compile Include="fibonacci\Fibonacci.cs" />
-    <Compile Include="fibonacci\FibonacciTests.cs" />
+    <Compile Include="escalation\EscalationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="escalation\Status.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="escalation\TroubleTicket.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="fibonacci\Fibonacci.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="fibonacci\FibonacciTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="helloworld\HelloWorldTests.cs" />
-    <Compile Include="manners\Context.cs" />
-    <Compile Include="manners\Guest.cs" />
-    <Compile Include="manners\LastSeat.cs" />
-    <Compile Include="manners\MannersTests.cs" />
-    <Compile Include="manners\Seat.cs" />
-    <Compile Include="manners\Seating.cs" />
-    <Compile Include="manners\Sex.cs" />
-    <Compile Include="nodesharing\NodeSharingTests.cs" />
-    <Compile Include="primenumbers\PrimeNumbersTests.cs" />
-    <Compile Include="state\State.cs" />
-    <Compile Include="state\StateTests.cs" />
-    <Compile Include="state\Status.cs" />
+    <Compile Include="manners\Context.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manners\Guest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manners\LastSeat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manners\MannersTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manners\Seat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manners\Seating.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manners\Sex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="nodesharing\NodeSharingTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="primenumbers\PrimeNumbersTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="state\State.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="state\StateTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="state\Status.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="drls\escalation.csharp.drl.xml">

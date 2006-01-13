@@ -2,8 +2,7 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
-using org.drools.@event;
-using java.util;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.examples.manners
 {
@@ -20,38 +19,25 @@ namespace org.drools.dotnet.examples.manners
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/manners.csharp.drl.xml", UriKind.Relative));
-			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-			workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
+			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
+			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
 			IList<Guest> guests = GenerateGuests();
 			Context context = new Context("start");
 			LastSeat lastSeat = new LastSeat(numSeats);
 
 			long start = DateTime.Now.Ticks;
-			workingMemory.assertObject(context);
-			workingMemory.assertObject(lastSeat);
+			workingMemory.AssertObject(context);
+			workingMemory.AssertObject(lastSeat);
 			foreach(Guest guest in guests)
 			{
-				workingMemory.assertObject(guest);
+				workingMemory.AssertObject(guest);
 			}
-			workingMemory.fireAllRules();
+			workingMemory.FireAllRules();
 			long stop = DateTime.Now.Ticks;
 			Console.Out.WriteLine("Elapsed time: " + (stop - start) / 10000 + "ms");
-			
-			//Get seats
-			/* TODO: This code sucks because you need convert from java types to .NET types
-			 * which requires one to liter their project with Java code or add 
-			 * support classes (total hack job).  To fix this we need to wrap these 
-			 * object and expose them as .NET types or port this to a pure .NET solution.
-			 */
 
-			Iterator i = workingMemory.getObjects().iterator();
-			IList<Seat> seats = new List<Seat>();
-			while(i.hasNext())
-			{
-				Seat seat = i.next() as Seat;
-				if (seat != null) seats.Add(seat);
-			}
+			IList<Seat> seats = workingMemory.GetObjects<Seat>();
 			Assert.AreEqual(numGuests, seats.Count, "seated guests " + seats.Count + 
 				" didn't match expected " + numGuests);
 

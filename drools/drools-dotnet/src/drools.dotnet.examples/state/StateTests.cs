@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using org.drools.@event;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.examples.state
 {
@@ -14,21 +14,19 @@ namespace org.drools.dotnet.examples.state
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/state.csharp.drl.xml", UriKind.Relative));
 
-			WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-			workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
+			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
+			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 			State a = new State("A");
 			State b = new State("B");
 			State c = new State("C");
 			State d = new State("D");
 
-			bool dynamic = true;
+			workingMemory.AssertObject(a);
+			workingMemory.AssertObject(b);
+			workingMemory.AssertObject(c);
+			workingMemory.AssertObject(d);
 
-			workingMemory.assertObject(a, dynamic);
-			workingMemory.assertObject(b, dynamic);
-			workingMemory.assertObject(c, dynamic);
-			workingMemory.assertObject(d, dynamic);
-
-			workingMemory.fireAllRules();
+			workingMemory.FireAllRules();
 
 			Assert.AreEqual(Status.Finished, a.Status);
 			Assert.AreEqual(Status.Finished, b.Status);
