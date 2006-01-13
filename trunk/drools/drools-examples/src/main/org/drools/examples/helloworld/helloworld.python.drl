@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<rule-set name="HelloWorld"
+<rule-set name="helloworld"
           xmlns="http://drools.org/rules"
           xmlns:python="http://drools.org/semantics/python"
           xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
