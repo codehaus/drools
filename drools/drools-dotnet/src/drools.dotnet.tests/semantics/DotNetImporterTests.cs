@@ -17,20 +17,22 @@ namespace org.drools.dotnet.tests.semantics
 			DotNetImporter importer = new DotNetImporter();
 			Class clazz = importer.importClass(context.getClass().getClassLoader(),
 				"System.Collections.Hashtable");
-			Assert.AreEqual(Class.forName("cli.System.Collections.Hashtable"), clazz);
+			Assert.AreEqual(Class.forName(
+				Type.GetType("System.Collections.Hashtable").AssemblyQualifiedName), clazz);
 		}
 
 		[Test]
 		public void TestExternalQualifiedClass()
 		{
+			string typeName = "System.Data.DataSet, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
 			RuleBaseContext context = new RuleBaseContext();
 			DotNetImporter importer = new DotNetImporter();
 			Class clazz = importer.importClass(context.getClass().getClassLoader(),
-				"System.Data.DataSet, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-			Assert.AreEqual("cli.System.Data.DataSet", clazz.getName());
+				typeName);
+			Assert.AreEqual(Class.forName(typeName), clazz);
 
-			Type type = importer.importType("System.Data.DataSet, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-			Assert.AreEqual(Type.GetType("System.Data.DataSet, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"), type);
+			Type type = importer.importType(typeName);
+			Assert.AreEqual(Type.GetType(typeName), type);
 		}
 
 		[Test]
@@ -49,7 +51,8 @@ namespace org.drools.dotnet.tests.semantics
 			DotNetImporter importer = new DotNetImporter();
 			importer.addImport(new BaseImportEntry("System.Collections"));
 			Class clazz = importer.importClass(context.getClass().getClassLoader(), "Hashtable");
-			Assert.AreEqual(Class.forName("cli.System.Collections.Hashtable"), clazz);
+			Assert.AreEqual(Class.forName(
+				Type.GetType("System.Collections.Hashtable").AssemblyQualifiedName), clazz);
 
 			Type type = importer.importType("Hashtable");
 			Assert.AreEqual(Type.GetType("System.Collections.Hashtable"), type);
@@ -74,10 +77,11 @@ namespace org.drools.dotnet.tests.semantics
 			DotNetImporter importer = new DotNetImporter();
 			importer.addImport(new BaseImportEntry("System.Collections"));
 			Class clazz = importer.importClass(context.getClass().getClassLoader(), "Hashtable");
-			Assert.AreEqual(Class.forName("cli.System.Collections.Hashtable"), clazz);
+			Assert.AreEqual(Class.forName(
+				Type.GetType("System.Collections.Hashtable").AssemblyQualifiedName), clazz);
 
 			clazz = importer.importClass(context.getClass().getClassLoader(), "Hashtable");
-			Assert.AreEqual(Class.forName("cli.System.Collections.Hashtable"), clazz);
+			Assert.AreEqual(Class.forName(Type.GetType("System.Collections.Hashtable").AssemblyQualifiedName), clazz);
 		}
 	}
 

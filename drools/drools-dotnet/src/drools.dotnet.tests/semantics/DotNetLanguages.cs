@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using System.Configuration;
+using org.drools.dotnet.io;
 
 namespace org.drools.dotnet.tests.semantics
 {
