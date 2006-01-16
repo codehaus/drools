@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules;
 
 /*
- * $Id: AbstractRuleSessionImpl.java,v 1.1 2004-12-05 20:25:15 dbarnett Exp $
+ * $Id: AbstractRuleSessionImpl.java,v 1.2 2006-01-16 01:31:22 michaelneale Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -78,6 +78,13 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetRepository;
  */
 abstract class AbstractRuleSessionImpl implements RuleSession
 {
+	private RuleExecutionSetRepository repository;
+	
+	public AbstractRuleSessionImpl(RuleExecutionSetRepository repository) {
+		super();
+		this.repository = repository;
+	}
+	
     /**
      * The Drools <code>WorkingMemory</code> associated
      * with this <code>RuleSession</code>.
@@ -258,9 +265,6 @@ abstract class AbstractRuleSessionImpl implements RuleSession
      */
     public RuleExecutionSetMetadata getRuleExecutionSetMetadata( )
     {
-        RuleExecutionSetRepository repository =
-            RuleExecutionSetRepository.getInstance( );
-
         String theBindUri = null;
         for ( Iterator i = repository.getRegistrations( ).iterator( );
               i.hasNext( ); )

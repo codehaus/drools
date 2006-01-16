@@ -1,7 +1,7 @@
 package org.drools.jsr94.rules.admin;
 
 /*
- * $Id: RuleExecutionSetRepository.java,v 1.11 2004-12-04 04:54:07 dbarnett Exp $
+ * $Id: RuleExecutionSetRepository.java,v 1.12 2006-01-16 01:31:23 michaelneale Exp $
  *
  * Copyright 2002-2004 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,6 +41,7 @@ package org.drools.jsr94.rules.admin;
  *
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,109 +52,100 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
 
 /**
  * Stores the registered <code>RuleExecutionSet</code> objects.
- *
+ * 
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-public final class RuleExecutionSetRepository
-{
-    /** The Singleton instance of the repository. */
-    private static RuleExecutionSetRepository REPOSITORY;
+public final class RuleExecutionSetRepository implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    /** Holds the registered <code>RuleExecutionSet</code> objects. */
-    private Map map = new HashMap( );
+	/** The Singleton instance of the repository. */
+	// private static RuleExecutionSetRepository REPOSITORY;
+	/** Holds the registered <code>RuleExecutionSet</code> objects. */
+	private Map map = new HashMap();
 
-    /** Private constructor; use <code>getInstance</code> instead. */
-    private RuleExecutionSetRepository( )
-    {
-        // Hide the constructor.
-    }
+	/** Private constructor; use <code>getInstance</code> instead. */
+	public RuleExecutionSetRepository() {
+		// Hide the constructor.
+	}
 
-    /**
-     * Gets the Singleton instance of a <code>RuleExecutionSetRepository</code>.
-     *
-     * @return The Singleton instance of the repository.
-     */
-    public static synchronized RuleExecutionSetRepository getInstance( )
-    {
-        if ( RuleExecutionSetRepository.REPOSITORY != null )
-        {
-            return RuleExecutionSetRepository.REPOSITORY;
-        }
-        return RuleExecutionSetRepository.REPOSITORY =
-            new RuleExecutionSetRepository( );
-    }
+	/**
+	 * Gets the Singleton instance of a <code>RuleExecutionSetRepository</code>.
+	 * 
+	 * @return The Singleton instance of the repository.
+	 */
+	// public static synchronized RuleExecutionSetRepository getInstance( )
+	// {
+	// if ( RuleExecutionSetRepository.REPOSITORY != null )
+	// {
+	// return RuleExecutionSetRepository.REPOSITORY;
+	// }
+	// return RuleExecutionSetRepository.REPOSITORY =
+	// new RuleExecutionSetRepository( );
+	// }
+	/**
+	 * Retrieves a <code>List</code> of the URIs that currently have
+	 * <code>RuleExecutionSet</code>s associated with them.
+	 * 
+	 * An empty list is returned is there are no associations.
+	 * 
+	 * @return a <code>List</code> of the URIs that currently have
+	 *         <code>RuleExecutionSet</code>s associated with them.
+	 */
+	public List getRegistrations() {
+		List list = new ArrayList();
+		list.addAll(this.map.keySet());
+		return list;
+	}
 
-    /**
-     * Retrieves a <code>List</code> of the URIs that currently have
-     * <code>RuleExecutionSet</code>s associated with them.
-     *
-     * An empty list is returned is there are no associations.
-     *
-     * @return a <code>List</code> of the URIs that currently have
-     *         <code>RuleExecutionSet</code>s associated with them.
-     */
-    public List getRegistrations( )
-    {
-        List list = new ArrayList( );
-        list.addAll( this.map.keySet( ) );
-        return list;
-    }
+	/**
+	 * Get the <code>RuleExecutionSet</code> bound to this URI, or return
+	 * <code>null</code>.
+	 * 
+	 * @param bindUri
+	 *            the URI associated with the wanted
+	 *            <code>RuleExecutionSet</code>.
+	 * 
+	 * @return the <code>RuleExecutionSet</code> bound to the given URI.
+	 */
+	public RuleExecutionSet getRuleExecutionSet(String bindUri) {
+		return (RuleExecutionSet) this.map.get(bindUri);
+	}
 
-    /**
-     * Get the <code>RuleExecutionSet</code> bound to this URI, or return
-     * <code>null</code>.
-     *
-     * @param bindUri the URI associated with the wanted
-     *        <code>RuleExecutionSet</code>.
-     *
-     * @return the <code>RuleExecutionSet</code> bound to the given URI.
-     */
-    public RuleExecutionSet getRuleExecutionSet( String bindUri )
-    {
-        return ( RuleExecutionSet ) this.map.get( bindUri );
-    }
+	/**
+	 * Register a <code>RuleExecutionSet</code> under the given URI.
+	 * 
+	 * @param bindUri
+	 *            the URI to associate with the <code>RuleExecutionSet</code>.
+	 * @param ruleSet
+	 *            the <code>RuleExecutionSet</code> to associate with the URI
+	 * 
+	 * @throws RuleExecutionSetRegisterException
+	 *             if an error occurred that prevented registration (i.e. if
+	 *             bindUri or ruleSet are <code>null</code>)
+	 */
+	public void registerRuleExecutionSet(String bindUri,
+			RuleExecutionSet ruleSet) throws RuleExecutionSetRegisterException {
+		if (bindUri == null) {
+			throw new RuleExecutionSetRegisterException(
+					"bindUri cannot be null");
+		}
+		if (ruleSet == null) {
+			throw new RuleExecutionSetRegisterException(
+					"ruleSet cannot be null");
+		}
+		this.map.put(bindUri, ruleSet);
+	}
 
-    /**
-     * Register a <code>RuleExecutionSet</code> under the given URI.
-     *
-     * @param bindUri the URI to associate with the
-     *        <code>RuleExecutionSet</code>.
-     * @param ruleSet the <code>RuleExecutionSet</code> to associate with the
-     *        URI
-     *
-     * @throws RuleExecutionSetRegisterException if an error occurred that
-     *         prevented registration
-     *         (i.e. if bindUri or ruleSet are <code>null</code>)
-     */
-    public void registerRuleExecutionSet(
-            String bindUri, RuleExecutionSet ruleSet )
-        throws RuleExecutionSetRegisterException
-    {
-        if ( bindUri == null )
-        {
-            throw new RuleExecutionSetRegisterException(
-                "bindUri cannot be null" );
-        }
-        if ( ruleSet == null )
-        {
-            throw new RuleExecutionSetRegisterException(
-                "ruleSet cannot be null" );
-        }
-        this.map.put( bindUri, ruleSet );
-    }
-
-    /**
-     * Unregister a <code>RuleExecutionSet</code> from the given URI.
-     *
-     * @param bindUri the URI to disassociate with the
-     *        <code>RuleExecutionSet</code>.
-     */
-    public void unregisterRuleExecutionSet( String bindUri )
-    {
-        if ( bindUri == null )
-        {
-            throw new NullPointerException( "bindUri cannot be null" );
-        }
-        this.map.remove( bindUri );
-    }
+	/**
+	 * Unregister a <code>RuleExecutionSet</code> from the given URI.
+	 * 
+	 * @param bindUri
+	 *            the URI to disassociate with the <code>RuleExecutionSet</code>.
+	 */
+	public void unregisterRuleExecutionSet(String bindUri) {
+		if (bindUri == null) {
+			throw new NullPointerException("bindUri cannot be null");
+		}
+		this.map.remove(bindUri);
+	}
 }
