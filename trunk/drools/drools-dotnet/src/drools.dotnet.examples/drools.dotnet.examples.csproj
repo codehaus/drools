@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="decisiontables\model\Claim.cs" />
+    <Compile Include="decisiontables\model\Team.cs" />
     <Compile Include="escalation\EscalationTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,6 +100,7 @@
     <Compile Include="state\Status.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="decisiontables\TeamAllocationExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="drls\escalation.csharp.drl.xml">
@@ -118,6 +121,10 @@
     <Content Include="drls\state.csharp.drl.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+   <Content Include="drls\TeamAllocationExample.xls">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\drools.dotnet\drools.dotnet.csproj">
@@ -129,6 +136,7 @@
       <Name>drools.semantics.dotnet</Name>
     </ProjectReference>
   </ItemGroup>
+
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
