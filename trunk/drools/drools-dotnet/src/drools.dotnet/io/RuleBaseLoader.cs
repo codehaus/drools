@@ -153,5 +153,58 @@ namespace org.drools.dotnet.io
 			}
 			return LoadFromStream(streams.ToArray(), resolver);
 		}
+
+        /// <summary>
+        /// Loads a rule set from a text reader
+        /// </summary>
+        /// <param name="reader">TextReader</param>
+        /// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
+        /// 
+        public static RuleBase LoadFromReader(System.IO.TextReader reader)
+        {
+            return RuleBaseLoader.LoadFromReader(reader, DefaultConflictResolver.getInstance());
+        }
+
+        /// <summary>
+        /// Loads a rule set from a Text Reader
+        /// </summary>
+        /// <param name="reader">reader to load the ruleset from</param>
+        /// <param name="resolver">Conflict resolver</param>
+        /// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
+        public static RuleBase LoadFromReader(System.IO.TextReader reader, ConflictResolver resolver)
+        {
+            return RuleBaseLoader.LoadFromReader(new System.IO.TextReader[] { reader }, resolver);
+        }
+
+        /// <summary>
+        /// Loads a rule set from a set of Text Reader
+        /// </summary>
+        /// <param name="readers">readers to load the ruleset from</param>
+        /// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
+        public static RuleBase LoadFromReader(System.IO.TextReader[] readers)
+        {
+            return RuleBaseLoader.LoadFromReader(readers, DefaultConflictResolver.getInstance());
+        }
+
+        /// <summary>
+        /// Loads a rule set from a set of Text Reader
+        /// </summary>
+        /// <param name="readers">readers to load the ruleset from</param>
+        /// <param name="resolver">Conflict resolver</param>
+        /// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
+        public static RuleBase LoadFromReader(System.IO.TextReader[] readers, ConflictResolver resolver)
+        {
+            InputStreamReader[] streamReaders = new InputStreamReader[readers.Length];
+            int count = 0;
+            foreach (TextReader reader in readers)
+            {
+                string readerString = reader.ReadToEnd();
+                
+                StringBufferInputStream inpStr = new StringBufferInputStream(new String(readerString.ToCharArray()));
+                streamReaders[count] = new InputStreamReader(inpStr);
+                count++;
+            }
+            return new RuleBase(drools.io.RuleBaseLoader.loadFromReader(streamReaders, resolver));
+        }
 	}
 }
