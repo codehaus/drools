@@ -45,6 +45,7 @@
     <Compile Include="events\ObjectAssertedEventArgs.cs" />
     <Compile Include="events\ObjectModifiedEventArgs.cs" />
     <Compile Include="events\ObjectRetractedEventArgs.cs" />
+    <Compile Include="io\DecisionTableLoader.cs" />
     <Compile Include="util\ReadOnlyList.cs" />
     <Compile Include="util\ReadyOnlyDictionary.cs" />
     <Compile Include="RuleBase.cs" />
