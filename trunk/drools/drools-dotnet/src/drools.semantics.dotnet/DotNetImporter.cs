@@ -62,20 +62,32 @@ namespace org.drools.semantics.dotnet
 			//Try loading the type - this is necessary so the IKVM class loader works.
 			Type type = Type.GetType(typeName);
 
-			//Try with the import entries
+			
 			if (type == null)
 			{
-				Iterator i = getImports().iterator();
-				List<Type> validTypes = new List<Type>();
-				while (i.hasNext())
-				{
-					string testTypeName = (string)i.next() + "." + typeName;
-					foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-					{
-						Type validType = assembly.GetType(testTypeName);
-						if (validType != null) validTypes.Add(validType);
-					}
-				}
+                //Try to get the type for fully qualified class names
+                List<Type> validTypes = new List<Type>();
+                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    Type validType = assembly.GetType(typeName);
+                    if (validType != null) validTypes.Add(validType);
+                }
+
+                //Try with the import entries
+                if (validTypes.Count == 0)
+                {
+                    Iterator i = getImports().iterator();
+
+                    while (i.hasNext())
+                    {
+                        string testTypeName = (string)i.next() + "." + typeName;
+                        foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                        {
+                            Type validType = assembly.GetType(testTypeName);
+                            if (validType != null) validTypes.Add(validType);
+                        }
+                    }
+                }
 
 				if (validTypes.Count == 1)
 				{
