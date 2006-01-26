@@ -41,7 +41,8 @@ namespace org.drools.dotnet.io
         }
 
         /// <summary>
-        /// This function replaces java-specific elements with dotnet elements in a DRL
+        /// This function replaces java-specific elements with dotnet elements in a DRL.
+        /// Ideally this will be refactored with drools 3, and will not require 
         /// </summary>
         /// <param name="javadrl">drl string</param>
         /// <returns></returns>
