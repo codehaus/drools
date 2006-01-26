@@ -5,8 +5,8 @@ using NUnit.Framework;
 using org.drools.dotnet.io;
 namespace org.drools.dotnet.examples.decisiontables
 {
-	
-	
+
+    [TestFixture]
 	public class TeamAllocationExample
 	{
 		private Claim BetweenSomeDateLongtail1
@@ -70,19 +70,19 @@ namespace org.drools.dotnet.examples.decisiontables
 		}
 		
 		
-		[STAThread]
-		public static void  Main(System.String[] args)
-		{
+		[Test]
+		public void TestTeamAllocationExample()
+        {
 			
-			TeamAllocationExample example = new TeamAllocationExample();
-			example.loadRuleBase();
-			example.teamAllocationBasic();
-			example.teamAllocationLongtail1();
-			example.teamAllocationLongtail2();
+			
+			loadRuleBase();
+			teamAllocationBasic();
+			teamAllocationLongtail1();
+			teamAllocationLongtail2();
 		}
 		
 		
-		public virtual void  teamAllocationBasic()
+		private void  teamAllocationBasic()
 		{
 			
 			Claim cat = Catastrophic;
@@ -93,7 +93,7 @@ namespace org.drools.dotnet.examples.decisiontables
 			System.Console.Out.WriteLine(team.Name);
 		}
 		
-		public virtual void  teamAllocationLongtail1()
+		private void  teamAllocationLongtail1()
 		{
 			Claim claim = BetweenSomeDateLongtail1;
 			Team team = new Team();
@@ -103,7 +103,7 @@ namespace org.drools.dotnet.examples.decisiontables
 			System.Console.Out.WriteLine(team.Name);
 		}
 		
-		public virtual void  teamAllocationLongtail2()
+		private void  teamAllocationLongtail2()
 		{
 			Claim claim = BetweenSomeDateLongtail2;
 			Team team = new Team();
