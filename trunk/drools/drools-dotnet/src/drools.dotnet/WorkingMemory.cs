@@ -6,6 +6,10 @@ using org.drools.dotnet.events;
 
 namespace org.drools.dotnet
 {
+    /// <summary>
+    /// This is a wrapper around the core drools working memory. 
+    /// For pure .Net clients.
+    /// </summary>
 	public class WorkingMemory
 	{
 		private org.drools.WorkingMemory _javaWorkingMemory;
