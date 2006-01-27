@@ -194,14 +194,11 @@ namespace org.drools.dotnet.io
         /// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
         public static RuleBase LoadFromReader(System.IO.TextReader[] readers, ConflictResolver resolver)
         {
-            InputStreamReader[] streamReaders = new InputStreamReader[readers.Length];
+            Reader[] streamReaders = new java.io.StringReader[readers.Length];
             int count = 0;
             foreach (TextReader reader in readers)
             {
-                string readerString = reader.ReadToEnd();
-                
-                StringBufferInputStream inpStr = new StringBufferInputStream(new String(readerString.ToCharArray()));
-                streamReaders[count] = new InputStreamReader(inpStr);
+				streamReaders[count] = new java.io.StringReader(reader.ReadToEnd());
                 count++;
             }
             return new RuleBase(drools.io.RuleBaseLoader.loadFromReader(streamReaders, resolver));

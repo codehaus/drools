@@ -41,5 +41,13 @@ namespace org.drools.dotnet.tests.io
 			RuleBase ruleBase = RuleBaseLoader.LoadFromAssembly(this.GetType().Assembly);
 			Assert.AreEqual(1, ruleBase.RuleSets.Count);
 		}
+
+		[Test]
+		public void TestReaderLoader()
+		{
+			StreamReader reader = new StreamReader("./drls/csharp.drl.xml");
+			RuleBase ruleBase = RuleBaseLoader.LoadFromReader(reader);
+			Assert.AreEqual(1, ruleBase.RuleSets.Count);
+		}
 	}
 }
