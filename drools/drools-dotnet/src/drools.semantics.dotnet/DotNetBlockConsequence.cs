@@ -56,12 +56,20 @@ namespace org.drools.semantics.dotnet
 
 		private Assembly Compile()
 		{
+			DotNetFunctions functions = null;
+			if (_rule.getRuleSet() != null)
+			{
+				functions = _rule.getRuleSet().getFunctions("dotnet") as DotNetFunctions;
+			}
+
+			DotNetImporter importer = _rule.getImporter() as DotNetImporter;
+			if (importer == null) importer = new DotNetImporter();
+
 			//Generate Code
 			CodeCompileUnit code = CodeGenerator.CreateConsequence(this.GetType().Namespace,
 				_className, _methodName, (Declaration[]) 
 				_rule.getParameterDeclarations().toArray(new Declaration[]{}),
-				_expression, (DotNetImporter)_rule.getImporter(),
-				(DotNetFunctions)_rule.getRuleSet().getFunctions("dotnet"));
+				_expression, importer, functions);
 
 			//Generate IL
 			return CodeCompiler.Compile(code);
