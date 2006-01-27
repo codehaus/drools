@@ -62,6 +62,13 @@ namespace org.drools.semantics.dotnet
 			//Try loading the type - this is necessary so the IKVM class loader works.
 			Type type = Type.GetType(typeName);
 
+            //If the rulebase is being loaded from a decision table then create correct type name 
+            //In decision table the 
+            if (typeName.IndexOf(".ASSEMBLY") != -1)
+            {
+                string correctTypeName = typeName.Replace(".ASSEMBLY.", ",");
+                type = Type.GetType(correctTypeName);
+            }
 			
 			if (type == null)
 			{
