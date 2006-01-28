@@ -16,7 +16,7 @@ namespace org.drools.dotnet.tests.semantics
 		{
 			Rule rule = CreateRule();
 			Int64 startTime = DateTime.Now.Ticks;
-			Condition c = new DotNetCondition(rule, 1, "param1.Length == 4;");
+            Condition c = new DotNetCondition(rule, 1, "param1.Length == 4;", null);
 			Mock tupleMock = new DynamicMock(typeof(Tuple));
 			tupleMock.ExpectAndReturn("get", "test", rule.getParameterDeclaration("param1"));
 			tupleMock.ExpectAndReturn("get", 1, rule.getParameterDeclaration("param2"));
@@ -30,7 +30,7 @@ namespace org.drools.dotnet.tests.semantics
 		{
 			Rule rule = CreateRule();
 			Int64 startTime = DateTime.Now.Ticks;
-			Condition c = new DotNetCondition(rule, 1, "param1.Equals(param2);");
+            Condition c = new DotNetCondition(rule, 1, "param1.Equals(param2);", null);
 			Mock tupleMock = new DynamicMock(typeof(Tuple));
 			tupleMock.ExpectAndReturn("get", "test", rule.getParameterDeclaration("param1"));
 			tupleMock.ExpectAndReturn("get", 1, rule.getParameterDeclaration("param2"));
@@ -44,7 +44,7 @@ namespace org.drools.dotnet.tests.semantics
 		public void TestCompilationError()
 		{
 			Rule rule = CreateRule();
-			Condition c = new DotNetCondition(rule, 1, "foobar...");
+            Condition c = new DotNetCondition(rule, 1, "foobar...", null);
 		}
 
 		[Test]
@@ -52,7 +52,7 @@ namespace org.drools.dotnet.tests.semantics
 		public void TestRuntimeError()
 		{
 			Rule rule = CreateRule();
-			Condition c = new DotNetCondition(rule, 1, "param1.Equals(String.Empty);");
+            Condition c = new DotNetCondition(rule, 1, "param1.Equals(String.Empty);", null);
 			Mock tupleMock = new DynamicMock(typeof(Tuple));
 			tupleMock.ExpectAndReturn("get", null, rule.getParameterDeclaration("param1"));
 			tupleMock.ExpectAndReturn("get", 0, rule.getParameterDeclaration("param2"));

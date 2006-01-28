@@ -26,14 +26,16 @@ namespace org.drools.semantics.dotnet
 		private string _className;
 		private string _methodName = "Invoke";
 		private string _namespace;
+        private LineNumberInfo _info = null;
 
-		public DotNetCondition(Rule rule, int id, string expression)
+		public DotNetCondition(Rule rule, int id, string expression, LineNumberInfo info)
 		{
 			_id = id;
 			_rule = rule;
 			_expression = expression;
 			_className = "Condition_" + id;
 			_namespace = this.GetType().Namespace;
+            _info = info;
 
 			_requiredParameters = (Declaration[])rule.getParameterDeclarations().toArray(
 				new Declaration[] { });
@@ -65,25 +67,36 @@ namespace org.drools.semantics.dotnet
 			}
 		}
 
-		private Assembly Compile()
+		public Assembly Compile()
 		{
-			DotNetFunctions functions = null;
-			if (_rule.getRuleSet() != null)
-			{
-				functions = _rule.getRuleSet().getFunctions("dotnet") as DotNetFunctions;
-			}
-
-			DotNetImporter importer = _rule.getImporter() as DotNetImporter;
-			if (importer == null) importer = new DotNetImporter();
-
 			//Generate Code
 			CodeCompileUnit code = CodeGenerator.CreateCondition(_namespace,
-				_className, _methodName, _requiredParameters, _expression, importer,
-				functions);
+				_className, _methodName, _requiredParameters, _expression, 
+                _rule.getImporter() as DotNetImporter,
+				_rule.getRuleSet().getFunctions("dotnet") as DotNetFunctions,_info);
+
+            // Prepare to generate IL
+            RuleBaseContext ctx = _rule.getRuleSet().getRuleBaseContext();
+            string assemblyPrefix =
+                ctx.get("AssemblyPrefix") as string;
+            bool isPrecompiled = false;
+            if (ctx.get("IsPrecompiled") != null)
+                isPrecompiled = (bool)ctx.get("IsPrecompiled");
 
 			//Generate IL
+            if (isPrecompiled)
+            {
+                return CodeCompiler.Compile
+                    (code, false, true, false, assemblyPrefix+"_"+_className+"_"+_methodName+".dll");
+            }
 			return CodeCompiler.Compile(code);
 		}
+
+        public void ResetAssembly(Assembly assembly)
+        {
+            this._assembly = assembly;
+        }
+
 
 		public override string ToString()
 		{

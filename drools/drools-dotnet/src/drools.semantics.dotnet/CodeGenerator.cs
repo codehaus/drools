@@ -10,17 +10,21 @@ namespace org.drools.semantics.dotnet
 	/// <summary>
 	/// Generates .NET code using CodeDOM
 	/// </summary>
-	internal class CodeGenerator
+	public class CodeGenerator
 	{
 		public static CodeCompileUnit CreateCondition(string namespaceName, string className, 
 			string methodName, Declaration[] parameters, string expression, 
-			DotNetImporter importer, DotNetFunctions functions)
+			DotNetImporter importer, DotNetFunctions functions,LineNumberInfo info)
 		{
 			try
 			{
 				CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
 					typeof(bool));
 				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
+                if (info != null && info.FileName!= null && info.StartLine!= -1)
+                {
+                    method.LinePragma = new CodeLinePragma(info.FileName, info.StartLine);
+                }
 				CodeStatement returnStatement = new CodeMethodReturnStatement(
 					new CodeSnippetExpression(expression));
 				method.Statements.Add(returnStatement);
@@ -40,14 +44,18 @@ namespace org.drools.semantics.dotnet
 
 		public static CodeCompileUnit CreateConsequence(string namespaceName, string className,
 			string methodName, Declaration[] parameters, string expression,
-			DotNetImporter importer, DotNetFunctions functions)
+			DotNetImporter importer, DotNetFunctions functions,LineNumberInfo info)
 		{
 			try
 			{
 				CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
 					typeof(void));
 				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
-				method.Statements.Add(new CodeSnippetExpression(expression));
+                if (info != null && info.FileName != null && info.StartLine != -1)
+                {
+                    method.LinePragma = new CodeLinePragma(info.FileName, info.StartLine);
+                }
+                method.Statements.Add(new CodeSnippetExpression(expression));
 
 				code = AddFunctions(code, functions);
 				code = AddReferencedAssemblies(code);
@@ -93,7 +101,7 @@ namespace org.drools.semantics.dotnet
 			CodeParameterDeclarationExpression droolsParam = new CodeParameterDeclarationExpression(
 				typeof(KnowledgeHelper), "drools");
 			droolsParam.Direction = FieldDirection.In;
-			methodCode.Parameters.Add(droolsParam);
+			methodCode.Parameters.Add(droolsParam);            
 			return code;
 		}
 
@@ -131,10 +139,13 @@ namespace org.drools.semantics.dotnet
 			}
 
 			//Import any types specified by importer
-			foreach (string entry in importer.getImports().toArray(new string[]{}))
-			{
-				if (!imports.Contains(entry)) imports.Add(entry);
-			}
+            if (importer != null)
+            {
+                foreach (string entry in importer.getImports().toArray(new string[] { }))
+                {
+                    if (!imports.Contains(entry)) imports.Add(entry);
+                }
+            }
 
 			//Add to code
 			foreach (string import in imports)

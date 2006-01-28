@@ -2,6 +2,7 @@ using System;
 using org.drools.rule;
 using org.drools.smf;
 using org.drools.spi;
+using org.drools.io;
 
 namespace org.drools.semantics.dotnet
 {
@@ -13,7 +14,7 @@ namespace org.drools.semantics.dotnet
 		public Condition[] newCondition(Rule r, RuleBaseContext rbc, Configuration c)
 		{
 			try
-			{
+			{               
 				int id = 0;
 				if (rbc.get("dotnet-condition-id") != null)
 				{
@@ -21,13 +22,16 @@ namespace org.drools.semantics.dotnet
 				}
 				id++;
 				rbc.put("dotnet-condition-id", id);
-				
-				return new Condition[] { new DotNetCondition(r, id, c.getText()) };
+
+                return new Condition[] { new DotNetCondition(r, id, c.getText(), 
+                    LineNumberInfo.Retrieve(c)) };
 			}
 			catch (Exception e)
 			{
 				throw new FactoryException(e);
 			}
 		}
+
+        
 	}
 }
