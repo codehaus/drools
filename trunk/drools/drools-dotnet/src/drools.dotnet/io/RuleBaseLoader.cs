@@ -7,6 +7,11 @@ using org.drools.spi;
 using java.io;
 using java.net;
 using org.drools.conflict;
+using ILMerging;
+using org.drools.rule;
+using System.Collections;
+using org.drools.semantics.dotnet;
+using org.drools.dotnet.util;
 
 namespace org.drools.dotnet.io
 {
@@ -194,14 +199,113 @@ namespace org.drools.dotnet.io
         /// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
         public static RuleBase LoadFromReader(System.IO.TextReader[] readers, ConflictResolver resolver)
         {
-            Reader[] streamReaders = new java.io.StringReader[readers.Length];
+            InputStreamReader[] streamReaders = new InputStreamReader[readers.Length];
             int count = 0;
             foreach (TextReader reader in readers)
             {
-				streamReaders[count] = new java.io.StringReader(reader.ReadToEnd());
+                string readerString = reader.ReadToEnd();
+                
+                StringBufferInputStream inpStr = new StringBufferInputStream(new String(readerString.ToCharArray()));
+                streamReaders[count] = new InputStreamReader(inpStr);
                 count++;
             }
             return new RuleBase(drools.io.RuleBaseLoader.loadFromReader(streamReaders, resolver));
         }
+
+
+        #region Load precompiled rulebase functions
+
+        public static RuleBase LoadPrecompiledRulebase(Stream stream, string precompiledAssembly)
+        {
+            return RuleBaseLoader.LoadPrecompiledRulebase(stream, DefaultConflictResolver.getInstance(), precompiledAssembly);
+
+        }
+        public static RuleBase LoadPrecompiledRulebase(Stream stream, ConflictResolver resolver, string precompiledAssembly)
+        {
+            RuleBase _rulebase = RuleBaseLoader.LoadFromStream(stream, resolver);
+            loadAssembly(_rulebase, precompiledAssembly);
+            return _rulebase;
+        }
+        
+        public static RuleBase LoadPrecompiledRulebase(Uri uri, string precompiledAssembly)
+        {
+            return RuleBaseLoader.LoadPrecompiledRulebase(uri, DefaultConflictResolver.getInstance(), precompiledAssembly);
+        }
+
+        public static RuleBase LoadPrecompiledRulebase(Uri uri, ConflictResolver resolver, string precompiledAssembly)
+        {
+            RuleBase _rulebase = RuleBaseLoader.LoadFromUri(uri, resolver);
+            loadAssembly(_rulebase, precompiledAssembly);
+            return _rulebase;
+        }
+
+        private static void SetRuleSetCtxProperties(RuleBase rb, string assemblyName)
+        {
+            string assemblyPrefix = "";
+            if (assemblyName != null && assemblyName.EndsWith(".dll"))
+                assemblyPrefix = assemblyName.Substring(0, assemblyName.IndexOf(".dll"));
+            IEnumerator enumer = rb.RuleSets.GetEnumerator();
+            while(enumer.MoveNext())
+            {
+                RuleSet ruleSet = enumer.Current as RuleSet;
+                ruleSet.getRuleBaseContext().put("IsPrecompiled", true);
+                ruleSet.getRuleBaseContext().put("AssemblyName", assemblyName);
+                ruleSet.getRuleBaseContext().put("AssemblyPrefix", assemblyPrefix);
+            }
+        }
+
+        private static Assembly loadAssembly(RuleBase ruleBase, string assemblyName)
+        {
+            RuleBaseLoader.SetRuleSetCtxProperties(ruleBase, assemblyName);
+            Assembly assembly = null;
+            try
+            {
+                assembly = Assembly.LoadFile(System.Environment.CurrentDirectory + "\\" + assemblyName);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message + " New Assembly will be created");
+            }
+
+            // if not found
+            if (assembly == null)
+            {
+                assembly = RuleBaseLoader.createAssembly(ruleBase);
+            }
+            return assembly;
+
+        }
+
+        private static Assembly createAssembly(RuleBase ruleBase)
+        {
+            System.Collections.ArrayList assemblies = CreateIntermediateAssemblies(ruleBase);
+
+            ILMerge ilmerge = new ILMerge();
+            ReadOnlyList<RuleSet> listOfRules = ruleBase.RuleSets as ReadOnlyList<RuleSet>;
+            RuleSet ruleSet = listOfRules[0] as RuleSet;
+            ///ruleBase.RuleSets[0] as RuleSet;
+            ilmerge.OutputFile = ruleSet.getRuleBaseContext().get("AssemblyName") as string;
+            ilmerge.DebugInfo = true;            
+            ilmerge.KeyFile = ruleSet.getRuleBaseContext().get("KeyFile") as string;
+            ilmerge.SetInputAssemblies((string[])assemblies.ToArray(Type.GetType("System.String")));
+            ilmerge.Merge();
+            //deleteIntermediateAssemblies(assemblies);
+            Assembly assembly = Assembly.LoadFile(System.Environment.CurrentDirectory + "\\" + ilmerge.OutputFile.ToString());
+            return assembly;
+        }
+
+        private static System.Collections.ArrayList CreateIntermediateAssemblies(RuleBase ruleBase)
+        {
+            System.Collections.ArrayList assemblies = null;
+            System.Collections.Hashtable compileParams = new System.Collections.Hashtable();
+            {
+                compileParams["RuleSet"] = ruleBase.RuleSets;
+                assemblies
+                    = DotNetRuleBaseIterator.Action(DotNetRuleBaseActions.COMPILE, compileParams);
+            }
+            return assemblies;
+        }
+        #endregion
+
 	}
 }

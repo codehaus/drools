@@ -17,7 +17,7 @@ namespace org.drools.dotnet.tests.semantics
 		{
 			Rule rule = CreateRule();
 			Int64 startTime = DateTime.Now.Ticks;
-			Consequence c = new DotNetBlockConsequence(rule, 1, "System.Threading.Thread.Sleep(1000);");
+			Consequence c = new DotNetBlockConsequence(rule, 1, "System.Threading.Thread.Sleep(1000);",null);
 			Mock tupleMock = new DynamicMock(typeof(Tuple));
 			tupleMock.ExpectAndReturn("get", "test", rule.getParameterDeclaration("param1"));
 			tupleMock.ExpectAndReturn("get", 1, rule.getParameterDeclaration("param2"));
@@ -34,7 +34,7 @@ namespace org.drools.dotnet.tests.semantics
 		public void TestCompilationError()
 		{
 			Rule rule = CreateRule();
-			Consequence c = new DotNetBlockConsequence(rule, 1, "foobar...");
+            Consequence c = new DotNetBlockConsequence(rule, 1, "foobar...", null);
 		}
 
 		[Test]
@@ -42,7 +42,7 @@ namespace org.drools.dotnet.tests.semantics
 		public void TestRuntimeError()
 		{
 			Rule rule = CreateRule();
-			Consequence c = new DotNetBlockConsequence(rule, 1, "Console.WriteLine(param1.ToString());");
+            Consequence c = new DotNetBlockConsequence(rule, 1, "Console.WriteLine(param1.ToString());", null);
 			Mock tupleMock = new DynamicMock(typeof(Tuple));
 			tupleMock.ExpectAndReturn("get", null, rule.getParameterDeclaration("param1"));
 			tupleMock.ExpectAndReturn("get", 0, rule.getParameterDeclaration("param2"));

@@ -22,7 +22,7 @@ namespace org.drools.semantics.dotnet
 				id++;
 				rbc.put("dotnet-consequence-id", id);
 
-				return new DotNetBlockConsequence(r, id, c.getText());
+                return new DotNetBlockConsequence(r, id, c.getText(),LineNumberInfo.Retrieve(c));
 			}
 			catch (Exception e)
 			{

@@ -12,19 +12,28 @@ namespace org.drools.semantics.dotnet
 	/// <summary>
 	/// Compiles .NET code
 	/// </summary>
-	internal class CodeCompiler
+	public class CodeCompiler
 	{
-		public static Assembly Compile(CodeCompileUnit code)
+        public static Assembly Compile(CodeCompileUnit code)
+        {
+            return Compile(code, true, false, false,null);
+        }
+
+		public static Assembly Compile
+            (CodeCompileUnit code, bool generateInMemory, 
+            bool includeDebug, bool generateExecutable, 
+            string outputAssembly)
 		{
 			CodeDomProvider provider = GetProvider();
 			CompilerParameters compilerParameters = new CompilerParameters();
-			compilerParameters.GenerateInMemory = true;
-			compilerParameters.IncludeDebugInformation = false;
-			compilerParameters.GenerateExecutable = false;
-
+			compilerParameters.GenerateInMemory = generateInMemory;
+			compilerParameters.IncludeDebugInformation = includeDebug;
+			compilerParameters.GenerateExecutable = generateExecutable;
+            if (!generateInMemory) compilerParameters.OutputAssembly = outputAssembly;
+            
+            
 			CompilerResults results = provider.CompileAssemblyFromDom(compilerParameters,
-				new CodeCompileUnit[1] { code });
-
+				new CodeCompileUnit[1] { code });            
 			if (results.Errors.Count > 0)
 			{
 				StringBuilder sb = new StringBuilder();

@@ -120,11 +120,11 @@ namespace org.drools.dotnet.rule
 			int count = 0;
 			foreach (string condition in rule.Conditions)
 			{
-				javaRule.addCondition(new DotNetCondition(javaRule, count++, condition));
+				javaRule.addCondition(new DotNetCondition(javaRule, count++, condition,null));
 			}
 
 			//Consequence
-			javaRule.setConsequence(new DotNetBlockConsequence(javaRule, 0, rule.Consequence));
+			javaRule.setConsequence(new DotNetBlockConsequence(javaRule, 0, rule.Consequence,null));
 
 			return javaRule;
 		}
