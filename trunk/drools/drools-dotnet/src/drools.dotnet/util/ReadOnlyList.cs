@@ -7,7 +7,7 @@ namespace org.drools.dotnet.util
 	/// A read-only list that wraps a java.util.List class.
 	/// </summary>
 	/// <typeparam name="T">The type of items in the list.</typeparam>
-	internal class ReadOnlyList<T> : IList<T>
+	public class ReadOnlyList<T> : IList<T>
 	{
 		private java.util.List _javaList;
 		private IList<T> _list = new List<T>();
