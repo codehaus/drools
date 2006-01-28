@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using org.drools.smf;
 using org.drools.io;
+using javalang = java.lang;
 
 namespace org.drools.semantics.dotnet
 {
     public class LineNumberInfo
     {
 
-        public const string NODELINESTART = "NODELINESTART";
+        public const string NODELINESTART = "NODLINESTART";
         public const string NODELINEEND = "NODELINEEND";
         public const string NODECOLUMNSTART = "NODECOLUMNSTART";
         public const string NODECOLUMNEND = "NODECOLUMNEND";
@@ -24,6 +25,8 @@ namespace org.drools.semantics.dotnet
         private LineNumberInfo() { }
         public LineNumberInfo(int startLine, int endLine, int startColumn, int endColumn, string fileName):this()
         {
+            //char[] chars = "NODELINESTART".ToCharArray();
+            //javalang.StringBuffer buf = new javalang.StringBuffer("NODELINESTART");            
             _startLine = startLine;
             _startColumn = startColumn;
             _endLine = endLine;
@@ -49,14 +52,17 @@ namespace org.drools.semantics.dotnet
                 if (!int.TryParse(c.getAttribute(NODECOLUMNEND), out columnEnd))
                     return null;
                 fileName = c.getAttribute(NODEFILENAME);
+                Uri uri = new Uri(fileName);
+                fileName = uri.Segments[uri.Segments.Length - 1];
                 if ( fileName== null)
-                    return null;                    
+                    return null;     
+               
             }
             catch (Exception ex) // for any exception, return null
             {
                 return null;
             }
-            return new LineNumberInfo(lineStart, lineEnd, columnStart, columnEnd, "escalation.csharp.drl.xml");
+            return new LineNumberInfo(lineStart, lineEnd, columnStart, columnEnd, fileName);
 
         }
 

@@ -34,7 +34,8 @@ namespace org.drools.dotnet.tests.semantics
 		public void TestCompilationError()
 		{
 			Rule rule = CreateRule();
-            Consequence c = new DotNetBlockConsequence(rule, 1, "foobar...", null);
+            DotNetBlockConsequence c = new DotNetBlockConsequence(rule, 1, "foobar...", null);
+            c.Compile();
 		}
 
 		[Test]

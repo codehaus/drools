@@ -38,8 +38,7 @@ namespace org.drools.semantics.dotnet
             _info = info;
 
 			_requiredParameters = (Declaration[])rule.getParameterDeclarations().toArray(
-				new Declaration[] { });
-			_assembly = Compile();
+				new Declaration[] { });			
 		}
 
 		public org.drools.rule.Declaration[] getRequiredTupleMembers()
@@ -51,6 +50,10 @@ namespace org.drools.semantics.dotnet
 		{
 			try
 			{
+                if (_assembly == null)
+                {
+                    _assembly = Compile();
+                }
 				List<object> parameters = new List<object>();
 				foreach (Declaration d in _requiredParameters)
 				{
@@ -89,7 +92,8 @@ namespace org.drools.semantics.dotnet
                 return CodeCompiler.Compile
                     (code, false, true, false, assemblyPrefix+"_"+_className+"_"+_methodName+".dll");
             }
-			return CodeCompiler.Compile(code);
+            else
+			    return CodeCompiler.Compile(code);
 		}
 
         public void ResetAssembly(Assembly assembly)

@@ -26,8 +26,7 @@ namespace org.drools.semantics.dotnet
 			_id = id;
 			_rule = rule;
 			_expression = expression;
-			_className = "Consequence_" + id;
-			_assembly = Compile();
+			_className = "Consequence_" + id;			
             _info = info;
 		}
 
@@ -40,6 +39,10 @@ namespace org.drools.semantics.dotnet
 		{
 			try
 			{
+                if (_assembly == null)
+                {
+                    _assembly = Compile();
+                }
 				List<object> parameters = new List<object>();
 				foreach (Declaration d in _rule.getParameterDeclarations().toArray(new Declaration[] { }))
 				{
@@ -79,8 +82,8 @@ namespace org.drools.semantics.dotnet
                 return CodeCompiler.Compile
                     (code, false, true, false, assemblyPrefix + "_" + _className + "_" + _methodName + ".dll");
             }
-			//Generate IL
-			return CodeCompiler.Compile(code);
+            else			
+			    return CodeCompiler.Compile(code);
 		}
 
         public void ResetAssembly(Assembly assembly)
