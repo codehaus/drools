@@ -34,12 +34,12 @@ namespace org.drools.semantics.dotnet
 			_importEntrySet.add(ie);
 		}
 
-		public java.util.Set getImportEntries()
+		public Set getImportEntries()
 		{
 			return _importEntrySet;
 		}
 
-		public java.util.Set getImports()
+		public Set getImports()
 		{
 			if (!_importEntrySet.isEmpty())
 			{
@@ -123,7 +123,7 @@ namespace org.drools.semantics.dotnet
 			return type;
 		}
 
-		public java.lang.Class importClass(java.lang.ClassLoader cl, string className)
+		public Class importClass(ClassLoader cl, string className)
 		{
 			Type type = importType(className);
 			Class clazz = null;
