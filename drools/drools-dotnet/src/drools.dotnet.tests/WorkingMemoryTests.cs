@@ -8,23 +8,31 @@ namespace org.drools.dotnet.tests
 	public class WorkingMemoryTests
 	{
 		[Test]
+		[Ignore("Need to implement this unit test.")]
 		public void TestFireAllRules()
 		{
+			throw new NotImplementedException();
 		}
 
 		[Test]
+		[Ignore("Need to implement this unit test.")]
 		public void TestApplicationData()
 		{
+			throw new NotImplementedException();
 		}
 
 		[Test]
+		[Ignore("Need to implement this unit test.")]
 		public void TestGetObjects()
 		{
+			throw new NotImplementedException();
 		}
 
 		[Test]
+		[Ignore("Need to implement this unit test.")]
 		public void TestClearAgenda()
 		{
+			throw new NotImplementedException();
 		}
 
 		[Test]
@@ -86,20 +94,20 @@ namespace org.drools.dotnet.tests
 			Assert.IsFalse(wm.ContainsObject(o));
 			Assert.AreEqual(0, wm.GetObjects<TestClass>().Count);
 		}
-	}
 
-	//Test class
-	public class TestClass
-	{
-		public TestClass(string name)
+		//Test class
+		public class TestClass
 		{
-			_name = name;
-		}
-		private string _name;
-		public string Name
-		{
-			get{ return _name; }
-			set{ _name = value; }
+			public TestClass(string name)
+			{
+				_name = name;
+			}
+			private string _name;
+			public string Name
+			{
+				get { return _name; }
+				set { _name = value; }
+			}
 		}
 	}
 }

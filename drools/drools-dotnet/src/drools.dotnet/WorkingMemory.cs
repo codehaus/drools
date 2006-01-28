@@ -25,21 +25,6 @@ namespace org.drools.dotnet
 		}
 
 		/// <summary>
-		/// Occurs when an object is asserted to working memory
-		/// </summary>
-		public event EventHandler<ObjectAssertedEventArgs> ObjectAsserted;
-
-		/// <summary>
-		/// Occurs when an object is modified in working memory
-		/// </summary>
-		public event EventHandler<ObjectModifiedEventArgs> ObjectModified;
-
-		/// <summary>
-		/// Occurs when an object is retracted from working memory
-		/// </summary>
-		public event EventHandler<ObjectRetractedEventArgs> ObjectRetracted;
-
-		/// <summary>
 		/// Asserts an object into working memory
 		/// </summary>
 		/// <param name="o">Object to assert</param>
@@ -47,7 +32,6 @@ namespace org.drools.dotnet
 		{
 			_javaWorkingMemory.assertObject(o);
 		}
-
 
 		/// <summary>
 		/// Clear the agenda
@@ -91,8 +75,13 @@ namespace org.drools.dotnet
 		/// </summary>
 		public IDictionary<string, object> ApplicationData
 		{
-			get{ return new ReadOnlyDictionary<string, object>(
-				_javaWorkingMemory.getApplicationDataMap()); }
+			get
+			{
+				throw new NotImplementedException(
+					"The .NET semantics module does not support application data.");
+				//return new ReadOnlyDictionary<string, object>(
+					//_javaWorkingMemory.getApplicationDataMap());
+			}
 		}
 
 		/// <summary>
@@ -102,7 +91,9 @@ namespace org.drools.dotnet
 		/// <param name="value">Value to set the item to</param>
 		public void SetApplicationData(string identifier, object value)
 		{
-			_javaWorkingMemory.setApplicationData(identifier, value);
+			throw new NotImplementedException(
+				"The .NET semantics module does not support application data.");
+			//_javaWorkingMemory.setApplicationData(identifier, value);
 		}
 
 		/// <summary>
@@ -152,7 +143,64 @@ namespace org.drools.dotnet
 
 		//TODO: setAsyncExceptionHandler
 
+		#region Events
+		/// <summary>
+		/// Occurs when an activation is cancelled.
+		/// </summary>
+		public event EventHandler<ActivationCancelledEventArgs> ActivationCancelled;
+
+		/// <summary>
+		/// Occurs when an activation is created.
+		/// </summary>
+		public event EventHandler<ActivationCreatedEventArgs> ActivationCreated;
+
+		/// <summary>
+		/// Occurs when an activation is fired.
+		/// </summary>
+		public event EventHandler<ActivationFiredEventArgs> ActivationFired;
+
+		/// <summary>
+		/// Occurs when an condition is tested.
+		/// </summary>
+		public event EventHandler<ConditionTestedEventArgs> ConditionTested;
+
+		/// <summary>
+		/// Occurs when an object is asserted to working memory
+		/// </summary>
+		public event EventHandler<ObjectAssertedEventArgs> ObjectAsserted;
+
+		/// <summary>
+		/// Occurs when an object is modified in working memory
+		/// </summary>
+		public event EventHandler<ObjectModifiedEventArgs> ObjectModified;
+
+		/// <summary>
+		/// Occurs when an object is retracted from working memory
+		/// </summary>
+		public event EventHandler<ObjectRetractedEventArgs> ObjectRetracted;
+		#endregion
+
 		# region Event Callouts
+		internal void OnActivationCancelled(object sender, ActivationCancelledEventArgs e)
+		{
+			if (ActivationCancelled != null) ActivationCancelled(sender, e);
+		}
+
+		internal void OnActivationCreated(object sender, ActivationCreatedEventArgs e)
+		{
+			if (ActivationCreated != null) ActivationCreated(sender, e);
+		}
+
+		internal void OnActivationFired(object sender, ActivationFiredEventArgs e)
+		{
+			if (ActivationFired != null) ActivationFired(sender, e);
+		}
+
+		internal void OnConditionTested(object sender, ConditionTestedEventArgs e)
+		{
+			if (ConditionTested != null) ConditionTested(sender, e);
+		}
+
 		internal void OnObjectAsserted(object sender, ObjectAssertedEventArgs e)
 		{
 			if (ObjectAsserted != null) ObjectAsserted(sender, e);

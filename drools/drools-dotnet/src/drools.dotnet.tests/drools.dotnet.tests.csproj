@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="io\RuleBaseLoaderTests.cs" />
+    <Compile Include="RuleBaseBuilderTests.cs" />
+    <Compile Include="rule\RuleTests.cs" />
+    <Compile Include="rule\RuleSetTests.cs" />
     <Compile Include="RuleBaseTests.cs" />
     <Compile Include="semantics\DotNetBlockConsequenceTests.cs" />
     <Compile Include="semantics\DotNetConditionTests.cs" />
