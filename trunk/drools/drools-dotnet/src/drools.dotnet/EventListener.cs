@@ -17,22 +17,26 @@ namespace org.drools.dotnet
 
 		public void activationCancelled(ActivationCancelledEvent ace)
 		{
-			//TODO: Implement these events
+			_workingMemory.OnActivationCancelled(_workingMemory,
+				new ActivationCancelledEventArgs());
 		}
 
 		public void activationCreated(ActivationCreatedEvent ace)
 		{
-			//TODO: Implement these events
+			_workingMemory.OnActivationCreated(_workingMemory,
+				new ActivationCreatedEventArgs());
 		}
 
 		public void activationFired(ActivationFiredEvent afe)
 		{
-			//TODO: Implement these events
+			_workingMemory.OnActivationFired(_workingMemory,
+				new ActivationFiredEventArgs());
 		}
 
 		public void conditionTested(ConditionTestedEvent cte)
 		{
-			//TODO: Implement these events
+			_workingMemory.OnConditionTested(_workingMemory,
+				new ConditionTestedEventArgs());
 		}
 
 		public void objectAsserted(ObjectAssertedEvent oae)

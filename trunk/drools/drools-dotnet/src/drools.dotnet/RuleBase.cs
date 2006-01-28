@@ -32,7 +32,7 @@ namespace org.drools.dotnet
 		/// <summary>
 		/// a READ-ONLY list of all the RuleSets that make up the RuleBase
 		/// </summary>
-		public IList<org.drools.rule.RuleSet> RuleSets
+		public ICollection<org.drools.rule.RuleSet> RuleSets
 		{
 			get{ return new ReadOnlyList<org.drools.rule.RuleSet>(_javaRuleBase.getRuleSets()); }
 		}

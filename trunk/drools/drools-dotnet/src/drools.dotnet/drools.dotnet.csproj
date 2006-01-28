@@ -42,16 +42,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventListener.cs" />
+    <Compile Include="events\ActivationCancelledEventArgs.cs" />
+    <Compile Include="events\ActivationCreatedEventArgs.cs" />
+    <Compile Include="events\ActivationFiredEventArgs.cs" />
+    <Compile Include="events\ConditionTestedEventArgs.cs" />
     <Compile Include="events\ObjectAssertedEventArgs.cs" />
     <Compile Include="events\ObjectModifiedEventArgs.cs" />
     <Compile Include="events\ObjectRetractedEventArgs.cs" />
     <Compile Include="io\DecisionTableLoader.cs" />
+    <Compile Include="RuleBaseBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rule\ApplicationDataDeclaration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rule\ParameterDeclaration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rule\Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rule\RuleSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="util\ReadOnlyList.cs" />
     <Compile Include="util\ReadyOnlyDictionary.cs" />
     <Compile Include="RuleBase.cs" />
     <Compile Include="io\RuleBaseLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkingMemory.cs" />
+    <Compile Include="WorkingMemoryDebugger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\drools.semantics.dotnet\drools.semantics.dotnet.csproj">
+      <Project>{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}</Project>
+      <Name>drools.semantics.dotnet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
