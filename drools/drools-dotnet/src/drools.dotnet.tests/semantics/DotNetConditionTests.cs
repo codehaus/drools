@@ -44,7 +44,9 @@ namespace org.drools.dotnet.tests.semantics
 		public void TestCompilationError()
 		{
 			Rule rule = CreateRule();
-            Condition c = new DotNetCondition(rule, 1, "foobar...", null);
+            DotNetCondition c = new DotNetCondition(rule, 1, "foobar...", null);
+            c.Compile();
+
 		}
 
 		[Test]

@@ -126,7 +126,7 @@ namespace org.drools.dotnet.io
 					urls[count] = new URL(uri.AbsoluteUri);
 				}
 				count++;
-			}
+			}            
 			return new RuleBase(org.drools.io.RuleBaseLoader.loadFromUrl(urls, resolver));
 		}
 
@@ -272,6 +272,11 @@ namespace org.drools.dotnet.io
             {
                 assembly = RuleBaseLoader.createAssembly(ruleBase);
             }
+            // Set the assembly on the rulebase.
+            Hashtable parameters = new Hashtable();
+            parameters["RuleSet"] = ruleBase.RuleSets;
+            parameters["Assembly"] = assembly;
+            DotNetRuleBaseIterator.Action(DotNetRuleBaseActions.SETASSEMBLY, parameters);
             return assembly;
 
         }
@@ -301,7 +306,7 @@ namespace org.drools.dotnet.io
             {
                 compileParams["RuleSet"] = ruleBase.RuleSets;
                 assemblies
-                    = DotNetRuleBaseIterator.Action(DotNetRuleBaseActions.COMPILE, compileParams);
+                    = DotNetRuleBaseIterator.Action(DotNetRuleBaseActions.COMPILE, compileParams) as System.Collections.ArrayList;
             }
             return assemblies;
         }

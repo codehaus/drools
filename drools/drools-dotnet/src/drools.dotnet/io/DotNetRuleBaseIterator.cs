@@ -13,7 +13,7 @@ namespace org.drools.semantics.dotnet
     public enum DotNetRuleBaseActions
     {
         COMPILE,
-        SETSCRIPT
+        SETASSEMBLY
     }
     public class DotNetRuleBaseIterator
     {
@@ -24,7 +24,7 @@ namespace org.drools.semantics.dotnet
         /// <param name="action"></param>
         /// <returns>An array list that contains additional calculated values. The values depend on the action.
         /// If action is 'Compile' the array list is a list of assembly names</returns>
-        public static System.Collections.ArrayList Action(DotNetRuleBaseActions action, 
+        public static object Action(DotNetRuleBaseActions action, 
             System.Collections.Hashtable parameters)
         {
             ReadOnlyList<RuleSet> rsarray = parameters["RuleSet"] as ReadOnlyList<RuleSet>;            
@@ -47,7 +47,7 @@ namespace org.drools.semantics.dotnet
 
                                 }
                                 break;
-                            case DotNetRuleBaseActions.SETSCRIPT:
+                            case DotNetRuleBaseActions.SETASSEMBLY:
                                 {
 
                                     cond.ResetAssembly(parameters["Assembly"] as Assembly);
@@ -67,7 +67,7 @@ namespace org.drools.semantics.dotnet
                                     assemblyList.Add(assembly.ManifestModule.Name);
                                 }
                                 break;
-                            case DotNetRuleBaseActions.SETSCRIPT:
+                            case DotNetRuleBaseActions.SETASSEMBLY:
                                 {
                                     conseq.ResetAssembly(parameters["Assembly"] as Assembly);
                                 }
