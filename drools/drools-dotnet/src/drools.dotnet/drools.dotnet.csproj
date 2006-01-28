@@ -36,35 +36,30 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ikvm\IKVM.GNU.Classpath.dll</HintPath>
     </Reference>
+    <Reference Include="ILMerge, Version=2.0.0.51214, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\ILMerge\ILMerge.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventListener.cs" />
     <Compile Include="events\ActivationCancelledEventArgs.cs" />
     <Compile Include="events\ActivationCreatedEventArgs.cs" />
     <Compile Include="events\ActivationFiredEventArgs.cs" />
     <Compile Include="events\ConditionTestedEventArgs.cs" />
+    <Compile Include="EventListener.cs" />
     <Compile Include="events\ObjectAssertedEventArgs.cs" />
     <Compile Include="events\ObjectModifiedEventArgs.cs" />
     <Compile Include="events\ObjectRetractedEventArgs.cs" />
     <Compile Include="io\DecisionTableLoader.cs" />
-    <Compile Include="RuleBaseBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="rule\ApplicationDataDeclaration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="rule\ParameterDeclaration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="rule\Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="rule\RuleSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="io\DotNetRuleBaseIterator.cs" />
+    <Compile Include="RuleBaseBuilder.cs" />
+    <Compile Include="rule\ApplicationDataDeclaration.cs" />
+    <Compile Include="rule\ParameterDeclaration.cs" />
+    <Compile Include="rule\Rule.cs" />
+    <Compile Include="rule\RuleSet.cs" />
     <Compile Include="util\ReadOnlyList.cs" />
     <Compile Include="util\ReadyOnlyDictionary.cs" />
     <Compile Include="RuleBase.cs" />
