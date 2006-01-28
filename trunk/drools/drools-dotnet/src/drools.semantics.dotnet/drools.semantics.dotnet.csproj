@@ -38,6 +38,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeCompilationException.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="DotNetImporter.cs" />
     <Compile Include="DotNetObjectType.cs" />
     <Compile Include="DotNetObjectTypeFactory.cs" />
+    <Compile Include="LineNumberInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
