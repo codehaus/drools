@@ -20,13 +20,14 @@ namespace org.drools.semantics.dotnet
 			{
 				CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
 					typeof(bool));
-				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
-                if (info != null && info.FileName!= null && info.StartLine!= -1)
-                {
-                    method.LinePragma = new CodeLinePragma(info.FileName, info.StartLine);
-                }
+				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];                
 				CodeStatement returnStatement = new CodeMethodReturnStatement(
 					new CodeSnippetExpression(expression));
+                if (info != null && info.FileName != null && info.StartLine != -1)
+                {
+                    int count = GetCountOfStartingLineFeeds(expression);
+                    returnStatement.LinePragma = new CodeLinePragma(info.FileName, info.StartLine+count);
+                }                
 				method.Statements.Add(returnStatement);
 
 				code = AddFunctions(code, functions);
@@ -51,12 +52,17 @@ namespace org.drools.semantics.dotnet
 				CodeCompileUnit code = GenerateClassCode(namespaceName, className, methodName, parameters,
 					typeof(void));
 				CodeMemberMethod method = (CodeMemberMethod)code.Namespaces[0].Types[0].Members[0];
-                if (info != null && info.FileName != null && info.StartLine != -1)
+                CodeSnippetExpression expr = new CodeSnippetExpression(expression);
+                method.Statements.Add(expr); 
+                if (info != null && info.FileName != null && info.StartLine != -1)                    
                 {
-                    method.LinePragma = new CodeLinePragma(info.FileName, info.StartLine);
-                }
-                method.Statements.Add(new CodeSnippetExpression(expression));
-
+                    if (method.Statements.Count > 0)
+                    {
+                        //int count = GetCountOfStartingLineFeeds(expression);
+                        method.Statements[0].LinePragma
+                            = new CodeLinePragma(info.FileName, info.StartLine);
+                    }                    
+                }                                
 				code = AddFunctions(code, functions);
 				code = AddReferencedAssemblies(code);
 				code = AddImports(code, importer);
@@ -69,6 +75,26 @@ namespace org.drools.semantics.dotnet
 					expression + "]", e);
 			}
 		}
+
+        private static int GetCountOfStartingLineFeeds(string text)
+        {
+            int count = 0;
+            int loopIndex = text.IndexOf("\n");
+            String loopText = text;
+            while (loopIndex != -1)
+            {
+                String text1 = loopText.Substring(0, loopIndex);
+                if (text1.Trim().Length == 0)
+                {
+                    count++;
+                }
+                else
+                    break;
+                loopText = loopText.Substring(loopIndex + 1);
+                loopIndex = loopText.IndexOf("\n");
+            }
+            return count;
+        }
 
 		private static CodeCompileUnit GenerateClassCode(string namespaceName, string className,
 			string methodName, Declaration[] parameters, Type returnType)
@@ -110,6 +136,11 @@ namespace org.drools.semantics.dotnet
 			if (functions != null)
 			{
 				CodeSnippetTypeMember functionMember = new CodeSnippetTypeMember(functions.getText());
+                if (functions.LineNumberInfo != null)
+                {
+                    functionMember.LinePragma = new CodeLinePragma
+                        (functions.LineNumberInfo.FileName, functions.LineNumberInfo.StartLine);
+                }
 				code.Namespaces[0].Types[0].Members.Add(functionMember);
 			}
 			return code;
