@@ -10,10 +10,12 @@ namespace org.drools.semantics.dotnet
 	public class DotNetFunctions : Functions
 	{
 		private string _text;
+        private LineNumberInfo _info;
 
-		public DotNetFunctions(String text)
+		public DotNetFunctions(String text,LineNumberInfo info)
 		{
 			_text = text;
+            _info = info;
 		}
 
 		public string getSemantic()
@@ -25,6 +27,10 @@ namespace org.drools.semantics.dotnet
 		{
 			return _text;
 		}
+        public LineNumberInfo LineNumberInfo
+        {
+            get { return _info; }
+        }
 
 		public override string ToString()
 		{

@@ -13,7 +13,7 @@ namespace org.drools.dotnet.tests.semantics
 		[Test]
 		public void TestClass()
 		{
-			Functions function = new DotNetFunctions("test function text");
+			Functions function = new DotNetFunctions("test function text",null);
 			Assert.AreEqual("test function text", function.getText());
 			Assert.AreEqual("dotnet", function.getSemantic());
 		}

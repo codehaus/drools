@@ -14,7 +14,7 @@ namespace org.drools.semantics.dotnet
 		{
 			try
 			{
-				return new DotNetFunctions(c.getText());
+                return new DotNetFunctions(c.getText(), LineNumberInfo.Retrieve(c));
 			}
 			catch (Exception e)
 			{

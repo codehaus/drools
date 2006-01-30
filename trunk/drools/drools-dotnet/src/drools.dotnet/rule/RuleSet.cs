@@ -79,7 +79,7 @@ namespace org.drools.dotnet.rule
 				{
 					functionsText.Append(function);
 				}
-				ruleset.addFunctions(new DotNetFunctions(functionsText.ToString()));
+				ruleset.addFunctions(new DotNetFunctions(functionsText.ToString(), null));
 				
 
 				//Rules
