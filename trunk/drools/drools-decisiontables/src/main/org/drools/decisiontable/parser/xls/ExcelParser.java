@@ -55,11 +55,18 @@ import org.apache.poi.hssf.eventusermodel.HSSFRequest;
 import org.apache.poi.hssf.record.BOFRecord;
 import org.apache.poi.hssf.record.BoolErrRecord;
 import org.apache.poi.hssf.record.BoundSheetRecord;
+import org.apache.poi.hssf.record.FormulaRecord;
 import org.apache.poi.hssf.record.LabelSSTRecord;
 import org.apache.poi.hssf.record.NumberRecord;
 import org.apache.poi.hssf.record.Record;
 import org.apache.poi.hssf.record.RowRecord;
 import org.apache.poi.hssf.record.SSTRecord;
+import org.apache.poi.hssf.record.formula.Ptg;
+import org.apache.poi.hssf.record.formula.Ref3DPtg;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.drools.decisiontable.parser.DecisionTableParseException;
 import org.drools.decisiontable.parser.DecisionTableParser;
@@ -68,6 +75,7 @@ import org.drools.decisiontable.parser.SheetListener;
 /**
  * @author <a href="mailto:shaun.addison@gmail.com"> Shaun Addison </a><a
  *         href="mailto:michael.neale@gmail.com"> Michael Neale </a>
+ *         Forumula handling by Pascal Chanteux
  * 
  * Parse an excel spreadsheet using the event model of POI. TODO: can not
  * resolve date format issues as yet.
@@ -75,7 +83,8 @@ import org.drools.decisiontable.parser.SheetListener;
  */
 public class ExcelParser
     implements
-    HSSFListener, DecisionTableParser
+    DecisionTableParser,
+    HSSFListener
 {
 
     public static final String  DEFAULT_RULESHEET_NAME = "Decision Tables";
@@ -96,6 +105,9 @@ public class ExcelParser
 
     private boolean             _useFirstSheet         = false;
 
+    private HSSFWorkbook        _workbook                     = null;
+    
+    
     /**
      * Define a map of sheet name to listner handlers.
      * 
@@ -190,6 +202,42 @@ public class ExcelParser
         case BoolErrRecord.sid :
             handleBool( record );
             break;
+        
+        case FormulaRecord.sid :            
+            handleFormula( record );
+            break;
+            
+        default :          
+            break;
+        }
+        
+        
+        
+    }
+
+
+    private void handleFormula(Record record)
+    {
+            
+        FormulaRecord formulaRec = (FormulaRecord) record;
+            
+        
+        Ptg ptg = formulaRec.peekExpressionToken();
+        
+        
+        if (ptg instanceof Ref3DPtg)
+        {
+            
+            Ref3DPtg ptg3D = (Ref3DPtg)ptg;
+            
+            HSSFSheet sheet = _workbook.getSheetAt(ptg3D.getExternSheetIndex() + 1 );      
+            HSSFRow row     = sheet.getRow(ptg3D.getRow());  
+            HSSFCell cell   = row.getCell(ptg3D.getColumn());
+            
+            _currentSheetListener.newCell( formulaRec.getRow( ),
+                    formulaRec.getColumn( ),
+                                       "" + cell.getStringCellValue() );
+                    
         }
     }
 
@@ -251,10 +299,15 @@ public class ExcelParser
     public void parseFile(InputStream inStream)
     {
         InputStream din = null;
-
+        POIFSFileSystem poifs=null;
+        
         try
         {
-            POIFSFileSystem poifs = new POIFSFileSystem( inStream );
+            poifs = new POIFSFileSystem( inStream );
+            
+            // Get the workbook for further references
+            _workbook = new HSSFWorkbook(poifs);           
+            
             // get the Workbook (excel part) stream in a InputStream
             din = poifs.createDocumentInputStream( WORKBOOK );
             HSSFRequest req = new HSSFRequest( );
