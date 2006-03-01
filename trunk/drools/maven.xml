@@ -477,11 +477,13 @@
         <arg line="${maven.ssh.args} ${maven.username}@${pom.siteAddress} 'cd ${pom.siteDirectory} &amp;&amp; tar zxvf drools-${pom.currentVersion}-javadoc.tar.gz &amp;&amp; rm -f drools-LATEST &amp;&amp; ln -s drools-${pom.currentVersion} drools-LATEST'"/>
       </exec>
 
-      <!-- deploy project jars -->
+      <!-- deploy project jars 
       <j:set scope="parent" var="maven.test.skip" value="true"/>
       <j:set var="goal" value="jar:deploy"/>
       <attainGoal name="multiproject:goal"/>
       <j:set var="maven.test.skip" value="false"/>
+	-->
+
 
       <!-- create and deploy a src jar -->
       <attainGoal name="drools:src-jar-all" />
