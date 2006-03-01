@@ -25,7 +25,6 @@ public class JavaSemanticCompileError extends RuntimeException {
                           buf );
         
         this.summaryMessage = buf.toString();
-        System.err.println( this.summaryMessage );
         
     }
     
@@ -40,6 +39,16 @@ public class JavaSemanticCompileError extends RuntimeException {
             buf.append(errorSummary + " \n");
         }
     }
+
+    /**
+     * This will return information about the errors that the semantic compiler returned. 
+     * More detail can be obtained by inspecting getErrors() array of CompilationProblems.
+     */
+    public String getMessage() {
+        return this.summaryMessage;
+    }
+    
+    
     
 
 }
