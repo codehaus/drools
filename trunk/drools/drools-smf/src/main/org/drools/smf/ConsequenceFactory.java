@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ConsequenceFactory.java,v 1.6 2004-12-14 21:00:29 mproctor Exp $
+ * $Id: ConsequenceFactory.java,v 1.7 2006-03-04 02:25:00 michaelneale Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,13 @@ package org.drools.smf;
  *
  */
 
+import java.io.Serializable;
+
 import org.drools.rule.Rule;
 import org.drools.spi.Consequence;
 import org.drools.spi.RuleBaseContext;
 
-public interface ConsequenceFactory
+public interface ConsequenceFactory extends Serializable
 {
     Consequence newConsequence(Rule rule,
                                RuleBaseContext context,
