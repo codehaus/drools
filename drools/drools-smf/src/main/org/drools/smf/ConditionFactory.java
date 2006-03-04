@@ -1,7 +1,7 @@
 package org.drools.smf;
 
 /*
- * $Id: ConditionFactory.java,v 1.9 2005-05-04 16:58:40 memelet Exp $
+ * $Id: ConditionFactory.java,v 1.10 2006-03-04 02:25:00 michaelneale Exp $
  *
  * Copyright 2002 (C) The Werken Company. All Rights Reserved.
  *
@@ -41,11 +41,13 @@ package org.drools.smf;
  *
  */
 
+import java.io.Serializable;
+
 import org.drools.rule.Rule;
 import org.drools.spi.Condition;
 import org.drools.spi.RuleBaseContext;
 
-public interface ConditionFactory
+public interface ConditionFactory extends Serializable
 {
     Condition[] newCondition(Rule rule,
                              RuleBaseContext context,
