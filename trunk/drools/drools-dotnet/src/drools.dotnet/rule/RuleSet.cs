@@ -62,6 +62,7 @@ namespace org.drools.dotnet.rule
 			{
 				org.drools.rule.RuleSet ruleset = new org.drools.rule.RuleSet(_name);
 				ruleset.setImporter(new DotNetImporter());
+                
 				ruleset.setDocumentation(_documentation);
 
 				//TODO: Readd this when the semantics module supports it.
@@ -103,7 +104,7 @@ namespace org.drools.dotnet.rule
 			javaRule.setSalience(rule.Salience);
 
 			//The order these values are set in is VERY important!
-			DotNetImporter importer = new DotNetImporter();
+			DotNetImporter importer = ruleset.getImporter() as DotNetImporter;
 			foreach(string import in _imports)
 			{
 				importer.addImport(new org.drools.semantics.@base.BaseImportEntry(import));
