@@ -48,6 +48,7 @@ public class BasicRuleMetadata implements RuleMetadata {
     private Integer salience;
     private Long duration;
     private Boolean noLoop;
+    private String xorGroup;
 
     public String getName() {
         return name;
@@ -72,6 +73,11 @@ public class BasicRuleMetadata implements RuleMetadata {
     public void setSalience(Integer salience) {
         this.salience = salience;
     }
+    
+    public void setXorGroup(String xorGroup)
+    {
+        this.xorGroup = xorGroup;
+    }
 
     public Long getDuration() {
         return duration;
@@ -87,5 +93,9 @@ public class BasicRuleMetadata implements RuleMetadata {
 
     public void setNoLoop(Boolean noLoop) {
         this.noLoop = noLoop;
+    }
+
+    public String getXorGroup() {
+        return xorGroup;
     }
 }

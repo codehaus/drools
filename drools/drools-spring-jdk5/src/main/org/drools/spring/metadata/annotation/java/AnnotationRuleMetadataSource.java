@@ -70,7 +70,8 @@ public class AnnotationRuleMetadataSource implements RuleMetadataSource {
                 && ruleAnnotation.documentation().length() == 0
                 && ruleAnnotation.salience() == Integer.MIN_VALUE
                 && ruleAnnotation.duration() == Long.MIN_VALUE
-                && ruleAnnotation.loop() == Rule.Loop.DEFAULT;
+                && ruleAnnotation.loop() == Rule.Loop.DEFAULT
+                && ruleAnnotation.xorGroup().length() == 0;
     }
 
     private RuleMetadata createRuleMetadataFromDefaultValue(Rule ruleAnnotation) {
@@ -102,6 +103,10 @@ public class AnnotationRuleMetadataSource implements RuleMetadataSource {
         }
         if (ruleAnnotation.loop() != Rule.Loop.DEFAULT) {
             metadata.setNoLoop(ruleAnnotation.loop().getValue());
+        }
+        if (ruleAnnotation.xorGroup().length() > 0)
+        {
+            metadata.setXorGroup(ruleAnnotation.xorGroup());
         }
 
         return metadata;

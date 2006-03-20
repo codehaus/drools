@@ -58,6 +58,7 @@ public @interface Rule {
     String documentation() default "";
     int salience() default Integer.MIN_VALUE;
     long duration() default Long.MIN_VALUE;
+    String xorGroup() default "";
 
     enum Loop {
         ALLOW(true), DISALLOW(false), DEFAULT(null);
