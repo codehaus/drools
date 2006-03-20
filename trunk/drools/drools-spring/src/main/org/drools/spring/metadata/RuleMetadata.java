@@ -48,5 +48,6 @@ public interface RuleMetadata {
     Integer getSalience();
     Long getDuration();
     Boolean getNoLoop();
+    String getXorGroup();
 
 }

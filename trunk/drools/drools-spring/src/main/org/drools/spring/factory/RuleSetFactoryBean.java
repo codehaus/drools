@@ -151,6 +151,10 @@ public class RuleSetFactoryBean implements FactoryBean, BeanNameAware, Initializ
         if (ruleMetadata.getNoLoop() != null) {
             rule.setNoLoop(ruleMetadata.getNoLoop().booleanValue());
         }
+        if (ruleMetadata.getXorGroup() != null)
+        {
+            rule.setXorGroup(ruleMetadata.getXorGroup());
+        }
     }
 
     public Object getObject() throws Exception {

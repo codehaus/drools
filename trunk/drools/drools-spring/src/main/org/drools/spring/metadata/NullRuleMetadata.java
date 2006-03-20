@@ -62,4 +62,8 @@ public class NullRuleMetadata implements RuleMetadata {
     public Boolean getNoLoop() {
         return null;
     }
+
+    public String getXorGroup() {
+        return null;
+    }
 }
