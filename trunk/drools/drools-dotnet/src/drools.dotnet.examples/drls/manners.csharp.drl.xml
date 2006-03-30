@@ -154,7 +154,8 @@ employs a depth-first search approach to the problem.
     <dotnet:consequence>
       <![CDATA[
            System.Console.WriteLine("FIRE: we are done");
-           System.Collections.Generic.IList<Seat> list = new System.Collections.Generic.List<Seat>();
+           //System.Collections.Generic.IList<Seat> list = new System.Collections.Generic.List<Seat>();		// Only works for 2.0 .NET framework version of Drools.NET
+           System.Collections.IList list = new System.Collections.ArrayList();    // This works for both 1.1 and 2.0 .NET framework verion of Drools.NET
 
            while(seating != null) {
             Seat seat = new Seat(seating.Seat1, seating.Guest1.Name);

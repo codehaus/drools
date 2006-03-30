@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System.Text;
 using org.drools;
 using java.util;
@@ -27,7 +31,11 @@ namespace org.drools.semantics.dotnet
         public static object Action(DotNetRuleBaseActions action, 
             System.Collections.Hashtable parameters)
         {
-            ReadOnlyList<RuleSet> rsarray = parameters["RuleSet"] as ReadOnlyList<RuleSet>;            
+#if FRAMEWORK11
+			ReadOnlyList rsarray = parameters["RuleSet"] as ReadOnlyList;            
+#else
+			ReadOnlyList<RuleSet> rsarray = parameters["RuleSet"] as ReadOnlyList<RuleSet>;            
+#endif
             System.Collections.ArrayList assemblyList = new System.Collections.ArrayList();
             System.Collections.IEnumerator rsArrayEnum = rsarray.GetEnumerator();
             while(rsArrayEnum.MoveNext())

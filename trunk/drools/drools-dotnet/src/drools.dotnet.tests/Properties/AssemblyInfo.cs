@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Drools .NET Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Drools.NET Tests for .NET 2.0")]
+[assembly: AssemblyDescription("This assembly is designed to work with the 2.0 version of the .NET framework.  If you are developing using .NET 1.1, you should use the Drools.NET binaries or source designed to work with .NET 1.1.  For more information, visit http://drools.codehaus.org/DotNet.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Blue Cypress, Inc.")]
 [assembly: AssemblyProduct("")]

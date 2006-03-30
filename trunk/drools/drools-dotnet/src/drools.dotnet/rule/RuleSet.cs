@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System.Text;
 using org.drools.semantics.dotnet;
 
@@ -9,11 +13,18 @@ namespace org.drools.dotnet.rule
 	{
 		private string _name;
 		private string _documentation;
+#if FRAMEWORK11
+		private IList _rules = new ArrayList();
+		private IList _applicationDataDeclarations = new ArrayList();
+		private IList _functions = new ArrayList();
+		private IList _imports = new ArrayList();
+#else
 		private ICollection<Rule> _rules = new List<Rule>();
 		private ICollection<ApplicationDataDeclaration> _applicationDataDeclarations = 
 			new List<ApplicationDataDeclaration>();
 		private ICollection<string> _functions = new List<string>();
 		private ICollection<string> _imports = new List<string>();
+#endif
 
 		public RuleSet(string name)
 		{
@@ -31,17 +42,29 @@ namespace org.drools.dotnet.rule
 			set { _documentation = value; }
 		}
 
+#if FRAMEWORK11
+		public IList Functions
+#else
 		public ICollection<String> Functions
+#endif
 		{
 			get { return _functions; }
 		}
 
+#if FRAMEWORK11
+		public IList Imports
+#else
 		public ICollection<String> Imports
+#endif
 		{
 			get { return _imports; }
 		}
 
+#if FRAMEWORK11
+		public IList ApplicationDataDeclarations
+#else
 		public ICollection<ApplicationDataDeclaration> ApplicationDataDeclarations
+#endif
 		{
 			get
 			{
@@ -51,7 +74,11 @@ namespace org.drools.dotnet.rule
 			}
 		}
 
+#if FRAMEWORK11
+		public IList Rules
+#else
 		public ICollection<Rule> Rules
+#endif
 		{
 			get { return _rules; }
 		}

@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using org.drools.dotnet.rule;
 
 namespace org.drools.dotnet.events
@@ -29,7 +33,11 @@ namespace org.drools.dotnet.events
 			get { throw new NotImplementedException(); }
 		}
 
+#if FRAMEWORK11
+		public IDictionary Parameters
+#else
 		public IDictionary<string, object> Parameters
+#endif
 		{
 			get { throw new NotImplementedException(); }
 		}

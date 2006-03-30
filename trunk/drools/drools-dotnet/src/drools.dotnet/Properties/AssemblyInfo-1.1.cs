@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Drools .NET Examples for .NET 2.0")]
-[assembly: AssemblyDescription("This assembly is designed to work with the 2.0 version of the .NET framework.  If you are developing using .NET 1.1, you should use the Drools.NET binaries or source designed to work with .NET 1.1.  For more information, visit http://drools.codehaus.org/DotNet.")]
+[assembly: AssemblyTitle("Drools.NET Wrappers for .NET 1.1")]
+[assembly: AssemblyDescription("This assembly is designed to work with the 1.1 version of the .NET framework.  If you are developing using .NET 2.0, you should use the Drools.NET binaries or source designed to work with .NET 2.0.  For more information, visit http://drools.codehaus.org/DotNet.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Blue Cypress, Inc.")]
 [assembly: AssemblyProduct("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("525fc802-ab33-436d-9858-60d824e87ef7")]
+[assembly: Guid("348dd32c-11a0-469a-b776-02ec7e4927e7")]
 
 // Version information for an assembly consists of the following four values:
 //

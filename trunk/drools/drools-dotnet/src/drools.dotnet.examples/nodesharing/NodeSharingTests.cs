@@ -11,8 +11,13 @@ namespace org.drools.dotnet.examples.nodesharing
 		[Test]
 		public void TestNodeSharingExample()
 		{
+#if FRAMEWORK11
+			RuleBase ruleBase = RuleBaseLoader.LoadFromRelativeUri(
+				"./drls/nodesharing.csharp.drl.xml");
+#else
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/nodesharing.csharp.drl.xml", UriKind.Relative));
+#endif
 			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
 
 			for (int i = 0; i < 10; i++)

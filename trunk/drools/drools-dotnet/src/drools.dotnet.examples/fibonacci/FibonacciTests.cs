@@ -11,8 +11,13 @@ namespace org.drools.dotnet.examples.fibonacci
 		[Test]
 		public void TestFibonacciExample()
 		{
+#if FRAMEWORK11
+			RuleBase ruleBase = RuleBaseLoader.LoadFromRelativeUri(
+				"./drls/fibonacci.csharp.drl.xml");
+#else
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/fibonacci.csharp.drl.xml", UriKind.Relative));
+#endif
 			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
 			//workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 

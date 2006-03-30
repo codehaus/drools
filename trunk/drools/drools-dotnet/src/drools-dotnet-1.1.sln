@@ -1,0 +1,70 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.dotnet-1.1", "drools.dotnet\drools.dotnet-1.1.csproj", "{1DF9AD1C-0053-4942-B8D7-AC34AF7952E9}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.dotnet.examples-1.1", "drools.dotnet.examples\drools.dotnet.examples-1.1.csproj", "{94FDDEAE-C004-46C4-9E3C-60B91CB849D3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.dotnet.tests-1.1", "drools.dotnet.tests\drools.dotnet.tests-1.1.csproj", "{965C73FE-98DE-4284-AAE5-25D64FE5BAA2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drools.semantics.dotnet-1.1", "drools.semantics.dotnet\drools.semantics.dotnet-1.1.csproj", "{37483F55-354B-47F5-8D4C-821C4162523B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{1DF9AD1C-0053-4942-B8D7-AC34AF7952E9}.Debug.ActiveCfg = Debug|.NET
+		{1DF9AD1C-0053-4942-B8D7-AC34AF7952E9}.Debug.Build.0 = Debug|.NET
+		{1DF9AD1C-0053-4942-B8D7-AC34AF7952E9}.Release.ActiveCfg = Release|.NET
+		{1DF9AD1C-0053-4942-B8D7-AC34AF7952E9}.Release.Build.0 = Release|.NET
+		{94FDDEAE-C004-46C4-9E3C-60B91CB849D3}.Debug.ActiveCfg = Debug|.NET
+		{94FDDEAE-C004-46C4-9E3C-60B91CB849D3}.Debug.Build.0 = Debug|.NET
+		{94FDDEAE-C004-46C4-9E3C-60B91CB849D3}.Release.ActiveCfg = Release|.NET
+		{94FDDEAE-C004-46C4-9E3C-60B91CB849D3}.Release.Build.0 = Release|.NET
+		{965C73FE-98DE-4284-AAE5-25D64FE5BAA2}.Debug.ActiveCfg = Debug|.NET
+		{965C73FE-98DE-4284-AAE5-25D64FE5BAA2}.Debug.Build.0 = Debug|.NET
+		{965C73FE-98DE-4284-AAE5-25D64FE5BAA2}.Release.ActiveCfg = Release|.NET
+		{965C73FE-98DE-4284-AAE5-25D64FE5BAA2}.Release.Build.0 = Release|.NET
+		{37483F55-354B-47F5-8D4C-821C4162523B}.Debug.ActiveCfg = Debug|.NET
+		{37483F55-354B-47F5-8D4C-821C4162523B}.Debug.Build.0 = Debug|.NET
+		{37483F55-354B-47F5-8D4C-821C4162523B}.Release.ActiveCfg = Release|.NET
+		{37483F55-354B-47F5-8D4C-821C4162523B}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FBB7454-A22D-4367-BE90-9967DE1E7AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1C7F94-6B2C-4281-9926-12652BF1FAE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9420EAA-D74A-48AA-9600-FB8D6505D642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD67C43-A7DE-48B8-9F10-F454DB22B00A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

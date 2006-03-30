@@ -1,6 +1,11 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections;
+	using System.Collections.Generic;
+#endif
 using System.Reflection;
 using org.drools.io;
 using org.drools.spi;
@@ -9,7 +14,6 @@ using java.net;
 using org.drools.conflict;
 using ILMerging;
 using org.drools.rule;
-using System.Collections;
 using org.drools.semantics.dotnet;
 using org.drools.dotnet.util;
 
@@ -18,7 +22,11 @@ namespace org.drools.dotnet.io
 	/// <summary>
 	///	Load one or more rules sets for in the Drools engine.
 	/// </summary>
+#if FRAMEWORK11
+	public sealed class RuleBaseLoader
+#else
 	public static class RuleBaseLoader
+#endif
 	{
 		/// <summary>
 		/// Loads a rule set from a stream
@@ -112,11 +120,18 @@ namespace org.drools.dotnet.io
 		/// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
 		public static RuleBase LoadFromUri(Uri[] uris, ConflictResolver resolver)
 		{
+#if FRAMEWORK11
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\");
+#else
 			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\", UriKind.Absolute);
+#endif
 			URL[] urls = new URL[uris.Length];
 			int count = 0;
 			foreach (Uri uri in uris)
 			{
+#if FRAMEWORK11	//The 1.1 framework Uri class only supports absolute uris.
+				urls[count] = new URL(uri.AbsoluteUri);
+#else
 				if (! uri.IsAbsoluteUri)
 				{
 					urls[count] = new URL(new Uri(baseUri, uri).AbsoluteUri);
@@ -125,10 +140,56 @@ namespace org.drools.dotnet.io
 				{
 					urls[count] = new URL(uri.AbsoluteUri);
 				}
+#endif
 				count++;
 			}            
 			return new RuleBase(org.drools.io.RuleBaseLoader.loadFromUrl(urls, resolver));
 		}
+
+		#region Load from relative uri functions
+
+#if !FRAMEWORK11
+		[Obsolete("Don't use LoadFromRelativeUri.  Instead use LoadFromUri and pass in a Uri created using UriKind.Relative", false)]
+#endif
+		public static RuleBase LoadFromRelativeUri(string uriPath)
+		{
+			return RuleBaseLoader.LoadFromRelativeUri(
+				uriPath, DefaultConflictResolver.getInstance()); 
+		}
+
+#if !FRAMEWORK11
+		[Obsolete("Don't use LoadFromRelativeUri.  Instead use LoadFromUri and pass in a Uri created using UriKind.Relative", false)]
+#endif
+		public static RuleBase LoadFromRelativeUri(string uriPath, ConflictResolver resolver)
+		{
+			return RuleBaseLoader.LoadFromRelativeUri(
+				new string[] { uriPath }, resolver);
+		}
+
+#if !FRAMEWORK11
+		[Obsolete("Don't use LoadFromRelativeUri.  Instead use LoadFromUri and pass in a Uri created using UriKind.Relative", false)]
+#endif
+		public static RuleBase LoadFromRelativeUri(string[] uriPaths)
+		{
+			return RuleBaseLoader.LoadFromRelativeUri(
+				uriPaths, DefaultConflictResolver.getInstance());
+		}
+
+#if !FRAMEWORK11
+		[Obsolete("Don't use LoadFromRelativeUri.  Instead use LoadFromUri and pass in a Uri created using UriKind.Relative", false)]
+#endif
+		public static RuleBase LoadFromRelativeUri(string[] uriPaths, ConflictResolver resolver)
+		{
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\");
+			Uri[] uris = new Uri[uriPaths.Length];
+			for (int i=0; i < uriPaths.Length; i++)
+			{
+				uris[i] = new Uri(baseUri, uriPaths[i]);
+			}
+			return RuleBaseLoader.LoadFromUri(uris, resolver);
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Loads a rule set using all the embedded resources in the assembly that end with .drl.xml
@@ -148,7 +209,11 @@ namespace org.drools.dotnet.io
 		/// <returns><see cref="org.drools.dotnet.RuleBase"/></returns>
 		public static RuleBase LoadFromAssembly(Assembly assembly, ConflictResolver resolver)
 		{
+#if FRAMEWORK11
+			ArrayList streams = new ArrayList();
+#else
 			List<Stream> streams = new List<Stream>();
+#endif
 			foreach (string resource in assembly.GetManifestResourceNames())
 			{
 				if (resource.EndsWith(".drl.xml"))
@@ -156,7 +221,13 @@ namespace org.drools.dotnet.io
 					streams.Add(assembly.GetManifestResourceStream(resource));
 				}
 			}
+#if FRAMEWORK11
+			Stream[] tempStreams = new Stream[streams.Count];
+			streams.CopyTo(tempStreams);
+			return LoadFromStream(tempStreams, resolver);
+#else
 			return LoadFromStream(streams.ToArray(), resolver);
+#endif
 		}
 
         /// <summary>
@@ -212,7 +283,6 @@ namespace org.drools.dotnet.io
             return new RuleBase(drools.io.RuleBaseLoader.loadFromReader(streamReaders, resolver));
         }
 
-
         #region Load precompiled rulebase functions
 
         public static RuleBase LoadPrecompiledRulebase(Stream stream, string precompiledAssembly, out Assembly assembly)
@@ -256,7 +326,7 @@ namespace org.drools.dotnet.io
 
         private static Assembly loadAssembly(RuleBase ruleBase, string assemblyName)
         {
-            if (!assemblyName.Contains(":\\"))
+            if (assemblyName.IndexOf(":\\") < 0)
                 assemblyName = System.Environment.CurrentDirectory + "\\" + assemblyName;
             
             RuleBaseLoader.SetRuleSetCtxProperties(ruleBase, assemblyName);
@@ -286,12 +356,16 @@ namespace org.drools.dotnet.io
 
         private static Assembly createAssembly(RuleBase ruleBase)
         {
-            System.Collections.ArrayList assemblies = CreateIntermediateAssemblies(ruleBase);
+			System.Collections.ArrayList assemblies = CreateIntermediateAssemblies(ruleBase);
 
             if (assemblies.Count == 0)
                 return null;
             ILMerge ilmerge = new ILMerge();
+#if FRAMEWORK11
+            ReadOnlyList listOfRules = ruleBase.RuleSets as ReadOnlyList;
+#else
             ReadOnlyList<RuleSet> listOfRules = ruleBase.RuleSets as ReadOnlyList<RuleSet>;
+#endif
             RuleSet ruleSet = listOfRules[0] as RuleSet;
             ///ruleBase.RuleSets[0] as RuleSet;
             ilmerge.OutputFile = ruleSet.getRuleBaseContext().get("AssemblyName") as string;

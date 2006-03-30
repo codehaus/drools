@@ -32,8 +32,12 @@ namespace org.drools.semantics.dotnet
             if (!generateInMemory) compilerParameters.OutputAssembly = outputAssembly;
             
             
+#if FRAMEWORK11
+			CompilerResults results = provider.CreateCompiler().CompileAssemblyFromDom(compilerParameters, code);            
+#else
 			CompilerResults results = provider.CompileAssemblyFromDom(compilerParameters,
 				new CodeCompileUnit[1] { code });            
+#endif
 			if (results.Errors.Count > 0)
 			{
 				StringBuilder sb = new StringBuilder();
@@ -52,7 +56,11 @@ namespace org.drools.semantics.dotnet
 
 				//Append source
 				StringWriter sr = new StringWriter();
+#if FRAMEWORK11
+				provider.CreateGenerator().GenerateCodeFromCompileUnit(code, sr, new CodeGeneratorOptions());
+#else
 				provider.GenerateCodeFromCompileUnit(code, sr, new CodeGeneratorOptions());
+#endif
 				string source = sr.ToString();
 				sr.Close();
 
@@ -68,7 +76,11 @@ namespace org.drools.semantics.dotnet
 
 		private static CodeDomProvider GetProvider()
 		{
+#if FRAMEWORK11
+			string providerName = ConfigurationSettings.AppSettings["drools.dotnet.codedomprovider"];
+#else
 			string providerName = ConfigurationManager.AppSettings["drools.dotnet.codedomprovider"];
+#endif
 			if (providerName != null && providerName.Trim().Length > 0)
 			{
 				Type providerType = Type.GetType(providerName);

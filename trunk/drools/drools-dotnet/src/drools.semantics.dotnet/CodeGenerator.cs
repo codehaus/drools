@@ -1,7 +1,11 @@
 using System;
 using System.CodeDom;
 using org.drools.rule;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using org.drools.spi;
 using System.Reflection;
 
@@ -148,7 +152,11 @@ namespace org.drools.semantics.dotnet
 
 		private static CodeCompileUnit AddImports(CodeCompileUnit code, DotNetImporter importer)
 		{
+#if FRAMEWORK11
+			IList imports = new ArrayList();
+#else
 			IList<string> imports = new List<string>();
+#endif
 
 			//Look thru class for types to import
 			foreach (CodeTypeMember member in code.Namespaces[0].Types[0].Members)

@@ -3,7 +3,11 @@ using org.drools.spi;
 using org.drools.rule;
 using System.Reflection.Emit;
 using org.drools.semantics.@base;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.CodeDom;
@@ -54,7 +58,11 @@ namespace org.drools.semantics.dotnet
                 {
                     _assembly = Compile();
                 }
+#if FRAMEWORK11
+				ArrayList parameters = new ArrayList();
+#else
 				List<object> parameters = new List<object>();
+#endif
 				foreach (Declaration d in _requiredParameters)
 				{
 					parameters.Add(t.get(d));

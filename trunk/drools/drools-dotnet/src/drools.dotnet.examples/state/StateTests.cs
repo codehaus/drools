@@ -11,8 +11,13 @@ namespace org.drools.dotnet.examples.state
 		[Test]
 		public void TestStateExample()
 		{
+#if FRAMEWORK11
+			RuleBase ruleBase = RuleBaseLoader.LoadFromRelativeUri(
+				"./drls/state.csharp.drl.xml");
+#else
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/state.csharp.drl.xml", UriKind.Relative));
+#endif
 
 			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
 			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());

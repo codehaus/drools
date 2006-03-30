@@ -3,7 +3,11 @@ using org.drools.rule;
 using System.Reflection;
 using System.CodeDom;
 using Microsoft.CSharp;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -43,7 +47,11 @@ namespace org.drools.semantics.dotnet
                 {
                     _assembly = Compile();
                 }
+#if FRAMEWORK11
+				ArrayList parameters = new ArrayList();
+#else
 				List<object> parameters = new List<object>();
+#endif
 				foreach (Declaration d in _rule.getParameterDeclarations().toArray(new Declaration[] { }))
 				{
 					parameters.Add(t.get(d));
