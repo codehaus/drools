@@ -5,6 +5,7 @@ using System.Threading;
 using org.drools.@event;
 using org.drools.dotnet.examples.escalation;
 using org.drools.dotnet.io;
+using System.Reflection;
 
 namespace org.drools.dotnet.examples.precompilation.escalation
 {
@@ -21,8 +22,9 @@ namespace org.drools.dotnet.examples.precompilation.escalation
                 (stream, "escalation.dll");            
             stream.Close();            
              */
+            Assembly ass = null;
             RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
-                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll");
+                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll", out ass);
         }
         [Test]
         public void TestEscalationExample()
@@ -34,8 +36,9 @@ namespace org.drools.dotnet.examples.precompilation.escalation
                 (stream, "escalation.dll");
             stream.Close();            
              */
+            Assembly ass = null;
             RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
-                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll"); 
+                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll", out ass); 
             WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
             //TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 

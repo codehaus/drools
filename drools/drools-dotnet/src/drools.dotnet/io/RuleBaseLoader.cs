@@ -215,27 +215,27 @@ namespace org.drools.dotnet.io
 
         #region Load precompiled rulebase functions
 
-        public static RuleBase LoadPrecompiledRulebase(Stream stream, string precompiledAssembly)
+        public static RuleBase LoadPrecompiledRulebase(Stream stream, string precompiledAssembly, out Assembly assembly)
         {
-            return RuleBaseLoader.LoadPrecompiledRulebase(stream, DefaultConflictResolver.getInstance(), precompiledAssembly);
+            return RuleBaseLoader.LoadPrecompiledRulebase(stream, DefaultConflictResolver.getInstance(), precompiledAssembly, out assembly);
 
         }
-        public static RuleBase LoadPrecompiledRulebase(Stream stream, ConflictResolver resolver, string precompiledAssembly)
+        public static RuleBase LoadPrecompiledRulebase(Stream stream, ConflictResolver resolver, string precompiledAssembly, out Assembly assembly)
         {
             RuleBase _rulebase = RuleBaseLoader.LoadFromStream(stream, resolver);
-            loadAssembly(_rulebase, precompiledAssembly);
+            assembly = loadAssembly(_rulebase, precompiledAssembly);
             return _rulebase;
         }
         
-        public static RuleBase LoadPrecompiledRulebase(Uri uri, string precompiledAssembly)
+        public static RuleBase LoadPrecompiledRulebase(Uri uri, string precompiledAssembly, out Assembly assembly)
         {
-            return RuleBaseLoader.LoadPrecompiledRulebase(uri, DefaultConflictResolver.getInstance(), precompiledAssembly);
+            return RuleBaseLoader.LoadPrecompiledRulebase(uri, DefaultConflictResolver.getInstance(), precompiledAssembly, out assembly);
         }
 
-        public static RuleBase LoadPrecompiledRulebase(Uri uri, ConflictResolver resolver, string precompiledAssembly)
+        public static RuleBase LoadPrecompiledRulebase(Uri uri, ConflictResolver resolver, string precompiledAssembly, out Assembly assembly)
         {
             RuleBase _rulebase = RuleBaseLoader.LoadFromUri(uri, resolver);
-            loadAssembly(_rulebase, precompiledAssembly);
+            assembly = loadAssembly(_rulebase, precompiledAssembly);
             return _rulebase;
         }
 
@@ -256,11 +256,14 @@ namespace org.drools.dotnet.io
 
         private static Assembly loadAssembly(RuleBase ruleBase, string assemblyName)
         {
+            if (!assemblyName.Contains(":\\"))
+                assemblyName = System.Environment.CurrentDirectory + "\\" + assemblyName;
+            
             RuleBaseLoader.SetRuleSetCtxProperties(ruleBase, assemblyName);
             Assembly assembly = null;
             try
             {
-                assembly = Assembly.LoadFile(System.Environment.CurrentDirectory + "\\" + assemblyName);
+                assembly = Assembly.LoadFile(assemblyName);
             }
             catch (Exception ex)
             {
@@ -285,17 +288,27 @@ namespace org.drools.dotnet.io
         {
             System.Collections.ArrayList assemblies = CreateIntermediateAssemblies(ruleBase);
 
+            if (assemblies.Count == 0)
+                return null;
             ILMerge ilmerge = new ILMerge();
             ReadOnlyList<RuleSet> listOfRules = ruleBase.RuleSets as ReadOnlyList<RuleSet>;
             RuleSet ruleSet = listOfRules[0] as RuleSet;
             ///ruleBase.RuleSets[0] as RuleSet;
             ilmerge.OutputFile = ruleSet.getRuleBaseContext().get("AssemblyName") as string;
+            
             ilmerge.DebugInfo = true;            
             ilmerge.KeyFile = ruleSet.getRuleBaseContext().get("KeyFile") as string;
             ilmerge.SetInputAssemblies((string[])assemblies.ToArray(Type.GetType("System.String")));
-            ilmerge.Merge();
+            try
+            {
+                ilmerge.Merge();
+            }
+            catch (Exception e)
+            {
+                string error = e.ToString();
+            }
             //deleteIntermediateAssemblies(assemblies);
-            Assembly assembly = Assembly.LoadFile(System.Environment.CurrentDirectory + "\\" + ilmerge.OutputFile.ToString());
+            Assembly assembly = Assembly.LoadFile(ilmerge.OutputFile.ToString());
             return assembly;
         }
 

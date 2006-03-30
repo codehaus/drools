@@ -38,7 +38,7 @@ namespace org.drools.dotnet.tests.rule
 		[Test]
 		public void TestImports()
 		{
-			RuleSet ruleset = new RuleSet("Test RuleSet");
+            RuleSet ruleset = new RuleSet("Test RuleSet");
 			ruleset.Imports.Add("System.Threading");
 			Rule rule = new Rule("Test Rule", ruleset);
 			rule.ParameterDeclarations.Add(new ParameterDeclaration("result", typeof(Result)));

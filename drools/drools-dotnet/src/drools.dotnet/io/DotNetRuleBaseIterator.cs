@@ -43,7 +43,7 @@ namespace org.drools.semantics.dotnet
                             case DotNetRuleBaseActions.COMPILE:
                                 {
                                     Assembly assembly = cond.Compile();
-                                    assemblyList.Add(assembly.ManifestModule.Name);
+                                    assemblyList.Add(assembly.Location);
 
                                 }
                                 break;
@@ -64,7 +64,8 @@ namespace org.drools.semantics.dotnet
                             case DotNetRuleBaseActions.COMPILE:
                                 {
                                     Assembly assembly = conseq.Compile();
-                                    assemblyList.Add(assembly.ManifestModule.Name);
+                                    assemblyList.Add(assembly.Location);
+                                    //ManifestModule.Name);
                                 }
                                 break;
                             case DotNetRuleBaseActions.SETASSEMBLY:
