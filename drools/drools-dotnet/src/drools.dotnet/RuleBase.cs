@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using org.drools.dotnet.util;
 
 namespace org.drools.dotnet
@@ -32,9 +36,16 @@ namespace org.drools.dotnet
 		/// <summary>
 		/// a READ-ONLY list of all the RuleSets that make up the RuleBase
 		/// </summary>
+#if FRAMEWORK11
+		public ICollection RuleSets
+		{
+			get{ return new ReadOnlyList(_javaRuleBase.getRuleSets()); }
+		}
+#else
 		public ICollection<org.drools.rule.RuleSet> RuleSets
 		{
 			get{ return new ReadOnlyList<org.drools.rule.RuleSet>(_javaRuleBase.getRuleSets()); }
 		}
+#endif
 	}
 }

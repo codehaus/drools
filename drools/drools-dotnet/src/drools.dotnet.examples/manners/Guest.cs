@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System.Text;
 
 namespace org.drools.dotnet.examples.manners
@@ -8,9 +12,17 @@ namespace org.drools.dotnet.examples.manners
 	{
 		private string _name;
 		private Sex _sex;
+#if FRAMEWORK11
+		private IList _hobbies;
+#else
 		private IList<string> _hobbies;
+#endif
 
+#if FRAMEWORK11
+		public Guest(string name, Sex sex, IList hobbies)
+#else
 		public Guest(string name, Sex sex, IList<string> hobbies)
+#endif
 		{
 			_name = name;
 			_sex = sex;
@@ -22,7 +34,11 @@ namespace org.drools.dotnet.examples.manners
 			get{ return _name; }
 		}
 
+#if FRAMEWORK11
+		public virtual IList Hobbies
+#else
 		public virtual IList<string> Hobbies
+#endif
 		{
 			get{ return _hobbies; }
 		}

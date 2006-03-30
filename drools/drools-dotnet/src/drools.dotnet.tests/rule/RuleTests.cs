@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using org.drools.dotnet.rule;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace org.drools.dotnet.tests.rule

@@ -2,7 +2,11 @@ using org.drools.spi;
 using java.util;
 using java.lang;
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System.Reflection;
 
 namespace org.drools.semantics.dotnet
@@ -80,7 +84,11 @@ namespace org.drools.semantics.dotnet
 			if (type == null)
 			{
                 //Try to get the type for fully qualified class names
-                List<Type> validTypes = new List<Type>();
+#if FRAMEWORK11
+				System.Collections.ArrayList validTypes = new System.Collections.ArrayList();
+#else
+				List<Type> validTypes = new List<Type>();
+#endif
                 foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     Type validType = assembly.GetType(typeName);
@@ -106,7 +114,11 @@ namespace org.drools.semantics.dotnet
 
 				if (validTypes.Count == 1)
 				{
+#if FRAMEWORK11
+					type = validTypes[0] as Type;
+#else
 					type = validTypes[0];
+#endif
 				}
 				else if (validTypes.Count > 1)
 				{

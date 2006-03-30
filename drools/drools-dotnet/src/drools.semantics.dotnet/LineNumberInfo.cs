@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System.Text;
 using org.drools.smf;
 using org.drools.io;
@@ -43,13 +47,13 @@ namespace org.drools.semantics.dotnet
             string fileName   = null;
             try
             {
-                if (!int.TryParse(c.getAttribute(NODELINESTART), out lineStart))
+                if (!IntTryParse(c.getAttribute(NODELINESTART), out lineStart))
                     return null;
-                if (!int.TryParse(c.getAttribute(NODELINEEND), out lineEnd))
+                if (!IntTryParse(c.getAttribute(NODELINEEND), out lineEnd))
                     return null;
-                if (!int.TryParse(c.getAttribute(NODECOLUMNSTART), out columnStart))
+                if (!IntTryParse(c.getAttribute(NODECOLUMNSTART), out columnStart))
                     return null;
-                if (!int.TryParse(c.getAttribute(NODECOLUMNEND), out columnEnd))
+                if (!IntTryParse(c.getAttribute(NODECOLUMNEND), out columnEnd))
                     return null;
                 fileName = c.getAttribute(NODEFILENAME);
                 Uri uri = new Uri(fileName);
@@ -58,13 +62,32 @@ namespace org.drools.semantics.dotnet
                     return null;     
                
             }
-            catch (Exception ex) // for any exception, return null
+            catch (Exception) // for any exception, return null
             {
                 return null;
             }
             return new LineNumberInfo(lineStart, lineEnd, columnStart, columnEnd, fileName);
 
         }
+
+		private static bool IntTryParse(string val, out int result)
+		{
+#if FRAMEWORK11
+			bool parseOk = false;
+			try
+			{
+				result = int.Parse(val);
+				parseOk = true;
+			}
+			catch (Exception)
+			{
+				result = 0;
+			}
+			return parseOk;
+#else
+			return int.TryParse(val, out result);
+#endif
+		}
 
         public int StartLine
         {

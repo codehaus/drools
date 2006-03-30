@@ -21,8 +21,14 @@ namespace org.drools.dotnet.tests.io
 		[Test]
 		public void TestUrlLoaderWithRelativePath()
 		{
+#if FRAMEWORK11
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\");
+			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
+				baseUri, "./drls/csharp.drl.xml"));
+#else
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/csharp.drl.xml", UriKind.Relative));
+#endif
 			Assert.AreEqual(1, ruleBase.RuleSets.Count);
 		}
 

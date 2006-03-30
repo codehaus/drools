@@ -22,9 +22,15 @@ namespace org.drools.dotnet.examples.precompilation.escalation
                 (stream, "escalation.dll");            
             stream.Close();            
              */
-            Assembly ass = null;
-            RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
-                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll", out ass);
+            Assembly assembly = null;
+#if FRAMEWORK11
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\");
+			RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
+				new Uri(baseUri, "./drls/escalation.csharp.drl.xml"), "escalation.dll", out assembly);
+#else
+			RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
+                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll", out assembly);
+#endif
         }
         [Test]
         public void TestEscalationExample()
@@ -36,9 +42,15 @@ namespace org.drools.dotnet.examples.precompilation.escalation
                 (stream, "escalation.dll");
             stream.Close();            
              */
-            Assembly ass = null;
-            RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
-                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll", out ass); 
+            Assembly assembly = null;
+#if FRAMEWORK11
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\");
+			RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
+				new Uri(baseUri, "./drls/escalation.csharp.drl.xml"), "escalation.dll", out assembly);
+#else
+			RuleBase ruleBase = RuleBaseLoader.LoadPrecompiledRulebase(
+                new Uri("./drls/escalation.csharp.drl.xml", UriKind.Relative), "escalation.dll", out assembly); 
+#endif
             WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
             //TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
@@ -95,7 +107,3 @@ namespace org.drools.dotnet.examples.precompilation.escalation
 
 	}
 }
-
-
-
-

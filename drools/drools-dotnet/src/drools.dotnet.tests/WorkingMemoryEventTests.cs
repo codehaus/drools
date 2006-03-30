@@ -23,6 +23,18 @@ namespace org.drools.dotnet.tests
 			_objectRetractedCount = 0;
 			_eventArgs = null;
 			_sender = null;
+#if FRAMEWORK11
+			Uri baseUri = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\");
+			RuleBase rb = RuleBaseLoader.LoadFromUri(
+				new Uri(baseUri, "./drls/csharp.drl.xml"));
+			_workingMemory = rb.GetNewWorkingMemory();
+			_workingMemory.ObjectAsserted += new EventHandler(
+				WorkingMemory_ObjectAsserted);
+			_workingMemory.ObjectModified += new EventHandler(
+				WorkingMemory_ObjectModified);
+			_workingMemory.ObjectRetracted += new EventHandler(
+				WorkingMemory_ObjectRetracted);
+#else
 			RuleBase rb = RuleBaseLoader.LoadFromUri(
 				new Uri("./drls/csharp.drl.xml", UriKind.Relative));
 			_workingMemory = rb.GetNewWorkingMemory();
@@ -32,6 +44,7 @@ namespace org.drools.dotnet.tests
 				WorkingMemory_ObjectModified);
 			_workingMemory.ObjectRetracted += new EventHandler<ObjectRetractedEventArgs>(
 				WorkingMemory_ObjectRetracted);
+#endif
 		}
 
 		[Test]
@@ -77,21 +90,33 @@ namespace org.drools.dotnet.tests
 			Assert.AreEqual(_workingMemory, _sender);
 		}
 
+#if FRAMEWORK11
+		private void WorkingMemory_ObjectAsserted(object sender, EventArgs e)
+#else
 		private void WorkingMemory_ObjectAsserted(object sender, ObjectAssertedEventArgs e)
+#endif
 		{
 			_objectAssertCount++;
 			_eventArgs = e;
 			_sender = sender;
 		}
 
+#if FRAMEWORK11
+		private void WorkingMemory_ObjectModified(object sender, EventArgs e)
+#else
 		private void WorkingMemory_ObjectModified(object sender, ObjectModifiedEventArgs e)
+#endif
 		{
 			_objectModifiedCount++;
 			_eventArgs = e;
 			_sender = sender;
 		}
 
+#if FRAMEWORK11
+		private void WorkingMemory_ObjectRetracted(object sender, EventArgs e)
+#else
 		private void WorkingMemory_ObjectRetracted(object sender, ObjectRetractedEventArgs e)
+#endif
 		{
 			_objectRetractedCount++;
 			_eventArgs = e;

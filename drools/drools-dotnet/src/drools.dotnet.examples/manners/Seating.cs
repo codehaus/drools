@@ -1,5 +1,9 @@
 using System;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 
 namespace org.drools.dotnet.examples.manners
 {
@@ -10,15 +14,22 @@ namespace org.drools.dotnet.examples.manners
 		private Guest _guest2;
 		private Guest _guest1;
 		private Seating _prevSeat;
+#if FRAMEWORK11
+		private IList _tabooList;
+#else
 		private IList<Guest> _tabooList;
-
+#endif
 		public Seating(int seat1, Guest guest1, Seating prevSeat)
 		{
 			_seat1 = seat1;
 			_guest1 = guest1;
 			_prevSeat = prevSeat;
 			_seat2 = seat1 + 1;
+#if FRAMEWORK11
+			_tabooList = new ArrayList();
+#else
 			_tabooList = new List<Guest>();
+#endif
 
 			if (_prevSeat != null)
 			{
@@ -57,7 +68,11 @@ namespace org.drools.dotnet.examples.manners
 			get { return _prevSeat; }
 		}
 
+#if FRAMEWORK11
+		public virtual IList TabooList
+#else
 		public virtual IList<Guest> TabooList
+#endif
 		{
 			get { return _tabooList; }
 		}

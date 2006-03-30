@@ -1,6 +1,10 @@
 using System;
 using NUnit.Framework;
-using System.Collections.Generic;
+#if FRAMEWORK11
+	using System.Collections;
+#else
+	using System.Collections.Generic;
+#endif
 using System.IO;
 using org.drools.dotnet.io;
 
@@ -17,12 +21,21 @@ namespace org.drools.dotnet.examples.manners
 		[Test]
 		public void TestMannersExample()
 		{
+#if FRAMEWORK11
+			RuleBase ruleBase = RuleBaseLoader.LoadFromRelativeUri(
+				"./drls/manners.csharp.drl.xml");
+#else
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/manners.csharp.drl.xml", UriKind.Relative));
+#endif
 			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
 			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
+#if FRAMEWORK11
+			IList guests = GenerateGuests();
+#else
 			IList<Guest> guests = GenerateGuests();
+#endif
 			Context context = new Context("start");
 			LastSeat lastSeat = new LastSeat(numSeats);
 
@@ -37,14 +50,22 @@ namespace org.drools.dotnet.examples.manners
 			long stop = DateTime.Now.Ticks;
 			Console.Out.WriteLine("Elapsed time: " + (stop - start) / 10000 + "ms");
 
+#if FRAMEWORK11
+			IList seats = workingMemory.GetObjects(typeof(Seat));
+#else
 			IList<Seat> seats = workingMemory.GetObjects<Seat>();
+#endif
 			Assert.AreEqual(numGuests, seats.Count, "seated guests " + seats.Count + 
 				" didn't match expected " + numGuests);
 
 			ValidateResults(guests, seats);
 		}
 
+#if FRAMEWORK11
+		private void ValidateResults(IList guests, IList seats)
+#else
 		private void ValidateResults(IList<Guest> guests, IList<Seat> seats)
+#endif
 		{
 		    Guest lastGuest = null;
 		    foreach (Seat seat in seats)
@@ -68,7 +89,11 @@ namespace org.drools.dotnet.examples.manners
 		    }
 		}
 		
+#if FRAMEWORK11
+		private Guest Guest4Seat(IList guests, Seat seat)
+#else
 		private Guest Guest4Seat(IList<Guest> guests, Seat seat)
+#endif
 		{
 			foreach (Guest guest in guests)
 			{
@@ -77,17 +102,29 @@ namespace org.drools.dotnet.examples.manners
 			return null;
 		}
 
+#if FRAMEWORK11
+		private IList GenerateGuests()
+#else
 		private IList<Guest> GenerateGuests()
+#endif
 		{
 			int maxMale = numGuests / 2;
 			int maxFemale = numGuests / 2;
 			int maleCount = 0;
 			int femaleCount = 0;
 
+#if FRAMEWORK11
+			IList guests = new ArrayList();
+#else
 			IList<Guest> guests = new List<Guest>();
+#endif
 
 			//Init hobbies
+#if FRAMEWORK11
+			IList allHobbies = new ArrayList();
+#else
 			IList<string> allHobbies = new List<string>();
+#endif
 			for (int i = 1; i <= maxHobbies; i++)
 			{
 				allHobbies.Add("h" + i);
@@ -118,7 +155,11 @@ namespace org.drools.dotnet.examples.manners
 
 				//Set guest hobbies
 				int numHobbies = rnd.Next(minHobbies, maxHobbies);
+#if FRAMEWORK11
+				IList hobbies = new ArrayList(allHobbies);
+#else
 				IList<string> hobbies = new List<string>(allHobbies);
+#endif
 				while (hobbies.Count > numHobbies)
 				{
 					hobbies.RemoveAt(rnd.Next(0, hobbies.Count - 1));

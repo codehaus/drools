@@ -12,8 +12,13 @@ namespace org.drools.dotnet.examples.escalation
 		[Test]
 		public void TestEscalationExample()
 		{
+#if FRAMEWORK11
+			RuleBase ruleBase = RuleBaseLoader.LoadFromRelativeUri(
+				"./drls/escalation.csharp.drl.xml");
+#else
 			RuleBase ruleBase = RuleBaseLoader.LoadFromUri(new Uri(
 				"./drls/escalation.csharp.drl.xml", UriKind.Relative));
+#endif
 			WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
 			//TODO: workingMemory.addEventListener(new DebugWorkingMemoryEventListener());
 
