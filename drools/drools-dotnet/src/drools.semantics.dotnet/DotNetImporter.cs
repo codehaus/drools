@@ -59,6 +59,7 @@ namespace org.drools.semantics.dotnet
 
 		public Type importType(string typeName)
 		{
+            string typeNameWithoutAssembly = typeName;
 			//Try loading the type - this is necessary so the IKVM class loader works.
 			Type type = Type.GetType(typeName);
 
@@ -69,7 +70,13 @@ namespace org.drools.semantics.dotnet
                 string correctTypeName = typeName.Replace(".ASSEMBLY.", ",");
                 type = Type.GetType(correctTypeName);
             }
-			
+
+            if (type == null && typeName.IndexOf(",") != -1)
+            {
+                typeNameWithoutAssembly = typeName.Substring(0, typeName.IndexOf(","));
+                type = Type.GetType(typeNameWithoutAssembly);
+            }
+
 			if (type == null)
 			{
                 //Try to get the type for fully qualified class names
@@ -77,6 +84,7 @@ namespace org.drools.semantics.dotnet
                 foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     Type validType = assembly.GetType(typeName);
+                    if (validType == null) validType = assembly.GetType(typeNameWithoutAssembly);
                     if (validType != null) validTypes.Add(validType);
                 }
 
