@@ -6,7 +6,7 @@
 	xs:schemaLocation="http://drools.org/rules rules.xsd http://drools.org/semantics/dotnet dotnet.xsd">
 
   <import>System</import>
-  <import>System.Threading</import>
+  <import>System.Threading, System</import>
   <dotnet:functions>
     public void Sleep(int milliseconds)
     {
