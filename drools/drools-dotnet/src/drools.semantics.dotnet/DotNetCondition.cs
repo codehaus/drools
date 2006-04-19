@@ -31,11 +31,13 @@ namespace org.drools.semantics.dotnet
 		private string _methodName = "Invoke";
 		private string _namespace;
         private LineNumberInfo _info = null;
+        private DotNetImporter _importer = null;
 
 		public DotNetCondition(Rule rule, int id, string expression, LineNumberInfo info)
 		{
 			_id = id;
 			_rule = rule;
+            _importer = (DotNetImporter)_rule.getImporter();
 			_expression = expression;
 			_className = "Condition_" + id;
 			_namespace = this.GetType().Namespace;
@@ -83,7 +85,7 @@ namespace org.drools.semantics.dotnet
 			//Generate Code
 			CodeCompileUnit code = CodeGenerator.CreateCondition(_namespace,
 				_className, _methodName, _requiredParameters, _expression, 
-                _rule.getImporter() as DotNetImporter,
+                _importer,
 				_rule.getRuleSet().getFunctions("dotnet") as DotNetFunctions,_info);
 
             // Prepare to generate IL

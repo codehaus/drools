@@ -24,11 +24,12 @@ namespace org.drools.semantics.dotnet
 		private string _className;
 		private string _methodName = "Invoke";
         private LineNumberInfo _info = null;
-
+        private DotNetImporter _importer = null;
         public DotNetBlockConsequence(Rule rule, int id, string expression, LineNumberInfo info)
 		{
 			_id = id;
 			_rule = rule;
+            _importer = (DotNetImporter)_rule.getImporter();
 			_expression = expression;
 			_className = "Consequence_" + id;			
             _info = info;
@@ -73,7 +74,7 @@ namespace org.drools.semantics.dotnet
 			CodeCompileUnit code = CodeGenerator.CreateConsequence(this.GetType().Namespace,
 				_className, _methodName, (Declaration[]) 
 				_rule.getParameterDeclarations().toArray(new Declaration[]{}),
-				_expression, _rule.getImporter() as DotNetImporter,
+				_expression, _importer,
                 _rule.getRuleSet().getFunctions("dotnet") as DotNetFunctions, _info);
 
             // Prepare to generate IL

@@ -178,13 +178,43 @@ namespace org.drools.semantics.dotnet
 			}
 
 			//Import any types specified by importer
+            //Import any types specified by importer
             if (importer != null)
             {
                 foreach (string entry in importer.getImports().toArray(new string[] { }))
                 {
-                    if (!imports.Contains(entry)) imports.Add(entry);
+                    string nameSpace = entry.Trim();
+                    string assemblyName = null;
+                    int commaIndex = entry.IndexOf(",");
+                    if (commaIndex != -1)
+                    {
+                        nameSpace = entry.Substring(0, commaIndex).Trim();
+                        assemblyName = entry.Substring(commaIndex + 1).Trim();
+                    }
+
+                    if (!imports.Contains(nameSpace)) imports.Add(nameSpace);
+                    Type type = SearchAppDomainForType(nameSpace);
+                    string assembly = null;
+                    if (type == null)
+                    {
+                        Assembly assem = null;
+                        if (assemblyName == null)
+                            assem = LoadType(nameSpace);
+                        else
+                            assem = LoadType(assemblyName);
+
+                        assembly = assem.Location;
+                    }
+                    else
+                    {
+                        assembly = type.Assembly.Location;
+                    }
+
+                    if (!code.ReferencedAssemblies.Contains(assembly))
+                        code.ReferencedAssemblies.Add(assembly);
                 }
             }
+
 
 			//Add to code
 			foreach (string import in imports)
@@ -218,26 +248,51 @@ namespace org.drools.semantics.dotnet
 			return code;
 		}
 
-		private static string GetNamespace(CodeTypeReference typeRef)
-		{
-			return SearchAppDomainForType(typeRef.BaseType).Namespace;
-		}
+        private static string GetNamespace(CodeTypeReference typeRef)
+        {
+            Type type = SearchAppDomainForType(typeRef.BaseType);
+            if (type == null) throw new Exception("Unable to find type [" + typeRef.BaseType + "].");
+            return type.Namespace;
+        }
 
-		private static string GetAssemblyReference(CodeTypeReference typeRef)
-		{
-			return SearchAppDomainForType(typeRef.BaseType).Assembly.Location;
-		}
+        private static string GetAssemblyReference(CodeTypeReference typeRef)
+        {
+            Type type = SearchAppDomainForType(typeRef.BaseType);
+            if (type == null) throw new Exception("Unable to find type [" + typeRef.BaseType + "].");
+            return type.Assembly.Location;
+        }
 
-		private static Type SearchAppDomainForType(string typeName)
-		{
-			Type type = null;
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				type = assembly.GetType(typeName);
-				if (type != null) return type;
-			}
-			if (type == null) throw new Exception("Unable to find type [" + typeName + "].");
-			return type;
-		}
-	}
+        private static Type SearchAppDomainForType(string typeName)
+        {
+
+            Type type = null;
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                type = assembly.GetType(typeName);
+                if (type != null) return type;
+            }
+            //if(type == null)    throw new Exception("Unable to find type [" + typeName + "].");
+
+            return type;
+        }
+
+        private static Assembly LoadType(string typeName)
+        {
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+
+				if (assembly.GetName().Name.Equals(typeName))
+				  return assembly;
+            }
+            try
+            {
+                Assembly assembly = AppDomain.CurrentDomain.Load(typeName);
+                return assembly;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to load type [" + typeName + "].");
+            }
+        }
+    }
 }
