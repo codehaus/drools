@@ -15,6 +15,9 @@ namespace org.drools.dotnet.tests.io
 		{
 			RuleBase ruleBase = RuleBaseLoader.LoadFromStream(new FileStream(
 				"./drls/csharp.drl.xml", FileMode.Open, FileAccess.Read));
+            WorkingMemory workingMemory = ruleBase.GetNewWorkingMemory();
+            workingMemory.AssertObject("Ready");
+            workingMemory.FireAllRules();
 			Assert.AreEqual(1, ruleBase.RuleSets.Count);
 		}
 
